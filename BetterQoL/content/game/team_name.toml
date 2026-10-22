@@ -1,0 +1,11 @@
+schema = "VRFW.game/2"
+
+# Utilities › team name length of «Plantilla de equipo» (docs/game/ui/team-name-length.md). The Team Dock's name
+# keyboard opens with config.toml [team_name] max_length characters instead of the game's 12 (graft util_team_name,
+# hook file of soccer_team_dock_menu); a name wider than the header's room is drawn in a smaller style of the same
+# colour. The settings come from scripts\team_name.lua.
+
+# () -> max length, room (px), the dock's own text style key (0 = no fit), fit style keys (comma-separated)
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_TEAM_NAME_SETTINGS"
+handler = "BetterQoL.TeamName.Settings"

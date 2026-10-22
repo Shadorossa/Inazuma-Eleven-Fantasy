@@ -1,0 +1,21 @@
+# «Cambiar forma» in the retail «Ver apariencia» of the team dock (mod Utilities, 2026-10-14; docs/game/mechanics/
+# form-viewer.md §8): the action BetterQoL.ViewForms.Cycle (CMD_UTIL_VIEW_FORMS, default RS / G, rebindable;
+# content\inputs\view_forms.toml) cycles the shown player's forms (the VR-Framework's form viewer). The key is polled
+# by Utilities' game Lua (assets\lua\_all\utilities_view_forms.lua) in the menus its host «utilities.view_forms»
+# lists (content\menus\view_forms.toml, entry utilities.appearance); this file is the screen's part: the build of the
+# picked form, the header «Ver apariencia · <form>», the guide entry and the press handler
+# BetterQoL.ViewForms.Appearance. Moved from Inazuma Fantasy's graft form_view (Y / CMD_FUNC3, retired there).
+# HOOK file (docs/framework/lua-hosts.md §7): VRFW_Host handlers on the framework's host of the stem, the retail
+# locals through VRFW_Host.hosts.team_dock_formation_menu.L.
+name = "util_view_forms"
+mod = "BetterQoL"
+order = 350
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "«Ver apariencia»: Utilities' «Cambiar forma» key (RS) cycles the player's forms (Utilities)"
+
+[[hooks]]
+stem = "team_dock_formation_menu"
+src = "util_vf_appearance.lua"

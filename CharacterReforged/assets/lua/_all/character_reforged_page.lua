@@ -24,7 +24,8 @@
 -- default. Asked only at run time (never while a chunk loads); every call goes through pcall.
 -- Also here: Page.SkillSetOn() (the option «Tabla de habilidades» on the new set: the Hiper page is the page of the new
 -- set's aura / mix slots, shown only then), Page.MixOf(card) (the base's mix-slot store, scripts\mix_slots.lua) and
--- Page.Projection(card) (the new set's aura / mix of a card, the skill table's and the match's rule).
+-- Page.Projection(card) (the new set's aura / mix of a card, the skill table's and the match's rule; a match team's
+-- player: his member row's set, Page.MatchMemberSet).
 -- For other mods' menu Lua: CharacterReforged.Page.Stat / LuckBonus / StatTop / GainsRaw / Providers / SkillSetOn /
 -- MixOf / ModeChangePartner.
 CharacterReforged = type(CharacterReforged) == "table" and CharacterReforged or {}
@@ -153,7 +154,8 @@ if CharacterReforged.Page == nil then
 
   -- THE projection of a saved card while the option shows the new set (scripts\mix_slots.lua
   -- CMND_CHARACTERREFORGED_PROJECT_SKILL_SET, the rule the skill table and the match use): { aura, mix, aura_from,
-  -- mix_from }; nil = the option on Victory Road, no answer (Character Reforged's scripts off) or no such card. Every
+  -- mix_from }; a team member the player page previews: his team set's (VRFW_PlateMember.SkillSet); nil = the option
+  -- on Victory Road, no answer (Character Reforged's scripts off) or no such card. Every
   -- place that shows a player's aura / mix (the Hiper page, the page's form badge, the 3D model's forms) reads this.
   Page.CMD_PROJECT = 2177163225            -- crc32("CMND_CHARACTERREFORGED_PROJECT_SKILL_SET")
   Page.projectionCache = {}                -- card -> {at, value}: one command per card per PROJECTION_CACHE_S
@@ -174,17 +176,60 @@ if CharacterReforged.Page == nil then
     end
     return v
   end
+  -- a player of a match team (the player page in a match, e.g. the pause «Formación»): his team member row's set as
+  -- the match plays it (VR-Framework CMND_VRFW_MATCH_MEMBER -> team, slot; CMND_VRFW_TEAM_MEMBER_MOVES -> his loadout):
+  -- the first keshin / totem / armour of it in the aura slot, the first Mix-Max / «Modo cambio» in the mix slot;
+  -- nil = no match, the user's own player, or a row that plays his card's own learn list
+  Page.CMD_MATCH_MEMBER = 992494052        -- crc32("CMND_VRFW_MATCH_MEMBER")
+  Page.CMD_MEMBER_MOVES = 319507648        -- crc32("CMND_VRFW_TEAM_MEMBER_MOVES")
+  Page.CMD_SKILL_INFO = 2580586398         -- (move, 9) -> ok, category (8 = aura); (move, 13) -> ok, aura type
+  Page.MIX_AURA_TYPES = {[2] = true, [6] = true}   -- Mix-Max, «Modo cambio»
+  function Page.MatchMemberSet(card)
+    local ok, found, team, slot = pcall(funcLuaCommand, Page.CMD_MATCH_MEMBER, card)
+    if not (ok and found == true and type(team) == "number" and type(slot) == "number") then
+      return nil
+    end
+    local r = {pcall(funcLuaCommand, Page.CMD_MEMBER_MOVES, team, slot)}
+    if not (r[1] == true and r[2] == true) then
+      return nil
+    end
+    local value = {aura = 0, mix = 0, aura_from = -1, mix_from = -1}
+    for i = 1, 6 do
+      local m = U32(r[2 + i])
+      local okc, known, category = pcall(funcLuaCommand, Page.CMD_SKILL_INFO, m, 9)
+      if m ~= 0 and okc and known and category == 8 then
+        local okt, kt, kind = pcall(funcLuaCommand, Page.CMD_SKILL_INFO, m, 13)
+        if okt and kt and Page.MIX_AURA_TYPES[kind] then
+          if value.mix == 0 then value.mix, value.mix_from = m, i - 1 end
+        elseif value.aura == 0 then
+          value.aura, value.aura_from = m, i - 1
+        end
+      end
+    end
+    return value
+  end
+
   function Page.Projection(card)
     if not EngineReady() or type(card) ~= "number" or card == 0 or not Page.SkillSetOn() then
       return nil
+    end
+    -- a team member previewed on the player page (the VR-Framework's plate member): his set as the match plays it
+    if type(VRFW_PlateMember) == "table" and type(VRFW_PlateMember.SkillSet) == "function" then
+      local okm, member = pcall(VRFW_PlateMember.SkillSet)
+      if okm and type(member) == "table" then
+        return member
+      end
     end
     local now = Clock()
     local hit = Page.projectionCache[card]
     if hit ~= nil and now ~= nil and now - hit.at < Page.PROJECTION_CACHE_S then
       return hit.value
     end
-    local ok, aura, mix, auraFrom, mixFrom = pcall(funcLuaCommand, Page.CMD_PROJECT, card)
-    local value = nil
+    local value = Page.MatchMemberSet(card)
+    local ok, aura, mix, auraFrom, mixFrom = false, nil, nil, nil, nil
+    if value == nil then
+      ok, aura, mix, auraFrom, mixFrom = pcall(funcLuaCommand, Page.CMD_PROJECT, card)
+    end
     if ok and type(aura) == "number" then
       value = {aura = U32(aura), mix = U32(mix), aura_from = tonumber(auraFrom) or -1, mix_from = tonumber(mixFrom) or -1}
     end

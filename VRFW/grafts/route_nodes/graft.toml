@@ -8,7 +8,7 @@
 # board scripts' hook points and their VRFW_Host hosts are graft route_board's (order 190: its host call runs after
 # this graft's and route_chains' files).
 name = "route_nodes"
-mod = "vr_framework"
+mod = "VRFW"
 order = 160
 module = ""
 requires = []

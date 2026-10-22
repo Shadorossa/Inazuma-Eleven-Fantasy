@@ -28,7 +28,7 @@
 # Order 346: after bb_draft (345), so the sync runs before the Draft's own top-menu sync (outer OnInit wrapper).
 # Globals only (BBT, BBT_*); nothing runs at chunk load but the CMND_GET_BB_STADIUM_CAMPAIGN_INFO wrapper's install.
 name = "bb_tournament"
-mod = "bb_chronicle_teams"
+mod = "BattleBayDeluxe"
 order = 346
 module = "lua_bridge"
 requires = ["bb_draft"]

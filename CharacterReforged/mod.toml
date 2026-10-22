@@ -1,8 +1,9 @@
-id = "character_reforged"
+id = "CharacterReforged"
+former_ids = ["character_reforged"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Character Reforged"
-version = "1.16.0"
+version = "1.28.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The shared base of the mods split out of Inazuma Fantasy: every character's own stats (Lv 200 values, growth, level curve), moveset (4 special moves + aura) and the level cap 200 (config.toml [level] cap, 99..999: EXP and stats follow it); the custom pairing / creation flow of the aura mods (All Miximaxed, All Changed, Aura Points, All Keshin Armed), the pairing rules as data and the common texts; the one-row player header of the player page («Ficha» and every screen with the player header: portrait, nickname and «SIGUIENTE» gone; name, element, position, gender, level and number on one band) with a slot where other mods hang their pieces (Stamina Points: the max PE); the paged player page (PERFIL with the player's 3D model and description, ATRIBUTOS with the stats as gauge rows and the Normal / Miximax view, SUPERTÉCNICAS, the Hiper page of the new set's aura / mix slots, Pasivas, the page dots; other mods add their values through its slots); the optional skill table (6 special moves + an aura slot + a mix slot; off by default, row «Tabla de habilidades» of the mod options); the duplicate-players hook (a save duplicated into another slot gets the duplicate rules other mods declare: one card per character with No More Rarities; a rule may ask for the same pass on every load of a player slot, after a one-time backup of that save). The ídolos' «Equipación del momento»: each Ídolo and Diamond card wears the kit of its moment (its team's kit of its era, derived from the game's tables, or the moment_kit its card declares) in matches, menus, face icons and Kizuna town, switched on or off per player in «Equipamiento». Works with the VR-Framework alone."
@@ -18,7 +19,7 @@ folder = "CharacterReforged"
 # of Inazuma Fantasy share their code here and `require` this mod (its «plugins»). Engine-generic mechanisms (the
 # transform engine's look, the fusion store, the transform run time) stay in the VR-Framework. Standard mod layout
 # (docs/framework/mod-layout.md).
-# 1.8.67 (Nacho 2026-10-19): no sixth sense page on Battle Bay Deluxe's lineup screen (assets\lua\personal_plate_menu\
+# 1.8.67 (Nacho 2026-10-19): no sixth sense page on Battle Bay Deluxe's lineup screen (Battle Bay Deluxe's assets\lua\personal_plate_menu\
 # 130_lineup_pages.lua, VRFW_PlayerPages.ShowWhen of vr_framework 2.4.242: no dot, no empty page)
 # 1.9.0 (Nacho 2026-10-19): the player page's model in front of the band on BetterMenu's roster again, through the
 # framework's capture quad binding (VRFW.render.capture_bind of vr_framework 2.5.0)
@@ -30,13 +31,16 @@ folder = "CharacterReforged"
 # the duel's command, as in retail)
 # 1.11.0 (owner 2026-10-21): Transforming Items (transforming_items) is one of its embedded modules
 # (modules\TransformingItems\, its id, prefix, save flag and texts unchanged)
+# 1.27.0 (owner 2026-10-22): the skill table's custom passive button is back, [ save ][ custom passive ][ Entrenar ]
+# (CMND_CHARACTERREFORGED_SIX_SENSE, scripts\board_slots.lua; read only with the module Signature Passives, which
+# was Special Players)
 # 1.14.0 (owner 2026-10-22): content\sounds\voice_fill.toml - every voice bank a card plays gets the technique / aura
 # shouts and in-match lines the other banks of the same character have and it lacks ([[VRFW.VoiceFill]] of
 # vr_framework 2.41.0; docs/game/audio/variant-voice-gaps.md)
 # 1.15.0 (owner 2026-10-22): the voice fill groups a character by its Japanese and English names, an adult bank
 # only takes adult banks' cues and a youth bank youth banks' (chara_base age group), and a technique's other keys come
 # from the bank's own cue of it (God Hand whk00010 -> whk00480, whk01710; vr_framework 2.44.0)
-requires = ["vr_framework>=2.44.0"]
+requires = ["VRFW>=2.87.0"]
 conflicts = []
 # hook / state: the per-character stats (content\game\stats.toml: GetCharaParamStatus, the specialty type, the
 # run speed; scripts\stats.lua's state keys); memory: the card records / board slots it reads (and the board branch it keeps on branch 1 while the new set is
@@ -196,7 +200,7 @@ lua_early = true
 #   modules\<Module>\           the embedded module mods, shipped in this folder (docs/framework/mod-families.md
 #                                «Embedded module mods»): AuraReworked (All Keshin Armed, All Miximaxed, All Changed and Souls Rework
 #                                in one mod since 2026-10-16), AuraPoints (Stamina Points merged in on 2026-10-16),
-#                                GroupSummons, NoMoreRarities, NewRecruitment, PlayerTraining, SpecialPlayers,
+#                                GroupSummons, NoMoreRarities, NewRecruitment, PlayerTraining, SignaturePassives,
 #                                TransformingItems (since 1.11.0). Each keeps its own mod.toml
 #                                (id, prefix, saves, options, grafts) and is switched on / off on this mod's «Mods» page
 #                                (enabled.toml; applies after a restart); a module that is off loads nothing

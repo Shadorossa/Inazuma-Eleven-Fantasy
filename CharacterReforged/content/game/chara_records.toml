@@ -4,17 +4,6 @@ schema = "VRFW.game/2"
 # the status object, its record and the effective level (the same declarations as Inazuma Fantasy's own copy, which
 # its board / training keep).
 
-# CharaStatus* FindCharaRecord(Container*, const u32* charaHdl) 0xD7F3E0: the status object of a handle (record at
-# +0x08, param block at +0x10)
-[[VRFW.Function]]
-name = "CharacterReforged.FindCharaRecord"
-game = "Board.FindCharaRecord"
-
-# u16 HumanChara_GetLevel(CharaStatus*, u8* outFlag) 0xD85710: the effective level, as HumanChara_RefreshStatus passes it
-[[VRFW.Function]]
-name = "CharacterReforged.HumanGetLevel"
-game = "Chara.HumanGetLevel"
-
 # [[g_gameRoot]+ Game.RootCharaContainers]: the character containers (container of kind k = [this + 8 + k * 8])
 [[VRFW.Global]]
 name = "character_reforged_chara_containers"

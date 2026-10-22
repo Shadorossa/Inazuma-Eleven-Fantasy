@@ -1,0 +1,15 @@
+# Neutral element icon of the mod Utilities, team dock chara status (docs/game/ui/neutral-element-icon.md): a HOOK file
+# (docs/framework/lua-hosts.md §7) on the VR-Framework's host of team_dock_menu_rpg_battle, because Inazuma Fantasy's
+# board_entry patch of that screen redefines SetupElementIconTexture (promoted locals) after Utilities' lua_early root.
+name = "neutral_element_dock"
+order = 300
+mod = "BetterQoL"
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Neutral element icon: team dock chara status (hook file)"
+
+[[hooks]]
+stem = "team_dock_menu_rpg_battle"
+src = "util_ne_team_dock_rpg.lua"

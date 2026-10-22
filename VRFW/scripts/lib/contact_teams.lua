@@ -144,10 +144,21 @@ local function read_routes(warn)
       end
     end
   end
-  -- the free-match tab of each game: the routeType of the first piece (table order) whose event slice holds it
+  -- the free-match tab of each game: the tab of the first piece (table order) whose event slice holds it; a piece of a
+  -- route is filed under its route's routeType (the route's first piece: the others hold 255), a piece no route holds
+  -- under its own routeType
+  local route_tab = {}
+  for _, route in ipairs(r) do
+    local s, n = slice(route.pieceInfo or route[3])
+    local first = s and p[s + 1]
+    local t = first and tonumber(scalar(first.routeType or first[1]))
+    if s then
+      for i = s, s + n - 1 do route_tab[i + 1] = t end
+    end
+  end
   out.tab_of = {}
-  for _, piece in ipairs(p) do
-    local t = tonumber(scalar(piece.routeType or piece[1]))
+  for i, piece in ipairs(p) do
+    local t = route_tab[i] or tonumber(scalar(piece.routeType or piece[1]))
     local es, en = slice(piece.eventInfoRef or piece[24])
     if t ~= nil and es then
       for j = es, es + en - 1 do
@@ -295,7 +306,8 @@ end
 local function rules_of(set, warn)
   local t = type(set.teams) == "table" and set.teams or {}
   local R = { staff = t.Staff == true, one_page = t.OnePagePerCharacter ~= false, merge = t.MergeSameName ~= false,
-    max_level = tonumber(t.MaxLevel) or 0, tiers = {}, earliest = t.HomePage == "earliest", places = {} }
+    max_level = tonumber(t.MaxLevel) or 0, tiers = {}, earliest = t.HomePage == "earliest", places = {},
+    hub = set.hub }
   if t.HomePage ~= nil and t.HomePage ~= "earliest" and t.HomePage ~= "terms" then
     warn(set.where .. ": [VRFW.ContactSet.Teams] HomePage " .. tostring(t.HomePage) .. " (earliest, terms): terms used")
   end
@@ -532,22 +544,34 @@ local function home_pages(D, maps, ctx, terms, R)
   local home = {}
   if R.earliest then
     -- the earliest page in the set's order (maps in their order, pages in theirs) where he is a member of the
-    -- page's teams: as a player first, as staff only when he plays on no page
+    -- page's teams, among the pages the set's hub lists (a game on the free-match list) first: as a player first,
+    -- as staff only when he plays on no page; a character on no listed page keeps his first page
+    local function listed(pg)
+      if R.hub ~= "free_match" then return true end
+      for g in pairs(pg.games) do
+        if D.list_row[g] ~= nil then return true end
+      end
+      return false
+    end
+    local any, any_staff = {}, {}
     for _, pg in ipairs(all) do
+      local shown = listed(pg)
       for _, t in ipairs(pg.teams) do
         for _, mb in ipairs(D.teams[t].members) do
           local c = D.card[mb.card]
           local role = role_of(R, c, mb)
           if role == "player" then
-            first[c.base] = first[c.base] or pg
+            any[c.base] = any[c.base] or pg
+            if shown then first[c.base] = first[c.base] or pg end
           elseif role == "staff" then
-            first_staff[c.base] = first_staff[c.base] or pg
+            any_staff[c.base] = any_staff[c.base] or pg
+            if shown then first_staff[c.base] = first_staff[c.base] or pg end
           end
         end
       end
     end
-    for b, pg in pairs(first) do home[b] = pg end
-    for b, pg in pairs(first_staff) do home[b] = home[b] or pg end
+    for b, pg in pairs(any_staff) do home[b] = first_staff[b] or pg end
+    for b, pg in pairs(any) do home[b] = first[b] or pg end
     return home
   end
   for _, pg in ipairs(all) do

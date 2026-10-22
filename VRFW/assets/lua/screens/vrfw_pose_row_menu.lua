@@ -43,6 +43,7 @@ local L_CARD = 4114633020       -- vrfw_pr_card  x5 the game's small player card
 local N = {PLATE = 64, TEXT = 84, SLOTS = 5}
 
 local C = {
+  DRAW_PRIORITY = 1491630496, PLATE_PRIORITY = 457,   -- (layer, instance, priority, children); the plates object's own
   TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
   SPRITE = 558735651, LOAD_TEX = 839427544, TEX_LOADING = 1506186496, SCALE = 3778714801, POS = 1389957207,
   ATTACH_TRACE = 1774843228, OPEN_LAYER = 629267548,
@@ -466,7 +467,8 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
     if M.pid ~= nil then
       Visible(false)
       MC(59611540, layer, 0, 0, M.SLOT)
-      MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT)
+      -- the slot's own key: without it the change reached model key 0 (another menu's model, e.g. the board's caravan)
+      MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT, M.KEY)
     end
     M.pid, M.chara, M.build = nil, nil, nil
   end
@@ -639,11 +641,12 @@ local function Quad(layer, idx, role, x, y, w, h)
 end
 
 -- the next plate of the pool: role, top-left (x, y), size
-local function Plate(role, x, y, w, h)
+local function Plate(role, x, y, w, h, priority)
   if used.plate >= N.PLATE then
     return
   end
   Quad(L_PLATE, used.plate, role, x + w / 2, y + h / 2, w, h)
+  pcall(funcLuaMenuCommand, C.DRAW_PRIORITY, L_PLATE, used.plate, priority or C.PLATE_PRIORITY, true)
   used.plate = used.plate + 1
 end
 
@@ -1016,9 +1019,9 @@ function NP.PlayerRows(Lo, list)
     local y = y0 + (k - 1) * step
     local owned = Owned(m.card)
     Plate(owned and "player_row_off" or "player_row", x, y, w, h)
-    Plate("check_box", x + 14, y + (h - 32) / 2, 32, 32)
+    Plate("check_box", x + 14, y + (h - 32) / 2, 32, 32, C.PLATE_PRIORITY + 1)
     if owned or m.done == true then
-      Plate("check_mark", x + 10, y + (h - 40) / 2 - 4, 40, 40)
+      Plate("check_mark", x + 10, y + (h - 40) / 2 - 4, 40, 40, C.PLATE_PRIORITY + 2)
     end
     local c = cards[m.card] or {}
     Line(c.name or "", x + 64, y + h / 2, ns, not owned)
@@ -1046,8 +1049,13 @@ NP.LU = {
   HIDE = {2635558741, 69091055, 814224422, 2843821468, 3345942320, 3491095421},
   -- a card drawn from its own sprites when the game's fill refuses it: the small plate in the position colour, the face
   SPRITE_CARD = {TEXTURE = 4225297828, PLATE = 3124533534, PLATE_SLOT = 627420056, FACE = 3220507922,
-    FACE_SLOT = 372537510, PLATES = {{16, 570978177}, {32, 3161258530}, {64, 627420056}, {128, 3137420859}}},
-  named = {},
+    FACE_SLOT = 372537510, PLATES = {{16, 570978177}, {32, 3161258530}, {64, 627420056}, {128, 3137420859}},
+    -- the large card, the leader frames and the other small pieces off (the template's coach plate among them)
+    NODES_OFF = {1517329426, 1387831794, 3417436232, 3662440288, 1260240154, 2423840957, 158445831},
+    MESHES_OFF = {2494321055, 775876763, 2197319787, 3491095421, 1910176454, 4283246729, 378264806, 1054577830,
+      430313174, 670064111, 1198450632, 3690620419, 3364549413, 55677738, 1107078292, 3639999790, 3899116140,
+      3397635553, 570644301, 3137996535}},
+  named = {}, logged = {},
 }
 -- the soccer card's name setting (the game's card fills find the card's parts by these tags: retail
 -- NameSetting_CharaCardForSoccer of soccer_formation_menu_inc)
@@ -1135,6 +1143,12 @@ end
 -- a card from its own sprites (the game's fill refused it): its position colour plate and the face
 function NP.SpriteCard(slot, card, position)
   local S = NP.LU.SPRITE_CARD
+  for _, node in ipairs(S.NODES_OFF) do
+    funcLuaMenuCommand(NP.LU.NODE_VISIBLE, L_CARD, node, false, slot)
+  end
+  for _, mesh in ipairs(S.MESHES_OFF) do
+    funcLuaMenuCommand(C.MESH_VISIBLE, L_CARD, mesh, false, slot)
+  end
   local plate = S.PLATE_SLOT
   for _, e in ipairs(S.PLATES) do
     if math.floor((position or 0) / e[1]) % 2 == 1 then
@@ -1195,9 +1209,14 @@ function NP.Lineup(Lo, r)
       NP.NameCard(slot)
       funcLuaMenuCommand(C.LAYER_VISIBLE, L_CARD, slot, true)
       pcall(SetDisableForceCharaInvalidUseTarget)
-      local filled = Call(U.FILL, L_CARD, slot, m.card, true, false, position, 0, Int(r.level), false, false, 0, kit)
-      if filled == false then
+      local okF2, filled = pcall(funcLuaMenuCommand, U.FILL, L_CARD, slot, m.card, true, false, position, 0,
+        Int(r.level), false, false, 0, kit)
+      if okF2 ~= true or filled ~= true then
         NP.SpriteCard(slot, m.card, position)
+      end
+      if not U.logged[slot .. ":" .. m.card] then
+        U.logged[slot .. ":" .. m.card] = true
+        Log("lineup card", slot, m.card, "fill", tostring(okF2), tostring(filled), "position", position)
       end
       pcall(SetEnableForceCharaInvalidUseTarget)
       for _, mesh in ipairs(U.HIDE) do
@@ -1382,7 +1401,7 @@ function OnInit()
     Tex(path)
   end
   ready, open_guard, DECL, HEAD, rows, cards, focus, count = false, 20, nil, nil, {}, {}, 1, 0
-  NP.first, NP.kits, NP.LU.named = nil, {}, {}
+  NP.first, NP.kits, NP.LU.named, NP.LU.logged = nil, {}, {}, {}
   used = {plate = 0, text = 0, plate_was = N.PLATE, text_was = N.TEXT}
   models, shown, placed, settle = {}, {}, {}, nil
   local key = 0

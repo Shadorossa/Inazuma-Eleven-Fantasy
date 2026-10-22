@@ -11,7 +11,7 @@
 name = "ui_clean_dock_panel"
 order = 920
 module = "lua_bridge"
-mod = "clean_hud"
+mod = "BetterUI"
 requires = []
 conflicts = []
 wraps = ["OnSetupLayer", "OnOpenLayer", "OnChangeFocus", "MoveFocusInc", "MoveFocusDec", "MoveFocusMtx", "Step",

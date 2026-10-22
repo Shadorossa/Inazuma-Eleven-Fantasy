@@ -1,0 +1,17 @@
+# Utilities' technique preview (docs/game/ui/technique-preview.md): the button of the «<RS> Previsualizar» prompt on the
+# special move card of the «Supertécnicas» list (ability_list_menu). An [[action]]: a row «Previsualizar supertécnica»
+# in the game's «Configuración de controles», tab «Controles básicos», where the player rebinds it (the game keeps the
+# choice in its own system save); the prompt's glyph is the markup <CMD_UTIL_TECH_PREVIEW> (text row
+# utilities_tech_preview_key), so it follows the binding and the device. Defaults: pad RS (R3, pad index 2: the retail
+# CMD_FUNC6, unused by ability_list_menu) / keyboard P (key index 15, no retail MENU_CTRL command).
+schema = "VRFW.input/1"
+
+[[action]]
+id = "BetterQoL.TechPreview.Play"
+command = "CMD_UTIL_TECH_PREVIEW"
+ctrl = "MENU_CTRL"
+category = "basic"
+label = "utilities_tech_preview_action"
+pad = "RS"
+keyboard = "P"
+screens = ["ability_list_menu", "ability_list_menu_on_bluebg"]   # graft util_tech_preview

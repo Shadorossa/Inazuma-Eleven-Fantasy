@@ -13,16 +13,6 @@ schema = "VRFW.game/2"
 
 # ------------------------------------------------------------------------------------------------ globals / structs
 
-# [g_soccerActors]: `mov r8, [rip+x]` at +8 of OnHissatsuUsed 0xEB6C60
-[[VRFW.Global]]
-name = "ap_actors"
-game = "Match.SoccerActors.ViaSkillUsed"
-
-# Unit* ActorUnit(actor) 0x15B25E0: the match unit of a soccer actor
-[[VRFW.Function]]
-name = "ApActorUnit"
-game = "Match.ActorUnit"
-
 # A soccer actor ([g_soccerActors] + index x 0x570): its handle, team, the summon (keshin / totem) and metamorphosis
 # (armour / miximax) machines, the pending action record (an aura start), the in-play byte.
 [[VRFW.Struct]]

@@ -1,0 +1,21 @@
+# Team name length of «Plantilla de equipo» of the mod Utilities (docs/game/ui/team-name-length.md; always on, no
+# option row). The Team Dock's name keyboard opens with config.toml [team_name] max_length characters (default 24)
+# instead of the game's 12, and a name wider than the header's room is drawn in a smaller style of the same colour
+# ([team_name] fit_styles). The save field holds 128 bytes of UTF-8, so the length is capped at 31.
+# HOOK file (docs/framework/lua-hosts.md §7): VRFW_Host handlers on the VR-Framework's host of soccer_team_dock_menu
+# (around OnEnter of the name frame, after SetupTeamDockTeamName), never merged with other grafts, no promoted locals;
+# the numbers are written as such. Was part of Inazuma Fantasy's graft pachanga_dock (20 characters, 2026-10-02; then
+# Pachangas' copy) until 2026-10-15: Utilities is the one owner now. Built into the mod: menu_assemble.py build --mod
+# utilities.
+name = "util_team_name"
+mod = "BetterQoL"
+order = 345
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Team Dock name: up to 24 characters (config.toml), long names drawn smaller (Utilities)"
+
+[[hooks]]
+stem = "soccer_team_dock_menu"
+src = "util_team_name_dock.lua"

@@ -1,0 +1,94 @@
+schema = "VRFW.game/2"
+
+# Utilities › original names per player (feature original_names; docs/game/ui/original-names.md). The game's
+# «Nombres de los personajes» row gets «Por equipos»; A on it opens the picker (graft research/grafts/util_original_names:
+# the team grid of a series page (the framework's emblem grid on Utilities' layers util_jpn_emblem / util_jpn_label), and
+# the player grid of a team on Utilities' face layer util_jpn_face of setting_menu, menus\108_option\setting_menu_jp_names.toml) whose Lua calls the commands below.
+# The logic is scripts\original_names.lua (+ scripts\lib\original_names_*.lua): the catalogue from the loaded series /
+# team / character tables and the mods' card_filters\ declarations, the saved choices (mod_options\utilities.json
+# names.*: one key per chosen player), the merged chara_text / team_text tables served per language and selection
+# (VRFW.files.serve_text) and the engine's opens redirected to them (VRFW.files.redirect, set again by the framework
+# at the early phase of the next start).
+#
+# The row itself (three values, «Por equipos» stored as names.custom) is the two hooks below.
+
+# [[g_gameRoot] + Game.RootSettings] = the game settings; +0x7D = «Nombres de los personajes» (1 = Originales)
+[[VRFW.Global]]
+name = "game_settings"
+base = "game_root"
+chain = ["Game.RootSettings"]
+
+# ([lang code]) -> bool: the loaded names tables no longer match the saved choices (the settings script takes the retail
+# «Originales» path: back to the title, texts reloaded). Asked before CloseMenuSetting.
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_RELOAD"
+handler = "BetterQoL.OriginalNames.Reload"
+
+# () -> the label text id of the names row (false: the row is not extended)
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_ROW"
+handler = "BetterQoL.OriginalNames.Row"
+
+# (lang code) -> pages (series), current page (1-based), reopen after each tick; 0 = no picker
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_OPEN"
+handler = "BetterQoL.OriginalNames.PickOpen"
+
+# () -> the player grid's layout ([original_names.grid] of config.toml): cols, rows, pitch x, pitch y, tile, centre x,
+# centre y, grey level, names under the tiles
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_GRID"
+handler = "BetterQoL.OriginalNames.PickGrid"
+
+# () -> the team grid's layout ([original_names.team_grid]): cols, rows, pitch x, pitch y, centre x, centre y
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_TEAM_GRID"
+handler = "BetterQoL.OriginalNames.PickTeamGrid"
+
+# (dir) -> page (1-based), the series' name, its players chosen, its players, its team rows; false = no picker
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_TAB"
+handler = "BetterQoL.OriginalNames.PickTab"
+
+# (i) -> team row i of the page: its name, players chosen, players, emblem (item_emblem id, 0 = none); false = none
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_ITEM"
+handler = "BetterQoL.OriginalNames.PickItem"
+
+# (i) -> opens team row i for the grid: players, players chosen, the team's name; false = none
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_TEAM"
+handler = "BetterQoL.OriginalNames.PickTeam"
+
+# (j) -> player j of the open team: chara_base key (face icon), chosen, dub name, original name; false = none
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_PLAYER"
+handler = "BetterQoL.OriginalNames.PickPlayer"
+
+# (j) (0 = every player of the team) -> the new state, players chosen, players; false = none
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_TOGGLE"
+handler = "BetterQoL.OriginalNames.PickToggle"
+
+# () -> changed, the row's new draft index (-1 = unchanged), its value text id, is it the last value
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_NAMES_PICK_CLOSE"
+handler = "BetterQoL.OriginalNames.PickClose"
+
+# ---------------------------------------------------------------- the settings row «Nombres de los personajes»
+
+# void SettingRowRead(menu, Row* row) 0x1184700: the row value from the game settings (type 63: index = (+0x7D != 0),
+# base 0); called by the row loader right after it copied the row's value list (row+0x10 text ids, row+0x18 u16 count).
+# Starts `xor r8d, r8d; test rdx, rdx; je rel32; cmp [rdx], r8d; je rel32`: 21 bytes stolen, both je relocated.
+[[VRFW.Hook]]
+name = "SettingRowRead"
+game = "Option.SettingRowRead"
+kind = "function"
+
+# void SettingRowWrite(menu, Row* row) 0x1184220: writes a settings row's value (row+0x1C index + row+0x20 base) into the
+# game settings; type 63 stores +0x7D = (value != 0). Starts `mov r10, rcx; test rdx, rdx; je rel32; cmp dword [rdx],
+# 0; je rel32`: 21 bytes stolen, both je relocated.
+[[VRFW.Hook]]
+name = "SettingRowWrite"
+game = "Option.SettingRowWrite"
+kind = "function"

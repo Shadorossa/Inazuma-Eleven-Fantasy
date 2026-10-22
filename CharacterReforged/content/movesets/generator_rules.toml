@@ -56,8 +56,8 @@ Level = 0.1
 Random = 0.1
 Seed = "character_reforged.movesets"
 
-# the grades a move starts at when the player is obtained (applied by True Hissatsu through the cards'
-# VRFW.MoveGrades; without True Hissatsu nothing reads them): Inazuma Fantasy's recruit grades, for the moves still
+# the grades a move starts at when the player is obtained (applied by Hissatsu Level Up through the cards'
+# VRFW.MoveGrades; without Hissatsu Level Up nothing reads them): Inazuma Fantasy's recruit grades, for the moves still
 # in the card's moveset. Every other move starts at its base level.
 [CharacterReforged.MovesetRules.StartingGrades]
 From = "research/mods/_aside/InazumaFantasy/characters/move_grades.toml"

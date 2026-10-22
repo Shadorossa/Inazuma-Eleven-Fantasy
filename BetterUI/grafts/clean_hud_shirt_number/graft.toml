@@ -15,7 +15,7 @@
 name = "clean_hud_shirt_number"
 order = 905
 module = "lua_bridge"
-mod = "clean_hud"
+mod = "BetterUI"
 requires = []
 conflicts = []
 wraps = []   # the dock's OnInit / WaitExecPerfromanceChangeMenu: VRFW_Host «before» handlers (BetterUI 1.21.27); the celebration menu's OnInit / OnSetupLayer / UpdateListItem / OnDecideFocus /

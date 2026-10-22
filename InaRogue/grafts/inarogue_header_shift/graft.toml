@@ -3,7 +3,7 @@
 # header_shift block (../ui_clean_header_shift/hs_common.lua). Split from ui_clean_header_shift on 2026-10-08 when that
 # graft moved to clean_hud (docs/refactor/if-adaptation-after-e3.md §35): the menu is IF's own, so its patch stays IF's.
 name = "inarogue_header_shift"
-mod = "inarogue"
+mod = "InaRogue"
 order = 900
 module = "lua_bridge"
 requires = ["inarogue"]

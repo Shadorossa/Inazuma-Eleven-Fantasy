@@ -1,0 +1,59 @@
+schema = "VRFW.card_type/1"
+# No More Rarities › where the «Rareza» tab of the two filter windows («FILTRAR» of the player lists and of the fichas
+# list) starts: config.toml [rarity_filter] first_listed_rarity (default 5: the removed 1★-4★ rarities and the 5★
+# normal card have no box; every normal card is rarity 4 and always passes a specific set, graft
+# no_more_rarities_filter). docs/game/characters/rarity-removal.md §8.
+#
+# Through the VR-Framework's card-type service (docs/framework/card-types.md): each rarity below the first listed one is
+# a card type with `filter = false`, kept only while first_listed_rarity is above it; the service starts the tab's
+# four loops (the tab builder and the full rebuild of both windows) at the first rarity left listed. 0 = no entry: the
+# game's tab. Item values stay rarity values, so the tab's textures, the filter params, the engine filter and the
+# filter state in the save keep their meaning.
+
+[[VRFW.CardType]]
+name = "unlisted_rarity_0"
+rarity = 0
+filter = false
+when = { config = "rarity_filter.first_listed_rarity", default = 5, above = 0 }
+
+[[VRFW.CardType]]
+name = "unlisted_rarity_1"
+rarity = 1
+filter = false
+when = { config = "rarity_filter.first_listed_rarity", default = 5, above = 1 }
+
+[[VRFW.CardType]]
+name = "unlisted_rarity_2"
+rarity = 2
+filter = false
+when = { config = "rarity_filter.first_listed_rarity", default = 5, above = 2 }
+
+[[VRFW.CardType]]
+name = "unlisted_rarity_3"
+rarity = 3
+filter = false
+when = { config = "rarity_filter.first_listed_rarity", default = 5, above = 3 }
+
+[[VRFW.CardType]]
+name = "unlisted_rarity_4"
+rarity = 4
+filter = false
+when = { config = "rarity_filter.first_listed_rarity", default = 5, above = 4 }
+
+[[VRFW.CardType]]
+name = "unlisted_rarity_5"
+rarity = 5
+filter = false
+when = { config = "rarity_filter.first_listed_rarity", default = 5, above = 5 }
+
+[[VRFW.CardType]]
+name = "unlisted_rarity_6"
+rarity = 6
+filter = false
+when = { config = "rarity_filter.first_listed_rarity", default = 5, above = 6 }
+
+[[VRFW.CardType]]
+name = "unlisted_rarity_7"
+rarity = 7
+filter = false
+when = { config = "rarity_filter.first_listed_rarity", default = 5, above = 7 }

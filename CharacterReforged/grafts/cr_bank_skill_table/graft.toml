@@ -6,7 +6,7 @@
 # 2026-10-14. HOOK file (docs/framework/lua-hosts.md §7): it only fills Utilities' table (no handler, no engine call at
 # load; the option is read when Utilities asks, at call time). Without Utilities it is inert.
 name = "cr_bank_skill_table"
-mod = "character_reforged"
+mod = "CharacterReforged"
 order = 340
 module = ""
 requires = []

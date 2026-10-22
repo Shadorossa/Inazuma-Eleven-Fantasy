@@ -4,21 +4,6 @@
 # CMND_PACHANGAS_UPVAL is the framework's built-in command lua_upvalues.
 schema = "VRFW.game/2"
 
-# void SetOrganizedFlagBit(TeamMember* m, u8 logicalSet, bool on) 0xE796F0
-[[VRFW.Function]]
-name = "PT_SetOrganizedFlagBit"
-game = "Party.SetOrganizedFlagBit"
-
-# void RecountTeamInfo(TeamInfo*) 0xDA76F0: the members' synergy flag byte (+0xF) from the team's synergy slots
-[[VRFW.Function]]
-name = "PT_RecountTeamInfo"
-game = "Party.RecountTeamInfo"
-
-# u8 LogicalToPhysical(_, u8 logical) 0xDA7690 (the logical -> physical team-set table)
-[[VRFW.Function]]
-name = "PT_LogicalToPhysical"
-game = "Party.LogicalToPhysical"
-
 [[VRFW.Global]]
 name = "pt_party"
 base = "game_root"
@@ -34,28 +19,28 @@ chain = ["ROOT_PLAY_DATA"]
 name = "CMND_PACHANGAS_INFO"
 aliases = ["CMND_FANTASY_PACHANGA_INFO", "CMND_EVT_PACHANGA_INFO"]
 handler = "Pachangas.Info"
-needs = ["PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # CMND_PACHANGAS_SET(dock 2..12, -1 = none) -> ok, code
 [[VRFW.Command]]
 name = "CMND_PACHANGAS_SET"
 aliases = ["CMND_FANTASY_PACHANGA_SET", "CMND_EVT_PACHANGA_SET"]
 handler = "Pachangas.Set"
-needs = ["PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # CMND_PACHANGAS_TEAM -> ok, dock, formation dword, team name, n, handle x n (the active 5v5 team)
 [[VRFW.Command]]
 name = "CMND_PACHANGAS_TEAM"
 aliases = ["CMND_FANTASY_PACHANGA_TEAM", "CMND_EVT_PACHANGA_TEAM"]
 handler = "Pachangas.Team"
-needs = ["PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # CMND_PACHANGAS_CAPTAIN -> ok, captain card, captain handle (the active 5v5 team's captain; 0 = none named)
 [[VRFW.Command]]
 name = "CMND_PACHANGAS_CAPTAIN"
 aliases = ["CMND_FANTASY_PACHANGA_CAPTAIN"]
 handler = "Pachangas.Captain"
-needs = ["PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # CMND_PACHANGAS_NOTE(op "set" / "get", text) -> the note (a text handed between menu VMs: the join scene's name)
 [[VRFW.Command]]
@@ -68,35 +53,35 @@ handler = "Pachangas.Note"
 name = "CMND_PACHANGAS_VS"
 aliases = ["CMND_FANTASY_PACHANGA_VS", "CMND_EVT_PACHANGA_VS"]
 handler = "Pachangas.Vs"
-needs = ["PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # CMND_PACHANGAS_FLAGS -> dock bits put back on 11v11 / 5v5 members (-1 = not ready)
 [[VRFW.Command]]
 name = "CMND_PACHANGAS_FLAGS"
 aliases = ["CMND_FANTASY_PACHANGA_FLAGS", "CMND_EVT_PACHANGA_FLAGS"]
 handler = "Pachangas.Flags"
-needs = ["PT_SetOrganizedFlagBit", "PT_LogicalToPhysical", "pt_party"]
+needs = ["Party.SetOrganizedFlagBit", "Party.LogicalToPhysical", "pt_party"]
 
 # CMND_PACHANGAS_INIT(dock) -> members removed (-1 = not ready / not a dock)
 [[VRFW.Command]]
 name = "CMND_PACHANGAS_INIT"
 aliases = ["CMND_FANTASY_PACHANGA_INIT", "CMND_EVT_PACHANGA_INIT"]
 handler = "Pachangas.Init"
-needs = ["PT_SetOrganizedFlagBit", "PT_RecountTeamInfo", "PT_LogicalToPhysical", "pt_party"]
+needs = ["Party.SetOrganizedFlagBit", "Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party"]
 
 # CMND_PACHANGAS_SPLIT(dock) -> removed (5v5 auto-copy emptied), 0 = kept / already checked, -1 = n/a
 [[VRFW.Command]]
 name = "CMND_PACHANGAS_SPLIT"
 aliases = ["CMND_FANTASY_PACHANGA_SPLIT", "CMND_EVT_PACHANGA_SPLIT"]
 handler = "Pachangas.Split"
-needs = ["PT_RecountTeamInfo", "PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # CMND_PACHANGAS_TEAMSWAP(dock, on 1 / 0) -> ok, swapped dock (-1 none): 11v11 <-> 5v5 members for the team bonuses screen
 [[VRFW.Command]]
 name = "CMND_PACHANGAS_TEAMSWAP"
 aliases = ["CMND_FANTASY_PACHANGA_TEAMSWAP", "CMND_EVT_PACHANGA_TEAMSWAP"]
 handler = "Pachangas.TeamSwap"
-needs = ["PT_RecountTeamInfo", "PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # a return to the title undoes a pending team bonuses swap (the retail command keeps running: the handler answers
 # nothing). The trial's own return to the title (CMND_EVT_TRIAL_RETURN) does not pass here.
@@ -104,7 +89,7 @@ needs = ["PT_RecountTeamInfo", "PT_LogicalToPhysical", "pt_party", "pt_play_data
 name = "PachangaGameReset"
 command = "CMND_GAME_RESET"
 handler = "Pachangas.OnGameReset"
-needs = ["PT_RecountTeamInfo", "PT_LogicalToPhysical", "pt_party"]
+needs = ["Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party"]
 
 # Independent 5v5 / 11v11 teams from dock 02 on: around the retail place / move 193693077(toSet, pos, fromSet, hdl, team)
 # (0xC35A80) the team the call is NOT about is saved (before) and put back, recounted, its dock bits restored (after).
@@ -112,14 +97,14 @@ needs = ["PT_RecountTeamInfo", "PT_LogicalToPhysical", "pt_party"]
 name = "PachangaSplitPre"
 command = 0x0B8B8595
 handler = "Pachangas.SplitPre"
-needs = ["PT_SetOrganizedFlagBit", "PT_RecountTeamInfo", "PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.SetOrganizedFlagBit", "Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 [[VRFW.CommandFilter]]
 name = "PachangaSplitPost"
 command = 0x0B8B8595
 phase = "after"
 handler = "Pachangas.SplitPost"
-needs = ["PT_SetOrganizedFlagBit", "PT_RecountTeamInfo", "PT_LogicalToPhysical", "pt_party", "pt_play_data"]
+needs = ["Party.SetOrganizedFlagBit", "Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # CMND_PACHANGAS_UPVAL(fn, expect1, value1 [, expect2, value2 …]) -> upvalues changed (-1 = not a function / not
 # available): every numeric upvalue of the game Lua function `fn` equal to an `expect` becomes its `value` (the

@@ -1,11 +1,11 @@
 -- Character Reforged's declaration for Utilities' «Banco» COMANDOS popup (research/grafts/cr_bank_skill_table,
--- docs/game/ui/bank-commands.md §4). Utilities reads Utilities.BankCommands.SkillTable at call time; this file answers
+-- docs/game/ui/bank-commands.md §4). Utilities reads BetterQoL.BankCommands.SkillTable at call time; this file answers
 -- it through a metatable field, so the option row character_reforged.skill_set_view is read only then: the new set view
 -- on = the skill table (evt_skill_slot_menu) with the formation's equip parameters (the stale «open the original
 -- board» request key evt_ss_open_board is deleted before and after); off = nil (Utilities' default: the retail board).
 -- No engine call at load.
 Utilities = Utilities or {}
-Utilities.BankCommands = Utilities.BankCommands or {}
+BetterQoL.BankCommands = BetterQoL.BankCommands or {}
 CharacterReforged = CharacterReforged or {}
 CharacterReforged.BANK_SKILL_TABLE = {Menu = 1041963128 --[[evt_skill_slot_menu]], Params = "equip",
   Clear = {1881233917 --[[evt_ss_open_board]]}}
@@ -18,7 +18,7 @@ function CharacterReforged.BankSkillSetOn()
   return CharacterReforged.EntryOpensSkillTable("bank (Utilities' Banco popup)")
 end
 do
-  local U = Utilities.BankCommands
+  local U = BetterQoL.BankCommands
   if rawget(U, "SkillTable") == nil then
     local mt = getmetatable(U) or {}
     local prev = mt.__index

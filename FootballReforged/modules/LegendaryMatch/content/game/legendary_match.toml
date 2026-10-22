@@ -4,11 +4,6 @@ schema = "VRFW.game/2"
 
 # ------------------------------------------------------------------------------------------------ globals
 
-# [g_soccerActors]: the soccer actors ([g_soccerActors] + index x 0x570: +0x94 the handle, +0xD0 the team)
-[[VRFW.Global]]
-name = "legendary_actors"
-game = "Match.SoccerActors.ViaSkillUsed"
-
 # The match info block [[g_gameRoot]+0x6A58] (+0x2C29 the user's team)
 [[VRFW.Global]]
 name = "legendary_match_info"

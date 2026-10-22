@@ -4383,3 +4383,11 @@ FirstClear = "chronicle_deluxe.gate_fbtl_cro12_030_010"        # 0xA20B285D
 Game = "fbtl_free_001"
 Difficulties = [9]
 FirstClear = "chronicle_deluxe.rival_fbtl_free_001_9"        # 0xCDE23C55
+
+# Chain match tiles of config.toml [heroic] chain_rewards: FirstClear (col 34) = the table
+# chronicle_deluxe.chain_<game>_<difficulty> (the rival's crest and kit, each only while the player has none).
+
+[[VRFW.GameDrops]]
+Game = "evt_ch_ie2_marytimes_05"
+Difficulties = [4]
+FirstClear = "chronicle_deluxe.chain_evt_ch_ie2_marytimes_05_4"        # 0x2F8F55E6

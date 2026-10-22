@@ -1,14 +1,15 @@
-id = "pachangas"
+id = "Pachangas"
+former_ids = ["pachangas"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Pachangas"
-version = "1.0.5"
+version = "1.3.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Team Dock's list starts with one row per match format («11v11», «5v5»; confirm switches the dock to it): every Team Dock holds its own 5-a-side team next to its 11-a-side one, with its 5v5 formations, kit, emblem and bank view, and «Set as active team» picks the active 5-a-side team the friendlies are played with."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-16"
+updated = "2026-10-22"
 # 1.0.1 (2026-10-15): the team name length filter left pachanga_dock: Utilities owns it (graft util_team_name,
 # docs/game/ui/team-name-length.md)
 # 1.0.2 (2026-10-16): the four type boxes became one normal list row «< 11 v 11 >»: left / right (or a click on its
@@ -38,10 +39,16 @@ folder = "Pachangas"
 # player plate in the 5v5 dock). The 7v7 and 3v3 formats are not offered yet (enabled = false; the rulesets are in Football Reforged's base).
 # Utilities: its team bank pages (UTIL_TB, mounted page) and the team kit command. InaRogue is optional: while its save is
 # loaded (its export InaRogue.SaveSlot) the docks keep the retail 11v11 / 5v5 link.
-requires = ["vr_framework>=2.4.87", "football_reforged>=1.2.0", "utilities>=1.15.1"]
+requires = ["VRFW>=2.87.0", "FootballReforged>=1.2.0", "BetterQoL>=1.15.1"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"
+# lua_early (1.3.0, owner bug 2026-10-22): the team dock patch (graft pachanga_dock, soccer_team_dock_menu) promotes the
+# script's locals and redefines whole retail functions (OnInit, OnSetupLayer, OnOpenLayer, OnChangeFocus, OnFunction,
+# Step, MoveFocusInc, UpdateFormationInfo, ...). Run after another mod's wrappers of that script, it dropped them: with
+# BetterUI loading below this mod, the dock lost BetterUI's whole layout (panel, header, rows; retail look). Early,
+# every other mod's dock patch wraps on top of these functions whatever the load order (docs/framework/lua-hosts.md §2).
+lua_early = true
 permissions = ["memory", "call", "command", "state", "hook"]
 
 [exports]
@@ -52,5 +59,5 @@ tables = []
 # A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
 # screen; switching Football Reforged off switches it off too. On by default.
 [module]
-of = "football_reforged"
+of = "FootballReforged"
 order = 70

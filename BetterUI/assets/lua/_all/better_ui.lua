@@ -5,7 +5,7 @@
 -- when that graft is not in this VM. Declared in mod.toml [exports]. Defines functions only; no engine call at load.
 --
 --   BetterUI.TopBarOn()                      the gate of the top bar shortcuts (= CLEAN_HUD_TopBarOn, defined by
---                                             Utilities since BetterUI 1.21.0 = Utilities.TopBarOn; nil without it)
+--                                             Utilities since BetterUI 1.21.0 = BetterQoL.TopBarOn; nil without it)
 --   BetterUI.ShopSwitching()                 true while the shop shortcuts (L2 / R2) are leaving the shop (shop
 --                                             menus; = CLEAN_HUD_SS_CO ~= nil)
 --   BetterUI.CardIsLayer(layer)              the compact player cards (formation screens, soccer_common VMs):

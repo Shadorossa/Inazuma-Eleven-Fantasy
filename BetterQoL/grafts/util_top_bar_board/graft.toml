@@ -1,0 +1,28 @@
+# Utilities' top bar step `chronicle_board` (docs/framework/top-bar.md §4): an entry whose action declares
+# `path = ["chronicle_board"]` (Utilities' «Modo Crónica», content\menus\top_bar.toml; IF's own «Crónica» too) lands on the
+# Chronicle route board, not on the Crónica menu. The framework's step API (lua\_all\10_top_bar.lua,
+# VRFW_TopBarStep(step): true when the shortcut in flight has this step next) is asked at the menu's OnInit; then
+# chronicle_mode_top_menu never shows: on the open of its background layer it does what its own «go to the board» end
+# does (UpdateVsRouteTownSceneChange: close, CMND_RESERVE_VSROUTE of the route the menu holds,
+# funcLuaMenuCommand(1951539112)) on the still-black screen, skipping the caravan. Not skipped (the menu shows as usual):
+# first-play event mode (global byte 3152001072 == 0), Chronicle tutorial not confirmed yet (global bit 1169930310), a
+# reserved Players Universe event, the retail menu-skip mode. No entry key here: the step name only. Wrappers only;
+# nothing at chunk load. Was Inazuma Fantasy's graft chronicle_board_go (keyed on IF's entry) until Clean HUD 1.14.10,
+# BetterUI's clean_hud_chronicle_board until 2026-10-12 (the top bar is Utilities': globals BetterQoL.TopBar.Board).
+name = "util_top_bar_board"
+mod = "BetterQoL"
+order = 960
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OnInit", "OnOpenLayer", "Step"]
+description = "Top bar step chronicle_board: straight to the Chronicle route board, the Crónica menu never shown"
+
+[[files]]
+stem = "chronicle_mode_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ut_board.lua"
+  marker = "util_top_bar_board"
+  crc = "none"

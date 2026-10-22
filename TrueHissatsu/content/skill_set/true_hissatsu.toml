@@ -1,8 +1,0 @@
-# True Hissatsu › its placement rule for Character Reforged's new skill set (scripts\skill_set.lua «place rules as
-# data», content\skill_set\defaults.toml): one copy of a special move per player's set. The selector greys out a move
-# the player already has and the screen refuses it; the retail board is covered by the Board.CanEquip hook.
-schema = "CharacterReforged.skill_set/1"
-
-[CharacterReforged.PlaceRules.true_hissatsu]
-command = "CMND_TRUEHISSATSU_CAN_PLACE"   # (charaStHdl, boardSlot 0..8, itemId) -> ok, other slot holding it
-slot = "board"

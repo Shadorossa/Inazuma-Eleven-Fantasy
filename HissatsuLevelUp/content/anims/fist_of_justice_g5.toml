@@ -1,0 +1,17 @@
+schema = "VRFW.anim/2"
+# Hissatsu Level Up › Superpuño invencible (Fist of Justice, whk00440) at G5: its two cut-ins copied whole (every cut,
+# camera, light, sound and banner of ev63_00440_1 / _2) as new events of the anim engine, so the G5 additions of
+# content\effects\fist_of_justice_g5.toml reach only these copies (docs/game/mechanics/skill-rank-usage.md §7.16).
+# The move content\techniques\fist_of_justice_g5.toml plays them; the grade rule
+# content\hissatsu_level_up\grade_animations.toml shows them from G5.
+owner = "match"
+
+[[event]]
+name = "fist_of_justice_g5"
+from = "ev63_00440_1"
+id = "ev63_80440"
+
+[[event]]
+name = "fist_of_justice_g5_fail"
+from = "ev63_00440_2"
+id = "ev63_80441"

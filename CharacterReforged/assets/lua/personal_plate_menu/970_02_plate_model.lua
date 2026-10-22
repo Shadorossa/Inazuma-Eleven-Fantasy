@@ -948,7 +948,7 @@ EVT_PPM = EVT_PPM or {}
   -- with Utilities): Utilities polls it and calls
   -- EVT_PPM_ViewFormsPress on a press. Without that declaration (no Utilities mechanism) R3 (CMD_FUNC6) is polled here.
   function M.UtilKey()
-    local V = type(Utilities) == "table" and Utilities.ViewForms or nil
+    local V = type(Utilities) == "table" and BetterQoL.ViewForms or nil
     return type(V) == "table" and type(V.Declared) == "function" and V.Declared("personal_plate_menu") == true
   end
   local function R3Down()

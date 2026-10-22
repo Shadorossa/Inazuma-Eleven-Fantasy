@@ -1,7 +1,7 @@
 schema = "VRFW.transform/2"
 if_mod = "all_keshin_armed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
-# All Keshin Armed: every keshin -> armour pair (189, from the v7.1.2 aura_skill_config + change_aura_skill_config: the
-# retail whitelist = `users.cards`, else the armour owner's cards = `users.characters`; moved here from Inazuma
+# All Keshin Armed: every keshin -> armour pair (189 from the v7.1.2 aura_skill_config + change_aura_skill_config, + 2
+# own at the end: the retail whitelist = `users.cards`, else the armour owner's cards = `users.characters`; moved here from Inazuma
 # Fantasy's content/transforms/if_armour.toml, 2026-10-13, same entries). Run by the framework's transform run time;
 # who may wear them is rules.toml (`armour_wearers = "anyone"`: any player whose body has a mesh, the meshes of every
 # body group are assets/chr/_armd + content/looks/armour_clothes.toml). How a player gets the armour without a game
@@ -1342,3 +1342,17 @@ kind = "armour"
 owner = 0x1A5B55BE
 source = { spirit = "wks00990" }
 users = { characters = [0x1A5B55BE] }
+
+# The armours of «Reina negra» and «Rey negro» (keshin the game has without one): this mod's own armour commands
+# (techniques/black_armours.toml, the white Queen / King armour recoloured), no retail owner.
+[[transform]]
+name = "was00380"
+kind = "armour"
+source = { spirit = "wks00380" }
+users = { anyone = true }
+
+[[transform]]
+name = "wak00390"
+kind = "armour"
+source = { spirit = "wkk00390" }
+users = { anyone = true }

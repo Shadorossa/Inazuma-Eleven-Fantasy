@@ -16,14 +16,14 @@ Orb = "best"
 ClearTicks = false
 
 # Equipo Ogro in the IE3 tab (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §9): its game (the last
-# IE1 board battle) is listed under the IE3 tab, right after Dark Team (owner 2026-10-22; it was after Pequeños
-# Gigantes); the board keeps its piece. The framework lists a copy of the game
+# IE1 board battle) is listed under the IE3 tab, right after Pequeños Gigantes (owner 2026-10-22: with Sky Team and
+# Dark Team before it, below); the board keeps its piece. The framework lists a copy of the game
 # in a hidden piece of that tab with the same unlock (the Ogre Crónica win) and the same clear bits (an old save keeps
 # its won classes) (docs/framework/free-match-tabs.md §9).
 [[VRFW.GameTab]]
 Game = "fbtl_cro01_130_010"        # Equipo Ogro
 Tab = 2                            # IE3
-After = "fbtl_cro03_130_010"       # Dark Team
+After = "fbtl_cro03_180_010"       # Pequeños Gigantes
 
 # ---- 1.11.1 (owner 2026-10-19; docs/game/mods/chronicle-deluxe-free-match.md §10). VRFW 2.7.2 keys
 # (docs/framework/free-match-tabs.md §12). New games copy the rows of the Chronicle battle they come from (the three
@@ -102,7 +102,7 @@ Tab = 2
 Unlock = "fbtl_cro03_180_010"
 Before = "fbtl_cro03_020_010"          # Big Waves (the first IE3 game once Equipo B left)
 
-# IE3: Sky Team, Dark Team and Ángel Oscuro right before Equipo Ogro
+# IE3: Sky Team, Dark Team and Ángel Oscuro right before Equipo Ogro, so the four follow Pequeños Gigantes
 [[VRFW.FreeMatchPlace]]
 Game = "fbtl_cro03_120_010"            # Sky Team
 Before = "fbtl_cro01_130_010"          # Equipo Ogro (its IE3 copy)
@@ -148,19 +148,19 @@ Unlock = "fbtl_cro06_010_010"
 Before = "fbtl_cro06_020_010"          # Dragones de Fuego (the first Galaxy game once Royal Academy left)
 
 # Ares (1.11.16, owner 2026-10-20): Raimon of the Inakuni island arc («Raimon Isla Remota», the line-up of the Ares final
-# against Academia Plenilunio, coach Mister), right after Barcelona Orb; the rows (three classes, AI, stadium) are those of that final,
-# and it opens with Barcelona Orb, as its neighbour.
+# against Academia Plenilunio, coach Mister), first in the tab (owner 2026-10-22: also an office page); the rows (three
+# classes, AI, stadium) are those of that final, and it opens with Barcelona Orb.
 [[VRFW.FreeMatchGame]]
 Game = "chronicle_deluxe_fm_raimon_ares"
 Team = "chronicle_deluxe.fm_raimon_island"  # «Raimon Isla Remota» (content/teams/16_ares/0001_raimon_free_match.toml)
 Template = "fbtl_cro07_130_010"        # ¡Hacia la cima! (Academia Plenilunio)
 Tab = 6
 Unlock = "fbtl_cro07_010_010"          # Barcelona Orb
-After = "fbtl_cro07_010_010"
+Before = "fbtl_cro07_010_010"          # declared first: before Raimon (Ares) below
 
 # Ares (owner 2026-10-22, for New Recruitment's office): Raimon of the first Ares battle (the line-up that faces Barcelona
 # Orb: Bobby Shearer, Jack Wallside, Erik Eagle, Steve Grim, Tim Saunders, Maxwell Carson, Jim Wraith, Sam Kincaid…),
-# right before Barcelona Orb (the tab's first); rows (three classes, AI, stadium) of that battle, opening with it.
+# right after Raimon Isla Remota (same anchor, declared after it), before Barcelona Orb; rows (three classes, AI, stadium) of that battle, opening with it.
 [[VRFW.FreeMatchGame]]
 Game = "chronicle_deluxe_fm_raimon_ares_first"
 Team = "chronicle_deluxe.fm_raimon_ares"    # «Raimon (Ares)» (content/teams/16_ares/0001_raimon_free_match.toml)
@@ -225,3 +225,74 @@ Before = "fbtl_cro12_080_020"
 [[VRFW.FreeMatchPlace]]
 Game = "fbtl_cro12_030_010"
 Before = "fbtl_cro12_080_020"
+
+# ---- Legend / unboarded teams as free-match games (owner 2026-10-22; docs/game/mods/chronicle-deluxe-free-match.md
+# §20): each one a new game against the game's own team (its rows, AI and stadium copied from `Template`, the tab's
+# battle it opens with), so it is a playable free match and a page of the New Recruitment office's hub. To add a team:
+# one more block (Team = its team key; Template / Unlock = a board battle of the tab; Before / After = its place).
+
+# GO: Raimon revolucionario (Battle Bay's GO Raimon, the team the old office's GO row used), first in the tab, opens
+# with the first GO battle
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_raimon_revolution"
+Team = "bb_08_team_raimon_go"
+Template = "fbtl_cro04_010_010"        # Caballeros Templarios (the first GO battle)
+Tab = 3
+Unlock = "fbtl_cro04_010_010"
+Before = "fbtl_cro04_010_010"
+
+# GO: Segundo equipo del Raimon (legend team) right after Raimon revolucionario (same anchor, declared after it),
+# opens with the first GO battle
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_raimon_second_team"
+Team = "tm_cro_legend_GO1_10"
+Template = "fbtl_cro04_010_010"        # Caballeros Templarios (the first GO battle)
+Tab = 3
+Unlock = "fbtl_cro04_010_010"
+Before = "fbtl_cro04_010_010"
+
+# GO: Ultramegahiedra (legend team) right before Cala Pirata, opens with Royal Academy (the battle before it)
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_ultramegahiedra"
+Team = "tm_cro_legend_GO1_01"
+Template = "fbtl_cro04_060_010"        # Royal Academy (GO)
+Tab = 3
+Unlock = "fbtl_cro04_060_010"
+Before = "fbtl_cro04_070_010"          # Cala Pirata
+
+# IE3: Caimanes del Cabo, Grifos de la Rosa and Brocken Brigade (legend teams), in that order right before Knights of
+# Queen, open with Dragones de Fuego (the battle before it)
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_caimanes_del_cabo"
+Team = "tm_cro_legend_IE3_07"
+Template = "fbtl_cro03_050_010"        # Dragones de Fuego
+Tab = 2
+Unlock = "fbtl_cro03_050_010"
+Before = "fbtl_cro03_060_010"          # Knights of Queen
+
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_grifos_de_la_rosa"
+Team = "tm_cro_legend_IE3_05"
+Template = "fbtl_cro03_050_010"
+Tab = 2
+Unlock = "fbtl_cro03_050_010"
+Before = "fbtl_cro03_060_010"
+
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_brocken_brigade"
+Team = "tm_cro_legend_IE3_06"
+Template = "fbtl_cro03_050_010"
+Tab = 2
+Unlock = "fbtl_cro03_050_010"
+Before = "fbtl_cro03_060_010"
+
+# Victory Road: Solaria-Zeus (the team of the Chronicle battle fbtl_cro09_080_010, which no board piece holds) right
+# after Raimon; its rows (four classes) are Raimon's free-match game's, it opens with the Victory Road Chronicle battle
+# against Raimon
+[[VRFW.FreeMatchGame]]
+Game = "chronicle_deluxe_fm_solaria_zeus"
+Team = "tm_cro_victory_0800"
+Template = "fbtl_raimon_01"            # Raimon (the Victory Road tab's free-match game)
+Tab = 8
+Unlock = "fbtl_cro09_060_010"          # Raimon, Victory Road Chronicle
+After = "fbtl_raimon_01"

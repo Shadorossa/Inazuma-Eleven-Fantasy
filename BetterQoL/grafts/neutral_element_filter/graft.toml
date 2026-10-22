@@ -1,0 +1,21 @@
+# Neutral element icon of the mod Utilities, item filter window (docs/game/ui/neutral-element-icon.md). The element
+# tab (list item type 4) of item_filter_menu lists the four elements on the element row (win07_06: icon + name) and
+# the fifth entry «Neutro» (value 5) on the plain text row (win07_04: no icon slot), so retail shows the word only.
+# The fifth entry's name gets the neutral text icon [$gaiji_cmd_type00] in front. Used by the moves / auras tabs of the
+# shop filter (graft util_shop_filter) and by the game's own item lists.
+name = "neutral_element_filter"
+mod = "BetterQoL"
+order = 300
+module = "lua_patch"
+requires = []
+conflicts = []
+wraps = ["UpdateItem"]
+description = "Neutral element icon: the «Neutro» entry of the item filter window's element tab"
+
+[[files]]
+stem = "item_filter_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ne_item_filter.lua"
+  marker = "neutral_element filter"

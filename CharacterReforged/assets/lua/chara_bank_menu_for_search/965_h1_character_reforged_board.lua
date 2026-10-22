@@ -10,6 +10,8 @@
 --   * the base's own card is greyed; the personal plate opens by itself and follows the cursor;
 --   * Aceptar on a card: the cursor goes to that card's special moves on the plate (the retail «Confirmación de
 --     supertécnica» mode); back there = the grid again;
+--   * a move row picked with Aceptar or a mouse click (the plate reports it, plate_create_moves_hooks.lua; the retail
+--     move-order drag of the plate is off meanwhile);
 --   * Aceptar on a move: refused when it is a hyper technique / aura, a goalkeeper move for a base who is not a
 --     goalkeeper, or a move the base already has (or picked); else (all `n` moves picked) the system's confirmation
 --     (the retail card window with the base, Sí / No; its text key from the system, {base} {partner} {moves};
@@ -29,6 +31,13 @@ do
   B.KEY_BASE = 2918576166                            -- character_reforged_create_base
   B.KEY_ROW = 416963278                              -- character_reforged_create_row
   B.KEY_MOVES = {892911027, 2888952841}              -- character_reforged_create_move1 / _move2
+  -- the move step on the plate (plate_create_moves_hooks.lua in personal_plate_menu): while KEY_PICKING is set, a
+  -- decide on a move row (Aceptar or a mouse click) writes row + 1 to KEY_PICKED_ROW instead of starting the retail
+  -- move-order drag
+  B.KEY_PICKING = 2195309509                         -- character_reforged_create_pick_moves
+  B.KEY_PICKED_ROW = 2315084405                      -- character_reforged_create_pick_row
+  B.KEY_PLATE_RELEASE = 2526449858                  -- character_reforged_create_plate_release
+  B.DUPLICATE_FRAMES = 2                             -- frames a second report of the same press is ignored
   B.MOVES = 201707600                                -- CMND_CHARACTERREFORGED_CREATE_MOVES (row) -> n, confirmId, confirmText,
                                                      -- confirmIcon, previewCommand, avatarMayPair
   B.IS_AVATAR = 2461887648                           -- CMND_GET_IS_AVATAR_CHARA (charaStHdl) -> the player's avatar
@@ -287,25 +296,64 @@ do
     UpdatePersonalPlate(hdl)
   end
 
+  -- the plate's move rows answer as a pick (true) or as the retail move-order drag (false)
+  function B.PickRows(on)
+    funcLuaCommand(B.PARAM_DELETE, B.KEY_PICKED_ROW)
+    funcLuaCommand(B.PARAM_DELETE, B.KEY_PICKING)
+    if on then
+      funcLuaCommand(B.PARAM_SET, B.KEY_PICKING, 0, 1, 1)
+    end
+  end
+
+  -- the row the plate reported as decided (0 .. 5), or nil
+  function B.TakePickedRow()
+    if funcLuaCommand(B.PARAM_HAS, B.KEY_PICKED_ROW) ~= true then
+      return nil
+    end
+    local v = funcLuaCommand(B.PARAM_GET, B.KEY_PICKED_ROW)
+    funcLuaCommand(B.PARAM_DELETE, B.KEY_PICKED_ROW)
+    if type(v) ~= "number" or v < 1 then
+      return nil
+    end
+    return v - 1
+  end
+
   -- one move of card `hdl` picked on the plate (nil = back)
   function B.PickMove(hdl, picked)
     funcLuaCommand(B.SOUND, B.SE_OPEN)
+    B.PickRows(true)
     B.MoveMode(true)
     UpdateButtonGuide()
     local frames = 0
+    local ignore = 0
     while true do
       coroutine.yield()
       frames = frames + 1
+      if ignore > 0 then
+        ignore = ignore - 1
+      end
       if frames > 3 and not B.InMoveMode() then
+        B.PickRows(false)
         B.Set("flag7", false)
         UpdateButtonGuide()
         return nil
       end
-      if frames > 8 and B.Pressed(B.CMD_ENTER) then
-        local row = funcLuaMenuCommand(B.FOCUS_INDEX, B.SKILL_ROWS, 0, B.PLATE)
+      -- the plate's report (mouse click or Aceptar on a row), else Aceptar seen by this menu
+      local row = B.TakePickedRow()
+      if row ~= nil and ignore > 0 then
+        row = nil
+      end
+      if row == nil and frames > 8 and B.Pressed(B.CMD_ENTER) then
+        row = funcLuaMenuCommand(B.FOCUS_INDEX, B.SKILL_ROWS, 0, B.PLATE)
         if type(row) ~= "number" then
           row = funcLuaMenuCommand(B.FOCUS_INDEX, B.SKILL_ROWS)
         end
+        if type(row) ~= "number" then
+          row = -1
+        end
+      end
+      if row ~= nil then
+        ignore = B.DUPLICATE_FRAMES
         local skill = (type(row) == "number" and row >= 0 and row <= 5) and (B.RowMoves(hdl)[row + 1] or 0) or 0
         local why = B.MoveRefused(skill, picked)
         B.Log("move", "partner", hdl, "row", row, "move", skill, "refused text", why or 0)
@@ -316,6 +364,7 @@ do
             coroutine.yield()
             wait = wait + 1
           end
+          B.PickRows(false)
           return skill
         end
         -- refused: the retail error sound only, the cursor stays on the moves (owner 2026-10-14: no blocking window
@@ -457,12 +506,17 @@ do
   function B.Recover()
     B.busy = false
     pcall(B.MoveMode, false)
+    pcall(B.PickRows, false)
     pcall(UpdateButtonGuide)
   end
 
   -- the team dock's plate given back as the bank found it (suspended, list mode off), never closed
   function B.ReleasePlate()
     B.MoveMode(false)
+    -- the plate forgets the bank's card (its own chara 0) and shows the dock's focused member again
+    -- (plate_create_moves_hooks.lua answers the empty card while KEY_PLATE_RELEASE is set, and clears it)
+    B.Param(B.KEY_PLATE_RELEASE, 1)
+    pcall(UpdatePersonalPlate, 0)
     pcall(funcLuaMenuCommand, B.PLATE_LIST_MODE, false)
     local opened = B.Get("flag") == true
     if opened then
@@ -477,6 +531,9 @@ do
   -- over the team dock keeps the dock's plate, also a row without partner moves (All Changed's mode change)
   function B.Close(nxt, ...)
     B.co = nil
+    if B.on then
+      pcall(B.PickRows, false)                       -- the plate's move rows answer as in the game again
+    end
     if not ((B.on or B.created) and B.keep_plate) or B.Get("flag2") == nil then
       if B.on then
         pcall(B.MoveMode, false)
@@ -494,6 +551,7 @@ do
   if VRFW_Host ~= nil then
     VRFW_Host.on(B.STEM, "OnInit", {id = B.ID .. ".init", phase = "before", fn = function()
       B.Reset()
+      funcLuaCommand(B.PARAM_DELETE, B.KEY_PLATE_RELEASE)
       if funcLuaCommand(B.PARAM_HAS, B.KEY_BASE) ~= true or funcLuaCommand(B.PARAM_HAS, B.KEY_ROW) ~= true then
         return
       end

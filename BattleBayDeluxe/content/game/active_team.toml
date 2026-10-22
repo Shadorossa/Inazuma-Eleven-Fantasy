@@ -86,16 +86,11 @@ value = "lookup(BattleBayDeluxe.TeamName, [args[2]]:u32)"
 write = "[args[1] + 0x60]:u64"
 
 [[VRFW.Hook]]
-# StartMatchRequest(scene, request) 0x17B7260: the generic «start this match» of every mode (15 callers). Stolen bytes:
-# mov [rsp+18h],rbx / mov [rsp+20h],rsi / push rbp / push rdi / push r14 = 14 bytes, no relative operand (unique
-# pattern in the v7.1.2 dump; the RIP operand after them is a wildcard).
+# StartMatchRequest(scene, request): the generic «start this match» of every mode (15 callers); the game profile's
+# Match.StartRequest.
 name = "StartMatchRequest"
+game = "Match.StartRequest"
 kind = "function"
-pattern = "48 89 5C 24 18 48 89 74 24 20 55 57 41 56 48 8D 6C 24 90 48 81 EC 70 01 00 00 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 60 8B 42 6C"
-rva = 0x17B7260
-steal = 14
-args = ["ptr", "ptr"]
-ret = "u64"
 # the script's handler writes the team set and the level sync of the match: it waits for a busy script VM
 wait_ms = 500
 

@@ -11,7 +11,7 @@
 # Order 190: after route_nodes (160) and route_chains (180), so this graft's own file (the host call last) runs after
 # theirs and every hooked global is defined when the host hooks it.
 name = "route_board"
-mod = "vr_framework"
+mod = "VRFW"
 order = 190
 module = ""
 requires = ["route_nodes", "route_chains"]

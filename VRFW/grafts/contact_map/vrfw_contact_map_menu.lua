@@ -1438,6 +1438,9 @@ CmPages.CARD = {HW = 104, HH = 80,      -- half the size of a lineup card on the
                 -- retail cyan sprite back (team00_01 icon_chr_focus_l01). The seasonal frame (a masked shimmer
                 -- material: a sprite there stays blue) is kept off
                 BORDER_MESH = 3345942320, BORDER_SLOT = 1739145470 --[[icon_chr_focus_l01]],
+                -- a small card (the bench, the managers: the team dock draws them small) has its own focus frame
+                SMALL_MESH = 3491095421 --[[_icon_chr_focus_s01]], SMALL_SLOT = 1892918451 --[[icon_chr_focus_s01]],
+                SMALL_HW = 68, SMALL_HH = 50,     -- half the size of a small card on the screen (the arrow, the hit box)
                 FOCUS_TEX = 4225297828 --[[team00_01.g4tx]], SEASONAL_MESH = 960763094 --[[_seasonal_frame_l01]],
                 ARROW_GAP = 6,                    -- the cursor arrow's tip this far left of the card's left edge
                 NEW_TAG = 40}                     -- the «!» badges use the tag pool from this index (the borders below it)
@@ -1498,6 +1501,7 @@ function CmPages.SetupFormLayer(a1, a2)
     -- no seasonal shimmer frame; the focus frame mesh is the state border, shown by DrawPitch
     pcall(funcLuaMenuCommand, C.MESH_VISIBLE, a1, CmPages.CARD.SEASONAL_MESH, false, a2)
     pcall(funcLuaMenuCommand, C.MESH_VISIBLE, a1, CmPages.CARD.BORDER_MESH, false, a2)
+    pcall(funcLuaMenuCommand, C.MESH_VISIBLE, a1, CmPages.CARD.SMALL_MESH, false, a2)
     if a1 == F.LEADER then
       for _, m in ipairs(CmPages.FOCUS.NUMBERS) do
         pcall(funcLuaMenuCommand, C.MESH_VISIBLE, a1, m, false, a2)
@@ -1653,31 +1657,46 @@ end
 
 -- a lineup card's state border (role card_border_signed / _ready / _unmet: its colour; nil = none): the card's own
 -- frame mesh on its outer edge, its sprite the plain white frame, tinted; false while the plain atlas loads
+-- whether a lineup card is drawn large (the team dock's rule, IsCharaCardBigtype of soccer_formation_menu_inc; else the
+-- starters and the coach large, the bench and the managers small)
+function CmPages.IsBigCard(layer, idx)
+  if type(IsCharaCardBigtype) == "function" then
+    local ok, big = pcall(IsCharaCardBigtype, idx, layer)
+    if ok and type(big) == "boolean" then
+      return big
+    end
+  end
+  return layer == CmPages.FORM.LEADER or idx <= 10
+end
+
 function CmPages.CardBorder(layer, idx, role, focused)
   local B = CmPages.CARD
+  local big = CmPages.IsBigCard(layer, idx)
+  local mesh, slot = big and B.BORDER_MESH or B.SMALL_MESH, big and B.BORDER_SLOT or B.SMALL_SLOT
   pcall(funcLuaMenuCommand, C.MESH_VISIBLE, layer, B.SEASONAL_MESH, false, idx)
+  pcall(funcLuaMenuCommand, C.MESH_VISIBLE, layer, big and B.SMALL_MESH or B.BORDER_MESH, false, idx)
   if focused then                   -- the selected card: the retail cyan frame, its own colours
-    pcall(funcLuaMenuCommand, C.SPRITE, layer, B.FOCUS_TEX, B.BORDER_SLOT, B.BORDER_SLOT, 0, idx)
-    pcall(funcLuaMenuCommand, C.PRIM_COLOR, layer, idx, B.BORDER_MESH, 1, 1, 1)
-    pcall(funcLuaMenuCommand, C.MESH_VISIBLE, layer, B.BORDER_MESH, true, idx)
+    pcall(funcLuaMenuCommand, C.SPRITE, layer, B.FOCUS_TEX, slot, slot, 0, idx)
+    pcall(funcLuaMenuCommand, C.PRIM_COLOR, layer, idx, mesh, 1, 1, 1)
+    pcall(funcLuaMenuCommand, C.MESH_VISIBLE, layer, mesh, true, idx)
     return true
   end
   local f = role ~= nil and FALLBACK[role] or nil
   local tc = f ~= nil and Tex(VRFW_ScreenArt.PLAIN) or nil
   if not tc then
-    pcall(funcLuaMenuCommand, C.MESH_VISIBLE, layer, B.BORDER_MESH, false, idx)
+    pcall(funcLuaMenuCommand, C.MESH_VISIBLE, layer, mesh, false, idx)
     return tc
   end
   local _, sc = VRFW_ScreenArt.Plain(f[1])
-  pcall(funcLuaMenuCommand, C.SPRITE, layer, tc, sc, B.BORDER_SLOT, 0, idx)
-  pcall(funcLuaMenuCommand, C.PRIM_COLOR, layer, idx, B.BORDER_MESH, f[2][1], f[2][2], f[2][3])
-  pcall(funcLuaMenuCommand, C.MESH_VISIBLE, layer, B.BORDER_MESH, true, idx)
+  pcall(funcLuaMenuCommand, C.SPRITE, layer, tc, sc, slot, 0, idx)
+  pcall(funcLuaMenuCommand, C.PRIM_COLOR, layer, idx, mesh, f[2][1], f[2][2], f[2][3])
+  pcall(funcLuaMenuCommand, C.MESH_VISIBLE, layer, mesh, true, idx)
   return true
 end
 
 -- the retail selection on a lineup card: its focus frame in and the cursor arrow at its left, vertically centred (x, y:
 -- the card's centre on screen); the previous card's frame out; nil = no card focused (the frame out, the arrow off)
-function CmPages.FocusCard(layer, idx, x, y)
+function CmPages.FocusCard(layer, idx, x, y, hw)
   local Fo = CmPages.FOCUS
   local cur = Fo.cur
   if cur ~= nil and (cur[1] ~= layer or cur[2] ~= idx) then
@@ -1698,7 +1717,7 @@ function CmPages.FocusCard(layer, idx, x, y)
     pcall(funcLuaMenuCommand, 1491630496 --[[draw priority]], layer, idx, Fo.cur[3] + 30, true)
   end
   -- the arrow: placed on the screen as the list rows place it (no attach: the input anchor re-attaches the cursor)
-  funcLuaMenuCommand(C.POS, L_CURSOR, x - CmPages.CARD.HW - CmPages.CARD.ARROW_GAP, -y, 0, 0)
+  funcLuaMenuCommand(C.POS, L_CURSOR, x - (hw or CmPages.CARD.HW) - CmPages.CARD.ARROW_GAP, -y, 0, 0)
   funcLuaMenuCommand(C.LAYER_VISIBLE, L_CURSOR, 0, true)
 end
 
@@ -1900,6 +1919,9 @@ function CmPages.DrawPitch()
       local B = CmPages.CARD
       local hw, hh = B.HW, B.HH
       local layer, idx = CmPages.CardOf(Int(n.slot))
+      if not CmPages.IsBigCard(layer, idx) then
+        hw, hh = B.SMALL_HW, B.SMALL_HH
+      end
       pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA]], layer, idx, 0,
         n.kind == "ghost" and P.GHOST_ALPHA or 1)
       Hide(L_TILE, k)
@@ -1967,7 +1989,7 @@ function CmPages.DrawPitch()
   end
   local p = pos[focus.grid]
   if p ~= nil and p.layer ~= nil then
-    CmPages.FocusCard(p.layer, p.idx, p.x, p.y)
+    CmPages.FocusCard(p.layer, p.idx, p.x, p.y, p.hw)
   else
     CmPages.Unfocus()
   end

@@ -1,14 +1,15 @@
-id = "player_training"
+id = "PlayerTraining"
+former_ids = ["player_training"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml). «Player Training» is a provisional name (owner may rename it).
 name = "Player Training"
-version = "1.0.17"
+version = "1.2.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Classic training, as in Chrono Stone: every player has Freedom points (growing with his level) to spread over his base stats in a training window (team dock › command list › «Training», L1 / R1 to switch players). With no free points left, raising a stat lowers its counterpart one for one; Reset gives every point back. The trained points count in matches and are kept in the save (Luck too). The bean rows of that list give way to the training, no training beans come from matches, boxes, quests, trophies or gifts, and the bean exchange («Canjear judías») is gone from every screen. Hero cards train like any player; Diamond and Prime cards cannot be trained. Works with the VR-Framework and Character Reforged; a training saved with Inazuma Fantasy is kept."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-16"
+updated = "2026-10-22"
 # This mod's own names (TOML keys [PlayerTraining.X], Lua PlayerTraining.X, commands CMND_PLAYERTRAINING_*, state
 # player_training.*); never VRFW. The old names CMND_EVT_TRAIN_* stay as command aliases (the game Lua calls them).
 prefix = "PlayerTraining"
@@ -70,7 +71,7 @@ lua_early = true
 # 1.0.12: the bean exchange («Canjear judías», beans_trade_menu) is closed so it never takes beans for nothing
 # (assets\lua\_all\player_training_no_bean_trade.lua).
 # 1.0.11 (vr_framework 2.4.142: AllSources): no beans in any mode nor from boxes, quests, trophies, gifts.
-requires = ["vr_framework>=2.4.142", "character_reforged>=1.7.0"]
+requires = ["VRFW>=2.87.0", "CharacterReforged>=1.7.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"
@@ -91,5 +92,5 @@ tables = []
 # ModManager and `vrfw list` show it inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod
 # of its own; switching Character Reforged off switches it off too. Its name there: its mod_name (text\keys.toml).
 [module]
-of = "character_reforged"
+of = "CharacterReforged"
 order = 80

@@ -8,6 +8,8 @@
 -- | CMND_VRFW_TEAM_LINEUP | team id, card… | true, rows written; false, why |
 -- | CMND_VRFW_TEAM_KIT | team id | the team's kit (uniform id of its team_config record; 0 = none) |
 -- | CMND_VRFW_TEAM_LEVEL | team id, row level, level | true, rows: every member plays at `level` (+ his own data offset) |
+-- | CMND_VRFW_TEAM_MEMBER_MOVES | team id, roster slot | true, 6 moves, 6 learn levels of his loadout; false, why |
+-- | CMND_VRFW_MATCH_MEMBER | chara handle | true, team id, roster slot of the match player's member row; false, why |
 
 TeamLineup = TeamLineup or {}
 
@@ -16,6 +18,7 @@ local function info(...) VRFW.log("team_lineup:", ...) end
 local MEMBER_STRIDE = 0x54       -- member row size (team_config member table)
 local MEMBER_CARD = 0x20         -- the row's chara_param (u32)
 local MEMBER_SLOT = 0x47         -- the row's roster slot (u8)
+local MEMBER_LOADOUT = 0x28      -- the row's TEAM_MEMBER_SKILL_CONFIG loadout (u32; 0 = the card's own learn list)
 local MAX_ROWS = 64
 
 local function rd(ty, at)
@@ -139,4 +142,124 @@ function TeamLineup.Level(team, row_level, level)
   end
   info(string.format("team 0x%08X: level %d (row %d): %d row(s)", team, want, base, n))
   return true, n
+end
+
+-- CMND_VRFW_TEAM_MEMBER_MOVES(team, slot) -> true, move1..move6, level1..level6 of the member row in that roster slot as
+-- the match plays it (its TEAM_MEMBER_SKILL_CONFIG loadout: special moves and auras, 0 = empty); false, why when the
+-- row plays its card's own learn list (loadout 0) or is not found. The player page previewing a team member shows it.
+-- The loadout is read from the team_config container the game holds (its loadout rows, the ones the match reads:
+-- 0xE25750 looks a loadout up there by id), with one array read for the ids (index kept while the table stays).
+local LOADOUT_ROWS = 0xA8        -- container: loadout rows (TEAM_MEMBER_SKILL_CONFIG: id, 6 moves, 6 levels; u32 each)
+local LOADOUT_COUNT = 0xB0       -- container: their count (i32)
+local LOADOUT_STRIDE = 0x34
+local ARRAY_MAX = 4096           -- VRFW.mem.read_array's largest read
+local EMPTY_MOVE = 0xFB997A80
+local INDEX = { base = nil, count = nil, rows = nil }   -- loadout id -> row index of the container's table
+
+local function loadout_row(cont, id)
+  local base, count = rd("ptr", cont + LOADOUT_ROWS), rd("i32", cont + LOADOUT_COUNT)
+  if not base or base < 0x10000 or not count or count <= 0 then return nil, "loadout table unreadable" end
+  if INDEX.base ~= base or INDEX.count ~= count then
+    local rows = {}
+    for start = 0, count - 1, ARRAY_MAX do
+      local n = math.min(ARRAY_MAX, count - start)
+      local ok, ids = pcall(VRFW.mem.read_array, "u32", base + start * LOADOUT_STRIDE, n, LOADOUT_STRIDE)
+      if not ok or type(ids) ~= "table" then return nil, "loadout ids unreadable" end
+      for k = 1, n do rows[ids[k]] = start + k - 1 end
+    end
+    INDEX.base, INDEX.count, INDEX.rows = base, count, rows
+  end
+  local i = INDEX.rows[id]
+  if not i then return nil, string.format("loadout 0x%08X not in the team table", id) end
+  local ok, v = pcall(VRFW.mem.read_array, "u32", base + i * LOADOUT_STRIDE, 13)
+  if not ok or type(v) ~= "table" or v[1] ~= id then return nil, "loadout row unreadable" end
+  return v
+end
+
+function TeamLineup.MemberMoves(team, slot)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  slot = math.floor(tonumber(slot) or -1)
+  local rec, cont = find_team(team)
+  if not rec then return false, cont end
+  local okc, cv = pcall(VRFW.mem.read_struct, "RandomTeamConfig", cont)
+  local okr, rv = pcall(VRFW.mem.read_struct, "RandomTeamRecord", rec)
+  local mbase = okc and type(cv) == "table" and cv.Members or nil
+  local first = okr and type(rv) == "table" and rv.First or nil
+  local count = okr and type(rv) == "table" and rv.Count or nil
+  if not mbase or mbase < 0x10000 or not first or not count or count == 0 or count > MAX_ROWS then
+    return false, "member slice unreadable"
+  end
+  first = first % 65536
+  for k = 0, count - 1 do
+    local a = mbase + (first + k) * MEMBER_STRIDE
+    if rd("u8", a + MEMBER_SLOT) == slot then
+      local lid = rd("u32", a + MEMBER_LOADOUT) or 0
+      if lid == 0 then return false, "the card's own learn list" end
+      local v, why = loadout_row(cont, lid)
+      if not v then return false, why end
+      local m = {}
+      for i = 2, 7 do m[#m + 1] = v[i] == EMPTY_MOVE and 0 or v[i] end
+      return true, m[1], m[2], m[3], m[4], m[5], m[6], v[8], v[9], v[10], v[11], v[12], v[13]
+    end
+  end
+  return false, "no member in slot " .. slot
+end
+
+-- CMND_VRFW_MATCH_MEMBER(chara handle) -> true, team, slot of the member row a match player plays from; false, why.
+-- The match's teams are the ones its request named (StartMatchRequest +0xA4 the player's team, +0xA8 the rival), written
+-- natively by the hook TeamLineup.MatchRequest (content\game\random_team.toml) into a block of this script; they count
+-- between match_start and match_end. A player the user owns (VRFW.chara.user_owned) plays his own set: no member.
+-- The player page shown in a match (the pause «Formación») names this member, as a line-up viewer names one.
+local MATCH_TEAMS_KEY = "vr_framework.team_lineup.match_teams"
+local MATCH = { block = nil, on = false }
+do
+  local ok, block = pcall(VRFW.mem.buffer, "tl_match_teams", 8)
+  if ok and type(block) == "number" and pcall(VRFW.state.set, MATCH_TEAMS_KEY, block) then
+    MATCH.block = block
+    wr("u64", block, 0)
+  else
+    VRFW.warn("team_lineup: the match teams block is not set up: a match player's page shows his card's set")
+  end
+end
+VRFW.on("match_start", function() MATCH.on = true return nil end)
+VRFW.on("match_end", function() MATCH.on = false return nil end)
+VRFW.on("game_reset", function() MATCH.on = false return nil end)
+
+-- the roster slot of card `card` in team `team` (staff slots left out); nil when he is not a member
+local function member_slot(team, card)
+  local rec, cont = find_team(team)
+  if not rec then return nil end
+  local okc, cv = pcall(VRFW.mem.read_struct, "RandomTeamConfig", cont)
+  local okr, rv = pcall(VRFW.mem.read_struct, "RandomTeamRecord", rec)
+  local mbase = okc and type(cv) == "table" and cv.Members or nil
+  local first = okr and type(rv) == "table" and rv.First or nil
+  local count = okr and type(rv) == "table" and rv.Count or nil
+  if not mbase or mbase < 0x10000 or not first or not count or count == 0 or count > MAX_ROWS then return nil end
+  first = first % 65536
+  for k = 0, count - 1 do
+    local a = mbase + (first + k) * MEMBER_STRIDE
+    local slot = rd("u8", a + MEMBER_SLOT)
+    if slot and slot < 19 and rd("u32", a + MEMBER_CARD) == card then return slot end
+  end
+  return nil
+end
+
+function TeamLineup.MatchMember(hdl)
+  hdl = math.floor(tonumber(hdl) or 0) % 4294967296
+  if not MATCH.on or not MATCH.block then return false, "no match" end
+  if hdl == 0 then return false, "no character" end
+  local okw, own = pcall(VRFW.chara.user_owned, hdl)
+  if okw and own ~= nil then return false, "the user's own player" end
+  local okr, r = pcall(VRFW.chara.record, hdl)
+  local card = okr and type(r) == "table" and tonumber(r.param) or nil
+  if not card or card == 0 then return false, "not a character" end
+  card = card % 4294967296
+  for _, at in ipairs({ 0, 4 }) do
+    local team = rd("u32", MATCH.block + at)
+    if team and team ~= 0 then
+      local slot = member_slot(team, card)
+      if slot then return true, team, slot end
+    end
+  end
+  return false, string.format("card 0x%08X is in neither team of the match", card)
 end

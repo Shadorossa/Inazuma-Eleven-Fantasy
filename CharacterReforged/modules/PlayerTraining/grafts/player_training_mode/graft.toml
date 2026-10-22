@@ -10,7 +10,7 @@
 # (evt_cmn03_07_btn_train) are declared in Character Reforged's content\menus\skill_table.toml; the dark stat icons and
 # the column backing are this mod's content\images\ recipes. No engine call at chunk load.
 name = "player_training_mode"
-mod = "player_training"
+mod = "PlayerTraining"
 order = 330
 module = "lua_bridge"
 requires = []

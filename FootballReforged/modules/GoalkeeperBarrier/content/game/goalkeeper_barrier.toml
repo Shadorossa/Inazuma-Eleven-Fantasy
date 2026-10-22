@@ -12,22 +12,12 @@ schema = "VRFW.game/2"
 name = "football_scene"
 rip = { pattern = "48 8B 0D ?? ?? ?? ?? 48 85 C9 74 09 41 0F 28 C8 E8 ?? ?? ?? ?? 4C 8D 9C 24 A0 00 00 00", disp_off = 3, next_ip_off = 7, rva = 0x1423EA5, target_rva = 0x21F6350 }
 
-# [g_soccerActors]: `mov r8, [rip+x]` at +8 of OnHissatsuUsed 0xEB6C60
-[[VRFW.Global]]
-name = "football_actors"
-game = "Match.SoccerActors.ViaSkillUsed"
-
 # The match info block [[g_gameRoot]+0x6A58] (+0x60 + team x 0x1130 the team blocks: +0x1058 tension, +0x1068 / +0x106C
 # the scoreboard's keeper bar f32 current / max; +0x2C29 the user's team)
 [[VRFW.Global]]
 name = "football_match"
 base = "game_root"
 chain = ["ROOT_MATCH"]
-
-# Unit* ActorUnit(actor) 0x15B25E0: the match unit of a soccer actor
-[[VRFW.Function]]
-name = "FootballActorUnit"
-game = "Match.ActorUnit"
 
 # A soccer actor ([g_soccerActors] + index x 0x570): its handle, team, the in-play byte.
 [[VRFW.Struct]]

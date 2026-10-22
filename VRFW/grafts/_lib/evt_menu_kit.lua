@@ -473,7 +473,8 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
     if M.pid ~= nil then
       Visible(false)
       MC(59611540, layer, 0, 0, M.SLOT)
-      MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT)
+      -- the slot's own key: without it the change reached model key 0 (another menu's model, e.g. the board's caravan)
+      MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT, M.KEY)
     end
     M.pid, M.chara, M.build = nil, nil, nil
   end

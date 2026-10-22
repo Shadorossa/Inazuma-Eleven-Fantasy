@@ -2,12 +2,14 @@
 #   content\items\    the transforming items ([[VRFW.ItemTransform]] of the VR-Framework, docs/framework/types/item.md §13)
 #   text\             texts (9 languages): the mod's name and description (keys.toml), the items' refusal texts (rows\)
 # A data mod: no plugin, no Lua of its own. The framework builds the pairs, the equip gate and the refusal window, and
-# draws the new look (match and menu models, face icons, the other version's stats and moves). It needs no other mod.
+# draws the new look (match and menu models, face icons, the other version's stats and moves). A module of Character
+# Reforged: it requires it.
 # Docs: docs/game/mods/transforming-items.md.
-id = "transforming_items"
+id = "TransformingItems"
+former_ids = ["transforming_items"]
 # the English fallback; the Mods screen shows the text keys mod_name / mod_description (text\keys.toml)
 name = "Transforming Items"
-version = "1.1.0"
+version = "1.3.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Items that change a player's look while he wears them. The Alius Crystal («Piedra Alius»): a player who took the Alius stone (the Dark Emperors, Royal Academy Redux and the Alius Academy players, in their classic version) equips it in «Equipamiento» and takes his Alius look, with that version's stats and moves; remove it and he is back. It can be equipped once the Dark Emperors are beaten in the Crónica. Works with the VR-Framework alone."
@@ -16,14 +18,14 @@ prefix = "TransformingItems"
 folder = "TransformingItems"
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 # [[VRFW.ItemTransform]] families / base_series (2.8.75); unlock.cleared sets unlock.flag on a won match (2.8.83)
 # 1.0.1 (owner 2026-10-21): the unlock is the save flag TransformingItems.AliusStoneUnlocked (content\flags\)
 # 1.0.2 (owner 2026-10-21): the flag declared by name only; its bit is given by the framework (2.8.86)
 # 1.1.0 (owner 2026-10-21: «Transforming Items debería ser un módulo dentro de Character Reforged»): an embedded
 # module of Character Reforged (research/mods/CharacterReforged/modules/TransformingItems/); its id, prefix, save
 # flag and texts unchanged
-requires = ["vr_framework>=2.8.86"]
+requires = ["VRFW>=2.8.86", "CharacterReforged>=1.18.0"]
 conflicts = []
 
 # A MODULE of Character Reforged (owner 2026-10-21, docs/framework/mod-families.md §1.3): shipped in
@@ -31,5 +33,5 @@ conflicts = []
 # Character Reforged's entry («Módulos y ajustes»: on / off); switching Character Reforged off switches it off too.
 # Its name there: its mod_name (text\keys.toml).
 [module]
-of = "character_reforged"
+of = "CharacterReforged"
 order = 85

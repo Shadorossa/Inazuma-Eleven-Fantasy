@@ -28,6 +28,11 @@ gate_kits = ["fbtl_cro12_030_010"]    # Plathos
 # and its [[VRFW.GameDrops]] FirstClear; a rival uniform without a kit item gets one (content/items/rival_kits.toml).
 rival_rewards = [{ game = "fbtl_free_001", difficulty = 9 }]    # Jóvenes Inazuma
 
+# Chain match tiles whose first win also gives the tile team's crest and kit, each only while the player has none (owner
+# 2026-10-22: Mary Times chain tile m01, Jóvenes Inazuma). `chain` = the chain file content/teams/70_route_nodes/chain_<chain>.toml,
+# `tile` = a match tile's Id. The builder writes chronicle_deluxe.chain_<evt_ch game>_<difficulty> and its [[VRFW.GameDrops]] FirstClear.
+chain_rewards = [{ chain = "ie2_marytimes", tile = "m01" }]
+
 # Heroic battles whose rival wears a uniform with no kit item in the game (owner 2026-10-20, docs/game/kits-unused.md
 # group B): the builder creates the kit item (content/items/rival_kits.toml) and the battle's first heroic win gives it,
 # only while the player has none. A uniform with no model texture and no icon on disk whose derived name is a kit the
@@ -57,10 +62,11 @@ extra_kits = [
 # store's other Raimon kit of that game (Equipación Raimon Isla Remota: 14 Puntos de pasión). A kit no single team owns
 # (owner 2026-10-20: the school clubs' neutral kit, worn by 74 club teams, and the training teams' kit) gives its
 # `names` and `icon_from`: a kit of the same mesh that the new item clones and whose icon is recoloured with the
-# colours of the uniform's own texture (the uniform has no icon in the game). `team` = one team wearing it.
+# colours of the uniform's own texture (the uniform has no icon in the game); `icon_png` (a path under the mod folder) is a
+# hand-made icon used as is instead of the recolour. `team` = one team wearing it.
 store_kits = [
     { team = "pltm_cro_ie7_02", store = "inazuma_fantasy_2.general_store", store_mod = "inazuma_fantasy_2", price = 14, currency = "tk_bb000001" },
-    { team = "tm_prc_050200", store = "inazuma_fantasy_2.general_store", store_mod = "inazuma_fantasy_2", price = 14, currency = "tk_bb000001", icon_from = "uni_u031401", names = { es = "Equipación de club", en = "Club Kit", fr = "Maillot de club", de = "Vereinstrikot", it = "Divisa del club", pt = "Uniforme de clube", ja = "部活ウェア", zh_hans = "社团球衣", zh_hant = "社團服裝" } },
+    { team = "tm_prc_050200", store = "inazuma_fantasy_2.general_store", store_mod = "inazuma_fantasy_2", price = 14, currency = "tk_bb000001", icon_from = "uni_u031401", icon_png = "assets/images/menu/200_icon/02_icon_item/icon_item07/uni_u117301.png", names = { es = "Equipación de club", en = "Club Kit", fr = "Maillot de club", de = "Vereinstrikot", it = "Divisa del club", pt = "Uniforme de clube", ja = "部活ウェア", zh_hans = "社团球衣", zh_hant = "社團服裝" } },
 ]
 
 # The heroic player rules (owner 2026-10-14, simplified 2026-10-16). The «first game» of a player is his character's
@@ -151,7 +157,7 @@ key = "chronicle_deluxe_fms_perfect_spark"
 max_manuals = 32          # manuals per row at most, the moves most players use first (the drop-rate list shows 64 rows)
 weight = 10               # loot weight of one manual / the boots (the books: by their rates)
 max_auras = 20            # aura items per row at most: keshin / totems first, then Mix-Max / mode changes
-books_mod = "true_hissatsu"   # the level-up books are this mod's items: they drop only while it is active
+books_mod = "HissatsuLevelUp"   # the level-up books are this mod's items: they drop only while it is active
 
 # Batalla de crónica (1) and the gate battle that stands in for it on the gate pieces (2)
 [[drops.battle]]

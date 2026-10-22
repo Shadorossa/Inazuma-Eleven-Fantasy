@@ -11,42 +11,42 @@ schema = "VRFW.game/2"
 name = "CMND_PLAYERTRAINING_INFO"     # (charaStHdl, fresh) -> ok, status, libTotal, libAvail, level, position, dirty, growthType, rule
 aliases = ["CMND_EVT_TRAIN_INFO"]
 handler = "PlayerTraining.Info"
-needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+needs = ["Board.FindCharaRecord", "Chara.HumanGetLevel", "player_training_chara_containers"]
 
 [[VRFW.Command]]
 name = "CMND_PLAYERTRAINING_STAT"     # (charaStHdl, idx) -> ok, value, base, bonus, delta, committed, min, max, partner1, partner2
 aliases = ["CMND_EVT_TRAIN_STAT"]
 handler = "PlayerTraining.Stat"
-needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+needs = ["Board.FindCharaRecord", "Chara.HumanGetLevel", "player_training_chara_containers"]
 
 [[VRFW.Command]]
 name = "CMND_PLAYERTRAINING_SET"      # (charaStHdl, idx, newDelta) -> ok, stop, reached, libAvail, d0 … d8
 aliases = ["CMND_EVT_TRAIN_SET"]
 handler = "PlayerTraining.Set"
-needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+needs = ["Board.FindCharaRecord", "Chara.HumanGetLevel", "player_training_chara_containers"]
 
 [[VRFW.Command]]
 name = "CMND_PLAYERTRAINING_COMMIT"   # (charaStHdl) -> ok, status
 aliases = ["CMND_EVT_TRAIN_COMMIT"]
 handler = "PlayerTraining.Commit"
-needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+needs = ["Board.FindCharaRecord", "Chara.HumanGetLevel", "player_training_chara_containers"]
 
 [[VRFW.Command]]
 name = "CMND_PLAYERTRAINING_CANCEL"   # (charaStHdl, 0 = every session) -> ok
 aliases = ["CMND_EVT_TRAIN_CANCEL"]
 handler = "PlayerTraining.Cancel"
-needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+needs = ["Board.FindCharaRecord", "Chara.HumanGetLevel", "player_training_chara_containers"]
 
 [[VRFW.Command]]
 name = "CMND_PLAYERTRAINING_RESET"    # (charaStHdl) -> ok, libAvail
 aliases = ["CMND_EVT_TRAIN_RESET"]
 handler = "PlayerTraining.Reset"
-needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+needs = ["Board.FindCharaRecord", "Chara.HumanGetLevel", "player_training_chara_containers"]
 
 [[VRFW.Command]]
 name = "CMND_PLAYERTRAINING_LUCK_DELTA"   # (charaStHdl) -> the committed Suerte delta (0 = none)
 handler = "PlayerTraining.LuckDelta"
-needs = ["PlayerTraining.FindCharaRecord", "PlayerTraining.HumanGetLevel", "player_training_chara_containers"]
+needs = ["Board.FindCharaRecord", "Chara.HumanGetLevel", "player_training_chara_containers"]
 
 # ------------------------------------------------------------------------------------------------ the match copy
 
@@ -138,17 +138,6 @@ from = "inazuma_fantasy"
 blobs = ["training.json"]
 
 # ------------------------------------------------------------------------------------------------ the game's objects
-
-# CharaStatus* FindCharaRecord(Container*, const u32* charaHdl) 0xD7F3E0: the status object of a handle (record at
-# +0x08, param block at +0x10)
-[[VRFW.Function]]
-name = "PlayerTraining.FindCharaRecord"
-game = "Board.FindCharaRecord"
-
-# u16 HumanChara_GetLevel(CharaStatus*, u8* outFlag) 0xD85710: the effective level, as HumanChara_RefreshStatus passes it
-[[VRFW.Function]]
-name = "PlayerTraining.HumanGetLevel"
-game = "Chara.HumanGetLevel"
 
 # [[g_gameRoot]+ Game.RootCharaContainers]: the character containers (container of kind k = [this + 8 + k * 8])
 [[VRFW.Global]]

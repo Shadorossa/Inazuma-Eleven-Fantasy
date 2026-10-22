@@ -5,7 +5,7 @@
 # band of the header as a normal 2D copy of the page.
 # The pages are declared to the VR-Framework's player page registry (VRFW_PlayerPages, docs/framework/player-pages.md):
 # CharacterReforged.Profile (index 6, type 8) first, CharacterReforged.Stats (7, type 9) after it; with plate_hiper's
-# CharacterReforged.Hiper and the mod Utilities' TRAYECTORIA (Utilities.Career, index 5, type 6, last) the order is
+# CharacterReforged.Hiper and the mod Utilities' TRAYECTORIA (BetterQoL.Career, index 5, type 6, last) the order is
 # 6 -> 7 -> 0 -> 4 -> 1 -> 2 -> 3 -> 5. The framework steps Q/E and maps the types; the plate block hands TRAYECTORIA's
 # page change to UTIL_CS.PageChange under its own wrappers and draws the dots from the registry's slots. Data: Character
 # Reforged content/menus/player_page_layout.toml (research/scripts/if_plate_row_build.py) and
@@ -16,7 +16,7 @@
 # own grafts redefine functions of the same chunks); this graft (personal_plate_menu, equip_menu_select) is built by
 # Character Reforged alone (one copy per VM).
 name = "plate_pages"
-mod = "character_reforged"
+mod = "CharacterReforged"
 order = 975
 module = "lua_bridge"
 requires = ["plate_hiper_plate", "ss2_menus"]

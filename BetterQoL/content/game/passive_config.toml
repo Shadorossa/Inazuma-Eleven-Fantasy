@@ -1,0 +1,233 @@
+schema = "VRFW.game/2"
+
+# Utilities › «Configuración de pasivas» (feature passive_config; docs/game/mechanics/pasivas-configurables.md).
+# The two slot readers are answered natively (docs/framework/native.md §2, [[VRFW.Hook.answer]]): the script fills
+# the tables (scripts/passive_config.lua) and the detours read them, no Lua call per read. The retail command filters
+# and the configurator's commands are the script's functions.
+
+# ------------------------------------------------------------------------------------------------ functions
+
+# Character record ([charaObj+8]) fields the configurator reads besides VRFW.chara.record: the old random archetype
+# (+0x49, +0x4B for a Diamante) and the coach / manager badge (+0x1BC, the inventory handle of the role badge item).
+[[VRFW.Struct]]
+name = "PassiveCharaRecord"
+size = 0x1C0
+fields = { build = { at = 0x49, type = "u8" }, diamond_build = { at = 0x4B, type = "u8" }, badge = { at = 0x1BC, type = "u32" } }
+
+# [g_gameRoot] + Game.RootItems = the inventory InventoryRecord takes
+[[VRFW.Global]]
+name = "utilities_inventory"
+base = "game_root"
+chain = ["Game.RootItems"]
+
+# [g_gameRoot] + Game.RootParty = the team sets (+0x1E0 + team * 0x4A8, members at +0x80): the match teams the live check reads
+[[VRFW.Global]]
+name = "utilities_team_sets"
+base = "game_root"
+chain = ["Game.RootParty"]
+
+# [g_gameRoot] + Game.RootMatch = the match info (+0x2C29 the user's match team, 0 / 1)
+[[VRFW.Global]]
+name = "utilities_match_info"
+base = "game_root"
+chain = ["Game.RootMatch"]
+
+# ------------------------------------------------------------------------------------------------ slot readers
+
+# u32* GetTeamPassiveId(u32* out, u32 charaHdl, u8 slot, u8 useCopy) 0xE80A70: the engine's single reader of a
+# player's passive slots (match passive builder 0x1604E90, every menu row). Stolen bytes: mov [rsp+8],rbx;
+# mov [rsp+10h],rbp; mov [rsp+18h],rsi (15).
+[[VRFW.Hook]]
+name = "GetTeamPassiveId"
+game = "Passive.TeamPassiveId"
+kind = "function"
+
+# first: a mode a mod declares without player passives ([[off_mode]], scripts/passive_config.lua) is the current mode:
+# every slot of every player reads 0 (no passive); key = the current mode id, entry 0
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.OffMode"
+key = ["state(mode.current)"]
+write = "[args[1]]:u32"
+
+# a saved player's slot the configurator decides (his applied choice; with declared slot rules also his defaults):
+# key (save slot, saved owner of the handle, slot 0-4); a match copy reads its owner's
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.Slots"
+key = ["slot", "owner(args[2])", "args[3]"]
+write = "[args[1]]:u32"
+
+# else the character's own passive (chara_param cols 61-65) for any character: key (param, slot); not for a coach /
+# manager (badge), not in the build slots of the build rarities ([passives] build_rarities / build_slots)
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.Own"
+key = ["[record(args[2]) + 4]:u32", "args[3]"]
+when = [
+  { value = "[record(args[2]) + 0x1BC]:u32", equals = 0 },
+  { value = ["[record(args[2]) + 0x10]:u32", "args[3]"], not_in_table = "PassiveConfig.OwnKept" },
+]
+write = "[args[1]]:u32"
+
+# bool IsTeamPassiveUnlocked(u32 charaHdl, u8 slot, u8 useCopy) 0xE80C30 (tail-jumps to 0xD85360). Stolen bytes:
+# mov [rsp+8],rbx; mov [rsp+10h],rsi; push rdi; sub rsp,20h (15).
+[[VRFW.Hook]]
+name = "IsTeamPassiveUnlocked"
+game = "Passive.TeamPassiveUnlocked"
+kind = "function"
+ret = "bool"
+
+# first: in a declared off mode no slot is unlocked (entry 0)
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.OffMode"
+key = ["state(mode.current)"]
+
+# 0 = an empty special slot the player cannot change (locked), 1 = a configured slot works although its board piece
+# is closed ([passives] unlock = "configured" / "all")
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.Unlock"
+key = ["slot", "owner(args[1])", "args[2]"]
+
+# [passives] unlock = "all": every non-empty slot of a configurable saved player (not a coach / manager) works; the
+# table holds the save slots where it applies (none in a mode's reserved slot)
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.AllOpen"
+key = ["slot"]
+when = [
+  { value = "owner(args[1])", not = 0 },
+  { value = "[record(owner(args[1])) + 0x1BC]:u32", equals = 0 },
+  { value = "[record(args[1]) + 0xEC + args[2] * 12]:u32", not = 0 },
+]
+
+# [passives] always_unlocked: a slot holding an own passive works (same conditions as the own passive above)
+[[VRFW.Hook.answer]]
+table = "PassiveConfig.OwnOpen"
+key = ["[record(args[1]) + 4]:u32", "args[2]"]
+when = [
+  { value = "[record(args[1]) + 0x1BC]:u32", equals = 0 },
+  { value = ["[record(args[1]) + 0x10]:u32", "args[2]"], not_in_table = "PassiveConfig.OwnKept" },
+]
+
+# ------------------------------------------------------------------------------------------------ what other readers see
+
+# 1 while a declared off mode is the current mode, else 0 (no value before the mode service answers): the one test
+# every reader of «no passives here» uses (this mod's plate and formation hook files, other mods' own passive slots,
+# script-driven passives, team bonus screens): native answers `when = { state = "BetterQoL.passives_off", equals = 1 }`,
+# scripts `VRFW.state.get("BetterQoL.passives_off") == 1`
+[[VRFW.State]]
+key = "BetterQoL.passives_off"
+formula = "lookup_or(PassiveConfig.OffMode, 1, state(mode.current)) == 0"
+
+# ------------------------------------------------------------------------------------------------ retail command filters
+# handler = a function of scripts/passive_config.lua; it answers `handled, values…` (handled false = the game's own
+# handler runs). The commands read teamPassiveInfo themselves, so the reader hooks never see them.
+
+# CMND_GET_CHARA_TEAM_PASSIVE_INFO(hdl, slot, field, useCopy, preview): plate / team lists / picker rows (pseudo
+# handles 0xE000 + i) / the clear menu's preview
+[[VRFW.CommandFilter]]
+name = "PassiveConfig.CharaTeamPassiveInfo"
+command = 0xF3483CE9
+handler = "BetterQoL.PassiveConfig.PlateInfo"
+needs = ["GetTeamPassiveId", "IsTeamPassiveUnlocked"]
+
+# 0x40A079E0(hdl): may this player get the per-player window's type 9 («Configuración de pasivas»)
+[[VRFW.CommandFilter]]
+name = "PassiveConfig.CanInherit"
+command = 0x40A079E0
+handler = "BetterQoL.PassiveConfig.CanInherit"
+needs = ["GetTeamPassiveId"]
+
+# 0xE1611D0F(hdl, slot) -> ok, configured id (the trash button's grey state, the plate's inheritance icon)
+[[VRFW.CommandFilter]]
+name = "PassiveConfig.InheritId"
+command = 0xE1611D0F
+handler = "BetterQoL.PassiveConfig.InheritId"
+needs = ["GetTeamPassiveId"]
+
+# 0xB5948BCF(hdl, slot): the retail clear menu clears the configured slot
+[[VRFW.CommandFilter]]
+name = "PassiveConfig.InheritClear"
+command = 0xB5948BCF
+handler = "BetterQoL.PassiveConfig.InheritClear"
+needs = ["GetTeamPassiveId"]
+
+# 0x4375DC93(hdl, 36): the archetype icon (archetype mode); the list's pseudo handles answer 0 for every field
+[[VRFW.CommandFilter]]
+name = "PassiveConfig.CharaBuild"
+command = 0x4375DC93
+handler = "BetterQoL.PassiveConfig.CharaStatus"
+needs = ["GetTeamPassiveId"]
+
+# 0x2B16FA30(hdl, 0) -> ok, build type (archetype mode)
+[[VRFW.CommandFilter]]
+name = "PassiveConfig.CharaBuild2"
+command = 0x2B16FA30
+handler = "BetterQoL.PassiveConfig.CharaBuild"
+needs = ["GetTeamPassiveId"]
+
+# CMND_GET_CHARA_INFO(param, 20) -> ok, 6 (archetype mode: a chara_param row has no archetype any more)
+[[VRFW.CommandFilter]]
+name = "PassiveConfig.ParamBuild"
+command = 0xF2048EB0
+handler = "BetterQoL.PassiveConfig.ParamBuild"
+needs = ["GetTeamPassiveId"]
+
+# CMND_GET_PASSIVE_EFFECT_INFO(def, 3) -> ok, 1 / (def, 4, i) -> ok, archetype: the archetype badge of a passive of an
+# archetype a mod declares (VRFW.archetype/1, docs/framework/archetype.md §7)
+[[VRFW.CommandFilter]]
+name = "PassiveConfig.EffBuild"
+command = 0x20E64C3F
+handler = "BetterQoL.PassiveConfig.EffBuild"
+needs = ["GetTeamPassiveId"]
+
+# ------------------------------------------------------------------------------------------------ commands
+# The configurator screen's commands (research/grafts/passive_config calls them; same names, arguments and answers
+# as utilities.dll before 2026-10-10).
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_OFF"         # () -> true while a declared off mode runs (the plate hides its passive rows)
+handler = "BetterQoL.PassiveConfig.Off"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_INFO"        # (hdl) -> ok, mode, archetype 1, archetype 2, max slots, inactive count
+handler = "BetterQoL.PassiveConfig.Info"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_SLOT"        # (hdl, slot) -> id, configured, locked, inactive stored id, kind code, lock reason (0 / 1 rules / 2 max_slots)
+handler = "BetterQoL.PassiveConfig.Slot"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_LIST"        # (hdl, slot, category) -> count, category, current index
+handler = "BetterQoL.PassiveConfig.List"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_LIST_ID"     # (index) -> id
+handler = "BetterQoL.PassiveConfig.ListId"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_CAT_NEXT"    # (hdl, slot, category, dir) -> category
+handler = "BetterQoL.PassiveConfig.CatNext"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_SET"         # (hdl, slot, id) -> ok, code (0 ok, 1-7 SetError)
+handler = "BetterQoL.PassiveConfig.Set"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_RESET"       # (hdl) -> ok
+handler = "BetterQoL.PassiveConfig.Reset"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_SPECIAL"     # ([hdl]) -> has special, title text key, special tile sprite, special slot (-1)
+handler = "BetterQoL.PassiveConfig.Special"
+needs = ["GetTeamPassiveId"]
+
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_PC_EFF_ICON"    # (effect) -> sprite crc (0 = retail icon)
+handler = "BetterQoL.PassiveConfig.EffIcon"
+needs = ["GetTeamPassiveId"]

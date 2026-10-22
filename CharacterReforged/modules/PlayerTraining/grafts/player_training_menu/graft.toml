@@ -5,7 +5,7 @@
 # The script asks the mod's commands by their old names (CMND_EVT_TRAIN_*, aliases of CMND_PLAYERTRAINING_*) and the
 # module bit 16 of CMND_EVT_LOADER_VERSION (the mod's [[VRFW.ModuleMask]] bit 4). Nothing at chunk load but globals.
 name = "player_training_menu"
-mod = "player_training"
+mod = "PlayerTraining"
 order = 100
 module = "lua_bridge"
 requires = []

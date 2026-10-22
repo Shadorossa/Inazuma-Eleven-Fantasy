@@ -23,7 +23,7 @@
 # miximax) picks them in the bank as Inazuma Fantasy's «Crear miximax» did (bank_create_moves_hooks.lua: Aceptar on a
 # card -> his moves on the plate -> the system's Sí / No); the moves go to the system's store command.
 name = "character_reforged_board"
-mod = "character_reforged"
+mod = "CharacterReforged"
 order = 965
 module = "lua_bridge"
 requires = []
@@ -44,6 +44,12 @@ require = ["EVT_OpenOriginalBoard", "EVT_PickCoroutine"]
 [[hooks]]
 stem = "chara_bank_menu_for_search"
 src = "bank_create_moves_hooks.lua"
+
+# the plate's move rows during that move step: a decide (mouse click or Aceptar) picks the row for the bank, the
+# retail move-order drag never starts
+[[hooks]]
+stem = "personal_plate_menu"
+src = "plate_create_moves_hooks.lua"
 
 # the board's aura list while the create rows are listed: the create rows' look and card, the Mix-Max rows the player
 # can not take greyed and refused (owner 2026-10-14; shared rules: lua\_all\character_reforged_create_card.lua)

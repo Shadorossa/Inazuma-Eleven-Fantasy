@@ -5,14 +5,14 @@
 #   [[entry]]
 #   host = "character_reforged.skill_table.row_action"   # a key on the focused move row (CMD_FUNC1)
 #   id = "rank_items"                                    # key <mod>.<id>
-#   text = "TrueHissatsu.RankItemGuide"                  # the guide entry (a text row of the mod)
-#   action = { lua = "TrueHissatsu.SkillTableRankItem" } # f(phase, ctx): "available" -> true / false, "press"
+#   text = "HissatsuLevelUp.RankItemGuide"                  # the guide entry (a text row of the mod)
+#   action = { lua = "HissatsuLevelUp.SkillTableRankItem" } # f(phase, ctx): "available" -> true / false, "press"
 #
 #   [[entry]]
 #   host = "character_reforged.skill_table.x_action"     # the same on X (CMD_FUNC4): Utilities' partner picker of
 #   id = "partners"                                      # combination moves; not taken while Inazuma Fantasy's own
 #   text = "<guide text row>"                            # block (its partner picker) is in the screen
-#   action = { lua = "Utilities.SkillTablePartners" }
+#   action = { lua = "BetterQoL.SkillTablePartners" }
 #
 #   [[entry]]
 #   host = "character_reforged.skill_table.footer_button" # the button between «Set de jugador» and «Pasiva

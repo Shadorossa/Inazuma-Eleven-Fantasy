@@ -1,0 +1,11 @@
+schema = "VRFW.level_sync/1"
+
+# Owner 2026-10-22: «En BBD el equipo propio sale a nivel 99; debe hacerle sync al nivel 40 pero tener todas las
+# supertécnicas desbloqueadas los jugadores propios». Every Battle Bay match (Campaña, Torneo, Draft, the free 1 vs 1)
+# is played on the game fbtl_bb_stadium_00 (its 4 difficulty rows only change the AI): the user's players play with
+# their Lv 40 stats, above or below it. Only the match stats change: the saved players keep their level, EXP and
+# moves, so every move they have stays usable (docs/game/modes/estadio-bb.md §17).
+[[VRFW.LevelSync]]
+name = "battle_bay_lv40"
+games = ["fbtl_bb_stadium_00"]
+level = 40

@@ -7,21 +7,10 @@ schema = "VRFW.game/2"
 
 # ---------------------------------------------------------------------------------------------------- game code
 
-# void SetOrganizedFlagBit(TeamMember* m, u8 logicalSet, bool on) 0xE796F0 (the debug probes: set 13's members)
-[[VRFW.Function]]
-name = "RL_SetOrganizedFlagBit"
-game = "Party.SetOrganizedFlagBit"
-
 # TeamInfo& TeamInfo::operator=(TeamInfo* dst, const TeamInfo* src) 0x20D440 (0x2D0 bytes with its sub-arrays)
 [[VRFW.Function]]
 name = "RL_TeamInfoAssign"
 game = "Party.TeamInfoAssign"
-
-# TeamInfo* GetTeamInfo(CGDDPartyStatus* party, u8 logicalSet, u8 team) 0xDA20A0 (0xDA2000 is a byte-identical copy: the
-# pattern runs into the padding and the next prologue to stay unique)
-[[VRFW.Function]]
-name = "RL_GetTeamInfo"
-game = "Team.SetStruct"
 
 # [[g_gameRoot] + 0x69A8] = CGDDPartyStatus (charaBank at +0x9F70, rpgCharaBank at +0xF24C, team sets at +0x17B8)
 [[VRFW.Global]]

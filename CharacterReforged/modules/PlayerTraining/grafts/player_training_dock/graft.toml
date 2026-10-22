@@ -9,7 +9,7 @@
 # append_block until 2026-10-20: another mod's merge-path patch of the dock (Pachangas) redefined the same functions
 # and dropped it. No engine call at chunk load.
 name = "player_training_dock"
-mod = "player_training"
+mod = "PlayerTraining"
 order = 300
 module = "lua_bridge"
 requires = []

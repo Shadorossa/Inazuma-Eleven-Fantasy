@@ -1,7 +1,7 @@
 # No More Rarities › settings (docs/refactor/aura-mods-split.md «No More Rarities»).
 
 # The «Rareza» tab of the two filter windows («FILTRAR» of the player lists and of the fichas list): the first rarity
-# it lists (content\game\rarity_filter.toml). 5 = from Héroe on: the removed 1★-4★ rarities and the 5★ normal card
+# it lists (content\card_types\hidden_rarities.toml). 5 = from Héroe on: the removed 1★-4★ rarities and the 5★ normal card
 # have no box (every normal card is rarity 4 and always passes a specific set: graft no_more_rarities_filter);
 # 4 = the 5★ box is listed too; 0 = every rarity, as in the game.
 [rarity_filter]

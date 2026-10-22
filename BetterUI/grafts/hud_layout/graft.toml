@@ -44,7 +44,7 @@
 name = "hud_layout"
 order = 910
 module = "lua_bridge"
-mod = "clean_hud"
+mod = "BetterUI"
 requires = []
 conflicts = []
 wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "PostStep", "Step", "UpdateAnimeMoveOffsetCmdBase", "OnStartOpponentSkillSelect", "SetupBaseCmdInfo", "ResetBaseCmdInfo", "SetupAreaTitle", "SetupZoneExecChara", "SetDashButtonGuideStatus",

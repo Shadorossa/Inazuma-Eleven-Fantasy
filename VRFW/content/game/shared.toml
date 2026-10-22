@@ -1,0 +1,143 @@
+schema = "VRFW.game/2"
+
+# Shared bindings: game functions, globals and structs every mod uses, bound once here. Each `name` is its `game`
+# profile name, so every mod sees it under that name (docs/framework/native.md §2): VRFW.call("Match.ActorUnit", actor),
+# VRFW.game["Event.Manager"](), VRFW.mem.read_struct("TeamRecord", p), needs = ["Match.ActorUnit"].
+
+# ------------------------------------------------------------------------------------------------ match
+
+# ActorUnit(actor) -> the match unit of a soccer actor (unit +0x370 = the character handle it plays).
+[[VRFW.Function]]
+name = "Match.ActorUnit"
+game = "Match.ActorUnit"
+
+# The match's soccer actors array (the operand next to the skill-used check).
+[[VRFW.Global]]
+name = "Match.SoccerActors.ViaSkillUsed"
+game = "Match.SoccerActors.ViaSkillUsed"
+
+# The match's soccer units.
+[[VRFW.Global]]
+name = "Match.SoccerUnits"
+game = "Match.SoccerUnits"
+
+# IsNetworkSession() -> 1 in an online session.
+[[VRFW.Function]]
+name = "Net.IsSession"
+game = "Net.IsSession"
+
+# ------------------------------------------------------------------------------------------------ events
+
+# The event manager: 20 slots of 0x7E0 bytes, current slot index u32 at +0x9154.
+[[VRFW.Global]]
+name = "Event.Manager"
+game = "Event.Manager"
+
+# EventSeek(slot, t): t < 0 runs the event's timeline to its end (only when the slot has a cut table).
+[[VRFW.Function]]
+name = "Event.Seek"
+game = "Event.Seek"
+
+# TimelineSeek(tl, t, voices): t < 0 runs every pending command and marks the timeline ended.
+[[VRFW.Function]]
+name = "Event.TimelineSeek"
+game = "Event.TimelineSeek"
+
+# StopEventSounds(slot, fade, all): stops the slot's voices / SE (all = 1 also the kept ones).
+[[VRFW.Function]]
+name = "Audio.StopEventSounds"
+game = "Audio.StopEventSounds"
+
+# The bright-fade object: the game's one full-screen fade (colour + alpha per layer).
+[[VRFW.Global]]
+name = "Render.BrightFade"
+game = "Render.BrightFade"
+
+# ------------------------------------------------------------------------------------------------ characters and items
+
+# FindCharaRecord(container, &handle) -> the character's record.
+[[VRFW.Function]]
+name = "Board.FindCharaRecord"
+game = "Board.FindCharaRecord"
+
+# HumanGetLevel(record, &out) -> the character's level.
+[[VRFW.Function]]
+name = "Chara.HumanGetLevel"
+game = "Chara.HumanGetLevel"
+
+# InvRecord(items, id) -> the inventory record of an item.
+[[VRFW.Function]]
+name = "Board.InvRecord"
+game = "Board.InvRecord"
+
+# SkillInfoFind(table, &out, id) -> a move's skill info.
+[[VRFW.Function]]
+name = "Technique.SkillInfoFind"
+game = "Technique.SkillInfoFind"
+
+# ------------------------------------------------------------------------------------------------ passives
+
+# RarityVersion(&out, &version, rarity): a passive's id at a rarity.
+[[VRFW.Function]]
+name = "Passive.RarityVersion"
+game = "Passive.RarityVersion"
+
+# TeamPassiveId(&out, chara, slot, copy): the passive id of a character's slot.
+[[VRFW.Function]]
+name = "Passive.TeamPassiveId"
+game = "Passive.TeamPassiveId"
+
+# TeamPassiveUnlocked(chara, slot, copy) -> the slot is unlocked.
+[[VRFW.Function]]
+name = "Passive.TeamPassiveUnlocked"
+game = "Passive.TeamPassiveUnlocked"
+
+# SignatureSlotId(&out, chara): the signature passive slot's id.
+[[VRFW.Function]]
+name = "Passive.SignatureSlotId"
+game = "Passive.SignatureSlotId"
+
+# SignaturePieceOpen(&handle) -> the signature piece is open.
+[[VRFW.Function]]
+name = "Passive.SignaturePieceOpen"
+game = "Passive.SignaturePieceOpen"
+
+# ------------------------------------------------------------------------------------------------ teams and party
+
+# GetTeamInfo(party, set, team) -> the team's struct in the party.
+[[VRFW.Function]]
+name = "Team.SetStruct"
+game = "Team.SetStruct"
+
+# FindTeamConfig(&record, &container, teamHash): the team_config record of a team (no side effect).
+[[VRFW.Function]]
+name = "Team.FindConfig"
+game = "Team.FindConfig"
+
+# team_config record, container and member row.
+[[VRFW.Struct]]
+name = "TeamRecord"
+game = "TeamRecord"
+
+[[VRFW.Struct]]
+name = "TeamConfig"
+game = "TeamConfig"
+
+[[VRFW.Struct]]
+name = "MemberRow"
+game = "MemberRow"
+
+# LogicalToPhysical(party, logical) -> the physical team slot.
+[[VRFW.Function]]
+name = "Party.LogicalToPhysical"
+game = "Party.LogicalToPhysical"
+
+# RecountTeamInfo(team): the team's member counts recomputed.
+[[VRFW.Function]]
+name = "Party.RecountTeamInfo"
+game = "Party.RecountTeamInfo"
+
+# SetOrganizedFlagBit(member, set, on): a member's organized bit of a set.
+[[VRFW.Function]]
+name = "Party.SetOrganizedFlagBit"
+game = "Party.SetOrganizedFlagBit"

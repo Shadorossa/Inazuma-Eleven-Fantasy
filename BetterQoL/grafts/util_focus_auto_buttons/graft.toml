@@ -1,0 +1,27 @@
+# Focus battle «AUTO» side prompts hidden (mod Utilities, 2026-10-12). In a focus battle (duel) the retail HUD
+# soccer_focus_battle_menu shows two blue plates at the screen edges, soccer08_35l_focus_auto_button_left /
+# soccer08_35r_focus_auto_button_right («AUTO — Bloquear izquierda [Z]» / «AUTO — Bloquear derecha [C]», the attack
+# side's texts when attacking). No game_param switches them off: the engine (exe 0x1414DE3B0, called with 1 at every
+# focus battle start) calls the Lua SetAutoButtonVisible(true) unconditionally (only online / non-default match flags
+# gate it), and SoccerFocusBattleGlobalParam has no display flag for them (isEnableAutoRun / isAutoDefenseAction are
+# the AI auto-run itself, not the prompt). So the plates are hidden here: wrappers of the two functions the engine
+# calls by name. SetAutoButtonVisible always closes the plates; SelectAutoButton (engine, when Z / C is pressed:
+# the chosen plate's «OK» animation, then both close) does nothing. The Z / C input and the action it picks are
+# native and untouched. Kill switch UTIL_FOCUS_AUTO_BUTTONS_HIDDEN = false.
+name = "util_focus_auto_buttons"
+mod = "BetterQoL"
+order = 340
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["SetAutoButtonVisible", "SelectAutoButton"]
+description = "focus battle: the «AUTO» left / right plates (Z / C) are never shown; the Z / C input is untouched"
+
+[[files]]
+stem = "soccer_focus_battle_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "focus_auto_buttons.lua"
+  marker = "util_focus_auto_buttons"
+  crc = "none"

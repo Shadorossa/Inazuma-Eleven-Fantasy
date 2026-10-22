@@ -1,0 +1,27 @@
+# Team planner («Planificador de equipo») of the mod Utilities (docs/game/ui/team-planner.md; script
+# research/mods/BetterQoL/scripts/team_planner.lua answers CMND_BETTERQOL_TP_*). In a team dock squad, A on an empty slot
+# offers «Añadir del banco» (the game's bank) and «Planificar equipo» (a picker of every character of the game and the
+# mods, cards at the display rarity, the ones not owned semi-transparent); the chosen one is a GHOST card in the slot
+# (never a card, never playable). A squad with ghosts cannot become the active team and the dock is not left while the
+# active squad has one; a ghost whose character the save gets is replaced by the real card when the dock opens.
+# HOOK files (docs/framework/lua-hosts.md §7): VRFW_Host handlers on the VR-Framework's hosts of the two stems
+# (research/mods/VRFW/assets/lua/menu/<stem>/000_host.lua), never merged with other grafts, no promoted locals (the
+# retail locals through VRFW_Host.hosts.<stem>.L). Their text is generated: edit util_tp_*.src.lua / util_tp_common.lua
+# and run gen_hooks.py. The picker's cards are Utilities' layer util_tp_card of soccer_formation_menu
+# (research/mods/BetterQoL/content/menus/102_team/team_planner.toml).
+name = "util_team_planner"
+mod = "BetterQoL"
+order = 345
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Team planner: ghost cards in the team dock's squads, picker of every character, automatic assignment (Utilities)"
+
+[[hooks]]
+stem = "team_dock_formation_menu"
+src = "util_tp_formation.lua"
+
+[[hooks]]
+stem = "soccer_team_dock_menu"
+src = "util_tp_dock.lua"

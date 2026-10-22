@@ -1,0 +1,28 @@
+# Utilities' top bar shortcuts (docs/framework/top-bar.md, entries in content\menus\top_bar.toml; BetterUI's file
+# until 2026-10-12, Inazuma Fantasy's until 2026-10-08): the MENU_CTRL commands the framework's 10_top_bar.lua polls.
+#   CMD_EVT_MOUSE_LEFT    the left mouse button alone (CMD_ENTER_CLICK also fires on Enter / A): a click on an icon.
+#   CMD_VRFW_TOPBAR_OPEN  the bar's open button (owner 2026-10-13: L3 instead of R3), an [[action]]: a row
+#                         «Abrir accesos directos» in the game's «Configuración de controles», tab «Controles básicos»,
+#                         where the player rebinds it (the game keeps the choice in its own system save); defaults pad
+#                         L3 (LS, pad index 1) / keyboard N (key index 13, the key the R3 command had: retail CMD_FUNC6's).
+#                         The only pad / key way into the bar (no D-pad UP entry), on every host with `open = true`.
+#                         L3 is the retail CMD_FUNC5 of Mercado (market_menu) and Objetos (item_menu): no pad entry
+#                         there (`open = false`, mouse only); the team dock hub keeps its retail R3 / N (`open = false`).
+#                         Until 2026-10-13: CMD_EVT_TOPBAR_R3, pad R3 [0, 2] / keyboard [0, 13].
+# BetterUI 1.12.1: CMD_EVT_TOPBAR_ON (pad L3 / keyboard T: tap = highlight the next icon, hold = go) is no longer declared
+# (Nacho 2026-10-08); the runtime's CMD_EVT_TOPBAR_ON path stays inert without it.
+schema = "VRFW.input/1"
+
+[[command]]
+ctrl = "MENU_CTRL"
+name = "CMD_EVT_MOUSE_LEFT"
+mouse = [0, 0]
+
+[[action]]
+id = "BetterQoL.TopBar.Open"
+command = "CMD_VRFW_TOPBAR_OPEN"
+ctrl = "MENU_CTRL"
+category = "basic"
+label = "utilities_topbar_open_action"
+pad = "LS"
+keyboard = "N"

@@ -299,10 +299,11 @@ end
 -- loader state: ok, phase (0 none, 1 picking, 2 complete, 3 campaign), filled, total; ok = false without the loader
 function BBCR_DRAFT_Info()
   local ok, team, phase, filled, total = funcLuaCommand(BBCR_DRAFT.INFO)
-  if ok ~= true then
+  if ok ~= true or type(phase) ~= "number" then
+    -- no answer (the mod's script is off): no draft
     return false, 0, 0, 0
   end
-  return true, phase, filled, total
+  return true, phase, filled or 0, total or 0
 end
 
 function BBCR_DRAFT_TeamName()

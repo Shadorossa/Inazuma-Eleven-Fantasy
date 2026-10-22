@@ -39,9 +39,9 @@ do
     P.installed = true
     P.CMD_FULL = @crc:CMND_CHARACTERREFORGED_PLAYER_SET_FULL@
     P.CMD_SET2 = @crc:CMND_CHARACTERREFORGED_PLAYER_SET_SAVE_FULL@
-    P.CMD_PC_INFO = @crc:CMND_UTIL_PC_INFO@
-    P.CMD_PC_SLOT = @crc:CMND_UTIL_PC_SLOT@
-    P.CMD_PC_SET = @crc:CMND_UTIL_PC_SET@
+    P.CMD_PC_INFO = @crc:CMND_BETTERQOL_PC_INFO@
+    P.CMD_PC_SLOT = @crc:CMND_BETTERQOL_PC_SLOT@
+    P.CMD_PC_SET = @crc:CMND_BETTERQOL_PC_SET@
     P.CMD_ROLE_SET = 885127448                     -- CMND_EVT role set (charaStHdl, role) -> status, now
     P.L_BASE = @crc:evt_psp_base@
     P.L_MOVE = @crc:evt_psp_move@

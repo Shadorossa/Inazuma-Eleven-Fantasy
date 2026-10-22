@@ -1434,7 +1434,7 @@ end
 
 -- 2026-10-14: capability checks of the services an action really uses. A command nobody declares answers a single
 -- false; a declared one answers its status or more than one value, so a call with handle 0 changes nothing.
---   custom passive (CMND_EVT_SIXSENSE): the slot; player sets (CMND_CHARACTERREFORGED_PLAYER_SET_GET, Character
+--   custom passive (CMND_CHARACTERREFORGED_SIX_SENSE): the slot; player sets (CMND_CHARACTERREFORGED_PLAYER_SET_GET, Character
 --   Reforged's scripts\player_sets.lua): the set store
 -- One «loader check» log line per missing service and screen visit; each probe answers once per visit.
 -- The skill board is Character Reforged's (2026-10-19, owner): every board write of this screen goes through its board
@@ -1442,7 +1442,7 @@ end
 -- loads (Technique.BuildSkillListFromBoard) and saves it, so every edit of the list is mirrored on the board
 -- (EVT_SyncBoard): a move written to the list alone was dropped wherever the board slot of its list position held
 -- something else (an aura, a move already listed).
-PL.SERVICE_PROBE = {six_sense = {1074115993 --[[CMND_EVT_SIXSENSE]], 0, 0, 0, -1},
+PL.SERVICE_PROBE = {six_sense = {8065085 --[[CMND_CHARACTERREFORGED_SIX_SENSE]], 0, 0, 0, -1},
   player_sets = {390397015 --[[CMND_CHARACTERREFORGED_PLAYER_SET_GET]], 0, 0}}
 PL.service_logged = {}
 PL.service_present = {}
@@ -3758,21 +3758,34 @@ end
 -- ---- six sense ("Pasiva personalizada") ------------------------------------------------------------------------
 -- equipped six sense: invHdl, itemId
 local function EVT_SS_Get()
-  local st, inv, item = EVT_PV_Call(1074115993, n, 0, 0, -1)
+  local st, inv, item = EVT_PV_Call(8065085, n, 0, 0, -1)
   if st ~= 1 then
     return 0, 0
   end
   return EVT_U32(inv or 0), EVT_U32(item or 0)
 end
 
--- the custom passive slot: locked while no mod declares its service (CMND_EVT_SIXSENSE; Inazuma Fantasy's, set aside):
+-- the custom passive slot: locked while no mod declares its service (CMND_CHARACTERREFORGED_SIX_SENSE, Character
+-- Reforged's scripts\board_slots.lua):
 -- returns locked, needLevel, pieceIdx (no board piece is read)
 local function EVT_SS_Lock()
   return not PL.HasService("six_sense"), 0, nil
 end
 
+-- the module Signature Passives (CMND_SIGNATUREPASSIVES_OWN_PASSIVE): the slot is the shown player's own passive and
+-- cannot be changed; answers his passive id (0 = none), or nil while the module is off (a command nobody declares
+-- answers a single false)
+function PL.Signature()
+  local ok, passive = pcall(funcLuaCommand, 2480071350 --[[CMND_SIGNATUREPASSIVES_OWN_PASSIVE]], n)
+  if ok and type(passive) == "number" then
+    return EVT_U32(passive)
+  end
+  return nil
+end
+
 local function EVT_SS_ButtonRefresh()
   local _, item = EVT_SS_Get()
+  item = PL.Signature() or item
   EVT_ButtonIcon(EVT_ROW_ICON_SS, EVT_SS_Icon(item))
   local locked = EVT_SS_Lock()
   funcLuaMenuCommand(C.LAYER_VISIBLE, L_PV_ROW, EVT_ROW_ICON_SS, not evt_pv_open)
@@ -3783,6 +3796,21 @@ end
 
 -- info card while the six-sense button has the focus: equipped item (icon, name, description) or the lock level
 local function EVT_SS_Info()
+  local signature = PL.Signature()
+  if signature ~= nil then                        -- read only: the own passive's detail, or nothing without one
+    local shown = false
+    if signature ~= 0 and PL.PassiveDetail ~= nil then
+      local name = EVT_PV_Call(EVT_PV.PASSIVE, 2, signature)
+      shown = pcall(PL.PassiveDetail, type(name) == "string" and name or "", "", signature)
+    end
+    SetVisibleEquipInfoWindow(false)
+    if not shown then
+      pcall(EVT_DetailHide)
+    end
+    funcLuaMenuCommand(C.TEXT, 3078308064 --[[mainmenu90_05_content_guide_line01]], 378156699 --[[_text_guide01]],
+      PL.Txt(signature ~= 0 and PL.TX.SIG_GUIDE or PL.TX.SIG_NONE), 0)
+    return
+  end
   local _, item = EVT_SS_Get()
   local locked, need = EVT_SS_Lock()
   if item ~= 0 and PL.PassiveDetail ~= nil then
@@ -3809,8 +3837,7 @@ local function EVT_SS_Info()
   else
     SetVisibleEquipInfoWindow(false)
   end
-  local guide = locked and string.format("Pasiva personalizada: se desbloquea en Nv.%d.", need)
-    or (item ~= 0 and "Pasiva personalizada equipada. Aceptar: cambiar; Eliminar: quitar." or "Pasiva personalizada: pulsa para equipar una.")
+  local guide = PL.Txt(locked and PL.TX.LOADER or (item ~= 0 and PL.TX.SS_BTN_EQUIPPED or PL.TX.SS_BTN_GUIDE))
   funcLuaMenuCommand(C.TEXT, 3078308064 --[[mainmenu90_05_content_guide_line01]], 378156699 --[[_text_guide01]], guide, 0)
 end
 
@@ -3818,7 +3845,7 @@ end
 -- menu ability_list_menu, group ability_list_menu_on_bluebg, params 4161869490 = character, 1498333934 = 200 (six-sense
 -- category). Its native commit writes into the open board menu only (null-checked, no-op here), so our block in that
 -- group's script (src/evt_ability_list_blue_block.lua, active with evt_ss_pick_used = 3) hands back the confirmed item
--- and its invSkill handle; CMND_EVT_SIXSENSE equips it after the menu closes.
+-- and its invSkill handle; CMND_CHARACTERREFORGED_SIX_SENSE equips it after the menu closes.
 function EVT_SS_PickCoroutine()
   local locked, need, piece = EVT_SS_Lock()
   if locked then
@@ -3876,7 +3903,7 @@ function EVT_SS_PickCoroutine()
     if h == 0 then
       h, added = EVT_HandleFor(item)
     end
-    local st, now = EVT_PV_Call(1074115993, n, 1, h, piece or -1)
+    local st, now = EVT_PV_Call(8065085, n, 1, h, piece or -1)
     if added then
       funcLuaCommand(C.DEL_ITEM, item, 1)
     end
@@ -4101,10 +4128,10 @@ end
 -- "Eliminar" on the six-sense button takes the item off
 local EVT_PV_PrevFunction = OnFunction
 function OnFunction(a1, a2)
-  if a1 == 4109882573 and evt_focus_layer == L_BTN_SS and evt_co == nil then
+  if a1 == 4109882573 and evt_focus_layer == L_BTN_SS and evt_co == nil and PL.Signature() == nil then
     local _, item = EVT_SS_Get()
     if item ~= 0 then
-      EVT_PV_Call(1074115993, n, 1, 0, -1)
+      EVT_PV_Call(8065085, n, 1, 0, -1)
       funcLuaCommand(C.SE, SE_REMOVE)
       EVT_SS_ButtonRefresh()
       pcall(EVT_SS_Info)
@@ -4214,7 +4241,12 @@ function PL.TxTable()
   SKIP_NOTOWN = 3318853735, -- evt_pl_skip_notown
   SKIP_PRIME = 3425905848, -- evt_pl_skip_prime
   SKIP_ROW = 2368727989, -- evt_pl_skip_row
+  SIG_GUIDE = 3646435247, -- evt_pl_sig_guide
+  SIG_NONE = 3588279511, -- evt_pl_sig_none
+  SS_BTN_EQUIPPED = 3181239823, -- evt_pl_ss_btn_equipped
+  SS_BTN_GUIDE = 2616371171, -- evt_pl_ss_btn_guide
   SS_GUIDE = 374095222, -- evt_pl_ss_guide
+  SS_NONE = 2070383841, -- evt_pl_ss_none
   SS_QUIT = 1197300667, -- evt_pl_ss_quit
   SUM_EQUIP = 1859211264, -- evt_pl_sum_equip
   SUM_HIPER = 1201407754, -- evt_pl_sum_hiper
@@ -4753,7 +4785,7 @@ end
 -- In game the board's list group listed moves (it reads the open board) and the retail equip_six_sense_menu opened
 -- blank (its native list is never set up outside the board / formation flow). Our list: the 37 six-sense items
 -- (item kind 177 = ss_ps50001 … ss_ps50037, docs/game/passives.md), those the save owns (CMND_GET_ITEM_NUM > 0),
--- with their names, "(equipada)" / "(sin copia libre)", plus "Quitar"; equip with CMND_EVT_SIXSENSE (slot 9).
+-- with their names, "(equipada)" / "(sin copia libre)", plus "Quitar"; equip with CMND_CHARACTERREFORGED_SIX_SENSE (slot 9).
 PL.SS_ITEMS = {3910925277, 1880271463, 118856433, 2574323538, 4000726980, 2004840062,
   7888616, 2428978041, 3888149487, 2265446922, 4026583708, 1762237222, 504277936,
   2154446355, 4151119493, 1852071743, 425947049, 2312925752, 4275782318, 2888477129,
@@ -4809,7 +4841,7 @@ function EVT_SS_PickCoroutine()
     local id = items[pick + 1]
     local st, now
     if id == 0 then
-      st, now = EVT_Call(1074115993, n, 1, 0, -1)
+      st, now = EVT_Call(8065085, n, 1, 0, -1)
       funcLuaCommand(C.SE, st == 1 and SE_REMOVE or SE_NG)
     elseif id ~= cur then
       local h, why = PL.FreeHandle(id)
@@ -4817,7 +4849,7 @@ function EVT_SS_PickCoroutine()
         funcLuaCommand(C.SE, SE_NG)                -- 2026-09-28: error sound only
         EVT_Log("sixsense no handle", tostring(why))
       else
-        st, now = EVT_Call(1074115993, n, 1, h, piece or -1)
+        st, now = EVT_Call(8065085, n, 1, h, piece or -1)
         if st ~= 1 then
           funcLuaCommand(C.SE, SE_NG)              -- 2026-09-28: error sound only (status in loader.log)
         end
@@ -5263,7 +5295,7 @@ function PL.SetLoad(p)
     elseif h == 0 then
       skip(why, label)
     else
-      local st = EVT_Call(1074115993, n, 1, h, -1)
+      local st = EVT_Call(8065085, n, 1, h, -1)
       if st ~= 1 then
         skip(PL.TX.SKIP_FAIL, label)
       end
@@ -5904,7 +5936,7 @@ end
 -- the board's six-sense piece opens): the retail list frame (team05_03, layer evt_ss_list, no native list view) with
 -- 7 retail list rows (team08_02_ability_list_item: six-sense icon, name, equipped / owned counts, check mark on the
 -- equipped one) over the left column; the focused item is shown on the right in the integrated panel. Up/down
--- (scrolls), Aceptar = equip (CMND_EVT_SIXSENSE after a free-copy check), back = close. Last row "Quitar".
+-- (scrolls), Aceptar = equip (CMND_CHARACTERREFORGED_SIX_SENSE after a free-copy check), back = close. Last row "Quitar".
 -- ===================================================================================================
 PL.L_SSLIST = 535021373
 PL.L_SSROW = 1205526439                         -- team08_02_ability_list_item
@@ -6138,10 +6170,15 @@ function PL.SSList(list, init)
 end
 
 function EVT_SS_PickCoroutine()
+  if PL.Signature() ~= nil then                  -- Signature Passives: read only (the detail shows on focus)
+    funcLuaCommand(C.SE, SE_NG)
+    pcall(EVT_SS_Info)
+    return
+  end
   local locked, need, piece = EVT_SS_Lock()
   if locked then
     funcLuaCommand(C.SE, SE_NG)
-    EVT_Message(string.format("La pasiva personalizada se desbloquea en el Nv.%d.", need))
+    EVT_Message(PL.Txt(PL.TX.LOADER))
     return
   end
   if not PL.HasService("six_sense") then
@@ -6173,7 +6210,7 @@ function EVT_SS_PickCoroutine()
   end
   if #list == 0 then
     funcLuaCommand(C.SE, SE_NG)
-    EVT_Message("No tienes ninguna pasiva personalizada.")
+    EVT_Message(PL.TxtOr(PL.TX.SS_NONE, "No tienes ninguna pasiva personalizada."))
     funcLuaMenuCommand(C.MENU_ACTIVE, EVT_MENU, true)
     return
   end
@@ -6194,7 +6231,7 @@ function EVT_SS_PickCoroutine()
     local e = list[pick + 1]
     local st, now
     if e.id == 0 then
-      st, now = EVT_Call(1074115993, n, 1, 0, -1)
+      st, now = EVT_Call(8065085, n, 1, 0, -1)
       funcLuaCommand(C.SE, st == 1 and SE_REMOVE or SE_NG)
     elseif e.id ~= cur then
       local h, why = PL.FreeHandle(e.id)
@@ -6202,7 +6239,7 @@ function EVT_SS_PickCoroutine()
         funcLuaCommand(C.SE, SE_NG)                -- 2026-09-28: error sound only
         EVT_Log("sixsense no handle", tostring(why))
       else
-        st, now = EVT_Call(1074115993, n, 1, h, piece or -1)
+        st, now = EVT_Call(8065085, n, 1, h, piece or -1)
         funcLuaCommand(C.SE, st == 1 and SE_DECIDE or SE_NG)   -- 2026-09-28: no status popup
       end
     end

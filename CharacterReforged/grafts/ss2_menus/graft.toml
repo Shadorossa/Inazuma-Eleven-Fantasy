@@ -12,7 +12,7 @@
 # copy guard (EVT_SS2_PICK_GEN / EVT_SS2_BLUE_GEN: only the last copy in a VM acts). The Hiper card component
 # (@HIPER_CARD@) is still the file of IF's graft folder plate_hiper_plate (shared with IF's plate).
 name = "ss2_menus"
-mod = "character_reforged"
+mod = "CharacterReforged"
 rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)
 order = 100
 module = "lua_bridge"

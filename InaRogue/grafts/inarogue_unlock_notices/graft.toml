@@ -3,7 +3,7 @@
 # (CMND_EVT_RU_NEWS; the office page that signs them is IF's graft rogue_unlocks). Split from rogue_unlocks on
 # 2026-10-14 (a graft cannot patch another mod's graft). Wraps IRM_OpenMap / IRM_AfterMatch of graft inarogue.
 name = "inarogue_unlock_notices"
-mod = "inarogue"
+mod = "InaRogue"
 order = 320
 module = "lua_bridge"
 requires = ["inarogue"]

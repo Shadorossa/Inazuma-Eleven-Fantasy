@@ -1,8 +1,0 @@
-# Training Ground (docs/game/mods/training-ground.md): the row «Todo tiro es tiro largo» (config.toml
-# [[training_ground.row]] long_shots_all) sets the flag below while it is on during a training match
-# (scripts\training_ground.lua); the framework's shot / zone rules (docs/framework/rules.md §8) then let every shot
-# move be used as a long shot.
-schema = "VRFW.shot_rule/1"
-
-[[VRFW.LongShot]]
-all_moves_flag = "training_ground.long_shots_all"

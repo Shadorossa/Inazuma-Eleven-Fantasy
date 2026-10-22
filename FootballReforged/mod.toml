@@ -1,14 +1,15 @@
-id = "football_reforged"
+id = "FootballReforged"
+former_ids = ["football_reforged"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Football Reforged"
-version = "1.8.0"
+version = "1.10.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "A base of match mechanics in modules: each module is a card on this mod's page in Mods (on / off, applies after a restart). Goalkeeper barrier: keepers resist shots while an orange part of their fatigue bar lasts. Furor: the GO Strikers tension gauge, a fire bar by each crest; full, L3 / R starts the furor phase. Both on by default. Match formats in the base: Football 7 (7 vs 7), Inazuma Street (3 vs 3, no keepers or referee) and the 5-a-side friendly without tactics or referee, rulebooks other mods and modes can pick."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 # This mod's own names (TOML keys [FootballReforged.X], Lua FootballReforged.X, commands CMND_FOOTBALLREFORGED_*, tables
 # FootballReforged.*); never VRFW.
 prefix = "FootballReforged"
@@ -21,8 +22,6 @@ folder = "FootballReforged"
 #   modules\Furor\               furor (Furor.X): GO Strikers' furor gauge (docs/game/mechanics/furor.md)
 #   modules\LegendaryMatch\      legendary_match (LegendaryMatch.X): the «Legendary» rival AI of every offline match
 #                                (data on VRFW.MatchAI; docs/game/mods/legendary-match.md)
-#   modules\TrainingGround\      training_ground (TrainingGround.X): the training field, a free pitch with no real match
-#                                (was Inazuma Fantasy's; docs/game/mods/training-ground.md)
 #   modules\Pachangas\           pachangas (Pachangas.X): the type row of «Plantilla de equipo» and every dock's own 5v5
 #                                team, the active pachanga team (was Inazuma Fantasy's)
 #   modules\Challenges\          challenges (Challenges.X): the match challenge rulesets, their defaults and formation,
@@ -50,7 +49,7 @@ folder = "FootballReforged"
 #                                research/scripts/if_match_formations_build.py
 #   Their names: text keys football_reforged.ruleset_<id> (text\keys.toml). The [[merged]] entry below keeps every
 #   `requires` / enabled.toml entry of the old id match_formats working.
-requires = ["vr_framework>=2.4.75"]
+requires = ["VRFW>=2.4.75"]
 conflicts = []
 
 # The former module match_formats (docs/framework/merged-mods.md): always on with the base.

@@ -1,0 +1,50 @@
+schema = "VRFW.character/2"
+if_mod = "all_keshin_armed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# All Keshin Armed › the armoured cards of «Reina negra» (wks00380) and «Rey negro» (wkk00390), the two keshin the game
+# has without an armour (docs/game/media/armour-port.md §11). Each is a copy of the white armour's armoured card (the
+# card was00220 / wak00230 names) with a new model whose clothes are the black part (content/looks/armour_clothes.toml,
+# model kaev0380 / kaev0390; texture by _tools/black_armour_build.py). Only the armour commands of
+# techniques/black_armours.toml name these cards; never roster cards. Ids as Inazuma Fantasy had them.
+default_lang = "en"
+
+[[character]]
+name = "black_queen_armour"                               # Reina negra's armour
+based_on = "c05024910_5100"                               # template: the white Queen's armoured card (was00220)
+order = 47
+battle = false
+
+  [character.base]
+  id = 0x76FA3570
+  name = "evt_kaev0380"
+
+  [character.new_model]
+  id = 0x01A42FA3
+  from = "c05024910_5100"
+  order = 47
+  [character.new_model.cells]
+  clothes = 0x0C89806C                                    # kaev0380
+
+  [[character.cards]]
+  id = 0xF6947FDF
+  order = 59
+
+[[character]]
+name = "black_king_armour"                                # Rey negro's armour
+based_on = "c04003210_5000"                               # template: the white King's armoured card (wak00230)
+order = 48
+battle = false
+
+  [character.base]
+  id = 0x6FE10431
+  name = "evt_kaev0390"
+
+  [character.new_model]
+  id = 0x18BF1EE2
+  from = "c04003210_5000"
+  order = 48
+  [character.new_model.cells]
+  clothes = 0x1592B12D                                    # kaev0390
+
+  [[character.cards]]
+  id = 0xEF8F4E9E
+  order = 60

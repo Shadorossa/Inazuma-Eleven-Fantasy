@@ -1,0 +1,127 @@
+schema = "VRFW.game/2"
+
+# Hissatsu Level Up › the engine entries of the special-move levels (docs/game/mechanics/skill-rank-usage.md §7) and the
+# one-copy-per-set rule. The logic and the per-slot store (blob skill_uses.json) are scripts\hissatsu_level_up.lua. Moved
+# from Inazuma Fantasy's content\game\skill_rank.toml + match_units.toml on 2026-10-14 (same game functions, same
+# commands under this mod's names, the old names kept as aliases for the callers that hash them).
+
+# ------------------------------------------------------------------------------------------------ save
+# IF's per-slot store (skill_uses.json, same bytes) copied once into this mod's save folders: the grades earned under
+# Inazuma Fantasy keep working (never replaces this mod's own, never touches IF's).
+[[VRFW.SaveImport]]
+name = "HissatsuLevelUp.FromInazumaFantasy"
+from = "inazuma_fantasy"
+blobs = ["skill_uses.json"]
+
+# ------------------------------------------------------------------------------------------------ functions / globals
+# void OpenCommonSkillTelop(const u32* skillId) 0x110EFE0: the skill-name banner of a move (the level-up banner opens
+# it again; the graft sr_popup appends the suffix)
+[[VRFW.Function]]
+name = "HissatsuLevelUp.OpenSkillTelop"
+game = "Technique.OpenSkillTelop"
+
+# [g_gameRoot] + Game.RootSkillTable = the skill table SkillInfoFind takes
+[[VRFW.Global]]
+name = "hissatsu_level_up_skill_table"
+base = "game_root"
+chain = ["Game.RootSkillTable"]
+
+# The match info block [[g_gameRoot]+0x6A58] (+0x2C29 = the user's team).
+[[VRFW.Global]]
+name = "hissatsu_level_up_match"
+base = "game_root"
+chain = ["ROOT_MATCH"]
+
+# ------------------------------------------------------------------------------------------------ hooks
+# OnHissatsuUsed(u32 actorHdl, const u32* skillId) 0xEB6C60. Post: the use is counted for the saved owner of the user's
+# player and a crossed threshold raises the live rank, the saved skill_list entry and opens the banner. A use waits up
+# to 200 ms for the scripts (a counted use is not lost). A subscriber of the framework's relocated entry of the
+# function (one patch, shared with the hook bus game event `match:skill_used`, run order 100): order 0 = after it.
+[[VRFW.Hook]]
+name = "HissatsuLevelUp.SkillUsed"
+game = "Technique.SkillUsed"
+kind = "function"
+wait_ms = 200
+order = 0
+
+# BuildSkillListFromBoard(CharaObj* obj, {entries, count}* list, u8, u8) 0xD83370. Post: every active entry (id != 0,
+# byte +6 == 0) of a saved character's list gets rank = the stored grade ([ranks] mode); RebuildSkillList 0xD84360 then
+# merges it into the persistent skill_list. A list waits up to 500 ms for the scripts (the next save keeps it).
+[[VRFW.Hook]]
+name = "HissatsuLevelUp.BuildSkillList"
+game = "Technique.BuildSkillListFromBoard"
+kind = "function"
+wait_ms = 500
+
+# bool MatchSkillInstall(Unit* unit, u8 slot, const u32* skillId, const InstallArgs* a) 0x1606470. Post: the installed
+# move's recast = max(0, floor(info.recast × (1 + recast_per_grade × rank))) instead of the retail flat ×1.2 at rank ≥ 1;
+# the first install after 30 s starts a new match (the rules' log line). The VR-Framework's item looks hook it too
+# (chained).
+[[VRFW.Hook]]
+name = "HissatsuLevelUp.MatchSkillInstall"
+game = "Technique.MatchSkillInstall"
+kind = "function"
+wait_ms = 200
+post_when = { value = "mask(ret, 0xFF)", not = 0 }
+
+# u8 CanEquip(u32 charaHdl, u32 invHdl, u8 needFree, u8 flag, u8 targetSlot) 0xE7D310: «may this item go on this
+# board». Every board write asks it (the game's board commit, CMND_EVT_BOARD_PLACE of the skill tables, the player
+# sets); the game's own duplicate test is skipped by the retail board's flag (board copies = retail grades). Post: a
+# yes is turned into a no when the same move already sits on another slot of the player's active set ([duplicates]
+# block; docs/refactor/aura-mods-split.md «True Hissatsu»).
+[[VRFW.Hook]]
+name = "HissatsuLevelUp.CanEquip"
+game = "Board.CanEquip"
+kind = "function"
+wait_ms = 100
+post_when = { value = "mask(ret, 0xFF)", not = 0 }
+
+# ------------------------------------------------------------------------------------------------ commands
+# The aliases are Inazuma Fantasy's old CMND_EVT_* names (their crc32 is what older game Lua calls).
+
+[[VRFW.Command]]
+name = "CMND_HISSATSULEVELUP_USES"   # (charaStHdl, skillId) -> uses, grade, next threshold (errors -1/-2, -1/-2, 0)
+aliases = ["CMND_EVT_SKILL_USES"]
+handler = "HissatsuLevelUp.Cmd.Uses"
+
+[[VRFW.Command]]
+name = "CMND_HISSATSULEVELUP_RANK_SET"   # (charaStHdl, skillId, grade 0..5) -> ok, grade (admin)
+aliases = ["CMND_EVT_SKILL_RANK_SET"]
+handler = "HissatsuLevelUp.Cmd.Set"
+
+[[VRFW.Command]]
+name = "CMND_HISSATSULEVELUP_RANK_BOOST"   # (charaStHdl, skillId, steps 1..5) -> ok, grade, old grade (while a rule allows it)
+aliases = ["CMND_EVT_SKILL_RANK_BOOST"]
+handler = "HissatsuLevelUp.Cmd.Boost"
+
+[[VRFW.Command]]
+name = "CMND_HISSATSULEVELUP_RANK_POPUP"   # (skillId) -> pending, grade, "" (consumed once, 8 s; graft sr_popup)
+aliases = ["CMND_EVT_SKILL_RANK_POPUP"]
+handler = "HissatsuLevelUp.Cmd.Popup"
+
+[[VRFW.Command]]
+name = "CMND_HISSATSULEVELUP_RANK_ITEMS"   # () -> raise item id, last-grade item id, use cap, last grade
+handler = "HissatsuLevelUp.Cmd.Items"
+
+[[VRFW.Command]]
+name = "CMND_HISSATSULEVELUP_RANK_ITEM"   # (charaStHdl, skillId, itemId, apply) -> code, old grade, new grade
+handler = "HissatsuLevelUp.Cmd.Item"
+
+[[VRFW.Command]]
+name = "CMND_HISSATSULEVELUP_CAN_PLACE"   # (charaStHdl, boardSlot 0..8, itemId) -> ok, other slot holding it (-1 = none)
+handler = "HissatsuLevelUp.Cmd.CanPlace"
+
+[[VRFW.Command]]
+name = "CMND_HISSATSULEVELUP_RETAIL_STOCK"   # (count) -> count -1: the save slot still needs its line; count >= 0 (abl_000001 stock) logs the retail «Nueva posibilidad» stock once per slot (graft sr_popup; 1.0.4)
+handler = "HissatsuLevelUp.Cmd.RetailStock"
+
+# ------------------------------------------------------------------------------------------------ grade sync
+# CMND_SET_SKILL(charaStHdl, skill, slot) 0x8EB59E18: the skill tables (Character Reforged's included) put a move in a
+# player's list with it, and it writes rank 0. After it, the list's ranks follow the stored grades again, so the
+# menus' grade glyph, plate base and graded power show the move's grade (docs/game/mechanics/skill-rank-usage.md
+# §7.17).
+[[VRFW.CommandFilter]]
+name = "HissatsuLevelUp.SetSkillGrade"
+command = "CMND_SET_SKILL"
+handler = "HissatsuLevelUp.AfterSetSkill"
+phase = "after"

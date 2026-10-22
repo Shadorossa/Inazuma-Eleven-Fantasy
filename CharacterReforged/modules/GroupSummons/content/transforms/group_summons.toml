@@ -5,8 +5,10 @@ schema = "VRFW.transform/2"
 # miximax never grants these keshin: `transfer = false`). The VR-Framework's aura rule run time does the rest:
 #
 # * participants: the summoner + the nearest team-mates on the pitch that complete ONE set: `carriers` carriers of the
-#   keshin itself, OR one carrier of each keshin of a `components` set (different players, exact sets, no mixing);
-#   a player whose aura slot holds a component sees the group keshin offered on his aura command while a set holds.
+#   keshin itself, OR one player per keshin of a `components` set with that keshin SUMMONED right now (different
+#   players, exact sets, no mixing); a player whose aura slot holds a component and who has it summoned sees the group
+#   keshin offered on his aura command while every other component of the set is summoned too. Its summon ends the
+#   components (the engine ends a running summon before it starts the next one), the summoner's and every partner's.
 # * trigger: Character Reforged's aura command (RB+B / J) or the retail aura row; refused (logged) when no set holds,
 #   the team already runs that keshin, a participant is bound to another group keshin or a share is not covered.
 # * cost "shared": every participant pays an equal share of the keshin's move from his own pool of it in

@@ -13,7 +13,7 @@
 # A gacha node's list (CMND_VRFW_GACHA_OF_GAME of its game, docs/framework/gacha.md): the owned players' spirits are
 # left out while it is open (CMND_VRFW_DROP_LIST_EXCLUDE_OWNED, on at OnInit, off at FinalizeMenu).
 name = "vrfw_drop_list"
-mod = "vr_framework"
+mod = "VRFW"
 order = 100
 module = ""
 requires = []

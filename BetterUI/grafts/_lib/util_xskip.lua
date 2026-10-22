@@ -13,9 +13,9 @@ UTIL_XS.FADE = 609722083                  -- bright fade (alpha, seconds, fade l
 UTIL_XS.COVER_LAYER = 1                   -- fade layer 1 (prog_common's cover); the event skip fades layer 0 only
 UTIL_XS.COVER_IN_S = 0.5                  -- the cover's fade in at the kick-off (the retail skip fade's length)
 UTIL_XS.HOLD = 1849920292                 -- param crc32("util_xskip_hold"): 1 = the framework holds the cover black
-UTIL_XS.HOLD_CMD = 25029330             -- CMND_UTIL_XSKIP_COVER(on) -> 1 (Utilities content\game\prematch_skip.toml)
+UTIL_XS.HOLD_CMD = 3211130387             -- CMND_BETTERQOL_XSKIP_COVER(on) -> 1 (Utilities content\game\prematch_skip.toml)
 UTIL_XS.JUMP = 3594158133                 -- param crc32("util_xskip_jump"): 1 = the direct jump ended the event (no cover)
-UTIL_XS.JUMP_CMD = 27517544             -- CMND_UTIL_XSKIP_JUMP(on) -> 1 (Utilities content\game\prematch_skip.toml)
+UTIL_XS.JUMP_CMD = 313471770             -- CMND_BETTERQOL_XSKIP_JUMP(on) -> 1 (Utilities content\game\prematch_skip.toml)
 UTIL_XS.BLACK0 = 2073416348                -- param crc32("util_xskip_black0"): 1 = fade layer 0 set black for the kick-off fade in
 UTIL_XS.PARAM_HAS = 2947612279
 UTIL_XS.PARAM_GET = 3522198769

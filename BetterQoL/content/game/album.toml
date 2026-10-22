@@ -1,0 +1,15 @@
+# BetterQoL › player album («Álbum de jugadores», docs/game/ui/album.md): the Lua commands of the page util_album_menu
+# (assets\lua\screens\util_album_menu.lua); the logic is scripts\album.lua (BetterQoL.Album.*).
+schema = "VRFW.game/2"
+
+# (lang code, name groups text, label of the other names) -> { total, owned, groups = { name groups, game groups } }, each group
+# { label, players, owned, series type }; false = no roster
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_ALBUM_OPEN"
+handler = "BetterQoL.Album.Open"
+
+# (kind 1 name / 2 game, group, page, rows a page) -> { page, pages, total, owned, rows = { { chara_base, card param,
+# name, team, game, owned, level, rarity }, … } }
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_ALBUM_PAGE"
+handler = "BetterQoL.Album.Page"

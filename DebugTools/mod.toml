@@ -1,7 +1,8 @@
-id = "debug_tools"
+id = "DebugTools"
+former_ids = ["debug_tools"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
 name = "Debug Tools"
-version = "1.2.0"
+version = "1.3.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "For testing only: while this mod is enabled, every debug and «unlock everything» setting of the other mods is on (every chain open and playable, every INAROGUE player, avatar, coach and album entry, the contact maps drawn open...). Disable it and everything is back to normal: nothing is written to your save by it. Its Mods options row «Contact maps: everything open and free» (off by default) opens every contact map page and signs any player without requirements or cost: those signings are real."
@@ -16,7 +17,7 @@ folder = "DebugTools"
 # each mod names its own debug settings in its mod.toml ([[VRFW.DebugSwitch]]), and the flags listed in this mod's
 # config.toml [flags] force them on for as long as this mod is enabled. The other mods' files are never changed.
 # README.md is a developer file, never installed.
-requires = ["vr_framework>=2.62.0"]
+requires = ["VRFW>=2.62.0"]
 conflicts = []
 
 # the debug flags this mod turns on: the [flags] table of its config.toml

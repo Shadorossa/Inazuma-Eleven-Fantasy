@@ -1,16 +1,17 @@
-id = "strikers_telops"
+id = "StrikersTitles"
+former_ids = ["strikers_telops"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
 # «Strikers Titles» since 1.2.0 (2026-10-10; «Telops» 1.1.0, «Rótulos de Strikers» / "Strikers Telops" before): the
 # same name in every language; the id stays strikers_telops (installs, load order, saves).
 name = "Strikers Titles"
-version = "1.2.1"
+version = "1.3.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 # (mod.toml has no credits key: the credit goes in the description)
 description = "Special-move name banners: the Spanish ones of the Inazuma Eleven GO Strikers 2013 fan translation on the game's own techniques and keshin, plus Inazuma Fantasy's banners (Spanish, Japanese and English). Strikers titles by @IEGOStrikersESP (https://x.com/IEGOStrikersESP). Personal use only: never released."
 priority = 0
 tags = ["Visual"]
-updated = "2026-10-14"
+updated = "2026-10-22"
 # This mod's own names (TOML keys [[StrikersTitles.X]], Lua StrikersTitles.X, any later text, command or key); never VRFW.
 prefix = "StrikersTitles"
 folder = "StrikersTitles"
@@ -23,7 +24,7 @@ folder = "StrikersTitles"
 # the game's layout), Inazuma Fantasy's own banners, tracked by git, moved here 2026-10-09. text\keys.toml: the mod's
 # name and description. Works on the retail moves, without Inazuma Fantasy. `requires` also makes it load after the
 # framework.
-requires = ["vr_framework>=2.0.0"]
+requires = ["VRFW>=2.0.0"]
 conflicts = []
 
 # «Rótulos personalizados» (Opciones de mods) offers these languages while this mod is on (docs/framework/content-languages.md)

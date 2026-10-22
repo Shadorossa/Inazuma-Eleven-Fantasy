@@ -9,7 +9,7 @@
 # of the VR-Framework's list rows (docs/framework/list-rows.md) and the normalisation a «before OnInit» handler on the
 # framework's host of this script (the dock number / type read from the parameters OnInit itself reads, not consumed).
 name = "rar_dock"
-mod = "no_more_rarities"
+mod = "NoMoreRarities"
 # Inazuma Fantasy's prime_dock / team_cmd_dock still list rar_dock in `requires` (order only now: a hook file is never
 # merged; the same rule ids make a second copy in one VM replace the first)
 rebuilt_by = ["inazuma_fantasy"]

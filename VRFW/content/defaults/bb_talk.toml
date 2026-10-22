@@ -14,6 +14,8 @@
 # team's line, 2 the rival's: every language the game has) or texts by language ({ es = "...", en = "..." }).
 player = { talk = "ev40_07070", line = 1 }   # «¡Vamos a por todas!» / «Let's get out there and win!»
 rival = { talk = "ev40_13130", line = 2 }    # «¡Ganaremos, pase lo que pase!» / «We will win, no matter what!»
+# Generic lines instead (a mod's own): text keys, one per team and side, always the same (crc32 of team id and side):
+#   pool = ["<mod>.<key>", ...]   rival_pool = [...]   (the rival side picks from both)
 # Pose of a captain with no retail pose of its own when no retail captain's pose fits its motion set either (all three
 # beats): a talk motion alias of defaults/talk.toml [motion] with no pose pack (every body has it), a retail motion name
 # or a 0x... id; `face` = a [face] alias / name.
@@ -39,6 +41,8 @@ synthetic = { first = 100, count = 100, rival = 99 }
 #   sources = ["bb_captain", "pre_match_own", "pre_match", "chronicle"]   # in this order; any subset
 #   voice_sources = ["pre_match_own", "pre_match"]   # their voiced lines' cues are copied into the talks' bank at start
 #   reject = ["<", "?"]   prefer_end = ["!"]   prefer_voiced = true   max_rows = 2   max_chars = 90   min_chars = 10
+#   reject_words = [...]   (whole words or phrases, same case)   require_end = ["!"]   require_words = [...]   (any case)
+#   require_voiced = true   check_langs = ["es"]   (reject / reject_words also on these languages' text)
 # The framework only sets what the game fixes: the voice bank the BB talks load (with English voices too) and the
 # language whose text the filters read.
 [bb_talk.retail]

@@ -1,9 +1,0 @@
-schema = "VRFW.game/2"
-
-# Inazuma Fantasy (id inazuma_fantasy, research/mods/_aside) kept the drill's settings in its global save data under
-# the key training_field.settings until 2026-10-15: copied once into this mod's global data, same key (IF's own data is
-# left as it is; this mod's own value always wins)
-[[VRFW.SaveImport]]
-name = "TrainingGround.FromInazumaFantasy"
-from = "inazuma_fantasy"
-global_values = ["training_field.settings"]

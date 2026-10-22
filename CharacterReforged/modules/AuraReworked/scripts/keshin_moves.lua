@@ -52,7 +52,7 @@ local function own_move(aura)
 end
 
 local function base_actors()
-  local ok, b = pcall(VRFW.game.km_actors)
+  local ok, b = pcall(VRFW.game["Match.SoccerActors.ViaSkillUsed"])
   if ok and type(b) == "number" and b >= 0x10000 then return b end
   return nil
 end
@@ -74,7 +74,7 @@ end)
 local function running(actor, hdl)
   local a = VRFW.mem.read_struct("KmActor", actor)
   if not a or a.hdl ~= hdl or a.team > 1 then return 0, false end
-  local ok, u = pcall(VRFW.call, "KmActorUnit", actor)
+  local ok, u = pcall(VRFW.call, "Match.ActorUnit", actor)
   local attr = 0
   if ok and type(u) == "number" and u >= 0x10000 then
     local okr, x = pcall(VRFW.mem.read, "u8", u + 0x2B4)

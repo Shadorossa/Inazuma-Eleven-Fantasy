@@ -553,7 +553,7 @@ end
 local function step_player(p, actor, a)
   local unit_attr = 0
   if a.summon_state == SUMMON_ACTIVE then
-    local ok, u = pcall(VRFW.call, "SrActorUnit", actor)
+    local ok, u = pcall(VRFW.call, "Match.ActorUnit", actor)
     if ok and type(u) == "number" and u >= 0x10000 then
       local okr, attr = pcall(VRFW.mem.read, "u8", u + 0x2B4)
       if okr and type(attr) == "number" then unit_attr = attr end
@@ -588,7 +588,7 @@ local function step_player(p, actor, a)
 end
 
 local function base_actors()
-  local ok, b = pcall(VRFW.game.sr_actors)
+  local ok, b = pcall(VRFW.game["Match.SoccerActors.ViaSkillUsed"])
   if ok and type(b) == "number" and b >= 0x10000 then return b end
   return nil
 end

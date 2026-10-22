@@ -4,7 +4,7 @@
 # ships its own merged evt_skill_slot_menu (it rebuilds ss2_menus with its blocks), which replaces this mod's while IF
 # is on, so IF rebuilds this graft too (`rebuilt_by`); the screen's file is one copy per VM either way.
 name = "plate_pages_skill_host"
-mod = "character_reforged"
+mod = "CharacterReforged"
 rebuilt_by = ["inazuma_fantasy"]   # IF's merged evt_skill_slot_menu carries it too (it replaces this mod's file)
 order = 975
 module = "lua_bridge"

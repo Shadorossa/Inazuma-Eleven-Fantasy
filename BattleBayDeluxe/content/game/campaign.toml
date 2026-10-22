@@ -117,12 +117,6 @@ expect_fn = "GameDecide"
 args = ["ptr", "ptr", "u32", "u64"]
 ret = "u64"
 needs = ["campaign_code", "FindChildByHash", "enjoy", "session", "EnjoyTable", "EnjoyRow", "GridMenu", "GridSlot", "GridChild", "Session"]
+# the pre-phase waits for a busy script VM: a skipped pre-phase is the game's own draw from the visible page only
+wait_ms = 500
 
-# bool IsNetworkSession() 0x1239C70 (1.5.42): the free match's Draft is refused in a network session (the online
-# Battle Bay). Two functions have these bytes (0x1239C70 and 0x1239ED0, the same global); the trailing padding picks
-# the first (as BetterUI's content/game/prematch_editor.toml declares it).
-[[VRFW.Function]]
-name = "IsNetworkSession"
-pattern = "48 8B 15 ?? ?? ?? ?? 8B 82 10 24 00 00 85 C0 74 27 FF C8 0F B6 84 10 14 24 00 00 3C 02 73 19 48 69 C0 08 12 00 00 48 03 C2 74 0D 0F B6 80 00 12 00 00 C0 E8 02 24 01 C3 32 C0 C3 CC CC CC CC CC CC CC CC"
-rva = 0x1239C70
-ret = "bool"

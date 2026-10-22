@@ -1,0 +1,20 @@
+schema = "VRFW.technique/3"
+if_mod = "all_keshin_armed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
+# All Keshin Armed › the armour commands of «Reina negra» (wks00380) and «Rey negro» (wkk00390), the two keshin the game
+# has without an armour (docs/game/media/armour-port.md §11). Each is a clone of the white armour (its cost, time,
+# buffs and cut-in) with the black keshin's name text and aura character (col 7: the keshin <-> armour pairing of the
+# game and of the framework), the armoured card of characters/black_armours.toml and no owner list (anyone may equip
+# it). Paired in transforms/armours.toml and techniques/armour_changes.toml like every other armour. Keys and ids
+# (crc32 of the key) as Inazuma Fantasy had them.
+
+[[aura_command]]
+key = "was00380"
+from = "was00220"
+cells = { name_text = 0xE5C1EB3C, aura_chara = 0x56C65775, chara_param = 0xF6947FDF }   # wks00380's name / aura chara
+charas = []
+
+[[aura_command]]
+key = "wak00390"
+from = "wak00230"
+cells = { name_text = 0x135F5A8B, aura_chara = 0x4FDD6634, chara_param = 0xEF8F4E9E }   # wkk00390's name / aura chara
+charas = []

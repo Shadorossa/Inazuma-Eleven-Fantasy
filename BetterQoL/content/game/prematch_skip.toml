@@ -1,0 +1,89 @@
+schema = "VRFW.game/2"
+
+# Utilities › pre-match «hold X = straight to the kick-off» (graft research/grafts/util_prematch_skip,
+# docs/game/ui/prematch-skip.md §5): the black cover the skip puts on bright-fade layer 1 is HELD natively until the
+# kick-off is ready, so nothing of the skipped events is seen and there is one fade in.
+#
+# Why native: the game fades every layer of the bright-fade object back in by itself (FadeInAll 0x17401C0: layers 0-3,
+# called when an event starts / ends, 0x14B90C0 / 0x14BA480, and by BattleSettingFlow 0x1436F50 states 11 and 13). The
+# Lua cover of 1.15.2 was re-asserted only by event_menu's Step, so each of those fade-ins showed the scene for a moment
+# between two skipped events (Nacho's report 2026-10-11: black flashes and jump cuts).
+#
+# The site: every fade of one layer goes through FadeLayerTo 0x173F930 (rcx = the bright-fade object [0x21F62C0], edx =
+# the layer, r8 = a start colour used when the 6th argument is 1, r9 = the target RGBA, [rsp+28h] = seconds (f32),
+# [rsp+30h] = «start from r8» (u8)). It writes the layer's record (layer N at obj + N * 0x3C: start RGBA +0x00, target
+# RGBA +0x10, progress u16 +0x28; the drawn colour = lerp(start, target, progress)). While the hold is on, after the
+# game's code (post) layer 1's start and target become opaque black, whatever the caller asked: layer 1 stays black.
+# Layer 0 (the retail event skip, the walk-in / lineup fades, the kick-off fade in) is never touched.
+#
+# The hold is a lookup table of this mod, BetterQoL.XSkipCover: key = the bright-fade object's address, set / cleared by
+# the graft through CMND_BETTERQOL_XSKIP_COVER (scripts\better_ui.lua). No entry = the game's code as it is (the answers
+# do not apply), so nothing changes outside the X skip.
+
+# FadeLayerTo 0x173F930 (obj, layer, start RGBA*, target RGBA*, seconds, from_start). Stolen: push rbx (40 53) /
+# sub rsp,30h / movsxd rax,edx / mov rbx,r9 / imul rdx,rax,3Ch = 16 bytes, no relative operand. All six arguments are
+# declared so the call thunk hands the stack ones (seconds, from_start) to the game's code as they came.
+[[VRFW.Hook]]
+name = "BrightFadeLayer"
+game = "Render.BrightFadeLayer"
+kind = "function"
+
+# Held: layer 1's start and target colours (8 floats from obj + 0x3C) = (0, 0, 0, 1), (0, 0, 0, 1).
+[[VRFW.Hook.answer]]
+phase = "post"
+when = [
+  { value = "args[2]", equals = 1 },
+  { value = "args[1]", in_table = "BetterQoL.XSkipCover" },
+]
+each = { count = "8", max = 8 }
+value = "if(i == 3, 1, if(i == 7, 1, 0))"
+write = "[args[1] + 0x3C + i * 4]:f32"
+
+# CMND_BETTERQOL_XSKIP_COVER(on) -> 1 when done: 1 = hold the cover (the table gets the bright-fade object), 0 = release
+# it (the table cleared). Not registered without the global; answers 0 to a hold while the hook is off. Either way the
+# graft then keeps its Lua-only cover (re-asserted every event_menu / lineup Step).
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_XSKIP_COVER"
+handler = "BetterQoL.XSkipCover"
+needs = ["Render.BrightFade"]
+
+# ---------------------------------------------------------------------------------------------------------------------
+# 1.21.7: the DIRECT jump (docs/game/ui/prematch-skip.md §6; Nacho 2026-10-12: «no chained skips, no black screen»).
+# When X fills its ring the graft asks CMND_BETTERQOL_XSKIP_JUMP(1) (scripts\better_ui.lua, BetterQoL.XSkipJump): the
+# running pre-match event is ended in that frame without the retail skip's fade (what the retail skip's state 4 does,
+# 0xF59CB0, minus its fade out / fade in): its sounds stopped (StopEventSounds), its timeline run to the end (EventSeek
+# to -1 = the end; the timeline's own TimelineSeek when the event has no cut table). The native flow
+# game::soccerscene::BattleSettingFlow (update 0x1436F50) then goes on by itself: its wait for the event ends at once.
+# The second entrance event (state 12, match info bit 0x80) is not started (hook PrematchSecondEntrance below) and the
+# lineup group (state 13) closes unopened without a fade (graft xs_lineup.lua): states 13 -> 14 -> 17 -> kick-off, with
+# formations, ball, camera, BGM, crowd and timers set up by the game's own states as in the retail order.
+
+# BattleSettingFlow state 12 (0x14381BA), once the first entrance event is over:
+#
+#   14381FE  48 8B 05 ?? ?? ?? ??     mov  rax, [g_gameRoot]
+#   1438205  48 8B 88 58 6A 00 00     mov  rcx, [rax+6A58h]      ; <- hook: the 7-byte mov is stolen (no relative operand)
+#   143820C  F6 01 80                 test byte [rcx], 80h        ; match info bit 0x80: one more entrance event
+#   143820F  0F 84 D3 00 00 00        je   14382E8
+#   ...                               build + start the event (0x14BEA70)
+#   14382E8  C7 46 20 0D 00 00 00     mov  dword [rsi+20h], 0Dh   ; state 13 (the lineups)
+#
+# `skip = true` (only while the X jump is on) resumes at 0x14382E8 (continue_at = 0xEA): no second event, state 13 next.
+# rsi = the flow (state u32 at +0x20). None of rax / rcx is read on that path.
+[[VRFW.Hook]]
+name = "PrematchSecondEntrance"
+game = "Event.PrematchSecondEntrance"
+kind = "mid"
+
+# CMND_BETTERQOL_XSKIP_JUMP(on) -> 1 when done: 1 = end the running event now and keep the flow from starting another
+# one; 0 = the jump is over (kick-off / disarm: the flag cleared). 0 = not possible (no event playing, a declaration
+# off): the graft then uses the 1.21.1 cover path.
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_XSKIP_JUMP"
+handler = "BetterQoL.XSkipJump"
+needs = ["Event.Manager", "Event.Seek", "Audio.StopEventSounds", "Event.TimelineSeek"]
+
+# Graft util_prematch_skip (event_menu): seconds X must be held to go straight to the kick-off (config.toml
+# [prematch_skip] hold; 0 = no X prompt). Without the command the graft uses 1 s.
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_XSKIP_HOLD"
+handler = "BetterQoL.SkipHold"

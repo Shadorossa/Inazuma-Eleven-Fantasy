@@ -980,7 +980,7 @@ EVT_PPG = EVT_PPG or {}
     G.psub = 0
   end
   G.noSpecial = false
-  -- round 13 (Nacho): the special passive's title («Limitador activo», CMND_UTIL_PC_SPECIAL's text key) on a pill
+  -- round 13 (Nacho): the special passive's title («Limitador activo», CMND_BETTERQOL_PC_SPECIAL's text key) on a pill
   -- (layer evt_pp_ptitle, object evt_ph_peg_pill) centred over the special's strip on sub-page 1, tinted the special
   -- orange; no special (the empty box) = no title. Page frame: local (x, -y) = screen (x, y) (pill centred on origin).
   G.PTITLE = @crc:evt_pp_ptitle@
@@ -994,7 +994,7 @@ EVT_PPG = EVT_PPG or {}
   G.PTITLE_RGB = {0.80, 0.30, 0.04}
   G.PTRULE, G.SP_PTRULE = @crc:evt_pp_ptrule@, @crc:evt_pp_ptrule@
   G.PTRULE_R = {1038, 772, 1866, 775}        -- the rule's screen rect (3 px, over the strip's top)
-  G.CMD_SPECIAL, G.CMD_TEXT = @crc:CMND_UTIL_PC_SPECIAL@, @crc:CMND_VRFW_TEXT_GET@
+  G.CMD_SPECIAL, G.CMD_TEXT = @crc:CMND_BETTERQOL_PC_SPECIAL@, @crc:CMND_VRFW_TEXT_GET@
 
   -- how far the slot-0 strip's top sits below a lone strip's top on sub-page 1 (title and rule move with it)
   function G.PTitleDy()
@@ -1351,7 +1351,7 @@ EVT_PPG = EVT_PPG or {}
   -- the page, the header / archetype box slant):
   --   row 1 = FICHADO | ORIGEN | PARTIDOS          row 2 = V-E-D · % | GOLES | GOLES/PART.
   --   (round 14, Nacho: 3 columns in both rows, goals only: no assists)
-  -- Numbers from the career record CMND_UTIL_CAREER_EX(chara, 0) (the mod Utilities') (goals v[9], assists v[10]: already tracked); the
+  -- Numbers from the career record CMND_BETTERQOL_CAREER_EX(chara, 0) (the mod Utilities') (goals v[9], assists v[10]: already tracked); the
   -- ratio is UTIL_CS.Ratio (decimal comma per language, «-» without matches). The career panel hangs from
   -- _atc_passive01 (screen (1495, 880)); its cell (r, c) default centre = (1204.5 + 195 c, 880 + 84 r): each kept cell
   -- moved (layer local pos, y up) to its centre CS_AT[r][c]; every other cell and the strips hidden.
@@ -1920,7 +1920,7 @@ EVT_PPG = EVT_PPG or {}
   -- action «Cambiar forma» (CMD_UTIL_VIEW_FORMS, default RS, rebindable) where this menu is declared for it (Character
   -- Reforged content\menus\player_page_view_forms.toml, only with Utilities); its glyph follows the binding. Without that declaration: R3 (CMD_FUNC6) as before.
   function G.FormKeyDecl()
-    local V = type(Utilities) == "table" and Utilities.ViewForms or nil
+    local V = type(Utilities) == "table" and BetterQoL.ViewForms or nil
     return type(V) == "table" and type(V.Declared) == "function" and V.Declared("personal_plate_menu") == true and V or nil
   end
   function G.FormKeyDown()

@@ -10,8 +10,6 @@ schema = "VRFW.team/2"
 # Same names and slots as the older mod Chronicles Deluxe (chronicles_deluxe, set aside 2026-10-14) and Inazuma Fantasy
 # before it: the piece (evt_rn_piece_<name>), the game (evt_rn_<name>) and the slot are derived from the node's name,
 # not from the mod, so every save's progress of these nodes is kept as it is.
-# While chronicles_deluxe is active this file is left out: that mod declares the same nodes (same slots).
-if_not_mod = "chronicles_deluxe"
 default_lang = "es"
 
 # IE1: after Inazuma Kids FC («¡Duelo en la Ribera del río!»), across the bridge. Owner 2026-10-13: a plain Crónica

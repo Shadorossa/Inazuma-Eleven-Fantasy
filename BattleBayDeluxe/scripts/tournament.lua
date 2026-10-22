@@ -288,6 +288,8 @@ local function name_text(t)
   end
   return NAME_TEXT[t] or 0
 end
+-- the Campaña's draw leaves the player's team out in every version (same name text)
+Tn.name_text = name_text
 
 -- a candidate of the story / Chronicle mode (by team, or by its name text)
 local function is_story(t)
@@ -343,6 +345,7 @@ local FAILED = nil       -- 1.5.11: why the last start did not draw a run (Tourn
 local POOL = nil         -- 1.5.15: the candidates of the last campaign draw (Tn.note_pool): caps the team counts offered
 local PLAYED = nil       -- the tournament match that ended this session { index, rival, gf, ga } (match_end)
 local LIVE = nil         -- the match being played { index, rival } (match_start)
+local final_request     -- the final stadium request (defined below; match_end calls it)
 
 local function current_slot()
   local ok, n = pcall(VRFW.slots.active)
@@ -850,7 +853,7 @@ end
 -- the StartMatchRequest answer (content\game\active_team.toml) writes this table's stadium into a Battle Bay
 -- request: set only while the player's next match is the final, removed otherwise
 local FINAL_TABLE = "BattleBayDeluxe.FinalStadium"
-local function final_request(run)
+final_request = function(run)
   local map = run and not run.outcome and final_next(run) and final_stadium(run) or ""
   local id = map ~= "" and U.crc32(map) or nil
   local ok, e = pcall(VRFW.native.table_set, FINAL_TABLE, 0, id)

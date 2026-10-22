@@ -1,14 +1,15 @@
-id = "group_summons"
+id = "GroupSummons"
+former_ids = ["group_summons"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Group Summons"
-version = "1.0.2"
+version = "1.2.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Keshin summoned by several players together, as in IE GO Strikers 2013: Griffin by three players and Arthur by two, all of them in the summon scene. The participants are the nearest team-mates on the pitch who carry the keshin, or one carrier of each of its component keshin. The aura command (RB+B) starts it; every participant pays his share of its move from his own PEG pool, may fire its move while it runs and starts no other aura meanwhile, and Griffin's Flamberge is kicked by all three. Other keshin are summoned as usual."
+description = "Keshin summoned by several players together, as in IE GO Strikers 2013: Griffin by three players and Arthur by two, all of them in the summon scene. The participants are the nearest team-mates on the pitch who carry the keshin, or one player of each of its component keshin with that keshin summoned; the group keshin replaces them. The aura command (RB+B) starts it; every participant pays his share of its move from his own PEG pool, may fire its move while it runs and starts no other aura meanwhile, and Griffin's Flamberge is kicked by all three. Other keshin are summoned as usual."
 priority = 0
 tags = ["Gameplay", "Visual"]
-updated = "2026-10-14"
+updated = "2026-10-22"
 # This mod's own names (TOML keys [[GroupSummons.X]], Lua GroupSummons.X, any later text, command or key); never VRFW.
 prefix = "GroupSummons"
 folder = "GroupSummons"
@@ -32,7 +33,8 @@ folder = "GroupSummons"
 # pools (aura_points.peg, shared by the participants), the armours Aura Reworked's keshin -> armour pairs (its part All Keshin Armed).
 # vr_framework 2.4.30: the plates' lent aura and the aura rules as Character Reforged / Aura Points use them;
 # 2.4.38: an anim reference to a moved key (the [[alias]]es here) reads the event under its new key.
-requires = ["vr_framework>=2.7.29", "character_reforged>=1.7.13", "aura_points>=1.0.2", "aura_reworked>=1.0.0"]
+# 2.84.0: a component counts only while its player has it summoned; the group keshin replaces the components.
+requires = ["VRFW>=2.84.0", "CharacterReforged>=1.7.13", "AuraPoints>=1.0.2", "AuraReworked>=1.0.0"]
 conflicts = []
 
 # Nothing to call: other mods read the group keshin through the framework (vrfw_aura_rule_*, CMND_VRFW_AURA_RULE) and
@@ -45,5 +47,5 @@ keys = []
 # ModManager and `vrfw list` show it inside Character Reforged's entry («Módulos y ajustes»: on / off) instead of as a mod
 # of its own; switching Character Reforged off switches it off too. Its name there: its mod_name (text\keys.toml).
 [module]
-of = "character_reforged"
+of = "CharacterReforged"
 order = 45

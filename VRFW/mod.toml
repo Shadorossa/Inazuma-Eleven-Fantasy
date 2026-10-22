@@ -1,7 +1,8 @@
-id = "vr_framework"
+id = "VRFW"
+former_ids = ["vr_framework"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\rows\mod_info.toml)
 name = "VRFW"
-version = "2.76.0"
+version = "2.101.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The base of the VR ModLoader's mods, in one mod: characters and teams declared by mods and their rarity (chara), mod texts in 9 languages (text), the save slots (the slot screen before the game starts), per-mod save data tied to the slot and the mods' save flags (save), global game rules declared by mods: parameters (game_param and the other property tables), controls and buttons (system), mod audio and voice packs (audio), match rulesets (match), special move animations (anim), row changes in any game table (tables), game modes declared by mods (modes), special move name banners, the «Mod options» tab and the title menu's «Mods» screen (graphics). Built into the VR ModLoader (winmm.dll): no DLL of its own. Needed by the mods that use any of its parts."
@@ -9,6 +10,12 @@ description = "The base of the VR ModLoader's mods, in one mod: characters and t
 priority = -10
 tags = ["Framework"]
 updated = "2026-10-22"
+# 2.78.0: menu models never touch another menu's model: a released slot changes its own model key (the release
+# without a key reached key 0, the Chronicle board's caravan: drawn huge after the pose row screen); VRFW_PoseRow.Open
+# no longer writes the caller's models (hidden through their layer's visibility, place only read and logged). Pose
+# row lineup cards: the game's fill as a menu command (it never ran: the coach template showed), refused fills drawn
+# from the card's sprites with the template's other pieces off; the rows' check box and tick drawn over the row
+# plate. Grafts pose_row and contact_map changed (menu kit): points regen needed.
 # 2.76.0: AllOpen fix: a row with a condition gets an always-true one instead of an empty string (empty = false: every row was locked).
 # 2.75.0: a return = "menus" friendly also starts from the Chronicle board (match_engine friendly.rs menu_mode: play
 # mode 4; the pachangas' A was refused). Pose row node panel: the retail art drawn straight from the screen's res atlases (no on-demand load:

@@ -5,16 +5,6 @@ if_mod = "souls_rework"                 # the part's switch (Mods options; docs/
 
 # ------------------------------------------------------------------------------------------------ globals / structs
 
-# [g_soccerActors]: `mov r8, [rip+x]` at +8 of OnHissatsuUsed 0xEB6C60
-[[VRFW.Global]]
-name = "sr_actors"
-game = "Match.SoccerActors.ViaSkillUsed"
-
-# Unit* ActorUnit(actor) 0x15B25E0: the match unit of a soccer actor (its aura bits at +0x2B4)
-[[VRFW.Function]]
-name = "SrActorUnit"
-game = "Match.ActorUnit"
-
 # A soccer actor ([g_soccerActors] + index x 0x570): its handle, team, the summon machine (aura, full time, time left,
 # state 2 = out) and the in-play byte (docs/game/mechanics/keshin-armed.md §2.2).
 [[VRFW.Struct]]

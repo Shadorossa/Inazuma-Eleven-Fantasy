@@ -1,13 +1,14 @@
-id = "goalkeeper_barrier"
+id = "GoalkeeperBarrier"
+former_ids = ["goalkeeper_barrier"]
 # name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
 name = "Goalkeeper Barrier"
-version = "1.3.0"
+version = "1.5.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Every keeper's barrier is the top 25 % of his bar on the scoreboard, drawn bronze: while his bar is above 75 % the shots he faces lose power (÷ 1.4); below that they keep their full power. A block move of his team makes his next keeper move 30 % cheaper in tension."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 # This mod's own names (TOML keys [GoalkeeperBarrier.X], Lua GoalkeeperBarrier.X, commands CMND_GOALKEEPERBARRIER_*,
 # tables GoalkeeperBarrier.*); never VRFW.
 prefix = "GoalkeeperBarrier"
@@ -24,7 +25,7 @@ folder = "GoalkeeperBarrier"
 # table FootballReforged.KeeperTension -> GoalkeeperBarrier.KeeperTension.
 # 1.3.0 (2026-10-21): Football Reforged 1.4.0 flips the own keeper bar (empties left to right): config.toml
 # hud_fill_from = ["right", "left"], the own bronze barrier at the fill's left (moving) edge; sprites rebuilt.
-requires = ["vr_framework>=2.4.6", "football_reforged>=1.2.0"]
+requires = ["VRFW>=2.87.0", "FootballReforged>=1.2.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"
@@ -38,5 +39,5 @@ keys = []
 tables = ["GoalkeeperBarrier.KeeperTension"]
 
 [module]
-of = "football_reforged"
+of = "FootballReforged"
 order = 10

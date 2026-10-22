@@ -7,21 +7,196 @@
 # shortest length that covers it (about 13 characters a second).
 lip = { cue = "ev40_bbd_lip_{tenths}", seconds = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0] }
 
+# Generic lines of a team with no voiced retail line (owner 2026-10-22: «una pool de 30 textos genéricos»): text keys of
+# this mod (text/keys.toml, 9 languages); each team speaks one per side, always the same (crc32 of team id and side over
+# the side's keys). The rival side also picks from `rival_pool` (challenges to the other team).
+pool = ["bb_chronicle_teams.bb_talk_pool_01", "bb_chronicle_teams.bb_talk_pool_02",
+    "bb_chronicle_teams.bb_talk_pool_03", "bb_chronicle_teams.bb_talk_pool_04", "bb_chronicle_teams.bb_talk_pool_05",
+    "bb_chronicle_teams.bb_talk_pool_06", "bb_chronicle_teams.bb_talk_pool_07", "bb_chronicle_teams.bb_talk_pool_08",
+    "bb_chronicle_teams.bb_talk_pool_09", "bb_chronicle_teams.bb_talk_pool_10", "bb_chronicle_teams.bb_talk_pool_11",
+    "bb_chronicle_teams.bb_talk_pool_12", "bb_chronicle_teams.bb_talk_pool_13", "bb_chronicle_teams.bb_talk_pool_15",
+    "bb_chronicle_teams.bb_talk_pool_16", "bb_chronicle_teams.bb_talk_pool_17", "bb_chronicle_teams.bb_talk_pool_18",
+    "bb_chronicle_teams.bb_talk_pool_19", "bb_chronicle_teams.bb_talk_pool_20", "bb_chronicle_teams.bb_talk_pool_21",
+    "bb_chronicle_teams.bb_talk_pool_23", "bb_chronicle_teams.bb_talk_pool_24", "bb_chronicle_teams.bb_talk_pool_25",
+    "bb_chronicle_teams.bb_talk_pool_26", "bb_chronicle_teams.bb_talk_pool_27", "bb_chronicle_teams.bb_talk_pool_28",
+    "bb_chronicle_teams.bb_talk_pool_29"]
+rival_pool = ["bb_chronicle_teams.bb_talk_pool_14", "bb_chronicle_teams.bb_talk_pool_22",
+    "bb_chronicle_teams.bb_talk_pool_30"]
+
 # Retail lines (docs/framework/bb-prematch.md «Retail lines»; the mechanism is the VR-Framework's): a team of this mod
 # has no BB talk of its own, so its captain speaks a line the game already has for him, with its voice and his pose,
-# instead of the default line. Sources, in this order: the captain also leads a retail Battle Bay team (that team's
-# own line, voice and pose); a line he speaks in the Chronicle pre-match talk of a match against his own team; in any
-# Chronicle pre-match talk; in any other Chronicle talk he is cast in. A side with none keeps the default line.
+# instead of the default line. The rival and the player's team are arbitrary, so only a GENERIC line fits: no name of a
+# team, a player, a place or a story thing (owner 2026-10-22: «Torch» named Raimon). Sources, in this order: the
+# captain also leads a retail Battle Bay team (that team's own line, voice and pose, unless the line holds one of
+# the rejects below); a line he speaks in the Chronicle pre-match talk of a match against his own team; in any Chronicle
+# pre-match talk; in any other talk of the Chronicle chapters he is cast in (owner: «¿186 con voz no has encontrado
+# nada que pegue?»: a voiced in-match cry such as «Here I come!»). A side with none keeps the default line (generic,
+# silent lip cue).
 [bb_talk.retail]
 sources = ["bb_captain", "pre_match_own", "pre_match", "chronicle"]
-# The voiced lines of these sources get their voice (copied at start into the talks' voice bank, about 70 KB each);
-# a `chronicle` line keeps the silent lip cue (its voice is not copied: too many characters).
-voice_sources = ["pre_match_own", "pre_match"]
-# The filters read the English text: no tag (a `<...>` names another character), no question, at most 2 rows and
-# 90 characters, at least 10; a voiced line and a line ending in «!» (a greeting or a challenge) come first.
-reject = ["<", "?"]
+# The chosen lines of these sources get their voice (copied at start into the talks' voice bank, about 70 KB each).
+voice_sources = ["pre_match_own", "pre_match", "chronicle"]
+# The filters read the English text. A line is kept when it is voiced (its own cue in its talk's bank), one row of 6 to
+# 90 characters, a cry (ends in «!»), about the match or fighting spirit (one of `require_words`: a word, or words in a
+# row), and holds none of `reject` (a tag: `<...>` names another character; a question) nor of `reject_words` (the
+# proper nouns of the game's texts, the techniques and items a line names, a few story words). A retail BB captain's
+# own line is only checked against the two rejects.
+# `reject` (substrings, English and Spanish text): a tag, a question; a line that speaks to a role of the story team
+# (the coach, the manager); a line about a past match or someone gone («since that», «aquel partido», «de vuelta»); a
+# condition («If ...», «Si ...») or an agreement («Okay.», «De acuerdo»): it answers something said before.
+reject = ["<", "?", "coach", "Coach", "entrenador", "Entrenador", "manager", "Manager", "míster", "Míster",
+    "since that", "that match", "aquel partido", "ese partido", "de vuelta", "back!", "If ", "Si ", "Okay.",
+    "De acuerdo"]
+# The same checks on the Spanish text too (a translation can name a character or a technique where English does not).
+check_langs = ["es"]
+require_voiced = true
+require_end = ["!"]
+require_words = ["win", "wins", "winning", "victory", "match", "beat", "crush", "lose", "losing", "opponent",
+    "opponents", "challenge", "defeat", "strongest", "battle", "fight", "let's go", "here we go", "here i come",
+    "leave it to me", "leave this to me", "count on me", "i won't lose", "we won't lose", "we'll win", "let's win",
+    "let's do this", "let's do it", "bring it on", "get ready", "let's play", "show you", "our power", "my power",
+    "full power", "all out", "give it our all", "give it everything", "fired up", "here goes", "i'm ready",
+    "we're ready", "ready or not", "take you on", "no holding back", "time to play", "let's show", "show them",
+    "play some", "real football"]
 prefer_end = ["!"]
 prefer_voiced = true
-max_rows = 2
+max_rows = 1
 max_chars = 90
-min_chars = 10
+min_chars = 6
+# The proper nouns: generated from the game's texts by research/scripts/bbd_talk_names_build.py (rerun it with --write
+# after a game update; --check tells whether the list is current).
+# BEGIN generated by research/scripts/bbd_talk_names_build.py (do not edit by hand)
+reject_words = ["A-game", "Abolishment", "Absolute Barrier", "Absolute Knights", "Abyssal", "Academia Alia",
+    "Academia IA", "Academia Orchid", "Academy", "Ace Invaders", "Achilles", "Acrobats", "Acupoint",
+    "Advanced Epsilon", "Aegis", "Aether", "Aether Virtuoso", "Aethyr", "Affairs", "AI", "AI Academy", "AIs",
+    "Aislar al jugador clave", "Alas gemelas", "Alia", "Alia Academy", "Alice", "Alius", "Alius Crystal", "Alley",
+    "Almighty", "Alpha", "Alpine", "Alpino", "America", "American", "Amistad", "Ancient Darkness", "Angel", "Angels",
+    "Aphrodite", "Aphrody", "Apollo", "Apolo", "Apolo dios del sol", "Apostles", "Apunta", "Aquacore", "Aquaculture",
+    "Arabian", "Arabian Firebirds", "Arcade", "Arced", "Arced Diamond Ray", "Arch", "Arch Pegasus", "Archipegaso",
+    "Archive", "Archon", "Arena", "Ares", "Arm", "Artifact", "ASAP", "Asia", "Asian", "Association",
+    "Ataque en tres frentes", "Ataque táctico", "Atlantis", "Aullido Lunar", "Aurora Obscure", "Aurora tenebrosa",
+    "Australia", "Australian", "Avenging", "Avenging Acrobats", "Awaji", "B-E", "Back Alley Field",
+    "Back Alley Kickers", "Backwater", "Bahía de las Conchas", "Bailarines Eternos", "Bakery", "Bands", "Bank",
+    "Banner", "Barcelona", "Barcelona Orb", "Barrera absoluta", "Bastión", "Beach", "Bear", "Beast Fang", "Beasts",
+    "Benefactor", "Berserker", "Bewildered", "Big Bang", "Big Waves", "Bigbums", "Birds", "Bisonte Rojo",
+    "Black Templars", "Blaster", "Blizzard", "Bloqueo espectral", "Bodacious", "Bodacious Beach", "Bomb", "Bon",
+    "Boom-tss", "Boost", "Box Lock", "Brain", "Brainwashing", "Brazil", "Brazo de diamante", "Brazo extensible",
+    "Breakthrough", "Breezy", "Brick", "Brilla", "Brisa deslizante", "Broski", "brother", "Bulls", "Bullseye",
+    "Bunny", "Bureau", "Burger", "Caballeros perfectos", "Caballeros Templarios", "Cadena", "Caf", "Café Tank",
+    "Cala Pirata", "Cambio de paradigma", "Campeones Raimon", "Campo explosivo", "Campo umbrío", "Cannon",
+    "Cannonball", "Caos", "Cap", "Caravan", "Caravana Inazuma", "Cascada Perfecta", "Cascade", "Catalonia",
+    "Catenaccio", "Catenaccio Counter", "Celebration", "Celesta", "CG", "Chairman", "Chairperson", "Challenge",
+    "CHAMP-ON", "Champon", "Chaos", "ChatGOD", "Cheat", "Cheat Blaster", "Chicago", "Children of the Night", "China",
+    "Chinese", "Chronicle", "Chrono", "Chubu", "Chugoku", "Chut vitral", "City", "Clairvoyance", "Claymore",
+    "Clearbunny", "club", "Club de baile", "Coastal", "Colmillo de pantera", "Colmillos del Norte", "Colossus",
+    "Columbus", "Commander", "Commanders", "Conejo de cristal", "Conejo de cristal lanza sagrada", "Confusión",
+    "Contraataque catenaccio", "Copycat", "Cosmic", "Cottages", "Cough", "Cove", "Crash",
+    "Creador de jugadas geniales", "Creak", "Creators", "Criaturas de la Noche", "Crossing", "Crosswind",
+    "Crosswind-Fauxshore", "Crystal", "Cuadrícula defensiva", "Cup", "Cyber", "Cyber Realm", "Cyberpolice",
+    "Cybershadow", "Cycling", "Cyclone", "dad", "Dance Club", "Dancers", "Dank", "Danza del viento", "Dark",
+    "Dark Angels", "Dark Emperors", "Dark Team", "darling", "DD", "Death", "Death Zone", "Defensa en bloque",
+    "Deity", "Demon", "Derailers", "Desafío", "Desert Lions", "Desesperdidos", "Despairadoes", "Destello de fuerza",
+    "Destrozataladros", "Destruction", "Desvanecimiento absoluto", "DETECTED", "Devil", "Devil Army Z", "Diamond",
+    "Diamond Arm", "Diamond Dust", "Diamond Hand", "Diamond Ray", "Digitonious", "Dinastía Galáctica",
+    "Discarded Can", "Disciple", "Disciples", "Divine", "Divine Drive", "Doll", "Dorado", "Downtown", "Dr", "Dragon",
+    "Dragon Crash", "Dragon Link", "Dragon Slayer", "Dragon Tornado", "DragonDrake", "Dragones de Fuego", "Dream",
+    "Drill", "Drill Smasher", "Drip", "Duna gravitacional", "Dune", "Earth", "Earth Eleven", "Earthlings", "East",
+    "Eastern", "Eastwind", "Eastwind International", "Easy Breezy", "Eater", "Eater-empowered", "Eaters", "Eclipse",
+    "Eclipse de Orión", "Egg", "Ejército del Fénix Árabe", "El", "El demonio del campo", "El Dorado", "El muro",
+    "El príncipe del campo de nieve", "Eleven", "Emberroot", "Emperador de la táctica", "Emperadores Oscuros",
+    "Emperor", "Emperor of Tactics", "Emperor Penguin", "Emperor Penguin No", "Emperor Penguin X", "Emperors",
+    "Empire", "Empollones", "Empujón del quince", "Enforced", "Enseñanzas del maestro", "Entrada relampagueante",
+    "Episode", "Epsilon", "Equipo A", "Equipo Zero", "Escudo lunar", "Espadón", "Espejismo", "Espíritu Miximax",
+    "Estadio Balsa", "Estadio Desierto", "Estadio Fútbol Frontier", "Estadio Pinball", "Eternal", "Eternal Blizzard",
+    "Eternal Dancers", "Eternal Light", "Everytown", "Excalibur", "Exclusive", "Executive", "Executor", "Extramundo",
+    "F-R-I-E-N-D-S", "Falam", "Falam Medius", "Fanatic", "Fanclub", "Fang", "Farm", "father", "Fauxshore", "FC",
+    "Fei", "Ferris", "Fertilia", "Fertilians", "FF", "FFC", "FFI", "FFS", "Fiend", "Fiend Hand", "Fifth", "Finn",
+    "Fire Dragon", "Fire Lemonade", "Fire Rooster", "Fire Striker", "Fire Tornado", "Fire Tornado DD", "Fireball",
+    "Fireball Storm", "Firebirds", "Fist", "Fist of Justice", "FLA", "Flash", "Flash Dash", "FLC",
+    "FLC SHINANO Formation", "Fleet", "Flota Ixar", "Football Frontier Stadium", "Football Monster", "Footballand",
+    "Force Flash", "Foundation", "Fourteen", "Fox Totem", "France", "French", "Friendship", "Frontier", "Frost",
+    "FST", "FST GARCILDO Team", "Fukuoka", "FUL", "FUL UM-BZ", "FUL UMIBOZU Statue", "FUL UMIBOZUMAN burger",
+    "Full-Team", "FYI", "Fénix", "Gahl", "Gale", "Gardens", "Garras del Sur", "Gate", "Gaviotas FC", "Gemini",
+    "Gemini Storm", "Generator", "Genesis", "Genius Play-Maker", "Ghost Lock", "Gigantes", "Go-bruh", "Goal", "God",
+    "God Catch", "God Hand", "God Hand of Friendship", "God Knows", "Goddess", "Goleadores del Callejón", "Golem",
+    "GOOO", "Gorgeous", "Gorgon", "Gorilla", "Gorillo", "Gota de la quietud", "Goverm", "Grabber", "Grabber Arm",
+    "Grace", "Gracia glacial", "Grammar", "Gramps", "Grandma", "Grandpa", "Granizado de fuego", "Gravity",
+    "Gravity Dune", "Grid", "Grid Guard", "Griffin", "Grifo", "Grifo señor de las bestias", "Guardianes",
+    "Guardianes de la Reina", "Guardians", "Guardians of the Queen", "Gym", "Génesis", "Hammer", "Hammer of Fury",
+    "Harborfront", "Hawaiian", "Heaven", "Heaven s Time", "Heavenly", "Heavenly Drive",
+    "Heavenly Horse Arch Pegasus", "Heavenly Thunder", "Hecaton", "High", "High-Soldiers", "Highness", "Hillview",
+    "Hokkaido", "Holy", "Hora celestial", "Hot", "Howl", "HQ", "Hub", "Hun", "Hungry", "Hurricane", "Hyper-Evolved",
+    "Hyperdrive", "Icy", "Icy Grace", "II", "Imagawa", "Imagawa s Ire", "Imperials", "Inacord", "InaTuber",
+    "Inazuma", "Inazuma Break", "Inazuma Caravan", "Inazuma Drop", "Inazuma Japón", "Inazuma Japón Legendario",
+    "Inazuma Kids FC", "Inazuma Legend National", "Inazuma National", "Inazuma-", "Indomitable", "Infinite",
+    "Infinite Wall", "Insight", "Institute", "Instituto Raimon", "Instituto Ribera", "Instituto Visión Noble",
+    "International", "Into Thin Air", "Invaders", "Invincible Lance", "Involving", "Ira de Imagawa", "Ire",
+    "Isla Remota", "Italian", "Italy", "Ixar", "Ixar Fleet", "Jack", "Japan", "Japanese", "Japanese Resistance",
+    "Jennifer", "JR", "June", "Junior", "Justice", "KABLAM", "Kansas", "Kanto", "Karuta", "Karuta Club", "Kay",
+    "Keshin", "Keyman", "Keyman Lockdown", "Kickers", "Kingdom", "Kinki", "Kirkwood", "Knights", "Knights of Queen",
+    "Knights of the Round Table", "Kobruh", "Korea", "Korean", "Kumamoto", "Kyushu", "La epopeya de Sigdor",
+    "La Marca del Berserker", "Laboratory", "LAF", "Lance", "Lanza invencible", "Lanzas laterales", "Last Resort",
+    "Lawcrest", "LBXs", "Lemonade", "Leones del Desierto", "Lessons", "LFC", "Liang", "Light-Speed Knight Sir Rabby",
+    "Lighthouse", "Lions", "Little Gigantes", "Lockdown", "Lodging", "Lord", "Los Emperadores", "Los Rojos", "Love",
+    "Lower", "LST", "Lunar", "Lunar Eclipse", "Lunar Howl", "Lunar Prime", "Lunar Sea", "Luz Eterna", "Macho",
+    "Madame", "Maelstrom", "Maelstrom Omega", "Magician", "Magmavia", "Magmavís", "Mago del campo", "Majin",
+    "Majin the Hand", "Majin the Wave", "Maldición", "Mama", "Management", "Mano celestial",
+    "Mano celestial de la amistad", "Mano de diamante", "Mano diabólica", "Mano mágica", "Manor", "Manos infinitas",
+    "Mansion", "Mar de Luna", "Marcaje al hombre", "Mark of the Berserker", "Mart", "Mary", "Mary Times",
+    "Master Magician Trickster", "Matador", "Matrices", "Medius", "Mega", "Mega Majin", "Megadragón",
+    "Megamanos mágicas", "Mekkemon", "Meowjesty", "Meteoric", "Meteoric Fire Tornado", "Mi mejor creación",
+    "Military", "Mindvisor", "Mine Games", "Mini-Battle", "Minister", "Mirage", "Mix", "Mk", "MNT", "MNT NAGUMOHARA",
+    "MNT NAGUMOHARA Shopkeepers", "MNT SHIROSHIKA", "MNT TEAMK", "Mode", "Molasmoss", "mom", "Monster",
+    "Monte Olimpo", "mother", "Mount", "Mount Olympus", "Mr", "Mugen", "Mugen the Hand", "Multipurpose",
+    "Muralla de Atlantis", "Muralla infinita", "Muro colectivo", "MVP", "Mystic", "Mírame", "N-Gen", "Nagasaki",
+    "Naiadi", "National", "Navy Invader", "Neo", "Neo Japón", "Neo National", "New Inazuma National",
+    "Noble Insight Institute", "Nomor", "Northbright", "Northbright-", "Northern", "Northern Fang", "Nosfanatica",
+    "Nosfanáticos", "Nuevo Inazuma Japón", "Obscure", "Odaiba", "Offset", "Ogre", "Okinawa", "Ola mágica",
+    "Old Gym Storage", "Olympus", "Omega", "Omega Maelstrom", "One-Touch", "Oolery", "OOONNN", "Operation", "Orb",
+    "Orbius", "Orchid", "Orchid Academy", "Orion", "Orion Eclipse", "Os Reis", "Oscuridad Ancestral",
+    "Oso polar n º", "Otaku", "Parada celestial", "Paradigm Shift", "Park", "Pegasus", "Penguin", "Penguin No",
+    "Penguin Reckoning", "Pequeños Gigantes", "Perfect Cascade", "Perfect Zone Press", "Phantom", "Phoenix",
+    "Picksie", "Picksies", "Piedra Alius", "Pinball", "Pinball Adventure Arena", "Pingüino emperador",
+    "Pingüino emperador n º", "Pingüino emperador X", "Pingüinos de luz y sombra", "Pirates Cove", "Pitch Magician",
+    "Pitchmaster", "Planet", "Plasma", "Plathos", "Platinum", "Platos", "Play-Maker", "Plaza", "Plenilunio", "Pluke",
+    "Polar Bear No", "Polaris", "Pole", "Polestar", "Polvo de Diamantes", "pops", "Port", "PR", "Preliminary",
+    "President", "Presión perfecta", "Prime", "Prince", "Principal", "Prittia", "PROCEED", "Prodigy",
+    "Prodigy Grammar", "Prominence", "Protocol", "Protocol Omega", "Protocolo Omega", "Proverb", "PsyBlue",
+    "PsyRanger", "Psyranger", "PsyRed", "Pt-oo", "Puño de furia", "Pájaro de fuego", "Qatar", "Queen",
+    "Queen s Knights", "Quiz", "Quiz Society", "Rabby", "Raffle", "Raft", "Raging", "Raging Bulls", "Railroad",
+    "Raimon", "Raimon Junior High", "Raimon Kings", "Raimon-style", "Raimonites", "Rampart", "Rank", "Rankers",
+    "Ray", "Rayo de diamantes", "Rayo de diamantes curvo", "Realm", "Reckoning", "Red Matador", "Regionals", "Reina",
+    "Remate celestial", "Remate dragón", "Resistencia Japón", "Resonance", "Resort", "RH", "Ribera del río",
+    "Riccardo", "Ridges", "River", "River Raft Arena", "Road", "Robin", "Robin caballero ultraveloz", "Rooster",
+    "Route", "Routes", "Royal", "Royal Academy", "Royal Runaround", "Runaround", "Ruptura relámpago", "Rural",
+    "Russia", "Russian", "Sabiduría divina", "Sacred Lance Clearbunny", "Saga", "Saints", "Saltherb", "Sanctum",
+    "Sands", "Satellite", "Saudi", "school", "Scotty", "Scramble", "Scrambles", "Seagull", "Seagull FC", "Seaside",
+    "Seaside Park", "Sector", "Shadow", "Shadow Swarm", "SHI-SHI-O", "Shibuya", "Shifting Sands Arena", "Shikoku",
+    "Shinobi", "Shinsengumi", "Shipyard", "Shopkeepers", "Shopping", "Shuffle", "Sideline Spears", "Sigdor",
+    "Sigdorian", "Sigh", "Siglia", "Silica", "Silica Eleven", "Simiape", "Simulation", "Sir Rabby", "Sis", "sister",
+    "Sky Team", "Skycraft", "Skyport", "Slayer", "Smasher", "Snapshots", "Sniff", "Snow", "Snow Prince", "SNS",
+    "Society", "Soiya", "Solaria-Zeus", "Soldier", "Sorpresa", "South", "Southern", "Southern Claw",
+    "Soy todopoderoso", "Space Laboratory", "Space Rankers", "Spain", "Spanish", "Spears", "Specialty",
+    "Spirit Miximax", "Spooky", "Spring", "Spring Thunderclap", "Squawk", "Stairway", "Star-Spangled",
+    "Star-Spangled Unicorns", "Stargazing", "States", "Station", "Stillness", "Stillness Drip", "Storm",
+    "Storm Wolves", "Stormridge", "Stream", "Street", "Sun Deity Apollo", "Super God Hand", "Superfan",
+    "Superiority", "Supermano celestial", "Supernatural Wingman Thunderbird", "Supernova", "Superpuño invencible",
+    "Supremacía de la espada", "Swarm", "Swirly", "Swirly Shot", "Sword Superiority", "Sílice", "T-Rex", "Table",
+    "Tactics Stream", "Tale", "Tank", "Target", "Tattered", "Teachings", "Teachings of the Master",
+    "Team FST GARCILDO", "Team Zero", "Templars", "Temporal", "Tentakraken", "Terrace", "The Empire", "The General",
+    "The Phoenix", "Thin", "Three-Pronged", "Three-Pronged Attack", "Thunder", "Thunderbird", "Thunderbolt",
+    "Thunderclap", "Tickets", "Time Trance", "Tiro espectral", "Tiro tramposo", "Tis", "Titan", "TM", "Tohoku",
+    "Tokyo", "Tom", "Tome", "Tomf", "Tormenta de fuego", "Tormenta de Géminis", "Tornado", "Tornado de fuego",
+    "Tornado de fuego DD", "Tornado de fuego meteoro", "Tornado de fuego meteoro V", "Tornado dragón", "Tornados",
+    "Tours", "Track Cycling", "Trampolín", "Trampolín relámpago", "Trance", "Trance temporal", "Tri-Pegasus",
+    "Triangle", "Triangle Z", "Trickster", "Trickster ilusionista", "Tripegaso", "Tristar", "Triángulo",
+    "Triángulo letal", "Triángulo Z", "Tropa Acrobática del Fútbol", "Trueno celestial", "Trueno de primavera",
+    "Trueno ilimitado", "Tryin", "Tumblers", "TV", "Twin", "Twin Wings", "Twinford", "Twister", "Twister Tornado",
+    "Tzu", "U-", "Udon", "UFO", "Uncle", "Unicorn", "Unicornios con Estrellas", "Unicorns", "Uninstall", "Unity",
+    "Universal", "Unlock", "USA", "Uzbekistan", "Ventisca eterna", "Vic", "Vice", "Victoreeeeyo", "Victoreeyo",
+    "Victoria", "VIP", "Virtuoso", "Virtuoso del éter", "VOID", "Vort-X", "Wall for One", "Wall of Atlantis",
+    "Wall Titan Warborg", "Walls", "Warborg", "Warborg muralla titánica", "Weekly", "West", "West Manor", "WHAAAAT",
+    "Wild", "Will-o", "Will-o the-Wisp Shot", "Wind God s Dance", "Wingman", "Wings", "Wolves", "Wonderland",
+    "Writers", "Xuan-Wu", "Xuanwu", "Yogurt", "Youth", "Zan", "Zanark", "Zephyr", "Zeus", "Zhuge", "Zona crítica",
+    "Zone", "Zoned Out", "Ángel Oscuro", "Épsilon", "Épsilon Plus", "Último recurso"]
+# END generated

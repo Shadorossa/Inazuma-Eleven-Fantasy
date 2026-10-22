@@ -1,0 +1,73 @@
+schema = "VRFW.effect/1"
+# Hissatsu Level Up › Superpuño invencible at G5 (owner 2026-10-20): the original cut-in with its own colours, plus the kind
+# of effects Parada celestial TURBO adds to Parada celestial (diff of ev63_00555 against ev63_00550: TURBO plays its
+# own effect object ev63005550 instead of ev63005500, which adds sparks around the player, back auras and a light
+# column, and attaches the body aura body_aura_godcatchFT to the player from frame 5 to 333), in the yellow-green light
+# of the anime's G5. Only the two G5 copies (ev63_80440 / ev63_80441, content/anims/fist_of_justice_g5.toml) get them.
+#
+# 1. A lime glow on the player: the retail body aura body_aura_ev070340000100_1 (an effect_status_define colour
+#    animation: rim light (1.5, 3, 1) at power 3, the outline and the eyes glow; TURBO uses body_aura_godcatchFT, the
+#    same kind in yellow) from frame 5 to 440.
+# 2. TURBO's added pieces in lime: a copy ev63005541 of TURBO's object (hue 78 on every texture but the particle
+#    position data, and on the materials) where only the sparks around the player (chr1_spark), the back auras
+#    (back_aura), the light column (light_Z) and the hazy streak background (back_line_new) are drawn: every other mesh (Parada's giant, its hands, its ball
+#    aura, smoke, rings, blurs, waves) has alpha 0. It plays as an extra actor of each G5 cut on the cut's effect point,
+#    with the TURBO clip of the same place in the move.
+
+[[recolor]]
+object = "ev63005550"
+copy = "ev63005541"
+hue = 78
+mode = "set"
+saturation = 1.0
+value = 1.1
+textures = ["BallAura_01", "BallAura_02", "BallAura_03", "BallAura_04", "BallAura_05", "ev63005550_ef_01",
+  "ev63005550_ef_02", "ev63005550_ef_03", "ev63005550_ef_04", "ev63005550_ef_08", "ev63005550_ef_09", "ev63005550_ef_11",
+  "ev63005550_ef_13", "ev63005550_ef_14", "ev63005550_ef_15", "ev63005550_ef_16", "ev63005550_ef_26", "ev63005550_ef_33",
+  "ev63005550_ef_36", "ev63005550_ef_37", "ev63005550_ef_38", "ev63005550_ef_40", "ev63005550_ef_42", "ev63005550_ef_43",
+  "ev63005550_ef_44", "ev63005550_ef_47", "ev63005550_ef_48", "ev63005550_ef_49", "ev63005550_ef_50", "ev63005550_ef_51",
+  "ev63005550_ef_60", "ev63005550_ef_61", "ev63005550_ef_70", "ev63005550_ef_71", "ev63005550_ef_72", "ev63005550_ef_73",
+  "ev63005550_ef_82", "ev63005550_ef_91", "ev63005550_ef_92", "ev63005550_ef_93", "ev63005550_ef_94", "ev63005550_ef_95",
+  "ev63005550_ef_96", "ev63005550_ef_99", "KeeperHit_00", "KeeperHit_01", "KeeperHit_02", "KeeperHit_03", "KeeperHit_04",
+  "KeeperHit_05", "KeeperHit_Fake_parColor"]
+materials = "all"
+[[recolor.tint]]
+mesh = ["_100_back", "smoke", "_250_majin", "ksn_spark", "_300_eyes", "_300_spark_c0602",
+  "hit_light", "hit_wave", "aura_Line", "ball_spark", "_610_aura5", "aura_c0100", "hand_spark", "_611_aura4",
+  "catch_ring", "BallAura", "ring_yellow", "ring_black", "KeeperHit", "majin_body", "blur", "rainbow"]
+alpha = 0.0
+op = "set"
+
+# the lime glow on the player (both G5 events)
+[[event_effect]]
+event = "ev63_80440"
+aura = "body_aura_ev070340000100_1"
+actor = "c00<TYPE><NO>_s00_p<VARIATION>"
+frame = 5
+until = 440
+
+[[event_effect]]
+event = "ev63_80441"
+aura = "body_aura_ev070340000100_1"
+actor = "c00<TYPE><NO>_s00_p<VARIATION>"
+frame = 5
+until = 440
+
+# TURBO's sparks, back auras and light column in lime, cut by cut (Superpuño cut -> the TURBO clip of the same place)
+# (the copies' cuts are renamed c0010, c0020… by position: c0010-c0060 = the base's c0100, c0200, c0300, c0400,
+# c0501 / c0502, c0601)
+[[event_effect]]
+event = "ev63_80440"
+object = "ev63005541"
+actor = "ev63005541"
+cuts = ["c0010", "c0020", "c0030", "c0040", "c0050", "c0060"]
+clips = { c0010 = "c0100", c0020 = "c0200", c0030 = "c0300", c0040 = "c0400", c0050 = "c0500", c0060 = "c0601" }
+attach = { point = "point_eff", locator = "evp_eff01" }
+
+[[event_effect]]
+event = "ev63_80441"
+object = "ev63005541"
+actor = "ev63005541"
+cuts = ["c0010", "c0020", "c0030", "c0040", "c0050"]
+clips = { c0010 = "c0100", c0020 = "c0200", c0030 = "c0300", c0040 = "c0400", c0050 = "c0500" }
+attach = { point = "point_eff", locator = "evp_eff01" }

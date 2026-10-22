@@ -165,7 +165,7 @@ layer = [
     { layer = "soccer11_08_equip_list_item", object = "evt_ss_equip_row", count = 7 },  # 2026-10-13: the retail row + the move plate attach
     { layer = "mainmenu01_08_chara_3d_shadow" },
     { layer = "cmn03_07_cmn_button_equip", object = "evt_cmn03_07_btn_sets" },  # the player-sets button: square skin, save icon (graft ss2_menus PL.SAVE_BUTTON)
-    { layer = "evt_cmn03_07_btn_ss", object = "evt_cmn03_07_btn_ss", align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "evt_cmn03_07_btn_ss", object = "evt_cmn03_07_btn_ss", align = [1, 8], scale = 0.20000000298023224 },  # the custom passive button: square skin, six-sense icon (graft ss2_menus), _pos_btn_atc03 x 160
     { layer = "evt_cmn03_07_btn_icon", object = "evt_cmn03_07_btn_icon", align = [1, 8], scale = 0.20000000298023224 },
     { layer = "cmn02_01_blackbg", from = "bb_stadium_campaign_end_window", count = 4, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "evt_passive_panel", object = "evt_passive_panel", align = [1, 8], scale = 0.20000000298023224 },
@@ -381,17 +381,17 @@ shift_base = [
     ["CMD_FCS_BACK", 0, 0xE9EE6361, 0],  # the first row, Up: the role medal slot above the player card
     ["CMD_FCS_NEXT", -1, 0x1E057607, 0],  # cmn03_07_cmn_button_equip
     ["CMD_FCS_BACK", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
-    ["CMD_FCS_NEXT", -1, 0x18B9DC60, 0],  # evt_cmn03_07_btn_train
-    ["CMD_FCS_BACK", 0, 0x18B9DC60, 0],  # evt_cmn03_07_btn_train
-    ["CMD_FCS_NEXT", -1, 0x8C7C3A06, 0],  # evt_cmn03_07_btn_role (2026-10-12: the «Pasivas de la rama» button is gone)
+    ["CMD_FCS_NEXT", -1, 0x241778A4, 0],  # the save button, Right: evt_cmn03_07_btn_ss (custom passive)
+    ["CMD_FCS_BACK", 0, 0x1E057607, 0],  # custom passive button, Left: the save button
+    ["CMD_FCS_NEXT", -1, 0x18B9DC60, 0],  # custom passive button, Right: evt_cmn03_07_btn_train
     ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
     ["CMD_FCS_BACK", 0, 0x241778A4, 0],
     ["CMD_FCS_NEXT", -1, 0x8C7C3A06, 0],
     ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
     ["CMD_FCS_BACK", 0, 0x241778A4, 0],  # evt_cmn03_07_btn_ss (was the removed «Pasivas de la rama» button)
     ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
-    ["CMD_FCS_BACK", 0, 0x1E057607, 0],  # cmn03_07_cmn_button_equip
-    ["CMD_FCS_NEXT", -1, 0x18B9DC60, 0],  # Entrenar is the last button (custom passive and role buttons removed)
+    ["CMD_FCS_BACK", 0, 0x241778A4, 0],  # Entrenar, Left: the custom passive button
+    ["CMD_FCS_NEXT", -1, 0x18B9DC60, 0],  # Entrenar is the last button (the role button stays removed)
     ["CMD_FCS_MTX_UP", 0, 0xFD6BC152, -1],  # soccer11_08_equip_list_item
     ["CMD_FCS_NEXT", -1, 0xFD6BC152, 0],  # role medal slot, Down: the first row
     ["CMD_FCS_BACK", 0, 0x1E057607, -1],  # role medal slot, Up: the bottom buttons

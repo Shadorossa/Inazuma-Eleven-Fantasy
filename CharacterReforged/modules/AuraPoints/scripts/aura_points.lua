@@ -665,7 +665,7 @@ local function step_player(p, actor, a)
   local tracked = p.tr.keshin or p.tr.armour or p.tr.soul
   local unit = nil
   if running or tracked or now - (p.unit_ms or -UNIT_REREAD_MS) >= UNIT_REREAD_MS then
-    local ok, u = pcall(VRFW.call, "ApActorUnit", actor)
+    local ok, u = pcall(VRFW.call, "Match.ActorUnit", actor)
     if ok and type(u) == "number" and u >= 0x10000 then
       unit = VRFW.mem.read_struct("ApUnit", u)
       p.unit_ms = now
@@ -694,7 +694,7 @@ VRFW.on("tick", function(ev)
   frame_update()
   if not seen.in_match or seen.ended then return nil end
   cost_teams()
-  local base = global("ap_actors")
+  local base = global("Match.SoccerActors.ViaSkillUsed")
   if not base then return nil end
   for i = 0, ACTOR_MAX - 1 do
     local actor = base + i * ACTOR_STRIDE
@@ -748,7 +748,7 @@ VRFW.on("hook:Ap_TensionPay", function(ev)
   local cost = rd("i32", req) or 0
   local p = players[hdl]
   if hdl == 0 or not p or not applies(p.team) or exempt(hdl) then return nil end
-  local base = global("ap_actors")
+  local base = global("Match.SoccerActors.ViaSkillUsed")
   local actor = base and base + band(hdl, 0xFF) * ACTOR_STRIDE
   local a = actor and VRFW.mem.read_struct("ApActor", actor)
   if not a or a.hdl ~= hdl then return nil end

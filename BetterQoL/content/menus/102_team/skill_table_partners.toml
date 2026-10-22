@@ -1,0 +1,78 @@
+# Utilities › the combo partner picker on Character Reforged's «Fantasy» skill table (evt_skill_slot_menu; research/
+# grafts/util_combo_partners, docs/game/mechanics/combo-partners.md §6.3, docs/framework/skill-table-host.md). Only
+# with Character Reforged (the screen is its [[screen]]):
+#
+# 1. X on a move row whose move needs partners: an X ACTION of the screen's host (Character Reforged's graft
+#    skill_table_host). The function is Utilities' hook file of the screen (util_cp_skill_table.lua); the guide entry is
+#    «Compañeros» (utilities.cp_btn). It answers «not available» while Inazuma Fantasy's own picker is in the screen
+#    (its X stays alone). The [[host]] is Character Reforged's; the entry is left out while it is off (`if_mod`).
+# 2. The picker's list: the passive configurator's objects (util_pc_list = the frame, util_pc_row x 6 = the rows; the
+#    frame's row attaches name the layer util_pc_row), in the screen's own list group next to its list popups
+#    (evt_ss_list / evt_ss_listbg), hidden until X opens them (draw priorities 450 / 451 set by the Lua, as the
+#    screen's own lists). No backdrop layer: the screen's list cover (PL.ListCover) draws it and hides the buttons.
+# 3. The performers on the move card (as Inazuma Fantasy's skill table showed them): layer util_cp_face (4 instances,
+#    not opened with the screen) = the list row object (team08_02_ability_list_item) on a layout copy that keeps only a
+#    96 px miniface centred 40 px above the origin inside a 108 px dark frame (the plate row's teambuff_base01). The
+#    hook file opens, fills, scales (60 px) and places one instance per performer right of «IA activada» and the
+#    «Nv.» badge of a move that needs partners: the player, the move's fixed partners, the chosen ones («?» = random).
+schema = "VRFW.menu/2"
+
+[[layout]]
+file = "common/menu/102_team/team08/util_cp_face/util_cp_face.g4pkm"
+from = "common/menu/102_team/team08/team08_02/team08_02.g4pkm"
+
+[[layout]]
+file = "common/menu/102_team/team08/util_cp_face/util_cp_face.g4pkm"
+joint = "_icon_cmd_type_base01"
+translate = [-54.0, 94.0, 0.0]
+scale = [108.0, 108.0, 1.0]
+
+[[layout]]
+file = "common/menu/102_team/team08/util_cp_face/util_cp_face.g4pkm"
+joint = "_icon_sp_area_dmy01"
+translate = [-48.0, 88.0, 0.0]
+scale = [96.0, 96.0, 1.0]
+
+[[object]]
+name = "util_cp_face"
+from = "team08_02_ability_list_item"
+priority = 690
+free = true
+remove_block = [
+    "CMenuAttachLocator",
+    "MenuCollisionSetting",
+]
+set = [
+    { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team08/team08_02/team08_02.g4pkm" }, values = { 1 = "common/menu/102_team/team08/util_cp_face/util_cp_face.g4pkm" } },
+]
+if_mod = "character_reforged"
+
+[[entry]]
+host = "character_reforged.skill_table.x_action"
+id = "partners"
+text = "utilities.cp_btn"
+order = 100
+action = { lua = "BetterQoL.SkillTablePartners" }
+if_mod = "character_reforged"
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+add_layer = { name = "util_pc_list", object = "util_pc_list", count = 1, align = ["left", "middle"], scale = 0.20000000298023224, after = "evt_ss_listbg", groups = [{ group = "evt_skill_slot_menu", flags = [0, 1, 1, 0, 1, 0], after = "evt_ss_listbg" }] }
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+add_layer = { name = "util_pc_row", object = "util_pc_row", count = 6, align = ["left", "middle"], scale = 0.20000000298023224, after = "util_pc_list", groups = [{ group = "evt_skill_slot_menu", flags = [0, 1, 1, 0, 1, 0], after = "util_pc_list" }] }
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+add_layer = { name = "util_cp_face", object = "util_cp_face", count = 4, after = "soccer11_04_chara_status", groups = [{ group = "common", flags = [0, 0, 0, 0, 1, 0], after = "soccer11_04_chara_status" }] }
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+res = [
+    "#/menu/20_cmn/cmn02/cmn02_01/cmn02_01.g4tx",
+    "#/menu/102_team/team08/team08_01/team08_01.g4tx",
+    "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx",
+    "#/menu/200_icon/15_icon_common/icon_common.g4tx",
+    "#/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx",
+]

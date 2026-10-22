@@ -205,7 +205,9 @@ BBT.G = {
   -- the Victory Road background (vroad04_01_p1: one translucent navy panel, 2004 x 724 at y 178 below its origin)
   -- stretched to hold the whole bracket: BG_TOP .. BG_BOTTOM
   BG_Y = 178, BG_H = 724, BG_TOP = 100, BG_BOTTOM = 1036,
-  PRIO_STADIUM = 560,                    -- 1.8.0: the Victory Road stadium behind the bracket (BBT_Open)
+  -- layer draw priorities (a higher priority draws in front): the stadium (BBT_Open) and its dim under the retail
+  -- band (195) and bracket art (196-203); the focus band and the star glows under the connectors (549) and plates (551)
+  PRIO_STADIUM = 190, PRIO_DIM = 192, PRIO_BACK = 546,
   -- results (8 matches: two columns of 4, the two plates of a match one above the other); the group tables: their own
   -- menu (BBT_GroupsShow)
   RES_X = 190, RES_TOP = 196, RES_MATCH = 196, RES_ROW = 80, RES_VAL = 56,
@@ -408,11 +410,13 @@ function BBT_Quad(layer, spr, x, y, w, h, col, prio, atlas)
   if i >= BBT.N[nk] then
     return
   end
-  if layer == BBT.L.line then
-    local want = prio or BBT.PRIO.line
+  -- the connector and box pools carry quads at several depths: each instance's priority set when it changes
+  if layer == BBT.L.line or layer == BBT.L.box then
+    local want = prio or BBT.PRIO[nk] or BBT.PRIO.line
+    local key = tostring(layer) .. ":" .. i
     BBT_S.prio = BBT_S.prio or {}
-    if BBT_S.prio[i] ~= want then
-      BBT_S.prio[i] = want
+    if BBT_S.prio[key] ~= want then
+      BBT_S.prio[key] = want
       funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], layer, i, want, true)
     end
   end
@@ -538,7 +542,7 @@ end
 function BBT_Focus(x, y, s)
   local G = BBT.G
   BBT_Quad(BBT.L.box, BBT.SPR_FOCUS, x + G.PLATE_W * s / 2, y, G.PLATE_W * s * G.FOCUS_W, G.PLATE_H * s * G.FOCUS_H,
-    BBT.WHITE)
+    BBT.WHITE, G.PRIO_BACK)
 end
 
 -- an instance's model + name alpha (CMND_SET_LAYER_MODEL_ALPHA / CMND_SET_MENU_TEXT_ALPHA, as the retail
@@ -696,7 +700,7 @@ BBT.ADV = {
   OUT_ALPHA = 0.45,       -- 1.5.37: the plate of a team that is out (model + text alpha, the retail locked-dock way)
   -- 1.9.0: the crest standing on a joint (BBT_BigCrest): BIG_OF of the stub, the round's joint spacing less BIG_GAP,
   -- BIG_MIN .. BIG_MAX px, its bottom BIG_LIFT px above the line; drawn in front of the connectors and the digits
-  BIG_OF = 0.5, BIG_GAP = 8, BIG_MIN = 24, BIG_MAX = 72, BIG_LIFT = 1, CREST_PRIO = 547,
+  BIG_OF = 0.5, BIG_GAP = 8, BIG_MIN = 24, BIG_MAX = 72, BIG_LIFT = 1, CREST_PRIO = 550,
 }
 
 function BBT_DrawTree(v)
@@ -837,7 +841,7 @@ function BBT_DrawTree(v)
   local star = math.max(G.STAR_MIN, math.min(G.STAR_MAX, pitch * G.STAR))
   for _, c in ipairs(crests) do
     if c.stays then
-      c.star = BBT_Quad(BBT.L.box, BBT.SPR_STAR, c.joint[1], c.joint[2], star, star, BBT.WHITE)
+      c.star = BBT_Quad(BBT.L.box, BBT.SPR_STAR, c.joint[1], c.joint[2], star, star, BBT.WHITE, G.PRIO_BACK)
       c.i = BBT_Crest(c, c.rest[1], c.rest[2], c.s)
     end
   end
@@ -1808,7 +1812,7 @@ function BBT_Draw(page, animate)
   BBT_Begin()
   -- 1.8.0: the Victory Road stadium dimmed under the page (the box pool's first quad, behind everything it draws)
   if BBT_S.stadium_bg and v.kind ~= "groups" then
-    BBT_Quad(BBT.L.box, BBT.SPR_DIM, BBT.G.CX, 540, BBT.G.W, 1080, BBT.WHITE)
+    BBT_Quad(BBT.L.box, BBT.SPR_DIM, BBT.G.CX, 540, BBT.G.W, 1080, BBT.WHITE, BBT.G.PRIO_DIM)
   end
   -- 2026-10-19: a 16-team knockout on the retail bracket art (BBT_DrawRetail), every other tree on the generic lines
   local retail = v.kind == "tree" and BBT_S.retail_open == true and tonumber(v.rounds) == BBT.RETAIL.ROUNDS
@@ -1902,8 +1906,8 @@ function BBT_Open(page)
   local sy = (G.BG_BOTTOM - G.BG_TOP) / G.BG_H
   funcLuaMenuCommand(BBT.C.SCALE, BBT.L.bg, 1, sy, 1, 0)
   funcLuaMenuCommand(BBT.C.POS, BBT.L.bg, 0, -(G.BG_TOP - G.BG_Y * sy), 0, 0)
-  -- 1.8.0: the Victory Road stadium (its layout in screen px: at the origin) behind the bracket's pools (549-552; a
-  -- lower draw priority draws in front; its own 200 would cover them): 560; the band (195) stays in front, as in retail
+  -- the Victory Road stadium (its layout in screen px: at the origin) at the back (G.PRIO_STADIUM: a higher draw
+  -- priority draws in front); the band (195), the retail art and the bracket's pools (546-554) in front of it
   BBT_S.strip = {}
   BBT_S.crest_prio = {}
   BBT_S.stadium_bg = false

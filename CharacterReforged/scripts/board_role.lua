@@ -66,7 +66,7 @@ local function inv_record(inv)
   if inv == 0 then return nil end
   local items = VRFW.game.character_reforged_items()
   if not items then return nil end
-  local ok, p = pcall(VRFW.call, "CharacterReforged.InvRecord", items, inv)
+  local ok, p = pcall(VRFW.call, "Board.InvRecord", items, inv)
   if not ok or not p or p < 0x10000 then return nil end
   return p
 end

@@ -63,14 +63,14 @@ RivalStats = "normal"            # every rival with an ordinary team's stats (th
   Rows = 3
 
   # the first win of each match at rank A gives the rival's crest (from the rival team at boot), at rank S one True
-  # Hissatsu «Libro de mejora de supertécnica» (only with True Hissatsu active); once each (VRFW chain-board.md §2d)
+  # Hissatsu «Libro de mejora de supertécnica» (only with Hissatsu Level Up active); once each (VRFW chain-board.md §2d)
   [[VRFW.Chain.RankReward]]
   Rank = "A"
   Rival = "emblem"
   [[VRFW.Chain.RankReward]]
   Rank = "S"
-  Item = "abl_ub000001"                  # true_hissatsu.technique_upgrade_book (key_id: crc32 of its key)
-  IfMod = "true_hissatsu"
+  Item = "abl_ub000001"                  # HissatsuLevelUp.technique_upgrade_book (key_id: crc32 of its key)
+  IfMod = "HissatsuLevelUp"
   Text = "chronicle_deluxe_chain_prize_upgrade_book"
 
   # the start («Inicio»): three branches leave it, as on the DS

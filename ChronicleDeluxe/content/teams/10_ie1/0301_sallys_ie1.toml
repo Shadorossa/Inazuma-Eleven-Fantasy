@@ -1,13 +1,11 @@
 schema = "VRFW.team/2"
-# Chronicle Deluxe (chronicle_deluxe, 2026-10-14): the same team as Chronicles Deluxe's (the older mod chronicles_deluxe,
-# set aside; same key, so the same team id and save entries). While chronicles_deluxe is active this file is left out
-# (it declares the identical team): the two mods never declare it twice.
-if_not_mod = "chronicles_deluxe"
-# Street Sally's as an IE1 team (Nacho 2026-10-09): the rival of the Chronicle side node «Sally's» (Chronicle Deluxe,
+# Chronicle Deluxe (chronicle_deluxe, 2026-10-14): the same team as Chronicles Deluxe's (the older mod
+# chronicles_deluxe, set aside; same key, so the same team id and save entries). Street Sally's as an IE1 team (Nacho
+# 2026-10-09): the rival of the Chronicle side node «Sally's» (Chronicle Deluxe,
 # content/teams/70_route_nodes/side_nodes.toml `ie1_sallys`, docs/game/modes/chronicle-side-branches.md §9.13), like
 # Umbrella (0300_umbrella_ie1.toml). Roster = the retail legend team tm_cro_legend_ie1_06 (its formation, kit and crest
-# through based_on), the line-up of the Estadio BB clone bb_204 (Chronicles Deluxe's 0203_sallys.toml); every player plays his card's own
-# moveset (loadout 0), no aura / Hiper. Its level comes from its game (the node's rows).
+# through based_on), the line-up of the Estadio BB clone bb_204 (Chronicles Deluxe's 0203_sallys.toml); every player
+# plays his card's own moveset (loadout 0), no aura / Hiper. Its level comes from its game (the node's rows).
 default_lang = "en"
 
 [[team]]

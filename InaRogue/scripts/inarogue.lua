@@ -179,8 +179,8 @@ VRFW.on("game_reset", function() Core.forget_all() end)
 
 -- ---------------------------------------------------------------------------------------- exports (mod.toml [exports])
 -- Inazuma Fantasy (which requires InaRogue) reads these from its scripts: INAROGUE's save slot (its rules stay off
--- there) and the Rogue points item. (The «no move rank-up by use in INAROGUE» rule is data for the mod True Hissatsu:
--- content\true_hissatsu\inarogue.toml, on the state key inarogue.active.)
+-- there) and the Rogue points item. (The «no move rank-up by use in INAROGUE» rule is data for the mod Hissatsu Level Up:
+-- content\hissatsu_level_up\inarogue.toml, on the state key inarogue.active.)
 local U = require "lib/rogue/util"
 function InaRogue.SaveSlot() return U.ROGUE_SLOT end
 function InaRogue.PointsItem() return Core.cfg().points.item end

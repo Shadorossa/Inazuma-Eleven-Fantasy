@@ -7,7 +7,7 @@
 # 2026-10-08), the Q/E steps through EVT_PlateHiperStep (= VRFW_PlayerPages.Step,
 # docs/framework/player-pages.md), the guide edit and the common block. Last of all (order 950, hiper-match-slot.md 16.34).
 name = "plate_hiper_bank"
-mod = "character_reforged"
+mod = "CharacterReforged"
 rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged bank scripts too (its grafts edit the same chunks)
 order = 950
 module = "lua_bridge"

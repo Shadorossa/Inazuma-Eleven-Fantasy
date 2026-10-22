@@ -1,0 +1,8 @@
+schema = "VRFW.game/2"
+
+# Signature Passives › what scripts\passive_blocks.lua reads to know the game passives a match player carries (the
+# carried_by passives and the CarriesPassive blocks of content\special_passives\): per team passive slot
+# IsTeamPassiveUnlocked then GetTeamPassiveId (Utilities' configured passives included), then the rarity version, as
+# the match builder 0x1604E90 reads them; and his own passive slot. Every one is a VR-Framework shared binding
+# (Passive.TeamPassiveUnlocked, Passive.TeamPassiveId, Passive.RarityVersion, Passive.SignatureSlotId,
+# Passive.SignaturePieceOpen, Match.ActorUnit, Match.SoccerActors.ViaSkillUsed): nothing is declared here.

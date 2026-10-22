@@ -1,0 +1,45 @@
+schema = "VRFW.team/2"
+default_lang = "en"
+# Special boss (rogue/bosses.toml). Team kept from the archived Chronicles Deluxe; key unchanged so the match hash stays.
+# Hi no Eiyuutachi (CS, «Fuyukai Suguru's route» #4; report status: missing).
+# Roster: wiki lineup «CS |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Hi_no_Eiyuutachi
+[[team]]
+name = "ct_wk_hi_no_eiyuutachi"
+key = "evt_ct_wk_hi_no_eiyuutachi"
+based_on = "tm_cro_go2_2720" # Demon's Horn: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0xB6B17B3B                          # team_kits_from_wiki.py: ported «Kaen no Wear away» (3DS model 0105, kit_ports_build.py) (was 0x16DAA0FA)
+level = 53
+series = "CS"
+roster = "exact"
+member = [
+  { card = 0x33D11B4C, slot = 0, number = 1, rarity_step = 1 }, # Genda Koujirou = Joseph King (GK)
+  { card = 0x4738445F, slot = 1, number = 2, rarity_step = 1 }, # Kii Fumiko = Kiburn (DF)
+  { card = 0x4425604F, slot = 2, number = 3, rarity_step = 1 }, # Nenel = Nenel (DF)
+  { card = 0xB4CC9B7D, slot = 3, number = 4, rarity_step = 1 }, # Hepai En = Jeff Iron (DF)
+  { card = 0x7A74C573, slot = 4, number = 5, rarity_step = 1, captain = true }, # Fudou Akio = Caleb Stonewall (MF)
+  { card = 0xB411C8FC, slot = 5, number = 6, rarity_step = 1 }, # Saginuma Osamu = Dave Quagmire (MF)
+  { card = 0x3952940A, slot = 6, number = 7, rarity_step = 1 }, # Uinel = Wenel (MF)
+  { card = 0x11021263, slot = 7, number = 8, rarity_step = 1 }, # Honba Geki = Bomber (MF)
+  { card = 0xFDECD9BC, slot = 8, number = 9, rarity_step = 1 }, # Kiyama Hiroto = Xavier Schiller (FW)
+  { card = 0x9D7A2566, slot = 9, number = 10, rarity_step = 1 }, # Raimon Natsumi = Nelly Evans (FW)
+  { card = 0xF150070D, slot = 10, number = 11, rarity_step = 1 }, # Gouenji Masato = Syon Blaze (FW)
+  { card = 0xAFFBF345, slot = 11, number = 12, rarity_step = 1 }, # Raayu = Si Sosman (GK)
+  { card = 0x104E3CFC, slot = 12, number = 13, rarity_step = 1 }, # Anazawa = Steven Nevets (DF)
+  { card = 0x873893C8, slot = 13, number = 14, rarity_step = 1 }, # Hera Tadashi = Henry House (MF)
+  { card = 0x4E1CC970, slot = 14, number = 15, rarity_step = 1 }, # Mack Ronijo = Mac Robingo (FW)
+  { card = 0x626D6FC8, slot = 15, number = 16, rarity_step = 1 }, # Suzuna = Bella Baker (FW)
+]
+[team.emblem]
+png = "content/teams/rogue_bosses/hi_no_eiyuutachi.png" # wiki: Heroes of the Flames emblem.png
+base = "em050243"
+catalog = "shared"
+
+[team.text.es]
+name = "Heroes of the Flames"
+short = "Heroes of the Flames"
+[team.text.en]
+name = "Heroes of the Flames"
+short = "Heroes of the Flames"
+[team.text.ja]
+name = "火の英雄たち"
+short = "火の英雄たち"

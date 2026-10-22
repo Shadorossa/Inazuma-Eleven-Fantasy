@@ -2,12 +2,12 @@
 # button of the character view is Utilities'; docs/game/mechanics/form-viewer.md §8). Moved from Inazuma Fantasy on
 # 2026-10-14 with the page (its menus/102_team/view_forms.toml; docs/refactor/aura-mods-split.md «Player page»).
 # Declaration only, and only while Utilities is active (if_mod: its host is Utilities'; Character Reforged does not
-# require it): Utilities' action Utilities.ViewForms.Cycle (CMD_UTIL_VIEW_FORMS, default RS, rebindable in
+# require it): Utilities' action BetterQoL.ViewForms.Cycle (CMD_UTIL_VIEW_FORMS, default RS, rebindable in
 # «Configuración de controles») is polled by Utilities in the menus its host «utilities.view_forms» lists, and calls the
 # entry's function on each press.
 # * player_page: the player page (personal_plate_menu): PERFIL cycles the 3D model's forms, or opens the retail
 #   «Ver apariencia» where a menu offers it (Formación); graft plate_model, EVT_PPM_ViewFormsPress. ATRIBUTOS
-#   (Normal / Miximax) and the Hiper page (mix / aura slot) read the same key through Utilities.ViewForms
+#   (Normal / Miximax) and the Hiper page (mix / aura slot) read the same key through BetterQoL.ViewForms
 #   (graft plate_pages: Declared / Pressed / GLYPH). Without Utilities: R3 (CMD_FUNC6) as before.
 schema = "VRFW.menu/2"
 if_mod = "utilities"

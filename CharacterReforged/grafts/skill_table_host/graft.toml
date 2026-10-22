@@ -7,11 +7,11 @@
 # (CharacterReforged.SkillTable.L / .Env(globals)) and graft skill_table_host_hooks makes the script a VR-Framework host.
 # A text graft of another mod cannot be built into this script (ss2_menus ships it whole; cross-mod requires are not
 # supported) and a hook file cannot reach the chunk's locals: this block is the one place that can. Replaces the grafts
-# move_rank_items (now True Hissatsu's hook files) and training_btn (now Player Training's hook file).
+# move_rank_items (now Hissatsu Level Up's hook files) and training_btn (now Player Training's hook file).
 # The block is GENERATED: edit skill_table_host_block.src.lua and run gen_block.py (the locals map).
 # rebuilt_by: Inazuma Fantasy builds it into its own merged evt_skill_slot_menu (part skill_table), like ss2_menus.
 name = "skill_table_host"
-mod = "character_reforged"
+mod = "CharacterReforged"
 rebuilt_by = ["inazuma_fantasy"]
 order = 330
 module = "lua_bridge"

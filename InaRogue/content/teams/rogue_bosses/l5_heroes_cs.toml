@@ -1,0 +1,45 @@
+schema = "VRFW.team/2"
+default_lang = "en"
+# Special boss (rogue/bosses.toml l5_heroes_cs). Roster from the wiki lineup, plus the two crossover guests on the bench.
+# L5 Heroes (CS, «Furukabu's route» #11; report status: missing).
+# Roster: wiki lineup «CS |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/L5_Heroes
+# Left out (no card in the game): Remi Altava; Kakuma Oushou; Mecha Endou
+[[team]]
+name = "ct_wk_l5_heroes"   # key kept: the boss match (evt_rl_b_l5_heroes_cs) references its hash
+key = "evt_ct_wk_l5_heroes"
+based_on = "tm_cro_go2_2720" # Demon's Horn: formation, kit, tactics (the wiki formation is not mapped)
+kit = { home = 0x1546BE65, flip = true }  # team_kits_from_wiki.py: wiki «Raimon Wear away» = VR kit of pltm_cro_ie4_15, pltm_cro_ie4_16, pltm_cro_ie4_17 (was 0x16DAA0FA)
+level = 99
+series = "CS"
+roster = "exact"
+member = [
+  { card = 0x353553B4, slot = 0, number = 1, rarity_step = 1, captain = true }, # Endou Mamoru = Mark Evans (GK)
+  { card = 0xC69DE15E, slot = 1, number = 2, rarity_step = 1 }, # Hershel Layton = Hershel Layton ({'IE': 'DF', 'CS': 'MF'})
+  { card = 0xEDB0B29D, slot = 2, number = 3, rarity_step = 1 }, # Luke Triton = Luke Triton ({'IE': 'MF', 'CS': 'DF'})
+  { card = 0x061964FB, slot = 3, number = 4, rarity_step = 1 }, # Shindou Takuto = Riccardo Di Rigo (MF)
+  { card = 0x489A980B, slot = 4, number = 5, rarity_step = 1 }, # Matsukaze Tenma = Arion Sherwind (MF)
+  { card = 0x636FF432, slot = 5, number = 6, rarity_step = 1 }, # Kidou Yuuto = Jude Sharp (MF)
+  { card = 0x7AACFA89, slot = 6, number = 7, rarity_step = 1 }, # Tsurugi Kyousuke = Victor Blade (FW)
+  { card = 0x4CB89E2F, slot = 7, number = 8, rarity_step = 1 }, # Gouenji Shuuya = Alex Zabel (FW)
+  { card = 0xC5193530, slot = 8, number = 9, rarity_step = 1 }, # Yamano Ban = Van Yamano (FW)
+  { card = 0xEE3466F3, slot = 9, number = 10, rarity_step = 1 }, # Oozora Hiro = Hiro Hughes (FW)
+  { card = 0x8E6A1A0A, slot = 10, number = 11, rarity_step = 1 }, # Gojou Masaru = Gus Martin (DF)
+  { card = 0x9EFEF108, slot = 11, number = 12, rarity_step = 1 }, # Yashima Yousuke = Gammon Checker (GK)
+  { card = 0x04479BD8, slot = 12, number = 13, rarity_step = 1 }, # Sasuke = Spotter (MF)
+  { card = 0xCB2082E0, slot = 14, number = 12, rarity_step = 1 }, # Chester Horse padre (PR)
+  { card = 0xEC72D8AA, slot = 15, number = 15, rarity_step = 1 }, # Mecamark (PR)
+]
+[team.emblem]
+png = "content/teams/rogue_bosses/l5_heroes_cs.png" # wiki: L5 Heroes emblem.png
+base = "em050243"
+catalog = "shared"
+
+[team.text.es]
+name = "L5 Heroes"
+short = "L5 Heroes"
+[team.text.en]
+name = "L5 Heroes"
+short = "L5 Heroes"
+[team.text.ja]
+name = "Ｌ５ヒーローズ"
+short = "Ｌ５ヒーローズ"

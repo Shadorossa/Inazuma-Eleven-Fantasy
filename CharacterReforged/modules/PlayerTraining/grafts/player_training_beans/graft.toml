@@ -6,7 +6,7 @@
 # OpenBeansSetMenu_Coroutine before the retail OnInit registers it (SetupManageCoroutineFunc 7); with the mod off or
 # its command not answering, the retail coroutine runs unchanged. No engine call at chunk load.
 name = "player_training_beans"
-mod = "player_training"
+mod = "PlayerTraining"
 order = 340
 module = "lua_bridge"
 requires = []

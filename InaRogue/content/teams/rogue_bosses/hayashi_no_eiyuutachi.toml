@@ -1,0 +1,44 @@
+schema = "VRFW.team/2"
+default_lang = "en"
+# Special boss (rogue/bosses.toml). Team kept from the archived Chronicles Deluxe; key unchanged so the match hash stays.
+# Hayashi no Eiyuutachi (CS, «Fuyukai Suguru's route» #7; report status: missing).
+# Roster: wiki lineup «CS |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Hayashi_no_Eiyuutachi
+# Left out (no card in the game): Hebeemoth; Sein
+[[team]]
+name = "ct_wk_hayashi_no_eiyuutachi"
+key = "evt_ct_wk_hayashi_no_eiyuutachi"
+based_on = "tm_cro_go2_2720" # Demon's Horn: formation, kit, tactics (the wiki formation is not mapped)
+kit = { home = 0xFE9DD443, flip = true }  # team_kits_from_wiki.py: wiki «Midori no Wear away» = VR kit item uni_u045401 (Verdant Kit) (was 0x16DAA0FA)
+level = 64
+series = "CS"
+roster = "exact"
+member = [
+  { card = 0x6F08338C, slot = 0, number = 1, rarity_step = 1 }, # Enolel = Anorel (GK)
+  { card = 0xE00DD123, slot = 1, number = 2, rarity_step = 1 }, # Kudou Fuyuka = Camellia Travis (DF)
+  { card = 0x4D223B67, slot = 2, number = 3, rarity_step = 1 }, # Kageno Jin = Jim Wraith (DF)
+  { card = 0x9F3C9B3F, slot = 3, number = 4, rarity_step = 1 }, # Midorikawa Ryuuji = Jordan Greenway (MF)
+  { card = 0x573842B6, slot = 4, number = 5, rarity_step = 1 }, # Atena Tomo = Wesley Knox (MF)
+  { card = 0x150AF22F, slot = 5, number = 6, rarity_step = 1 }, # Akutsu Kiyoshi = Ark (MF)
+  { card = 0x1B074106, slot = 6, number = 7, rarity_step = 1 }, # Mark Krueger = Mark Krueger (MF)
+  { card = 0xE4F7E8FD, slot = 7, number = 8, rarity_step = 1, captain = true }, # Someoka Ryuugo = Kevin Dragonfly (FW)
+  { card = 0x5A098D99, slot = 8, number = 9, rarity_step = 1 }, # Urabe Rica = Suzette Hartland (FW)
+  { card = 0x6B29135D, slot = 9, number = 10, rarity_step = 1 }, # Thaemy = Odette Musetta (GK)
+  { card = 0xFCF3E00A, slot = 10, number = 11, rarity_step = 1 }, # Yokohama = Francis Paine (MF)
+  { card = 0x8B2583C2, slot = 11, number = 12, rarity_step = 1 }, # Sandayuu Mishima = Oni Triumvir (MF)
+  { card = 0xC18C87B5, slot = 12, number = 13, rarity_step = 1 }, # Fuuko = Sunniffa Scentgood (FW)
+  { card = 0x1E180077, slot = 13, number = 14, rarity_step = 1 }, # Sakuma Jirou = David Samford (FW)
+]
+[team.emblem]
+png = "content/teams/rogue_bosses/hayashi_no_eiyuutachi.png" # wiki: Heroes of the Forest emblem.png
+base = "em050243"
+catalog = "shared"
+
+[team.text.es]
+name = "Heroes of the Forest"
+short = "Heroes of the Forest"
+[team.text.en]
+name = "Heroes of the Forest"
+short = "Heroes of the Forest"
+[team.text.ja]
+name = "林の英雄たち"
+short = "林の英雄たち"

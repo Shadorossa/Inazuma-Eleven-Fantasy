@@ -1,14 +1,15 @@
-id = "go_gameplay"
+id = "GoGameplay"
+former_ids = ["go_gameplay"]
 # name / description: the English fallback; the card on Football Reforged's page shows the text keys mod_name /
 # mod_description in the game's language (text\keys.toml)
 name = "GO Gameplay"
-version = "1.1.0"
+version = "1.2.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Inazuma Eleven GO style duels. In a focus battle against the CPU nobody moves and there is no countdown: you pick a special move or a side (go left / go right, block left / block right). The CPU answers with a special move of its own or a side: same side, the defender wins; opposite sides, the attacker; its special move wins unless your power beats it by a margin (config.toml). No sliding tackles in the match, for you and the CPU."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 # This mod's own names (TOML keys GoGameplay.X, rule ids go_gameplay.*); never VRFW.
 prefix = "GoGameplay"
 folder = "GoGameplay"
@@ -26,7 +27,7 @@ folder = "GoGameplay"
 #   text\keys.toml                       the card's name / description, 9 languages
 # 1.1.0 (owner 2026-10-21): the GO choice resolution through the VR-Framework's duel choice service (VRFW 2.33.0;
 # docs/framework/duel-choice.md); the movement lock is the service's (only in duels it applies to, lifted once decided).
-requires = ["vr_framework>=2.33.0", "football_reforged>=1.2.0"]
+requires = ["VRFW>=2.33.0", "FootballReforged>=1.2.0"]
 conflicts = []
 loader_modules = []
 permissions = []
@@ -39,7 +40,7 @@ tables = []
 # A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
 # screen; switching Football Reforged off switches it off too.
 [module]
-of = "football_reforged"
+of = "FootballReforged"
 order = 120
 # starts switched OFF (owner 2026-10-21: the player opts in on its card); docs/framework/mod-families.md §1.4
 default_enabled = false

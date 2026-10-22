@@ -1,0 +1,36 @@
+# «Banco» player popup COMANDOS of the mod Utilities (chara_bank_menu; docs/game/ui/bank-commands.md), Nacho 2026-09-30,
+# moved from Inazuma Fantasy (graft bank_cmds, table EVT_BCMD) to Utilities on 2026-10-09 («Añade el banco de comandos
+# al utilities»):
+#   retail: Añadir al equipo, Añadir a espacio de plantilla vacío, Retirar, Retiro rápido, Recuperar equipamiento,
+#           Recuperar auto. en banco (toggle)
+#   now:    Añadir al equipo, Tabla de habilidades, Equipamiento, Configuración de pasivas, Retiro rápido,
+#           Recuperar equipamiento, Recuperar auto. en banco (toggle)
+# «Retiro rápido» = the retail «Retirar» path (confirmation, retire; with Inazuma Fantasy its fichajes refund) + an auto
+# save. Tabla de habilidades / Equipamiento open the same screens as the team formation for that one player (the skill
+# table = the retail ability board, or the screen a mod declares in BetterQoL.BankCommands.SkillTable), Configuración
+# de pasivas runs Utilities' passive_config session on the bank's plate; the bank comes back with the cursor on the
+# same player. The Kizuna club popup (retail flag2) keeps the retail popup, and so does any player a mod's rule
+# (BetterQoL.BankCommands.Rules) sends to it. Always on (no option).
+# HOOK file (docs/framework/lua-hosts.md §7): VRFW_Host handlers on the VR-Framework's host of chara_bank_menu
+# (research/mods/VRFW/assets/lua/menu/chara_bank_menu/000_host.lua), never merged with other grafts, no promoted locals:
+# the rows are swapped at the popup's MENU_DEF.OpenSubWindow call, so Inazuma Fantasy's merged lua_early file of this
+# stem (fichajes, aura_used...) runs under the dispatchers unchanged. Built into the mod: menu_assemble.py build --mod
+# utilities.
+name = "util_bank_commands"
+mod = "BetterQoL"
+order = 340
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = []
+description = "Bank player popup: skill table / equipment / passives entries, quick retire + auto save (Utilities)"
+
+[[hooks]]
+stem = "chara_bank_menu"
+src = "util_bank_commands.lua"
+
+# the retail «Tabla de habilidades» opened from the bank for a player outside the dock: the START card's missing slot
+# (docs/game/ui/bank-commands.md §2)
+[[hooks]]
+stem = "ability_learning_board_menu"
+src = "util_bank_board.lua"

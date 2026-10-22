@@ -80,7 +80,7 @@ local function hex(h) return string.format("0x%08X", h or 0) end
 -- ---------------------------------------------------------------------------------------- game memory
 
 local function ready()
-  return ENABLED and VRFW.is_on("PT_LogicalToPhysical") and VRFW.is_on("pt_party")
+  return ENABLED and VRFW.is_on("Party.LogicalToPhysical") and VRFW.is_on("pt_party")
 end
 
 local function slot()
@@ -115,7 +115,7 @@ local function set_addr(l)
   if not party then return nil end
   local data = rd("ptr", party + PARTY_SET_DATA)
   if not data or data < 0x10000 then return nil end
-  local ok, p = pcall(VRFW.call, "PT_LogicalToPhysical", 0, l)
+  local ok, p = pcall(VRFW.call, "Party.LogicalToPhysical", 0, l)
   if not ok or not p then return nil end
   return data + p * SET_SIZE
 end
@@ -161,12 +161,12 @@ local function recount(addr, t)
 end
 
 local function recount_team_info(team_addr)
-  local ok, e = pcall(VRFW.call, "PT_RecountTeamInfo", team_addr)
+  local ok, e = pcall(VRFW.call, "Party.RecountTeamInfo", team_addr)
   if not ok then warn("RecountTeamInfo: " .. tostring(e)) end
 end
 
 local function set_bit(member_addr, l, on)
-  local ok, e = pcall(VRFW.call, "PT_SetOrganizedFlagBit", member_addr, l, on)
+  local ok, e = pcall(VRFW.call, "Party.SetOrganizedFlagBit", member_addr, l, on)
   if not ok then warn("SetOrganizedFlagBit dock " .. l .. ": " .. tostring(e)) end
   return ok
 end

@@ -6,7 +6,7 @@
 # The block is evt_plate_hiper_common.lua (this folder, not the shared _lib), shared with plate_hiper_bank (same block) and
 # plate_hiper_plate (include @PH_COMMON@ at the top of its child).
 name = "plate_hiper_common"
-mod = "character_reforged"
+mod = "CharacterReforged"
 rebuilt_by = ["inazuma_fantasy"]   # IF's merged dock scripts redefine what it wraps: IF's copy wraps them again
 order = 950
 module = "lua_bridge"

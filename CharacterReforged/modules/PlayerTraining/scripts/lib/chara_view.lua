@@ -28,7 +28,7 @@ local function bufs()
 end
 
 function M.ready()
-  return VRFW.is_on("PlayerTraining.FindCharaRecord") and VRFW.is_on("PlayerTraining.HumanGetLevel") and VRFW.is_on("player_training_chara_containers")
+  return VRFW.is_on("Board.FindCharaRecord") and VRFW.is_on("Chara.HumanGetLevel") and VRFW.is_on("player_training_chara_containers")
 end
 
 -- the status object of a character handle checked against its record, or nil + error code
@@ -41,7 +41,7 @@ function M.object(hdl)
   if not cont or cont == 0 then return nil, M.ERR_NOT_READY end
   bufs()
   VRFW.mem.write("u32", HBUF, hdl)
-  local ok, obj = pcall(VRFW.call, "PlayerTraining.FindCharaRecord", cont, HBUF)
+  local ok, obj = pcall(VRFW.call, "Board.FindCharaRecord", cont, HBUF)
   if not ok then
     VRFW.error(string.format("training: FindCharaRecord(0x%08X) raised: %s", hdl, tostring(obj)))
     return nil, M.ERR_EXCEPTION
@@ -68,7 +68,7 @@ end
 -- the effective level of a status object, or nil + error code
 function M.level(obj)
   bufs()
-  local ok, v = pcall(VRFW.call, "PlayerTraining.HumanGetLevel", obj, FBUF)
+  local ok, v = pcall(VRFW.call, "Chara.HumanGetLevel", obj, FBUF)
   if not ok then
     VRFW.error(string.format("training: GetLevel(0x%X) raised: %s", obj, tostring(v)))
     return nil, M.ERR_EXCEPTION

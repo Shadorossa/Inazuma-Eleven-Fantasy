@@ -216,7 +216,7 @@ end
 local function team_ptr(set, team)
   local party = U.global("rl_party")
   if not party then return nil end
-  local ok, t = pcall(VRFW.call, "RL_GetTeamInfo", party, set, team)
+  local ok, t = pcall(VRFW.call, "Team.SetStruct", party, set, team)
   if ok and type(t) == "number" and t >= 0x10000 then return t end
   return nil
 end
@@ -260,14 +260,14 @@ end
 
 local function set_bits(team0, on)
   for k = 0, MEMBERS - 1 do
-    local ok = pcall(VRFW.call, "RL_SetOrganizedFlagBit", team0 + MEMBER_LIST + k * MEMBER_STRIDE, ROGUE_SET, on)
+    local ok = pcall(VRFW.call, "Party.SetOrganizedFlagBit", team0 + MEMBER_LIST + k * MEMBER_STRIDE, ROGUE_SET, on)
     if not ok then return false end
   end
   return true
 end
 
 local function api_ready()
-  return VRFW.is_on("RL_GetTeamInfo") and VRFW.is_on("RL_SetOrganizedFlagBit") and VRFW.is_on("RL_TeamInfoAssign")
+  return VRFW.is_on("Team.SetStruct") and VRFW.is_on("Party.SetOrganizedFlagBit") and VRFW.is_on("RL_TeamInfoAssign")
     and U.global("rl_party") ~= nil
 end
 

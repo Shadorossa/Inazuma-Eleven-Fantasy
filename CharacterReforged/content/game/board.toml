@@ -12,7 +12,7 @@ name = "CharacterReforged.BoardPlaceByHandle"
 game = "Board.PlaceByHandle"
 
 # bool CanEquipOnBoard(u32 charaHdl, u32 invHdl, u8 needFree, u8 ?, u8 targetSlot) 0xE7D310: «may this item go on this
-# board slot» (True Hissatsu's duplicate rule hooks it)
+# board slot» (Hissatsu Level Up's duplicate rule hooks it)
 [[VRFW.Function]]
 name = "CharacterReforged.BoardCanEquip"
 game = "Board.CanEquip"
@@ -45,3 +45,10 @@ needs = ["CharacterReforged.BoardCanEquip", "CharacterReforged.BoardPlaceByHandl
 name = "CMND_CHARACTERREFORGED_BOARD_CLEAR"   # (charaStHdl, boardSlot[, keepOpen 0 / 1 / 3]) -> status, effectiveInv
 handler = "CharacterReforged.BoardSlots.Clear"
 needs = ["CharacterReforged.BoardPlaceByHandle", "CharacterReforged.BoardSkillPieces", "CharacterReforged.BoardEquipSlot"]
+
+# The skill table's custom passive button (graft ss2_menus): board equip slot 9 read / written through Board.EquipSlot
+# (scripts\board_slots.lua BoardSlots.SixSense; status as above).
+[[VRFW.Command]]
+name = "CMND_CHARACTERREFORGED_SIX_SENSE"   # (charaStHdl, op, invHdl, pieceIdx) -> status, invHdl, itemId
+handler = "CharacterReforged.BoardSlots.SixSense"
+needs = ["CharacterReforged.BoardEquipSlot"]

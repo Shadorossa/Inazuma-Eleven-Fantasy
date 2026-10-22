@@ -1,32 +1,33 @@
 schema = "VRFW.game/2"
 
-# Level sync of the user's team (docs/framework/level-sync.md). Mods declare it per difficulty row
-# (content\level_sync\*.toml); scripts\level_sync.lua fills the tables VRFW.LevelSync.Raise / .Cap and installs both detours only when
-# a declaration is in force (`apply = "script"`). Nothing runs at the match itself but these native answers.
+# Level sync of the user's team (docs/framework/level-sync.md). Mods declare it per game and / or difficulty row
+# (content\level_sync\*.toml); scripts\level_sync.lua fills the tables VRFW.LevelSync.Raise / .Cap (key: game id,
+# row; 0 = any) and installs both detours only when a declaration is in force (`apply = "script"`). Nothing runs at the match itself but these native answers.
 
-# The address of the native block the match request answer writes the request's difficulty row into (u8 at +0; set by
+# The address of the native block the match request answers write the request's difficulty row (u8 at +0) and game
+# (u32 at +4) into (set by
 # scripts\level_sync.lua at start, cleared at the end of every match and at a title return).
 [[VRFW.State]]
 key = "vr_framework.level_sync.request"
 
 # u64 StartMatchRequest(scene, request): the generic «start this match» of every mode. The request's match info starts
 # at +0x68 (the reserve handler fills it from the game and difficulty rows): +0x6C the game, +0x7D the difficulty row.
-# Stolen bytes: mov [rsp+18h],rbx / mov [rsp+20h],rsi / push rbp / push rdi / push r14 = 14 bytes, no relative operand.
 [[VRFW.Hook]]
 name = "LevelSync.MatchRequest"
+game = "Match.StartRequest"
 kind = "function"
-pattern = "48 89 5C 24 18 48 89 74 24 20 55 57 41 56 48 8D 6C 24 90 48 81 EC 70 01 00 00 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 60 8B 42 6C"
-rva = 0x17C9400
-steal = 14
-args = ["ptr", "ptr"]
-ret = "u64"
 apply = "script"
 
-# the request's difficulty row, for the stat level answer below
+# the request's difficulty row and game, for the stat level answers below
 [[VRFW.Hook.answer]]
 phase = "pre"
 value = "[args[2] + 0x7D]:u8"
 write = "[state(vr_framework.level_sync.request)]:u8"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+value = "[args[2] + 0x6C]:u32"
+write = "[state(vr_framework.level_sync.request) + 4]:u32"
 
 # MatchCharaBuild's GetLevel call (a saved player's match copy): the level its match stats are computed at
 # (SoccerChara_SetStats(stats, level) right after). Only that level changes: the saved character, his board and moves
@@ -39,13 +40,41 @@ args = ["ptr", "ptr"]
 ret = "u16"
 apply = "script"
 
-# the match's row in VRFW.LevelSync.Raise: every player at its level; in VRFW.LevelSync.Cap: only a player above it is
-# brought down; in neither: the game's level
+# The first rule found, most specific first: (game, row), (game, any row), (any game, row). In VRFW.LevelSync.Raise:
+# every player at its level; in VRFW.LevelSync.Cap: only a player above it is brought down; in neither: the game's level.
+
+# the match's game and row
 [[VRFW.Hook.answer]]
 phase = "post"
 table = "VRFW.LevelSync.Raise"
-key = ["[state(vr_framework.level_sync.request)]:u8"]
+key = ["[state(vr_framework.level_sync.request) + 4]:u32", "[state(vr_framework.level_sync.request)]:u8"]
 
 [[VRFW.Hook.answer]]
 phase = "post"
-value = "min(ret, lookup(VRFW.LevelSync.Cap, [state(vr_framework.level_sync.request)]:u8))"
+value = "min(ret, lookup(VRFW.LevelSync.Cap, [state(vr_framework.level_sync.request) + 4]:u32, [state(vr_framework.level_sync.request)]:u8))"
+
+# the match's game, any row
+[[VRFW.Hook.answer]]
+phase = "post"
+table = "VRFW.LevelSync.Raise"
+key = ["[state(vr_framework.level_sync.request) + 4]:u32", "0"]
+
+[[VRFW.Hook.answer]]
+phase = "post"
+value = "min(ret, lookup(VRFW.LevelSync.Cap, [state(vr_framework.level_sync.request) + 4]:u32, 0))"
+
+# any game, the match's row
+[[VRFW.Hook.answer]]
+phase = "post"
+table = "VRFW.LevelSync.Raise"
+key = ["0", "[state(vr_framework.level_sync.request)]:u8"]
+
+[[VRFW.Hook.answer]]
+phase = "post"
+value = "min(ret, lookup(VRFW.LevelSync.Cap, 0, [state(vr_framework.level_sync.request)]:u8))"
+
+# () -> level, raise (1 / 0) of the current match request's rule (0, 0 = none): the VS screen's team level
+# (assets/lua/menu/soccer_battle_setting_flow_vs_menu/200_level_sync.lua).
+[[VRFW.Command]]
+name = "CMND_VRFW_LEVEL_SYNC"
+handler = "LevelSync.Cmd"

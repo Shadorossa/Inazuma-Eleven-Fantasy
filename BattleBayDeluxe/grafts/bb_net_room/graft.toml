@@ -17,7 +17,7 @@
 #                         invite = the Steam overlay's, kick off
 # Order 347: after bb_tournament (346). Globals only (BBN*); nothing runs at chunk load. docs bb-online-ownnet.md §18.
 name = "bb_net_room"
-mod = "bb_chronicle_teams"
+mod = "BattleBayDeluxe"
 order = 347
 module = "lua_bridge"
 requires = []

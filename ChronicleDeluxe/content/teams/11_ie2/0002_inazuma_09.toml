@@ -1,11 +1,10 @@
 schema = "VRFW.team/2"
 # Chronicle Deluxe (2026-10-21): «Ases del Inazuma 2» (Inazuma '09, イナズマ'09) of IE2, a rival of the chain «Ruta del
 # entrenador del Mary Times» (content/teams/70_route_nodes/chain_ie2_marytimes.toml). The same team key as the set-aside
-# Chronicles Deluxe's «Inazuma '09» (ct_iy_09, the same team id and the same 11 players): while chronicles_deluxe is
-# active this file is left out and that mod's team is used. Here: its 11 players (the wiki lineup) with each card's own
-# moves, the formation / tactics of the retail «Ice Queens» legend team (as there; that mod's CPU loadouts and legend
-# stat rates are not here), the wiki crest (WebP -> PNG, no resize), as ct_iy_08 (content/teams/10_ie1/0012).
-if_not_mod = "chronicles_deluxe"
+# Chronicles Deluxe's «Inazuma '09» (ct_iy_09, the same team id and the same 11 players). Here: its 11 players (the wiki
+# lineup) with each card's own moves, the formation / tactics of the retail «Ice Queens» legend team (as there; that
+# mod's CPU loadouts and legend stat rates are not here), the wiki crest (WebP -> PNG, no resize), as ct_iy_08
+# (content/teams/10_ie1/0012).
 default_lang = "en"
 
 [[team]]

@@ -1,0 +1,364 @@
+  -- ---- shared by both hook files (gen_hooks.py puts it in place of @COMMON@) -------------------------------------
+  UTIL_TP = UTIL_TP or {}
+  local TP = UTIL_TP
+  TP.C = {
+    INFO = @crc:CMND_BETTERQOL_TP_INFO@,
+    LIST = @crc:CMND_BETTERQOL_TP_LIST@,
+    SET = @crc:CMND_BETTERQOL_TP_SET@,
+    CANDIDATES = @crc:CMND_BETTERQOL_TP_CANDIDATES@,
+    ASSIGNED = @crc:CMND_BETTERQOL_TP_ASSIGNED@,
+    PENDING = @crc:CMND_BETTERQOL_TP_PENDING@,
+    PICK_OPEN = @crc:CMND_BETTERQOL_TP_PICK_OPEN@,
+    PICK_GRID = @crc:CMND_BETTERQOL_TP_PICK_GRID@,
+    PICK_TEAM_GRID = @crc:CMND_BETTERQOL_TP_PICK_TEAM_GRID@,
+    PICK_TAB = @crc:CMND_BETTERQOL_TP_PICK_TAB@,
+    PICK_ITEM = @crc:CMND_BETTERQOL_TP_PICK_ITEM@,
+    PICK_TEAM = @crc:CMND_BETTERQOL_TP_PICK_TEAM@,
+    PICK_PLAYER = @crc:CMND_BETTERQOL_TP_PICK_PLAYER@,
+    PICK_LIST = @crc:CMND_BETTERQOL_TP_PICK_LIST@,
+    PICK_TABS = @crc:CMND_BETTERQOL_TP_PICK_TABS@,
+    PICK_SEASON = @crc:CMND_BETTERQOL_TP_PICK_SEASON@,
+    PICK_ROSTER = @crc:CMND_BETTERQOL_TP_PICK_ROSTER@,
+    LOG = 3661580131,            -- CMND_EVT_LOG
+    TEXT_GET = 4074371074,       -- CMND_TEXT_GET
+    SND = 1917805374,            -- the menus' sound effect call
+    SYS_MSG = 2289627655,        -- system message (text, 0, 0, 0, 0, 0, false)
+    LAYER_VISIBLE = 711242136,   -- CMND_SET_LAYER_VISIBLE (layer, instance, on)
+    MODEL_ALPHA = 4231609516,    -- CMND_SET_LAYER_MODEL_ALPHA (layer, instance, 0, alpha)
+    TEXT_ALPHA = 1126837159,     -- CMND_SET_MENU_TEXT_ALPHA (layer, instance, text node, alpha)
+    PRIM_ALPHA = 2219773080,     -- CMND_SET_PRIM_ALPHA (layer, instance, prim, alpha)
+    CARD_BY_PARAM = 2339877830,  -- a character card from a param id (layer, instance, param, big, leader, pos type, face
+                                 -- type, level, -, -, rarity, kit, -, main member, 0, -, -, manager)
+    FORMATION_INFO = 2649030357, -- CMND_GET_SOCCER_FORMATION_INFO (6, formation, slot) -> ok, pos type
+    PLACE_CHECK = 1730898405,    -- (hdl, set, pos, from set, type) -> ok, code: the check of SwapChara (writes nothing)
+    PLACE = 193693077,           -- (set, pos, from set, hdl, type): the bank -> slot placement
+    PLACE_PREP = 2379170951,     -- funcLuaMenuCommand(hdl): what SwapChara / the bank call before placing
+    PARAM_HAS = 2947612279, PARAM_GET = 3522198769, PARAM_DEL = 3363400568, PARAM_SET = 3860611758,
+    VS_TEAM = 3713813716,        -- CMND_GET_VS_USE_TEAM_SET
+  }
+  TP.CARD = 1973487846           -- team00_01_chara_card_for_soccer
+  TP.LEADER = 1658289671         -- team00_01_chara_card_for_leader
+  TP.BLANK = 3571911991          -- team00_01_p1_chara_card_blank
+  TP.BLANK_LEADER = 2290394976   -- team00_01_p1_chara_card_blank_for_leader
+  TP.TEXT_NODE = 170976702       -- _text_chr01
+  TP.PRIMS = {3653219854 --[[num_chr_l01]], 3469038147 --[[num_chr_s01]]}
+  TP.LEADER_SLOT = 19
+  TP.FROM_BANK = 16
+  TP.SY_OK, TP.SY_MOVE, TP.SY_BACK, TP.SY_ERROR = 3848881948, 2500047763, 202039849, 2086672038
+  TP.KEY_BANK = @crc:util_tp_bank_req@ -- parameter: the formation screen asks the dock for the game's bank
+  TP.T_REFUSE_ACTIVE = @crc:utilities.tp_refuse_active@
+  TP.T_REFUSE_LEAVE = @crc:utilities.tp_refuse_leave@
+  TP.T_ASSIGNED = @crc:utilities.tp_assigned@
+  TP.ghost = TP.ghost or {}      -- slot -> param drawn as a ghost on this screen
+
+  function TP.Log(...)
+    pcall(funcLuaCommand, TP.C.LOG, "utilities team_planner", ...)
+  end
+
+  function TP.M(cmd, ...)        -- a menu command, errors swallowed
+    local ok, a, b = pcall(funcLuaMenuCommand, cmd, ...)
+    if ok then
+      return a, b
+    end
+    return nil
+  end
+
+  function TP.Cmd(cmd, ...)      -- a script command of Utilities (nil when not answered)
+    local ok, a, b, c, d, e, f, g, h, i, j = pcall(funcLuaCommand, cmd, ...)
+    if ok then
+      return a, b, c, d, e, f, g, h, i, j
+    end
+    return nil
+  end
+
+  function TP.Snd(id)
+    pcall(funcLuaCommand, TP.C.SND, id)
+  end
+
+  function TP.Text(id, fallback)
+    local ok, s = pcall(funcLuaCommand, TP.C.TEXT_GET, id)
+    if ok and type(s) == "string" and s ~= "" then
+      return s
+    end
+    return fallback
+  end
+
+  function TP.Msg(id, fallback, ...)
+    local s = TP.Text(id, fallback)
+    if select("#", ...) > 0 then
+      local ok, f = pcall(string.format, s, ...)
+      s = ok and f or s
+    end
+    pcall(funcLuaCommand, TP.C.SYS_MSG, s, 0, 0, 0, 0, 0, false)
+  end
+
+  -- on, ghost alpha, display rarity (the planner works in this save slot)
+  function TP.Info()
+    local on, alpha, rarity = TP.Cmd(TP.C.INFO)
+    if on ~= true then
+      return false, 1, 4
+    end
+    return true, type(alpha) == "number" and alpha or 0.45, type(rarity) == "number" and rarity or 4
+  end
+
+  -- slot -> param of a squad, and the display rarity
+  function TP.Plans(set, ty)
+    local out = {}
+    local s, rarity = TP.Cmd(TP.C.LIST, set, ty or 0)
+    if type(s) == "string" then
+      for slot, param in s:gmatch("(%d+):(%d+)") do
+        out[tonumber(slot)] = tonumber(param)
+      end
+    end
+    return out, type(rarity) == "number" and rarity or 4
+  end
+
+  function TP.SetPlan(set, ty, slot, param)
+    return TP.Cmd(TP.C.SET, set, ty or 0, slot, param or 0) == true
+  end
+
+  -- the character in a squad slot (0 = empty); the coach is slot 19
+  function TP.Occupant(set, ty, slot)
+    if type(SearchTeamSetCharaStHdlByScPosNo) ~= "function" then
+      return 0
+    end
+    local ok, h = pcall(SearchTeamSetCharaStHdlByScPosNo, slot, set, ty or 0)
+    if ok and type(h) == "number" and h ~= 0 then
+      if type(IsInvalidSoccerCharaHdl) == "function" and IsInvalidSoccerCharaHdl(h) then
+        return 0
+      end
+      return h
+    end
+    return 0
+  end
+
+  -- the slots of a squad that hold a ghost (planned and still empty); plans of slots filled by hand are dropped
+  function TP.GhostSlots(set, ty)
+    local out, n = {}, 0
+    local plans = TP.Plans(set, ty)
+    for slot, param in pairs(plans) do
+      if TP.Occupant(set, ty, slot) ~= 0 then
+        TP.SetPlan(set, ty, slot, 0)
+        TP.Log("squad", set, ty, "slot", slot, "filled by hand: plan dropped")
+      else
+        out[slot] = param
+        n = n + 1
+      end
+    end
+    return out, n
+  end
+
+  function TP.HasGhosts(set, ty)
+    if type(set) ~= "number" or not TP.Info() then
+      return false
+    end
+    local _, n = TP.GhostSlots(set, ty or 0)
+    return n > 0
+  end
+
+  -- a ghost's real copy: the first qualifying owned copy that is not in the squad yet and that the game's own check
+  -- accepts for the slot, placed with the game's own placement; returns the handle or nil
+  function TP.AssignSlot(set, ty, slot, param)
+    local list = TP.Cmd(TP.C.CANDIDATES, param)
+    if type(list) ~= "string" or list == "" then
+      return nil
+    end
+    for hs in list:gmatch("%d+") do
+      local h = tonumber(hs)
+      local used = false
+      if type(IsCharaInTeam) == "function" then
+        local okU, u = pcall(IsCharaInTeam, h, set)
+        used = okU and u == true
+      end
+      if not used then
+        local okC, accept, code = pcall(funcLuaCommand, TP.C.PLACE_CHECK, h, set, slot, TP.FROM_BANK, ty)
+        if okC and accept then
+          TP.M(TP.C.PLACE_PREP, h)
+          local okP = pcall(funcLuaCommand, TP.C.PLACE, set, slot, TP.FROM_BANK, h, ty)
+          if okP and TP.Occupant(set, ty, slot) == h then
+            TP.Cmd(TP.C.ASSIGNED, set, ty, slot, h)
+            return h
+          end
+          TP.Log("squad", set, ty, "slot", slot, "placement of", h, "did not stick")
+        else
+          TP.Log("squad", set, ty, "slot", slot, "copy", h, "refused by the game's check, code", tostring(code))
+        end
+      end
+    end
+    return nil
+  end
+
+  -- every ghost of the mounted page whose character the save now has; returns how many were placed
+  function TP.AssignAll()
+    if not TP.Info() then
+      return 0
+    end
+    local squads = TP.Cmd(TP.C.PENDING)
+    if type(squads) ~= "string" or squads == "" then
+      return 0
+    end
+    local n = 0
+    for s, t in squads:gmatch("(%d+):(%d+)") do
+      local set, ty = tonumber(s), tonumber(t)
+      local ghosts = TP.GhostSlots(set, ty)
+      for slot, param in pairs(ghosts) do
+        if TP.AssignSlot(set, ty, slot, param) then
+          n = n + 1
+        end
+      end
+    end
+    if n > 0 then
+      TP.Log("assigned", n, "planned player(s)")
+    end
+    return n
+  end
+
+  -- ---- ghost drawing -----------------------------------------------------------------------------------------------
+
+  function TP.Alpha(layer, inst, a)
+    TP.M(TP.C.MODEL_ALPHA, layer, inst, 0, a)
+    TP.M(TP.C.TEXT_ALPHA, layer, inst, TP.TEXT_NODE, a)
+    for _, p in ipairs(TP.PRIMS) do
+      TP.M(TP.C.PRIM_ALPHA, layer, inst, p, a)
+    end
+  end
+
+  -- the formation of the squad on screen
+  function TP.FormationId()
+    for _, f in ipairs({"GetTeamDockFormationId", "GetApplyFormationId"}) do
+      local fn = rawget(_ENV, f)
+      if type(fn) == "function" then
+        local ok, id = pcall(fn)
+        if ok and type(id) == "number" and id ~= 0 then
+          return id
+        end
+      end
+    end
+    return 0
+  end
+
+  -- draw the ghost of `param` on slot `slot` (19 = the coach card)
+  function TP.Draw(slot, param, rarity, alpha)
+    local leader = slot == TP.LEADER_SLOT
+    local layer = leader and TP.LEADER or TP.CARD
+    local inst = leader and 0 or slot
+    local main = false
+    if not leader and type(IsMainMember) == "function" then
+      local ok, m = pcall(IsMainMember, slot)
+      main = ok and m == true
+    end
+    local big = leader
+    if not leader and type(IsCharaCardBigtype) == "function" then
+      local ok, b = pcall(IsCharaCardBigtype, slot, layer)
+      big = ok and b == true
+    end
+    local pos = 0
+    if main then
+      local ok, got, p = pcall(funcLuaCommand, TP.C.FORMATION_INFO, 6, TP.FormationId(), slot)
+      pos = (ok and got and type(p) == "number") and p or 0
+    elseif not leader and type(GetSoccerCharaCalcParamBestPositionTypeByCharaParamID) == "function"
+        and type(ConvertPosTypeToScPosType) == "function" then
+      local ok, p = pcall(GetSoccerCharaCalcParamBestPositionTypeByCharaParamID, param, 0)
+      if ok then
+        local ok2, sp = pcall(ConvertPosTypeToScPosType, p)
+        pos = ok2 and sp or 0
+      end
+    end
+    local face = 0
+    if type(GetCharaFaceType) == "function" then
+      local ok, f = pcall(GetCharaFaceType)
+      face = (ok and type(f) == "number") and f or 0
+    end
+    local manager = false
+    if not leader and type(IsManager) == "function" then
+      local ok, m = pcall(IsManager, slot)
+      manager = ok and m == true
+    end
+    local drawn = TP.M(TP.C.CARD_BY_PARAM, layer, inst, param, big, leader, pos, face, 1, false, false, rarity, 0,
+      false, main, 0, false, false, manager)
+    if drawn == false then
+      TP.Log("ghost", slot, param, "not drawn")
+      return false
+    end
+    TP.M(TP.C.LAYER_VISIBLE, layer, inst, true)
+    TP.M(TP.C.LAYER_VISIBLE, leader and TP.BLANK_LEADER or TP.BLANK, inst, false)
+    TP.Alpha(layer, inst, alpha)
+    TP.ghost[slot] = param
+    return true
+  end
+
+  -- a ghost instance that now shows a real card (or nothing) gets its normal look back
+  function TP.Unghost(slot)
+    if TP.ghost[slot] == nil then
+      return
+    end
+    TP.ghost[slot] = nil
+    local leader = slot == TP.LEADER_SLOT
+    TP.Alpha(leader and TP.LEADER or TP.CARD, leader and 0 or slot, 1)
+  end
+
+  -- ghosts of the squad on screen (`only` = one slot); the ghosts of slots no longer planned are taken off
+  function TP.Ghosts(set, ty, only)
+    if type(set) ~= "number" then
+      return
+    end
+    local on, alpha, rarity = TP.Info()
+    if not on then
+      return
+    end
+    local ghosts = TP.GhostSlots(set, ty or 0)
+    for slot in pairs(TP.ghost) do
+      if (only == nil or only == slot) and ghosts[slot] == nil then
+        TP.Unghost(slot)
+        if TP.Occupant(set, ty or 0, slot) == 0 then
+          local leader = slot == TP.LEADER_SLOT
+          TP.M(TP.C.LAYER_VISIBLE, leader and TP.LEADER or TP.CARD, leader and 0 or slot, false)
+          if type(UpdateMemberCharaBlankSlot) == "function" then
+            pcall(UpdateMemberCharaBlankSlot, leader and 0 or slot, true, leader or nil)
+          end
+        end
+      end
+    end
+    for slot, param in pairs(ghosts) do
+      if only == nil or only == slot then
+        TP.Draw(slot, param, rarity, alpha)
+      end
+    end
+  end
+
+  -- wrap global `name` of the stem: make(orig) returns the wrapper (VRFW_Host around handler, else the global, once)
+  TP.wrapped = TP.wrapped or {}
+  function TP.Wrap(stem, name, make)
+    local H = VRFW_Host or EVT_Host
+    if type(H) == "table" and type(H.on) == "function" then
+      H.on(stem, name, {id = "utilities.team_planner." .. name, phase = "around", fn = function(nxt, ...)
+        return make(nxt)(...)
+      end})
+      return true
+    end
+    local cur = rawget(_ENV, name)
+    if type(cur) ~= "function" or TP.wrapped[stem .. name] then
+      return false
+    end
+    TP.wrapped[stem .. name] = true
+    rawset(_ENV, name, make(cur))
+    return true
+  end
+
+  -- the host's retail locals of the stem (nil without EVT_DEBUG)
+  function TP.Locals(stem)
+    local H = VRFW_Host or EVT_Host
+    local h = type(H) == "table" and type(H.hosts) == "table" and H.hosts[stem] or nil
+    return h ~= nil and h.L or nil
+  end
+
+  function TP.Local(stem, k)
+    local L = TP.Locals(stem)
+    if L == nil then
+      return nil
+    end
+    local ok, v = pcall(function()
+      return L[k]
+    end)
+    return ok and v or nil
+  end

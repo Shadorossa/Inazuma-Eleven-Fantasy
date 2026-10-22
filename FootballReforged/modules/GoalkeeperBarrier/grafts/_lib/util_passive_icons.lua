@@ -3,12 +3,12 @@
   -- ---- archetype icons of the status plate header ----------------------------------------------------------------
   -- Retail draws ONE build icon (chara field 36 = the archetype the configurator derives: slot 4's for a dual one) on
   -- _icon_build_dmy01 in the header's left strip (soccer11_04 / soccer11_04pp layouts). A dual archetype (slots 4
-  -- and 5 of different archetypes, CMND_UTIL_PC_INFO) also shows slot 5's archetype on _icon_lock_status01: the
+  -- and 5 of different archetypes, CMND_BETTERQOL_PC_INFO) also shows slot 5's archetype on _icon_lock_status01: the
   -- 28 px quad right above it in the same strip, centred on it (retail hides that quad on every refresh, so a single
   -- archetype keeps the retail look). Hooked on UpdateCharaStatusPlateInfoByCharaStHdl, which every header refresh
   -- goes through (BySoccerCharaHdl / UseAttributeBg included).
   UTIL_PCI = UTIL_PCI or {}
-  UTIL_PCI.CMD_INFO = @crc:CMND_UTIL_PC_INFO@
+  UTIL_PCI.CMD_INFO = @crc:CMND_BETTERQOL_PC_INFO@
   UTIL_PCI.ICON_TEX = 2320109963 -- #/menu/200_icon/15_icon_common/icon_common.g4tx
   UTIL_PCI.LOCK_MESH = 1670039012 -- _icon_lock_status01
   UTIL_PCI.LOCK_DUMMY = @crc:icon_lock_status01@
@@ -23,18 +23,18 @@
   UTIL_PCI.ROW_MASKED_MESH = 1255155594 -- _icon_cmd_type_dmy01 (unused)
   UTIL_PCI.PLATE_SLOT = 2597149412 -- teambuff_base01 (texture slot of the plate row's _teambuff_base01)
   -- the special passive's tile (soccer11_20 sprite): only when a mod's slot rules declare one ([slots] special_tile,
-  -- answered by CMND_UTIL_PC_SPECIAL; the plate session sets it), else the retail tile
+  -- answered by CMND_BETTERQOL_PC_SPECIAL; the plate session sets it), else the retail tile
   UTIL_PCI.SPECIAL_TILE = UTIL_PCI.SPECIAL_TILE or 0
 
   -- ---- mods' passive icons ----------------------------------------------------------------------------------------
   -- A mod draws its own icon for a passive effect (sprite of the per-language atlas icon_teambuff) instead of the
   -- retail buff icon of the effect (GRAND_TOTAL_INFO buff icon, kept for the match HUD): its passive_config\*.toml
-  -- [[effect_icon]] (Utilities, docs/game/mechanics/pasivas-configurables.md §3), answered by CMND_UTIL_PC_EFF_ICON
+  -- [[effect_icon]] (Utilities, docs/game/mechanics/pasivas-configurables.md §3), answered by CMND_BETTERQOL_PC_EFF_ICON
   -- (0 = none). Asked once per effect and VM. Wraps the retail SwapPassiveSkillEffectIcon (plate rows, techniques
   -- screen); the pickers ask UTIL_PCI.EffIcon.
   UTIL_PCI.TEAMBUFF_TEX = 2301895383 -- #/menu/200_icon/08_icon_teambuff/<LG>/icon_teambuff.g4tx
   UTIL_PCI.TEAMBUFF_SLOT = 3234721532 -- icon_teambuff_dmy01 (the retail row's buff icon slot)
-  UTIL_PCI.CMD_EFF_ICON = @crc:CMND_UTIL_PC_EFF_ICON@
+  UTIL_PCI.CMD_EFF_ICON = @crc:CMND_BETTERQOL_PC_EFF_ICON@
   UTIL_PCI.EFF_ICON = UTIL_PCI.EFF_ICON or {}
   function UTIL_PCI.EffIcon(eff)
     if type(eff) ~= "number" or eff == 0 then

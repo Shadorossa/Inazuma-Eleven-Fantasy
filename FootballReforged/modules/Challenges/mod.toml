@@ -1,14 +1,15 @@
-id = "challenges"
+id = "Challenges"
+former_ids = ["challenges"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Challenges"
-version = "1.1.0"
+version = "1.2.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Match challenges other mods can arm: score 3 goals in 45 s, keep the ball for 15 s, steal the ball. With the all-outfield 5v5 formation of the possession challenges and the office trial friendlies (5v5, 7v7, 3v3) Inazuma Fantasy's office launches."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 # This mod's own names: TOML keys Challenges.X, text keys challenges.<key>; never VRFW. Ruleset, friendly, formation,
 # trigger and team ids are global and kept as they were in Inazuma Fantasy.
 prefix = "Challenges"
@@ -28,7 +29,7 @@ folder = "Challenges"
 # The framework's match engine runs the challenges; the office that offers the trials (games evt_trial_NN, texts, HUD)
 # stays Inazuma Fantasy's.
 # 1.1.0 (2026-10-21): the rulesets it plays (football_7, inazuma_street, if_pachanga_5v5) are Football Reforged's base.
-requires = ["vr_framework>=2.4.75", "football_reforged>=1.5.0", "pachangas>=1.0.0"]
+requires = ["VRFW>=2.4.75", "FootballReforged>=1.5.0", "Pachangas>=1.0.0"]
 conflicts = []
 loader_modules = []
 permissions = []
@@ -41,5 +42,5 @@ tables = []
 # A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
 # screen; switching Football Reforged off switches it off too. On by default.
 [module]
-of = "football_reforged"
+of = "FootballReforged"
 order = 80

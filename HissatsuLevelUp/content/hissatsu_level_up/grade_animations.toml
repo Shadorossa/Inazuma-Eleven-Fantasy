@@ -1,0 +1,30 @@
+schema = "HissatsuLevelUp.rules/1"
+# Hissatsu Level Up › grade animations: from a grade on, a special move plays the cut-in of its evolution. Only the cut-in
+# changes: the move keeps its own name, power, element, cost and recast. The grade is the player's own grade of the
+# move in that match (the user's players: earned by use; rivals: their team's grade), checked when the cut-in starts.
+# Any active mod may add entries in its own content\hissatsu_level_up\*.toml (it lists "hissatsu_level_up" in its [layout]
+# script_folders); a later entry for the same move and grade replaces this one, `enabled = false` takes it off.
+# Keys: technique / animation_of = a move's internal key (whk00010), a mod move <mod>.<name> or its id; grade = 1..6
+# (1 the first grade, 5 = G5, 6 the last grade). Docs: docs/game/mechanics/skill-rank-usage.md §7.16.
+
+# Mano celestial (God Hand, mountain, whk00010, cut-in ev63_00010_1 / _2) at G5 shows Mano celestial EV (whk00490,
+# ev63_00490_1 / _2)
+[[HissatsuLevelUp.GradeAnimation]]
+technique = "whk00010"
+grade = 5
+animation_of = "whk00490"
+
+# Parada celestial (God Catch, mountain, whk00550, cut-in ev63_00550_1 / _2) at G5 shows Parada celestial TURBO
+# (whk00555, ev63_00555_1 / _2)
+[[HissatsuLevelUp.GradeAnimation]]
+technique = "whk00550"
+grade = 5
+animation_of = "whk00555"
+
+# Superpuño invencible (Fist of Justice, mountain, whk00440, cut-in ev63_00440_1 / _2) at G5 shows its G5 cut-in:
+# the copy HissatsuLevelUp.fist_of_justice_g5 (content/techniques/fist_of_justice_g5.toml, events ev63_80440 / _80441
+# with the effects content/effects/fist_of_justice_g5.toml adds, as TURBO adds to Parada celestial)
+[[HissatsuLevelUp.GradeAnimation]]
+technique = "whk00440"
+grade = 5
+animation_of = "HissatsuLevelUp.fist_of_justice_g5"

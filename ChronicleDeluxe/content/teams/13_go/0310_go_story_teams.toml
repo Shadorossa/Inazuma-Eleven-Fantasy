@@ -7,7 +7,6 @@ schema = "VRFW.team/2"
 # its retail levels + the rival's level change (the retail gap kept) with its 3DS lists; its story moves learned once
 # their story event came before the match. Techniques VR's own match scripts use keep their retail state.
 # A rival's per-match move set of the 3DS game (soccer_chara_btlNNNN) wins over his learn list where it exists.
-if_not_mod = "chronicles_deluxe"
 default_lang = "en"
 # note: fbtl_cro04_100_010 (tm_cro_go1_1000): 3DS player Grisley Bear has no member in the VR team (left out)
 # note: fbtl_cro04_220_010 (tm_cro_go2_2700): no 3DS story match, scaled retail Lv 45 -> 61

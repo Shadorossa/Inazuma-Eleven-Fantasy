@@ -10,7 +10,7 @@
 #                        the generated table ss_data.lua), then autosaves
 #   title_menu_2         host handler (ss_title2.lua): runs the apply from OnInit after the slot service's COMMIT
 name = "story_start"
-mod = "vr_framework"
+mod = "VRFW"
 order = 150
 requires = ["save_slots"]
 conflicts = []

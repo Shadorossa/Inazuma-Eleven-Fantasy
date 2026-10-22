@@ -7,9 +7,10 @@
 --     context  a whole number handed to the mod's source command (e.g. its zone)
 --     opts     { hide = { layer crc… } } more layers of the caller hidden while the screen is up (each visible
 --              instance, shown again when it closes; a hidden one stays hidden),
---              models = { {layer crc, slot}, … } the caller's own 3D models hidden meanwhile (a menu model of the
---              caller is drawn in the 3D pass over the screen's backgrounds, through the screen's model camera: the
---              Chronicle board's caravan showed huge over the list)
+--              models = { {layer crc, slot}, … } the caller's own 3D models (instance 0 of the layer): hidden
+--              meanwhile through their model handle (the layer itself stays visible: it may hold the caller's
+--              backgrounds), and put back where they were when the screen closes (the caller's step may place them
+--              through the screen's model camera while it is up: the Chronicle board's caravan, drawn huge)
 -- No engine call at load time.
 if VRFW_PoseRow == nil then
   local R = {
@@ -24,6 +25,8 @@ if VRFW_PoseRow == nil then
     START_WAIT = 60,             -- frames the screen may take to appear
     LAYER_NUM = 1175615627,      -- (layer) -> instance count
     IS_VISIBLE = 1262717583,     -- (layer, instance) -> visible
+    MODEL_POS = 3136332215,      -- CMND_GET_CHARA_MODEL_POS (layer, instance, slot) -> found, x, y, z
+    MODEL_SET_POS = 1088067423,  -- CMND_SET_CHARA_MODEL_POS (layer, instance, x, y, z, slot)
     MODEL_HANDLE = 3895705890,   -- (layer, instance, slot) -> the menu model's handle (0: none)
     MODEL_VISIBLE = 1890282463,  -- (handle, on)
   }
@@ -43,8 +46,8 @@ if VRFW_PoseRow == nil then
     return ok and r == true
   end
 
-  -- the caller's models: hidden (on = false), each one's handle kept; shown again (on = true)
-  local function models(list, on, kept)
+  -- the caller's models: hidden (on = false: each one's handle kept), shown again (on = true)
+  function R.ModelShow(list, on, kept)
     kept = kept or {}
     for k, m in ipairs(list or {}) do
       local h = kept[k]
@@ -60,21 +63,19 @@ if VRFW_PoseRow == nil then
     return kept
   end
 
-  -- the caller's models' place (CMND_GET_CHARA_MODEL_POS): kept before the screen; after it, a place that moved is put
-  -- back (CMND_SET_CHARA_MODEL_POS) and one line logged
+  -- the caller's models' place: kept before the screen; after it, a place that moved is put back (one log line)
   function R.ModelPlace(list, when)
     R.places = R.places or {}
     for k, m in ipairs(list or {}) do
-      local r = table.pack(pcall(funcLuaMenuCommand, 3136332215, m[1], 0, m[2] or 0))
-      local found, x, y, z = r[2], r[3], r[4], r[5]
+      local r = table.pack(pcall(funcLuaMenuCommand, R.MODEL_POS, m[1], 0, m[2] or 0))
+      local x, y, z = r[3], r[4], r[5]
       if when == "before" then
-        R.places[k] = (r[1] and found == true and type(x) == "number") and {x, y, z} or false
-      elseif R.places[k] and (type(x) ~= "number" or math.abs(x - R.places[k][1]) > 0.001
+        R.places[k] = (r[1] and r[2] == true and type(x) == "number") and {x, y, z} or false
+      elseif R.places[k] and type(x) == "number" and (math.abs(x - R.places[k][1]) > 0.001
           or math.abs(y - R.places[k][2]) > 0.001 or math.abs(z - R.places[k][3]) > 0.001) then
         local p = R.places[k]
-        pcall(funcLuaMenuCommand, 1088067423, m[1], 0, p[1], p[2], p[3], m[2] or 0)
-        R.Log("caller model", m[1], m[2] or 0, "place", tostring(x), tostring(y), tostring(z), "put back to",
-          p[1], p[2], p[3])
+        pcall(funcLuaMenuCommand, R.MODEL_SET_POS, m[1], 0, p[1], p[2], p[3], m[2] or 0)
+        R.Log("caller model", m[1], m[2] or 0, "moved to", x, y, z, "put back to", p[1], p[2], p[3])
       end
     end
   end
@@ -101,7 +102,7 @@ if VRFW_PoseRow == nil then
       end
     end
     R.ModelPlace(opts.models, "before")
-    local kept = models(opts.models, false)
+    local kept = R.ModelShow(opts.models, false)
     pcall(funcLuaCommand, R.OPEN_MENU, R.MENU)
     local t = 0
     while not up() and t < R.START_WAIT do
@@ -115,10 +116,8 @@ if VRFW_PoseRow == nil then
     for _, h in ipairs(hidden) do
       pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], h[1], h[2], true)
     end
-    models(opts.models, true, kept)
     R.ModelPlace(opts.models, "after")
-    coroutine.yield()
-    R.ModelPlace(opts.models, "after")   -- again once the caller's own step ran
+    R.ModelShow(opts.models, true, kept)
     if yielded then pcall(VRFW_HubYield, false, R.MENU) end
     local pick = 0
     local okx, exists = pcall(funcLuaCommand, R.P_EXISTS, R.KEY_PICK)

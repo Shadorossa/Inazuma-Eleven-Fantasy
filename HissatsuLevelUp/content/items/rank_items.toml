@@ -1,0 +1,95 @@
+schema = "VRFW.item/2"
+# Hissatsu Level Up › the move-rank items (docs/game/mechanics/move-rank-items.md). Used from the skill table screen (graft
+# move_rank_items: a move row, the item key, confirm with the old -> new level); the effect is scripts\hissatsu_level_up.lua
+# (CMND_HISSATSULEVELUP_RANK_ITEM), the item ids come from config.toml [ranks] raise_item / last_grade_item. Moved from
+# Inazuma Fantasy's content\items\move_rank_items.toml on 2026-10-14.
+#
+# 1. technique_upgrade_book «Libro de mejora de supertécnica» (owner 2026-10-14: its own item): +1 level of ONE special
+#    move of ONE player, up to the second-to-last level. Cloned from the retail abl_000001 («Nueva posibilidad», the
+#    original ability board's piece), which keeps its retail name, description, icon and sources again (until 1.0.3
+#    this mod renamed abl_000001 into the book; a save's abl_000001 stock is NOT converted, the mod only logs it once
+#    per save slot: CMND_HISSATSULEVELUP_RETAIL_STOCK, graft sr_popup). Icon: its own texture abl_ub000001 of the `abl`
+#    sheet, made at build from the player's retail abl_000001 icon with the hue turned to blue
+#    (content\images\menu\200_icon\02_icon_item\technique_upgrade_book.toml). Its id = crc32("abl_ub000001") =
+#    0xA1B0F543 (key_id); config.toml raise_item = "abl_ub000001". Sold in the Tienda general (content\shops\).
+# 2. ultimate_evolution_manual: Inazuma Eleven GO Galaxy's 究極進化の書 (items 196E4A75 SH / BC7E30F6 OF / CBAE01E7 DF /
+#    49FE9636 GK, category 200; Galaxy taisen route prizes): one item for every move category here. Takes a move from
+#    the second-to-last level to the last (G5 -> GO, 超 / 絶 / 極 -> 神, A / S / Z -> ∞). Galaxy only shipped in
+#    Japanese: ja = the official name, en = the wiki's name («Ultimate Evolution Manual»), the others translate it.
+#    Icon: its own texture abl_ue000001 = Galaxy's icon (content\images\menu\200_icon\02_icon_item\
+#    ultimate_evolution_manual.toml, research/scripts/if_ultimate_manual_icon.py), in the `abl` sheet (icon_item01).
+#    Its id = crc32("abl_ue000001") = 0x6417CBCD (key_id), the same id it had in Inazuma Fantasy.
+default_lang = "es"
+
+[[item]]
+name = "technique_upgrade_book"
+base = "abl_000001"
+category = "consumable"
+key_id = true                                 # id = crc32("abl_ub000001") = 0xA1B0F543, like every retail item
+icon_key = "abl_ub000001"                     # own texture of icon_item01 (the `abl` sheet): the retail icon, blue
+rarity = 2
+max_stack = 999
+  [item.text.es]
+  name = "Libro de mejora de supertécnica"
+  description = "Sube un nivel una supertécnica de un jugador.\nNo llega al último nivel: para eso hace falta\nel Cuaderno de evolución definitiva."
+  [item.text.en]
+  name = "Special Move Upgrade Book"
+  description = "Raises one special move of one player by one level.\nIt can't reach the final level: that takes\nan Ultimate Evolution Manual."
+  [item.text.fr]
+  name = "Livre d'amélioration de technique"
+  description = "Fait monter d'un niveau une supertechnique d'un joueur.\nN'atteint pas le dernier niveau : il faut pour cela\nle Livre d'évolution ultime."
+  [item.text.de]
+  name = "Technik-Verbesserungsbuch"
+  description = "Hebt eine Spezialtechnik eines Spielers um eine Stufe an.\nDie letzte Stufe erreicht sie damit nicht:\ndafür braucht es das Buch der ultimativen Evolution."
+  [item.text.it]
+  name = "Libro potenziamento tecnica"
+  description = "Fa salire di un livello una supertecnica di un giocatore.\nNon arriva all'ultimo livello: per quello serve\nil Libro dell'evoluzione suprema."
+  [item.text.pt]
+  name = "Livro de melhoria de técnica"
+  description = "Sobe um nível uma supertécnica de um jogador.\nNão chega ao último nível: para isso é preciso\no Livro da evolução suprema."
+  [item.text.ja]
+  name = "必殺技強化の書"
+  description = "選手1人の必殺技1つを1段階進化させる。\n最終段階にはできない。\n最終段階には究極進化の書が必要。"
+  [item.text.zh_hans]
+  name = "必杀技强化之书"
+  description = "让一名球员的一个必杀技进化一个阶段。\n无法进化到最终阶段：\n那需要究极进化之书。"
+  [item.text.zh_hant]
+  name = "必殺技強化之書"
+  description = "讓一名球員的一個必殺技進化一個階段。\n無法進化到最終階段：\n那需要究極進化之書。"
+
+[[item]]
+name = "ultimate_evolution_manual"
+base = "abl_000001"
+category = "consumable"
+key_id = true                                 # id = crc32("abl_ue000001") like every retail item: with another id the
+                                              # drop list / reward rows drew it blank (2026-10-12)
+icon_key = "abl_ue000001"                     # own texture of icon_item01 (the `abl` sheet): Galaxy's icon
+rarity = 2                                    # the game's plates are 1-2
+max_stack = 999
+  [item.text.es]
+  name = "Cuaderno de evolución definitiva"
+  description = "Lleva una supertécnica de un jugador de su penúltimo\nnivel al último (G5 → GO, 超 → 神...).\nSolo funciona con técnicas en su penúltimo nivel."
+  [item.text.en]
+  name = "Ultimate Evolution Manual"
+  description = "Takes one special move of one player from its second-to-last\nlevel to the final one (G5 → GO, 超 → 神...).\nOnly works on moves at their second-to-last level."
+  [item.text.fr]
+  name = "Livre d'évolution ultime"
+  description = "Fait passer une supertechnique d'un joueur de son avant-dernier\nniveau au dernier (G5 → GO, 超 → 神...).\nNe marche que sur une technique à son avant-dernier niveau."
+  [item.text.de]
+  name = "Buch der ultimativen Evolution"
+  description = "Bringt eine Spezialtechnik eines Spielers von der vorletzten\nzur letzten Stufe (G5 → GO, 超 → 神...).\nWirkt nur bei Techniken auf der vorletzten Stufe."
+  [item.text.it]
+  name = "Libro dell'evoluzione suprema"
+  description = "Porta una supertecnica di un giocatore dal penultimo\nlivello all'ultimo (G5 → GO, 超 → 神...).\nFunziona solo con tecniche al penultimo livello."
+  [item.text.pt]
+  name = "Livro da evolução suprema"
+  description = "Leva uma supertécnica de um jogador do penúltimo\nnível ao último (G5 → GO, 超 → 神...).\nSó funciona com técnicas no penúltimo nível."
+  [item.text.ja]
+  name = "究極進化の書"
+  description = "選手1人の必殺技1つを最終段階の1つ手前から\n最終段階へ進化させる（G5 → GO、超 → 神…）。\n最終段階の1つ手前の必殺技にだけ使える。"
+  [item.text.zh_hans]
+  name = "究极进化之书"
+  description = "让一名球员的一个必杀技从倒数第二阶段\n进化到最终阶段（G5 → GO、超 → 神…）。\n只能用于处于倒数第二阶段的必杀技。"
+  [item.text.zh_hant]
+  name = "究極進化之書"
+  description = "讓一名球員的一個必殺技從倒數第二階段\n進化到最終階段（G5 → GO、超 → 神…）。\n只能用於處於倒數第二階段的必殺技。"

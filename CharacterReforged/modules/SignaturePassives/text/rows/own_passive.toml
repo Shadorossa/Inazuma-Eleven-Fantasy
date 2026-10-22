@@ -1,0 +1,64 @@
+# Signature Passives › the game's texts of the custom passive slot renamed «Pasiva propia»: the slot holds each player's
+# own passive, it is no longer equipped (menu_text rows by id, 9 languages). Format: docs/framework/types/text.md.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = 1901464137  # the slot's name (board piece, list tab, equip menu header)
+es = "Pasiva propia"
+en = "Signature Passive"
+fr = "Passif exclusif"
+de = "Persönliche Passivfähigkeit"
+it = "Abilità passiva esclusiva"
+pt = "Passiva Própria"
+ja = "固有パッシブ"
+zh_hans = "专属被动技能"
+zh_hant = "專屬被動技能"
+
+[[row]]
+id = 498819128  # the same name in the header titles
+es = "Pasiva propia"
+en = "Signature Passive"
+fr = "Passif exclusif"
+de = "Persönliche Passivfähigkeit"
+it = "Abilità passiva esclusiva"
+pt = "Passiva Própria"
+ja = "固有パッシブ"
+zh_hans = "专属被动技能"
+zh_hant = "專屬被動技能"
+
+[[row]]
+id = 881264133  # the empty slot's detail window: name
+es = "Espacio de pasiva propia"
+en = "Signature Passive Slot"
+fr = "Emplacement de passif exclusif"
+de = "Slot der persönlichen Passivfähigkeit"
+it = "Slot abilità passiva esclusiva"
+pt = "Espaço da Passiva Própria"
+ja = "固有パッシブスロット"
+zh_hans = "专属被动技能栏位"
+zh_hant = "專屬被動技能欄"
+
+[[row]]
+id = 3527340873  # the empty slot's detail window: description
+es = "Aquí va la pasiva propia del jugador. No se puede cambiar."
+en = "Holds the player's own Signature Passive.\nIt cannot be changed."
+fr = "Contient le passif exclusif du joueur.\nIl ne peut pas être changé."
+de = "Enthält die persönliche Passivfähigkeit des Spielers.\nSie kann nicht geändert werden."
+it = "Contiene l'abilità passiva esclusiva del giocatore.\nNon si può cambiare."
+pt = "Contém a Passiva Própria do jogador.\nNão pode ser trocada."
+ja = "選手それぞれの固有パッシブ。\n変更はできない。"
+zh_hans = "球员自身的专属被动技能。\n无法更换。"
+zh_hant = "球員自身的專屬被動技能。\n無法更換。"
+
+[[row]]
+id = 818778190  # the board's unlock notice
+es = "Se ha desbloqueado la pasiva propia <ICON> de [CREPORT01]<CHARA_NAME>[C]."
+en = "[CREPORT01]<CHARA_NAME>[C]'s <ICON> Signature Passive has been unlocked."
+fr = "Le passif exclusif <ICON> de [CREPORT01]<CHARA_NAME>[C] a été déverrouillé."
+de = "Die persönliche Passivfähigkeit <ICON> von [CREPORT01]<CHARA_NAME>[C] wurde freigeschaltet."
+it = "L'abilità passiva esclusiva <ICON> di [CREPORT01]<CHARA_NAME>[C] è stata sbloccata."
+pt = "A Passiva Própria <ICON> de [CREPORT01]<CHARA_NAME>[C] foi desbloqueada."
+ja = "[CREPORT01]<CHARA_NAME>[C] の <ICON>固有パッシブが[解放/かいほう]された。"
+zh_hans = "[CREPORT01]<CHARA_NAME>[C]的 <ICON>专属被动技能已解锁。"
+zh_hant = "[CREPORT01]<CHARA_NAME>[C]的<ICON>專屬被動技能已解鎖。"

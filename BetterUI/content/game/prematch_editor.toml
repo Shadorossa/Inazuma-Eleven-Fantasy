@@ -21,12 +21,6 @@ schema = "VRFW.game/2"
 # no relocation), the `je` stays in place and reads the flags the trampoline's `test` set. None of rax, rcx, rdx,
 # r8-r11 is live on either path; rbx (bl), rsi, xmm6 / xmm7 must be kept (the stub keeps every register anyway).
 
-# bool IsNetworkSession() 0x1239C70: [g_session] (+0x2410 count, +0x2414 kinds, entry * 0x1208 + 0x1200 bit 2). Two
-# functions have these bytes (0x1239C70 and 0x1239ED0, the same global); the trailing padding picks the first.
-[[VRFW.Function]]
-name = "IsNetworkSession"
-game = "Net.IsSession"
-
 # Match info fields the decision reads.
 [[VRFW.Struct]]
 name = "MatchInfo"
@@ -39,6 +33,6 @@ fields = { flags = { at = 0x00, type = "u32" }, match_type = { at = 0x16, type =
 name = "PrematchEditor"
 game = "Menu.PrematchEditor"
 kind = "mid"
-needs = ["IsNetworkSession", "MatchInfo"]
+needs = ["Net.IsSession", "MatchInfo"]
 
 # config.toml skip_prematch_editor = false (developer kill switch): the handler answers nothing (retail editor).

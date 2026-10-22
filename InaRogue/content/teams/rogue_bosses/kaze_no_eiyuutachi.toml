@@ -1,0 +1,45 @@
+schema = "VRFW.team/2"
+default_lang = "en"
+# Special boss (rogue/bosses.toml). Team kept from the archived Chronicles Deluxe; key unchanged so the match hash stays.
+# Kaze no Eiyuutachi (CS, «Fuyukai Suguru's route» #4; report status: missing).
+# Roster: wiki lineup «CS |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Kaze_no_Eiyuutachi
+# Left out (no card in the game): Belial
+[[team]]
+name = "ct_wk_kaze_no_eiyuutachi"
+key = "evt_ct_wk_kaze_no_eiyuutachi"
+based_on = "tm_cro_go2_2720" # Demon's Horn: formation, kit, tactics (the wiki formation is not mapped)
+kit = { home = 0x35A52295, flip = true }  # team_kits_from_wiki.py: wiki «Gassan Wear away» = VR kit of tm_cro_go1_0900, tm_cro_go1_0920 (was 0x16DAA0FA)
+level = 55
+series = "CS"
+roster = "exact"
+member = [
+  { card = 0x5C5BBF0C, slot = 0, number = 1, rarity_step = 1 }, # Gigi Blasi = Gigi Blasi (GK)
+  { card = 0x515996B0, slot = 1, number = 2, rarity_step = 1, captain = true }, # Kazemaru Ichirouta = Nathan Swift (DF)
+  { card = 0x127FC7C9, slot = 2, number = 3, rarity_step = 1 }, # Ekadel = Ekadel (DF)
+  { card = 0x5338D833, slot = 3, number = 4, rarity_step = 1 }, # Kujirai Takanori = Gele (DF)
+  { card = 0x03A148DA, slot = 4, number = 5, rarity_step = 1 }, # Handa Shinichi = Steve Grim (MF)
+  { card = 0x03A33B7F, slot = 5, number = 6, rarity_step = 1 }, # Zaizen Touko = Victoria Vanguard (MF)
+  { card = 0xA4AC6C2E, slot = 6, number = 7, rarity_step = 1 }, # Kurione Yuki = Rhine (MF)
+  { card = 0x23CD7125, slot = 7, number = 8, rarity_step = 1 }, # Mephisto = Malphas (MF)
+  { card = 0x3F424FEE, slot = 8, number = 9, rarity_step = 1 }, # Matsuno Kuusuke = Maxwell Carson (FW)
+  { card = 0xE84B364C, slot = 9, number = 10, rarity_step = 1 }, # Endou Canon = Canon Evans (FW)
+  { card = 0xECCD92A8, slot = 10, number = 11, rarity_step = 1 }, # Kamezaki Kappa = Karl Kappa (GK)
+  { card = 0x55FBEF5C, slot = 11, number = 12, rarity_step = 1 }, # Tobitaka Seiya = Archer Hawkins (DF)
+  { card = 0x35AF165F, slot = 12, number = 13, rarity_step = 1 }, # Arute Saneki = Artie Mishman (MF)
+  { card = 0x8E1FB325, slot = 13, number = 14, rarity_step = 1 }, # Tonnino = Ton Nino (MF)
+  { card = 0xA3AE1CA4, slot = 14, number = 15, rarity_step = 1 }, # Dream = Amir Rika (FW)
+]
+[team.emblem]
+png = "content/teams/rogue_bosses/kaze_no_eiyuutachi.png" # wiki: Heroes of the Sky emblem.png
+base = "em050243"
+catalog = "shared"
+
+[team.text.es]
+name = "Heroes of the Sky"
+short = "Heroes of the Sky"
+[team.text.en]
+name = "Heroes of the Sky"
+short = "Heroes of the Sky"
+[team.text.ja]
+name = "風の英雄たち"
+short = "風の英雄たち"

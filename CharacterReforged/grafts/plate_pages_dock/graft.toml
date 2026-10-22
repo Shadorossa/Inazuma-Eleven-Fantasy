@@ -8,7 +8,7 @@
 # definitions; a function nobody redefined keeps the first copy's wrapper (EVT_PPG_Wrap: one wrapper per function).
 # Sources: the files of research/grafts/plate_pages.
 name = "plate_pages_dock"
-mod = "character_reforged"
+mod = "CharacterReforged"
 rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own scripts too (its merged files redefine what this wraps)
 order = 975
 module = "lua_bridge"

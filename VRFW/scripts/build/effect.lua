@@ -1,5 +1,5 @@
 -- Build script of the type `effect`: every active mod's effect declarations, in load order.
--- Assets stage: [[recolor]], [[effect]] (new pooled effects), [[shot_aura]], [[chr_trigger]], then the check of shipped effect packs.
+-- Assets stage: [[recolor]] (objects), [[effect]] (new pooled effects), [[recolor]] (auras), [[shot_aura]], [[chr_trigger]], then the check of shipped effect packs.
 -- Events stage (run by the `technique` type): [[event_effect]], [[attach]], [[event_timing]], [[event_command]]. A bad declaration skips only itself.
 -- input = { stage = "assets" | "events", files = { { file, mod, load_index, value = <effects file> } } (each
 --           [[recolor]] / [[event_command]] also has `json`), carry = { defined, copies } (event stage),
@@ -238,11 +238,27 @@ return function(input)
     read_define(X)
     for _, f in ipairs(X.files) do
       for i, d in ipairs(f.value.recolor or {}) do
-        local detail, err = recolor(X, d)
-        X.item(f, "recolor", i .. " (" .. (d.copy or d.object or d.effect or "?") .. ")", detail, err)
+        if d.aura == nil then
+          local detail, err = recolor(X, d)
+          X.item(f, "recolor", i .. " (" .. (d.copy or d.object or d.effect or "?") .. ")", detail, err)
+        end
       end
     end
     effects(X)
+    -- auras after the new pooled effects: both write effect_define (the aura's colour animations go on top)
+    for _, f in ipairs(X.files) do
+      for i, d in ipairs(f.value.recolor or {}) do
+        if d.aura ~= nil then
+          local detail, err
+          if d.object ~= nil or d.effect ~= nil then
+            err = "write exactly one of `object` / `effect` / `aura`"
+          else
+            detail, err = VRFW.effect.recolor_aura(d.json)
+          end
+          X.item(f, "recolor", i .. " (" .. (d.copy or d.aura) .. ")", detail, err)
+        end
+      end
+    end
     -- after the new pooled effects: an aura may name one
     if any(X, "shot_aura") then rules = T.shot_auras(X) end
     -- after the shot auras: both edit eff_chr_trigger

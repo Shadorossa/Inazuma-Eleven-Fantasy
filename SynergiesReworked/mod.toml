@@ -1,4 +1,5 @@
-id = "synergies_reworked"
+id = "SynergiesReworked"
+former_ids = ["synergies_reworked"]
 # «Synergies Reworked» (owner request 2026-10-14: «Separa de IF también lo de las sinergias»; spelling corrected from
 # «SinergiesReworked»). Split out of Inazuma Fantasy (its _phases.toml part `synergies`): declarations of the
 # VR-Framework's synergy type only (VRFW.synergy/1, run time = VRFW scripts\synergy.lua, the panel drawing included),
@@ -13,7 +14,7 @@ id = "synergies_reworked"
 name = "Synergies Reworked"
 prefix = "SynergiesReworked"
 folder = "SynergiesReworked"
-version = "1.1.0"
+version = "1.2.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Reworks some of the game's team synergies so they ask for players of a team or a group instead of a few named characters. El linaje oscuro: Ray Dark plus two players of Royal Academy, Zeus, Orfeo, Eclipse or Team D. Las gerentes más allegadas and Las gerentes de GO: any three female managers of their series. Los maestros de Alius: one Alius captain plus a player of each of the other two Alius teams. Los guerreros de Santuario: one player of Oscuridad Ancestral plus one of Luz Eterna. Líderes del Protocolo Omega: Alpha, Beta or Gamma plus two players of Protocol Omega 1.0, 2.0 or 3.0. The names, icons and effects stay the game's; the synergy panel shows the nexus, the teams' crests, the manager icon with the required series and who is still missing."
@@ -25,7 +26,7 @@ updated = "2026-10-22"
 # Inazuma Fantasy and Character Reforged are not needed (the pools read the game's own characters).
 # vr_framework 2.57.0: an emptied row's face stays off (no player behind a crest); the shop's effects page without the
 # rows' crests and minifaces.
-requires = ["vr_framework>=2.57.0"]
+requires = ["VRFW>=2.57.0"]
 conflicts = []
 permissions = []
 

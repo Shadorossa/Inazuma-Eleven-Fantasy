@@ -43,7 +43,7 @@ end
 
 local function team_of(handle)
   local index = band(handle or 0, 0xFF)
-  local actors = game_global("legendary_actors")
+  local actors = game_global("Match.SoccerActors.ViaSkillUsed")
   if handle == 0 or index >= ACTOR_COUNT or not actors then return nil end
   local actor = actors + index * ACTOR_STRIDE
   if read("u32", actor + ACTOR_HANDLE) ~= handle then return nil end

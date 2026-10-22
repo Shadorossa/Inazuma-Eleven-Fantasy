@@ -5,7 +5,7 @@
 --   tension_cost_multiplier        tension_pay:skill  cost_mult for the user's players (long_shot: long-shot moves)
 --   technique_cooldown_multiplier  recast             recast_mult for the user's players
 --   wall_reduction_multiplier      move_power         power_mult of that side's shot-block moves (the AT a wall takes away)
---   technique_grade_override       state key InaRogue.max_grade = 1 (the mod True Hissatsu's max_grade_states rule)
+--   technique_grade_override       state key InaRogue.max_grade = 1 (the mod Hissatsu Level Up's max_grade_states rule)
 --   technique_power_multiplier, technique_free_until_broken: move_power / tension_pay:skill through lib/rogue/svc_blocks.lua
 -- The active pieces are rebuilt whenever the run is loaded or saved (Core.on_run).
 

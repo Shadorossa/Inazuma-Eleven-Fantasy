@@ -2,9 +2,9 @@
 -- Character Reforged › the «Fantasy» skill table's role medal slot and its button row (graft skill_table_role_slot).
 -- HOOK file of evt_skill_slot_menu (shipped as is: command ids written as numbers, their names in the comments): it
 -- wraps the screen's globals and calls them; no retail or Character Reforged function is replaced.
---   * The bottom row is [ player sets ][ Entrenar ]: the custom passive button (evt_cmn03_07_btn_ss) and the role
---     button (evt_cmn03_07_btn_role) stay hidden with their icons (instances of the passive row layer) and out of the
---     focus chain (content\menus\skill_table.toml).
+--   * The bottom row is [ player sets ][ custom passive ][ Entrenar ]: the custom passive button (evt_cmn03_07_btn_ss)
+--     is graft ss2_menus'; the role button (evt_cmn03_07_btn_role) stays hidden with its icon (an instance of the
+--     passive row layer) and out of the focus chain (content\menus\skill_table.toml).
 --   * The coach / manager medal is the skill board's own slot (layer team13_05c_effect_grid_director_manager_slot of
 --     ability_learning_board_menu) shown above the player card: drawn as the board draws it (empty plate, gold coach
 --     or silver manager medal) at 62 % size, fully above the player card; focused with Up from the first move row or
@@ -23,7 +23,6 @@ do
   local Slot = CharacterReforged_RoleSlot
   Slot.LAYER = 3924714337                           -- team13_05c_effect_grid_director_manager_slot
   Slot.CARD = 1774956026                            -- team00_01_chara_card (the shown player's card)
-  Slot.BUTTON_SS = 605517988                        -- evt_cmn03_07_btn_ss (custom passive button, hidden)
   Slot.BUTTON_ROLE = 2356951558                     -- evt_cmn03_07_btn_role (role button, hidden)
   Slot.BUTTON_PASSIVES = 3196164535                 -- evt_cmn03_07_btn_icon (removed branch passives button, hidden)
   Slot.GET_ROLE = 1327558109                        -- CMND_CHARACTERREFORGED_GET_ROLE (charaStHdl) -> role, badge, plays, native, lock
@@ -225,15 +224,15 @@ do
     funcLuaMenuCommand(Slot.LOCATOR_VISIBLE, layer, 239073744 --[[_pos_orb_base02]], false, 0)
   end
 
-  -- the removed buttons and their icons: hidden whatever showed them again (list covers, icon refreshes)
+  -- the removed buttons and the role icon: hidden whatever showed them again (list covers, icon refreshes)
   function Slot.HideRemoved()
     local L = Slot.Table()
-    for _, layer in ipairs({Slot.BUTTON_SS, Slot.BUTTON_ROLE, Slot.BUTTON_PASSIVES}) do
+    for _, layer in ipairs({Slot.BUTTON_ROLE, Slot.BUTTON_PASSIVES}) do
       funcLuaMenuCommand(Slot.LAYER_VISIBLE, layer, 0, false)
     end
     if L ~= nil and L.L_PV_ROW ~= nil then
       local PL = L.PL
-      for _, k in ipairs({L.EVT_ROW_ICON_SS, PL and PL.ROW_ICON_ROLE or nil}) do
+      for _, k in ipairs({PL and PL.ROW_ICON_ROLE or nil}) do
         if type(k) == "number" then
           funcLuaMenuCommand(Slot.LAYER_VISIBLE, L.L_PV_ROW, k, false)
         end
@@ -271,7 +270,7 @@ do
         Slot.Show(false)
         pcall(Slot.Place)
         pcall(Slot.Draw)
-      elseif a1 == Slot.BUTTON_SS or a1 == Slot.BUTTON_ROLE or a1 == Slot.BUTTON_PASSIVES then
+      elseif a1 == Slot.BUTTON_ROLE or a1 == Slot.BUTTON_PASSIVES then
         funcLuaMenuCommand(Slot.LAYER_VISIBLE, a1, a2, false)
       end
       return table.unpack(result, 1, result.n)
@@ -287,7 +286,7 @@ do
         Slot.Show(false)
         pcall(Slot.Place)
         pcall(Slot.Draw)
-      elseif a1 == Slot.BUTTON_SS or a1 == Slot.BUTTON_ROLE or a1 == Slot.BUTTON_PASSIVES then
+      elseif a1 == Slot.BUTTON_ROLE or a1 == Slot.BUTTON_PASSIVES then
         funcLuaMenuCommand(Slot.LAYER_VISIBLE, a1, a2, false)
       end
       return table.unpack(result, 1, result.n)

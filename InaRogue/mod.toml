@@ -1,12 +1,13 @@
-id = "inarogue"
+id = "InaRogue"
+former_ids = ["inarogue"]
 name = "InaRogue"
-version = "1.2.0"
+version = "1.9.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "INAROGUE: el modo roguelite de Inazuma Eleven. Forma un equipo desde cero, recorre el mapa fase tras fase y colecciona cartas, avatares y formaciones en tu propia partida (ranura 4)."
 priority = 0
 tags = ["Mode"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 # 1.1.0 (owner 2026-10-20): the welcome gacha of the first entry (docs/game/modes/inarogue-welcome-gacha.md): the
 # first-run gift drawn in a gold copy of the Players Universe scene, each player revealed by the retail summon
 # performance, then a summary of the players.
@@ -16,7 +17,7 @@ updated = "2026-10-21"
 # companions (if_mod gates, soft commands). Inazuma Fantasy requires InaRogue, never the other way round.
 # vr_framework 2.2.205: the save import service ([[VRFW.SaveImport]]: INAROGUE's saved files of mod inazuma_fantasy) and the
 # reserved-slot hand-over (`takes_over`); 2.2.159: if_mod gates; 2.2.x: the title row host, the random team service.
-requires = ["vr_framework>=2.4.207"]
+requires = ["VRFW>=2.87.0"]
 # its title press / menus run before the other mods' patches, as INAROGUE did inside Inazuma Fantasy
 lua_early = true
 loader_modules = ["lua_bridge"]
@@ -35,9 +36,9 @@ keys = []
 tables = ["Passive.SlotsOff", "Passive.SignatureSlot", "Passive.SignatureOpen", "Passive.SignatureOnly"]
 
 # its own content\ folders read only by its scripts (no framework type): the catalogues (content\rogue\) and its growth
-# (content\growth\), its rule for the mod True Hissatsu (content\true_hissatsu\: no move rank-up by use in INAROGUE)
+# (content\growth\), its rule for the mod Hissatsu Level Up (content\hissatsu_level_up\: no move rank-up by use in INAROGUE)
 [layout]
-script_folders = ["rogue", "growth", "true_hissatsu"]
+script_folders = ["rogue", "growth", "hissatsu_level_up"]
 
 # Debug switches (docs/framework/debug-flags.md): the config.toml settings a debug flag forces on (e.g. while the mod
 # Debug Tools is enabled); config.toml keeps them off. Flag `unlock_all`: every avatar, office unlock, coach, album entry and

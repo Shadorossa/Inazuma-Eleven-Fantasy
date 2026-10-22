@@ -3,13 +3,18 @@
 # The retail rows Inazuma Fantasy's shops replace: in every shop that is not a story shop, each row of an item
 # one of its shops sells now is hidden (VRFW `hide`: the row stays in shop_config, never listed). 1458 items in 7 shops.
 # `hide_spirits = true`: the shop's player spirit rows hidden too ([sources] hide_spirits; 133 rows).
+# (an [[edit]] of its own, `if_not_mod = "new_recruitment"`: that mod hides them itself).
 # `hide_unknown_items = true`: its rows of an item item_config does not have hidden too ([sources] hide_unknown_items;
 # 2 rows).
 schema = "VRFW.shop/2"
 
 [[edit]]
-target = "0xB13B2BD5"           # Tienda vínculo (86 items)
+target = "0xB13B2BD5"           # Tienda vínculo
 hide_spirits = true             # 2 player spirit rows
+if_not_mod = "new_recruitment"     # that mod hides them
+
+[[edit]]
+target = "0xB13B2BD5"           # Tienda vínculo (86 items)
 hide = [
   "coi_object_k01h109", "coi_object_k01h113", "coi_object_k01h114", "coi_object_k01h116", "coi_object_k01h117", "coi_object_k01h112",
   "coi_object_k01h107", "gd110016", "gd110008", "gd110009", "gd110013", "gd110014",
@@ -229,8 +234,12 @@ hide = [
 ]
 
 [[edit]]
-target = "0x5B032CEA"           # Mercado de espíritus (268 items)
+target = "0x5B032CEA"           # Mercado de espíritus
 hide_spirits = true             # 57 player spirit rows
+if_not_mod = "new_recruitment"     # that mod hides them
+
+[[edit]]
+target = "0x5B032CEA"           # Mercado de espíritus (268 items)
 hide = [
   "whs01250", "whs01060", "whs01220", "whs01050", "whs01410", "whs01760",
   "whs02280", "whs02230", "whs02080", "wap01001", "wap01002", "wap01003",
@@ -280,12 +289,17 @@ hide = [
 ]
 
 [[edit]]
-target = "0x66B2F9E6"           # El atrio de los indomables (0 items)
+target = "0x66B2F9E6"           # El atrio de los indomables
 hide_spirits = true             # 71 player spirit rows
+if_not_mod = "new_recruitment"     # that mod hides them
+
+[[edit]]
+target = "0xAF9EA088"           # Tienda del torneo
+hide_spirits = true             # 3 player spirit rows
+if_not_mod = "new_recruitment"     # that mod hides them
 
 [[edit]]
 target = "0xAF9EA088"           # Tienda del torneo (10 items)
-hide_spirits = true             # 3 player spirit rows
 hide = [
   "uni_u011001_20", "uni_u020101_20", "uni_u061301_20", "uni_u070901_20", "uni_u070101_20", "whk00490",
   "ex0006", "ex0007", "ex0008", "abl_000001",

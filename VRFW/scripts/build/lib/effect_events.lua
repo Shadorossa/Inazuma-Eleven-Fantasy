@@ -156,12 +156,21 @@ local function command_id(s)
   return n or VRFW.crc32(s)
 end
 
-local function command(X, d)
+local function command(X, mod, d)
   if #(d.set or {}) == 0 then return nil, "`set` is empty" end
   local range, err = ranges(X, d.event, d.cuts)
   if not range then return nil, err end
   local key = list_key(X, d.list == "evt" and "evt" or "eff", d.event)
-  local n, frames = VRFW.effect.command(key, command_id(d.command), d.json, range)
+  -- a `set` string that names an own pooled effect ([[effect]]) is written as its game name
+  local names = {}
+  for _, s in ipairs(d.set) do
+    if type(s) == "string" then
+      local own = VRFW.ids.own(mod, s)
+      local game = (own and X.defined[own]) or X.defined[s]
+      if game then names[s] = game end
+    end
+  end
+  local n, frames = VRFW.effect.command(key, command_id(d.command), d.json, range, names)
   if not n then return nil, frames end
   if n == 0 then return nil, "no command " .. d.command .. " to change in " .. key end
   return { n .. " command(s) changed in place at frame(s) " .. show(frames) }
@@ -183,7 +192,7 @@ function M.run(X)
       X.item(f, "event_timing", i .. " (" .. d.event .. " " .. d.target .. ")", detail, err)
     end
     for i, d in ipairs(v.event_command or {}) do
-      local detail, err = command(X, d)
+      local detail, err = command(X, f.mod, d)
       X.item(f, "event_command", i .. " (" .. d.event .. " " .. d.command .. ")", detail, err)
     end
   end

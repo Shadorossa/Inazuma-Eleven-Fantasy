@@ -1,0 +1,143 @@
+-- Signature Passives › the own passive («Pasiva propia») on Victory Road's skill board (ability_learning_board_menu;
+-- graft signature_passives_board). HOOK file (shipped as is: command ids written as numbers, their names in the
+-- comments): it wraps the screen's globals and calls them; no retail function is replaced.
+--   * the custom passive piece (layer team13_05_effect_grid_six_sense) is drawn holding the player's own passive
+--     (CMND_SIGNATUREPASSIVES_OWN_PASSIVE), or empty when he has none, whatever item the save holds there;
+--   * its detail window shows that passive (or the empty slot's window);
+--   * selecting it never opens the custom passive list: the retail «cannot» sound plays instead.
+-- The player comes from the screen's own calls (OnInit's parameter, OnChangeTargetChara). Definitions and wraps only at
+-- chunk load (no engine call); the board's active / input state is never touched.
+do
+  SignaturePassives_Board = SignaturePassives_Board or {}
+  local Board = SignaturePassives_Board
+  Board.OWN_PASSIVE = 2480071350                     -- CMND_SIGNATUREPASSIVES_OWN_PASSIVE (charaStHdl) -> passive id, always open, mod
+  Board.SIX_SENSE_GRID = 1822684097                  -- team13_05_effect_grid_six_sense
+  Board.CATEGORY_SIX_SENSE = 5                       -- the custom passive piece's category (GetEffectPieceInfoFromMenu)
+  Board.FOCUS_RING = 2907318182                      -- team13_09_effect_grid_focus_ring
+  Board.FOCUS_INDEX = 2603265800                     -- (layer) -> the focused piece
+  Board.PIECE_INFO = 4147077179                      -- (piece) -> layerIdx, posIdx, skillId, selectedSkillId, category, …
+  Board.DETAIL = 1593383077                          -- team00_26_passive_slot_detail_info
+  Board.NAME_NODE = 1704438437                       -- _text_name01
+  Board.PASSIVE_INFO = 1448743477                    -- CMND_GET_PASSIVE_SKILL_INFO (0, id) -> effect; (2, id) -> name
+  Board.TEXT_GET = 4074371074                        -- CMND_TEXT_GET (text id)
+  Board.SLOT_NAME = 1901464137                       -- menu_text «Pasiva propia» (Signature Passives' text row)
+  Board.SET_TEXT = 1083631230                        -- CMND_SET_MENU_TEXT_STRING (layer, node, text, idx)
+  Board.LAYER_VISIBLE = 711242136                    -- CMND_SET_LAYER_VISIBLE (layer, idx, visible)
+  Board.PARAM_HAS = 2947612279                       -- parameter store: has (key)
+  Board.PARAM_GET = 3522198769                       -- parameter store: get (key)
+  Board.PARAM_CHARA = 4161869490                     -- the player the team dock passes (OnInit reads and clears it)
+  Board.SOUND = 1917805374                           -- play a system sound
+  Board.SOUND_CANNOT = 2086672038                    -- sy0003, the retail «cannot»
+  Board.chara = nil
+
+  -- the shown player's own passive id (0 = none)
+  function Board.OwnPassive()
+    local hdl = Board.chara
+    if type(hdl) ~= "number" or hdl == 0 then
+      return 0
+    end
+    local ok, passive = pcall(funcLuaCommand, Board.OWN_PASSIVE, hdl)
+    if ok and type(passive) == "number" then
+      return passive
+    end
+    return 0
+  end
+
+  function Board.PassiveName(passive)
+    local ok, name = pcall(funcLuaCommand, Board.PASSIVE_INFO, 2, passive)
+    if ok and type(name) == "string" and name ~= "" then
+      return name
+    end
+    local ok2, text = pcall(funcLuaCommand, Board.TEXT_GET, Board.SLOT_NAME)
+    return (ok2 and type(text) == "string") and text or ""
+  end
+
+  -- the detail window of the custom passive piece: the own passive, else the empty slot
+  function Board.Detail()
+    local piece = funcLuaMenuCommand(Board.FOCUS_INDEX, Board.FOCUS_RING)
+    if type(piece) ~= "number" then
+      return
+    end
+    local category = select(5, funcLuaMenuCommand(Board.PIECE_INFO, piece))
+    if category ~= Board.CATEGORY_SIX_SENSE then
+      return
+    end
+    local passive = Board.OwnPassive()
+    if passive == 0 then
+      UpdateEmptySixSenseSlotDetailWindow(0)
+      return
+    end
+    local effect = funcLuaCommand(Board.PASSIVE_INFO, 0, passive)
+    UpdateSixSenseDetailInfo(0, passive, effect, Board.chara)
+    funcLuaMenuCommand(Board.SET_TEXT, Board.DETAIL, Board.NAME_NODE, Board.PassiveName(passive), 0)
+    funcLuaMenuCommand(Board.LAYER_VISIBLE, Board.DETAIL, 0, true)
+  end
+
+  -- ---- the wraps (once per VM; each calls what it wrapped) -----------------------------------------------------
+  function Board.WrapGlobal(name, make)
+    Board.wrappers = Board.wrappers or {}
+    local current = _ENV[name]
+    if current == nil or Board.wrappers[name] == current then
+      return
+    end
+    local wrapper = make(current)
+    Board.wrappers[name] = wrapper
+    _ENV[name] = wrapper
+  end
+
+  -- the player: the team dock's parameter, read before the retail OnInit takes it
+  Board.WrapGlobal("OnInit", function(previous)
+    return function(...)
+      Board.chara = nil
+      pcall(function()
+        if funcLuaCommand(Board.PARAM_HAS, Board.PARAM_CHARA) == true then
+          Board.chara = funcLuaCommand(Board.PARAM_GET, Board.PARAM_CHARA)
+        end
+      end)
+      return previous(...)
+    end
+  end)
+
+  -- L / R: another player
+  Board.WrapGlobal("OnChangeTargetChara", function(previous)
+    return function(chara, ...)
+      Board.chara = chara
+      return previous(chara, ...)
+    end
+  end)
+
+  -- the piece: always the own passive (equipped look), or empty
+  Board.WrapGlobal("UpdateEffectPieceIcon", function(previous)
+    return function(layer, idx, piece, skill, equipped, ...)
+      if layer == Board.SIX_SENSE_GRID then
+        local ok, passive = pcall(Board.OwnPassive)
+        if ok and passive ~= 0 then
+          return previous(layer, idx, piece, passive, true, ...)
+        end
+        return previous(layer, idx, piece, skill, false, ...)
+      end
+      return previous(layer, idx, piece, skill, equipped, ...)
+    end
+  end)
+
+  Board.WrapGlobal("UpdateDetailWindow", function(previous)
+    return function(show, a2, a3, title, ...)
+      local result = table.pack(previous(show, a2, a3, title, ...))
+      if show ~= false and not title then
+        pcall(Board.Detail)
+      end
+      return table.unpack(result, 1, result.n)
+    end
+  end)
+
+  -- the custom passive list (OpenAbilityListMenu's third argument) never opens: the slot cannot be changed
+  Board.WrapGlobal("OpenAbilityListMenu", function(previous)
+    return function(piece, skill, six_sense, ...)
+      if six_sense then
+        pcall(funcLuaCommand, Board.SOUND, Board.SOUND_CANNOT)
+        return
+      end
+      return previous(piece, skill, six_sense, ...)
+    end
+  end)
+end

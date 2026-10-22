@@ -5,7 +5,7 @@
 # route_board's VRFW_RB_MatchRank (the framework's S / A / B score rule VRFW_MatchRank); the "C" crest's badge is route_board's VRFW_RB_Badge, VRFW_RCH_RankOf its default rank.
 # Order after route_nodes (160: VRFW_RN_Load); route_board (190) adds the hook points and the host call after it.
 name = "route_chains"
-mod = "vr_framework"
+mod = "VRFW"
 order = 180
 module = ""
 requires = ["route_nodes"]

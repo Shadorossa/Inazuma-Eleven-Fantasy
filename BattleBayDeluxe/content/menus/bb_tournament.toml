@@ -288,7 +288,7 @@ scale = [0.0, 0.0, 1.0]
 
 # 1.8.0: the Victory Road mode's stadium background (victory_road_top_menu's vroad01_00_background: _bg_v01, 2640 x
 # 1080 from x -360, layout in screen px), opened under the bracket by the graft (BBT_Open) behind its pools
-# (draw priority 560; its own 200 would draw over them); the band (vroad04_01_p1_bg, 195) stays in front of it
+# (draw priority 190, a higher priority draws in front); the band (vroad04_01_p1_bg, 195) stays in front of it
 [[patch]]
 menu = "bb_stadium_top_menu"
 add_layer = { name = "vroad01_00_background", object = "vroad01_00_background", count = 1, align = [1, 8], scale = 0.20000000298023224, groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0] }] }

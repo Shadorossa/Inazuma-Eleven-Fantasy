@@ -8,7 +8,7 @@
 # Wrappers of UpdateScreenOutCtrlCharaIcon (watches the bubble, changes nothing) and PostStep (draws); order 310: after
 # stamina_hud (300) when both build into one script. Nothing at chunk load.
 name = "aura_points_hud"
-mod = "aura_points"
+mod = "AuraPoints"
 order = 310
 module = "lua_bridge"
 requires = []

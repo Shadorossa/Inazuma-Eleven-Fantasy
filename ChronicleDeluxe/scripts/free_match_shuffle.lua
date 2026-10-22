@@ -132,7 +132,7 @@ end
 
 -- the member rows of team `id` in memory: { [slot] = row address }, starters; nil, why
 local function rows_of(id)
-  if not VRFW.is_on("ChronicleDeluxeFmShuffleFind") then return nil, "FindTeamConfig not resolved" end
+  if not VRFW.is_on("Team.FindConfig") then return nil, "FindTeamConfig not resolved" end
   local okb, recb = pcall(VRFW.mem.buffer, "cd_fms_team_rec", 8)
   local okc, contb = pcall(VRFW.mem.buffer, "cd_fms_team_cont", 8)
   local okh, hashb = pcall(VRFW.mem.buffer, "cd_fms_team_hash", 4)
@@ -140,12 +140,12 @@ local function rows_of(id)
   wr("u64", recb, 0)
   wr("u64", contb, 0)
   wr("u32", hashb, id)
-  local ok, e = pcall(VRFW.call, "ChronicleDeluxeFmShuffleFind", recb, contb, hashb)
+  local ok, e = pcall(VRFW.call, "Team.FindConfig", recb, contb, hashb)
   if not ok then return nil, "FindTeamConfig faulted (" .. tostring(e) .. ")" end
   local rec, cont = rd("ptr", recb) or 0, rd("ptr", contb) or 0
   if rec < 0x10000 or cont < 0x10000 then return nil, "team " .. hex(id) .. " not in team_config" end
-  local okr, rv = pcall(VRFW.mem.read_struct, "ChronicleDeluxeFmShuffleRecord", rec)
-  local okc2, cv = pcall(VRFW.mem.read_struct, "ChronicleDeluxeFmShuffleConfig", cont)
+  local okr, rv = pcall(VRFW.mem.read_struct, "TeamRecord", rec)
+  local okc2, cv = pcall(VRFW.mem.read_struct, "TeamConfig", cont)
   if not okr or not okc2 or type(rv) ~= "table" or type(cv) ~= "table" then return nil, "team record unreadable" end
   local first, count, base, n = rv.First, rv.Count, cv.Members, cv.MemberCount
   if not first or not count or not base or base < 0x10000 or not n then return nil, "team record unreadable" end
@@ -156,7 +156,7 @@ local function rows_of(id)
   local by_slot, starters = {}, 0
   for k = 0, count - 1 do
     local a = base + (first + k) * MEMBER_STRIDE
-    local okm, m = pcall(VRFW.mem.read_struct, "ChronicleDeluxeFmShuffleMember", a)
+    local okm, m = pcall(VRFW.mem.read_struct, "MemberRow", a)
     if not okm or type(m) ~= "table" or m.Slot == nil then return nil, "member row " .. k .. " unreadable" end
     if by_slot[m.Slot] then return nil, "roster slot " .. m.Slot .. " twice" end
     by_slot[m.Slot] = a

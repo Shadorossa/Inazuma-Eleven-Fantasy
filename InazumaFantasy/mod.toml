@@ -1,8 +1,9 @@
-id = "inazuma_fantasy_2"
+id = "InazumaFantasy"
+former_ids = ["inazuma_fantasy_2"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml).
 name = "Inazuma Fantasy"
-version = "1.11.0"
+version = "1.13.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Inazuma Fantasy. The Market has three shops of its own, priced in Passion Points (the BB Rare Medal renamed; the Victory Star becomes Friendship Points): a «General Store» with every ticket (Kizuna areas, stadiums), consumable, name plate, kit, team emblem (but the crests a Chronicle battle gives), Kizuna decoration, sticker and title the game's shops sell (the titles at their Chronicle collection costs); a «Training Shop» with every piece of player equipment, special tactic, synergy and keshin / miximax / soul move; and «Special Moves», one tab per move type (shot, dribble, block, catch). Those rows leave the game's shops, player spirits and premade Diamonds are no longer sold, and the game's Market shops, left empty, leave the Market, and every menu entry of them (Chronicle, Vs, Kizuna and other mode menus) opens the General Store; the story shops keep theirs. Every match also pays Friendship and Passion Points at its end (amounts in config.toml). Nine Idol cards of the earlier Inazuma Fantasy replace the game's Idol cards of the same players (same card ids). Every shop lists what it does not sell yet with a padlock and what unlocks it."
@@ -54,7 +55,7 @@ lua_early = true
 # 1.4.2 (vr_framework 2.4.146: [[VRFW.ShopTab]], [[edit]] hide_unknown_items): one move shop with a tab per move type;
 # the titles in the General Store. 1.4.1 (vr_framework 2.4.141: [[edit]] hide_spirits): the player spirit rows hidden.
 # 1.3.3 (vr_framework 2.4.133: [[VRFW.MatchDropExtra]]): every match pays Puntos de amistad / pasión at its end.
-requires = ["vr_framework>=2.4.147"]
+requires = ["VRFW>=2.4.147"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

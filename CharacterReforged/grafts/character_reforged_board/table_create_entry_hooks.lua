@@ -4,7 +4,8 @@
 -- EVT_PickCoroutine and EVT_Equip and calls them; no retail or Character Reforged function is replaced.
 --   * the aura / mix row's picker is about to open (EVT_PickCoroutine, row 0): a free copy of every declared system's
 --     «create» item is owned (the game's list only shows owned items; the screen's own code sets the UI flag
---     evt_mx_list_create that lists them), as on the retail board (board_create_entry_hooks.lua);
+--     evt_mx_list_create that lists them), as on the retail board (board_create_entry_hooks.lua); the rows the shown
+--     player may not be the base of (the avatar for a system with avatar_may_pair = false) are left out;
 --   * a «create» item picked on that row (EVT_Equip, row 0): the partner (a system with partner moves: also his
 --     moves, bank_create_moves_hooks.lua) from the retail bank picker, the system's
 --     store command keeps the pair, a copy of the system's carrier goes to the player's mix slot (Character Reforged's
@@ -90,9 +91,19 @@ do
     end
   end
 
+  -- the «create» rows player `hdl` may not be the base of (the avatar for a system with avatar_may_pair = false) left
+  -- out of the picker; hdl = nil gives them back (CharacterReforged.CreateCard.WithholdCreates)
+  function Create.Withhold(hdl)
+    local card = type(CharacterReforged) == "table" and type(CharacterReforged.CreateCard) == "table" and CharacterReforged.CreateCard or nil
+    if card ~= nil and type(card.WithholdCreates) == "function" then
+      pcall(card.WithholdCreates, hdl)
+    end
+  end
+
   -- before the aura / mix row's picker opens: a free copy of every system's «create» item owned
   function Create.BeforePicker()
     funcLuaCommand(Create.PARAM_DELETE, Create.KEY_EARLY)   -- a flag left by an earlier picker is never this one's
+    Create.Withhold(Create.Player())                 -- rows this player may not be the base of: not listed
     if Create.InazumaFantasyFlow() then
       return
     end
@@ -324,6 +335,9 @@ do
         if not ok then
           Create.Log("1 list", "error", tostring(err))
         end
+        local result = table.pack(previous(row, ...))
+        Create.Withhold(nil)
+        return table.unpack(result, 1, result.n)
       end
       return previous(row, ...)
     end

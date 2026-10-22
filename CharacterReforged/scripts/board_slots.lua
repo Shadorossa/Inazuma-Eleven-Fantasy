@@ -9,6 +9,10 @@
 --                                                                          without a native item is not emptied (-6);
 --                                                                          1: emptied, stays open; 3: the native item
 --                                                                          off too, open and empty)
+--   CMND_CHARACTERREFORGED_SIX_SENSE(charaStHdl, op, invHdl, pieceIdx) -> status, invHdl, itemId: the custom passive
+--                                                                          slot (board equip slot 9); op 0 reads it, op 1
+--                                                                          puts invHdl there (0 = take it off) through
+--                                                                          Board.EquipSlot; pieceIdx is not used
 --
 -- Status: 1 done and verified, 0 refused by the game's CanEquip (no free copy / a duplicate rule such as True
 -- Hissatsu's), 2 read back different, -1 bad arguments, -2 not ready, -3 closed without a definition piece, -4 the
@@ -288,3 +292,32 @@ function BoardSlots.Clear(hdl, slot, mode)
   return st, now
 end
 
+
+-- ------------------------------------------------------------------------------------- the custom passive slot
+-- Board equip slot 9 (skillEquipInvInfo.sixSense, record +0x94 + 9 * 4): the skill table's custom passive button reads
+-- and writes it here (graft ss2_menus); the game's own slot writer gives the old item's use back.
+local SIX_SENSE_SLOT = 9
+
+function BoardSlots.SixSense(hdl, op, inv, piece)
+  hdl, op, inv = u32(hdl), math.floor(tonumber(op) or 0), u32(inv)
+  local data, why = character_data(hdl)
+  if not data then return why, 0, 0 end
+  local at = data + OFFSET_PLACED + SIX_SENSE_SLOT * 4
+  local st = STATUS_OK
+  if op == 1 then
+    local before = u32(read("u32", at) or 0)
+    local failed = equip_slot(hdl, inv, SIX_SENSE_SLOT, false)
+    local after = u32(read("u32", at) or 0)
+    st = failed or (after == inv and STATUS_OK or STATUS_REFUSED)
+    info(string.format("SIX_SENSE(%s) %s -> %s (wanted %s) -> status %d", hex(hdl), hex(before), hex(after), hex(inv), st))
+  elseif op ~= 0 then
+    return STATUS_BAD_ARGUMENTS, 0, 0
+  end
+  local current = u32(read("u32", at) or 0)
+  local item = 0
+  if current ~= 0 then
+    local ok, id = pcall(VRFW.item.of_inv, current)
+    item = ok and u32(id) or 0
+  end
+  return st, current, item
+end

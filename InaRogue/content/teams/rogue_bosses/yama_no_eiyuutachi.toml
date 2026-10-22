@@ -1,0 +1,45 @@
+schema = "VRFW.team/2"
+default_lang = "en"
+# Special boss (rogue/bosses.toml). Team kept from the archived Chronicles Deluxe; key unchanged so the match hash stays.
+# Yama no Eiyuutachi (CS, «Fuyukai Suguru's route» #8; report status: missing).
+# Roster: wiki lineup «CS |  | Game opponent», https://inazuma-eleven.fandom.com/wiki/Yama_no_Eiyuutachi
+# Left out (no card in the game): Beelzebu
+[[team]]
+name = "ct_wk_yama_no_eiyuutachi"
+key = "evt_ct_wk_yama_no_eiyuutachi"
+based_on = "tm_cro_go2_2720" # Demon's Horn: formation, kit, tactics (the wiki formation is not mapped)
+kit = 0x5D0ED184                          # team_kits_from_wiki.py: ported «Active Wear away» (3DS model 0117, kit_ports_build.py) (was 0x16DAA0FA)
+level = 70
+series = "CS"
+roster = "exact"
+member = [
+  { card = 0x05627FB5, slot = 0, number = 1, rarity_step = 1 }, # Zagomel Zande = Lars Luceafăr (GK)
+  { card = 0x07033136, slot = 1, number = 2, rarity_step = 1, captain = true }, # Kabeyama Heigorou = Jack Wallside (DF)
+  { card = 0x079974DD, slot = 2, number = 3, rarity_step = 1 }, # Aresu Ran = Lane War (DF)
+  { card = 0x08192322, slot = 3, number = 4, rarity_step = 1 }, # Gokukawa Kantarou = Gocker (DF)
+  { card = 0xEE8B2CF1, slot = 4, number = 5, rarity_step = 1 }, # Icka Stacks = Ichabod Stark (MF)
+  { card = 0x1B30630A, slot = 5, number = 6, rarity_step = 1 }, # Julien Rousseau = Julien Rousseau (MF)
+  { card = 0x0B13B3E4, slot = 6, number = 7, rarity_step = 1 }, # Iwato (scout character) = Tom Bulldown (MF)
+  { card = 0xD5F8771D, slot = 7, number = 8, rarity_step = 1 }, # Eska Bamel = Escavan Malice (FW)
+  { card = 0x1DBB24C3, slot = 8, number = 9, rarity_step = 1 }, # Desuta = Destra (FW)
+  { card = 0xB913E140, slot = 9, number = 10, rarity_step = 1 }, # Mistrene Callous = Mystral Callous (FW)
+  { card = 0xAF4C47E4, slot = 10, number = 11, rarity_step = 1 }, # Kino Aki = Silvia Woods (GK)
+  { card = 0x0B64F688, slot = 11, number = 12, rarity_step = 1 }, # Elfel = Lephiel (DF)
+  { card = 0xA0A48C62, slot = 12, number = 13, rarity_step = 1 }, # Hanezaki Gouta = Hauser (DF)
+  { card = 0xA8294296, slot = 13, number = 14, rarity_step = 1 }, # Bach = Lou Fauntleroy (MF)
+  { card = 0x49EC6068, slot = 14, number = 15, rarity_step = 1 }, # Watari = Vick Pointer (FW)
+]
+[team.emblem]
+png = "content/teams/rogue_bosses/yama_no_eiyuutachi.png" # wiki: Heroes of the Mountain emblem.png
+base = "em050243"
+catalog = "shared"
+
+[team.text.es]
+name = "Heroes of the Mountain"
+short = "Heroes of the Mountain"
+[team.text.en]
+name = "Heroes of the Mountain"
+short = "Heroes of the Mountain"
+[team.text.ja]
+name = "山の英雄たち"
+short = "山の英雄たち"

@@ -1,14 +1,15 @@
-id = "duel_auras"
+id = "DuelAuras"
+former_ids = ["duel_auras"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Duel Auras"
-version = "1.2.0"
+version = "1.3.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "In a duel an aura (keshin, totem, armour, Mix-Max, mode change) is never the answer to the rival's special move: it activates with its effects and the duel choice stays open, so a real special move or a normal action answers. The same for the CPU."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-21"
+updated = "2026-10-22"
 # This mod's own names (TOML keys [DuelAuras.X], Lua DuelAuras.X, commands CMND_DUELAURAS_*); never VRFW.
 prefix = "DuelAuras"
 folder = "DuelAuras"
@@ -25,7 +26,7 @@ folder = "DuelAuras"
 # aura stayed the duel's answer); no skill table view or option is read: enabling the module is the only switch.
 # 1.2.0 (owner 2026-10-21): needs VRFW 2.19.0: the duel's clock is frozen during the aura's cut-in on v7.2.1 (the focus
 # hold now installs there), and an aura is refused once its side committed its duel choice (no aura behind a clash).
-requires = ["vr_framework>=2.19.0", "football_reforged>=1.2.0"]
+requires = ["VRFW>=2.19.0", "FootballReforged>=1.2.0"]
 conflicts = []
 loader_modules = []
 permissions = []
@@ -38,5 +39,5 @@ tables = []
 # A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
 # screen; switching Football Reforged off switches it off too. On by default.
 [module]
-of = "football_reforged"
+of = "FootballReforged"
 order = 110

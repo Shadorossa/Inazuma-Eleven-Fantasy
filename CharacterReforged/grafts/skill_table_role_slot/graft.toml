@@ -1,16 +1,16 @@
 # Character Reforged › the «Fantasy» skill table's role medal slot (docs/game/skill-slots.md §12.6d): the skill board's
 # coach / manager slot (team13_05c_effect_grid_director_manager_slot) above the player card, drawn as the board draws
 # it, Aceptar = the screen's role picker (CMND_CHARACTERREFORGED_GET_ROLE / _SET_ROLE, scripts\board_role.lua). The
-# button row keeps [ player sets ][ Entrenar ]: the custom passive and role buttons stay hidden. HOOK file only (shipped
+# button row is [ player sets ][ custom passive ][ Entrenar ]: the role button stays hidden. HOOK file only (shipped
 # as is; the layer, its inputs and its focus links are content\menus\skill_table.toml).
 name = "skill_table_role_slot"
-mod = "character_reforged"
+mod = "CharacterReforged"
 order = 340
 module = "lua_bridge"
 requires = []
 conflicts = []
 wraps = []
-description = "Character Reforged: the skill table's role medal slot above the player card; custom passive and role buttons removed"
+description = "Character Reforged: the skill table's role medal slot above the player card; role button removed"
 
 [[hooks]]
 stem = "evt_skill_slot_menu"

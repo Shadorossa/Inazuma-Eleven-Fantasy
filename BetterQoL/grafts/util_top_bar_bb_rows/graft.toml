@@ -1,0 +1,26 @@
+# Utilities' top bar steps `bb_row.<id>` (docs/framework/top-bar.md §16): the rows of the «Battle Bay» group
+# (content\menus\top_bar.toml: Campaña / 1v1 / Online) go through the title's Estadio BB request, then this step opens
+# the hub's row whose menuObjectName is <id> (the retail table of bb_stadium_top_menu read through its own
+# GetLitItemInfo; no id is listed here: the step name carries it). Once the hub's list has the control focus and no fade
+# runs, the row is focused and decided through the retail OnDecideFocus in a coroutine resumed from Step (the way
+# Inazuma Fantasy's modes_hub opens a BB row, mh_bb.lua): the retail checks stay (the BB tutorial prompt, the online
+# sign-in of the Multijugador row). The framework's step API (lua\_all\10_top_bar.lua VRFW_TopBarStep) is asked at the
+# hub's OnInit. Wrappers only; nothing at chunk load. BetterUI's clean_hud_bb_rows until 2026-10-12 (the top bar is
+# Utilities': globals BetterQoL.TopBar.BbRows, alias CLEAN_HUD_BBR).
+name = "util_top_bar_bb_rows"
+mod = "BetterQoL"
+order = 961
+module = "lua_bridge"
+requires = []
+conflicts = []
+wraps = ["OnInit", "Step"]
+description = "Top bar steps bb_row.<id>: the Battle Bay group's rows open that row of the Estadio BB hub"
+
+[[files]]
+stem = "bb_stadium_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "ut_bb_rows.lua"
+  marker = "util_top_bar_bb_rows"
+  crc = "none"

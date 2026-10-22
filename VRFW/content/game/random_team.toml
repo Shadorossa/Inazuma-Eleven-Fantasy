@@ -72,3 +72,42 @@ needs = ["RandomTeamFind", "RandomTeamRecord"]
 name = "CMND_VRFW_TEAM_LEVEL"
 handler = "TeamLineup.Level"
 needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
+
+# (team id, roster slot) -> true, move1..move6, level1..level6 of that member row's loadout as the match plays it (auras
+# included; 0 = empty) | false, why: the player page previewing a team member shows the member's own set
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_MEMBER_MOVES"
+handler = "TeamLineup.MemberMoves"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
+
+# Match member (scripts\team_lineup.lua): (chara handle) -> true, team id, roster slot of the member row a match player
+# plays from | false, why. The match's teams: the request's +0xA4 (the player's team) and +0xA8 (the rival), written
+# by the hook below into the script's block (state vr_framework.team_lineup.match_teams); a player the user owns has
+# none. Character Reforged's player page reads it in a match (the team member's set: his aura / mix).
+[[VRFW.State]]
+key = "vr_framework.team_lineup.match_teams"
+
+# u64 StartMatchRequest(scene, request): the generic «start this match» of every mode (as level_sync.toml).
+[[VRFW.Hook]]
+name = "TeamLineup.MatchRequest"
+kind = "function"
+pattern = "48 89 5C 24 18 48 89 74 24 20 55 57 41 56 48 8D 6C 24 90 48 81 EC 70 01 00 00 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 60 8B 42 6C"
+rva = 0x17C9400
+steal = 14
+args = ["ptr", "ptr"]
+ret = "u64"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+value = "[args[2] + 0xA4]:u32"
+write = "[state(vr_framework.team_lineup.match_teams)]:u32"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+value = "[args[2] + 0xA8]:u32"
+write = "[state(vr_framework.team_lineup.match_teams) + 4]:u32"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_MATCH_MEMBER"
+handler = "TeamLineup.MatchMember"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]

@@ -14,7 +14,7 @@
 name = "shop_shortcuts"
 order = 960
 module = "lua_bridge"
-mod = "clean_hud"
+mod = "BetterUI"
 requires = []
 conflicts = []
 wraps = ["OnFunction", "Step", "OnDecideFocus", "UpdateButtonGuide", "funcLuaMenuCommand", "OnInit"]

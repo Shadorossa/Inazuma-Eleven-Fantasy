@@ -10,7 +10,7 @@
 # wrapper (before: inside). Same effect: modes_hub takes its keys before it calls the retail OnInit and does nothing
 # after it, so the order stays modes_hub's keys -> retail OnInit -> back(1) -> EVT_MH_T.pending = the origin.
 name = "pachanga_core"
-mod = "vr_framework"
+mod = "VRFW"
 order = 200
 module = ""
 requires = []

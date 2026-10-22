@@ -27,7 +27,7 @@ New = "content/teams/70_route_nodes/chains_added.toml"
   Difficulty = 4
   Board = { Cols = 5, Rows = 3 }
   RivalStats = "normal"
-  RankReward = [{ Rank = "A", Rival = "emblem" }, { Rank = "S", Item = "abl_ub000001", IfMod = "true_hissatsu", Text = "chronicle_deluxe_chain_prize_upgrade_book" }]
+  RankReward = [{ Rank = "A", Rival = "emblem" }, { Rank = "S", Item = "abl_ub000001", IfMod = "HissatsuLevelUp", Text = "chronicle_deluxe_chain_prize_upgrade_book" }]
   Tile = [{ Id = "start", Kind = "start", Pos = [1, 2] }]
   # its node on the Chronicle board (placed afterwards with the board editor)
   [Editor.Companion]
@@ -307,7 +307,7 @@ Id = "rank_reward"
   Type = "string"
   More = true
   Label = { es = "Solo con el mod", en = "Only with the mod" }
-  Help = { es = "Id del mod que declara el objeto (p. ej. true_hissatsu): sin él activo, este premio no se da.", en = "Id of the mod that declares the item (e.g. true_hissatsu): without it active, this reward is not given." }
+  Help = { es = "Id del mod que declara el objeto (p. ej. HissatsuLevelUp): sin él activo, este premio no se da.", en = "Id of the mod that declares the item (e.g. HissatsuLevelUp): without it active, this reward is not given." }
   [[Shape.Field]]
   Key = "Text"
   Type = "string"

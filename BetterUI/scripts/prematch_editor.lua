@@ -29,7 +29,7 @@ function BetterUI.SkipEditor(mi)
     return false
   end
   local oko, observer = pcall(function() return info.observer end)
-  local okn, net = pcall(VRFW.call, "IsNetworkSession")
+  local okn, net = pcall(VRFW.call, "Net.IsSession")
   local okt, ty = pcall(function() return info.match_type end)
   ty = okt and ty or 255
   if oko and observer == 0 and okn and net == false then

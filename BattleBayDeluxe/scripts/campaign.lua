@@ -228,10 +228,10 @@ local FREE = nil       -- the free-match menu whose campaign flag this decide ra
 local FREE_MENU = nil  -- { menu, slot }: the free-match grid whose Draft screen is open (CMND_BBD_DRAFT_DECIDE)
 
 local function network_session()
-  if not VRFW.is_on("IsNetworkSession") then
+  if not VRFW.is_on("Net.IsSession") then
     return nil
   end
-  local ok, v = U.call("IsNetworkSession")
+  local ok, v = U.call("Net.IsSession")
   if not ok then
     return nil
   end
@@ -357,16 +357,20 @@ local function prepare(menu, btn)
   if not camp or camp == 0 then
     return nil
   end
+  -- from here on a nil is the game's own draw (only the visible page's slots): every such case says why
   local okb, lb = pcall(VRFW.mem.buffer, "bbd_layer", 4)
   if not okb or not U.wr("u32", lb, G.GRID_LAYER) then
+    warn("layer buffer not writable: game campaign draw (visible page only)")
     return nil
   end
   local okc, child = U.call("FindChildByHash", menu, lb, 0)
   if not okc then
+    warn("grid layer not found: game campaign draw (visible page only)")
     return nil
   end
   local cursor = U.get(U.struct("GridChild", child), "cursor")
   if not cursor then
+    warn("cursor slot not readable: game campaign draw (visible page only)")
     return nil
   end
   if cursor < 0 or cursor >= G.SLOTS then
@@ -378,13 +382,23 @@ local function prepare(menu, btn)
     local s = slot_struct(menu, i)
     local team, un = U.get(s, "team"), U.get(s, "unlocked")
     if team == nil or un == nil then
+      warn("grid slot " .. i .. " not readable (slot base " .. tostring(G.slot_base()) .. "): game campaign draw "
+        .. "(visible page only)")
       return nil
     end
     grid[i + 1] = { team = team, raw = un }
   end
   local player = grid[cursor + 1].team
   if player == 0 then
+    warn("cursor slot " .. cursor .. " holds no team: game campaign draw (visible page only)")
     return nil
+  end
+  -- what the game's own draw would take: the visible page's unlocked slots minus the player's team
+  local page_pool = 0
+  for _, x in ipairs(grid) do
+    if x.team ~= 0 and x.team ~= player and x.raw ~= 0 then
+      page_pool = page_pool + 1
+    end
   end
   local raw = G.enjoy_rows()
   if not raw then
@@ -485,6 +499,20 @@ local function prepare(menu, btn)
     g[i] = { team = x.team, unlocked = x.raw ~= 0 or rule[x.team] == true }
   end
   local pool, locked = candidates(rows, g, player)
+  -- the player's team in another version (another row with the same team name text) is never a rival either
+  local player_name = Tourn.name_text(player)
+  local variants = 0
+  if player_name ~= 0 then
+    local keep = {}
+    for _, t in ipairs(pool) do
+      if Tourn.name_text(t) == player_name then
+        variants = variants + 1
+      else
+        keep[#keep + 1] = t
+      end
+    end
+    pool = keep
+  end
   Tourn.note_pool(#pool) -- 1.5.15: the Torneo's options offer only the team counts this pool fills
   if #pool == 0 then
     warn("no unlocked team besides the player's in " .. #rows .. " rows: game campaign draw")
@@ -544,9 +572,10 @@ local function prepare(menu, btn)
       end
     end
   end
-  info(string.format("start, player %s (slot %d), %d candidates of %d rows (%d locked; rows without condition %d (%d "
-    .. "of the unlock rule: CPU rivals), conditioned unlocked %d / locked %d), seed %s", U.hex(player), cursor, #pool,
-    #rows, locked, free_rows, nrule, cond_open, cond_shut, p.seed))
+  info(string.format("start, player %s (slot %d), pool %d teams from every page (%d enjoy rows; the visible page alone "
+    .. "gives %d; %d version(s) of the player's team left out; %d locked; rows without condition %d (%d of the unlock "
+    .. "rule: CPU rivals), conditioned unlocked %d / locked %d), seed %s", U.hex(player), cursor, #pool, #rows,
+    page_pool, variants, locked, free_rows, nrule, cond_open, cond_shut, p.seed))
   return p
 end
 

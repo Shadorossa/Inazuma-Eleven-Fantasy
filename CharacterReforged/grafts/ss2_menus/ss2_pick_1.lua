@@ -50,7 +50,7 @@ local evt_free = {}                 -- skill id -> the list shows a free copy (h
 local evt_sent = 0                  -- last id from SendSkillIdToLua (if the engine calls it for this group)
 EVT_CR = {slot = 0, chara = 0, board = -1, seen = {}}   -- Character Reforged slot rules of the open pick (global: no new chunk local)
 -- 2026-10-14: the place rules other mods declare as data ([CharacterReforged.PlaceRules.<name>]: their own game Lua
--- command, e.g. True Hissatsu's «one copy per set»), asked after Character Reforged's own rule: { {id, board}, … }
+-- command, e.g. Hissatsu Level Up's «one copy per set»), asked after Character Reforged's own rule: { {id, board}, … }
 function EVT_CR_Rules()
   if EVT_CR.rules ~= nil then
     return EVT_CR.rules

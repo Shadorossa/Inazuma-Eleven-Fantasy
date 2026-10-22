@@ -170,6 +170,7 @@ end
 
 local function stop(team, why)
   local t = State.team[team]
+  t.empty, t.refused = nil, nil
   if t.count == 0 then return end
   for hdl, mark in pairs(t.pressers) do
     pcall(VRFW.ai.release, hdl)
@@ -185,8 +186,12 @@ local function press(team, carrier, cx, cz, who, user)
   local now_set, n, names = {}, 0, {}
   local target = SETTINGS.chase and { chase = carrier } or { x = cx, z = cz }
   local arrows = arrows_for(team, user)
+  local refused = nil
   for _, c in ipairs(chosen) do
-    local ok, done = pcall(VRFW.ai.move, c.hdl, target, { sprint = SETTINGS.sprint, ms = SETTINGS.order_ms })
+    local ok, done, why = pcall(VRFW.ai.move, c.hdl, target, { sprint = SETTINGS.sprint, ms = SETTINGS.order_ms })
+    if not (ok and done) then
+      refused = refused or string.format("%s: %s", hex(c.hdl), tostring(ok and why or done))
+    end
     if ok and done then
       -- his arrows when he starts pressing, and a new target for them when the carrier changes
       local mark = t.pressers[c.hdl]
@@ -194,8 +199,11 @@ local function press(team, carrier, cx, cz, who, user)
         pcall(VRFW.ai.arrow, c.hdl, { chase = carrier })
         mark = carrier
       elseif arrows and mark == nil then
-        local oka, shown = pcall(VRFW.ai.arrow, c.hdl, { chase = carrier })
+        local oka, shown, why_not = pcall(VRFW.ai.arrow, c.hdl, { chase = carrier })
         mark = (oka and shown) and carrier or true
+        if mark == true then
+          info(string.format("T%d: no arrows on %s (%s)", team, hex(c.hdl), tostring(oka and why_not or shown)))
+        end
       elseif mark == nil then
         mark = true
       end
@@ -216,6 +224,16 @@ local function press(team, carrier, cx, cz, who, user)
     if not t.pressers[hdl] then changed = true end
   end
   t.pressers, t.count = now_set, n
+  -- a refused move order and an empty press are logged when they start (no per-frame line)
+  if refused ~= t.refused then
+    t.refused = refused
+    if refused then info(string.format("T%d: a press order was refused (%s)", team, refused)) end
+  end
+  local empty = n == 0
+  if empty ~= t.empty then
+    t.empty = empty
+    changed = changed or empty
+  end
   if changed then
     if n > 0 then
       info(string.format("T%d presses the carrier %s (%s): %s", team, hex(carrier), who, table.concat(names, ", ")))
@@ -281,6 +299,13 @@ local function cpu_wants(team, cx, cz, now)
   return false
 end
 
+-- your press button: a line when it goes on or off (what the ball was doing then)
+local function note_button(on, context)
+  if on == State.user_held then return end
+  State.user_held = on
+  info(string.format("your press button %s (%s)", on and "on" or "off", context))
+end
+
 local function stop_all(why)
   stop(0, why)
   stop(1, why)
@@ -316,6 +341,7 @@ VRFW.on("tick", function(ev)
   local user = m.user_team
   local ok, carrier, cteam, cx, cz = pcall(VRFW.ai.ball)
   if not ok or not carrier or (cteam ~= 0 and cteam ~= 1) then
+    if user == 0 or user == 1 then note_button(user_holds(), "loose ball") end
     stop_all("loose ball")
     State.owner = nil
     return nil
@@ -334,6 +360,7 @@ VRFW.on("tick", function(ev)
   local want, who
   if user == team then
     want, who = user_holds(), "your press button"
+    note_button(want, "the rival's carrier " .. hex(carrier))
   else
     want, who = SETTINGS.cpu and cpu_wants(team, cx, cz, now), "CPU"
   end

@@ -5,7 +5,7 @@
 # other mods' hook files then hook its callbacks with VRFW_Host.on (Player Training's training mode). Shipped as is
 # (numbers, no placeholders); no engine call at chunk load. Not rebuilt by Inazuma Fantasy: one copy per VM.
 name = "skill_table_host_hooks"
-mod = "character_reforged"
+mod = "CharacterReforged"
 order = 330
 module = "lua_bridge"
 requires = []

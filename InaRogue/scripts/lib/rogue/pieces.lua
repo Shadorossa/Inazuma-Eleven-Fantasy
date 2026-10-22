@@ -148,12 +148,12 @@ P.LIST.pass_speed_multiplier = {
 }
 
 -- technique_grade_override(grade, duration_matches): every move of the user's players plays at the maximum grade for
--- the next N matches of the run (the item's matches_left in rogue_run.json; the mod True Hissatsu's
+-- the next N matches of the run (the item's matches_left in rogue_run.json; the mod Hissatsu Level Up's
 -- max_grade_states rule over the state key InaRogue.max_grade)
 P.GRADES = { max = true }
 P.LIST.technique_grade_override = {
   scope = "match", duration = "matches", value_key = "duration_matches", status = "implemented",
-  hook = "True Hissatsu's match install (Technique.MatchSkillInstall; not in the v7.2.1 profile yet)",
+  hook = "Hissatsu Level Up's match install (Technique.MatchSkillInstall; not in the v7.2.1 profile yet)",
   parse = function(t)
     local grade = t.grade or "max"
     if not P.GRADES[grade] then return nil, "technique_grade_override: grade `" .. tostring(grade) .. "` (max)" end

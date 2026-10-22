@@ -97,6 +97,7 @@ local M = {
   -- what the audio engine said at boot about a mod (its page): (mod id) -> "<1|0>|<text>" lines
   AU_NOTES = Crc("CMND_VRFW_MM_AU_NOTES"),
   PROVIDES = Crc("CMND_VRFW_MM_PROVIDES"),      -- (mod id) -> its mod.toml `provides`, comma separated ("" = none)
+  KEY_ID = Crc("CMND_VRFW_MM_KEY_ID"),          -- (mod name: id, key id or former id) -> key id of that installed mod ("" = none)
   TAG_DEFS = Crc("CMND_VRFW_MM_TAG_DEFS"),      -- () -> how many mod tags the mods declare ([[VRFW.ModTag]])
   TAG_DEF = Crc("CMND_VRFW_MM_TAG_DEF"),        -- (i) -> id, text key
   MOD_TAGS = Crc("CMND_VRFW_MM_MOD_TAGS"),      -- (mod id) -> its tag ids, one per line
@@ -504,8 +505,28 @@ local function Size(bytes)
 end
 
 -- ---- data ---------------------------------------------------------------------------------------------------------------
+-- a written mod name (requires, provides, a warning's other mod) -> the key id the rows carry (CMND_VRFW_MM_KEY_ID:
+-- the mod.toml id, the key id and the former ids all name the mod); read once per name and listing
+local key_names = {}
+
+local function KeyOf(name)
+  if name == nil or name == "" then
+    return name
+  end
+  local k = key_names[name]
+  if k == nil then
+    k = Str(Call(M.KEY_ID, name))
+    if k == "" then
+      k = name
+    end
+    key_names[name] = k
+  end
+  return k
+end
+
 local function ReadAll()
   base_mod = nil
+  key_names = {}
   mods = {}
   local installed, active, _skipped, _conflicts, _dirty, changes, np, p = Call(M.COUNT)
   have = type(installed) == "number"
@@ -609,6 +630,7 @@ local function Text(m, what)
 end
 
 local function NameOf(id)
+  id = KeyOf(id)
   if id == BASE and base_mod ~= nil then return base_mod.name end
   for _, m in ipairs(mods) do
     if m.id == id then
@@ -619,6 +641,7 @@ local function NameOf(id)
 end
 
 local function ModById(id)
+  id = KeyOf(id)
   if id == BASE then return base_mod end
   for _, m in ipairs(mods) do
     if m.id == id then
@@ -1170,13 +1193,14 @@ function INFO.Requires(m)
   for req in string.gmatch(raw, "[^,\n]+") do
     local name, op, ver = string.match(req, "^%s*([%w_%.%-]+)%s*([<>=!~]*)%s*([^%s]*)%s*$")
     if name ~= nil then
-      if name == BASE or parts[name] then
+      local key = KeyOf(name)
+      if key == BASE or parts[name] then
         fw = true
-        if name == BASE and ver ~= "" then
+        if key == BASE and ver ~= "" then
           fwv = need(op, ver)
         end
-      elseif not seen[name] then
-        seen[name] = true
+      elseif not seen[key] then
+        seen[key] = true
         out[#out + 1] = NameOf(name) .. need(op, ver)
       end
     end
@@ -1373,7 +1397,8 @@ function INFO.Provider(name)
   end
   for _, o in ipairs(mods) do
     for item in string.gmatch(INFO.Provides(o), "[^,%s]+") do
-      if string.match(item, "^([%w_%.%-]+)") == name then
+      local n = string.match(item, "^([%w_%.%-]+)")
+      if n ~= nil and string.lower(n) == string.lower(name) then
         return o
       end
     end
@@ -1400,13 +1425,14 @@ function INFO.Needs(m)
   for req in string.gmatch(Text(m, 2), "[^,\n]+") do
     local name, op, ver = string.match(req, "^%s*([%w_%.%-]+)%s*([<>=!~]*)%s*([^%s]*)%s*$")
     if name ~= nil then
-      local key = (name == BASE or parts[name]) and BASE or name
+      local own = KeyOf(name)
+      local key = (own == BASE or parts[name]) and BASE or own
       if not seen[key] then
         seen[key] = true
-        local d = key == BASE and base_mod or INFO.Provider(key)
+        local d = key == BASE and base_mod or INFO.Provider(name)
         local short = (d ~= nil and d.name ~= "") and d.name or (key == BASE and "VR-Framework" or name)
         local label = short
-        if key == name and ver ~= "" then
+        if key == own and ver ~= "" then
           label = label .. ((op == "" or op == ">=") and (" (" .. ver .. "+)") or (" (" .. op .. " " .. ver .. ")"))
         end
         local row
@@ -1415,7 +1441,7 @@ function INFO.Needs(m)
         else
           row = {label, T(d.enabled and "st_on" or "st_off"), d.enabled and "[CG]" or "[CWG]"}
         end
-        local too_old = old[name] or old[key] or (d ~= nil and old[d.id])
+        local too_old = old[name] or old[key] or old[own] or (d ~= nil and old[d.id])
         row.key, row.mod, row.name = key, d, short
         row.ok = d ~= nil and d.enabled and not too_old
         row.reason = (d == nil and T("dep_missing")) or (too_old and T("dep_old")) or ((not d.enabled) and T("st_off")) or ""
@@ -1448,7 +1474,7 @@ function INFO.NeededBy(m)
     if o ~= m then
       for req in string.gmatch(Text(o, 2), "[^,\n]+") do
         local name = string.match(req, "^%s*([%w_%.%-]+)")
-        if name ~= nil and mine[name] then
+        if name ~= nil and (mine[name] or mine[KeyOf(name)]) then
           out[#out + 1] = o.name ~= "" and o.name or o.id
           break
         end
@@ -1847,7 +1873,7 @@ function RV.Offers(m)
   local out = {}
   for item in string.gmatch(INFO.Provides(m), "[^,]+") do
     local name = string.match(item, "^%s*([%w_%.%-]+)")
-    if name ~= nil and name ~= m.id then
+    if name ~= nil and KeyOf(name) ~= m.id then
       local s = CE.KeyText(m.id .. ".provides_" .. name)
       if s == "" then
         local o = ModById(name)

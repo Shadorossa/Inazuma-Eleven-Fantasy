@@ -192,4 +192,4 @@ speed = "CharacterReforged.SpeedOf(args[3])"
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_CHARA_STAT"   # (charaStHdl, idx 0..8) -> value, hasPerCharacterData (errors: value < 0, false)
 handler = "CharacterReforged.CharaStat"
-needs = ["CharacterReforged.FindCharaRecord", "CharacterReforged.HumanGetLevel", "character_reforged_chara_containers"]
+needs = ["Board.FindCharaRecord", "Chara.HumanGetLevel", "character_reforged_chara_containers"]

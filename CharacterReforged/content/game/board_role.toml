@@ -17,11 +17,6 @@ game = "Board.BadgeEquip"
 name = "CharacterReforged.BadgeUnequip"
 game = "Board.BadgeUnequip"
 
-# InvRecord* InvRecord(Items* items, u32 invHdl) 0xD8D4B0: an inventory record (item id +4, stock +0x10, equipped +0x14)
-[[VRFW.Function]]
-name = "CharacterReforged.InvRecord"
-game = "Board.InvRecord"
-
 # [g_gameRoot] + Game.RootItems = the inventory InvRecord takes
 [[VRFW.Global]]
 name = "character_reforged_items"
@@ -34,9 +29,9 @@ chain = ["Game.RootItems"]
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_GET_ROLE"     # (charaStHdl) -> role, badgeHdl, playCount, native, lock
 handler = "CharacterReforged.BoardRole.GetRole"
-needs = ["CharacterReforged.BadgeEquip", "CharacterReforged.BadgeUnequip", "CharacterReforged.InvRecord", "character_reforged_items"]
+needs = ["CharacterReforged.BadgeEquip", "CharacterReforged.BadgeUnequip", "Board.InvRecord", "character_reforged_items"]
 
 [[VRFW.Command]]
 name = "CMND_CHARACTERREFORGED_SET_ROLE"     # (charaStHdl, role 0..2) -> status, roleAfter (-10: the matches missing)
 handler = "CharacterReforged.BoardRole.SetRole"
-needs = ["CharacterReforged.BadgeEquip", "CharacterReforged.BadgeUnequip", "CharacterReforged.InvRecord", "character_reforged_items"]
+needs = ["CharacterReforged.BadgeEquip", "CharacterReforged.BadgeUnequip", "Board.InvRecord", "character_reforged_items"]

@@ -15,7 +15,7 @@
 # the bars follow their portraits). Nothing at chunk load but the debug library's upvalue search. While Inazuma Fantasy's mx_popup draws its own bars in the
 # same script (its global EVT_AP with EVT_AURA_PEG on) this one draws nothing, so a bar is never drawn twice.
 name = "aura_points_buff_bar"
-mod = "aura_points"
+mod = "AuraPoints"
 order = 860
 module = "lua_bridge"
 requires = []

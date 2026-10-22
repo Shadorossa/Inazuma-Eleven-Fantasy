@@ -1,0 +1,31 @@
+# BetterQoL: the row «Álbum de jugadores» in «Caseta del club» (play_guide_top_menu; retail «Guía del Juego»),
+# docs/game/ui/album.md. As util_club_stats_row (kind 4): the retail list is `t` = one KIND per row (0 Ayuda, 1 Galería de
+# la victoria, 2 Archivo de escenas, 3 Logros) and the labels, help lines and icons are looked up by kind (`t3` / `t4` /
+# `t5` at kind + 1). This block adds kind 5: appended to `t` when the list's first row is set up (each open), its label
+# / help line / icon (icon_list_s05, the photo album) at index 6, its press in OnDecideFocus (BetterQoL.Album.Open, the
+# page's opener assets/lua/play_guide_top_menu/155_album.lua). Order 59: between util_club_stats_row (60) and BetterUI's
+# clean_hud_guide_rows (50), so its wrapper of OnSetupLayer runs after the club stats row's: the album row comes right
+# after «Estadísticas del club» (with BetterUI above «Ayuda», its rule moves kind 0 to the end). If «Ayuda» is already
+# last when the row is added, it goes in front of it. The tables are reached as upvalues (EVT_UpvalueFind): no retail
+# local is named, nothing promoted. No engine call at load.
+name = "util_album_row"
+order = 59
+module = "lua_bridge"
+mod = "BetterQoL"
+requires = []
+conflicts = []
+wraps = ["OnSetupLayer", "OnDecideFocus"]
+description = "BetterQoL: «Álbum de jugadores» row in «Caseta del club»"
+
+[[files]]
+stem = "play_guide_top_menu"
+expect = [
+  '^local t = \{0, 1, 2, 3\}$',
+]
+
+  [[files.ops]]
+  type = "append_block"
+  src = "album_row.lua"
+  marker = "util_album_row"
+  crc = "none"
+  include = { "@UPV@" = "../_lib/evt_upvalues.lua" }

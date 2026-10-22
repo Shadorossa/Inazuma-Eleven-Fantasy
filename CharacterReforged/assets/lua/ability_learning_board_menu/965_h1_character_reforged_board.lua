@@ -8,7 +8,8 @@
 -- (Utilities' combo partner picker: its list layers stayed visible over the board) and the edits of other mods'
 -- patches of the same screen.
 --   * an aura piece (category 1) is about to list its auras (OpenAbilityListMenu_Coroutine, before the list opens):
---     every system's «create» item listed, a free copy owned (BeforeList);
+--     every system's «create» item listed, a free copy owned, the rows this player may not be the base of (the avatar
+--     for a system with avatar_may_pair = false) left out (BeforeList); such a row reached any other way is refused;
 --   * the list closed (right after the coroutine's first wait, the one for the list; the board is still inactive:
 --     the retail coroutine re-activates it afterwards, this file never touches the menu's active state): a «create»
 --     row picked -> the partner (a system with partner moves: also his moves, bank_create_moves_hooks.lua) from the
@@ -30,6 +31,9 @@ do
   Board.RESTORE = 4143853932                         -- CMND_CHARACTERREFORGED_CREATE_RESTORE (charaHdl, slot) -> ok
   Board.REFUSAL = 3947752921                         -- CMND_CHARACTERREFORGED_CREATE_REFUSAL (row, code) -> labelId, reasonId, labelText, reasonText
   Board.LOG = 2743311895                             -- CMND_CHARACTERREFORGED_CREATE_LOG (step, values…)
+  Board.MOVES = 201707600                            -- CMND_CHARACTERREFORGED_CREATE_MOVES (row) -> …, 6th: the avatar may take part
+  Board.IS_AVATAR = 2461887648                       -- CMND_GET_IS_AVATAR_CHARA (charaStHdl) -> the player's avatar
+  Board.AVATAR_DENIED = -4                           -- the refusal code of the avatar (CMND_CHARACTERREFORGED_CREATE_REFUSAL)
   Board.PIECE_INFO = 4147077179                      -- (piece) -> layerIdx, posIdx, skillId, selectedSkillId, category, … (GetEffectPieceInfoFromMenu)
   Board.AURA_CATEGORY = 1                            -- an aura piece of the board
   Board.PARAM_HAS = 2947612279                       -- parameter store: has (key)
@@ -91,6 +95,7 @@ do
     end
     Board.aura = true
     funcLuaCommand(Board.PARAM_SET, Board.KEY_LIST_BASE, 0, hdl, 1)
+    Board.Withhold(hdl)                              -- rows this player may not be the base of: not listed
     for i = 1, count do
       local create = answer[i + 1]
       if type(create) == "number" and create ~= 0 then
@@ -112,6 +117,16 @@ do
       end
     end
     funcLuaCommand(Board.FLAG_SET, Board.FLAG, 1)
+  end
+
+  -- the «create» rows player `hdl` may not be the base of (the avatar for a system with avatar_may_pair = false) left
+  -- out of the list; hdl = nil gives them back (CharacterReforged.CreateCard.WithholdCreates)
+  function Board.Withhold(hdl)
+    local cr = rawget(_G, "CharacterReforged")
+    local card = type(cr) == "table" and type(cr.CreateCard) == "table" and cr.CreateCard or nil
+    if card ~= nil and type(card.WithholdCreates) == "function" then
+      pcall(card.WithholdCreates, hdl)
+    end
   end
 
   -- before the bank opens: the base and the row for its move step (a system without `moves` leaves the bank retail)
@@ -172,6 +187,7 @@ do
     Board.aura = false
     funcLuaCommand(Board.FLAG_SET, Board.FLAG, 0)
     funcLuaCommand(Board.PARAM_DELETE, Board.KEY_LIST_BASE)
+    Board.Withhold(nil)
     local row, slot, store = funcLuaCommand(Board.PICKED, hdl)
     if type(row) ~= "number" or row <= 0 or type(slot) ~= "number" or slot < 0 then
       Board.Log("2 picked", "none")
@@ -182,6 +198,15 @@ do
     -- the list opened the bank itself (CharacterReforged.CreateCard.OpenBankEarly): only wait for it
     local early = funcLuaCommand(Board.PARAM_HAS, Board.KEY_EARLY) == true
     funcLuaCommand(Board.PARAM_DELETE, Board.KEY_EARLY)
+    -- the avatar for a system whose rules say avatar_may_pair = false: never created, whatever route placed the row
+    local avatar_may_pair = select(6, funcLuaCommand(Board.MOVES, row))
+    local denied = avatar_may_pair == false and funcLuaCommand(Board.IS_AVATAR, hdl) == true
+    if denied and not early then
+      Board.Log("2 picked", "row", row, "player", hdl, "the avatar: refused")
+      funcLuaCommand(Board.RESTORE, hdl, slot)
+      Board.Refusal(row, Board.AVATAR_DENIED)
+      return
+    end
     if not early then
       Board.BankKeys(hdl, row)
       funcLuaCommand(Board.TEMP_SET, Board.BANK_RESULT, 0)
@@ -201,7 +226,9 @@ do
     local move1, move2 = Board.BankMoves()
     Board.Log("4 bank closed", "temp int 2524660062 =", partner, "moves", move1, move2, "plate after", funcLuaCommand(Board.EXIST, Board.PLATE_MENU) == true)
     local code = -1                                  -- -1 cancelled (no window)
-    if type(partner) == "number" and partner ~= 0 then
+    if denied and type(partner) == "number" and partner ~= 0 then
+      code = Board.AVATAR_DENIED
+    elseif type(partner) == "number" and partner ~= 0 then
       local stored, k = Board.Store(store, hdl, partner, move1, move2)
       code = type(stored) == "number" and stored or -3  -- -3: the store command did not answer a code
       Board.Log("5 store", "base", hdl, "partner", partner, "moves", move1, move2, "code", code, "k", k)

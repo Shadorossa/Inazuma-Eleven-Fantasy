@@ -1,0 +1,11 @@
+schema = "VRFW.game/2"
+
+# Utilities › «Cambiar forma» (docs/game/mechanics/form-viewer.md §8.3): the form indicator of the retail «Ver
+# apariencia» (a form tile + a key tile at the top right of the shown character; graft research/grafts/util_view_forms,
+# layers util_vf_tile / util_vf_badge of content\menus\view_forms.toml) reads its place from config.toml [view_forms] through
+# scripts\view_forms.lua.
+
+# CMND_BETTERQOL_VIEW_FORMS_CFG() -> {badge_x, badge_y, badge_scale, badge_priority, tile_size, tile_gap, key_scale, key_dx, key_dy}
+[[VRFW.Command]]
+name = "CMND_BETTERQOL_VIEW_FORMS_CFG"
+handler = "BetterQoL.ViewForms.Config"

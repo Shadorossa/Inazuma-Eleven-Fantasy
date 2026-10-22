@@ -685,7 +685,7 @@ end
 function R.battery_frame(in_match)
   if not in_match then return end
   local now = now_ms()
-  local base = global("sp_actors")
+  local base = global("Match.SoccerActors.ViaSkillUsed")
   for _, p in pairs(players) do
     local b = p.battery
     if b and b.phase == "out" then
@@ -841,7 +841,7 @@ local function step_player(p, actor, a)
   local tracked = p.tr.keshin or p.tr.armour or p.tr.miximax or p.tr.out_run
   local unit = nil
   if running or tracked or now - p.unit_ms >= REREAD_MS or p.chara == 0 then
-    local ok, u = pcall(VRFW.call, "SpActorUnit", actor)
+    local ok, u = pcall(VRFW.call, "Match.ActorUnit", actor)
     if ok and type(u) == "number" and u >= 0x10000 then
       unit = VRFW.mem.read_struct("SpUnit", u)
       if unit then
@@ -916,7 +916,7 @@ VRFW.on("tick", function(ev)
   if not mi or frame.scene == 0 then return nil end
   frame_update()
   if not seen.in_match then return nil end
-  local base = global("sp_actors")
+  local base = global("Match.SoccerActors.ViaSkillUsed")
   if not base then return nil end
   local okp, sl = pcall(VRFW.extra_slot.players)
   slots = (okp and type(sl) == "table") and sl or {}
@@ -1040,12 +1040,12 @@ local function card_of_chara(hdl)
     FBUF = VRFW.mem.buffer("aura_points_stamina_flag", 8)
   end
   VRFW.mem.write("u32", HBUF, hdl)
-  local ok, obj = pcall(VRFW.call, "SpFindCharaRecord", cont, HBUF)
+  local ok, obj = pcall(VRFW.call, "Board.FindCharaRecord", cont, HBUF)
   if not ok or type(obj) ~= "number" or obj < 0x10000 then return nil end
   local rec = rd("ptr", obj + 8)
   if not rec or rd("u32", rec) ~= hdl then return nil end
   local id = rd("u32", rec + 4)
-  local okl, lv = pcall(VRFW.call, "SpHumanGetLevel", obj, FBUF)
+  local okl, lv = pcall(VRFW.call, "Chara.HumanGetLevel", obj, FBUF)
   lv = (okl and type(lv) == "number") and lv % 65536 or nil
   if id == 0 then id = nil end
   return id, lv

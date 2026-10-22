@@ -14,6 +14,10 @@ feet_y = 668
 head_y = 338
 # the card under each model
 card = { w = 230, h = 196, y = 700, bar = 6 }
+# the default style's art by role: [retail atlas, sprite] from the screen's res (the Chronicle board's vsroute01_15 /
+# _16), drawn as loaded; the plain tinted shapes take no colour on this screen. A mod's content\screen_art\*.toml
+# (Screen = "pose_row") still wins
+art = { panel_ground = ["#/menu/30_vsroute/vsroute01/vsroute01_15/vsroute01_15.g4tx", "list_base01"], list_row = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_off"], list_row_focus = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_on"], list_badge = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"], card = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_off"], tag_owned = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"], tag_new = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"], position_1 = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"], position_2 = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"], position_3 = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"], position_4 = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base_xs01_gray"] }
 
 # style "node_panel": the Chronicle board's node panel look (left) and a blue side panel with the models (right)
 [layout.node_panel]

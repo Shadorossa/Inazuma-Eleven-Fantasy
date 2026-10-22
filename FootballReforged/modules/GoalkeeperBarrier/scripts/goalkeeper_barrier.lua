@@ -79,13 +79,13 @@ end
 local function hex(v) return string.format("0x%08X", v or 0) end
 
 local function unit_of(actor)
-  local ok, u = pcall(VRFW.call, "FootballActorUnit", actor)
+  local ok, u = pcall(VRFW.call, "Match.ActorUnit", actor)
   if ok and type(u) == "number" and u >= 0x10000 then return VRFW.mem.read_struct("FootballUnit", u) end
   return nil
 end
 
 local function actor_of(handle)
-  local base = game_global("football_actors")
+  local base = game_global("Match.SoccerActors.ViaSkillUsed")
   if not base or not handle or handle == 0 then return nil end
   local actor = base + band(handle, 0xFF) * ACTOR_STRIDE
   local a = VRFW.mem.read_struct("FootballActor", actor)
@@ -142,7 +142,7 @@ end
 local function scan_keepers(now)
   if now - State.scan_ms < SETTINGS.rescan_ms then return end
   State.scan_ms = now
-  local base = game_global("football_actors")
+  local base = game_global("Match.SoccerActors.ViaSkillUsed")
   if not base then return end
   local found = {}
   for i = 0, ACTOR_COUNT - 1 do

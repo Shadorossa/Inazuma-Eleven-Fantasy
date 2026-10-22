@@ -9,6 +9,8 @@
 --     character and move: Arion, «Túnel tornado»);
 --   * a retail Mix-Max row the shown player can not take (its AURA_CMD_CHARA owners / change_aura whitelist, the
 --     VR-Framework's CMND_VRFW_MIXIMAX_ITEM_ALLOWED) is greyed and refused with the retail error sound.
+--   * a «create» row the shown player may not be the base of (the avatar, for a system whose rules say avatar_may_pair
+--     = false) is not listed at all (Card.WithholdCreates before the list opens).
 -- Definitions only (this file is in `_all`): no engine call at load.
 CharacterReforged = type(CharacterReforged) == "table" and CharacterReforged or {}
 if CharacterReforged.CreateCard == nil then
@@ -76,6 +78,24 @@ if CharacterReforged.CreateCard == nil then
     end
     local ok, row, _, _, avatar_may_pair = pcall(funcLuaCommand, Card.ROW_OF, skill)
     return not (ok and type(row) == "number" and row > 0 and avatar_may_pair == false)
+  end
+
+  Card.UI_FLAG_SET = 489464673             -- CMND_EVT_UI_FLAG_SET (key, value)
+  Card.UI_FLAG_GET = 100903117             -- CMND_EVT_UI_FLAG_GET (key) -> value (0 = not set)
+  Card.LOG = 2743311895                    -- CMND_CHARACTERREFORGED_CREATE_LOG (step, values…)
+
+  -- the «create» rows player `hdl` may not be the base of (Card.CreateAllowed) are left out of the next ability list:
+  -- the framework hides a create entry while the UI flag keyed by its item id is 1; hdl = nil gives every row back
+  function Card.WithholdCreates(hdl)
+    Card.IsCreate(1)                       -- the create items read (once per list)
+    for item in pairs(Card.items or {}) do
+      local withheld = hdl ~= nil and not Card.CreateAllowed(item, hdl)
+      local ok, now = pcall(funcLuaCommand, Card.UI_FLAG_GET, item)
+      if not ok or (now == 1) ~= withheld then
+        pcall(funcLuaCommand, Card.UI_FLAG_SET, item, withheld and 1 or 0)
+        pcall(funcLuaCommand, Card.LOG, "create row withheld", "item", item, "player", hdl or 0, withheld)
+      end
+    end
   end
 
   function Card.AuraType(skill)
