@@ -15,7 +15,7 @@
 -- * Archetypes 0-5 are the game's, 7+ the mods' declared ones (their small icon through the VR-Framework's
 --   GeTeamBuffBuildTypeIconTextureName); 6 = none.
 -- Defines functions and tables; no engine call at chunk load.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 BetterQoL.ArchetypeHeader = type(BetterQoL.ArchetypeHeader) == "table" and BetterQoL.ArchetypeHeader or {}
 do
   local AH = BetterQoL.ArchetypeHeader

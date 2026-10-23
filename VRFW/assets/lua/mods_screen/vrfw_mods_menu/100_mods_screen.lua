@@ -1632,6 +1632,7 @@ end
 -- screen opening. (one table: the main chunk is at Lua's limit of 200 locals)
 local RV = {cache = {}, MAX = 400, ROWS = 13, ORDER = {dependency = 1, error = 2, skipped = 3, warning = 4}}
 RV.NEWS_ROWS, RV.MOD_ROWS, RV.FULL_ROWS = 13, 9, 14
+RV.MOD_STEP, RV.MOD_HEAD_H = 51, 40     -- «Módulos»: a row's pitch, a category title's height
 
 -- the body of a mod's page: under the header band and the view tabs, above the shortcut bar
 function RV.BodyY()
@@ -2133,22 +2134,82 @@ end
 -- met shows it in red next to its state and is greyed (it cannot be switched on). A or a click on Sí / No switches
 -- it, Y or a click on the row opens a module mod's own page.
 
--- the module rows of mod `m`: {mod = module mod} or {opt = option row} (read once per page opening)
+-- the category of mod `m`: the first tag of its mod.toml `tags` -> id (lower case, "_" for spaces), label (text key
+-- "category_<id>" in the game's language, else the tag as written); nil = no tags
+function RV.Category(m)
+  local tag = string.match(Text(m, 8), "^([^\n]+)") or ""
+  if tag == "" then
+    return nil
+  end
+  local id = string.gsub(string.lower(tag), "[%s%-]+", "_")
+  local key = "category_" .. id
+  local label = T(key)
+  return {id = id, label = label ~= key and label or tag}
+end
+
+-- the module rows of mod `m`: {mod = module mod, cat = its category} or {opt = option row}, grouped by category (the
+-- categories in the order of their first module, the modules of each in their own order; read once per page opening)
 function RV.ModuleRows(m)
   local ck = "mrows:" .. m.id
   local r = RV.cache[ck]
   if r == nil then
-    r = {}
+    local groups, order = {}, {}
     for _, o in ipairs(RV.Settings(m.id)) do
+      local row = nil
       if o.module ~= nil then
-        r[#r + 1] = {mod = o.module}
+        row = {mod = o.module, cat = RV.Category(o.module)}
       elseif o.imodule then
-        r[#r + 1] = {opt = o}
+        row = {opt = o}
+      end
+      if row ~= nil then
+        local gid = row.cat and row.cat.id or ""
+        if groups[gid] == nil then
+          groups[gid] = {}
+          order[#order + 1] = gid
+        end
+        groups[gid][#groups[gid] + 1] = row
+      end
+    end
+    r = {}
+    for _, gid in ipairs(order) do
+      for _, row in ipairs(groups[gid]) do
+        r[#r + 1] = row
       end
     end
     RV.cache[ck] = r
   end
   return r
+end
+
+-- the lines of the «Módulos» list: a category title before the first row of each category, then its rows
+-- -> {head = label, h = height} | {n = row number, h = height}
+function RV.ModuleLines(m)
+  local ck = "mlines:" .. m.id
+  local lines = RV.cache[ck]
+  if lines == nil then
+    lines = {}
+    local last = nil
+    for n, r in ipairs(RV.ModuleRows(m)) do
+      local gid = r.cat and r.cat.id or ""
+      if gid ~= last and r.cat ~= nil then
+        lines[#lines + 1] = {head = r.cat.label, h = RV.MOD_HEAD_H}
+      end
+      last = gid
+      lines[#lines + 1] = {n = n, h = RV.MOD_STEP}
+    end
+    RV.cache[ck] = lines
+  end
+  return lines
+end
+
+-- the line of module row n
+function RV.ModuleLine(lines, n)
+  for li, l in ipairs(lines) do
+    if l.n == n then
+      return li
+    end
+  end
+  return 1
 end
 
 function RV.ModuleOn(r)
@@ -2243,33 +2304,53 @@ function RV.DrawModules(m)
   local head = T("modules_head", {n = #rows, k = RV.ModulesOn(m)}) .. "  ·  " ..
                (msize > 0 and T("modules_size", {s = Size(m.size), z = Size(msize)}) or Size(m.size))
   Txt("PL", "[CB]" .. Cut(head, Fit(w - 200, 0.74)) .. "[C]", x, top, 0.74)
-  local vis, y0, step, h = RV.MOD_ROWS, top + 28, 51, 45
+  local y0, h, avail = top + 28, RV.MOD_STEP - 6, RV.MOD_ROWS * RV.MOD_STEP
   p.mrow = math.max(1, math.min(p.mrow or 1, #rows))
-  local mtop = math.max(1, math.min(p.mtop or 1, p.mrow))
-  if p.mrow >= mtop + vis then
-    mtop = p.mrow - vis + 1
+  -- scroll by lines: the focused row on the page, with its category title when it is right above
+  local lines = RV.ModuleLines(m)
+  local sl = RV.ModuleLine(lines, p.mrow)
+  local tl = math.max(1, math.min(p.mline or 1, sl))
+  if tl > 1 and lines[tl - 1].head ~= nil then
+    tl = tl - 1
   end
-  p.mtop = mtop
-  for k = 0, vis - 1 do
-    local n = mtop + k
-    local r = rows[n]
-    if r == nil then
+  local function fits(a, b)
+    local hsum = 0
+    for k = a, b do
+      hsum = hsum + lines[k].h
+    end
+    return hsum <= avail
+  end
+  while tl < sl and not fits(tl, sl) do
+    tl = tl + 1
+  end
+  p.mline = tl
+  local y, first, last = y0, nil, nil
+  for k = tl, #lines do
+    local l = lines[k]
+    local need = l.h + ((l.head ~= nil and lines[k + 1] ~= nil) and lines[k + 1].h or 0)   -- a title only with its first row
+    if y + need > y0 + avail then
       break
     end
-    local foc = (mouse.on and (mouse.hot == "mrow" .. n or mouse.hot == "mtog" .. n)) or (not mouse.on and n == p.mrow)
-    RV.DrawModuleRow(m, n, r, x, y0 + k * step, w, h, foc)
+    if l.head ~= nil then
+      Txt("PL", "[CN]" .. Cut(l.head, Fit(w, 0.8)) .. "[C]", x, y + l.h / 2, 0.8)
+    else
+      first, last = first or l.n, l.n
+      RV.DrawModuleRow(m, l.n, rows[l.n], x, y, w, h, l.n == p.mrow)   -- the pointer's hover moves p.mrow too (Hover)
+    end
+    y = y + l.h
   end
   -- the pages of the list above the rows: ↑ / ↓ and the keys that turn them (left / right)
-  RV.Pager(x + w, top, mtop, math.min(#rows, mtop + vis - 1), #rows, function()
-    p.mtop = math.max(1, mtop - vis)
-    p.mrow = p.mtop
+  local function turn(n)
+    p.mrow = n
+    p.mline = RV.ModuleLine(lines, n)
     funcLuaCommand(C.SE, SE_MOVE)
     Draw()
+  end
+  first, last = first or 1, last or #rows
+  RV.Pager(x + w, top, first, last, #rows, function()
+    turn(math.max(1, first - (last - first + 1)))
   end, function()
-    p.mtop = math.min(mtop + vis, #rows - vis + 1)
-    p.mrow = p.mtop
-    funcLuaCommand(C.SE, SE_MOVE)
-    Draw()
+    turn(math.min(#rows, last + 1))
   end)
 end
 
@@ -2695,8 +2776,14 @@ function RV.Layout(m)
       pending = nil
     end
   end
-  local nmods = 0
+  local nmods, group = 0, nil
   for n, r in ipairs(rows) do
+    if r.group ~= nil and r.group ~= group then
+      -- the settings of an active module: its name as the section title
+      flush()
+      group = r.group
+      lines[#lines + 1] = {kind = "head", h = RV.HEAD_H, text = group.mname or (group.name ~= "" and group.name or group.id)}
+    end
     if r.module ~= nil or r.imodule then
       nmods = nmods + 1
       if n == 1 then
@@ -2917,7 +3004,8 @@ function RV.DrawSettings(m)
   local y, first, last = py, nil, nil
   for k = top, #lines do
     local l = lines[k]
-    if y + l.h > bottom + RV.CARD_GAP then
+    local need = l.h + ((l.kind == "head" and lines[k + 1] ~= nil) and lines[k + 1].h or 0)   -- a title only with its first row
+    if y + need > bottom + RV.CARD_GAP then
       break
     end
     if l.kind == "head" then
@@ -2925,7 +3013,7 @@ function RV.DrawSettings(m)
     else
       for c, n in ipairs(l.items) do
         first, last = first or n, n
-        local foc = (mouse.on and mouse.hot == "set" .. n) or (not mouse.on and p.szone ~= "buttons" and n == sel)
+        local foc = p.szone ~= "buttons" and n == sel     -- the pointer's hover moves p.srow too (Hover)
         if l.kind == "cards" then
           RV.DrawCard(m, n, rows[n], px + (c - 1) * (cw + 16), y, cw, foc)
         else
@@ -2943,15 +3031,33 @@ function RV.DrawSettings(m)
   Txt("PL", "[CWG]" .. Cut(note, Fit(w, 0.62)) .. "[C]", px, bottom + 22, 0.62)
 end
 
--- the «Ajustes» rows of mod `m`: its settings without the modules (those are the «Módulos» view)
+-- the own settings of mod `id`: its rows without the modules (those are the «Módulos» view)
+function RV.OwnSettings(id)
+  local r = {}
+  for _, o in ipairs(RV.Settings(id)) do
+    if o.module == nil and not o.imodule then
+      r[#r + 1] = o
+    end
+  end
+  return r
+end
+
+-- the «Ajustes» rows of mod `m`: its own settings, then those of each module mod of its family that is on (the same
+-- rows, keys and storage as on the module's own page; `group` = the module, for its section title)
 function RV.SetRows(m)
   local ck = "setrows:" .. m.id
   local r = RV.cache[ck]
   if r == nil then
-    r = {}
-    for _, o in ipairs(RV.Settings(m.id)) do
-      if o.module == nil and not o.imodule then
-        r[#r + 1] = o
+    r = RV.OwnSettings(m.id)
+    for _, mm in ipairs(m.modules or {}) do
+      if mm.enabled then
+        for _, o in ipairs(RV.OwnSettings(mm.id)) do
+          local row = {group = mm}
+          for k, v in pairs(o) do
+            row[k] = v
+          end
+          r[#r + 1] = row
+        end
       end
     end
     RV.cache[ck] = r
@@ -4188,6 +4294,17 @@ local function Hover(h)
   local id = h and h[5] or nil
   local redraw = id ~= mouse.hot
   mouse.hot = id
+  if id ~= nil and ui.popup ~= nil then
+    -- a mod page's module / setting row under the pointer becomes the focused row (the one the keys move on from)
+    local p = ui.popup
+    local mr = tonumber(string.match(id, "^mrow(%d+)$") or string.match(id, "^mtog(%d+)$") or "")
+    local sr = tonumber(string.match(id, "^set(%d+)$") or "")
+    if mr ~= nil and mr ~= p.mrow then
+      p.mrow, redraw = mr, true
+    elseif sr ~= nil and (sr ~= p.srow or p.szone ~= "rows") then
+      p.srow, p.szone, redraw = sr, "rows", true
+    end
+  end
   if id ~= nil and ui.popup == nil then
     local cid = string.match(id, "^card(.+)$") or string.match(id, "^btn(.+)$")
     if cid ~= nil and ui.page == nil and ui.tab == 1 then

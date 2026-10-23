@@ -5,7 +5,7 @@
 -- (VRFW_PlayerPages.ShowWhen, docs/framework/player-pages.md; a page no active mod adds is never drawn). The page is
 -- recognised by its parameter BetterQoL.album_plate of the game's parameter store (set while it shows the plate).
 -- Elsewhere the pages stay. Conditions only; no engine call at load time.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 if BetterQoL.AlbumPages == nil and VRFW_PlayerPages ~= nil and type(VRFW_PlayerPages.ShowWhen) == "function" then
   local A = {
     FLAG = 2398708549,                     -- crc32 of BetterQoL.album_plate (the album page's parameter)

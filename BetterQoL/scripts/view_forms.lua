@@ -8,7 +8,7 @@
 --   CMND_BETTERQOL_VIEW_FORMS_CFG() -> {badge_x, badge_y, badge_scale, badge_priority, tile_size, tile_gap, key_scale,
 --   key_dx, key_dy} (config.toml [view_forms])
 
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.ViewForms = BetterQoL.ViewForms or {}
 local ViewForms = BetterQoL.ViewForms
 

@@ -4,7 +4,7 @@
 -- «X Mostrar» (VRFW_FooterPrompts) shows only when some mod declares such nodes. VRFW_Host handlers only: nothing runs
 -- at load but their registration.
 if VRFW_Host ~= nil then
-  Utilities = Utilities or {}
+  BetterQoL = BetterQoL or {}
   local H = {
     STEM = "vs_route_town_menu",
     FUNCTION = 4283758262,        -- crc32("utilities_board_hide"): the input row's function

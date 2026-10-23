@@ -1,5 +1,5 @@
 -- Utilities util_top_bar_board (graft.toml; BetterUI's clean_hud_chronicle_board until 2026-10-12): the top bar step `chronicle_board` lands on the Chronicle board.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 BetterQoL.TopBar = type(BetterQoL.TopBar) == "table" and BetterQoL.TopBar or {}
 BetterQoL.TopBar.Board = {skip = false, co = nil}
 BetterQoL.TopBar.Board.STEP = "chronicle_board"      -- the step name entries declare in `action.path`

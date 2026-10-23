@@ -258,6 +258,112 @@ file = "common/menu/51_save/save01/evt_bbd_tn_txt/evt_bbd_tn_txt.g4pkm"
 joint = "_list_icon_dmy_s01_ok"
 scale = [0.0, 0.0, 1.0]
 
+# 1.33.0 (owner 2026-10-23: «Partidos jugados» over «Tu próximo partido», the clocks out of place): the round panel's
+# own copy of the retail vroad04_09 (the same rounded navy plate and text styles), its three lines one under the other
+# (the round in the title style, the matches played, the next match), the two clocks hidden (no time is shown); the
+# base PAD + the title line + two lines + PAD tall from its retail top. 1.33.2: the copy is the retail object with
+# only its layout's translate / scale changed (1.33.0 had removed its text plate and moved the text nodes to other
+# parents; the Battle Bay top menu then stayed inactive when the overlay closed before the team grid)
+[[object]]
+name = "evt_bbd_tn_sched"
+from = "vroad04_09_schedule_for_spectator"
+set = [{ param = "SkeletonAnime", match = { 1 = "common/menu/75_vroad/vroad04/vroad04_09/vroad04_09.g4pkm" }, values = { 1 = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm" } }]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/75_vroad/vroad04/vroad04_09/vroad04_09.g4tx"] }]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm"
+from = "common/menu/75_vroad/vroad04/vroad04_09/vroad04_09.g4pkm"
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm"
+joint = "_time_base01"
+translate = [-197.0, 163.0, 0.0]
+scale = [394.0, 200.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm"
+joint = "_text_time01_01"
+translate = [-181.0, 147.0, 0.0]
+scale = [360.0, 64.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm"
+joint = "_text_time01_02"
+translate = [-181.0, 83.0, 0.0]
+scale = [360.0, 52.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm"
+joint = "_text_now01"
+translate = [-181.0, 31.0, 0.0]
+scale = [360.0, 52.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm"
+joint = "_icon_time01"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm"
+joint = "_icon_time02"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_sched/evt_bbd_tn_sched.g4pkm"
+joint = "_text_time02"
+scale = [0.0, 0.0, 1.0]
+
+# 1.33.0 (owner 2026-10-23: «Lo del estadio de la final debe tener el mismo formato de letra y rectángulo que el de
+# arriba»): the final stadium's box, the same panel with two lines (the label in the round title's style, the stadium
+# in the next match line's), centred on the layer's origin (the graft places it at the bottom centre)
+[[object]]
+name = "evt_bbd_tn_stadium"
+from = "vroad04_09_schedule_for_spectator"
+set = [{ param = "SkeletonAnime", match = { 1 = "common/menu/75_vroad/vroad04/vroad04_09/vroad04_09.g4pkm" }, values = { 1 = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm" } }]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/75_vroad/vroad04/vroad04_09/vroad04_09.g4tx"] }]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm"
+from = "common/menu/75_vroad/vroad04/vroad04_09/vroad04_09.g4pkm"
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm"
+joint = "_time_base01"
+translate = [-197.0, 74.0, 0.0]
+scale = [394.0, 148.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm"
+joint = "_text_time01_01"
+translate = [-181.0, 58.0, 0.0]
+scale = [360.0, 64.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm"
+joint = "_text_now01"
+translate = [-181.0, -6.0, 0.0]
+scale = [360.0, 52.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm"
+joint = "_icon_time01"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm"
+joint = "_icon_time02"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm"
+joint = "_text_time02"
+scale = [0.0, 0.0, 1.0]
+
+[[layout]]
+file = "common/menu/75_vroad/vroad04/evt_bbd_tn_stadium/evt_bbd_tn_stadium.g4pkm"
+joint = "_text_time01_02"
+scale = [0.0, 0.0, 1.0]
+
 # ---- layers ------------------------------------------------------------------------------------------------------
 # counts = the largest bracket (T.MAX_SIZE 64 teams, 1.5.44): 32 plates a side (+ the champion's), 63 match scores (results /
 # groups pages: 16 plates, 16 values, 4 group titles), 4 x 62 + 3 connector pieces (a match: 2 stubs + 2 half joints;
@@ -403,7 +509,7 @@ add_layer = { name = "vroad04_07b_tounament_score_final", object = "vroad04_07b_
 
 [[patch]]
 menu = "bb_stadium_top_menu"
-add_layer = { name = "vroad04_09_schedule_for_spectator", object = "vroad04_09_schedule_for_spectator", count = 1, after = "vroad04_07b_tounament_score_final", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_07b_tounament_score_final" }] }
+add_layer = { name = "vroad04_09_schedule_for_spectator", object = "evt_bbd_tn_sched", count = 1, after = "vroad04_07b_tounament_score_final", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "vroad04_07b_tounament_score_final" }] }
 
 [[patch]]
 menu = "bb_stadium_top_menu"
@@ -435,6 +541,11 @@ add_layer = { name = "evt_bbd_tn_box", object = "evt_bbd_tn_box", count = 36, al
 menu = "bb_stadium_top_menu"
 add_layer = { name = "evt_bbd_tn_crest", object = "evt_bbd_tn_row_l", count = 32, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_box", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_box" }] }
 
+# 1.33.0: the final stadium's panel (evt_bbd_tn_stadium above), placed by the graft (bbt_top.lua BBT_StadiumPanel)
+[[patch]]
+menu = "bb_stadium_top_menu"
+add_layer = { name = "evt_bbd_tn_stadium", object = "evt_bbd_tn_stadium", count = 1, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_tn_crest", groups = [{ group = "bb_stadium_top_menu", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_tn_crest" }] }
+
 # the input anchor (off screen, as the Draft's evt_bb_draft_anchor): its own focus group, keys -> the graft
 [[patch]]
 menu = "bb_stadium_top_menu"
@@ -457,7 +568,8 @@ add_cmd = [
 # (2026-10-19; git history of this file has them).
 
 # ---- the Torneo's options window: a third L / R row (1.5.16) -------------------------------------------------------
-# «Filtrar equipos poco importantes» (Sí / No) under «Con fase de grupos» and «Número de equipos». The retail L / R
+# «Sin equipos menores» (Sí / No; 1.33.0, was «Filtrar equipos poco importantes»: now it fits the row at the size of
+# the other rows) under «Con fase de grupos» and «Número de equipos». The retail L / R
 # window (sub_window, layout 3: win05_17_sub_list_locator_lr + win05_08_sub_list_item_lr x2) holds 2 rows. While the
 # Torneo's panel is open, the graft (bbt_common.lua BBT_SW_ThirdRow) swaps the window's locator for this 3-row copy
 # and opens a third row instance; every other L / R window keeps the retail locator and its 2 rows.
@@ -466,10 +578,13 @@ menu = "sub_window"
 layer = "win05_08_sub_list_item_lr"
 count = 3
 
-# win05_17 with a joint _list04 (row 3, 70 px under row 2, as rows 1-2); the panel and its no-touch zone 1.3x taller
-# (396 -> 515, 356 -> 463) so its inner dark box (retail y 84..256) holds the three rows (y 157 / 227 / 297 from the
-# top), the button joint _list03 in the middle of the band under the box again (retail y 325 -> 424: local -168 ->
-# -267); the attach rows of the retail object plus row 3 (index 2) on _list04
+# win05_17 with a joint _list04 (row 3, 70 px under row 2, as rows 1-2). 1.33.0 (owner 2026-10-23: the first row
+# stuck out above the inner dark box): the retail plate (list_base_lr01, 396 tall) has its inner dark box at y 102..274
+# from its top, the two rows (72 tall, 70 apart: 142) centred in it with 15 px above and below. Three rows (212) with
+# the same margins need a box of 242: the plate scaled by 242 / 172 (396 -> 557, the no-touch zone 356 -> 501), its box
+# then at y 143..385, the rows centred in it (the row locator _pos_list_atc01 at y 194, rows 194 / 264 / 334), the
+# button joint _list03 in the middle of the band under the box (y 385..523: 454, local -260); the attach rows of the
+# retail object plus row 3 (index 2) on _list04
 [[object]]
 name = "evt_bbd_tn_opts_locator"
 from = "win05_17_sub_list_locator_lr"
@@ -488,18 +603,23 @@ translate = [0.0, -140.0, 0.0]
 
 [[layout]]
 file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
+joint = "_pos_list_atc01"
+translate = [0.0, -194.0, 0.0]
+
+[[layout]]
+file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
 joint = "_list03"
-translate = [0.0, -267.0, 0.0]
+translate = [0.0, -260.0, 0.0]
 
 [[layout]]
 file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
 joint = "_list_base_lr01"
-scale = [768.0, 515.0, 1.0]
+scale = [768.0, 557.0, 1.0]
 
 [[layout]]
 file = "common/menu/10_win/win05/evt_bbd_tn_opts/evt_bbd_tn_opts.g4pkm"
 joint = "_untouch01"
-scale = [728.0, 463.0, 1.0]
+scale = [728.0, 501.0, 1.0]
 
 [[patch]]
 menu = "sub_window"

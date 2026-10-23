@@ -53,7 +53,7 @@ local fit_list = table.concat(fit_styles, ",")
 
 vrfw.log(string.format("team name: up to %d characters, room %d px, %d fit styles", max_length, room, #fit_styles))
 
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.TeamName = BetterQoL.TeamName or {}
 
 -- () -> max length (characters), room (px), the dock's own style key (0 = no fit), fit style keys (comma-separated)

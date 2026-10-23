@@ -64,6 +64,8 @@ level = 40
 series = "IE1"
 stadium_fallback = "s41g001"
 stadium_image = "ev_chronicle_img/ev_ch_s41g001_0501.g4tx"
+# the song of its own Chronicle games on its shots (shot_music: docs/framework/types/sound.md §5.1)
+shot_music = "auto"
 tactics = [0x68F5E26F, 0x0AECEA79, 0x13F7DB38]
 appears = [{ list = "bb_stadium", category = "main", season = "series_03", row = { copy = false, stadium = 0x4F44DDA6, image = "ev_chronicle_img/ev_ch_s41g001_0501.g4tx", image_name = "ev_ch_s41g001_0501", bgm = 0x6C1E6CDD } }]
 same_as = ["tm_cro_ie1_1300"]

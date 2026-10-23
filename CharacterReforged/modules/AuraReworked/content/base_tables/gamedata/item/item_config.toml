@@ -2,8 +2,8 @@ schema = "VRFW.base_table/1"
 # Aura Reworked › the items of its parts, added BY KEY to the game's special-skill item list
 # (docs/framework/types/base_table.md §3); each [[keyed]] block belongs to one part (its `if_mod`).
 
-# ---------------------------------------------------------------- All Changed
-# All Changed: the items of the «Modo cambio» commands (content\techniques\auras\mode_change.toml), added BY KEY to the
+# ---------------------------------------------------------------- Custom Change Mode
+# Custom Change Mode: the items of the «Modo cambio» commands (content\techniques\auras\mode_change.toml), added BY KEY to the
 # game's special-skill item list (docs/framework/types/base_table.md §3), so they stand on the base game and on top of
 # any mod's whole edition of item_config. Moved from Inazuma Fantasy's item_config splice on 2026-10-14: the same ids
 # (crc32 of the keys) and catalog numbers (6960-6968), so the saves that own them keep them. sub (skill_kind) 178 =

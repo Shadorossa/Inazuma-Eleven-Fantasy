@@ -59,7 +59,6 @@ local C = {
   TEAM_KIT = 4158248751,      -- CMND_VRFW_TEAM_KIT (team) -> its kit (uniform id; 0 = none)
   MODEL_POS = 1088067423,     -- CMND_SET_CHARA_MODEL_POS (layer, inst, x, y, z, slot)
   MODEL_TURN = 1195674914,    -- the model control (layer, inst, on): the right stick turns the model
-  MODEL_MOTION = 2358506188,  -- a model's motion (layer, inst, clip, 0, 0, 0, 16, -1, slot): the retail summon performance's call
   MSG_BUSY = 898725220,
   CHECK_INPUT = 4265778440,   -- CMND_CHECK_INPUT_CMD (ctrl, input)
   FREE_CURSOR = 879521569,
@@ -82,6 +81,7 @@ local CHAR_W = 15               -- the width of one letter at scale 1 (placing a
 local WRAP_W = 21               -- the widest letter at scale 1 (a wrapped line never runs past its column)
 local Q = 36                    -- the cmn01_10 quad's own size
 local SETTLE = 12               -- frames the selection rests before its models are built
+local CLOSE_WAIT_MAX = 120      -- frames a close waits at most for its models to be freed
 
 -- the screen's pictures by ROLE: a mod's sprite (content\screen_art\*.toml, Screen = "pose_row"), else a shape of the
 -- framework's neutral atlas vrfw_plain tinted with the role's colour
@@ -130,6 +130,7 @@ local models = {}       -- slot -> EVT_CharaModelNew
 local shown = {}        -- slot -> card wanted there
 local settle = nil      -- frames left before the selection's models are built
 local placed = {}       -- slot -> the build placed
+local closing = nil     -- {result, frames}: the close waiting for the models to be freed (Leave)
 local NP = {page = 1}   -- the node panel style: the side panel's page
 
 local function Log(...)
@@ -334,8 +335,11 @@ local Ptr = EVT_PointerNew()
 --   M.Show(pid)   the model of chara_param `pid` (built once; the same player again = just shown)
 --   M.Hide()      hidden (a build under way stays hidden when it completes)
 --   M.Step()      every frame (Step)
---   M.Release()   the model released (a list that changes its players frees the old ones)
---   M.Ok()        false when the layer has no model component (nothing was ever built): draw something else
+--   M.Release()   the model released (a list that changes its players frees the old ones); a build or load under way
+--                 is hidden at once and freed in M.Step once complete, never mid-load
+--   M.Released()  true once nothing is held and `free_frames` (2) frames went by after the last free: a screen
+--                 closes its menu object only then (the renderer may still draw the freed model's last frames)
+--   M.Ok()       false when the layer has no model component (nothing was ever built): draw something else
 -- opts: shadow = the 3D shadow layer (retail mainmenu01_08_chara_3d_shadow), pose (retail shop 2328706751), uniform (0 =
 -- his own), look (look flags, 0), settle (2), min (6), max (120), log = function(...) for the first lines,
 -- kit = function(pid) -> uniform, flags: the kit of that player (uniform 0 = `uniform`; flags 2 = the keeper shirt),
@@ -353,6 +357,7 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
     SHADOW = opts.shadow or 858725131 --[[mainmenu01_08_chara_3d_shadow]], POSE = opts.pose or 2328706751,
     SETTLE = opts.settle or 2, MIN = opts.min or 6, MAX = opts.max or 120, SLOT = opts.slot or 0}
   M.KEY = opts.key or M.SLOT
+  local FREE_FRAMES = opts.free_frames or 2
   local function MC(cmd, ...)
     local ok, a, b = pcall(funcLuaMenuCommand, cmd, ...)
     if ok then return a, b end
@@ -461,18 +466,45 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
       Visible(false)
     end
   end
-  -- the slot's model released (retail shop ResetCharaModel): nothing shown, its resources freed
+  -- a build or a model load of this slot still under way (retail SetupCharaModel never changes a model mid-load)
+  local function Busy()
+    return not BuildDone() or (M.chara ~= nil and Loading(M.chara))
+  end
+  -- the free itself: hidden first, then the slot emptied and changed (retail summon screen order); the frames after it
+  -- (FREE_FRAMES) let the renderer finish the frames that still draw the old model
+  local function Free()
+    Visible(false)
+    MC(59611540, layer, 0, 0, M.SLOT)
+    -- the slot's own key: without it the change reached model key 0 (another menu's model, e.g. the board's caravan)
+    MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT, M.KEY)
+    Log("released", M.pid)
+    M.pid, M.chara, M.build, M.release_wanted = nil, nil, nil, false
+    M.free_frames = FREE_FRAMES
+  end
+  -- the slot's model released (retail shop ResetCharaModel): nothing shown, its resources freed. A build or load under
+  -- way is hidden now and freed once it is complete (M.Step), never mid-load.
   function M.Release()
     M.pend, M.hide_build = nil, false
-    if M.pid ~= nil then
-      Visible(false)
-      MC(59611540, layer, 0, 0, M.SLOT)
-      -- the slot's own key: without it the change reached model key 0 (another menu's model, e.g. the board's caravan)
-      MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT, M.KEY)
+    if M.pid == nil then
+      M.release_wanted = false
+      return
     end
-    M.pid, M.chara, M.build = nil, nil, nil
+    if Busy() then
+      Visible(false)
+      if not M.release_wanted then
+        M.release_wanted = true
+        Log("release waits for the load", M.pid)
+      end
+      return
+    end
+    Free()
+  end
+  -- true once nothing is held: no model, no release waiting for its load, the frames after the last free gone by
+  function M.Released()
+    return M.pid == nil and not M.release_wanted and (M.free_frames or 0) <= 0
   end
   function M.Show(pid)
+    M.release_wanted = false   -- shown again before its free: the new build replaces it
     local P = M.pend
     if P ~= nil and P.pid == pid then
       return
@@ -526,6 +558,16 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
   end
   function M.Step()
     BuildStep()
+    if M.release_wanted then
+      Visible(false)
+      if not Busy() then
+        Free()
+      end
+      return
+    end
+    if (M.free_frames or 0) > 0 then
+      M.free_frames = M.free_frames - 1
+    end
     PendStep()
   end
   return M
@@ -748,33 +790,11 @@ local function Owned(card)
 end
 
 -- ---- models ---------------------------------------------------------------------------------------------------------
--- a slot's screen centre x: the declaration's `centered` = the models centred in the panel, else the layout's slot_x
+-- a slot's screen centre x: the layout's slot_x
 local function SlotX(Lo, k)
-  if DECL ~= nil and DECL.centered then
-    local P = Lo.panel or {}
-    return (P.x or 650) + (P.w or 1220) / 2 + (k - (DECL.models + 1) / 2) * (Lo.centered_step or 240)
-  end
   return (Lo.slot_x or {})[k] or 960
 end
 
--- the declaration's motion of a shown model (0 = none): 1 = the retail summon performance's (soccer_summon_menu t8, by
--- the player's main position 1 GK 2 FW 3 MF 4 DF, the big and small body types' own FW / MF clips), else that clip
-local SUMMON_MOTION = {[1] = 4211840059, [2] = 2504473885, [3] = 2717938668, [4] = 2232361508,
-  big = {[2] = 2474107858, [3] = 4267164290}, small = {[2] = 1458406759, [3] = 1003332663}}
-local function MotionOf(M)
-  local m = Int(DECL.motion)
-  if m ~= 1 then
-    return m
-  end
-  if cards[M.pid] == nil then
-    CardsOf({{card = M.pid}})
-  end
-  local pos = Int((cards[M.pid] or {}).position)
-  local ok, has, body = pcall(funcLuaCommand, 4060384944 --[[CMND_GET_CHARA_INFO]], M.chara or 0, 3, 0)
-  body = (ok and has == true) and Int(body) or 0
-  local by = (body == 5 and SUMMON_MOTION.big) or ((body == 3 or body == 11) and SUMMON_MOTION.small) or {}
-  return by[pos] or SUMMON_MOTION[pos] or SUMMON_MOTION[2]
-end
 -- a slot's world place from the layout: its screen centre x, the feet line (the shop camera's perspective)
 local function SlotWorld(k)
   local Lo, Ca = NP.Layout(), DECL.camera or {}
@@ -816,11 +836,7 @@ local function ModelStep()
       local x, y, z = SlotWorld(k)
       pcall(funcLuaMenuCommand, C.MODEL_POS, L_MODEL, 0, x, y, z, k - 1)
       pcall(funcLuaMenuCommand, C.MODEL_TURN, L_MODEL, 0, false)
-      local motion = MotionOf(M)
-      if motion ~= 0 then
-        pcall(funcLuaMenuCommand, C.MODEL_MOTION, L_MODEL, 0, motion, 0, 0, 0, 16, -1, k - 1)
-      end
-      Log("slot", k, "card", M.pid, "at", string.format("%.2f %.2f %.2f", x, y, z), "motion", motion)
+      Log("slot", k, "card", M.pid, "at", string.format("%.2f %.2f %.2f", x, y, z))
     end
   end
 end
@@ -1296,13 +1312,44 @@ local function Select(i)
   return true
 end
 
+-- every model freed (a load under way finishes first) and the renderer past their last frames
+local function ModelsReleased()
+  for _, M in pairs(models) do
+    if not M.Released() then
+      return false
+    end
+  end
+  return true
+end
+
+-- the screen closes with `result` once its models are freed (CloseStep): closing the menu object while a model of
+-- it is still loading or still drawn frees resources the renderer and the loader are using
 local function Leave(result)
+  ready = false
   ReleaseModels()
+  closing = {result = result, frames = 0}
+  Log("close", DECL and DECL.key or "", "result", result, "models freed", tostring(ModelsReleased()))
+end
+
+local function CloseStep()
+  local c = closing
+  for _, M in pairs(models) do
+    M.Step()
+  end
+  local freed = ModelsReleased()
+  if not freed and c.frames < CLOSE_WAIT_MAX then
+    c.frames = c.frames + 1
+    return
+  end
+  closing = nil
+  if not freed then
+    Log("close", "models still held after", c.frames, "frames: closing anyway")
+  end
   pcall(funcLuaMenuCommand, C.FREE_CURSOR, true, false, true)
   funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_SET, KEY_RESULT, 0, result, 1)
+  funcLuaCommand(C.P_SET, KEY_RESULT, 0, c.result, 1)
   funcLuaCommand(C.CLOSE_MENU, MENU)
-  ready = false
+  Log("closed", DECL and DECL.key or "", "after", c.frames, "frames")
 end
 
 local function Decide()
@@ -1403,7 +1450,7 @@ function OnInit()
   ready, open_guard, DECL, HEAD, rows, cards, focus, count = false, 20, nil, nil, {}, {}, 1, 0
   NP.first, NP.kits, NP.LU.named, NP.LU.logged = nil, {}, {}, {}
   used = {plate = 0, text = 0, plate_was = N.PLATE, text_was = N.TEXT}
-  models, shown, placed, settle = {}, {}, {}, nil
+  models, shown, placed, settle, closing = {}, {}, {}, nil, nil
   local key = 0
   if funcLuaCommand(C.P_EXISTS, KEY_ROW) then
     key = Int(funcLuaCommand(C.P_GET, KEY_ROW))
@@ -1631,6 +1678,10 @@ function Step()
         evt_co = nil
       end
     end
+  end
+  if closing ~= nil then
+    CloseStep()
+    return
   end
   if not ready then
     return

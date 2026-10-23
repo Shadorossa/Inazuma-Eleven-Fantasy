@@ -47,13 +47,13 @@ default = 1
 parent = "aura_reworked.souls_rework"
 order = 153
 
-# ---------------------------------------------------------------- All Changed
+# ---------------------------------------------------------------- Custom Change Mode
 
 [[option]]
 id = "all_changed"                            # row key aura_reworked.all_changed
 type = "toggle"
-label = "part_all_changed"
-help = "part_all_changed_help"
+label = "part_custom_change_mode"
+help = "part_custom_change_mode_help"
 default = 1
 restart = true
 order = 160

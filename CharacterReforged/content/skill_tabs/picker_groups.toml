@@ -6,8 +6,8 @@ schema = "VRFW.skill_tab/1"
 # ss2_menus, PL.TabWindow) open the «Habilidades» / «Técnicas» list with the window of their slot's group:
 #   * a special-move row  -> group "moves": tiro, regate, defensa (bloqueo), portero (parada) = categories 1-4;
 #   * the aura slot       -> group "aura": keshin (100) and tótem (103);
-#   * the mix slot        -> group "mix": Mix-Max (102) and «Modo cambio» (106, All Changed's tab: its declaration
-#     content\skill_tabs\mode_change_tab.toml of All Changed puts it in this group, right after Mix-Max).
+#   * the mix slot        -> group "mix": Mix-Max (102) and «Modo cambio» (106, Custom Change Mode's tab: its declaration
+#     content\skill_tabs\mode_change_tab.toml of Custom Change Mode puts it in this group, right after Mix-Max).
 # The other tabs are not built in a picker (VR-Framework skill tab registry, docs/framework/card-types.md §3: native
 # row, Z / C, icons, filters, mouse zones); the team list outside the pickers keeps every tab. A group's tabs must
 # follow each other in the list, so the tótem tab moves next to keshin (order 55): the list reads tiro, regate,

@@ -3,13 +3,13 @@ former_ids = ["home_stadium"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Home Stadium"
-version = "1.3.0"
+version = "1.4.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Each of your teams gets a home stadium: Team Dock › «Home stadium» (a picture button under Tactics with BetterUI, a list row without it) lists the stadiums you own (bought or unlocked) and saves the pick for the team on screen. The team plays its home matches there: the friendlies that leave the stadium open (no stadium of their own and no rival's home). Competition, Chronicle and Battle Bay keep their stadiums."
 priority = 0
-tags = ["Gameplay"]
-updated = "2026-10-22"
+tags = ["Teams", "Gameplay"]
+updated = "2026-10-23"
 # 1.2.4 (owner bug 2026-10-20): with BetterUI the dock list never gets the «Estadio local» row (the ESTADIO panel button replaces it; the check no longer depends on the button's layer existing yet)
 # 1.2.3 (owner test 2026-10-19): the ESTADIO box shows FORMACIÓN's own translucent plate (the copied object also
 # showed the flat grey «blank / stop» plate the retail SetupFormationStyle hides) at FORMACIÓN's draw priority

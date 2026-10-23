@@ -148,7 +148,7 @@ do
     return true
   end
 
-  Utilities = type(Utilities) == "table" and Utilities or {}
+  BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
   BetterQoL.AlbumRow = {KIND = UAL_ROW.KIND, Add = UalAdd}
 
   if EVT_UAL_ROW_WRAPPED == nil then
@@ -177,7 +177,7 @@ do
     local w = function(a1, a2, ...)
       local f = UAL_ROW.found
       if a1 == UAL_ROW.LIST and f ~= nil and type(a2) == "number" and f.kinds[a2 + 1] == UAL_ROW.KIND then
-        local P = type(Utilities) == "table" and BetterQoL.Album or nil
+        local P = type(BetterQoL) == "table" and BetterQoL.Album or nil
         if type(P) == "table" and type(P.Open) == "function" then
           local ok, err = pcall(P.Open)
           if not ok then

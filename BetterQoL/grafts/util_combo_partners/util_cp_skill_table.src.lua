@@ -390,7 +390,7 @@ do
     end
   end
 
-  Utilities = type(Utilities) == "table" and Utilities or {}
+  BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 
   -- the x_action entry of Character Reforged's skill table host (see the top of this file)
   function BetterQoL.SkillTablePartners(phase, ctx)

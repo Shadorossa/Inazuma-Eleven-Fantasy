@@ -8,6 +8,20 @@ default_like = "ega0075e"
 # Prefix of added ball triggers: <prefix><effect game name>; changing it changes every added trigger id.
 trigger_prefix = "vrfw_shot_aura."
 
+# Trigger lists of the character-effect controllers (eff_chr_trigger; the ball's list holds one row per own aura).
+# Every row of a built list keeps its effect pack loaded for the whole match, so the ball's list only keeps the retail
+# rows and the auras of every move the match's players can use (both teams, every keshin / armour / Mix-Max / totem /
+# mode change form, the extra-slot plates).
+[trigger_lists]
+# Most rows one list (a character's or the ball's) keeps when a controller is built. The game reads a list's rows with
+# a one-byte counter (255 rows at most); the framework's patch Effect.TriggerRows (content/game/trigger_rows.toml)
+# widens it. A list with more rows than this (or than 255 when the patch is not applied) is cut right before the build.
+# 201 rows (92 retail ball rows and 109 aura packs) load in a match; 418 rows stop the match load at its start event.
+max_rows = 201
+# Part of each engine resource registry (effects, objects, packs, textures, meshes, skeletons, particles; capacities read
+# from the game at run time) that new ball auras leave free for what the match loads after the ball's list (0 to 1).
+pool_reserve = 0.05
+
 # `when.form` words mapped to the form they name (`none` = no active form).
 [shot_aura.form_words]
 keshin = "keshin"

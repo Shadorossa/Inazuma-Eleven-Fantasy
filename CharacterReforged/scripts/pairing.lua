@@ -1,5 +1,5 @@
 -- Character Reforged › the shared pairing rules and card / board helpers of the aura mods' creation flows (All
--- Miximaxed «Crear miximax», All Changed «Crear nuevo cambio»; docs/refactor/aura-mods-split.md «CharacterReforged:
+-- Miximaxed «Crear miximax», Custom Change Mode «Crear nuevo cambio»; docs/refactor/aura-mods-split.md «CharacterReforged:
 -- shared base»). Pure Lua over the framework: the saved character records (VRFW.chara), the card index, the mods'
 -- content\pairing\*.toml rules (VRFW.files.declarations) and the game's board placement (content\game\board.toml).
 -- Other mods call the exported functions (mod.toml [exports]); a system's own store stays in its mod.

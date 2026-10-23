@@ -24,6 +24,4 @@ panel_title = { type = "string", default = "", doc = "node_panel: menu_text row 
 team = { type = "string", default = "", doc = "menu_text row id of the Y action (none: no Y): the screen closes with pick -1, the opener runs it" }
 page = { type = "string", default = "", doc = "menu_text row id of the side panel's page line (%d / %d)" }
 hint = { type = "string", default = "", doc = "menu_text row id of the line under the models" }
-motion = { type = "string", default = "", doc = "a motion the models play once shown: \"summon\" = the retail summon performance's (by position and body type), a clip name or \"0x…\"; empty = the pose only" }
-centered = { type = "bool", default = false, doc = "the models centred in the panel (else the layout's slot_x)" }
 when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

@@ -38,9 +38,6 @@ order = 50
 action = { title = "evt_title_menu_custom_item" }
 menus = ["evt_inarogue_menu"]
 
-# the group «Partido» (2026-10-12, docs/game/modes/training-field.md): «Partido libre» and the «Campo de
-# entrenamiento», each the title's «Modos de juego» request + a step of graft training_field (soccer_top_menu)
-
 [[top_bar_host]]
 menu = "evt_inarogue_menu"
 leave = "IRM_LeaveRogue"

@@ -1,0 +1,15 @@
+schema = "VRFW.game/2"
+
+# Character-effect controller build (Effect.CharaTriggerComponentBuild): the row counter of each trigger list widened
+# from one byte to 32 bits, so a list of 256 rows or more (a character's or the ball's) is read once instead of wrapping
+# the counter and reading past its rows. The most rows a list keeps is [trigger_lists] max_rows of the effect defaults.
+
+# Row counter set to 0 before each list.
+[[VRFW.Patch]]
+name = "Effect.TriggerRows.CounterInit"
+edit = "Effect.TriggerRows.CounterInit32"
+
+# Row counter step and compare with the list's row count.
+[[VRFW.Patch]]
+name = "Effect.TriggerRows.CounterStep"
+edit = "Effect.TriggerRows.CounterStep32"

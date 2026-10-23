@@ -39,7 +39,7 @@
 --    applies at the next start (logged once).
 -- No engine call at load time. Names: BetterQoL.OriginalNames (state, functions); the sub window's callbacks are
 -- globals named "BetterQoL.OriginalNames.<Fn>" (and reachable as that path).
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.OriginalNames = {
   C = {
     RELOAD = 2253276586,       -- CMND_BETTERQOL_NAMES_RELOAD

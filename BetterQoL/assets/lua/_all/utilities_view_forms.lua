@@ -22,7 +22,7 @@
 -- Only one Utilities RS action per menu: the technique preview's (Utilities' «Previsualizar» on the move card) is never
 -- declared here, and a menu declared here must not be one of its menus.
 -- Defines functions and tables; no engine call at chunk load.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 BetterQoL.ViewForms = type(BetterQoL.ViewForms) == "table" and BetterQoL.ViewForms or {}
 do
   local VF = BetterQoL.ViewForms

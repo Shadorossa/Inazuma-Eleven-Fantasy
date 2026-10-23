@@ -1,19 +1,19 @@
 # «Flamberge» («Flamberge», whs01900, fire shot, Grifo's keshin shot, cut-in ev60_01900): while the ball flies to the
 # goal it keeps the end of the cut-in's OWN look (the last cut c0400, the volley after the flaming sword's swing, held
 # at frame 490, the texture flow running on): the swirling fire head round the ball (its flame domes, waves and glow
-# cards) and the train of six fire rings strung out behind it along the flight (the first on the ball, the last
-# ~25 m back, each bigger than the one before), the rings spinning about the flight at the cut-in's own speed (21 deg
-# a frame: 105 whole turns in 30 s); x1 of the cut-in size (head ~0.75 m, its glow ~1.2 m, rings ~3.5-4 m across),
-# instead of the plain fire special-shot aura (ega0075c). The glow cards and the rings lie across the flight, facing
-# the cut-in's chase camera: each is stood 90 deg about the vertical to face the touchline (both faces drawn; as
-# Mortal Smash's glows), the rings staying centred on the flight line. Dropped: the scenery (sky, clouds, rocks,
+# cards) and a trail of fire rings across the flight line: each ring is born on the ball every 7 frames and stays
+# where it appeared (fixed on the pitch, ~5 m apart, closing ~25 m behind the ball), the rings spinning about the
+# flight at the cut-in's own speed (21 deg a frame: 105 whole turns in 30 s); x1 of the cut-in size (head ~0.75 m,
+# its glow ~1.2 m, rings ~4 m across), instead of the plain fire special-shot aura (ega0075c). The glow cards lie
+# across the flight, facing the cut-in's chase camera: each is stood 90 deg about the vertical to face the touchline
+# (both faces drawn; as Mortal Smash's glows); the rings keep the cut-in's pose, the ball passing through them. Dropped: the scenery (sky, clouds, rocks,
 # ground cards, keshin smoke and aura), the flaming sword and its hilt (left at the kick point), the swing's
 # after-images, kick sparks, kick ring and the yellow-out. The object is ev6190fl00
 # (assets\data\{common,dx11}\effect\event\ev60\ev6190fl00\), built by research/scripts/flamberge_ball_fx.py from
 # ev60019000; docs/game/media/flamberge-ball-fx.md.
 # The trigger copies the fire special-shot aura's row (like = "ega0075c"; skillEffectBitFlag 0): CB_SkillShootBallAura
-# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b), so the rings trail straight back along the
-# flight. The move has no _or / _mm / _cro key; Inazuma Fantasy's three-player Flamberge (new_animations
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b), so the ring trail runs straight back along
+# the flight. The move has no _or / _mm / _cro key; Inazuma Fantasy's three-player Flamberge (new_animations
 # `flamberge_trio`, ev60_81900, a copy of ev60_01900 with extra seats) is the same key and gets the same aura. Its
 # flight: content\techniques\flamberge_trajectory.toml (dive).
 # Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from

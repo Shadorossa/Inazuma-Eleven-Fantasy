@@ -1,7 +1,7 @@
 -- Character Reforged › the base game's «Crear …» entry of the aura mods (docs/refactor/aura-mods-split.md «The base
 -- game's create entry»): ONE flow on the retail skill board (graft character_reforged_board) with one row per SYSTEM a
 -- mod declares. An aura piece's list shows the «create» item of every declared system (All Miximaxed «Crear miximax»,
--- All Changed «Crear nuevo cambio»); the player picks one, the retail bank picker gives the partner, the system's own
+-- Custom Change Mode «Crear nuevo cambio»); the player picks one, the retail bank picker gives the partner, the system's own
 -- store command keeps the pair and this flow puts the system's carrier on that board slot. A refused or cancelled
 -- pick gives the slot back what it held; a refusal shows a retail info window (a text key per refusal code).
 --

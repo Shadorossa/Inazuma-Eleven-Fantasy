@@ -1,6 +1,5 @@
 # Texts of the VR-Framework's gacha service (docs/framework/gacha.md): rows of menu_text in the framework's 9 languages,
-# read by the gacha's game Lua (assets\lua\menu\_all\63_gacha.lua) with CMND_TEXT_GET by id = crc32(row id). A pool's own
-# question is the declaring mod's text ([[VRFW.GachaPool]] question).
+# read by the gacha's game Lua (assets\lua\menu\_all\74_gacha.lua) with CMND_TEXT_GET by id = crc32(row id).
 
 schema = "VRFW.text/2"
 table = "menu_text"
@@ -44,67 +43,15 @@ ja = "ガチャを回す"
 zh_hans = "转扭蛋"
 zh_hant = "轉扭蛋"
 
-# the drawn player joined the club (%s = his name); crc32("vrfw_gacha_joined")
+# the drawn player was signed (%s = his name); crc32("vrfw_gacha_obtained")
 [[row]]
-id = "vrfw_gacha_joined"
-es = "¡%s se ha unido al equipo!"
-en = "%s joined the team!"
-fr = "%s a rejoint l'équipe !"
-de = "%s ist dem Team beigetreten!"
-it = "%s si è unito alla squadra!"
-pt = "%s juntou-se à equipa!"
-ja = "%sが仲間になった！"
-zh_hans = "%s加入了球队！"
-zh_hant = "%s加入了球隊！"
-
-# the obtained screen (content\pose_rows\gacha_obtained.toml): its header; crc32("vrfw_gacha_obtained_header")
-[[row]]
-id = "vrfw_gacha_obtained_header"
-es = "Nuevo jugador"
-en = "New player"
-fr = "Nouveau joueur"
-de = "Neuer Spieler"
-it = "Nuovo giocatore"
-pt = "Novo jogador"
-ja = "新しい選手"
-zh_hans = "新球员"
-zh_hant = "新球員"
-
-# the panel's title; crc32("vrfw_gacha_obtained_title")
-[[row]]
-id = "vrfw_gacha_obtained_title"
-es = "¡Enhorabuena!"
-en = "Congratulations!"
-fr = "Félicitations !"
-de = "Herzlichen Glückwunsch!"
-it = "Congratulazioni!"
-pt = "Parabéns!"
-ja = "おめでとう！"
-zh_hans = "恭喜！"
-zh_hant = "恭喜！"
-
-# the panel's line under the title; crc32("vrfw_gacha_obtained_info")
-[[row]]
-id = "vrfw_gacha_obtained_info"
-es = "¡Se ha unido al equipo!"
-en = "Joined the team!"
-fr = "A rejoint l'équipe !"
-de = "Ist dem Team beigetreten!"
-it = "Si è unito alla squadra!"
-pt = "Juntou-se à equipa!"
-ja = "仲間になった！"
-zh_hans = "加入了球队！"
-zh_hant = "加入了球隊！"
-
-# the list row and the tag on the player's card; crc32("vrfw_gacha_obtained_tag")
-[[row]]
-id = "vrfw_gacha_obtained_tag"
-es = "¡Nuevo fichaje!"
-en = "New signing!"
-fr = "Nouvelle recrue !"
-de = "Neuzugang!"
-it = "Nuovo acquisto!"
-pt = "Nova contratação!"
-ja = "新加入！"
-zh_hans = "新加盟！"
-zh_hant = "新加盟！"
+id = "vrfw_gacha_obtained"
+es = "¡Has obtenido a %s!"
+en = "You obtained %s!"
+fr = "Tu as obtenu %s !"
+de = "Du hast %s erhalten!"
+it = "Hai ottenuto %s!"
+pt = "Obtiveste %s!"
+ja = "%sを獲得した！"
+zh_hans = "获得了%s！"
+zh_hant = "獲得了%s！"

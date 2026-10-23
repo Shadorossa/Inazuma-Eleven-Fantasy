@@ -1,5 +1,5 @@
 -- Character Reforged › partner locks: a card of the player's club used as the PARTNER of another card's pair (a
--- Mix-Max of All Miximaxed, a mode change of All Changed, any system a mod declares) stays in the player bank. He
+-- Mix-Max of All Miximaxed, a mode change of Custom Change Mode, any system a mod declares) stays in the player bank. He
 -- cannot be placed from the bank into a team (every team screen, the bank's «Añadir al equipo», a drag, the mouse) and
 -- his bank card shows the system's plate («Mix»). A partner already in a team stays where he is; he may always go back
 -- to the bank. Docs: docs/game/ui/partner-lock-bank.md.

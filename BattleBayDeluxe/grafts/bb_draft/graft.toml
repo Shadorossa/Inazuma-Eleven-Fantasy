@@ -30,6 +30,10 @@
 #   soccer_top_menu                  Campaña's block or the Torneo's run with the Draft team keeps / restores the
 #                                    drafted squad; else it is discarded). 1.5.42: also on soccer_top_menu, the hub
 #                                    the Battle Bay is entered through now (bb_stadium_top_menu no longer opens)
+#   enjoy_team_select_menu_campaign, bbd_difficulty_*.lua: while a mod owns the AI difficulty (config.toml [difficulty]
+#   enjoy_team_select_menu_offline   owner_states, CMND_BBD_DIFFICULTY_OWNED) GetSelectDifficultyIdx answers its index,
+#                                    the Campaña / Torneo team decide starts without the difficulty window
+#                                    (CMND_BBD_DIFFICULTY_START) and the 1 vs 1's match settings hide the difficulty row
 # Globals only; nothing runs at chunk load but bbd_roster.lua's footer prompt declaration (pure Lua).
 name = "bb_draft"
 mod = "BattleBayDeluxe"
@@ -37,11 +41,22 @@ order = 345
 module = "lua_bridge"
 requires = []
 conflicts = []
-wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnBack", "OnFunction", "OnCloseEndLayer", "Step", "SetupEmblemIcon", "UpdateFormation", "UpdateTacticsLayer", "UpdateButtonGuide", "OnChangeFocus"]
+wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnBack", "OnFunction", "OnCloseEndLayer", "Step", "SetupEmblemIcon", "UpdateFormation", "UpdateTacticsLayer", "UpdateButtonGuide", "OnChangeFocus", "GetSelectDifficultyIdx"]
 description = "Battle Bay: the Draft tile of the Campaña (pitch + bench, 1 of 5 per slot in any order, then the campaign)"
 
 [[files]]
 stem = "enjoy_team_select_menu_campaign"
+
+  # first: the innermost OnDecideFocus wrapper (the retail team decide that opens the difficulty window)
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_difficulty_common.lua"
+  marker = "bb_draft difficulty common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_difficulty_campaign.lua"
+  marker = "bb_draft difficulty campaign"
 
   [[files.ops]]
   type = "append_block"
@@ -60,6 +75,16 @@ stem = "enjoy_team_select_menu_campaign"
 
 [[files]]
 stem = "enjoy_team_select_menu_offline"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_difficulty_common.lua"
+  marker = "bb_draft difficulty common"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbd_difficulty_free.lua"
+  marker = "bb_draft difficulty free"
 
   [[files.ops]]
   type = "append_block"

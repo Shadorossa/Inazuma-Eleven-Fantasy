@@ -6,7 +6,7 @@
 -- clean_hud_top_bar.lua, until BetterUI 1.20.0, owner decision 2026-10-12): its old globals stay as aliases at the end
 -- (CLEAN_HUD_TopBarOn, CLEAN_HUD_TopBarOnBoard, CLEAN_HUD_TB_*). Defines functions and tables only; nothing runs at
 -- chunk load.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 BetterQoL.TopBar = type(BetterQoL.TopBar) == "table" and BetterQoL.TopBar or {}
 local TB = BetterQoL.TopBar
 

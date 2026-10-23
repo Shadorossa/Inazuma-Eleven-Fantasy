@@ -585,7 +585,7 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x9D81FFB9, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNJ2B/7koAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120040
   ] } }
 
-  [[keyed.add]]                         # fbtl_cro04_170_010 (rival tm_cro_go1_1600)
+  [[keyed.add]]                         # fbtl_cro04_170_010 (rival tm_cro_go1_1601)
   key = 0x6DAEFAC2                       # crc32(chronicle_deluxe.heroic_fbtl_cro04_170_010)
   cells = { REF_ITEMS = { set = [
     { item = 0x743AAB4E, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em040014
@@ -920,6 +920,13 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x282F81F4, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNCgvgfQoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120090
   ] } }
 
+  [[keyed.add]]                         # fbtl_cro06_010_010 Crónica (golden coin)
+  key = 0x56BB93C4                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_010_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
   [[keyed.add]]                         # fbtl_cro06_010_010 (rival tm_cro_go3_0100)
   key = 0x33763AED                       # crc32(chronicle_deluxe.heroic_fbtl_cro06_010_010)
   cells = { REF_ITEMS = { set = [
@@ -927,6 +934,14 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0xED5A312C, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u040801
     { item = 0x247A4214, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u061701
     { item = 0x65CD83B9, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060301
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_020_010 Crónica (golden coin)
+  key = 0xD02FE16A                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_020_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_020_010 (rival tm_cro_go3_0200)
@@ -934,6 +949,14 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0xFCC4D203, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060302
     { item = 0x984B59C3, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060101
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_030_010 Crónica (golden coin)
+  key = 0x1B7332CF                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_030_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_030_010 (rival tm_cro_go3_0300)
@@ -941,6 +964,13 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x8BC3E295, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060303
     { item = 0x9A0DE79A, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060201
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # evt_rn_galaxy_raimon Crónica (golden coin)
+  key = 0x4F8EBB1E                       # crc32(chronicle_deluxe.cronica_evt_rn_galaxy_raimon)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # evt_rn_galaxy_raimon (rival chronicle_deluxe.cro_galaxy_raimon)
@@ -948,6 +978,14 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x1D4B6E80, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em040001
     { item = 0xE28B0AA3, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u040101
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_040_010 Crónica (golden coin)
+  key = 0x06760277                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_040_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_040_010 (rival tm_cro_go3_0400)
@@ -955,6 +993,14 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x15A77736, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060304
     { item = 0x9BCF8DAD, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060301
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_050_010 Crónica (golden coin)
+  key = 0xCD2AD1D2                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_050_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_050_010 (rival tm_cro_go3_0500)
@@ -962,6 +1008,14 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x62A047A0, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060305
     { item = 0x9E809B28, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060401
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_060_010 Crónica (golden coin)
+  key = 0x4BBEA37C                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_060_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_060_010 (rival tm_cro_go3_0600)
@@ -970,6 +1024,14 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x8CAE268C, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060307
     { item = 0x9F42F11F, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060501
     { item = 0xDF3AD199, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNN860ZkoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120082
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_070_010 Crónica (golden coin)
+  key = 0x80E270D9                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_070_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_070_010 (rival tm_cro_go3_0700)
@@ -977,6 +1039,7 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0xFBA9161A, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060306
     { item = 0x9D044F46, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060601
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_080_010 (rival tm_cro_go3_0800)
@@ -985,6 +1048,7 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x1C113B1D, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060308
     { item = 0x26DA5513, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNCbaVRMoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # fashion chronicle_deluxe.kit_silica_eleven_alt
     { item = 0x9CC62571, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060701
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_090_010 (rival tm_cro_go3_0900)
@@ -992,6 +1056,13 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x6B160B8B, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060309
     { item = 0x979A624C, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060801
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # evt_rn_galaxy_naiadi_side Crónica (golden coin)
+  key = 0x1B0CC997                       # crc32(chronicle_deluxe.cronica_evt_rn_galaxy_naiadi_side)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # evt_rn_galaxy_naiadi_side (rival chronicle_deluxe.cro_galaxy_naiadi_side)
@@ -999,6 +1070,7 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x6B160B8B, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060309
     { item = 0x2B872028, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNCuHICgoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # fashion chronicle_deluxe.kit_naiadi_eleven_alt
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_100_010 (rival tm_cro_go3_1000)
@@ -1006,6 +1078,7 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x0BD1826E, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060310
     { item = 0x9658087B, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u060901
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_110_010 (rival tm_cro_go3_1100)
@@ -1013,6 +1086,7 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x7CD6B2F8, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060311
     { item = 0x20F73EA6, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u061101
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_120_010 (rival tm_cro_go3_1200)
@@ -1020,6 +1094,7 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0xE5DFE342, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060312
     { item = 0x22B180FF, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u061201
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_130_010 (rival tm_cro_go3_1300)
@@ -1027,6 +1102,14 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x92D8D3D4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060313
     { item = 0x2373EAC8, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u061301
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_140_010 Crónica (golden coin)
+  key = 0xA00109C3                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_140_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_140_010 (rival tm_cro_go3_1400)
@@ -1035,6 +1118,14 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x0CBC4677, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060314
     { item = 0x263CFC4D, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u061401
     { item = 0xA83DE10F, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNKg94Q8oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120083
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_150_010 Crónica (golden coin)
+  key = 0x6B5DDA66                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_150_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_150_010 (rival tm_cro_go3_1500)
@@ -1043,6 +1134,14 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x7BBB76E1, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060315
     { item = 0x27FE967A, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u061501
     { item = 0x365974AC, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNDZZdKwoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120084
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
+  ] } }
+
+  [[keyed.add]]                         # fbtl_cro06_160_010 Crónica (golden coin)
+  key = 0xEDC9A8C8                       # crc32(chronicle_deluxe.cronica_fbtl_cro06_160_010)
+  cells = { REF_ITEMS = { set = [
+    { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_160_010 (rival tm_cro_go3_1600)
@@ -1051,6 +1150,7 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0xE2B2275B, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # emblem em060316
     { item = 0x25B82823, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # fashion uni_u061601
     { item = 0xCF7014DE, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNM9wFN4oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # important gd120079
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro07_010_010 (rival tm_cro_ares_1100)
@@ -1475,6 +1575,7 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
     { item = 0xC3052576, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNMMFJXYoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsd000040
     { item = 0x7867B677, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNHhntncoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wss000050
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_090_010 Crónica: story auras
@@ -1483,6 +1584,7 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
     { item = 0x2E3D11F1, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNC49EfEoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wss000030
     { item = 0xEF21DE69, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNO8h3mkoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsd000470
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_100_010 Crónica: story auras
@@ -1494,6 +1596,7 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x7BCEA96F, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNHvOqW8oAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsk000130
     { item = 0xC0C01BBB, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNMDAG7soAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000140
     { item = 0xF0F12DC3, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNPDxLcMoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wsd000160
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_110_010 Crónica: story auras
@@ -1501,6 +1604,7 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
     { item = 0xD9DB2AFA, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNNnbKvooAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000150
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_120_010 Crónica: story auras
@@ -1509,6 +1613,7 @@ table = "soccer/soccer_prize_itbl_base"
     { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
     { item = 0xBC7585C9, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNLx1hckoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000010
     { item = 0x372620B0, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNDcmILAoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wss000020
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro06_130_010 Crónica: story auras
@@ -1516,6 +1621,7 @@ table = "soccer/soccer_prize_itbl_base"
   cells = { REF_ITEMS = { set = [
     { item = 0x64EB1725, count = 5, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_st000001
     { item = 0xF5FFD1E5, count = 1, weight = 1, condition = { text = "AAAAACEFNY12ZtgAEwIoAAYCNPX/0eUoAAYCMgAAAAEyAAAAAHg=" }, reserved_4 = 0 },   # special_skill wso000560
+    { item = 0x3E638AB4, count = 1, weight = 1, condition = 0, reserved_4 = 0 },   # consume tk_gc000001
   ] } }
 
   [[keyed.add]]                         # fbtl_cro12_030_010 gate battle (rival tm_cro_original_0300)

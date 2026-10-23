@@ -6,13 +6,13 @@ key_id = "SignaturePassives"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Signature Passives"
-version = "1.5.0"
+version = "1.6.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The custom passive becomes each player's Signature Passive: a passive of his own, declared per character by the mods, instead of one you equip. On Victory Road's board the slot always shows it and cannot be changed; matches use it. On Character Reforged's Fantasy table the custom passive button shows it, read only. Adds the generic elemental passives (Wind, Forest, Fire, Mountain, Void plus: own moves of that element ×1.15), assigned like any generic passive. Every passive is built from reusable blocks (when / whose event, stacks, effects on chosen players, what nullifies it), edited per character in ModManager «Pasivas». Needs Character Reforged."
 priority = 0
-tags = ["Gameplay", "Characters"]
-updated = "2026-10-22"
+tags = ["Characters", "Gameplay"]
+updated = "2026-10-23"
 # This mod's own names (TOML keys [SignaturePassives.X], Lua SignaturePassives.X, commands CMND_SIGNATUREPASSIVES_*); never VRFW.
 # Renamed from Special Players (SpecialPlayers / special_players) in 1.5.0; the old ids stay in former_ids: old lists,
 # gates and saves keep working.

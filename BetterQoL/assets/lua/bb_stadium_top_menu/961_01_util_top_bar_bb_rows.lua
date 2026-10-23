@@ -3,7 +3,7 @@
 -- Utilities util_top_bar_bb_rows (graft.toml; BetterUI's clean_hud_bb_rows until 2026-10-12): the top bar steps `bb_row.<menuObjectName>` open that row of this hub.
 -- BetterQoL.TopBar.BbRows.row = the row asked by the shortcut in flight (menuObjectName); .deciding = the row while its retail
 -- OnDecideFocus runs from here (another graft wrapping OnDecideFocus may read it: «a top bar shortcut picked this row»).
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 BetterQoL.TopBar = type(BetterQoL.TopBar) == "table" and BetterQoL.TopBar or {}
 BetterQoL.TopBar.BbRows = {row = nil, frames = 0, co = nil, deciding = nil}
 BetterQoL.TopBar.BbRows.STEP = "bb_row."                         -- the step names the entries declare: bb_row.<id>

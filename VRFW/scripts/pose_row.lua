@@ -4,7 +4,7 @@
 -- its players as 3D models posing in a row; the entries come from the declaring mod's own command (`source`).
 -- | Command | Args | Returns |
 -- |---|---|---|
--- | CMND_VRFW_POSE_ROW | key crc (crc32 of "<mod>.<name>") | { key, source, pose, models, title, decide, owned, new, label, hint, layout, camera, motion (0 none, 1 the summon performance's, else a clip crc), centered }; nothing = not declared |
+-- | CMND_VRFW_POSE_ROW | key crc (crc32 of "<mod>.<name>") | { key, source, pose, models, title, decide, owned, new, label, hint, layout, camera }; nothing = not declared |
 -- | CMND_VRFW_POSE_ROW_CARDS | language code, card… | { [i] = { name, position } } of each card (name in that language, position = main_position) |
 
 PoseRow = PoseRow or {}
@@ -55,8 +55,7 @@ local function load_rows()
                  title = text_id(v.title), decide = text_id(v.decide), owned = text_id(v.owned),
                  new = text_id(v.new), label = text_id(v.label), hint = text_id(v.hint),
                  style = v.style, banner = text_id(v.banner), icon_atlas = v.icon_atlas, icon_sprite = v.icon_sprite,
-                 panel_title = text_id(v.panel_title), team = text_id(v.team), page = text_id(v.page), layout = L.layout, camera = L.camera,
-                 motion = (v.motion == "summon" and 1) or D.id_of(v.motion) or 0, centered = v.centered == true }
+                 panel_title = text_id(v.panel_title), team = text_id(v.team), page = text_id(v.page), layout = L.layout, camera = L.camera }
     info(string.format("%s: source %s, %d model(s)", d.key, tostring(v.source), v.models))
   end
   return ROWS

@@ -1,0 +1,11 @@
+schema = "VRFW.transform/2"
+# Character Reforged › the cooldown between auras: after a team starts any aura (keshin, totem, armour, miximax, mode
+# change...), no player of that team may start another one for this many seconds of match time (paused time and the
+# half-time break do not count). Both teams, the CPU too. The option row «Cooldown entre auras» (options.toml
+# aura_cooldown: off / 5 / 10 / 15 / 20 / 30 s, default 10) sets it, read at every match start; team_aura_cooldown_s
+# is the value while the row was never changed (keep it equal to the row's default). The framework's transform run
+# time applies it in its aura gate ([rules] team_aura_cooldown_s / team_aura_cooldown_option).
+
+[rules]
+team_aura_cooldown_s = 10
+team_aura_cooldown_option = "aura_cooldown"

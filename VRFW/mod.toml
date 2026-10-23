@@ -2,14 +2,27 @@ id = "VRFW"
 former_ids = ["vr_framework"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\rows\mod_info.toml)
 name = "VRFW"
-version = "2.101.0"
+version = "2.135.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The base of the VR ModLoader's mods, in one mod: characters and teams declared by mods and their rarity (chara), mod texts in 9 languages (text), the save slots (the slot screen before the game starts), per-mod save data tied to the slot and the mods' save flags (save), global game rules declared by mods: parameters (game_param and the other property tables), controls and buttons (system), mod audio and voice packs (audio), match rulesets (match), special move animations (anim), row changes in any game table (tables), game modes declared by mods (modes), special move name banners, the «Mod options» tab and the title menu's «Mods» screen (graphics). Built into the VR ModLoader (winmm.dll): no DLL of its own. Needed by the mods that use any of its parts."
 # the base loads first: the mods that use it load after it (and win their conflicts)
 priority = -10
 tags = ["Framework"]
-updated = "2026-10-22"
+updated = "2026-10-23"
+# 2.135.0: the ball's trigger list keeps only the retail rows and the auras of every move the match's players can use
+# (unit slots incl. form variants, linked moves of slotted keshin / armour / Mix-Max / totem / mode change commands, the
+# plates, the transform engine's forms); new auras stay within the resource registries minus [trigger_lists] pool_reserve.
+# 2.134.0: [[shot_aura]] when.aura_model: a rule for the shooter's active totem / keshin (or its armour / Mix-Max
+# form) by its model (aura_skill_config col 7), e.g. an aura variant with the shooter's own creature.
+# 2.133.0: Battle Bay team select: the team panel's player cards draw one draw priority above their pitch frame
+# (the game gave both the same one, so the pitch could draw over the cards: faded cards, lines across them).
+# 2.132.0: shot auras leave the ball for good: a killed aura's nested effect parts are stopped too and a fading
+# instance is followed by its new handle until gone; a chain link in flight ends the previous link's aura.
+# 2.131.0: trigger lists of 256+ rows no longer crash the match load: patch Effect.TriggerRows widens the controller
+# build's one-byte row counter; [trigger_lists] max_rows (effect defaults) bounds every list, the ball's chosen per match.
+# 2.105.0: transform [rules] team_aura_cooldown_s / team_aura_cooldown_option: after a team starts any aura, no
+# player of that team starts another for that many seconds of match time (the aura_start gate; plates reason «cooldown»).
 # 2.78.0: menu models never touch another menu's model: a released slot changes its own model key (the release
 # without a key reached key 0, the Chronicle board's caravan: drawn huge after the pose row screen); VRFW_PoseRow.Open
 # no longer writes the caller's models (hidden through their layer's visibility, place only read and logged). Pose

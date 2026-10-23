@@ -32,7 +32,7 @@
 local B = require "lib/tb_bytes"
 local S = require "lib/tb_store"
 
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.TeamBanks = BetterQoL.TeamBanks or {}
 
 local band, bor, bnot, lshift = bit32.band, bit32.bor, bit32.bnot, bit32.lshift

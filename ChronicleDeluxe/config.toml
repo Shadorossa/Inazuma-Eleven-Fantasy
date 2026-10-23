@@ -106,7 +106,7 @@ until_first_clear = true
 # game not listed here allows everything (no rule). The Crónica and every other match are not ruled.
 #   keshin = fighting spirits; armour = keshin armed; bond = bond transformations; awakening = awakening powers and
 #   changes; own_mode_change = a mode change of the card's own kit (the game's own, e.g. Shawn Froste's);
-#   created_mode_change = a mode change a player created (All Changed's «Modo cambio»)
+#   created_mode_change = a mode change a player created (Custom Change Mode's «Modo cambio»)
 # Owner: no aura in IE1-IE3, Ares and Orion except the cards' own mode changes; fighting spirits in GO; + armours and
 # miximax in Chrono Stone; + totems in Galaxy; Victory Road allows everything (bond, awakening, created mode changes).
 [heroic.auras]
@@ -148,6 +148,16 @@ name = "fm_protocol_omega_3_base"
 team = "tm_cro_orion_1200"   # Chispas Perfectas (La marca llama de nuevo)
 name = "fm_perfect_spark_shuffle"
 key = "chronicle_deluxe_fms_perfect_spark"
+# The golden coin «Moneda dorada» (owner 2026-10-23; content/items/golden_coin.toml), the Chronicle board gacha's coin
+# (_gacha_pool.toml cost_item). research/scripts/chronicle_deluxe_heroic_build.py adds `count` coins to the first-clear
+# table of every Crónica and every Batalla heroica of the games in `first_clear_series` (the battles' game = their
+# route's series, as the player rules: ie1 ie2 ie3 go1 go2 go3 ares orion victory_road); its drop rate in the Batalla
+# heroica is [[drops.battle]] `golden_coin` below (chronicle_deluxe_drops_build.py).
+[golden_coin]
+item = "tk_gc000001"                   # the item's key (its icon_key; key_id: its id is crc32 of the key)
+first_clear_series = ["go3"]           # Galaxy: 1 coin for the first Crónica win and 1 for the first Heroica win
+count = 1
+
 # The rival's drops of every Chronicle board battle (owner 2026-10-21; docs/game/mods/chronicle-deluxe.md §17). Read
 # by research/scripts/chronicle_deluxe_drops_build.py, which writes content\teams\90_rules\rival_drops.toml and the
 # drop / loot base tables from them: change a value here, re-run it (`--check` = exit 1 when the data is stale).
@@ -175,6 +185,7 @@ difficulties = [4]
 manuals = 10.0
 boots = 2.5
 auras = 1.5
+golden_coin = 10.0        # the golden coin ([golden_coin] item), every Batalla heroica (owner 2026-10-23, default 10 %)
 books = [
   { item = "abl_ub000001", rate = 2.0 },   # Libro de mejora de supertécnica
   { item = "abl_ue000001", rate = 0.5 },   # Cuaderno de evolución definitiva (grade 4 -> 5)

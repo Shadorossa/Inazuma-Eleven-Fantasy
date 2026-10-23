@@ -20,6 +20,13 @@ team = "active_team"
 # level sync; every move stays usable). 0 = no sync.
 level_sync = 40
 
+[difficulty]
+# The AI difficulty another mod sets itself: game_state keys such a mod publishes ([[VRFW.State]] with the game's
+# difficulty index: 0 Principiante, 1 Intermedio, 2 Avanzado, 3 Desafiante). While one of them answers, the Battle Bay
+# asks for no difficulty: the Campaña and the Torneo start without the difficulty window, the 1 vs 1's match settings
+# have no difficulty row, and every match uses that index. No key answers (those mods off) = the game's own choice.
+owner_states = ["LegendaryMatch.ai_difficulty"]
+
 [draft]
 # The Draft's pool is derived when the game starts, from the Battle Bay as the game loads it (no fixed list): every
 # player (squad slots 0-18) of every other Battle Bay team, one card per character. These keys are its rule.

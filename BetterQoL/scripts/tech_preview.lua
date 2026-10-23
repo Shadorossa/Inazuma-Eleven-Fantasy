@@ -17,7 +17,7 @@
 
 local S = require "lib/tb_store"
 
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.TechPreview = BetterQoL.TechPreview or {}
 local TP = BetterQoL.TechPreview
 

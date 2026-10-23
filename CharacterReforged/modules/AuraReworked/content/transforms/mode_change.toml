@@ -1,6 +1,6 @@
 schema = "VRFW.transform/2"
 if_mod = "all_changed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
-# All Changed › the mode change's pseudo-items in the game's ability lists (docs/game/mods/all-changed.md; the
+# Custom Change Mode › the mode change's pseudo-items in the game's ability lists (docs/game/mods/all-changed.md; the
 # transform type's [ability_list], merged over every mod): the carriers a player's change uses (wmc_evt0..7) are never
 # listed (the swap holds them, not the player's moves); the mode change items pass the move type / element filter of a
 # picker that lists mode changes (their linked move is themselves, no SKILL_INFO row). «Crear nuevo cambio»

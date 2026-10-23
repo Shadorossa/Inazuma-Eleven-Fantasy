@@ -120,3 +120,19 @@ needs = ["campaign_code", "FindChildByHash", "enjoy", "session", "EnjoyTable", "
 # the pre-phase waits for a busy script VM: a skipped pre-phase is the game's own draw from the visible page only
 wait_ms = 500
 
+# ---------------------------------------------------------------- the difficulty another mod owns
+# config.toml [difficulty] owner_states (scripts\campaign.lua): the graft bb_draft's bbd_difficulty.lua asks these.
+
+[[VRFW.Command]]
+# -> the difficulty index (0-3) an active mod owns, -1 = none (the player picks it)
+name = "CMND_BBD_DIFFICULTY_OWNED"
+handler = "BattleBayDeluxe.OwnedDifficulty"
+
+[[VRFW.Command]]
+# -> true: the Campaña / Torneo grid's team decided while a mod owns the difficulty: the start button's decide
+# (GameDecide with 0x140980D9, called directly) with the Decide hook's pre / post phases, so the Campaña starts (or the
+# Torneo draws its run) without the difficulty window; false = nothing started (the graft opens the window)
+name = "CMND_BBD_DIFFICULTY_START"
+handler = "BattleBayDeluxe.StartWithoutDifficulty"
+needs = ["GameDecide", "campaign_code", "FindChildByHash", "enjoy", "session", "EnjoyTable", "EnjoyRow", "GridMenu", "GridSlot", "GridChild", "Session"]
+

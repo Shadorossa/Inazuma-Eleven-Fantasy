@@ -5,7 +5,7 @@
 -- on = the skill table (evt_skill_slot_menu) with the formation's equip parameters (the stale «open the original
 -- board» request key evt_ss_open_board is deleted before and after); off = nil (Utilities' default: the retail board).
 -- No engine call at load.
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.BankCommands = BetterQoL.BankCommands or {}
 CharacterReforged = CharacterReforged or {}
 CharacterReforged.BANK_SKILL_TABLE = {Menu = 1041963128 --[[evt_skill_slot_menu]], Params = "equip",

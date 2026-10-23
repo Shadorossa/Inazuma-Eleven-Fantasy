@@ -34,3 +34,17 @@ help = "team_aura_max_help"
 values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, { value = 0, name = "team_aura_max_none", text = "No limit" }]
 default = 3
 order = 141
+
+# «Cooldown entre auras» (owner request 2026-10-23: «de normal tiene que ser 10s de cooldown entre uso de cualquier
+# aura»): seconds of match time after a team starts any aura (keshin, totem, armour, miximax, mode change...) before
+# that team may start another. Per team, both teams (the CPU too); paused time and the half-time break do not count.
+# 0 = off. Read at every match start (no restart): content\transforms\aura_cooldown.toml [rules]
+# team_aura_cooldown_option.
+[[option]]
+id = "aura_cooldown"                          # row key CharacterReforged.aura_cooldown
+type = "list"
+label = "aura_cooldown"                       # text\keys.toml, 9 languages
+help = "aura_cooldown_help"
+values = [{ value = 0, name = "aura_cooldown_off", text = "Off" }, { value = 5, text = "5 s" }, { value = 10, text = "10 s" }, { value = 15, text = "15 s" }, { value = 20, text = "20 s" }, { value = 30, text = "30 s" }]
+default = 10
+order = 142

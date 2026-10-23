@@ -23,17 +23,11 @@ if VRFW_Host ~= nil then
     FRIENDLY = "new_recruitment_pachanga",
     GAME = 2372839589,              -- sbtl_rojiura_01: a retail 5v5 match row (game type 2: the stadiums' 5v5 lines)
     MENU = "new_recruitment.pachangas",   -- the pose row (content\pose_rows\pachangas.toml)
-    -- the board's own chrome hidden while the list is up (its footer and the piece's title banner)
-    -- the board's chrome and pieces hidden while the list is up (the list is drawn over the board's map: its pieces,
-    -- locks, icons and roads would show over the side panel's 3D models)
+    -- the board's own chrome hidden while the list is up (its footer, the piece's title banner, the zoom guides and
+    -- the cursor); the map's pieces, their team icons and the roads stay (owner 2026-10-23)
     HIDE = {1423637364 --[[rpg00_05_menu_button_guide]], 139522149 --[[vsroute02_03_gametitle]],
-            4002479583 --[[vsroute00_05_town_map_piece]], 1632548965 --[[vsroute00_07_town_map_piece_atc_chara]],
-            1617793781 --[[vsroute01_09_town_map_piece_lock_front]], 3060354640 --[[vsroute01_09b_town_map_piece_lock_back]],
-            2638032167 --[[vsroute01_06c_town_map_piece_clear_icon]], 907932950 --[[vsroute01_07c_gate_key_icon]],
-            1225175571 --[[vsroute01_07_obtain_gate_key_icon]], 57708379 --[[vsroute01_07b_gate_keyhole_icon]],
-            3325939278 --[[vsroute01_08_destination_icon]], 3905678584 --[[vsroute00_03_area_name_plate]],
             3860387247 --[[vsroute_zoom_guide]], 1635409244 --[[vsroute_p1_area_zoom_guide]],
-            922325769 --[[vrfw_route_road]], 2296367164 --[[cmn05_01_cursor]]},
+            2296367164 --[[cmn05_01_cursor]]},
     LINEUP = 949268794,             -- CMND_NEWRECRUITMENT_PACHANGA_LINEUP (key) -> the cards who play its next match
     TEAM_LINEUP = 91345181,         -- CMND_VRFW_TEAM_LINEUP (team, card…): those cards take roster slots 0..
     BASE = 1856865420,              -- CMND_NEWRECRUITMENT_PACHANGA_BASE (team level): the levels scale from it

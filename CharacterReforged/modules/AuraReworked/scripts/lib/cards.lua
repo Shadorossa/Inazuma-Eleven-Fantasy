@@ -1,4 +1,4 @@
--- All Changed › the cards a mode change works on: owned cards (VRFW.chara.saved), their chara_param facts (the
+-- Custom Change Mode › the cards a mode change works on: owned cards (VRFW.chara.saved), their chara_param facts (the
 -- framework's character index, VRFW.chara.card) and the framework's fusion store (VRFW.miximax.call). Pure Lua over the
 -- framework; no game data written. (The same helpers as Inazuma Fantasy's lib\transform\cards.lua, reduced to what a
 -- mode change needs; candidates for Character Reforged once its shared card helpers land, docs/refactor/aura-mods-split.md.)

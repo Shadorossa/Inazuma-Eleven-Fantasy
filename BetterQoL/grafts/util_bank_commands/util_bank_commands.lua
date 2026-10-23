@@ -22,7 +22,7 @@
 --   BetterQoL.BankCommands.Rules["<Prefix>.<Name>"] = {Retail = function(h) end, Lock = function(h) end}
 --       Retail(h) true: the retail popup for that player; Lock(h) true: every row grey and A refused.
 -- Always on. Nothing calls funcLuaCommand / funcLuaMenuCommand at chunk load.
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.BankCommands = BetterQoL.BankCommands or {}
 BetterQoL.BankCommands.Rules = BetterQoL.BankCommands.Rules or {}
 do

@@ -6,7 +6,7 @@
 -- click) the Caseta comes back with its cursor on the row. The Caseta's button guide shows «Ordenar» on Select while the
 -- page is open (the page sorts with it) and gets its own «Aceptar» back. Runs as a coroutine resumed from Step.
 -- Engine calls only from the menu callbacks.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 
 if UTIL_CST == nil then
   UTIL_CST = {

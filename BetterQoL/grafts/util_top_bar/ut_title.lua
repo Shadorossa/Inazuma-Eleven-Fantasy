@@ -6,7 +6,7 @@
 -- index 2, never locked) with that id (GetTitleMenuItemId / IsEnableMenuItemButton answer for it during the call):
 -- the same checks, sound and request as a button press. The same hand-off as Inazuma Fantasy's mh_title.lua (which
 -- replaces this one when IF is on: its [top_bar_title] loads later). Globals only; nothing runs at chunk load.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 BetterQoL.TopBar = type(BetterQoL.TopBar) == "table" and BetterQoL.TopBar or {}
 BetterQoL.TopBar.GO_KEY = 4221495040 --[[crc32 utilities_topbar_go]]
 BetterQoL.TopBar.READY_KEY = 3292329527 --[[crc32 utilities_title_ready]]

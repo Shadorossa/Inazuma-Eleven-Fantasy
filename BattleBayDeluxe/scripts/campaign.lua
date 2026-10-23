@@ -701,8 +701,17 @@ local function finish(p)
   check_match(sess, p.player, p.rivals[1])
 end
 
-VRFW.on("hook:Decide", function(ev)
-  local menu, btn, idx = ev.args[1], ev.args[2], ev.args[3]
+-- the Campaña / Torneo grid of the last team decide (the start without the difficulty window decides on it)
+local CAMPAIGN_GRID = nil
+
+-- the pre-phase of a decide (the Decide hook, and the start without the difficulty window): nil = the game's Decide
+-- runs, { skip = true, ret = 0 } = it does not
+local function decide_pre(menu, btn, idx)
+  pcall(function()
+    if U.rd("u32", btn) == G.GRID_LAYER and (U.get(U.struct("GridMenu", menu), "campaign") or 0) ~= 0 then
+      CAMPAIGN_GRID = menu
+    end
+  end)
   if PREP then
     -- a post-phase that never ran (the scripts were busy on another thread then): the grid back first
     if PREP.menu == menu then
@@ -751,15 +760,16 @@ VRFW.on("hook:Decide", function(ev)
   end
   PREP = p
   return nil
-end)
+end
 
-VRFW.on("hook:Decide:post", function(ev)
-  if FREE and FREE.menu == ev.args[1] then
+-- the post-phase of a decide on `menu`
+local function decide_post(menu)
+  if FREE and FREE.menu == menu then
     free_back("post-phase")
   end
   local p = PREP
   PREP = nil
-  if not p or p.menu ~= ev.args[1] then
+  if not p or p.menu ~= menu then
     return nil
   end
   local ok, e = pcall(finish, p)
@@ -768,4 +778,117 @@ VRFW.on("hook:Decide:post", function(ev)
     pcall(restore_grid, p)
   end
   return nil
+end
+
+VRFW.on("hook:Decide", function(ev)
+  return decide_pre(ev.args[1], ev.args[2], ev.args[3])
 end)
+
+VRFW.on("hook:Decide:post", function(ev)
+  return decide_post(ev.args[1])
+end)
+
+-- ------------------------------------------------------------------------------------------------ the owned difficulty
+-- A mod that sets the CPU's AI itself publishes the game's difficulty index (0-3) as a game_state key; config.toml
+-- [difficulty] owner_states lists the keys read. While one answers, the Battle Bay asks for no difficulty (graft
+-- bb_draft bbd_difficulty.lua): the menus' GetSelectDifficultyIdx answers it, the Campaña / Torneo team decide starts
+-- at once (StartWithoutDifficulty) and the 1 vs 1's match settings hide their difficulty row.
+
+local DIFFICULTY_LEVELS = 4 -- the game's difficulty windows: 4 levels, index 0-3
+local DIFFICULTY_STATES = {}
+do
+  local keys = U.config("difficulty.owner_states", {})
+  if type(keys) ~= "table" then
+    keys = { keys }
+  end
+  for _, k in ipairs(keys) do
+    k = U.trim(tostring(k))
+    if k ~= "" then
+      DIFFICULTY_STATES[#DIFFICULTY_STATES + 1] = k
+    end
+  end
+end
+local difficulty_shown = nil
+local difficulty_bad = {}
+
+-- the owned difficulty: index, key; nil = no key answers
+local function owned_difficulty()
+  for _, key in ipairs(DIFFICULTY_STATES) do
+    local ok, v = pcall(VRFW.state.get, key)
+    v = ok and tonumber(v) or nil
+    if v ~= nil then
+      v = floor(v)
+      if v >= 0 and v < DIFFICULTY_LEVELS then
+        return v, key
+      end
+      if not difficulty_bad[key] then
+        difficulty_bad[key] = true
+        warn(string.format("difficulty: game_state %s = %d is not a difficulty index (0-%d): ignored", key, v,
+          DIFFICULTY_LEVELS - 1))
+      end
+    end
+  end
+  return nil
+end
+
+-- CMND_BBD_DIFFICULTY_OWNED -> the owned difficulty index, -1 = none (logged when it changes)
+function BattleBayDeluxe.OwnedDifficulty()
+  local ok, idx, key = pcall(owned_difficulty)
+  if not ok then
+    warn("difficulty: owner check failed: " .. tostring(idx))
+    return -1
+  end
+  local shown = idx and (key .. "=" .. idx) or "none"
+  if shown ~= difficulty_shown then
+    difficulty_shown = shown
+    if idx then
+      info(string.format("difficulty: owned (game_state %s): index %d of 0-%d for every Battle Bay match, no "
+        .. "difficulty asked", key, idx, DIFFICULTY_LEVELS - 1))
+    else
+      info("difficulty: no mod owns it (config.toml [difficulty] owner_states): the player picks it")
+    end
+  end
+  return idx or -1
+end
+
+local function start_without_difficulty()
+  local idx = owned_difficulty()
+  if idx == nil then
+    warn("difficulty start: no mod owns the difficulty: nothing started")
+    return false
+  end
+  local menu = CAMPAIGN_GRID
+  CAMPAIGN_GRID = nil
+  if not menu or (U.get(U.struct("GridMenu", menu), "campaign") or 0) == 0 then
+    warn("difficulty start: no Campaña grid decided: nothing started")
+    return false
+  end
+  local okb, lb = pcall(VRFW.mem.buffer, "bbd_layer_start", 4)
+  if not okb or not U.wr("u32", lb, G.BTN_CAMPAIGN_START) then
+    warn("difficulty start: layer buffer not writable: nothing started")
+    return false
+  end
+  local r = decide_pre(menu, lb, 0)
+  if type(r) == "table" and r.skip then
+    info("difficulty start: the game's start not run (the Torneo draws its run): difficulty index " .. idx)
+    return true
+  end
+  local ok, e = U.call("GameDecide", menu, lb, 0)
+  decide_post(menu)
+  if not ok then
+    warn("difficulty start: the game's start failed: " .. tostring(e))
+    return false
+  end
+  info("difficulty start: the Campaña started without the difficulty window, difficulty index " .. idx)
+  return true
+end
+
+-- CMND_BBD_DIFFICULTY_START -> true = started (or the Torneo's run drawn), false = nothing started
+function BattleBayDeluxe.StartWithoutDifficulty()
+  local ok, done = pcall(start_without_difficulty)
+  if not ok then
+    warn("difficulty start failed: " .. tostring(done))
+    return false
+  end
+  return done == true
+end

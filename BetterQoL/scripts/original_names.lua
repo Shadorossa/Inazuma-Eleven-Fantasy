@@ -29,7 +29,7 @@
 local Cat = require "lib/original_names_catalogue"
 local T = require "lib/original_names_tables"
 
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.OriginalNames = BetterQoL.OriginalNames or {}
 
 local OPT_PREFIX, OPT_FORMAT, OPT_CUSTOM = "names.", "names.format", "names.custom"

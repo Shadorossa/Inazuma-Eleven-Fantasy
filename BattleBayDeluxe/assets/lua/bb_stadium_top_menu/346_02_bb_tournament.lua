@@ -450,7 +450,39 @@ BBT.UNLOAD = 223540611
 -- one call to 1455139087 (campaign). The game registers funcLuaCommand AFTER the chunk ran, so a wrapper installed at
 -- chunk load is overwritten and never runs (BBD 1.5.6: the Torneo opened the 1v1 grid); the swap is a temporary
 -- wrapper put in place around that one WaitExecOtherMenu (the retail chunk looks the global up at every call).
+-- 1.33.2 (owner 2026-10-23: «nuevo torneo» left the Battle Bay top menu without input): the retail WaitExecOtherMenu
+-- makes this menu inactive and waits, without a bound, until the engine reports it settled (667479479), then opens the
+-- grid. The same two steps run here first with a bound (BBT.GRID_WAIT_STEPS Steps of the decide coroutine): past it
+-- the menu is made active again, its lists get the focus back, the grid is not opened (false: the caller disarms the
+-- run). Each step logged once.
+BBT.GRID_WAIT_STEPS = 180
+function BBT_TopMenuSettled()
+  local menu = BBT_HOST.menu
+  local _, main = coroutine.running()
+  funcLuaMenuCommand(1558704558 --[[CMND_SET_MENU_ACTIVE?]], menu, false)
+  BBT_Log("grid: " .. tostring(BBT_HOST.name) .. " made inactive, waiting for it to settle")
+  for step = 0, BBT.GRID_WAIT_STEPS do
+    local ok, busy = pcall(funcLuaCommand, 667479479 --[[menu still changing?]], menu)
+    if not ok or busy ~= true then
+      BBT_Log("grid: " .. tostring(BBT_HOST.name) .. " settled after " .. step .. " Step(s)")
+      return true
+    end
+    if main then
+      break
+    end
+    coroutine.yield()
+  end
+  funcLuaMenuCommand(1558704558 --[[CMND_SET_MENU_ACTIVE?]], menu, true)
+  pcall(BBT_HOST.refocus)
+  BBT_Log("grid: " .. tostring(BBT_HOST.name) .. " did not settle in " .. BBT.GRID_WAIT_STEPS ..
+    " Steps: the grid is not opened, the menu is active again")
+  return false
+end
+
 function BBT_OpenGridAsCampaign()
+  if not BBT_TopMenuSettled() then
+    return false
+  end
   local cmd = funcLuaCommand
   local swapped = false
   local swap
@@ -478,6 +510,8 @@ function BBT_OpenGridAsCampaign()
   if not ok then
     error(err, 0)
   end
+  BBT_Log("grid: the retail opener returned")
+  return true
 end
 BBT.RULE_SELECT = 962770085
 BBT.RULE_STATE = 883569181
@@ -503,6 +537,10 @@ BBT.L.box = 4216515300   -- 1.5.24: a score box at a plate's inner end (between 
 -- 1.5.35: a crest alone (the left plate's object, plate and name hidden): the winners standing at the bracket's joints
 -- and walking to them (at most one per match of the first round: 32)
 BBT.L.crest = 3817070050
+-- 1.33.0 (owner 2026-10-23: «Lo del estadio de la final debe tener el mismo formato de letra y rectángulo que el de
+-- arriba»): the final stadium's box is the round panel's own object (evt_bbd_tn_stadium, a two-line copy of the
+-- retail vroad04_09 panel: the same rounded navy plate and text styles)
+BBT.L.stadium_panel = 697292859
 -- 1.5.57 (owner in game 2026-10-13 22:41: the Battle Bay top menu stayed WHITE): the engine sets up at most ~844
 -- layer instances in one open menu (docs/game/ui/menu-layer-limits.md §2.1-§2.2); past it the menu never finishes
 -- opening (its background never ends opening, the retail FadeIn never runs: the title's white fade stays). 1.5.54
@@ -515,7 +553,7 @@ BBT.L.crest = 3817070050
 -- are digit sprites on the connector pool (BBT.NUM): line 256 -> 330 (1.12.0; a 64-team tree: 251 pieces + 62 pairs + the
 -- final's 2 digits + shoot-outs; a results page: its digits only), txt 66 -> 4 (the final stadium's two lines, the
 -- champion screen's two)
-BBT.N = { line = 330, row_l = 33, row_r = 32, txt = 4, icon = 1, box = 36, crest = 32 }
+BBT.N = { line = 330, row_l = 33, row_r = 32, txt = 4, icon = 1, box = 36, crest = 32, stadium_panel = 1 }
 -- draw priority of a connector-pool quad by what it draws (the layer's own is the connectors' 549; a score box drawn
 -- on it where the menu has no box pool: 552, BBT.SHARE)
 BBT.PRIO = { line = 549, box = 552 }
@@ -569,7 +607,9 @@ BBT.NODE_QUAD = 1909474081 --[[icon_new01]]
 -- results page: single digits in its boxes (research/scripts/bbd_bracket_art.py draws them; W / H / GAP / PAIR_H =
 -- its DIGIT_W / DIGIT_H / PAIR_GAP / PAIR_H). HEIGHT = a digit's height of the plates' pitch (H_MIN .. H_MAX px),
 -- SPACE = the gap from the joint (digit units), ADV = a digit's advance in a row, PRIO = in front of the connectors
-BBT.NUM = { W = 22, H = 29, GAP = 20, PAIR_H = 78, HEIGHT = 0.55, H_MIN = 13, H_MAX = 26, SPACE = 4, ADV = 0.78,
+-- 1.33.0 (owner 2026-10-23): GAP wide enough for the lit line between the two numbers at every digit height; the
+-- loser's digits light blue («blue», was a dark navy lost on the panel)
+BBT.NUM = { W = 22, H = 29, GAP = 32, PAIR_H = 90, HEIGHT = 0.55, H_MIN = 13, H_MAX = 26, SPACE = 4, ADV = 0.78,
   PEN_S = 0.75, FINAL_S = 1.3, BOX_FILL = 0.72, PRIO = 548 }
 -- the plate's four looks (team06_02): off = light (a team), on = blue (the player), ok = cyan (the champion), ol =
 -- the focus outline (never shown here)
@@ -591,11 +631,18 @@ BBT.C = {
 -- plates' edge (+ GAP), so the final meets in the middle (CX) and its stem goes up to the champion's plate.
 BBT.G = {
   W = 1920, TOP = 136, BOTTOM = 1004, MARGIN = 34, CX = 960, PLATE_W = 520, PLATE_H = 72, FILL = 0.84,
-  SCALE_MAX = 1.0, GAP = 16, Q = 36, LINE = 4, LINE_LIT = 10, CHAMP_Y = 176, CHAMP_S = 0.85, CROWN_W = 72,
+  SCALE_MAX = 1.0, GAP = 16, Q = 36, LINE = 6, LINE_LIT = 10, CHAMP_Y = 176, CHAMP_S = 0.85, CROWN_W = 72,
   CROWN_H = 54, SCORE_DY = 18, TXT_MIN = 0.62, TXT_MAX = 0.9,
   -- 1.8.0: the trophy's centre on the generic tree (the retail trophy in place of the crown, BBT_TrophyPlace); a
   -- star's size = STAR of the plates' pitch (STAR_MIN .. STAR_MAX px); the focus band = FOCUS_W x FOCUS_H of the plate
   TROPHY_Y = 300, STAR = 1.8, STAR_MIN = 32, STAR_MAX = 64, FOCUS_W = 1.2, FOCUS_H = 1.7,
+  -- 1.33.0 (owner 2026-10-23: the 32 / 64-team trees with the 16-team tree's rounded lines): LINE = the retail tree's
+  -- thickness (vroad04_01 tournament01), a stub's turn to its joint on a TURN_R corner, its sprite TURN_LEN px of
+  -- straight line long (research/scripts/bbd_bracket_art.py TURN_R / TURN_LEN: keep in sync)
+  TURN_R = 8, TURN_LEN = 120,
+  -- 1.35.0: the retail trophy's cup ends this far below its node (vroad04_02 _vic_trophy01: top 87, 176 tall); the
+  -- generic tree's stem stops there
+  TROPHY_CUP_BOTTOM = 89,
   COL = { 0.66, 0.78, 0.95 }, COL_LIT = { 1.0, 0.80, 0.24 }, DIM = 0.5,
   -- the Victory Road background (vroad04_01_p1: one translucent navy panel, 2004 x 724 at y 178 below its origin)
   -- stretched to hold the whole bracket: BG_TOP .. BG_BOTTOM
@@ -639,7 +686,21 @@ BBT_HOST = {
     return funcLuaMenuCommand(102308320 --[[CMND_IS_CTRL_FOCUS_ACTIVE?]], BBT.LIST_MID) == true
   end,
   open_grid = function()
-    BBT_OpenGridAsCampaign()
+    return BBT_OpenGridAsCampaign()
+  end,
+  -- 1.37.0 (owner 2026-10-23: «quita guía de controles en este menú y en el del cuadro de torneo»): while the overlay
+  -- is up the footer shows only the retail «Aceptar» (its Enter), without the other mods' prompts (BetterUI's «Guía de
+  -- controles»; the anchor has no row for that key); closed, the menu's own guide again (its prompts included)
+  guide = function(open)
+    local GUIDE = 1138543975 --[[mainmenu01_06_base_button_guide]]
+    if open then
+      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], GUIDE, 0, true)
+      funcLuaMenuCommand(2209673388 --[[guide entries]], BBT_HOST.menu, GUIDE, { 1847312674 --[[Accept]] },
+        { 2750714971 --[[<CMD_ENTER>]] }, { 0 }, { 0 }, { 0 })
+      funcLuaMenuCommand(452337289 --[[guide commands]], BBT_HOST.menu, GUIDE, { 1981080283 --[[CMD_ENTER]] })
+    elseif type(UpdateButtonGuide) == "function" then
+      UpdateButtonGuide(true)
+    end
   end,
   before_match = function() end,
 }
@@ -825,20 +886,44 @@ end
 
 -- an axis-aligned connector piece from (x0, y0) to (x1, y1); lit = on the winners' path (thicker); st = its state
 -- (BBT.SPR_STATE: plain / lit / me / out / out_me; default lit or plain), drawn as that state's coloured quad; 1.8.0:
--- a lit / me piece is its direction's halo sprite (BBT.SPR_HALO)
-function BBT_Seg(x0, y0, x1, y1, lit, st)
+-- a lit / me piece is its direction's halo sprite (BBT.SPR_HALO). A piece runs half its thickness past both ends (into
+-- the joints). 1.33.0: shape = { toward = "down" / "up", right } draws a stub with its rounded turn (BBT_RoundedTurn);
+-- shape = { trim = "start" / "end" } stops a vertical piece exactly at that end (where a turn's corner ends)
+function BBT_Seg(x0, y0, x1, y1, lit, st, shape)
   local G = BBT.G
   local t = lit and G.LINE_LIT or G.LINE
-  local w, h
+  local look = st or (lit and "lit" or "plain")
+  if shape and shape.toward then
+    return BBT_RoundedTurn(x0, x1, y0, shape.toward, shape.right, t, look)
+  end
+  local w, h, cy = 0, 0, (y0 + y1) / 2
   if y0 == y1 then
     w, h = math.abs(x1 - x0) + t, t
   else
-    w, h = t, math.abs(y1 - y0) + t
+    local dir = y1 > y0 and 1 or -1
+    local a = y0 - (shape and shape.trim == "start" and 0 or t / 2) * dir
+    local b = y1 + (shape and shape.trim == "end" and 0 or t / 2) * dir
+    w, h, cy = t, math.abs(b - a), (a + b) / 2
   end
-  local look = st or (lit and "lit" or "plain")
   local halo = BBT.SPR_HALO[look]
   local spr = halo and halo[y0 == y1 and "h" or "v"] or BBT.SPR_STATE[look] or BBT.SPR_LINE
-  BBT_Quad(BBT.L.line, spr, (x0 + x1) / 2, (y0 + y1) / 2, w, h, BBT.WHITE)
+  BBT_Quad(BBT.L.line, spr, (x0 + x1) / 2, cy, w, h, BBT.WHITE)
+end
+
+-- 1.33.0: a match's stub from xs to its joint xj on line y, turning on a rounded corner (BBT.G.TURN_R) towards the
+-- joint («down»: the upper entrant's, «up»: the lower one's; right = the mirrored side), thickness t, state look: one
+-- quad of the sprite bbd_tn_turn_<look>_<toward>_<side> stretched to the stub's length so that the corner's vertical
+-- end (half a thickness inside the sprite's far edge) stands on the joint
+function BBT_RoundedTurn(xs, xj, y, toward, right, t, look)
+  local G = BBT.G
+  local half = t / 2
+  local sprite_w = math.floor(G.TURN_LEN + half)
+  local sprite_h = math.floor(half + G.TURN_R)
+  local w = math.abs(xj - xs) * sprite_w / (sprite_w - half)
+  local cx = right and (xs - w / 2) or (xs + w / 2)
+  local cy = toward == "down" and (y - half + sprite_h / 2) or (y + half - sprite_h / 2)
+  local name = string.format("bbd_tn_turn_%s_%s_%s", look, toward, right and "right" or "left")
+  BBT_Quad(BBT.L.line, BBT_SprCrc(name), cx, cy, w, sprite_h, BBT.WHITE)
 end
 
 -- a free text centred on (x, y) at `scale`; style = a retail font style (crc32 of its name; default BBT.STYLE_TXT)
@@ -959,8 +1044,9 @@ function BBT_SprCrc(name)
   return c
 end
 
--- a row of digit sprites centred on (x, y): parts = { { sprite name, height }, ... }; returns its width
-function BBT_Glyphs(parts, x, y)
+-- a row of digit sprites centred on (x, y): parts = { { sprite name, height }, ... }; prio = the quads' draw
+-- priority (default BBT.NUM.PRIO, in front of the connectors); returns its width
+function BBT_Glyphs(parts, x, y, prio)
   local N = BBT.NUM
   local total, ws = 0, {}
   for k, p in ipairs(parts) do
@@ -969,13 +1055,13 @@ function BBT_Glyphs(parts, x, y)
   end
   local cx = x - total / 2
   for k, p in ipairs(parts) do
-    BBT_Quad(BBT.L.line, BBT_SprCrc(p[1]), cx + ws[k] / 2, y, ws[k], p[2], BBT.WHITE, N.PRIO, BBT.ART_NUM)
+    BBT_Quad(BBT.L.line, BBT_SprCrc(p[1]), cx + ws[k] / 2, y, ws[k], p[2], BBT.WHITE, prio or N.PRIO, BBT.ART_NUM)
     cx = cx + ws[k] * N.ADV
   end
   return total
 end
 
--- the parts of number n (style gold / dark / white) at height h appended to parts; wrap = in brackets
+-- the parts of number n (style gold / blue / white) at height h appended to parts; wrap = in brackets
 function BBT_NumParts(parts, n, style, h, wrap)
   if wrap then
     parts[#parts + 1] = { "bbd_tn_d_lp", h }
@@ -1013,7 +1099,7 @@ function BBT_TreeScore(m, xj, ym, right, pitch, lead)
   local space = N.SPACE * h / N.H
   local used = (lead or 0) + space
   local ga, gb = sc.ga or 0, sc.gb or 0
-  local sa, sb = m.w == 1 and "gold" or "dark", m.w == 2 and "gold" or "dark"
+  local sa, sb = m.w == 1 and "gold" or "blue", m.w == 2 and "gold" or "blue"
   local w
   if ga <= 9 and gb <= 9 then
     w = N.W * h / N.H
@@ -1049,7 +1135,7 @@ function BBT_FinalScore(m, ymid, pitch)
   local h = math.max(N.H_MIN, math.min(N.H_MAX, pitch * N.HEIGHT)) * N.FINAL_S
   local y = ymid + G.LINE_LIT + h / 2
   local off = N.W * h / N.H
-  local sa, sb = m.w == 1 and "gold" or "dark", m.w == 2 and "gold" or "dark"
+  local sa, sb = m.w == 1 and "gold" or "blue", m.w == 2 and "gold" or "blue"
   BBT_Glyphs(BBT_NumParts({}, sc.ga or 0, sa, h), G.CX - off, y)
   BBT_Glyphs(BBT_NumParts({}, sc.gb or 0, sb, h), G.CX + off, y)
   if (sc.pa or 0) + (sc.pb or 0) > 0 then
@@ -1094,8 +1180,9 @@ BBT.ADV = {
   -- the line colours: BBT.SPR_STATE (1.5.37: coloured quads; plain, lit gold, me light blue, out dark, out_me)
   OUT_ALPHA = 0.45,       -- 1.5.37: the plate of a team that is out (model + text alpha, the retail locked-dock way)
   -- 1.9.0: the crest standing on a joint (BBT_BigCrest): BIG_OF of the stub, the round's joint spacing less BIG_GAP,
-  -- BIG_MIN .. BIG_MAX px, its bottom BIG_LIFT px above the line; drawn in front of the connectors and the digits
-  BIG_OF = 0.5, BIG_GAP = 8, BIG_MIN = 24, BIG_MAX = 72, BIG_LIFT = 1, CREST_PRIO = 550,
+  -- BIG_MIN .. BIG_MAX px, centred on the joint (1.37.0, owner 2026-10-23: «caos debería estar en la unión de los
+  -- brackets»; 1.9.0-1.36.0 stood it on the line, half a pair higher); drawn in front of the connectors and the digits
+  BIG_OF = 0.5, BIG_GAP = 8, BIG_MIN = 24, BIG_MAX = 72, CREST_PRIO = 550,
 }
 
 function BBT_DrawTree(v)
@@ -1149,13 +1236,13 @@ function BBT_DrawTree(v)
   end
   -- a piece walked by leaf `l`: plain before its match is played, lit while that team is still in, dark once out
   local segs = {}
-  local function seg(x0, y0, x1, y1, l, played, won)
+  local function seg(x0, y0, x1, y1, l, played, won, shape)
     local p = leaves[l] or {}
     local st = "plain"
     if played and (p.team or 0) ~= 0 then
       st = (won and not p.out) and "lit" or "out"
     end
-    segs[#segs + 1] = { x0, y0, x1, y1, st, p.me == true }
+    segs[#segs + 1] = { x0, y0, x1, y1, st, p.me == true, shape }
   end
   local crests = {}
   local ymid = (G.TOP + G.BOTTOM) / 2
@@ -1180,10 +1267,12 @@ function BBT_DrawTree(v)
       if r < R then
         local right = t > cnt / 2
         local xj = jx(r)
-        seg(mx(xc, right), ya, mx(xj, right), ya, la, played, w == 1)
-        seg(mx(xc, right), yb, mx(xj, right), yb, lb, played, w == 2)
-        seg(mx(xj, right), ya, mx(xj, right), ym, la, played, w == 1)
-        seg(mx(xj, right), ym, mx(xj, right), yb, lb, played, w == 2)
+        -- 1.33.0: each stub turns to the joint on a rounded corner (the retail 16-team tree's look); the joint's two
+        -- halves start where the corners end
+        seg(mx(xc, right), ya, mx(xj, right), ya, la, played, w == 1, { toward = "down", right = right })
+        seg(mx(xc, right), yb, mx(xj, right), yb, lb, played, w == 2, { toward = "up", right = right })
+        seg(mx(xj, right), ya + G.TURN_R, mx(xj, right), ym, la, played, w == 1, { trim = "start" })
+        seg(mx(xj, right), ym, mx(xj, right), yb - G.TURN_R, lb, played, w == 2, { trim = "end" })
         -- the score in the pocket between the match's two stubs (left of its joint; mirrored on the right)
         -- 1.9.0: the result stacked just past the joint (BBT_TreeScore)
         -- 1.9.0 (owner 2026-10-21: «El logo del equipo debe ser grande y estar arriba de la intersección»): the
@@ -1194,7 +1283,7 @@ function BBT_DrawTree(v)
         -- (the digits always clear the crest's column, so a neighbour's crest never covers them)
         BBT_TreeScore(m, xj, ym, right, pitch, big / 2)
         if win ~= 0 and from then
-          local rest = { mx(xj, right), ym - G.LINE_LIT / 2 - A.BIG_LIFT - big / 2 }
+          local rest = { mx(xj, right), ym }
           nat[t] = rest
           crests[#crests + 1] = { leaf = win, round = r, rest = rest, s = big / A.CREST_W, stays = stays,
             joint = { mx(xj, right), ym }, path = { from, { mx(xj, right), yw }, { mx(xj, right), ym }, rest } }
@@ -1203,7 +1292,10 @@ function BBT_DrawTree(v)
         -- the final: the left finalist's line and the right one's meet at CX; the stem up to the champion
         seg(xc, ya, G.CX, ya, la, played, w == 1)
         seg(mx(xc, true), yb, G.CX, yb, lb, played, w == 2)
-        seg(G.CX, G.CHAMP_Y + G.PLATE_H * G.CHAMP_S / 2, G.CX, ymid, win, played, true)
+        -- 1.35.0 (owner 2026-10-23: the stem ran through the middle of the trophy): with the retail trophy the stem
+        -- stops at the cup's lower edge, as on the 16-team art; without it, at the champion's plate
+        local stem_top = BBT_S.trophy and (G.TROPHY_Y + G.TROPHY_CUP_BOTTOM) or (G.CHAMP_Y + G.PLATE_H * G.CHAMP_S / 2)
+        seg(G.CX, stem_top, G.CX, ymid, win, played, true)
         BBT_FinalScore(m, ymid, pitch)
         if win ~= 0 and from then
           -- the champion's crest walks to the champion plate's crest slot (the plate shows once it is there)
@@ -1226,7 +1318,7 @@ function BBT_DrawTree(v)
         elseif g[6] and st == "out" then
           look = "out_me"
         end
-        BBT_Seg(g[1], g[2], g[3], g[4], st == "lit", look)
+        BBT_Seg(g[1], g[2], g[3], g[4], st == "lit", look, g[7])
       end
     end
   end
@@ -1369,11 +1461,32 @@ end
 function BBT_TrophyPlace(alone)
   local C, L, R = BBT.C, BBT.RL, BBT.RETAIL
   funcLuaMenuCommand(C.MESH_VISIBLE, L.base, R.MESH_TREE, not alone, 0)
+  -- 1.35.0 (owner 2026-10-23: light-blue glow pieces at the 16-team places over a 64-team tree): the base's own glow
+  -- meshes along the 16-team paths (_line_l01 .. _line_r08, a moving light) go with its tree mesh
+  for _, mesh in ipairs(BBT_RetailGlowMeshes()) do
+    funcLuaMenuCommand(C.MESH_VISIBLE, L.base, mesh, not alone, 0)
+  end
   funcLuaMenuCommand(C.POS, L.base, 0, alone and (R.TROPHY_NODE_Y - BBT.G.TROPHY_Y) or 0, 0, 0)
   if alone then
     funcLuaMenuCommand(C.VISIBLE, L.base, 0, true)
     funcLuaMenuCommand(C.VISIBLE, L.trophy, 0, true)
   end
+end
+
+-- 1.35.0: the base's glow meshes, one per slot of the retail tree (_line_l01 .. _line_lNN, _line_r01 ..: NN = its
+-- leaves on a side, 2 ^ ROUNDS / 2), their crc32 built once
+function BBT_RetailGlowMeshes()
+  if BBT_S.glow_meshes == nil then
+    local list = {}
+    local per_side = 2 ^ BBT.RETAIL.ROUNDS / 2
+    for _, side in ipairs({ "l", "r" }) do
+      for k = 1, per_side do
+        list[#list + 1] = BBT_Crc(string.format("_line_%s%02d", side, k))
+      end
+    end
+    BBT_S.glow_meshes = list
+  end
+  return BBT_S.glow_meshes
 end
 
 -- a strip's lit length: rate 0 (unlit) .. 1 (to the centre); the star at its head shown while the rate is above 0
@@ -1458,8 +1571,6 @@ function BBT_RetailPanel(v)
     funcLuaMenuCommand(C.TEXT, l, node, s, 0)
     funcLuaMenuCommand(C.TEXT_VISIBLE, l, node, s ~= "", 0)
   end
-  pcall(funcLuaMenuCommand, 1172899594 --[[CMND_UPDATE_TEXT_PLATE?]], l, 0, R.TXT_ROUND)
-  pcall(funcLuaMenuCommand, 1172899594 --[[CMND_UPDATE_TEXT_PLATE?]], l, 0, R.TXT_PLAYED)
   return cur
 end
 
@@ -1551,7 +1662,9 @@ end
 -- (MIN_W..MAX_W: MAX_W stays inside the 64-team tree's inner lines); a line wider than the room is scaled down; the
 -- picture only once it is in and only when it fits beside the texts (the texts stay centred: the box grows by the
 -- picture on both sides).
-BBT.STADIUM = { Y = 958, H = 84, MIN_W = 300, MAX_W = 480, SIDE = 28, THUMB_W = 128, THUMB_H = 72, PAD = 8,
+-- 1.33.0: on a menu with the panel layer (BBT.L.stadium_panel) the box is that panel, PANEL_W wide (the layout of
+-- evt_bbd_tn_stadium), centred at (CX, Y), the picture left of it; the quad box below is the fallback
+BBT.STADIUM = { Y = 958, H = 84, MIN_W = 300, MAX_W = 480, SIDE = 28, THUMB_W = 128, THUMB_H = 72, PAD = 8, PANEL_W = 394,
   LABEL_S = 0.62, NAME_S = 0.86, CHAR_W = 14.5, TEXT_SIZE = 3549540977 --[[CMND_GET_MENU_TEXT_RECT_SIZE]],
   LOAD_MIN = 10, LOAD_MAX = 600, PICTURE_DIR = "#/menu/220_img/stadium/img_room_" }
 
@@ -1631,6 +1744,11 @@ function BBT_DrawStadium()
   if not okn or type(name) ~= "string" then
     name = ""
   end
+  local panels = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], BBT.L.stadium_panel)
+  if type(panels) == "number" and panels >= 1 then
+    BBT_StadiumLogged(fs.map, name, BBT_StadiumPanel(fs, name))
+    return
+  end
   -- the two lines centred on the screen's centre, each scaled down to the room it has
   local room = P.MAX_W - P.SIDE * 2
   local widest = 0
@@ -1659,9 +1777,36 @@ function BBT_DrawStadium()
     BBT_Quad(BBT.L.box, pic.sprite, G.CX - w / 2 + P.PAD + P.THUMB_W / 2, P.Y, P.THUMB_W, P.THUMB_H, BBT.WHITE, nil,
       pic.tex)
   end
-  if BBT_S.stadium_logged ~= fs.map .. ":" .. pic.st then
-    BBT_S.stadium_logged = fs.map .. ":" .. pic.st
-    BBT_Log(string.format("final stadium panel: %s «%s» (picture %s)", fs.map, name,
+  BBT_StadiumLogged(fs.map, name, pic)
+end
+
+-- 1.33.0: the final stadium on the round panel's object: «Estadio de la final» in the round title's style, the
+-- stadium's name in the next match line's style, the picture (once it is in) left of the panel; returns the picture
+function BBT_StadiumPanel(fs, name)
+  local C, P, R, G = BBT.C, BBT.STADIUM, BBT.RETAIL, BBT.G
+  local l = BBT.L.stadium_panel
+  local i = BBT_Take(l)
+  funcLuaMenuCommand(C.VISIBLE, l, i, true)
+  funcLuaMenuCommand(C.SCALE, l, 1, 1, 1, i)
+  funcLuaMenuCommand(C.POS, l, G.CX, -P.Y, 0, i)
+  for node, s in pairs({ [R.TXT_ROUND] = BBT_Text("final_stadium"), [R.TXT_NEXT] = name, [R.TXT_PLAYED] = "",
+    [R.TXT_SPARE] = "" }) do
+    funcLuaMenuCommand(C.TEXT, l, node, s, i)
+    funcLuaMenuCommand(C.TEXT_VISIBLE, l, node, s ~= "", i)
+  end
+  local pic = BBT_StadiumPicture(fs.map)
+  if pic.st == 2 then
+    BBT_Quad(BBT.L.box, pic.sprite, G.CX - P.PANEL_W / 2 - P.PAD - P.THUMB_W / 2, P.Y, P.THUMB_W, P.THUMB_H,
+      BBT.WHITE, nil, pic.tex)
+  end
+  return pic
+end
+
+-- the final stadium's box logged once per map and picture state
+function BBT_StadiumLogged(map, name, pic)
+  if BBT_S.stadium_logged ~= map .. ":" .. pic.st then
+    BBT_S.stadium_logged = map .. ":" .. pic.st
+    BBT_Log(string.format("final stadium panel: %s «%s» (picture %s)", map, name,
       pic.st == 2 and "shown" or (pic.st == 1 and "loading" or "none")))
   end
 end
@@ -1891,7 +2036,10 @@ end
 -- 32-team first round): team A's plate (crest left) ending at the centre, team B's mirrored plate starting there,
 -- each team's goals in a box at its plate's inner end (the winner's box lit, the loser's dark); a shoot-out adds the
 -- kicks in brackets, extra time «(pr.)». v.rows[t] = { a, b, ga, gb, pa, pb, et, done, w }
-BBT.RES = { GAP = 20, BOX_W = 64, BOX_W_PEN = 128, BOX_H = 0.74, PITCH_MAX = 84, FILL = 0.84,
+-- 1.36.0 (owner 2026-10-23: the winners' goals missing, the losers' faded): the digits sit on the plates' inner
+-- end, so they draw in front of the plates (DIGIT_PRIO above their 551; the connectors' digits stay at 548): an
+-- opaque winner's plate no longer covers them and a faded loser's plate no longer shows them through its alpha
+BBT.RES = { GAP = 20, BOX_W = 64, BOX_W_PEN = 128, BOX_H = 0.74, PITCH_MAX = 84, FILL = 0.84, DIGIT_PRIO = 553,
   -- the boxes' colours: BBT.SPR_STATE win / lose / even (1.5.37: coloured quads)
 }
 function BBT_DrawResults(v)
@@ -1906,7 +2054,7 @@ function BBT_DrawResults(v)
   local top = (G.TOP + G.BOTTOM) / 2 - pitch * n / 2
   local pw = G.PLATE_W * s
   local bh = G.PLATE_H * s * Rr.BOX_H
-  local ts = math.max(G.TXT_MIN, math.min(G.TXT_MAX + 0.1, s))
+  local scores = {}
   for t, r in ipairs(rows) do
     local y = top + pitch * (t - 0.5)
     local xa = G.CX - Rr.GAP / 2 - pw
@@ -1917,6 +2065,8 @@ function BBT_DrawResults(v)
     if r.b and (r.b.team or 0) ~= 0 then
       BBT_Plate(r.b, xb, y, s, true, false)
     end
+    scores[#scores + 1] = r.done and (BBT_Score({ ga = r.ga, gb = r.gb, pa = r.pa, pb = r.pb }) .. (r.et and "*" or ""))
+      or "-"
     if r.done then
       for side = 1, 2 do
         local g = side == 1 and r.ga or r.gb
@@ -1934,11 +2084,10 @@ function BBT_DrawResults(v)
           look = r.w == side and "win" or "lose"
         end
         local bx = side == 1 and (G.CX - Rr.GAP / 2 - bw / 2 - 4) or (G.CX + Rr.GAP / 2 + bw / 2 + 4)
-        -- 1.9.0: the Victory Road digits on the stadium panel's navy (winner gold, loser dark, a draw white), the
-        -- shoot-out's kicks smaller in brackets, extra time marked
-        BBT_Quad(BBT.L.box, BBT.SPR_PANEL, bx, y, bw, bh, BBT.WHITE)
+        -- 1.9.0: the Victory Road digits (a draw white), the shoot-out's kicks smaller in brackets, extra time
+        -- marked; 1.33.0 (owner 2026-10-23): no box behind them, the winner's yellow-orange, the loser's light blue
         local N = BBT.NUM
-        local style = look == "win" and "gold" or (look == "lose" and "dark" or "white")
+        local style = look == "win" and "gold" or (look == "lose" and "blue" or "white")
         local h = bh * N.BOX_FILL
         local parts = BBT_NumParts({}, g or 0, style, h)
         if (r.pa or 0) + (r.pb or 0) > 0 then
@@ -1946,10 +2095,12 @@ function BBT_DrawResults(v)
         elseif r.et then
           parts[#parts + 1] = { "bbd_tn_d_et", h * N.PEN_S }
         end
-        BBT_Glyphs(parts, bx, y)
+        BBT_Glyphs(parts, bx, y, Rr.DIGIT_PRIO)
       end
     end
   end
+  -- 1.33.0: the scores this page shows, once per draw (the owner saw every result «0»)
+  BBT_Log("results page: " .. #rows .. " match(es): " .. table.concat(scores, "  "))
 end
 
 -- 1.5.60 (owner 2026-10-14: «que la fase de grupos no se divida nunca en páginas, siempre 1 sola página»): the group
@@ -2335,8 +2486,9 @@ function BBT_Open(page)
   -- header): placed off screen and invisible, it keeps the keys
   funcLuaMenuCommand(BBT.C.POS, BBT.ANCHOR, -4000, 4000, 0, 0)
   funcLuaMenuCommand(BBT.C.VISIBLE, BBT.ANCHOR, 0, false)
-  funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], BBT.ANCHOR, true)
-  funcLuaMenuCommand(1778826357, BBT.ANCHOR, 0, true)
+  BBT_FocusAnchor()
+  BBT_S.focus_watch = 0
+  pcall(BBT_HOST.guide, true)
   if not BBT_Draw(page) then
     BBT_Close()
     return false
@@ -2393,6 +2545,39 @@ function BBT_Close()
   BBT_ShowLayers(H.hide, true)
   H.header()
   H.refocus()
+  BBT_S.focus_watch = nil
+  pcall(H.guide, false)
+end
+
+-- 1.37.0 (owner 2026-10-23: «al darle a aceptar no pasa nada» on the results shown after a match): the input anchor
+-- takes the keys (its focus enabled and set). The overlay opens on the results while the top menu is still coming back
+-- from the match: until the anchor reports its focus (at most FOCUS_SETTLE Steps after the opening) it is set again,
+-- and a decide on any other layer while the overlay is up is the overlay's Enter
+BBT.FOCUS_SETTLE = 120
+function BBT_FocusAnchor()
+  funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], BBT.ANCHOR, true)
+  funcLuaMenuCommand(1778826357, BBT.ANCHOR, 0, true)
+end
+
+-- from Step after an opening: the anchor's focus until it holds
+function BBT_FocusWatch()
+  local S = BBT_S
+  S.focus_watch = S.focus_watch + 1
+  local has = funcLuaMenuCommand(102308320 --[[CMND_IS_CTRL_FOCUS_ACTIVE?]], BBT.ANCHOR) == true
+  if has then
+    if S.focus_watch > 1 then
+      BBT_Log("overlay keys: the anchor holds the focus after " .. S.focus_watch .. " Step(s)")
+    end
+    S.focus_watch = nil
+    return
+  end
+  if S.focus_watch >= BBT.FOCUS_SETTLE then
+    BBT_Log("overlay keys: the anchor never reported its focus in " .. BBT.FOCUS_SETTLE ..
+      " Steps (a decide on any layer is still the overlay's Enter)")
+    S.focus_watch = nil
+    return
+  end
+  BBT_FocusAnchor()
 end
 
 -- 1.5.33 (owner 2026-10-13): the round's results show ONCE, right after the match (Enter = the bracket); everywhere
@@ -2629,6 +2814,12 @@ function BBT_NewRun()
   if not okg then
     error(errg, 0)
   end
+  -- 1.33.2: the grid not opened (the menu never settled): the armed run goes, the top menu stays usable
+  if errg == false then
+    BBT_Call(BBT.DISARM)
+    BBT_Log("new tournament: the team grid did not open, the run is disarmed")
+    return
+  end
   BBT_Log("new tournament: team grid closed")
   -- back from the grid: a started tournament shows its bracket (the first round); else the armed one goes
   local i3 = BBT_Info()
@@ -2844,9 +3035,15 @@ do
   local decide = OnDecideFocus
   function OnDecideFocus(a1, a2, ...)
     if BBT_S.open then
-      if a1 == BBT.ANCHOR then
-        BBT_OnEnter()
+      -- 1.37.0: a decide on another layer (the menu's own focus came back over the anchor) is the overlay's Enter too
+      if a1 ~= BBT.ANCHOR then
+        if BBT_S.stray_decide ~= a1 then
+          BBT_S.stray_decide = a1
+          BBT_Log("overlay keys: decide on layer " .. tostring(a1) .. ": taken as the overlay's Enter, the anchor focused")
+        end
+        BBT_FocusAnchor()
       end
+      BBT_OnEnter()
       return 1
     end
     -- 1.5.47: the «Campaña» row opens the Campaña screen in Torneo mode when a tournament runs (or ended, not shown
@@ -2914,6 +3111,13 @@ do
     end
     if S.open and S.champ then
       pcall(BBT_ChampStep)
+    end
+    if S.open and S.focus_watch ~= nil then
+      local okf, errf = pcall(BBT_FocusWatch)
+      if not okf then
+        S.focus_watch = nil
+        BBT_Log("overlay keys error", tostring(errf))
+      end
     end
     -- 1.5.64: no group-stage menu outside the overlay's group page
     local okw, errw = pcall(BBT_GroupsWatch)

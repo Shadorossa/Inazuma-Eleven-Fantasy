@@ -591,8 +591,11 @@ local Ptr = EVT_PointerNew()
 --   M.Show(pid)   the model of chara_param `pid` (built once; the same player again = just shown)
 --   M.Hide()      hidden (a build under way stays hidden when it completes)
 --   M.Step()      every frame (Step)
---   M.Release()   the model released (a list that changes its players frees the old ones)
---   M.Ok()        false when the layer has no model component (nothing was ever built): draw something else
+--   M.Release()   the model released (a list that changes its players frees the old ones); a build or load under way
+--                 is hidden at once and freed in M.Step once complete, never mid-load
+--   M.Released()  true once nothing is held and `free_frames` (2) frames went by after the last free: a screen
+--                 closes its menu object only then (the renderer may still draw the freed model's last frames)
+--   M.Ok()       false when the layer has no model component (nothing was ever built): draw something else
 -- opts: shadow = the 3D shadow layer (retail mainmenu01_08_chara_3d_shadow), pose (retail shop 2328706751), uniform (0 =
 -- his own), look (look flags, 0), settle (2), min (6), max (120), log = function(...) for the first lines,
 -- kit = function(pid) -> uniform, flags: the kit of that player (uniform 0 = `uniform`; flags 2 = the keeper shirt),
@@ -610,6 +613,7 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
     SHADOW = opts.shadow or 858725131 --[[mainmenu01_08_chara_3d_shadow]], POSE = opts.pose or 2328706751,
     SETTLE = opts.settle or 2, MIN = opts.min or 6, MAX = opts.max or 120, SLOT = opts.slot or 0}
   M.KEY = opts.key or M.SLOT
+  local FREE_FRAMES = opts.free_frames or 2
   local function MC(cmd, ...)
     local ok, a, b = pcall(funcLuaMenuCommand, cmd, ...)
     if ok then return a, b end
@@ -718,18 +722,45 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
       Visible(false)
     end
   end
-  -- the slot's model released (retail shop ResetCharaModel): nothing shown, its resources freed
+  -- a build or a model load of this slot still under way (retail SetupCharaModel never changes a model mid-load)
+  local function Busy()
+    return not BuildDone() or (M.chara ~= nil and Loading(M.chara))
+  end
+  -- the free itself: hidden first, then the slot emptied and changed (retail summon screen order); the frames after it
+  -- (FREE_FRAMES) let the renderer finish the frames that still draw the old model
+  local function Free()
+    Visible(false)
+    MC(59611540, layer, 0, 0, M.SLOT)
+    -- the slot's own key: without it the change reached model key 0 (another menu's model, e.g. the board's caravan)
+    MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT, M.KEY)
+    Log("released", M.pid)
+    M.pid, M.chara, M.build, M.release_wanted = nil, nil, nil, false
+    M.free_frames = FREE_FRAMES
+  end
+  -- the slot's model released (retail shop ResetCharaModel): nothing shown, its resources freed. A build or load under
+  -- way is hidden now and freed once it is complete (M.Step), never mid-load.
   function M.Release()
     M.pend, M.hide_build = nil, false
-    if M.pid ~= nil then
-      Visible(false)
-      MC(59611540, layer, 0, 0, M.SLOT)
-      -- the slot's own key: without it the change reached model key 0 (another menu's model, e.g. the board's caravan)
-      MC(2232914067 --[[CMND_CHARA_MODEL_CHANGE]], layer, 0, 0, 9, M.SLOT, M.KEY)
+    if M.pid == nil then
+      M.release_wanted = false
+      return
     end
-    M.pid, M.chara, M.build = nil, nil, nil
+    if Busy() then
+      Visible(false)
+      if not M.release_wanted then
+        M.release_wanted = true
+        Log("release waits for the load", M.pid)
+      end
+      return
+    end
+    Free()
+  end
+  -- true once nothing is held: no model, no release waiting for its load, the frames after the last free gone by
+  function M.Released()
+    return M.pid == nil and not M.release_wanted and (M.free_frames or 0) <= 0
   end
   function M.Show(pid)
+    M.release_wanted = false   -- shown again before its free: the new build replaces it
     local P = M.pend
     if P ~= nil and P.pid == pid then
       return
@@ -783,6 +814,16 @@ EVT_CharaModelNew = EVT_CharaModelNew or function(layer, opts)
   end
   function M.Step()
     BuildStep()
+    if M.release_wanted then
+      Visible(false)
+      if not Busy() then
+        Free()
+      end
+      return
+    end
+    if (M.free_frames or 0) > 0 then
+      M.free_frames = M.free_frames - 1
+    end
     PendStep()
   end
   return M

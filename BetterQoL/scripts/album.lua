@@ -21,7 +21,7 @@ local C = require "lib/tp_core"
 local Cat = require "lib/original_names_catalogue"
 local T = require "lib/original_names_tables"
 
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.Album = BetterQoL.Album or {}
 
 local PLAYER_KIND = 10

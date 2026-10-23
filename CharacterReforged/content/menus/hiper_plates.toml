@@ -1,7 +1,7 @@
 # Character Reforged › the match HUD plates of the new skill set (moved from Inazuma Fantasy 2026-10-14 with the RB+A /
 # RB+B buttons, owner: «base owns a neutral plate, IF overrides its look»; docs/refactor/aura-mods-split.md «The 6 + 2
 # set over the retail data»). The graft research/grafts/hiper_btn (mod character_reforged) draws them from the
-# framework's CMND_VRFW_XSLOT_PLATES (whichever plates slot runs the match: this mod's skill set slot, or All Changed's
+# framework's CMND_VRFW_XSLOT_PLATES (whichever plates slot runs the match: this mod's skill set slot, or Custom Change Mode's
 # RB+B fallback). Inazuma Fantasy adds its look on top: the portrait column (its menus\00_soccer\
 # soccer_command_action_menu_hiper_face.toml, layer evt_hiper_chr_icon) and the Hiper card rules (graft hiper_btn_face).
 #

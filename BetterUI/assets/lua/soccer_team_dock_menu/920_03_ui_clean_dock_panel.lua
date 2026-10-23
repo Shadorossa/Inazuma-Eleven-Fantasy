@@ -72,8 +72,7 @@
 -- one button of the synergy buttons' kind between the TÁCTICAS block and FORMACIÓN, in their column (CHD_SLOT). Its
 -- layer is the mod's own root layer: placed every Step from the two synergy buttons' measured places (global units),
 -- hidden until placed; TÁCTICAS DOWN / FORMACIÓN UP / CONF. UP go to it, from it UP = TÁCTICAS (bottom row), DOWN =
--- FORMACIÓN, RIGHT = the nearest card (round 9: UP / DOWN pass through the shortcut row CHD.ROW between the tactics
--- and the button: Vínculo de Afinidad, Comandos de hipertécnicas, Habilidades, Banco, each deciding its list row): the
+-- FORMACIÓN, RIGHT = the nearest card: the
 -- button's own input rows (its mod's) send them as CMD_FUNCTION
 -- betterui_dock_button_up / _down / _right to OnFunction; ENTER is the mod's (its OnEnter). Its help line is the spec's
 -- `help` text; its `extra` layers (e.g. a picture) are kept on the button's place; placing runs only after the events
@@ -247,8 +246,6 @@ local CHD_DOCKNO = {  -- team01_05_team_dock_no: arrows x0.6 about their centres
 }
 local CHD_SLOT = {  -- another mod's picture button (BetterUI.AddDockButton): its centre (dx, dy) frame units from the lower synergy button, step = lower - upper synergy button
   step = -72.0, dx = 0.0, pdx = -139.0, dy = -384.5, h = 107.0, mesh = 4273639855, mx = -66.0, my = 36.0, mw = 132.0, mh = 72.0}  -- dx: the synergy column, pdx: the panel's centre; _synergy_top_base01: the default scale reference
-local CHD_ROW = {  -- the shortcut row: tile centres (frame units from the lower synergy button), the tiles' scale, the CONF. box's centre and top-left in its layer (team00_14)
-  dy = -301.2, xs = {-267.15, -181.72, -96.28, -10.85}, scale = 0.3662, cx = -96.0, cy = -95.0, mx = -199.0, my = -24.0}
 -- @@dock_panel_layout END
 
 if EVT_CHD_PANEL == nil then
@@ -967,9 +964,6 @@ end
 local function CHD_SlotArm()
   local st = CHD.slot
   st.live, st.still = 1, 0
-  if CHD.row ~= nil then
-    CHD.row.live, CHD.row.still = 1, 0
-  end
   for _, e in pairs(st.extra or {}) do
     e.wait = 0
   end
@@ -1051,50 +1045,6 @@ local function CHD_SlotPlace()
   end
 end
 
--- ---- the shortcut row (round 9, owner 2026-10-19; content\menus\dock_shortcuts.toml) ----------------------------------
--- Four tiles under TÁCTICAS (one layer, 4 instances, copies of the CONF. DE EQUIPO box at CHD_ROW.scale): Vínculo de
--- Afinidad, Comandos de hipertécnicas, Habilidades, Banco. Each runs the dock's own OnDecideFocus of its list row (the
--- row of that kind in the live list), so it opens exactly what the list opens. Placed like the dock button (after the
--- events that move the field, until still), hidden until placed; dressed when the layer opens (scale, icon, no title /
--- text, unfocused look). Arrows through its input rows (OnFunction), ENTER through OnEnter: nothing is polled.
-CHD.ROW = {
-  LAYER = 4226985067,             -- betterui_dock_shortcut
-  -- the dock list's kinds: 2 Vínculo de Afinidad (kizuna_menu), 9 Comandos de hipertécnicas (OpenAuraSkill),
-  -- 7 Habilidades (ability_list_menu), 8 Banco (OpenCharaBank)
-  KINDS = {2, 9, 7, 8},
-  -- BetterUI's own glyphs {atlas, sprite}: flat white 120 x 120 like the game's team build icons, added to
-  -- #/menu/200_icon/15_icon_common/icon_common.g4tx (the atlas the retail CONF. DE EQUIPO box swaps its icon from) by
-  -- content\images\menu\200_icon\15_icon_common\shortcut_icons.toml: betterui_shortcut_affinity,
-  -- betterui_shortcut_hyper_commands, betterui_shortcut_abilities, betterui_shortcut_bank
-  ICONS = {{2320109963, 1121349036}, {2320109963, 3570283708}, {2320109963, 70854441}, {2320109963, 4011921015}},
-  -- the tile's name: its text box (_text_build01, layout left -186, 180 x 28: centre x -96); every name drawn at one
-  -- scale, the largest that fits the longest name in the box (measured by the game, CMND_GET_MENU_TEXT_RECT_SIZE)
-  TEXT_LEFT = -186, TEXT_W = 180, TEXT_H = 28, TEXT_WIDE = 1600, GLYPH_W = 13.5,
-  TEXT_SIZE = 3549540977,         -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node) -> width, height
-  -- the notices the list rows of these kinds carried, attached to the tiles by the object's attach rows (same labels
-  -- as the list item's): kind 7 the «!» of a new ability (cmn01_10_new_icon_ability, label 0xC9BC4393), kind 8 the
-  -- bank's player count (team14_05_chara_bank_count, label 0x8EB7B730). The retail keeps filling them.
-  NOTICES = {[7] = {label = 3384558483, layer = 741700554}, [8] = {label = 2394404656, layer = 3925006528}},
-  COUNT_NODE = 4293674698,        -- _pos_atc_free01: the bank count's locator on the tile, moved onto the box's top edge
-  COUNT_AT = {-58, -24},          -- (layout units of team00_14: the box spans x -199..7, y -24..-166)
-  -- the bank count's number, as the retail OnOpenLayer of team14_05_chara_bank_count writes it: the count
-  -- (2515142303(6, 0)) into the prim the layer finds by 4027423568 (CMND_SEARCH_PRIM_INDEX), set with 3609943765
-  COUNT_LAYER = 3925006528, COUNT_GET = 2515142303, COUNT_PRIM = 4027423568, COUNT_SET = 3609943765,
-  COUNT_NUM = 1708202333,         -- _num_bank_count_dmy02 (the number's node in team14_05)
-  SEARCH_PRIM = 1927054058,
-  FOCUS_COUNT = 3252599449,       -- (layer, n): how many instances the focus can step through (retail list: n)
-  ICON_SLOT = 2789893477,         -- icon_build_dmy01
-  ICON_MESH = 260772049,          -- _icon_build_dmy01
-  TITLE = 4209478916,             -- _gtxt_teambuild01
-  TEXT = 2160352228,              -- _text_build01
-  MESH = 2422459839,              -- _base_build01 (layout CHD_ROW.mx / my: the scale reference)
-  TACTIC_PLATE = 248918510,       -- _touch_cmd_base01 of soccer08_12_tactics_cmd (y 26, 52 tall: the visible plate)
-  TILE_H = 52, TILE_GAP = 6,      -- the tiles' largest height and the gap above / below them (px at 1080p)
-  FN = {LEFT = 2400577626, RIGHT = 2095601307, UP = 2406418687, DOWN = 3918372617},   -- betterui_dock_shortcut_*
-  MENU = 937147172,               -- soccer_team_dock_menu
-  SE_NG = 2086672038,             -- sy0003
-}
-CHD.row = {live = 0, still = 0, wait = 0, inst = {}, placed = false, logged = false, swapLog = false, last = 0}
 CHD.focusAt = nil                 -- the layer the dock's focus was last moved to (a shift, CHD_Go, CHD_ToCard): nil at open
 
 -- a layer that is not where the focus is shows no focus: control focus off, the «Focus» animation out, no green
@@ -1108,442 +1058,6 @@ local function CHD_Unfocused(layer, idx)
   CHD_Cmd(3781155141 --[[CMND_PLAY_ANIME_TYPE]], layer, idx, 2734777837 --[[Focus]], 2, 973515837 --[[button]])
   CHD_Cmd(CHD.CURSOR_TRACE, layer, idx, CHD.CURSOR, false)
   CHD_Cmd(CHD.FOCUS_MARK, layer, idx, false)
-end
-
-local function CHD_RowOn()
-  return CHD_PanelOn() and not CHD_TacOn() and CHD_Open(CHD.ROW.LAYER, 0)
-end
-
--- the first upvalue of the live global `name` (or of what it wraps, 4 levels) for which pred holds (EVT_DEBUG)
-local function CHD_Upvalue(name, pred)
-  local D = rawget(_ENV, "EVT_DEBUG")
-  if D == nil then
-    return nil
-  end
-  local seen = {}
-  local function scan(f, depth)
-    if type(f) ~= "function" or seen[f] or depth > 4 then
-      return nil
-    end
-    seen[f] = true
-    local i = 1
-    while true do
-      local n, v = D.getupvalue(f, i)
-      if n == nil then
-        return nil
-      end
-      if pred(v) then
-        return v
-      end
-      if type(v) == "function" then
-        local r = scan(v, depth + 1)
-        if r ~= nil then
-          return r
-        end
-      end
-      i = i + 1
-    end
-  end
-  return scan(rawget(_ENV, name), 0)
-end
-
--- the dock list's live kinds (the table SetupTeamDockListItem reads) and texts (SetupTeamDockListItemText's)
-local function CHD_RowKinds()
-  return CHD_Upvalue("SetupTeamDockListItem", function(v)
-    if type(v) ~= "table" or v[0] ~= nil or #v < 1 or #v > 16 then
-      return false
-    end
-    for _, k in ipairs(v) do
-      if type(k) ~= "number" then
-        return false
-      end
-    end
-    return true
-  end)
-end
-
-local function CHD_RowTexts()
-  return CHD_Upvalue("SetupTeamDockListItemText", function(v)
-    return type(v) == "table" and type(v[1]) == "table" and v[1].itemExplation ~= nil
-  end)
-end
-
--- the row is there: panel layout, no tactics view, and the menu has the four tiles
-local function CHD_RowWanted()
-  local num = CHD_Get(CHD.CREATE_NUM, CHD.ROW.LAYER)
-  return CHD_PanelOn() and not CHD_TacOn() and type(num) == "number" and num >= #CHD.ROW.KINDS
-end
-
--- the dock list without the rows of the tiles' kinds (they replace them). Runs before the list's setup, which counts
--- its rows from this table (n = rows shown); the order of the others is kept
-local function CHD_RowStrip()
-  if not CHD_RowWanted() then
-    return
-  end
-  local kinds = CHD_RowKinds()
-  if kinds == nil then
-    return
-  end
-  local drop = {}
-  for _, k in ipairs(CHD.ROW.KINDS) do
-    drop[k] = true
-  end
-  local kept = 0
-  for _, k in ipairs(kinds) do
-    if not drop[k] then
-      kept = kept + 1
-    end
-  end
-  if kept == 0 then
-    CHD_Log("shortcut row: the list would be empty, its rows stay")   -- an empty list traps the focus
-    return
-  end
-  local removed = 0
-  for r = #kinds, 1, -1 do
-    if drop[kinds[r]] then
-      table.remove(kinds, r)
-      removed = removed + 1
-    end
-  end
-  if removed > 0 then
-    CHD_Log("shortcut row: " .. tostring(removed) .. " list row(s) moved to the tiles")
-  end
-end
-
--- tile i's name: the list row's own text (t2[kind + 1].itemName, every language)
-local function CHD_RowName(i)
-  local texts = CHD_RowTexts()
-  local e = texts and texts[(CHD.ROW.KINDS[i + 1] or -1) + 1]
-  if type(e) == "table" and e.itemName ~= nil and e.itemName ~= 0 then
-    local text = CHD_Lc(CHD.TEXT_GET, e.itemName)
-    if type(text) == "string" then
-      return text
-    end
-  end
-  return nil
-end
-
--- tile i's help line: the list row's own (t2[kind + 1].itemExplation)
-local function CHD_RowHelp(i)
-  local texts = CHD_RowTexts()
-  local e = texts and texts[(CHD.ROW.KINDS[i + 1] or -1) + 1]
-  if type(e) == "table" and e.itemExplation ~= nil then
-    local text = CHD_Lc(CHD.TEXT_GET, e.itemExplation)
-    if type(text) == "string" then
-      CHD_Cmd(CHD.SET_TEXT, CHD.GUIDE_LINE, CHD.GUIDE_NODE, text, 0)
-    end
-  end
-end
-
-local function CHD_ToRow(from, fi, i)
-  if not CHD_RowOn() or not CHD.row.placed then
-    return false
-  end
-  i = i or CHD.row.last or 0
-  CHD_Go(from, fi, CHD.ROW.LAYER, i)
-  CHD.row.last = i
-  CHD_RowHelp(i)
-  return true
-end
-
--- the layer's setup (each instance): the focus steps through the four tiles; no tile traces the green cursor (the
--- object's copied attach row traces it on every instance: the last one kept it while the focus was elsewhere); each
--- list notice traced only by its own tile
-local function CHD_RowSetup(i)
-  local R = CHD.ROW
-  if i == 0 then
-    CHD_Cmd(R.FOCUS_COUNT, R.LAYER, #R.KINDS)
-  end
-  CHD_Cmd(CHD.CURSOR_TRACE, R.LAYER, i, CHD.CURSOR, false)
-  for kind, nt in pairs(R.NOTICES) do
-    CHD_Cmd(CHD.CURSOR_TRACE, R.LAYER, i, nt.label, R.KINDS[i + 1] == kind)
-  end
-end
-
--- the four names at one scale: each measured by the game at scale 1 (CMND_GET_MENU_TEXT_RECT_SIZE with the string),
--- then each box narrowed to its name's width times the one scale k and the name written AGAIN into it (the game fits a
--- text into its box when the text is set: 1.23.6 changed the boxes after setting the names, so only the long names
--- shrank), centred under the icon. k = the largest that fits the longest name in the layout box (at most 1)
-local function CHD_RowNames()
-  local R = CHD.ROW
-  local names, widths, longest = {}, {}, 0
-  for i = 0, #R.KINDS - 1 do
-    local name = CHD_RowName(i) or ""
-    names[i] = name
-    CHD_Cmd(CHD.NODE_SCALE, R.LAYER, i, R.TEXT, R.TEXT_WIDE, R.TEXT_H)
-    local w = CHD_Get(R.TEXT_SIZE, R.LAYER, i, R.TEXT, name)
-    if type(w) ~= "number" or w <= 0 then
-      w = #name:gsub("[\128-\191]", "") * R.GLYPH_W   -- the estimate when the game gives no width
-    end
-    widths[i] = w
-    longest = math.max(longest, w)
-  end
-  local k = longest > 0 and math.min(1, R.TEXT_W / longest) or 1
-  for i = 0, #R.KINDS - 1 do
-    local box = math.max(1, math.min(R.TEXT_W, widths[i] * k))
-    CHD_Cmd(CHD.NODE_SCALE, R.LAYER, i, R.TEXT, box, R.TEXT_H)
-    CHD_Cmd(CHD.NODE_POS, R.LAYER, i, R.TEXT, 0, R.TEXT_LEFT + (R.TEXT_W - box) / 2)
-    if names[i] ~= "" then
-      CHD_Cmd(CHD.SET_TEXT, R.LAYER, R.TEXT, names[i], i)
-    end
-  end
-  if not CHD.row.namesLog then
-    CHD.row.namesLog = true
-    CHD_Log(string.format("shortcut names at scale %.2f (longest %.0f)", k, longest))
-  end
-end
-
--- the bank count's number, written as the retail OnOpenLayer of the count layer does, once the tile it hangs on is
--- placed and shown (the retail write at the layer's open left an empty pill on the tile) and after a child menu
--- (the bank may have changed)
-local function CHD_RowCount()
-  local R = CHD.ROW
-  local count = CHD_Lc(R.COUNT_GET, 6, 0)
-  local prim = CHD_Get(R.SEARCH_PRIM, R.COUNT_LAYER, 0, R.COUNT_PRIM)
-  if type(count) ~= "number" or prim == nil then
-    return
-  end
-  CHD_Cmd(R.COUNT_SET, R.COUNT_LAYER, 0, prim, count)
-  if not CHD.row.countLog then
-    CHD.row.countLog = true
-    CHD_Log("shortcut bank count " .. tostring(count) .. " (count layer priority " .. tostring(CHD.row.countPrio)
-      .. ", tiles " .. tostring(CHD_Get(1018283794 --[[CMND_GET_DRAW_PRIORITY]], R.LAYER, 0)) .. ")")
-  end
-end
-
--- the layer opened (its last instance): every tile scaled, its icon, its name, no title, its list notice, the
--- unfocused look (unless it holds the focus). Not gated on IS_OPEN: inside OnOpenLayer the instances do not read as
--- open yet (1.23.2 dressed nothing: white icon slots, the «CONF. DE EQUIPO» titles)
-local function CHD_RowDress()
-  local R = CHD.ROW
-  -- the draw order: the bank count's digits keep the priority their layer had when the dock built it (raising the
-  -- pill's layer above the tile raised the pill only: 1.23.6-1.23.9 drew an empty pill, the «3656» written under the
-  -- tile). So nothing of the count layer is changed: the tiles go one under it instead (never under FORMACIÓN's
-  -- order, the retail boxes'), and the «!» goes one above the tiles (the retail list puts it one above its rows)
-  local GET_PRIO = 1018283794 --[[CMND_GET_DRAW_PRIORITY]]
-  if CHD.row.countPrio == nil then
-    CHD.row.countPrio = CHD_Get(GET_PRIO, R.COUNT_LAYER, 0) or false
-  end
-  local prio = CHD_Get(GET_PRIO, R.LAYER, 0)
-  local cp = CHD.row.countPrio
-  local floor = CHD_Get(GET_PRIO, CHD.FORM, 0)
-  if type(prio) == "number" and type(cp) == "number" and prio >= cp
-      and (type(floor) ~= "number" or cp - 1 >= floor) then
-    prio = cp - 1
-    for i = 0, #R.KINDS - 1 do
-      CHD_Cmd(CHD.SET_PRIO, R.LAYER, i, prio)
-    end
-  end
-  for i = 0, #R.KINDS - 1 do
-    CHD_Cmd(CHD.LAYER_SCALE, R.LAYER, CHD.row.scale or CHD_ROW.scale, CHD.row.scale or CHD_ROW.scale, 1, i)
-    -- the «CONF. DE EQUIPO» title: mesh off, node off and at size 0 (it kept showing with the mesh off alone)
-    CHD_Cmd(CHD.MESH_VIS, R.LAYER, R.TITLE, false, i)
-    CHD_Cmd(CHD.NODE_VIS, R.LAYER, R.TITLE, false, i)
-    CHD_Cmd(CHD.NODE_SCALE, R.LAYER, i, R.TITLE, 0, 0)
-    -- the name under the icon: the list row's text (sized with the others below)
-    local name = CHD_RowName(i)
-    if name ~= nil then
-      CHD_Cmd(CHD.SET_TEXT, R.LAYER, R.TEXT, name, i)
-    end
-    CHD_Cmd(CHD.TEXT_VIS, R.LAYER, R.TEXT, name ~= nil, i)
-    CHD_Cmd(CHD.NODE_VIS, R.LAYER, R.TEXT, name ~= nil, i)
-    CHD_Cmd(CHD.MESH_VIS, R.LAYER, R.ICON_MESH, true, i)
-    local ic = R.ICONS[i + 1]
-    local ok, res = CHD_Cmd(CHD.SWAP, R.LAYER, ic[1], ic[2], R.ICON_SLOT, 0, i)
-    if not CHD.row.swapLog then
-      CHD_Log("shortcut " .. tostring(i) .. " icon " .. tostring(ic[2]) .. ": " .. tostring(ok) .. " " .. tostring(res)
-        .. ", name " .. tostring(name))
-      if i == #R.KINDS - 1 then
-        CHD.row.swapLog = true
-      end
-    end
-    local nt = R.NOTICES[R.KINDS[i + 1]]
-    if nt ~= nil then
-      if nt.layer == 3925006528 then
-        CHD_Cmd(CHD.NODE_POS, R.LAYER, i, R.COUNT_NODE, 0, R.COUNT_AT[1])
-        CHD_Cmd(CHD.NODE_POS, R.LAYER, i, R.COUNT_NODE, 1, R.COUNT_AT[2])
-      end
-      if type(prio) == "number" and nt.layer ~= R.COUNT_LAYER then
-        CHD_Cmd(CHD.SET_PRIO, nt.layer, 0, prio + 1)
-      elseif type(prio) == "number" then
-        -- the bank count's pill and number above the tile and its focus frame: the retail icon layers set their
-        -- priority with the trailing «true» (the layer's texts / numbers follow it), a plain set moved only the pill
-        CHD_Cmd(CHD.SET_PRIO, nt.layer, 0, prio + 1, true)
-      end
-    end
-    CHD_RowSetup(i)
-    CHD_Unfocused(R.LAYER, i)
-  end
-  CHD_RowNames()
-  if not CHD.row.logged then
-    CHD.row.logged = true
-    CHD_Log("shortcut row dressed")
-  end
-end
-
--- the tiles onto CHD_ROW (global units from the synergy buttons, as the dock button), while armed
-local function CHD_RowPlace()
-  local R, st = CHD.ROW, CHD.row
-  if st.live <= 0 or not CHD_RowOn() then
-    return
-  end
-  if st.wait > 0 then
-    st.wait = st.wait - 1
-    return
-  end
-  local ux, uy = CHD_G(CHD.SYN_UPPER, 0, CHD.POS_BASE)
-  local lx, ly = CHD_G(CHD.SYN_LOWER, 0, CHD.POS_BASE)
-  if ux == nil or lx == nil then
-    return
-  end
-  local k = (ly - uy) / CHD_SLOT.step
-  if math.abs(k) < 0.05 then
-    return
-  end
-  -- the free band, in global units: from the bottom of the lowest tactic plate (soccer08_12 instance 0, its visible
-  -- plate _touch_cmd_base01, measured with its own scale) to the top of the dock button (its centre CHD_SLOT.dy, its
-  -- height CHD_SLOT.h). The tiles are centred in it at most CHD_ROW.scale tall, smaller when the band is short.
-  local cbx, cby = CHD_G(CHD.CMD, 0, CHD.POS_BASE)
-  local ctx, cty = CHD_G(CHD.CMD, 0, R.TACTIC_PLATE)
-  if cbx == nil or ctx == nil or math.abs(cty - cby) < 0.01 then
-    return
-  end
-  local kc = (cty - cby) / 26                             -- global per tactic layer unit (_touch_cmd_base01 at y 26)
-  local band_top = cty - 52 * kc                          -- the plate's bottom edge
-  local band_bottom = ly + (CHD_SLOT.dy + CHD_SLOT.h / 2) * k
-  local band = math.abs(band_top - band_bottom) / math.abs(k)   -- field units
-  local tile_h = math.min(R.TILE_H, band - 2 * R.TILE_GAP)
-  if tile_h < 20 then
-    if not st.tooSmall then
-      st.tooSmall = true
-      CHD_Log(string.format("shortcut row: no room (band %.1f)", band))
-    end
-    return
-  end
-  local scale = CHD_ROW.scale * tile_h / R.TILE_H
-  if st.scale ~= scale then
-    st.scale = scale
-    for i = 0, 3 do
-      CHD_Cmd(CHD.LAYER_SCALE, R.LAYER, scale, scale, 1, i)
-    end
-  end
-  local row_y = (band_top + band_bottom) / 2
-  local moved, all = false, true
-  for i = 0, 3 do
-    local e = st.inst[i]
-    if e == nil then
-      e = {x = 0, y = 0, placed = false}
-      st.inst[i] = e
-      CHD_Cmd(CHD.LAYER_VISIBLE, R.LAYER, i, false)
-    end
-    local bx, by = CHD_G(R.LAYER, i, CHD.POS_BASE)
-    local mx, my = CHD_G(R.LAYER, i, R.MESH)
-    if bx == nil or mx == nil then
-      all = false
-    else
-      local kbx, kby = (mx - bx) / CHD_ROW.mx, (my - by) / CHD_ROW.my   -- global per (scaled) layer unit
-      if math.abs(kbx) < 0.01 or math.abs(kby) < 0.01 then
-        all = false
-      else
-        -- the tiles' x spacing follows their size (centred on the panel's centre)
-        local cx0 = (CHD_ROW.xs[2] + CHD_ROW.xs[3]) / 2
-        local tx = lx + (cx0 + (CHD_ROW.xs[i + 1] - cx0) * tile_h / R.TILE_H) * math.abs(k)
-        local ty = row_y
-        local px, py = bx + CHD_ROW.cx * kbx, by + CHD_ROW.cy * kby
-        local s = scale
-        local dx, dy = (tx - px) / (kbx / s), (ty - py) / (kby / s)       -- layer position units (unscaled)
-        if math.abs(dx) >= 0.5 or math.abs(dy) >= 0.5 then
-          e.x, e.y = e.x + dx, e.y + dy
-          CHD_Cmd(CHD.LAYER_POS, R.LAYER, e.x, e.y, 0, i)
-          moved = true
-        elseif not e.placed then
-          e.placed = true
-          CHD_Cmd(CHD.LAYER_VISIBLE, R.LAYER, i, true)
-        end
-      end
-    end
-  end
-  if moved then
-    st.still, st.wait = 0, 2
-  elseif all then
-    if not st.placed then
-      st.placed = true
-      CHD_Log(string.format("shortcut row placed (tiles %.1f px tall)", tile_h))
-      CHD_RowNames()
-      CHD_RowCount()
-    end
-    st.still = st.still + 1
-    if st.still >= CHD_SLOT_STILL then
-      st.live = 0
-    end
-  end
-end
-
--- ENTER on tile i (inside OnEnter's callback coroutine): the dock's own OnDecideFocus of the list row of that kind, as
--- if that row had been decided; then the focus back on the tile
-local function CHD_RowDecide(i)
-  local R = CHD.ROW
-  local kind = R.KINDS[i + 1]
-  local kinds = CHD_RowKinds()
-  if kinds == nil or type(OnDecideFocus) ~= "function" then
-    CHD_Lc(CHD.SOUND, R.SE_NG)
-    CHD_Log("shortcut " .. tostring(i) .. ": the dock list is not readable")
-    return
-  end
-  local row = nil
-  for r, kd in ipairs(kinds) do
-    if kd == kind then
-      row = r - 1
-      break
-    end
-  end
-  -- the row moved to the tiles: the list's decide reads its kind at row #kinds (one past the shown rows; # and
-  -- ipairs stay raw, so nothing else sees it) for as long as the decide runs
-  local slot = nil
-  if row == nil then
-    slot = #kinds + 1
-    row = slot - 1
-    setmetatable(kinds, {__index = function(_, key)
-      if key == slot then
-        return kind
-      end
-      return nil
-    end})
-  end
-  CHD_Log("shortcut " .. tostring(i) .. ": list row " .. tostring(row) .. " (kind " .. tostring(kind) .. ")")
-  CHD_Cmd(1558704558, R.MENU, false)
-  CHD_Cmd(CHD.FOCUS_ENABLE, R.LAYER, false)
-  local ok, err = pcall(OnDecideFocus, CHD.LIST, row)
-  if slot ~= nil then
-    setmetatable(kinds, nil)
-  end
-  if not ok then
-    CHD_Log("shortcut " .. tostring(i) .. " error " .. tostring(err))
-  end
-  -- back from the row's menu: the squad on the pitch drawn again from the team set. The retail list gets this from its
-  -- own return (ResumeTeamDock reopens the list; its OnOpenLayer sets the dock's «redraw the squad» flag only while the
-  -- list holds the focus), never true for a tile: a player put on the bench in the bank stayed off the pitch and the
-  -- dock kept its old member list (owner 2026-10-19). UpdateFormationInfo = the retail redraw (member list, cards).
-  if type(UpdateFormationInfo) == "function" then
-    local okr, er = pcall(UpdateFormationInfo)
-    CHD_Log("shortcut " .. tostring(i) .. ": squad redrawn" .. (okr and "" or (" (error " .. tostring(er) .. ")")))
-  end
-  -- the list row's branch gave the list the control focus (and some its marker): the tile takes both back. The
-  -- cursor has one owner: the tile that holds the focus
-  CHD_Cmd(CHD.FOCUS_ENABLE, CHD.LIST, false)
-  for r = 0, CHD_Num(CHD.LIST) - 1 do
-    CHD_Cmd(CHD.CURSOR_TRACE, CHD.LIST, r, CHD.CURSOR, false)
-    CHD_Cmd(CHD.CURSOR_TRACE, CHD.LIST, r, CHD.CARD_CURSOR, false)
-    CHD_Cmd(CHD.FOCUS_MARK, CHD.LIST, r, false)
-  end
-  CHD.focusAt = R.LAYER
-  CHD_Cmd(CHD.FOCUS_ENABLE, R.LAYER, true)
-  CHD_Cmd(1558704558, R.MENU, true)
-  CHD_Cmd(CHD.CURSOR_LOC, R.LAYER, CHD.CURSOR, i, CHD_Num(R.LAYER))
-  CHD_Cmd(CHD.CURSOR_TRACE, R.LAYER, i, CHD.CURSOR, true)
-  CHD_SetFocus(R.LAYER, i)
-  CHD.row.last = i
-  CHD_RowHelp(i)
 end
 
 -- every Step: the header's pointer zones (engine zones = layout rectangles, docs/game/ui/ui-redesign.md «pointer zones
@@ -1734,36 +1248,16 @@ local function CHD_After(name, after)
   end)
 end
 
--- before the dock's own setup: the list's first instance counts its rows from the kinds table
-local chd_prev_setup = rawget(_ENV, "OnSetupLayer")
-if type(chd_prev_setup) == "function" then
-  rawset(_ENV, "OnSetupLayer", function(a1, a2, ...)
-    if a1 == CHD.LIST and (a2 or 0) == 0 then
-      local ok, err = pcall(CHD_RowStrip)
-      if not ok then
-        CHD_Log("error shortcut strip " .. tostring(err))
-      end
-    end
-    return chd_prev_setup(a1, a2, ...)
-  end)
-end
 CHD_After("OnSetupLayer", function(a1, a2)
   CHD_Apply(a1, a2)
-  if a1 == CHD.ROW.LAYER then
-    CHD_RowSetup(a2 or 0)
-  end
 end)
 CHD_After("OnOpenLayer", function(a1, a2)
   CHD_Apply(a1, a2)
-  if a1 == CHD.ROW.LAYER and (a2 or 0) == 3 then
-    CHD_RowDress()                -- the shortcut row's last tile opened: dress the four
-  end
   if a1 ~= nil and a1 == CHD_SlotLayer() then
     CHD_Unfocused(a1, a2 or 0)    -- the dock button opens without the focused look (unless the focus is on it)
   end
-  if a1 == CHD.slot.layer or a1 == CHD.FRAMES[1] or a1 == CHD.FRAMES[2] or a1 == CHD.SYN_LOWER
-      or a1 == CHD.ROW.LAYER then
-    CHD.SlotArm()                 -- the button / row / field (11v11 / 5v5) opening: the dock slides in, place again
+  if a1 == CHD.slot.layer or a1 == CHD.FRAMES[1] or a1 == CHD.FRAMES[2] or a1 == CHD.SYN_LOWER then
+    CHD.SlotArm()                 -- the button / field (11v11 / 5v5) opening: the dock slides in, place again
   end
 end)
 -- the team switch and the dock back from a child menu move the field: place the button again
@@ -1772,9 +1266,6 @@ CHD_After("UpdateTeamDockNo", function()
 end)
 CHD_After("ResumeTeamDock", function()
   CHD.SlotArm()
-  if CHD_RowOn() then
-    CHD_RowCount()
-  end
 end)
 -- the retail sets the tactic's name and plate per instance (setup, open, every refresh)
 CHD_After("SetupTacticsLayer", function(a1, a2)
@@ -1965,47 +1456,10 @@ CHD.FN = {UP = 2122449173, DOWN = 885050662, RIGHT = 3622053520}   -- betterui_d
 local chd_prev_fn = rawget(_ENV, "OnFunction")
 if type(chd_prev_fn) == "function" then
   rawset(_ENV, "OnFunction", function(a1, ...)
-    local RF = CHD.ROW.FN
-    if a1 == RF.LEFT or a1 == RF.RIGHT or a1 == RF.UP or a1 == RF.DOWN then
-      local L = CHD.ROW.LAYER
-      if CHD_RowOn() and CHD_Active(L) then
-        local i = CHD_Idx(L)
-        if a1 == RF.LEFT and i > 0 then
-          CHD_Go(L, i, L, i - 1)
-          CHD.row.last = i - 1
-          CHD_RowHelp(i - 1)
-          CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
-        elseif a1 == RF.RIGHT and i < #CHD.ROW.KINDS - 1 then
-          CHD_Go(L, i, L, i + 1)
-          CHD.row.last = i + 1
-          CHD_RowHelp(i + 1)
-          CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
-        elseif a1 == RF.RIGHT then
-          local ci = CHD_CardFrom(4, L, i)
-          if ci ~= nil then
-            CHD_ToCard(L, i, ci)
-            CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
-          end
-        elseif a1 == RF.UP and CHD_Open(CHD.TAC, 0) then
-          CHD_Go(L, i, CHD.TAC, 0)
-          CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
-        elseif a1 == RF.DOWN then
-          if CHD_ToSlot(L, i) then
-            CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
-          elseif CHD_Open(CHD.FORM, 0) then
-            CHD_Go(L, i, CHD.FORM, 0)
-            CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
-          end
-        end
-      end
-      return
-    end
     if a1 == CHD.FN.UP or a1 == CHD.FN.DOWN or a1 == CHD.FN.RIGHT then
       local slot = CHD_SlotLayer()
       if slot ~= nil and CHD_Active(slot) then
-        if a1 == CHD.FN.UP and CHD_ToRow(slot, 0) then
-          CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
-        elseif a1 == CHD.FN.UP and CHD_Open(CHD.TAC, 0) then
+        if a1 == CHD.FN.UP and CHD_Open(CHD.TAC, 0) then
           CHD_Go(slot, 0, CHD.TAC, 0)
           CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
         elseif a1 == CHD.FN.DOWN and CHD_Open(CHD.FORM, 0) then
@@ -2022,18 +1476,6 @@ if type(chd_prev_fn) == "function" then
       return
     end
     return chd_prev_fn(a1, ...)
-  end)
-end
-
--- ENTER on a shortcut tile (its input row): the tile's list row, decided by the dock itself (CHD_RowDecide)
-local chd_prev_enter = rawget(_ENV, "OnEnter")
-if type(chd_prev_enter) == "function" then
-  rawset(_ENV, "OnEnter", function(a1, a2, ...)
-    if a1 == CHD.ROW.LAYER and CHD_RowOn() then
-      CHD_RowDecide(type(a2) == "number" and a2 or CHD_Idx(a1))
-      return
-    end
-    return chd_prev_enter(a1, a2, ...)
   end)
 end
 
@@ -2128,10 +1570,6 @@ local function CHD_Redirect(sh, key)
   if not CHD_Active(t) then
     return
   end
-  -- TÁCTICAS DOWN (a key): the shortcut row under the tactics
-  if key and f == CHD.TAC and t == CHD.FORM and CHD_ToRow(t, ti) then
-    return
-  end
   -- TÁCTICAS DOWN / FORMACIÓN UP (a key, not the pointer): another mod's picture button between them
   if key and ((f == CHD.TAC and t == CHD.FORM) or (f == CHD.FORM and t == CHD.TAC)) and CHD_ToSlot(t, ti) then
     return
@@ -2192,9 +1630,6 @@ if type(chd_prev_shift) == "function" then
         if not ok then
           CHD_Log("error shift redirect " .. tostring(err))
         end
-      elseif a3 == CHD.ROW.LAYER then
-        CHD.shift = nil           -- onto a shortcut tile (the pointer): kept, with its help line
-        CHD_RowHelp(a4 or 0)
       elseif a3 == CHD_SlotLayer() then
         CHD.shift = nil           -- onto another mod's picture button (the pointer): kept, with its help line
         CHD_SlotHelp(select(2, CHD_SlotLayer()))
@@ -2233,7 +1668,6 @@ CHD_After("Step", function()
   end
   if not CHD.busy then
     CHD_SlotPlace()
-    CHD_RowPlace()
   end
   if not CHD.busy then
     CHD_Ghost()

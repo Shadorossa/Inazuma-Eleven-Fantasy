@@ -2,7 +2,7 @@ schema = "CharacterReforged.pairing/1"
 # Character Reforged › the pairing rules of the aura mods' creation flows (docs/refactor/aura-mods-split.md
 # «CharacterReforged: shared base»). Every active mod may declare `content\pairing\*.toml` with
 # [CharacterReforged.PairRules.<system>] tables; the keys merge over the mods in load order (the later mod wins key by
-# key), `default` first, then the system's own table (`miximax` = All Miximaxed, `change` = All Changed, …).
+# key), `default` first, then the system's own table (`miximax` = All Miximaxed, `change` = Custom Change Mode, …).
 # Read by scripts\pairing.lua (CharacterReforged.PairRules / PairCheck / PairValidity).
 
 [CharacterReforged.PairRules.default]

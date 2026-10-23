@@ -1,6 +1,6 @@
-# All Changed › the mode change in a match on the base game (docs/game/mods/all-changed.md; framework:
+# Custom Change Mode › the mode change in a match on the base game (docs/game/mods/all-changed.md; framework:
 # docs/framework/extra-slot.md §7): the VR-Framework's plates slot with only its MIX slot (`mix_only`): a player whose
-# change is equipped (scripts\all_changed.lua publishes ModeChangeMix: base card -> carrier wmc_evt0, and ModeChange:
+# change is equipped (scripts\custom_change_mode.lua publishes ModeChangeMix: base card -> carrier wmc_evt0, and ModeChange:
 # base card -> partner card) swaps with RB+B (key J) into the partner card and back with RB+B again: 60 s cooldown
 # after each swap (either way), no time limit, no cost. Every other aura (keshin, armour, totem, miximax, the retail
 # mode changes) stays the game's own: this slot never takes it.

@@ -126,7 +126,7 @@ do
 
   function FV.load(hdl)
     FV.hdl, FV.idx = hdl, 1
-    local V = type(Utilities) == "table" and BetterQoL.ViewForms or nil
+    local V = type(BetterQoL) == "table" and BetterQoL.ViewForms or nil
     local src, answered
     if type(V) == "table" and type(V.Forms) == "function" then
       FV.forms, src, answered = V.Forms(hdl)
@@ -423,7 +423,7 @@ do
   end)
 
   -- the press (BetterQoL.ViewForms calls it in this menu): the next form, the builder again
-  Utilities = type(Utilities) == "table" and Utilities or {}
+  BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
   BetterQoL.ViewForms = type(BetterQoL.ViewForms) == "table" and BetterQoL.ViewForms or {}
   function BetterQoL.ViewForms.Appearance()
     if not Viewing() or FV.hdl == 0 or #FV.forms <= 1 then

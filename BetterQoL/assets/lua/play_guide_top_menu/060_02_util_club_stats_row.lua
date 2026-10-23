@@ -148,7 +148,7 @@ do
     return true
   end
 
-  Utilities = type(Utilities) == "table" and Utilities or {}
+  BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
   BetterQoL.ClubStatsRow = {KIND = UCS_ROW.KIND, Add = UcsAdd}
 
   if EVT_UCS_ROW_WRAPPED == nil then
@@ -177,7 +177,7 @@ do
     local w = function(a1, a2, ...)
       local f = UCS_ROW.found
       if a1 == UCS_ROW.LIST and f ~= nil and type(a2) == "number" and f.kinds[a2 + 1] == UCS_ROW.KIND then
-        local P = type(Utilities) == "table" and BetterQoL.ClubStats or nil
+        local P = type(BetterQoL) == "table" and BetterQoL.ClubStats or nil
         if type(P) == "table" and type(P.Open) == "function" then
           local ok, err = pcall(P.Open)
           if not ok then

@@ -31,6 +31,14 @@ VRFW_BBP = {
   DIFFWIN = 2996147312 --[[win05_11_select_difficulty_win_base]],
   SUBWIN = 968210065 --[[sub_window]],
   LOCK = 892105257 --[[mainmenu90_30_lock_icon]],
+  -- the team panel's player cards and the pitch frame each side's cards stand on: the game sets both to the same draw
+  -- priority, so the pitch could draw over the cards (faded cards, lines across them); the cards go one above it
+  PANEL_PITCH = {
+    [3003299608 --[[team00_01_chara_card_left]]] = 1324325467 --[[vs01_46_enjoy_team_select_formation_frame_left]],
+    [3825623416 --[[team00_01_chara_card_right]]] = 187604095 --[[vs01_46_enjoy_team_select_formation_frame_right]],
+  },
+  GET_PRIO = 1018283794 --[[CMND_GET_DRAW_PRIORITY]],
+  SET_PRIO = 1491630496 --[[CMND_SET_DRAW_PRIORITY]],
   -- "win it to unlock it": the focused locked slot's hint on its padlock's guide balloon
   -- (the lock icon layer's own _pos_lock_guide01 / _text_guide01, as the game's locked list items use it), the "not
   -- available» sound on an Accept the game refused
@@ -688,6 +696,22 @@ function VRFW_BBP_KeepCrests(on)
   VRFW_BBP.keep_crests = on == true
 end
 
+-- a team panel card instance set up by the game (OnSetupLayer, after the game's own priority): drawn one above its
+-- side's pitch frame, whose priority is read from the frame (the game gives both the same one)
+function VRFW_BBP_CardOverPitch(layer, idx)
+  local B = VRFW_BBP
+  local pitch = funcLuaMenuCommand(B.GET_PRIO, B.PANEL_PITCH[layer], 0)
+  local card = funcLuaMenuCommand(B.GET_PRIO, layer, idx)
+  if type(pitch) ~= "number" or type(card) ~= "number" or card > pitch then
+    return
+  end
+  funcLuaMenuCommand(B.SET_PRIO, layer, idx, pitch + 1, true)
+  if idx == 0 then
+    VRFW_BBP_Log("panel cards " .. tostring(layer) .. " over the pitch: priority " .. tostring(card) .. " -> "
+                 .. tostring(pitch + 1))
+  end
+end
+
 function VRFW_BBP_Redraw(turn)
   local B = VRFW_BBP
   turn = turn == true
@@ -948,7 +972,14 @@ do
       pcall(VRFW_BBP_Draw)
       return
     end
-    return setup(a1, a2, ...)
+    local r = table.pack(setup(a1, a2, ...))
+    if VRFW_BBP.PANEL_PITCH[a1] ~= nil then
+      local ok, err = pcall(VRFW_BBP_CardOverPitch, a1, a2)
+      if not ok then
+        VRFW_BBP_Log("card priority error", tostring(err))
+      end
+    end
+    return table.unpack(r, 1, r.n)
   end
 
   local open = OnOpenLayer

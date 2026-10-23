@@ -9,7 +9,7 @@ id = "TransformingItems"
 former_ids = ["transforming_items"]
 # the English fallback; the Mods screen shows the text keys mod_name / mod_description (text\keys.toml)
 name = "Transforming Items"
-version = "1.3.0"
+version = "1.4.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Items that change a player's look while he wears them. The Alius Crystal («Piedra Alius»): a player who took the Alius stone (the Dark Emperors, Royal Academy Redux and the Alius Academy players, in their classic version) equips it in «Equipamiento» and takes his Alius look, with that version's stats and moves; remove it and he is back. It can be equipped once the Dark Emperors are beaten in the Crónica. Works with the VR-Framework alone."
@@ -17,8 +17,8 @@ description = "Items that change a player's look while he wears them. The Alius 
 prefix = "TransformingItems"
 folder = "TransformingItems"
 priority = 0
-tags = ["Gameplay", "Characters"]
-updated = "2026-10-22"
+tags = ["Characters", "Gameplay"]
+updated = "2026-10-23"
 # [[VRFW.ItemTransform]] families / base_series (2.8.75); unlock.cleared sets unlock.flag on a won match (2.8.83)
 # 1.0.1 (owner 2026-10-21): the unlock is the save flag TransformingItems.AliusStoneUnlocked (content\flags\)
 # 1.0.2 (owner 2026-10-21): the flag declared by name only; its bit is given by the framework (2.8.86)

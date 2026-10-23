@@ -7,7 +7,7 @@
 -- opened is closed too (asked again until it is gone), the plate's parameter cleared and the menu camera's offset put
 -- back; then the Caseta comes back with its cursor on the row and its own «Aceptar». Runs as a coroutine resumed from
 -- Step. Engine calls only from the menu callbacks.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 
 if UTIL_ALB == nil then
   UTIL_ALB = {

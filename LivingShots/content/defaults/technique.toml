@@ -1,0 +1,6 @@
+# Living Shots: technique-type defaults of this mod (docs/framework/technique.md §4e).
+
+[trajectory]
+# Every aura shot flies one straight line from its start to the goal point (owner 2026-10-23). The points of each
+# move's flight stay in its file; `trajectory.straight = false` in a move flies its curve again.
+straight = true

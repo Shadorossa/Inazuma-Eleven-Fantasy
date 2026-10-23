@@ -15,7 +15,7 @@ mod = "BetterUI"
 requires = []
 conflicts = []
 wraps = ["OnSetupLayer", "OnOpenLayer", "OnChangeFocus", "MoveFocusInc", "MoveFocusDec", "MoveFocusMtx", "Step",
-         "SetupTacticsLayer", "UpdateTeamBuildTypeInfo", "OnFunction", "OnEnter", "OnFocusLayerShift",
+         "SetupTacticsLayer", "UpdateTeamBuildTypeInfo", "OnFunction", "OnFocusLayerShift",
          "UpdateTeamDockNo", "ResumeTeamDock"]
 description = "clean_hud: Plantilla panel (tactics row, Conf. beside Formación) smaller dock arrows, AT / DF under the goalkeeper"
 

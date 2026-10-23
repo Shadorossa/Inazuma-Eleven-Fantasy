@@ -35,3 +35,13 @@ args = ["ptr"]
 ret = "f32"
 wait_ms = 100
 post_when = [{ value = "[args[1]]:u8", equals = 1 }, { value = "ret", not = 0 }]
+
+# ------------------------------------------------------------------------------------------------ the AI difficulty
+
+# This module sets the rival's AI in every offline match itself, so a difficulty choice of a menu means nothing while
+# it runs. Published for other mods' menus: the game's difficulty index (0 Principiante, 1 Intermedio, 2 Avanzado,
+# 3 Desafiante) they use instead of asking for one. 3 = the game's highest level (its rows only change the rival's AI,
+# which this module replaces). Answered only while this module is on.
+[[VRFW.State]]
+key = "LegendaryMatch.ai_difficulty"
+value = 3

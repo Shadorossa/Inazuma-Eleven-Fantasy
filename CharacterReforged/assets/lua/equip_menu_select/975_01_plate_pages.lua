@@ -2477,7 +2477,7 @@ EVT_PPG = EVT_PPG or {}
   -- action «Cambiar forma» (CMD_UTIL_VIEW_FORMS, default RS, rebindable) where this menu is declared for it (Character
   -- Reforged content\menus\player_page_view_forms.toml, only with Utilities); its glyph follows the binding. Without that declaration: R3 (CMD_FUNC6) as before.
   function G.FormKeyDecl()
-    local V = type(Utilities) == "table" and BetterQoL.ViewForms or nil
+    local V = type(BetterQoL) == "table" and BetterQoL.ViewForms or nil
     return type(V) == "table" and type(V.Declared) == "function" and V.Declared("personal_plate_menu") == true and V or nil
   end
   function G.FormKeyDown()

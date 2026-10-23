@@ -1,18 +1,18 @@
-# All Changed › the commands of the custom «Modo cambio» (scripts/all_changed.lua; docs/game/mods/all-changed.md):
+# Custom Change Mode › the commands of the custom «Modo cambio» (scripts/custom_change_mode.lua; docs/game/mods/all-changed.md):
 # what a creation screen asks (Character Reforged's pairing flow). The old Inazuma Fantasy's own CMND_EVT_MC_* /
 # CMND_FANTASY_MC_* copies were removed on 2026-10-15.
 schema = "VRFW.game/1"
 if_mod = "all_changed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
 
-# The created changes of the mod All Changed (2026-10-14 .. 2026-10-16, merged into Aura Reworked): copied once into
+# The created changes of the mod Custom Change Mode (2026-10-14 .. 2026-10-16, merged into Aura Reworked): copied once into
 # slot<N>/aura_reworked/ (the old files are left as they are). First: a save that has them takes them.
 [[VRFW.SaveImport]]
-name = "AuraReworked.ChangeFromAllChanged"
+name = "AuraReworked.ChangeFromCustomChangeMode"
 from = "all_changed"
 blobs = ["mode_change.json"]
 
 # Inazuma Fantasy's created changes (blob mode_change.json of each save slot, 2026-10-04 .. 2026-10-14), for a save
-# that never had All Changed's: copied once into slot<N>/aura_reworked/ when it has no such file yet.
+# that never had Custom Change Mode's: copied once into slot<N>/aura_reworked/ when it has no such file yet.
 [[VRFW.SaveImport]]
 name = "AuraReworked.ChangeFromInazumaFantasy"
 from = "inazuma_fantasy"

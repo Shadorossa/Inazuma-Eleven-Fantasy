@@ -12,6 +12,9 @@ Title = { es = "Auras de tiro", en = "Shot auras" }
 Help = { es = "El efecto que rodea al balón mientras vuela un tiro: qué tiros lo llevan y qué objeto de efecto se ve.", en = "The effect around the ball while a shot flies: which shots carry it and which effect object shows." }
 Section = "shot_aura"
 Files = ["content/effects/*.toml"]
+# the automatic auras (research/scripts/ls_auto_aura.py --emit): listed as «automática», «Convertir en manual» moves one
+# into content\effects\ (the generator then leaves its shot alone)
+Automatic = ["content/effects/auto/*.toml"]
 Table = "shot_aura"
 Key = "name"
 Shape = "shot_aura"
@@ -30,7 +33,7 @@ Shape = "effect"
 
 [[Shape]]
 Id = "shot_aura"
-Preview = { Kind = "shot_aura", Technique = "when.techniques", Aura = "aura", Element = "color", Effect = { Table = "effect", Key = "name", Object = "object", Shape = "effect" } }
+Preview = { Kind = "shot_aura", Technique = "when.techniques", Aura = "aura", Element = "color", HideBall = "hide_ball", Fit = "fit.replay", Effect = { Table = "effect", Key = "name", Object = "object", Shape = "effect" } }
   [[Shape.Field]]
   Key = "name"
   Type = "id"
@@ -52,10 +55,10 @@ Preview = { Kind = "shot_aura", Technique = "when.techniques", Aura = "aura", El
   Label = { es = "Aura", en = "Aura" }
   Help = { es = "Un objeto de aura del mod, o una familia del juego de cinco (una por elemento), o el aura del tiro normal.", en = "One of the mod's aura objects, or a game family of five (one per element), or the normal shot's aura." }
   [Shape.Field.ValueLabels]
-  ega0075 = { es = "Supertécnica del juego (por elemento)", en = "Game special move (by element)" }
-  ega0080 = { es = "Tiro en cadena del juego (por elemento)", en = "Game chain shot (by element)" }
-  ega0085 = { es = "Tiro lejano del juego (por elemento)", en = "Game long shot (by element)" }
-  ega0021 = { es = "Tiro normal del juego", en = "Game normal shot" }
+  ega0075 = { es = "La del juego por elemento", en = "The game's, by element" }
+  ega0080 = { es = "Tiro en cadena del juego", en = "The game's chain shot" }
+  ega0085 = { es = "Tiro lejano del juego", en = "The game's long shot" }
+  ega0021 = { es = "Tiro normal del juego", en = "The game's normal shot" }
   [[Shape.Field]]
   Key = "like"
   Type = "enum"
@@ -99,6 +102,11 @@ Preview = { Kind = "shot_aura", Technique = "when.techniques", Aura = "aura", El
   More = true
   Label = { es = "En el cut-in del portero", en = "In the keeper's cut-in" }
   Help = { es = "También sobre el balón del cut-in de portero / bloqueo que recibe el tiro, a esta escala.", en = "Also on the ball of the keeper / block cut-in the shot meets, at this scale." }
+  [[Shape.Field]]
+  Key = "hide_ball"
+  Type = "bool"
+  Label = { es = "Ocultar el balón principal", en = "Hide the main ball" }
+  Help = { es = "Mientras el aura se ve en el campo, el balón real del partido no se dibuja (para auras que llevan su propio balón o varios). Vuelve al acabar el aura.", en = "While the aura plays on the pitch the real match ball is not drawn (for auras that carry their own ball or several). It comes back when the aura ends." }
   [[Shape.Field]]
   Key = "remove"
   Type = "bool"
@@ -182,6 +190,13 @@ Id = "when"
   Of = "string"
   More = true
   Label = { es = "Transformación", en = "Transform" }
+  [[Shape.Field]]
+  Key = "aura_model"
+  Type = "list"
+  Of = "string"
+  More = true
+  Label = { es = "Modelo del aura", en = "Aura model" }
+  Help = { es = "El tótem / espíritu guerrero activo del tirador (o su armadura / Mix-Max): su modelo (k000450, a000400).", en = "The shooter's active totem / keshin (or its armour / Mix-Max form): its model (k000450, a000400)." }
   [[Shape.Field]]
   Key = "card"
   Type = "list"

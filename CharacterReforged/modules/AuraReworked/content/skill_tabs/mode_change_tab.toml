@@ -1,7 +1,7 @@
 schema = "VRFW.skill_tab/1"
 if_mod = "all_changed"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
 
-# All Changed › a «Modo cambio» tab on the «Habilidades» / «Técnicas» list (ability_list_menu; moved from Inazuma
+# Custom Change Mode › a «Modo cambio» tab on the «Habilidades» / «Técnicas» list (ability_list_menu; moved from Inazuma
 # Fantasy's skill_tabs 2026-10-14, docs/game/mechanics/mode-change.md §3.1). Category 106 = aura command type 6: the
 # game's own list filter keeps the mode changes there (the retail ones and this mod's; its carriers and «Crear nuevo
 # cambio» follow content\transforms\mode_change.toml [ability_list]). The game has no tab for it; the VR-Framework's

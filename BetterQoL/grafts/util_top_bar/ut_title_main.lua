@@ -3,7 +3,7 @@
 -- InputEnable -> InputWait), and a press in between is dropped (InputEnable makes the title active again and its
 -- request is never read; Inazuma Fantasy's 07/10 logs). Param utilities_title_ready = 1 from the moment title_main
 -- reads requests; ut_title.lua presses only then (title_menu_2's OnInit clears it). Globals only.
-Utilities = type(Utilities) == "table" and Utilities or {}
+BetterQoL = type(BetterQoL) == "table" and BetterQoL or {}
 BetterQoL.TopBar = type(BetterQoL.TopBar) == "table" and BetterQoL.TopBar or {}
 BetterQoL.TopBar.READY_KEY = 3292329527 --[[crc32 utilities_title_ready]]
 

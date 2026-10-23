@@ -17,7 +17,7 @@
 
 local S = require "lib/career_store"
 
-Utilities = Utilities or {}
+BetterQoL = BetterQoL or {}
 BetterQoL.Career = BetterQoL.Career or {}
 
 -- ---------------------------------------------------------------------------------------- data layout (v7.1.2)

@@ -1,0 +1,43 @@
+schema = "VRFW.item/2"
+# Chronicle Deluxe: «Moneda dorada» (golden coin), the coin the Chronicle board's gacha takes for each draw
+# (content/gacha/kizuna_coin_gacha.toml cost_item). Given by the first win of each Galaxy Crónica and Batalla heroica
+# and dropped in every Batalla heroica (config.toml [golden_coin], [[drops.battle]] golden_coin). A currency token like
+# the retail medals, cloned from «Medalla de la victoria»; its key tk_gc000001 follows the game's token keys (the `tk`
+# prefix puts its icon on the icon_item10 sheet: content/images/menu/200_icon/02_icon_item/golden_coin.toml), and its id
+# is crc32 of the key like every game item (key_id), so the drop lists and the reward windows draw its icon.
+default_lang = "es"
+
+[[item]]
+name = "golden_coin"
+base = "tk_tnm000001"
+category = "currency"
+icon_key = "tk_gc000001"
+key_id = true
+max_stack = 999
+  [item.text.es]
+  name = "Moneda dorada"
+  description = "Se usa en el gacha del tablero de Crónica.\nSe consigue en las batallas heroicas."
+  [item.text.en]
+  name = "Golden Coin"
+  description = "Used in the Chronicle board's gacha.\nWon in the Heroic Battles."
+  [item.text.fr]
+  name = "Pièce dorée"
+  description = "Sert au gacha du plateau de Chronique.\nS'obtient dans les batailles héroïques."
+  [item.text.de]
+  name = "Goldmünze"
+  description = "Für das Gacha des Chronik-Bretts.\nGibt es in den Heldenschlachten."
+  [item.text.it]
+  name = "Moneta d'oro"
+  description = "Serve per il gacha del tabellone Cronaca.\nSi ottiene nelle battaglie eroiche."
+  [item.text.pt]
+  name = "Moeda dourada"
+  description = "Usa-se no gacha do tabuleiro da Crónica.\nGanha-se nas batalhas heroicas."
+  [item.text.ja]
+  name = "ゴールドコイン"
+  description = "クロニクルのボードのガチャで使う。\nヒロイックバトルで手に入る。"
+  [item.text.zh_hans]
+  name = "金币"
+  description = "用于编年史棋盘的扭蛋。\n可在英雄之战中获得。"
+  [item.text.zh_hant]
+  name = "金幣"
+  description = "用於編年史棋盤的扭蛋。\n可在英雄之戰中獲得。"

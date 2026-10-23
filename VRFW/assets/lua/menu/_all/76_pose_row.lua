@@ -7,10 +7,14 @@
 --     context  a whole number handed to the mod's source command (e.g. its zone)
 --     opts     { hide = { layer crc… } } more layers of the caller hidden while the screen is up (each visible
 --              instance, shown again when it closes; a hidden one stays hidden),
---              models = { {layer crc, slot}, … } the caller's own 3D models (instance 0 of the layer): hidden
---              meanwhile through their model handle (the layer itself stays visible: it may hold the caller's
---              backgrounds), and put back where they were when the screen closes (the caller's step may place them
---              through the screen's model camera while it is up: the Chronicle board's caravan, drawn huge)
+--              models = { {layer crc, slot}, … } the caller's own 3D models (instance 0 of the layer), hidden
+--              meanwhile and given back after (R.CallerModels): a caller menu that has the retail SetCharaEnable (the
+--              Chronicle board: its caravan) does it itself, which also puts its own model camera back (the board
+--              places the caravan every frame through the current camera: after the screen's camera it came back
+--              huge); any other caller: the models' handles (retail SetCharaModelVisible). Nothing is moved.
+--   VRFW_PoseRow.HideLayers(layers) -> hidden    the visible instances of those layers hidden (a staging helper)
+--   VRFW_PoseRow.ShowLayers(hidden)              them shown again
+--   VRFW_PoseRow.CallerModels(models, on[, kept]) the `models` above hidden (-> what to give back) / given back
 -- No engine call at load time.
 if VRFW_PoseRow == nil then
   local R = {
@@ -25,10 +29,9 @@ if VRFW_PoseRow == nil then
     START_WAIT = 60,             -- frames the screen may take to appear
     LAYER_NUM = 1175615627,      -- (layer) -> instance count
     IS_VISIBLE = 1262717583,     -- (layer, instance) -> visible
-    MODEL_POS = 3136332215,      -- CMND_GET_CHARA_MODEL_POS (layer, instance, slot) -> found, x, y, z
-    MODEL_SET_POS = 1088067423,  -- CMND_SET_CHARA_MODEL_POS (layer, instance, x, y, z, slot)
     MODEL_HANDLE = 3895705890,   -- (layer, instance, slot) -> the menu model's handle (0: none)
     MODEL_VISIBLE = 1890282463,  -- (handle, on)
+    LAYER_VISIBLE = 711242136,   -- CMND_SET_LAYER_VISIBLE (layer, instance, on)
   }
   VRFW_PoseRow = R
 
@@ -46,6 +49,29 @@ if VRFW_PoseRow == nil then
     return ok and r == true
   end
 
+  -- the visible instances of `layers` hidden -> the list of what was hidden (R.ShowLayers puts it back); a hidden
+  -- instance stays hidden.
+  function R.HideLayers(layers)
+    local hidden = {}
+    for _, l in ipairs(layers or {}) do
+      local okn, n = pcall(funcLuaMenuCommand, R.LAYER_NUM, l)
+      for i = 0, (okn and type(n) == "number" and n or 0) - 1 do
+        local okv, v = pcall(funcLuaMenuCommand, R.IS_VISIBLE, l, i)
+        if okv and v == true then
+          pcall(funcLuaMenuCommand, R.LAYER_VISIBLE, l, i, false)
+          hidden[#hidden + 1] = {l, i}
+        end
+      end
+    end
+    return hidden
+  end
+
+  function R.ShowLayers(hidden)
+    for _, h in ipairs(hidden or {}) do
+      pcall(funcLuaMenuCommand, R.LAYER_VISIBLE, h[1], h[2], true)
+    end
+  end
+
   -- the caller's models: hidden (on = false: each one's handle kept), shown again (on = true)
   function R.ModelShow(list, on, kept)
     kept = kept or {}
@@ -59,25 +85,31 @@ if VRFW_PoseRow == nil then
       if h then
         pcall(funcLuaCommand, R.MODEL_VISIBLE, h, on)
       end
+      if not on then
+        R.Log("caller model", m[1], m[2] or 0, h and "hidden by its handle" or "has no model")
+      end
     end
     return kept
   end
 
-  -- the caller's models' place: kept before the screen; after it, a place that moved is put back (one log line)
-  function R.ModelPlace(list, when)
-    R.places = R.places or {}
-    for k, m in ipairs(list or {}) do
-      local r = table.pack(pcall(funcLuaMenuCommand, R.MODEL_POS, m[1], 0, m[2] or 0))
-      local x, y, z = r[3], r[4], r[5]
-      if when == "before" then
-        R.places[k] = (r[1] and r[2] == true and type(x) == "number") and {x, y, z} or false
-      elseif R.places[k] and type(x) == "number" and (math.abs(x - R.places[k][1]) > 0.001
-          or math.abs(y - R.places[k][2]) > 0.001 or math.abs(z - R.places[k][3]) > 0.001) then
-        local p = R.places[k]
-        pcall(funcLuaMenuCommand, R.MODEL_SET_POS, m[1], 0, p[1], p[2], p[3], m[2] or 0)
-        R.Log("caller model", m[1], m[2] or 0, "moved to", x, y, z, "put back to", p[1], p[2], p[3])
+  -- the caller's models hidden (on = false) / given back (on = true, with what the hide returned). The caller menu's
+  -- own retail SetCharaEnable when it has one (the Chronicle board: its caravan enabled / disabled and, on true, the
+  -- board's model camera current again, so its every-frame placement is right at once); else the models' handles.
+  function R.CallerModels(list, on, kept)
+    if list == nil or #list == 0 then
+      return nil
+    end
+    if type(SetCharaEnable) == "function" then
+      local ok, err = pcall(SetCharaEnable, on)
+      R.Log("caller models", on and "given back" or "hidden", "by the menu's SetCharaEnable", ok and "" or tostring(err))
+      if ok then
+        return "menu"
       end
     end
+    if kept == "menu" then
+      kept = nil
+    end
+    return R.ModelShow(list, on, kept)
   end
 
   function R.Open(key, context, opts)
@@ -90,34 +122,22 @@ if VRFW_PoseRow == nil then
     param(R.KEY_CTX, math.floor(tonumber(context) or 0))
     pcall(funcLuaCommand, R.P_CLEAR, R.KEY_PICK)
     local yielded = VRFW_HubYield ~= nil and pcall(VRFW_HubYield, true, R.MENU)
-    local hidden = {}
-    for _, l in ipairs(opts.hide or {}) do
-      local okn, n = pcall(funcLuaMenuCommand, R.LAYER_NUM, l)
-      for i = 0, (okn and type(n) == "number" and n or 0) - 1 do
-        local okv, v = pcall(funcLuaMenuCommand, R.IS_VISIBLE, l, i)
-        if okv and v == true then
-          pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], l, i, false)
-          hidden[#hidden + 1] = {l, i}
-        end
-      end
-    end
-    R.ModelPlace(opts.models, "before")
-    local kept = R.ModelShow(opts.models, false)
+    local hidden = R.HideLayers(opts.hide)
+    local kept = R.CallerModels(opts.models, false)
     pcall(funcLuaCommand, R.OPEN_MENU, R.MENU)
+    R.Log("open", key, "context", tostring(context), "requested")
     local t = 0
     while not up() and t < R.START_WAIT do
       t = t + 1
       coroutine.yield()
     end
     local opened = up()
+    R.Log("open", key, opened and "up after" or "not up after", t, "frames")
     while up() do
       coroutine.yield()
     end
-    for _, h in ipairs(hidden) do
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], h[1], h[2], true)
-    end
-    R.ModelPlace(opts.models, "after")
-    R.ModelShow(opts.models, true, kept)
+    R.ShowLayers(hidden)
+    R.CallerModels(opts.models, true, kept)
     if yielded then pcall(VRFW_HubYield, false, R.MENU) end
     local pick = 0
     local okx, exists = pcall(funcLuaCommand, R.P_EXISTS, R.KEY_PICK)
