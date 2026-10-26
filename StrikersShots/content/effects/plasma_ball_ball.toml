@@ -1,0 +1,30 @@
+# «Plasma Ball» («Balón de plasma», whs01970, wind long shot, cut-in ev60_01970): while the ball flies to the goal it
+# keeps the look of the cut-in's last cut (c0040, frames 314-346 looped): the purple shell, white core glow and pink
+# wind swirl round the ball, the pink-purple plasma arcs and the red sparks crackling round it, x1 (the cut-in's size),
+# and the cut-in's side-to-side motion: the ball steps 1.035 m to one side of the straight flight line over 4.9 m, holds
+# that side 14.8 m, steps over to the other side (the cut-in's 2.07 m step), and so on, on the distance flown (the
+# distance clock: `anchor = "kick"`, 0.75 m a clip frame). The match ball flies the straight line, not drawn while it
+# flies (`hide_ball` of the technique, content\techniques\plasma_ball_trajectory.toml: hidden at the kick, once the
+# aura is on the ball; a rule's own `hide_ball` hides it before the aura is spawned and the aura was never drawn): the
+# ball seen is the match ball model (chr/b000001) inside the aura, weaving and rolling with it. The
+# cut-in's ground streaks (a fixed spot of the pitch) are dropped. The object is ev6197pb00
+# (assets\data\{common,dx11}\effect\event\ev60\ev6197pb00\), built by research/scripts/plasma_ball_ball_fx.py from
+# ev60019700. The trigger copies the wind long-shot aura's row (like = "ega0085b"). Flight: content\techniques\
+# plasma_ball_trajectory.toml (a ground shot, as in the cut-in).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "plasma_ball"
+from = "ega0085b"
+object = "effect/event/ev60/ev6197pb00/ev6197pb00.objbin"
+
+[[shot_aura]]
+name = "plasma_ball"
+when = { techniques = ["whs01970"] }
+aura = "plasma_ball"
+like = "ega0085b"
+# the weave is keyed on the distance flown: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Doble hélice (Double Helix, whs02330, cut-in ev60_02330).
+#
+# Measured: in the shot cut (c0400) the event ball (b000001 slot s01) dives out of the sky, 36.8 m -> 31.8 m up over
+# event frames 1386-1446 (research/scripts/shot_trajectory_from_cutin.py _event_ball("ev60_02330", "s01", "c0400")).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line, at most 3 m): one straight level line from
+# the kick point to the goal, the ball centre at 2.00 m the whole way. unblockable = false: the game's block rules (this
+# mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Doble hélice (whs02330).
+[[edit]]
+target = "whs02330"
+trajectory = { points = [[0.0, 2.00]], straight = true, unblockable = false }

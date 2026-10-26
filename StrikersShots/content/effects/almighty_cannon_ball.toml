@@ -1,0 +1,24 @@
+# «Cañón celestial» (Almighty Cannon, whs01340; mountain; cut-in ev60_01340): while the ball flies to the goal it keeps
+# the look of the cut-in's last shot (c0300, held at frame 301) at a FIXED size: the ball inside the golden glow head
+# (~5 m across), the straight yellow-white beam (~2.9 m across, 8.7 m long) coming out of the kick point as the ball
+# moves away and never growing, shrinking or pulsing once shown (its far end faded, its texture flow running on), x1.
+# The head's glow discs face the camera and the beam's cards turn about the flight to face it (billboards), so it looks
+# the same from the touchline as from the front. The sparks, kick flashes, wind cards and shock waves are left out.
+# The object is ev6013ac00 (effect/event/ev60/ev6013ac00/), built by research/scripts/almighty_cannon_ball_fx.py from
+# the cut-in's effect object ev60013400.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\almighty_cannon_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "almighty_cannon"
+from = "ega0075a"
+object = "effect/event/ev60/ev6013ac00/ev6013ac00.objbin"
+
+[[shot_aura]]
+name = "almighty_cannon"
+when = { techniques = ["whs01340"] }
+aura = "almighty_cannon"
+like = "ega0075a"

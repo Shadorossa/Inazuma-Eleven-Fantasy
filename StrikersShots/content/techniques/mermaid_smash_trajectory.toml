@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Choque de sirena (Mermaid Smash, whs02450), cut-in ev60_02450.
+#
+# In the cut-in (c0300) the ball is volleyed at 1.47 m and flies off drawing its pink trail; where the trail is at its
+# fullest behind it (frame 259, research/scripts/mermaid_smash_ball_fx.py FLIGHT_HEIGHT) the ball is 0.76 m over the
+# pitch. Flight: straight and level at that height into the goal, the trail running straight behind the ball.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); points count from the kick; one point = a level flight; straight = true: one straight line from the kick
+# to the goal at that height.
+
+# Choque de sirena (whs02450).
+[[edit]]
+target = "whs02450"
+trajectory = { points = [[0.0, 0.76]], straight = true, unblockable = false }

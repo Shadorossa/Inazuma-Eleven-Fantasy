@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Averno de Guma (Gooma Inferno, whs02740, cut-in ev60_02740): one straight level line
+# at 1.7 m from the kick point into the goal point, whatever the shot's length (the aura's fire beam runs straight
+# behind the ball, 1.0 m below its centre at most). In the cut-in's last shot (c0300) the event ball flies almost level,
+# 1.70 -> 1.75 -> 1.61 m over 18.5 m. unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Averno de Guma (whs02740).
+[[edit]]
+target = "whs02740"
+trajectory = { points = [[0.0, 1.7]], straight = true, unblockable = false }

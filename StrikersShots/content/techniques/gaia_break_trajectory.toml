@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Remate de Gaia (Gaia Break, whs00750, cut-in ev60_00750).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.40 m the whole way (the spirals reach 2.1 m round the flight at x0.65: they never
+# touch the grass). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball
+# centre over the pitch (m); the height is held.
+
+# Remate de Gaia (whs00750).
+[[edit]]
+target = "whs00750"
+trajectory = { points = [[0.0, 2.40]], straight = true, unblockable = false }

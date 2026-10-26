@@ -1,0 +1,26 @@
+# «Tiro fantasma» (Phantom Shot, whs00090; forest shot, cut-in ev60_00090): while the ball flies to the goal it
+# becomes the six phantom balls of the cut-in's last cut (c0030, held at frame 160, x0.85): the match ball is hidden
+# (hide_ball, techniques\phantom_shot_trajectory.toml) and phantom B's pink-white core and purple-blue ghost flame
+# shell fly where it is, the other five phantoms round it at their places in the cut-in's bunch; near the goal the
+# five slide onto B and merge into it, as the cut-in's phantoms meet at its end (fit: the held bunch stretched to the
+# flight so the merge, the last 16 frames of the replay, lands on the goal). The cores and back glows face the camera
+# (billboards), so they look round from every side. The path lines, the burst at the kick and the screen particles are
+# left out. The object is ev6009ps00
+# (effect/event/ev60/ev6009ps00/), built by research/scripts/phantom_shot_ball_fx.py from ev60000900.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "phantom_shot"
+from = "ega0075d"
+object = "effect/event/ev60/ev6009ps00/ev6009ps00.objbin"
+
+[[shot_aura]]
+name = "phantom_shot"
+when = { techniques = ["whs00090"] }
+aura = "phantom_shot"
+like = "ega0075d"
+fit = { replay = 68, sustain = [12, 52] }

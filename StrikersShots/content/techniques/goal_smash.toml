@@ -1,0 +1,46 @@
+# Goal Smash (feature of «Strikers Shots»; the standalone mod goal_smash 1.0.0 before): the «goal
+# smash» (the goal is destroyed after the goal) belongs to the MOVE, whoever scores with it (game cards, mod cards,
+# opponents). Technique engine of the VR-Framework (docs/app/technique-engine.md §3.5); the
+# mechanism and the recipes (add a move / a recoloured scene): docs/game/mechanics/goal-smash.md §9.
+# The game's own per-player rows (Harper Evans) and a match script's reserve (story / Chronicles) still win.
+# Off for every mod: [chara.technique] goal_events = false in the VR-Framework's config.toml; skipped per goal by this
+# mod's option «Saltar la cinemática de gol especial» (options.toml).
+#
+# One [[edit]] per move: `technique` = the move's key (whsNNNNN; its _or / _mm variants are covered by the same rule),
+# `goal_event` = the scene. Grouped by scene; add a move under its scene.
+#
+# Scenes:
+#   ev71_00070  retail: fire (Harper Evans' Meteor)
+#   ev71_00071  retail: ev71_00070 with the Inazuma Break beams (effect of story scene ev09_04570)
+#   ev71_00080  retail: Blaine Westbrook's, its eff list fixed by content\base_tables\event_cfg\eff\ev71_00080_eff.toml
+#   ev71_00090  this mod: ev71_00070 in GOLD (effect ev71000900; research/scripts/goal_smash_build.py SMASHES)
+#               its lists: content\base_tables\event_cfg\{evt,eff,snd}\ev71_00090*.toml (readable deltas of ev71_00070's)
+schema = "VRFW.technique/3"
+
+# ---------------------------------------------------------------- ev71_00070 (fire)
+
+[[edit]]
+target = "whs10110"      # Tornado de fuego meteoro (Meteor Fire Tornado)
+goal_event = "ev71_00070"
+
+[[edit]]
+target = "whs10160"      # Tornado de fuego meteoro V
+goal_event = "ev71_00070"
+
+# ---------------------------------------------------------------- ev71_00071 (Inazuma Break beams)
+
+[[edit]]
+target = "whs00380"      # Ruptura relámpago (Inazuma Break): its own variant (effect of story scene ev09_04570,
+goal_event = "ev71_00071"   # loaded by the event itself; retail plays it in Chronicles matches too)
+
+# ---------------------------------------------------------------- ev71_00080 (Dark Empress)
+
+[[edit]]
+target = "whs10090"      # Emperatriz oscura (Blaine Westbrook): the retail eff-list actor bug is fixed in
+goal_event = "ev71_00080"   # content\base_tables\event_cfg\eff\ev71_00080_eff.toml
+
+# ---------------------------------------------------------------- ev71_00090 (gold, this mod)
+
+[[edit]]
+target = "whs02350"      # Impulso del equipo definitivo (Arion Sherwind, Rey Arturo…): its shot ev60_02350 is gold
+goal_event = "ev71_00090"

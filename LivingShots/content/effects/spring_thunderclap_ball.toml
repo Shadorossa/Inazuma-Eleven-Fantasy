@@ -29,3 +29,6 @@ name = "spring_thunderclap"
 when = { techniques = ["whs10010", "whs10010_or"] }
 aura = "spring_thunderclap"
 like = "ega0075b"
+# its kick-point part stays on the kicker: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

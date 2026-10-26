@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro sónico (Sonic Shot, whs01610), cut-in ev60_01610.
+#
+# In the cut-in's last shot (c0400) the ball flies level at 1.01 m from the kick (frame 334) to the cut's end (382;
+# research/scripts/sonic_shot_ball_fx.py). Flight: straight and level at 1.0 m into the goal. unblockable = false: the
+# game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count
+# from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that
+# height.
+
+# Tiro sónico (whs01610).
+[[edit]]
+target = "whs01610"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

@@ -1,0 +1,39 @@
+# «Shell Burst» («Cañonazo de fragmentos», whs02230, void shot, cut-in ev60_02230): the end of the cut-in's last shot
+# (c0400) on the pitch (owner 2026-10-24: «debería quedarse en punto fijo el panel verde y disparar los rayos
+# correspondientes como al final de la cut in (siempre acompañando a donde iría el balón, nunca detrás de él)»). Two
+# effects:
+# * shell_burst_panel (object ev6223sp00, `ground_effect`): the green honeycomb of seven glass cells standing on the
+#   pitch at the kick point, upright and facing the goal, the ball's way through its centre cell; its inner lights,
+#   the circuit ring spreading out of it and the six outer cells' muzzle glows (camera-facing, flickering), for the
+#   whole flight (it goes with the aura when the shot ends);
+# * shell_burst (object ev6223sb00, `aura`, on the distance clock): the centre cell's yellow glow round the ball
+#   (camera-facing, flickering) and the seven rays the cells fire, laid along the flight from each cell to the ball
+#   (owner 2026-10-24: «deben quedarse disparando desde los fragmentos verdes como punto quieto donde inicia el rayo»):
+#   60 m beams revealed from the kick point as the ball moves away, so each ray always starts at its cell on the panel
+#   and ends at the ball, never stretched (their texture at the cut-in's density, flowing), with a rounded, fading tip.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60022300 by
+# research/scripts/shell_burst_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\shell_burst_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "shell_burst"
+from = "ega0085e"
+object = "effect/event/ev60/ev6223sb00/ev6223sb00.objbin"
+
+[[effect]]
+name = "shell_burst_panel"
+from = "ega0021"
+object = "effect/event/ev60/ev6223sp00/ev6223sp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "shell_burst"
+when = { techniques = ["whs02230"] }
+aura = "shell_burst"
+like = "ega0085e"
+# the rays come out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the panel stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "shell_burst_panel" }

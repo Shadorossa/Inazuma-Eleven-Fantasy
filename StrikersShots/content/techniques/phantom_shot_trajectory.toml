@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro fantasma (Phantom Shot, whs00090, cut-in ev60_00090).
+# One level line at 1.5 m from the kick point into the goal point (owner 2026-10-24: horizontal, never rising or
+# falling), so the lowest phantom flying round the ball (1.1 m under it at x0.85) stays over the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+# hide_ball: the real match ball is not drawn while the shot flies (its aura, effects\phantom_shot_ball.toml, is the
+# six phantom balls, phantom B where the ball is); drawn again when the shot is over.
+
+# Tiro fantasma (whs00090).
+[[edit]]
+target = "whs00090"
+trajectory = { points = [[0.0, 1.5]], goal_points = [[0.0, 1.5]], unblockable = false }
+hide_ball = true

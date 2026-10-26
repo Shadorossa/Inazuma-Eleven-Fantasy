@@ -1,0 +1,27 @@
+# «Tormenta de fuego» (Fireball Storm, whs00450 and whs01770; fire shot, cut-ins ev60_00450 / ev60_01770: the same
+# cut-in): while the ball flies to the goal it wears the cut-in's last shot (c0050, the ball diving out of the sky,
+# held at frame 447 from the aura's first frame): the spiky fireball round the ball (camera-facing: the same round sun
+# from the touchline as from the front), the flame swirl wrapped round the front of its flame streak and the fire
+# chunks strung along it, laid straight behind the ball, coming out of the kick point as the ball flies (never
+# stretched) and fading out at the far end, x0.4. The fire swirls left in the sky and the sparks stay out (the cut-in's
+# set).
+# The object is ev6045fs00 (effect/event/ev60/ev6045fs00/), built by research/scripts/fireball_storm_classic_ball_fx.py
+# from ev60004500.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\fireball_storm_classic_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fireball_storm_classic"
+from = "ega0075c"
+object = "effect/event/ev60/ev6045fs00/ev6045fs00.objbin"
+
+[[shot_aura]]
+name = "fireball_storm_classic"
+when = { techniques = ["whs00450", "whs01770"] }
+aura = "fireball_storm_classic"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

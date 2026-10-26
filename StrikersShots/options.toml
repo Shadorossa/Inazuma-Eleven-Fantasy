@@ -1,0 +1,17 @@
+schema = "VRFW.option/2"
+# Setting of «Strikers Shots»'s special goals (content	echniques\goal_smash.toml) in the Opciones tab «Opciones de
+# mods» (format: docs/app/mod-options.md §3). Value kept in evt_loader\mod_options\StrikersShots.json, read live by
+# the technique engine's goal-event hook at every goal (no restart): on = a goal scored with a move of
+# content	echniques\goal_smash.toml plays the normal goal (docs/game/mechanics/goal-smash.md §9.3). The id is the
+# engine's convention (technique_engine goal::SKIP_OPTION). A value saved by a mod this one `provides` (goal_smash) is
+# taken over once by the engine; the row moved here from Living Shots, whose saved value the loader copies once
+# (`migrate_from`, docs/framework/merged-mods.md §4.1).
+
+[[option]]
+id = "skip_goal_scene"                        # row key StrikersShots.skip_goal_scene
+type = "toggle"                               # 0 = Desactivado (goal smash plays), 1 = Activado (normal goal)
+label = "skip_goal_scene"                     # «Saltar la cinemática de gol especial» (text\keys.toml, 9 languages)
+help = "skip_goal_scene_help"
+default = false
+order = 300
+migrate_from = ["LivingShots.skip_goal_scene", "shot_fx.skip_goal_scene"]

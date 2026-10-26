@@ -1,0 +1,36 @@
+# Aura Reworked › the sprites of Souls Rework's skill carousel (screen aura_reworked_souls_reel_menu,
+# content\menus\reel.toml), drawn by _tools/souls_rework_reel_atlas_build.py (run it again after a change):
+#   souls_rework_reel_plate       the card plate: light grey with a white rim, tinted with the totem's element colour
+#   souls_rework_reel_level_on    a level diamond that counts
+#   souls_rework_reel_level_off   a level diamond that does not count
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/02_btl/souls_rework_reel/souls_rework_reel.g4tx"
+name = "souls_rework_reel"
+size = [512, 256]
+png = "souls_rework_reel/souls_rework_reel.png"
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_reel/souls_rework_reel.g4tx"
+name = "souls_rework_reel_plate"
+texture = "souls_rework_reel"
+x = 4
+y = 4
+size = [448, 120]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_reel/souls_rework_reel.g4tx"
+name = "souls_rework_reel_level_on"
+texture = "souls_rework_reel"
+x = 460
+y = 4
+size = [32, 32]
+
+[[sprite]]
+atlas = "#/menu/02_btl/souls_rework_reel/souls_rework_reel.g4tx"
+name = "souls_rework_reel_level_off"
+texture = "souls_rework_reel"
+x = 460
+y = 40
+size = [32, 32]

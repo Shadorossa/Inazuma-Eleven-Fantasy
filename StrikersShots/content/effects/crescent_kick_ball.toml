@@ -1,0 +1,25 @@
+# «Crescent Kick» («Chut de luna llena», whs03320, mountain shot, cut-in ev60_03320): while the ball flies to the goal
+# after the cut-in it keeps the look of the end of the cut-in's last shot (c0500, frame 306; owner 2026-10-24: «que el
+# aura sea como el final del tiro, no curvo»): the white-gold spiky head round the ball and its glow (a billboard,
+# round from every side), and behind it the golden crescent slash trail, laid straight along the flight instead of
+# along the cut-in's curved path, at its own length (~38 m, never stretched), its sides and far end faded, crossed so
+# it reads from the touchline as from behind, its texture shimmering on as in the cut-in, x1.
+# The object is ev6332ck00 (effect/event/ev60/ev6332ck00/), generated on the author's PC from the game's own cut-in
+# effect ev60033200 by research/scripts/crescent_kick_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame. Its flight: content\techniques\crescent_kick_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "crescent_kick"
+from = "ega0075a"
+object = "effect/event/ev60/ev6332ck00/ev6332ck00.objbin"
+
+[[shot_aura]]
+name = "crescent_kick"
+when = { techniques = ["whs03320"] }
+aura = "crescent_kick"
+like = "ega0075a"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

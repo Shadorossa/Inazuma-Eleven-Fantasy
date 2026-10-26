@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Mandíbulas dobles (Double Jaw, whs01270, cut-in ev60_01270): its own flight
+# (docs/framework/types/technique.md, `trajectory.zigzag`).
+# Measured: the event ball (b000001 slot s00) of ev60_01270 c0300 zigzags along the teeth of its trail, from 0.30 m at
+# each valley up to 1.16 m at each peak, its regular teeth 3.14-3.21 m long; the band the aura lays on the pitch
+# (research/scripts/double_jaw_ball_fx.py) repeats one of those teeth, 3.206 m between its corners, from the kick point
+# with a valley there. The flight: the same teeth from the kick point, sharp corners, the last tooth cut at the goal,
+# so the ball runs along the band on every shot length.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m).
+
+# Mandíbulas dobles (whs01270).
+[[edit]]
+target = "whs01270"
+trajectory = { zigzag = { length = 3.206, low = 0.30, high = 1.16 }, unblockable = false }

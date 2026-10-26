@@ -1,0 +1,23 @@
+# «Flaming Firebird» («Pájaro ardiente», whs03190; fire shot, cut-in ev60_03190): while the ball flies to the goal it
+# wears the cut-in's last shot (c0300, held at frame 404, every part revealed): the firebird made of flame tufts with
+# the ball at its heart (its tail, wings, head, beak and eyes) and its large flame wings trailing over it, the flames
+# flowing on as in the cut-in, the bird level with the flight. x1 of the cut-in size (wingspan ~2 m). The kick's flash,
+# ring and fire waves, the screen overlays and the fire grains stay out.
+# The object is ev6031ff00 (effect/event/ev60/ev6031ff00/), built by research/scripts/flaming_firebird_ball_fx.py from
+# ev60031900.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\flaming_firebird_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "flaming_firebird"
+from = "ega0075c"
+object = "effect/event/ev60/ev6031ff00/ev6031ff00.objbin"
+
+[[shot_aura]]
+name = "flaming_firebird"
+when = { techniques = ["whs03190"] }
+aura = "flaming_firebird"
+like = "ega0075c"

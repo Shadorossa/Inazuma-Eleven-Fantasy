@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Balón de plasma (Plasma Ball, whs01970, cut-in ev60_01970).
+#
+# Measured: the event ball (b000001 slot s01) of ev60_01970 c0040 is kicked at effect frame 226 and skims the pitch
+# 64.8 m along +Z at 0.14 m the whole cut (a ground shot; its side step is the aura's weave,
+# effects\plasma_ball_ball.toml).
+# Flight (owner 2026-10-24: «tiene que ser un disparo raso»): along the ground the whole way, the ball centre at
+# 0.14 m as in the cut-in. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the
+# ball centre over the pitch (m); points count from the kick; the height is held.
+# hide_ball: the match ball is not drawn while the shot flies (hidden at the kick, after the aura is on the ball; the
+# ball seen is the one inside the aura) and is drawn again when the shot is over (docs/game/mechanics/ball-visibility.md).
+
+# Balón de plasma (whs01970).
+[[edit]]
+target = "whs01970"
+trajectory = { points = [[0.0, 0.14]], unblockable = false }
+hide_ball = true

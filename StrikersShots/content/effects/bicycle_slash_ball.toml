@@ -1,0 +1,37 @@
+# «Bicycle Slash» («Chilena fulminante», whs02480, void shot, cut-in ev60_02480): the end of the cut-in's last shot
+# (c0200) on the pitch (owner 2026-10-24: «tiene que tener un punto fijo como en la cut in al final (como el que tiene
+# cañonazo de fragmentos) y de ahí se genere el disparo y el rayo que acompaña el balón»). Two effects:
+# * bicycle_slash_burst (object ev6248bp00, `ground_effect`): the black hole the ball is struck out of, its blue flames
+#   and the flame waves pulsing out of it with the shock disc behind it (camera-facing), fixed at the kick point at the
+#   ball's height for the whole flight (it goes with the aura when the shot ends);
+# * bicycle_slash (object ev6248bb00, `aura`, on the distance clock): the sword slash out of the black hole to the
+#   ball, its blue glow, flame fringes and black core: 60 m beams at the cut-in's cross-section and texture density
+#   (repeated, never stretched), the cut-in's axial billboards (turned to the camera about the flight), revealed from
+#   the kick point in 1.3 m slices fading in over 4 m (one mesh per material, 138 slices), with a rounded tip fading in
+#   just ahead of the ball.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60024800 by
+# research/scripts/bicycle_slash_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\bicycle_slash_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "bicycle_slash"
+from = "ega0085e"
+object = "effect/event/ev60/ev6248bb00/ev6248bb00.objbin"
+
+[[effect]]
+name = "bicycle_slash_burst"
+from = "ega0021"
+object = "effect/event/ev60/ev6248bp00/ev6248bp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "bicycle_slash"
+when = { techniques = ["whs02480"] }
+aura = "bicycle_slash"
+like = "ega0085e"
+# the slash comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the black hole stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "bicycle_slash_burst" }

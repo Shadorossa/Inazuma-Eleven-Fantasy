@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chut prehistórico (Jurassic Jaws, whs01960 and its mixi-max key whs01960_mm), cut-in
+# ev60_01960.
+#
+# In the cut-in's last shot (c0300) the ball sinks from 1.88 m at the kick (frame 272) to 0.62 m at the cut's end; it
+# is at 1.0 m when the aura's loop starts (frame 300; research/scripts/jurassic_jaws_ball_fx.py FLIGHT_HEIGHT). Flight:
+# straight and level at that height into the goal. unblockable = false: the game's block rules (this mod changes no
+# block rule). Heights are the ball centre over the pitch (m); points count from the kick; one point = a level flight;
+# straight = true: one straight line from the kick to the goal at that height.
+
+# Chut prehistórico (whs01960).
+[[edit]]
+target = "whs01960"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }
+
+# Chut prehistórico, mixi-max (whs01960_mm).
+[[edit]]
+target = "whs01960_mm"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

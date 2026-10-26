@@ -25,3 +25,6 @@ aura = "tiger_storm"
 like = "ega0075c"
 # the aura's replay (56 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
 fit = { replay = 56 }
+# its kick-point part stays on the kicker: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

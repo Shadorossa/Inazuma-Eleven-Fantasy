@@ -1,0 +1,23 @@
+# «Elemental Destroyer» («Furia de los elementos», whs01720; void shot, cut-in ev60_01720): while the ball flies to
+# the goal it is the head of the cut-in's final beam (c0300, held at its end, 486): the violet haze, the blue glow, the
+# dark red body with black edges, the magenta core and the violet streaks, laid straight behind the ball, x0.313. The
+# beam comes out of the kick point as the ball moves away (on the distance clock), never stretched, its far end
+# fading out; its head rounded round the ball; drawn twice, turned 90 deg about the flight, so it reads as a beam
+# from the touchline, from behind and from above. The object is ev6172ed00 (effect/event/ev60/ev6172ed00/), built by
+# research/scripts/elemental_destroyer_ball_fx.py from the cut-in's effect object ev60017200 (never committed:
+# research/mods/StrikersShots/README.md). Its flight: content\techniques\elemental_destroyer_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "elemental_destroyer"
+from = "ega0075e"
+object = "effect/event/ev60/ev6172ed00/ev6172ed00.objbin"
+
+[[shot_aura]]
+name = "elemental_destroyer"
+when = { techniques = ["whs01720"] }
+aura = "elemental_destroyer"
+like = "ega0075e"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

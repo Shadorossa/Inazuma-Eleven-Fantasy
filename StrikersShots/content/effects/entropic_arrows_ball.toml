@@ -1,0 +1,29 @@
+# «Aguijones escarlata» (Entropic Arrows, whs01620; void shot, cut-in ev60_01620): in the cut-in's last cut (c0500)
+# the ball has become a volley of scarlet arrows, so the match ball is hidden (hide_ball,
+# techniques\entropic_arrows_trajectory.toml) and the volley flies as the shot on its arc: the bunched arrows of the
+# start of c0500 (held at frame 400), parallel to the flight, their tips where the ball is, ~2 m across, x0.25, each
+# arrow swaying on its own (a small wobble and bob, its own phase); they come out of the kick point as the shot flies
+# (never stretched) and fade out over the back 30 % of the volley; their streaks at their full cut-in length from the
+# first frame. The crossed arrow cards read from the touchline too.
+# The object is ev6016ea00 (effect/event/ev60/ev6016ea00/), built by research/scripts/entropic_arrows_ball_fx.py from
+# the cut-in's effect object ev60016200: ball at the origin flying +Z along the arrows.
+# The trigger copies the void special-shot aura's row (like = "ega0075e"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "entropic_arrows"
+from = "ega0075e"
+object = "effect/event/ev60/ev6016ea00/ev6016ea00.objbin"
+
+[[shot_aura]]
+name = "entropic_arrows"
+when = { techniques = ["whs01620"] }
+aura = "entropic_arrows"
+like = "ega0075e"
+# the volley comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

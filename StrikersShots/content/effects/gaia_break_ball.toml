@@ -1,0 +1,26 @@
+# «Gaia Break» («Remate de Gaia», whs00750; mountain shot, cut-in ev60_00750): while the ball flies to the goal it wears
+# the look of the cut-in's last cut (c0600, held at frame 460): the glow on the ball, the three spiral ribbons turning
+# round the flight behind it, the white cone streaming back out of the kick point (its tail fading) and the rings the
+# ball leaves behind, one every 6 frames, each born on the ball, growing and fading where it was left. x0.65 of the
+# cut-in size (spirals 2.1 m round the flight). The earlier cuts' rock star and rays, the scenery rocks and the speed
+# lines stay out.
+# The object is ev6075gb00 (effect/event/ev60/ev6075gb00/), built by research/scripts/gaia_break_ball_fx.py from
+# ev60007500.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\gaia_break_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "gaia_break"
+from = "ega0075a"
+object = "effect/event/ev60/ev6075gb00/ev6075gb00.objbin"
+
+[[shot_aura]]
+name = "gaia_break"
+when = { techniques = ["whs00750"] }
+aura = "gaia_break"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

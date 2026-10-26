@@ -1,0 +1,27 @@
+# «Misil arenoso» (Dust Javelin, whs02520; mountain shot, cut-in ev60_02520): while the ball flies to the goal it
+# wears the cut-in's last shot (c0300, held at frame 340 from the aura's first frame): the sand javelin with the ball
+# in its point, its sand layers widening behind the ball (crossed copies turned about the flight give them volume from
+# every view, their sides soft) and the sand swirls wound round it, turning; the sand flows back from the ball, x0.2
+# (~8 m long). The javelin comes out of the kick point as the ball flies (distance clock, never stretched); every part
+# fades out over the last half of its length, narrowing, to fully transparent (no end line).
+# The cut-in's last shot has no event ball (only c0100 has one): the ball is the javelin's tip joint (uzu).
+# The object is ev6252dj00 (effect/event/ev60/ev6252dj00/), built by research/scripts/dust_javelin_ball_fx.py from
+# ev60025200.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain shot aura's row (like = "ega0075a"); the distance clock (anchor = "kick",
+# drift 0.75 m a frame) reveals the javelin from the kick point. Flight: content\techniques\dust_javelin_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dust_javelin"
+from = "ega0075a"
+object = "effect/event/ev60/ev6252dj00/ev6252dj00.objbin"
+
+[[shot_aura]]
+name = "dust_javelin"
+when = { techniques = ["whs02520"] }
+aura = "dust_javelin"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

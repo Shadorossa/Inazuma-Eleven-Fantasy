@@ -1,0 +1,30 @@
+# «Flecha divina» (Divine Arrows, whs00310; wind shot, cut-in ev60_00310): while the ball flies to the goal it keeps
+# the look of the cut-in's last shot (c0500, frames 316-344, held at 344): the white spiky burst round the ball, the blue
+# light beam streaming back to the kick point and the low dust wall the shot raises off the pitch under it, instead of
+# the plain wind special-shot aura (ega0075b).
+# The object is ev6031da00 (effect/event/ev60/ev6031da00/), built by research/scripts/divine_arrows_ball_fx.py from
+# the cut-in's effect object ev60003100: ball at the origin flying +Z along the beam's axis, x0.792; the beam and the
+# dust come out of the kick point as the ball flies (never stretched) and each fades out over the last 40 % of its
+# length; the burst flickers as in the cut-in, its glow card faces the camera; the dust lies on the grass under the
+# beam and is drawn under everything. Its flight: content\techniques\divine_arrows_trajectory.toml (low and level,
+# 0.55 m up).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "divine_arrows"
+from = "ega0075b"
+object = "effect/event/ev60/ev6031da00/ev6031da00.objbin"
+
+[[shot_aura]]
+name = "divine_arrows"
+when = { techniques = ["whs00310"] }
+aura = "divine_arrows"
+like = "ega0075b"
+# the beam and the dust come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

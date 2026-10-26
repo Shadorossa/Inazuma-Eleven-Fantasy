@@ -1,0 +1,23 @@
+# «Checkmate» («Jaque mate», whs01920; forest shot, cut-in ev60_01920): while the ball flies to the goal it wears the
+# cut-in's last shot (c0400, held at frame 410): the vortex round the ball, its white-hot core, the cyan swirl, the
+# purple / magenta and dark spiral rings and the purple and cyan glows, their swirl turning on (texture scroll), with
+# the cyan and black lightning crackling round it in a seamless 41-frame loop; every card faces the camera
+# (billboards) and is centred on the ball, so it reads round from behind, from the front and from the touchline, x0.3.
+# The object is ev6019cm00 (effect/event/ev60/ev6019cm00/), built by research/scripts/checkmate_ball_fx.py from
+# ev60019200.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\checkmate_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "checkmate"
+from = "ega0075d"
+object = "effect/event/ev60/ev6019cm00/ev6019cm00.objbin"
+
+[[shot_aura]]
+name = "checkmate"
+when = { techniques = ["whs01920"] }
+aura = "checkmate"
+like = "ega0075d"

@@ -169,7 +169,8 @@ end
 
 local owned_cache, owned_at = nil, nil
 
--- [entry] = { param, level, rarity } of the club's best copy (highest level) of each row
+-- [entry] = { param, level, handle } of the club's best copy (highest level) of each row; its rarity is read when a
+-- page shows it (rarity_of: one record read per row shown, not one per club player at every opening)
 local function owned()
   local now = VRFW.now()
   if owned_cache and owned_at and now - owned_at < OWNED_TTL_MS then
@@ -183,8 +184,7 @@ local function owned()
       local e = roster.of_param[p]
       local lv = int(c.level) or 0
       if e and (out[e] == nil or lv > out[e].level) then
-        local okr, rec = pcall(VRFW.chara.record, int(c.handle))
-        out[e] = { param = p, level = lv, rarity = (okr and type(rec) == "table" and int(rec.rarity)) or 0 }
+        out[e] = { param = p, level = lv, handle = int(c.handle) }
       end
     end
   else
@@ -192,6 +192,15 @@ local function owned()
   end
   owned_cache, owned_at = out, now
   return out
+end
+
+-- the rarity of an owned copy (read once, kept with it)
+local function rarity_of(o)
+  if o.rarity == nil then
+    local okr, rec = pcall(VRFW.chara.record, o.handle)
+    o.rarity = (okr and type(rec) == "table" and int(rec.rarity)) or 0
+  end
+  return o.rarity
 end
 
 -- ---------------------------------------------------------------------------------------------- names and groups
@@ -406,7 +415,7 @@ function BetterQoL.Album.Page(kind, group, page, per)
     local o = have[e]
     out.rows[k] = { e.base, o and o.param or e.param, L.name[e], (e.team and text_of(L.team_rows, roster.cat.team_names[e.team]))
                       or "", text_of(L.series_rows, roster.cat.series[e.si].name_text) or "", o ~= nil,
-                    o and o.level or 1, o and o.rarity or 0 }
+                    o and o.level or 1, o and rarity_of(o) or 0 }
   end
   return out
 end

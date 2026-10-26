@@ -1,0 +1,19 @@
+# «Tiro elefantino» (Tusk Force, whs02500; forest shot, cut-in ev60_02500): the end of the cut-in's final shot (c0400,
+# held at frame 290) on the ball: the white-hot fireball, its orange-yellow flame fringe swept back behind the ball,
+# its flames swirling round it as in the cut-in (the texture's own scroll, whole turns a loop: no seam). x2 (readable
+# from the touchline). The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame. The object under assets\data is generated on the author's PC from the
+# game's own cut-in effect ev60025000 by research/scripts/tusk_force_ball_fx.py (never committed:
+# research/mods/StrikersShots/README.md). Its flight: content\techniques\tusk_force_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "tusk_force"
+from = "ega0075d"
+object = "effect/event/ev60/ev6025tf00/ev6025tf00.objbin"
+
+[[shot_aura]]
+name = "tusk_force"
+when = { techniques = ["whs02500"] }
+aura = "tusk_force"
+like = "ega0075d"

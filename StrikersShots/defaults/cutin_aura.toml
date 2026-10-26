@@ -1,0 +1,6 @@
+# «Strikers Shots»: its shot auras also show on the ball of the keeper / block cut-in the shot meets (VR-Framework
+# fx_engine, defaults\cutin_aura.toml of the framework: which cut-ins, the ball actor and joint; RE in
+# docs/game/mechanics/shot-aura-in-cutins.md). Rule id prefix -> scale of the aura on the cut-in's ball (the cut-in
+# draws that ball 2.5x on a close camera: half the pitch size to start; a rule's own `cutin_scale` key wins).
+[rules]
+"StrikersShots." = 0.5

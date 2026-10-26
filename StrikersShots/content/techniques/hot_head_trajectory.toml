@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cabezazo fiero (Hot Head, whs02820, cut-in ev60_02820).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_02820 c0600 leaves the header at effect frame ~344 and flies
+# almost level over 387-417 (6.82 -> 6.62 m, mean 6.64 m; 1.9 deg down) at ~12 m/s along the flight.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 3.0 m the whole way: the cut-in's 6.64 m header (a high jump) brought down to the
+# highest level flight this mod's _flight_height.toml leaves as measured (untouched_up_to: the level mid-height shots fly
+# at 2.8-3.0 m). unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Cabezazo fiero (whs02820).
+[[edit]]
+target = "whs02820"
+trajectory = { points = [[0.0, 3.00]], straight = true, unblockable = false }

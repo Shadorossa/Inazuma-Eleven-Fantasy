@@ -3,17 +3,24 @@
 -- Opened from «Caseta del club» (play_guide_top_menu, assets\lua\play_guide_top_menu\155_album.lua) the way that menu
 -- opens its «Archivo de escenas»: the Caseta keeps its background, its header (title «Álbum de jugadores»), its button
 -- guide and its return arrow; this page draws the LEFT half over them:
---   * the type row: L2 at the left end, R2 at the right end, «Nombre» / «Juego» between them;
+--   * the type row: Y at the left end, «Nombre» / «Juego» right of it;
 --   * the group row: LB / RB at the ends, the groups between them (the game's series tab icons, or letter ranges);
 --   * the band: type › group, «Tienes X / Y»; two columns of 10 rows (down the first, then the second), each row the
 --     game's check box (ticked = the club has the player), his kit miniface and his name; «Página N/M» under them;
 -- and opens the game's player plate (personal_plate_menu) on the RIGHT half in its players-universe mode (a card id,
 -- a level and a rarity, as the game's pack list chara_pack_probability_list_menu does): the club's best copy of the
 -- selected player, else his card at level 1 with the «No lo tienes» badge under it. The plate keeps its own menu
--- inactive in that mode; this page turns its pages (X / Y).
--- Keys (cmd rows of the off-screen anchor row -> OnFunction / OnBack): up / down move, left / right a page, L2 / R2 the
--- type, LB / RB the group, X / Y the plate's pages, B / Esc / right click close (the engine closes the page; the plate
--- is asked to close here and by the opener); the wheel moves.
+-- inactive in that mode; this page turns its pages (L2 / R2). Its 3D model: Character Reforged's plate model on its
+-- capture layer while this page exists (assets/lua/personal_plate_menu/135_album_pages.lua).
+-- Keys (cmd rows of the off-screen anchor row -> OnFunction / OnBack): up / down move, left / right the other column
+-- of the same row (from the right column a right goes to the next page's left column, from the left column a left to
+-- the previous page's right column; the pages wrap), Y the type, LB / RB the group, L2 / R2 the plate's pages,
+-- B / Esc / right click close (the engine closes the page; the plate is asked to close here and by the opener).
+-- Mouse / free cursor: the zones of the drawn rows, type and group tabs, the group keys and the page arrows (hover
+-- selects a row when the pointer moves, a click picks; a click on the selected row = A), the wheel moves.
+-- A: the selected player's action of another mod, BetterQoL.AlbumActions (docs/game/ui/album.md §5): the first entry
+-- whose On() holds runs Run(row) as a coroutine resumed from Step (it may open the game's message windows); keys and
+-- the pointer wait while it runs; when it answers true (the club changed) the album data is read again.
 -- Data: BetterQoL's scripts\album.lua (CMND_BETTERQOL_ALBUM_OPEN when the page opens, CMND_BETTERQOL_ALBUM_PAGE on each page /
 -- group / type change). Drawing only when something changed; minifaces per page. No engine call at load time.
 INCLUDE("LUA_PROG_BASE")
@@ -28,11 +35,15 @@ local C = {
   FACE = 552280324, RESET_FACE = 4176779611, LOADING = 1277042906, CHECK_INPUT = 4265778440,
   TEXT_STYLE = 2333948100, CTRL = 3518307824, LIST_NUM = 3252599449, FOCUS_SET = 3466097042,
   ATTACH_TRACE = 1774843228, CHARA_INFO = 4060384944,
+  GET_PRIO = 1018283794 --[[CMND_GET_DRAW_PRIORITY]], SET_PRIO = 1491630496 --[[CMND_SET_DRAW_PRIORITY]],
   PARAM_EXISTS = 2947612279, PARAM_DELETE = 3363400568, PARAM_SET = 3860611758,
   OPEN_MENU = 433545986, CLOSE_MENU = 320421347, IS_MENU = 2231168902, IS_OPEN_MENU = 3693934564,
 }
 local MENU_CTRL = 1332654303
 local WHEEL_UP, WHEEL_DOWN = 1942756954 --[[CMD_EVT_WHEEL_UP]], 1623431741 --[[CMD_EVT_WHEEL_DOWN]]
+-- the pointer (mouse and VR's free cursor, docs/game/ui/mouse-support.md §5): position (screen px, y down), the
+-- engine's «moved» flag, the mouse's left button
+local POINTER = { POS = 558229292, MOVED = 3272825600, LEFT = 218912913 --[[CMD_EVT_MOUSE_LEFT]] }
 -- the page's layers (content\menus\album.toml)
 local L = { PLATE = 4160871141, ICON = 699561794, FACE = 1228023294, TEXT = 2007890270 }
 local L_ANCHOR = 3455690937        -- save01_02_list_item: the input anchor (1 instance, off screen)
@@ -46,7 +57,7 @@ local ANCHOR = {
 local FN = {
   [3533807059] = "up", [1356451490] = "down", [910277105] = "left", [1029011626] = "right",
   [4230302454] = "type_prev", [1156108959] = "type_next", [3559612738] = "group_prev", [1827076395] = "group_next",
-  [2512251038] = "plate_prev", [762343671] = "plate_next",
+  [2512251038] = "plate_prev", [762343671] = "plate_next", [2674977970] = "accept",
 }
 local QUAD = 1909474081            -- icon_new01: the cmn01_10 quad's sprite slot
 local Q = 36                       -- the cmn01_10 quad side
@@ -97,7 +108,7 @@ local WAIT_FRAMES = 300            -- frames a change keeps redrawing while text
 -- state of this opening
 local S = { ready = false, ok = false, kind = KIND_GAME, group = 1, page = 1, pages = 1, sel = 1, data = nil,
   rows = {}, total = 0, owned = 0, sent = {}, used = {}, shown = {}, texts = {}, loaded = {}, faces = {}, cap = {},
-  opened = {}, dirty = true, frame = 0, plate = nil, line = nil }
+  opened = {}, dirty = true, frame = 0, plate = nil, line = nil, zones = {}, ptr = {} }
 
 -- ---- helpers (this menu has its own VM) ------------------------------------------------------------------------------
 local CRC_T, CRCS = nil, {}
@@ -202,7 +213,19 @@ local function TexReady(tex)
   return ok and loading == false
 end
 
-local function Quad(layer, tex, sprite, x, y, w, h)
+-- a pool layer's own draw priority (read once from its first instance, before any is raised)
+local function BasePrio(layer)
+  S.prio = S.prio or {}
+  if S.prio[layer] == nil then
+    local p = M(C.GET_PRIO, layer, 0)
+    S.prio[layer] = type(p) == "number" and p or false
+  end
+  return S.prio[layer]
+end
+
+-- raise = 1: drawn one priority above the layer's other instances (the tick over its check box: instances of one
+-- priority have no fixed order); 0 / nil: the layer's own priority
+local function Quad(layer, tex, sprite, x, y, w, h, raise)
   if not TexReady(tex) then
     S.waiting = true
     return nil
@@ -214,6 +237,8 @@ local function Quad(layer, tex, sprite, x, y, w, h)
   Set(layer, i, "sp", C.SPRITE, layer, Crc(tex), Crc(sprite), QUAD, 0, i)
   Set(layer, i, "pos", C.POS, layer, x + w / 2, -(y + h / 2), 0, i)
   Set(layer, i, "a", C.ALPHA, layer, i, 0, 1)
+  local base = BasePrio(layer)
+  if base then Set(layer, i, "prio", C.SET_PRIO, layer, i, base + (raise or 0), true) end
   return i
 end
 
@@ -301,7 +326,12 @@ local function Face(key, cx, cy, size)
   M(C.MESH_VISIBLE, L.FACE, CARD.MESH, not loading, i)
 end
 
-local function BeginFrame() S.used, S.waiting = {}, false end
+local function BeginFrame() S.used, S.waiting, S.zones = {}, false, {} end
+
+-- a pointer zone (screen px, top-left + size, y down) of something drawn now: kind + value
+local function Zone(x, y, w, h, kind, v)
+  S.zones[#S.zones + 1] = { x, y, x + w, y + h, kind = kind, v = v }
+end
 
 local function EndFrame()
   for k in pairs(S.shown) do
@@ -464,8 +494,8 @@ local BLUE_STYLE = "tab"
 local function DrawTypes()
   local y, h = P.type_y, P.type_h
   Text(Tx("KeysType"):match("^(<[^>]+>)") or "", P.x, y, "head")
-  TextR(Tx("KeysType"):match("(<[^>]+>)$") or "", P.x + P.width, y, "head", 26)
-  local x0, x1 = P.x + P.key_w + 6, P.x + P.width - P.key_w - 6
+  Zone(P.x, y - h / 2, P.key_w, h, "type_key", 1)
+  local x0, x1 = P.x + P.key_w + 6, P.x + P.width
   local names = { Tx("TypeName"), Tx("TypeSeries") }
   local w = (x1 - x0 - 4) / #names
   for k, s in ipairs(names) do
@@ -473,6 +503,7 @@ local function DrawTypes()
     Plate(L.PLATE, "off", x, y - h / 2, w, h)
     if k == S.kind then Plate(L.ICON, "focus", x, y - h / 2, w, h) end
     TextC(s, x + w / 2, y + 1, BLUE_STYLE, 28)
+    Zone(x, y - h / 2, w, h, "type", k)
   end
 end
 
@@ -483,12 +514,15 @@ local function DrawGroups()
   local mid = y + h / 2
   Text(Tx("KeysGroup"):match("^(<[^>]+>)") or "", P.x, mid, "head")
   TextR(Tx("KeysGroup"):match("(<[^>]+>)$") or "", P.x + P.width, mid, "head", 26)
+  Zone(P.x, y, P.key_w, h, "group_key", -1)
+  Zone(P.x + P.width - P.key_w, y, P.key_w, h, "group_key", 1)
   local n = math.max(1, #gl)
   local tw = (P.width - 2 * P.key_w - (n - 1) * P.tab_gap) / n
   local x = P.x + P.key_w
   for k, g in ipairs(gl) do
     Plate(L.PLATE, "off", x, y, tw, h)
     if k == S.group then Plate(L.ICON, "focus", x, y, tw, h) end
+    Zone(x, y, tw, h, "group", k)
     local ty = S.kind == KIND_GAME and tonumber(g[4]) or 0
     local drawn = false
     if ty and ty >= 1 and ty <= 99 then
@@ -529,6 +563,7 @@ local function DrawRow(r, k)
   local ry = P.top + row * (P.row_h + P.row_gap)
   local rw = P.col_w - 14
   Plate(L.PLATE, "off", rx, ry, rw, P.row_h)
+  Zone(rx, ry, rw, P.row_h, "row", k)
   if k == S.sel then
     Plate(L.ICON, "focus", rx, ry, rw, P.row_h)
     Cursor(rx + 6, ry + P.row_h / 2, 38)
@@ -537,7 +572,7 @@ local function DrawRow(r, k)
   local bx = rx + 16
   local K = RETAIL.check
   Quad(L.ICON, K.tex, K.box, bx, cy - P.box / 2, P.box, P.box)
-  if r.owned then Quad(L.ICON, K.tex, K.mark, bx - 4, cy - P.mark / 2 - 4, P.mark, P.mark) end
+  if r.owned then Quad(L.ICON, K.tex, K.mark, bx - 4, cy - P.mark / 2 - 4, P.mark, P.mark, 1) end
   local fx = bx + P.box + 12
   if r.base ~= 0 then Face(r.base, fx + P.face / 2, cy, P.face) end
   local nx = fx + P.face + 10
@@ -556,8 +591,12 @@ local function Draw()
     for k, r in ipairs(S.rows) do DrawRow(r, k) end
     local keys = Tx("KeysPage")
     local left, right = keys:match("^(<[^>]+>)"), keys:match("(<[^>]+>)$")
-    TextC((left or "") .. "  " .. Fill(Tx("Page"), S.page, S.pages) .. "  " .. (right or ""), P.x + P.width / 2,
-      P.page_y, "head", 26)
+    local line = (left or "") .. "  " .. Fill(Tx("Page"), S.page, S.pages) .. "  " .. (right or "")
+    TextC(line, P.x + P.width / 2, P.page_y, "head", 26)
+    -- the arrows at both ends of the counter (a button tag is about two glyphs wide)
+    local half, key = Units(line) * 26 * GLYPH / 2, 2 * 26 * GLYPH + 8
+    Zone(P.x + P.width / 2 - half - 4, P.page_y - 22, key, 44, "page", -1)
+    Zone(P.x + P.width / 2 + half - key + 4, P.page_y - 22, key, 44, "page", 1)
     local r = S.rows[S.sel]
     if r ~= nil and not r.owned then
       local s = Tx("NotOwned")
@@ -616,9 +655,127 @@ local function Kind(d)
   LoadPage()
 end
 
+-- left / right: the other column of the same row; past the first / last column the previous / next page, landing in
+-- its last / first column on the same row (a shorter column: its last row)
+local function Side(d)
+  local n = #S.rows
+  local col, row = math.floor((S.sel - 1) / P.rows), (S.sel - 1) % P.rows
+  local c = col + d
+  if n > 0 and c >= 0 and c < P.cols then
+    local k = c * P.rows + row + 1
+    if k > n and n > c * P.rows then k = n end
+    if k <= n then
+      S.sel = k
+      Snd(SY_MOVE)
+      S.dirty = true
+      SetLine()
+      PlateShow()
+      return
+    end
+  end
+  if S.pages <= 1 then
+    Snd(SY_ERROR)
+    return
+  end
+  S.sel = (d > 0 and 0 or P.cols - 1) * P.rows + row + 1
+  Page(d)
+end
+
+local function Select(k)
+  if k == S.sel or S.rows[k] == nil then return end
+  Move(k - S.sel)
+end
+
+local function SetKind(k)
+  if k ~= S.kind then Kind(k - S.kind) end
+end
+
+local function SetGroup(k)
+  if k ~= S.group then Group(k - S.group) end
+end
+
+-- the zone under (x, y): the last declared wins
+local function PointerAt(x, y)
+  for i = #S.zones, 1, -1 do
+    local z = S.zones[i]
+    if x >= z[1] and x < z[3] and y >= z[2] and y < z[4] then return z end
+  end
+  return nil
+end
+
+-- the pointer, once per Step: a row is selected under it only on a frame the pointer moved (a redraw under a resting
+-- pointer never re-selects); a left click picks the zone under it. Returns the row clicked, if any.
+local Accept
+
+local function PointerStep()
+  local Q_ = S.ptr
+  local x, y = M(POINTER.POS)
+  if type(x) ~= "number" or type(y) ~= "number" then return nil end
+  local moved = M(POINTER.MOVED) == true or (Q_.x ~= nil and (math.abs(x - Q_.x) > 1 or math.abs(y - Q_.y) > 1))
+  Q_.x, Q_.y = x, y
+  local down = In(POINTER.LEFT)
+  local click = down and not Q_.down
+  Q_.down = down
+  if not moved and not click then return nil end
+  local z = PointerAt(x, y)
+  if z == nil then return nil end
+  if z.kind == "row" then
+    local was = S.sel
+    Select(z.v)
+    if click and was == z.v then Accept(true) end
+    return nil
+  elseif click then
+    if z.kind == "type" then SetKind(z.v)
+    elseif z.kind == "type_key" then Kind(z.v)
+    elseif z.kind == "group" then SetGroup(z.v)
+    elseif z.kind == "group_key" then Group(z.v)
+    elseif z.kind == "page" then Page(z.v)
+    end
+  end
+  return nil
+end
+
+-- ---- A: another mod's action on the selected player (BetterQoL.AlbumActions) --------------------------------------------
+
+local function Offered(a)
+  if type(a) ~= "table" or type(a.On) ~= "function" or type(a.Run) ~= "function" then return false end
+  local ok, on = pcall(a.On)
+  return ok and on == true
+end
+
+Accept = function(by_pointer)
+  if S.task ~= nil then return end
+  if not by_pointer and In(POINTER.LEFT) then return end      -- a mouse click: the pointer takes it
+  local r = S.rows[S.sel]
+  local acts = type(BetterQoL) == "table" and BetterQoL.AlbumActions or nil
+  if r == nil or type(acts) ~= "table" then return end
+  for _, a in ipairs(acts) do
+    if Offered(a) then
+      local row = { base = r.base, param = r.param, name = r.name, owned = r.owned, level = r.level }
+      S.task = coroutine.create(function() return a.Run(row) end)
+      Log("action", tostring(a.id), "param", r.param)
+      return
+    end
+  end
+end
+
+local function TaskStep()
+  if S.task == nil then return end
+  local ok, changed = coroutine.resume(S.task)
+  if not ok then Log("action error", tostring(changed)) end
+  if ok and coroutine.status(S.task) ~= "dead" then return end
+  S.task = nil
+  S.ptr.down = true                -- a button still held from the windows is no click
+  if ok and changed == true then
+    Load()
+    if S.ok then LoadPage() end
+  end
+end
+
 local ACT = {
+  accept = function() Accept(false) end,
   up = function() Move(-1) end, down = function() Move(1) end,
-  left = function() Page(-1) end, right = function() Page(1) end,
+  left = function() Side(-1) end, right = function() Side(1) end,
   type_prev = function() Kind(-1) end, type_next = function() Kind(1) end,
   group_prev = function() Group(-1) end, group_next = function() Group(1) end,
   plate_prev = function() PlatePage(-1) end, plate_next = function() PlatePage(1) end,
@@ -627,9 +784,11 @@ local ACT = {
 -- ---- menu callbacks ----------------------------------------------------------------------------------------------------
 
 function OnInit()
-  S.ready, S.ok, S.frame, S.dirty, S.plate, S.line = false, false, 0, true, nil, nil
-  S.kind, S.group, S.page, S.sel, S.rows = KIND_GAME, 1, 1, 1, {}
+  S.ready, S.ok, S.frame, S.dirty, S.plate, S.line, S.task = false, false, 0, true, nil, nil, nil
+  S.kind, S.group, S.page, S.sel, S.rows, S.zones = KIND_GAME, 1, 1, 1, {}, {}
+  S.ptr = { down = true }          -- a button held from the Caseta's Accept is no click
   S.sent, S.used, S.shown, S.faces, S.opened, S.cap, S.texts = {}, {}, {}, {}, {}, {}, {}
+  S.prio = {}
   Load()
 end
 
@@ -679,7 +838,7 @@ end
 
 function OnFunction(a1, a2)
   local act = FN[a2] or FN[a1]
-  if act == nil or not S.ready then return end
+  if act == nil or not S.ready or S.task ~= nil then return end
   ACT[act]()
   return 1
 end
@@ -694,8 +853,13 @@ function Step()
   S.frame = S.frame + 1
   if not S.ready then return end
   PlateStep()
+  if S.task ~= nil then
+    TaskStep()
+    return
+  end
   -- the wheel has no menu command of its own: read like the game's other mouse pages (docs/game/ui/mouse-support.md)
   if In(WHEEL_UP) then Move(-1) elseif In(WHEEL_DOWN) then Move(1) end
+  PointerStep()
   -- drawn when something changed, and again while a texture or a miniface of the page is still loading
   if S.dirty then S.wait_until = S.frame + WAIT_FRAMES end
   if S.dirty or (S.waiting and S.frame < (S.wait_until or 0)) then

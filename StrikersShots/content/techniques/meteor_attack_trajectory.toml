@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Ataque meteorito (Meteor Attack, whs00110, cut-in ev60_00110) (docs/framework/types/technique.md
+# `trajectory`): one level line at 1.0 m from the kick point into the goal point (owner 2026-10-24: horizontal,
+# never rising or falling; never the game's own curved / arched path), whatever the shot's length.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m): points from the kick, goal_points counted back from the goal point; the first / last height is held.
+
+# Ataque meteorito (whs00110).
+[[edit]]
+target = "whs00110"
+trajectory = { points = [[0.0, 1.0]], goal_points = [[0.0, 1.0]], unblockable = false }

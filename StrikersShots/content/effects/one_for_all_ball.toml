@@ -1,0 +1,36 @@
+# «One for All» («Uno para todos», whs03120, mountain shot, cut-in ev60_03120): the cut-in's c0500 last shot: the ball
+# struck out of the blue magic circle on the point of a golden sword of light. Two effects:
+# * one_for_all_circle (object ev6312oc00, `ground_effect`): the magic circle standing at the kick point, its centre at
+#   the flight's height, its plane across the flight; its blue glows, rune rings and rune discs and the golden light at
+#   its centre face the camera with the circle's shape (the same circle from the touchline as from behind the kicker);
+#   the rune discs keep turning; it stays the whole flight and goes with the sword when the shot ends;
+# * one_for_all (object ev6312os00, `aura`, on the distance clock): the golden sword of light as a fixed beam from the
+#   circle to the ball for the whole flight (blade, inner shine, outer edges, the orange runes and energy streaks
+#   flowing along it), born at the kick point and revealed as the ball flies, never stretched; the ball just behind the
+#   sword's point inside the blade as in the cut-in; crossed copies so it reads from every side.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60031200 by
+# research/scripts/one_for_all_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\one_for_all_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "one_for_all"
+from = "ega0075a"
+object = "effect/event/ev60/ev6312os00/ev6312os00.objbin"
+
+[[effect]]
+name = "one_for_all_circle"
+from = "ega0021"
+object = "effect/event/ev60/ev6312oc00/ev6312oc00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "one_for_all"
+when = { techniques = ["whs03120"] }
+aura = "one_for_all"
+like = "ega0075a"
+# the sword comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the circle stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "one_for_all_circle" }

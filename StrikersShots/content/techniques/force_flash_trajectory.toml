@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Destello de fuerza (Force Flash, whs10040), cut-in ev60_10040.
+#
+# In the cut-in (c0400) the ball flies at the camera from ~3.2 m down to ~1.7 m over the pitch inside its swirl of
+# flames, giving off wind rings. Flight (owner's rule 2026-10-24: every aura shot a straight level line, at most 3 m
+# high): straight and level at 2.5 m into the goal, so the wind rings (up to 2.3 m round the ball) fly clear of the
+# grass. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); points count from the kick; one point = a level flight; straight = true: one straight line from the
+# kick to the goal at that height.
+
+# Destello de fuerza (whs10040).
+[[edit]]
+target = "whs10040"
+trajectory = { points = [[0.0, 2.50]], straight = true, unblockable = false }

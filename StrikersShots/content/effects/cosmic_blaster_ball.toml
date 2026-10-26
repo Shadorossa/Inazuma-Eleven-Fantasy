@@ -1,0 +1,36 @@
+# «Combo cósmico» (Cosmic Blaster, whs02980, whs02980_or and whs02980_or_02, same cut-in; forest shot of two players,
+# cut-in ev60_02980): the end of the cut-in's last shot (c0600) on the pitch (owner 2026-10-24: «debería tener un punto
+# fijo de salida, que es la bola negra gigante de cuando se rompe y sale el disparo de ahí»). Two effects:
+# * cosmic_blaster_hole (object ev6298cp00, `ground_effect`): the giant black ball standing at the kick point, its
+#   centre at the flight's height; it swells and breaks as the shot leaves it, the black hole's yellow / blue swirl
+#   turning on round it (its discs face the camera: the same from the touchline as from behind the kicker); it stays
+#   the whole flight and goes with the beam when the shot ends;
+# * cosmic_blaster (object ev6298cb00, `aura`, on the distance clock): the yellow / orange twisted fire stream from the
+#   black ball to the ball, born at the kick point and revealed as the ball flies (nothing ever behind the kick
+#   point), never stretched, its texture flowing on, its rounded head round the ball.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60029800 by
+# research/scripts/cosmic_blaster_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\cosmic_blaster_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "cosmic_blaster"
+from = "ega0075d"
+object = "effect/event/ev60/ev6298cb00/ev6298cb00.objbin"
+
+[[effect]]
+name = "cosmic_blaster_hole"
+from = "ega0021"
+object = "effect/event/ev60/ev6298cp00/ev6298cp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "cosmic_blaster"
+when = { techniques = ["whs02980", "whs02980_or", "whs02980_or_02"] }
+aura = "cosmic_blaster"
+like = "ega0075d"
+# the stream comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.416667
+# the black ball stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "cosmic_blaster_hole" }

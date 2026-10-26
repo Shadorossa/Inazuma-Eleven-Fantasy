@@ -1,0 +1,27 @@
+# «Cornada de bisonte» (Bull Rush, whs03200; fire shot, cut-in ev60_03200): while the ball runs to the goal it keeps
+# the look of the cut-in's shot cut (c0400, frames 413-442, held at 442): its fire aura on the event ball, x1, instead of
+# the plain fire special-shot aura (ega0075c); the burning furrow it ploughs in the cut-in (its beds and edge) is laid
+# on the grass as the ball passes, fixed on the pitch from the kick point, never stretched, under the fire, its far end
+# fading out behind. The object is ev6032br00 (effect/event/ev60/ev6032br00/), built by
+# research/scripts/bull_rush_ball_fx.py from the cut-in's effect object ev60032000 with the settings the automatic
+# pipeline (ls_auto_aura.py) derived for its fire aura. The trigger copies the fire special-shot aura's row
+# (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Its flight: content\techniques\bull_rush_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "bull_rush"
+from = "ega0075c"
+object = "effect/event/ev60/ev6032br00/ev6032br00.objbin"
+
+[[shot_aura]]
+name = "bull_rush"
+when = { techniques = ["whs03200"] }
+aura = "bull_rush"
+like = "ega0075c"
+# born at the kick point and run on the ball's distance from it: the furrow stays where the ball ploughed it
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

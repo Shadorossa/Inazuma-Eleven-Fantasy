@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Colmillo retorcido (Fangtasmagoria, whs02250 / whs02250_mm, cut-in ev60_02250).
+#
+# Measured: in c0300 the ball flies almost level, from 1.0 m at frame 300 to 0.62 m at 330.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick to the
+# goal, the ball centre at 0.8 m the whole way. unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Colmillo retorcido (whs02250).
+[[edit]]
+target = "whs02250"
+trajectory = { points = [[0.0, 0.80]], straight = true, unblockable = false }
+
+# Colmillo retorcido, miximax version (whs02250_mm).
+[[edit]]
+target = "whs02250_mm"
+trajectory = { points = [[0.0, 0.80]], straight = true, unblockable = false }

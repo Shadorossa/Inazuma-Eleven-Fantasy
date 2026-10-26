@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cabezazo yoyó (Gyro Head, whs00550, cut-in ev60_00550).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_00550 c0400 is headed down from 8.7 m and comes in low at the
+# end of the shot: 3.54 m at effect frame 301, 1.71 m at frame 331 (the aura's frame).
+# Flight (owner 2026-10-24: «está todo bien salvo la altura»): one straight level line from the kick point to the goal,
+# the ball centre at 1.70 m the whole way, the cut-in's height at the end of its last shot. unblockable = false: the
+# game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); the height is
+# held.
+
+# Cabezazo yoyó (whs00550).
+[[edit]]
+target = "whs00550"
+trajectory = { points = [[0.0, 1.70]], straight = true, unblockable = false }

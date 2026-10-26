@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tripegaso (Tri-Pegasus, whs00680, cut-in ev60_00680).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.00 m the whole way (the flame ball reaches ~0.9 m under the ball and the pegasus'
+# wings (x1.8) beat down to ~0.45 m over the grass: nothing touches the grass). unblockable = false: the game's block
+# rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Tripegaso (whs00680).
+[[edit]]
+target = "whs00680"
+trajectory = { points = [[0.0, 2.00]], straight = true, unblockable = false }

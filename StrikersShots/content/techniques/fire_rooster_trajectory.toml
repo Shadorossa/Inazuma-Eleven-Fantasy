@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Pájaro de fuego (Fire Rooster, whs00370, cut-in ev60_00370).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.30 m the whole way (the bird's wings beat down to 2.0 m under the ball at x0.6:
+# they never touch the grass). unblockable = false: the game's block rules (this mod changes no block rule). Heights
+# are the ball centre over the pitch (m); the height is held.
+
+# Pájaro de fuego (whs00370).
+[[edit]]
+target = "whs00370"
+trajectory = { points = [[0.0, 2.30]], straight = true, unblockable = false }

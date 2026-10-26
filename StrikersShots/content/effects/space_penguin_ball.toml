@@ -1,0 +1,23 @@
+# «Pingüino espacial» (Space Penguin, whs00820, wind; cut-in ev60_00820): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last shot (c0090): the ball inside its blue-violet spiky burst, the five
+# penguins in the ring they close into at the cut's end round the ball, each swaying gently with its pair of orange glows and its
+# white streak running straight back out of its tail (never stretched, out of the kick point, its tail fading), instead of
+# the plain wind special-shot aura (ega0075b). The object is ev6082sp00 (effect/event/ev60/ev6082sp00/), built by
+# research/scripts/space_penguin_ball_fx.py from the cut-in's effect object ev60008200 and the penguins (ev60_00820):
+# c0090 held at frame 652 (the burst at 638), ball at the origin flying +Z, x0.7.
+# The trigger copies the wind special-shot aura row (like): CB_SkillShootBallAura turns +Z along the ball's velocity
+# every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\space_penguin_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "space_penguin"
+from = "ega0075b"
+object = "effect/event/ev60/ev6082sp00/ev6082sp00.objbin"
+
+[[shot_aura]]
+name = "space_penguin"
+when = { techniques = ["whs00820"] }
+aura = "space_penguin"
+like = "ega0075b"

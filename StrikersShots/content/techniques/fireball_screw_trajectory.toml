@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Torbellino de fuego (Fireball Screw, whs01180 / whs01180_mm), cut-in ev60_01180.
+#
+# In the cut-in (c0400) the ball dives from ~26 m to the goal (0.6 m at the cut's end) inside its fire screw tunnel.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line, at most 3 m high): one straight level line
+# from the kick point to the goal, the ball centre at 1.60 m (research/scripts/fireball_screw_ball_fx.py FLIGHT_HEIGHT),
+# so the ~1.5 m-wide tunnel round it clears the pitch. unblockable = false: the game's block rules (this mod changes
+# no block rule). Heights are the ball centre over the pitch (m); one point = a level flight; straight = true.
+
+# Torbellino de fuego (whs01180).
+[[edit]]
+target = "whs01180"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }
+
+# Torbellino de fuego (whs01180_mm).
+[[edit]]
+target = "whs01180_mm"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }

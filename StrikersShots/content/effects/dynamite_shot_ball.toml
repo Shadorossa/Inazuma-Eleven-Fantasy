@@ -1,0 +1,24 @@
+# «Dynamite Shot» («Tiro dinamita», whs00170, fire shot, cut-in ev60_00170): the ball's last look in flight in the
+# cut-in's final shot (c0500, held at frame 262, just before it bursts into the explosion) on the ball: the white-hot
+# core inside its spiky flame crown, the flickering orange glow round it (facing the camera from every side), and the
+# long thin flame trail laid straight behind it with a crossed copy so it reads from the touchline and from behind, coming
+# out of the kick point as the ball moves away (on the distance clock, never stretched) and fading out at its far end;
+# the flames keep flowing. x1 (the cut-in's own size), the trail narrowed to a thin flame line.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60001700 by
+# research/scripts/dynamite_shot_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\dynamite_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dynamite_shot"
+from = "ega0075c"
+object = "effect/event/ev60/ev6017dy00/ev6017dy00.objbin"
+
+[[shot_aura]]
+name = "dynamite_shot"
+when = { techniques = ["whs00170"] }
+aura = "dynamite_shot"
+like = "ega0075c"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

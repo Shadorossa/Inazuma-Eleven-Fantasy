@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chut granada (Grenade Shot, whs00070), cut-in ev60_00070.
+#
+# In the cut-in (c0200) the ball leaves the kick level, 1.07 m over the pitch at the end of the shot (research/scripts/
+# grenade_shot_ball_fx.py, frame 236). Flight: straight and level at that height into the goal. unblockable = false:
+# the game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count
+# from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Chut granada (whs00070).
+[[edit]]
+target = "whs00070"
+trajectory = { points = [[0.0, 1.07]], straight = true, unblockable = false }

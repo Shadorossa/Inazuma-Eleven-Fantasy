@@ -1,0 +1,21 @@
+# «Ataque cóndor» (Condor Dive, whs00240; wind shot, cut-in ev60_00240): while the ball flies to the goal it is inside
+# the end of the cut-in's shot cut (c0500, frames 291-321): its yellow comet head on the ball and the cut-in's thin
+# streak of particles left on the pitch from the kick point, each particle fading out within 10 m behind the ball, x1,
+# instead of the plain wind special-shot aura (ega0075b). The object is ev6024cd00 (effect/event/ev60/ev6024cd00/),
+# built by research/scripts/condor_dive_ball_fx.py from the cut-in's effect object ev60002400. The trigger copies the
+# wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the ball's velocity every
+# frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "condor_dive"
+from = "ega0075b"
+object = "effect/event/ev60/ev6024cd00/ev6024cd00.objbin"
+
+[[shot_aura]]
+name = "condor_dive"
+when = { techniques = ["whs00240"] }
+aura = "condor_dive"
+like = "ega0075b"

@@ -1,0 +1,26 @@
+# «Heavenly Drive» («Remate celestial», whs01080; mountain shot, cut-in ev60_01080): while the ball flies to the goal it
+# wears the end of the cut-in's last shot (c0400, held at frame 410): the white-gold light sphere round the ball (halo,
+# sphere, three swirls, ring of light grains) and the starburst of light rays radiating out of it all round, facing
+# the camera from every side, with the lightning crackling round it (its 24-frame blink looped seamlessly from the
+# first frame). x0.6 of the cut-in size (sphere ~2.2 m across, rays reaching ~2.1 m from the ball). The cut-in's white
+# ball, the clouds, the light pillars and the screen-wide streaks stay out.
+# The object is ev6108hd00 (effect/event/ev60/ev6108hd00/), built by research/scripts/heavenly_drive_ball_fx.py from
+# ev60010800.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0085a"). Flight:
+# content\techniques\heavenly_drive_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "heavenly_drive"
+from = "ega0085a"
+object = "effect/event/ev60/ev6108hd00/ev6108hd00.objbin"
+
+[[shot_aura]]
+name = "heavenly_drive"
+when = { techniques = ["whs01080"] }
+aura = "heavenly_drive"
+like = "ega0085a"
+anchor = "kick"
+drift = 0.75

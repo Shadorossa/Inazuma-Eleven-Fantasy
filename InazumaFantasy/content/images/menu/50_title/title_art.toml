@@ -1,0 +1,139 @@
+# Inazuma Fantasy: its title art. The «INAZUMA ELEVEN ... Victory Road FANTASY» logo and the press-start key art (a
+# starry-sky picture of three players) from the owner's VisualMod3.0 pack, the earlier Inazuma Fantasy's
+# title art. Same texture layouts in v7.1.2 and v7.2.1 (sprite names, boxes, sizes): only the pictures change.
+#
+# The framework's own title art (VRFW vrfw_title_art.toml / vrfw_title_clouds.toml) is off while this mod's config has
+# [VRFW.TitleArt] own = true (config.toml), so these declarations are the only ones on these sprites.
+#
+# Pictures (title_art\):
+#   logo_ja / logo_de / logo_es / logo_en   the logo per language (1600 x 1200, the retail logo02 box); logo_en serves
+#                                           en, fr, it, pt, zh_hans and zh_hant, as in the earlier mod
+#   ending_logo / ending_logo_es            the same logo for the ending logo texture ed_logo01 (1328 x 864)
+#   key_art                                 the press-start background, half size of bg_sky01_st (scaled up at build)
+#   star_ring / star_frame                  the two star layers that replace the cloud textures bg_cloud01_st / 02_st
+schema = "VRFW.image/1"
+
+# ---- the logo: press-start logo (title00_03_02) and mode-menu logo (title02_01) --------------------------------------
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_03_02/<LG>/title00_03_02.g4tx"
+name = "logo02"
+png = "title_art/logo_ja.png"
+lang = ""
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_03_02/<LG>/title00_03_02.g4tx"
+name = "logo02"
+png = "title_art/logo_de.png"
+lang = "de"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_03_02/<LG>/title00_03_02.g4tx"
+name = "logo02"
+png = "title_art/logo_es.png"
+lang = "es"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_03_02/<LG>/title00_03_02.g4tx"
+name = "logo02"
+png = "title_art/logo_en.png"
+lang = ["en", "fr", "it", "pt", "zh_hans", "zh_hant"]
+
+[[sprite]]
+atlas = "#/menu/50_title/title02/title02_01/<LG>/title02_01.g4tx"
+name = "logo02"
+png = "title_art/logo_ja.png"
+lang = ""
+
+[[sprite]]
+atlas = "#/menu/50_title/title02/title02_01/<LG>/title02_01.g4tx"
+name = "logo02"
+png = "title_art/logo_de.png"
+lang = "de"
+
+[[sprite]]
+atlas = "#/menu/50_title/title02/title02_01/<LG>/title02_01.g4tx"
+name = "logo02"
+png = "title_art/logo_es.png"
+lang = "es"
+
+[[sprite]]
+atlas = "#/menu/50_title/title02/title02_01/<LG>/title02_01.g4tx"
+name = "logo02"
+png = "title_art/logo_en.png"
+lang = ["en", "fr", "it", "pt", "zh_hans", "zh_hant"]
+
+# ---- the ending logo (ed_logo01, one texture, no sprite) -------------------------------------------------------------
+
+[[texture]]
+atlas = "#/menu/220_img/ed_logo/<LG>/ed_logo01.g4tx"
+name = "ed_logo01"
+png = "title_art/ending_logo_es.png"
+lang = "es"
+
+[[texture]]
+atlas = "#/menu/220_img/ed_logo/<LG>/ed_logo01.g4tx"
+name = "ed_logo01"
+png = "title_art/ending_logo.png"
+lang = ["", "de", "en", "fr", "it", "pt", "zh_hans", "zh_hant"]
+
+# ---- the press-start key art (title_menu layer title00_01_title_top_st) ---------------------------------------------
+
+# the whole picture is the background; the two character sprites, the green light and the sun flare are emptied
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_sky01_st"
+recipe = "key_art"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_chr02_st"
+recipe = "no_left_character"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_chr01_st"
+recipe = "no_right_character"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_green_eff01_st"
+recipe = "no_green_light"
+
+[[sprite]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_lens_flare01_st"
+recipe = "no_flare"
+
+[[texture]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_cloud01_st"
+png = "title_art/star_ring.png"
+
+[[texture]]
+atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"
+name = "bg_cloud02_st"
+png = "title_art/star_frame.png"
+
+# ---- recipes ---------------------------------------------------------------------------------------------------------
+
+[[recipe]]
+name = "key_art"
+png = "title_art/key_art.png"
+ops = [{ op = "resize", size = [5280, 2400] }, { op = "opaque" }]
+
+[[recipe]]
+name = "no_left_character"
+canvas = [2008, 2384]
+
+[[recipe]]
+name = "no_right_character"
+canvas = [1760, 1992]
+
+[[recipe]]
+name = "no_green_light"
+canvas = [2640, 1200]
+
+[[recipe]]
+name = "no_flare"
+canvas = [2356, 1200]

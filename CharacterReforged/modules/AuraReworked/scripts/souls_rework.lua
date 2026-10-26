@@ -8,9 +8,13 @@
 --     at its level (a level-up adds the difference to the SP left); without it: every summon starts with the extra time
 --     of the level reached and a level-up during a summon adds its share (full time × ΔSP / SP[1] × time_scale);
 --   * the release button does nothing while a totem is out (native answer on AuraReworked.SoulsPlayer.no_release).
--- The totem's own move rolls the reel: a uniformly random slot of the totem's 6 (seeded per match); the user's rolls are
--- shown by the graft souls_rework_reel (command CMND_AURAREWORKED_SOULS_REEL), the rival's are applied without a reel. The
--- result lands when the reel stops and lasts while the totem is out (timed skills: their seconds; recoveries: at once).
+-- The totem's own move rolls the reel: a uniformly random slot of the totem's 6 (seeded per match), at the move's command
+-- (`event_build`, before its cut-in). The user's rolls are shown by the skill carousel, the screen
+-- aura_reworked_souls_reel_menu (content\menus\reel.toml): opened (VRFW.ui.open_menu) when the first cut-in after the
+-- command starts, or over play when the move resolves without one (`match:skill_used`); its script asks
+-- CMND_AURAREWORKED_SOULS_REEL once and reports the stop with CMND_AURAREWORKED_SOULS_REEL_LANDED. The rival's rolls are
+-- applied without it. The result lands when the carousel stops (at the latest when that cut-in ends, which also closes
+-- the carousel) and lasts while the totem is out (timed skills: their seconds; recoveries: at once).
 -- Every level-up queues a pop (a speech bubble in the aura type's colours with «+Nv.» over the player's head) for the graft
 -- souls_rework_level_pop (command CMND_AURAREWORKED_SOULS_LEVEL_POP; config.toml [souls.level_pop]).
 
@@ -46,11 +50,50 @@ local function num(v, d)
 end
 local REEL = {
   show = CFG_REEL.show ~= false,
-  open = num(CFG_REEL.open_s, 0.2), spin = num(CFG_REEL.spin_s, 0.8), stop = num(CFG_REEL.stop_s, 0.9),
-  result = num(CFG_REEL.result_s, 1.2), close = num(CFG_REEL.close_s, 0.3), rows = num(CFG_REEL.spin_rows_per_s, 12),
-  queue = math.max(1, math.floor(num(CFG_REEL.queue, 2))),
+  screen = "aura_reworked_souls_reel_menu",
+  open = num(CFG_REEL.open_s, 0.2), spin = num(CFG_REEL.spin_s, 1.9), settle = num(CFG_REEL.settle_s, 0.25),
+  hold = num(CFG_REEL.hold_s, 1.2), close = num(CFG_REEL.close_s, 0.25),
+  window_ms = num(CFG_REEL.cutin_window_s, 3) * 1000,
+  icon_atlas = tostring(CFG_REEL.icon_atlas or ""),
 }
-REEL.land_ms = (REEL.open + REEL.spin + REEL.stop) * 1000
+-- the roll lands when the carousel stops; a shown roll whose stop is never reported lands this much later
+REEL.land_ms = (REEL.open + REEL.spin + REEL.settle) * 1000
+REEL.late_ms = 2000
+-- a roll of the move's command not yet taken by its use after this many ms belongs to a move that never resolved
+REEL.stale_ms = 15000
+
+-- "#RRGGBB" -> r, g, b in 0..1 (nil when not a colour)
+local function colour(v)
+  if type(v) ~= "string" then return nil end
+  local r, g, b = v:match("^#(%x%x)(%x%x)(%x%x)$")
+  if not r then return nil end
+  return tonumber(r, 16) / 255, tonumber(g, 16) / 255, tonumber(b, 16) / 255
+end
+REEL.elements = {}
+for i, v in ipairs(type(CFG_REEL.element_colors) == "table" and CFG_REEL.element_colors or {}) do
+  local r, g, b = colour(v)
+  if r then REEL.elements[i] = { r, g, b } end
+end
+REEL.neutral = { colour(CFG_REEL.neutral_color) }
+if #REEL.neutral ~= 3 then REEL.neutral = { 0.55, 0.55, 0.55 } end
+REEL.miss = { colour(CFG_REEL.miss_color) }
+if #REEL.miss ~= 3 then REEL.miss = REEL.neutral end
+-- the carousel's layout as the screen's script reads it: "key=value;…" (config.toml [souls.reel])
+local LAYOUT_KEYS = {
+  { "cx", "center_x", 960 }, { "cy", "center_y", 96 }, { "gap", "spacing", 214 }, { "w", "card_width", 224 },
+  { "h", "card_height", 60 }, { "side_scale", "side_scale", 0.8 }, { "side_alpha", "side_alpha", 0.55 },
+  { "loops", "loops", 3 }, { "settle", "settle_cards", 0.08 }, { "icon", "icon_size", 34 },
+  { "icon_gap", "icon_gap", 10 }, { "name_px", "name_size", 21 }, { "level_px", "level_size", 15 },
+  { "dia", "diamond_size", 9 }, { "dia_gap", "diamond_spacing", 13 }, { "line_gap", "line_gap", 5 },
+}
+local layout = {}
+for _, k in ipairs(LAYOUT_KEYS) do layout[#layout + 1] = string.format("%s=%s", k[1], tostring(num(CFG_REEL[k[2]], k[3]))) end
+for _, k in ipairs({ { "open", REEL.open }, { "spin", REEL.spin }, { "settle_s", REEL.settle }, { "hold", REEL.hold },
+  { "close", REEL.close } }) do
+  layout[#layout + 1] = string.format("%s=%s", k[1], tostring(k[2]))
+end
+layout[#layout + 1] = "atlas=" .. REEL.icon_atlas
+REEL.layout = table.concat(layout, ";")
 local POP = {
   show = CFG_POP.show ~= false, cpu = CFG_POP.cpu ~= false,
   appear = num(CFG_POP.appear_s, 0.15), hold = num(CFG_POP.hold_s, 1.0), out = num(CFG_POP.out_s, 0.4),
@@ -128,9 +171,8 @@ local DATA = nil
 
 local match = { on = false, no = 0, seed = 0, user = 0xFF, state = 0, dt = 0 }
 local players = {}       -- hdl -> { hdl, team, actor, active, pairs = { [aura] = { level, lp, max_level } }, fx = {}, rolls }
-local pending = {}       -- rolls waiting for the reel to stop: { hdl, aura, slot, at, seq }
-local reel_queue = {}    -- shown rolls for the graft: { seq, ... }
-local reel_seq = 0
+local pending = {}       -- rolls waiting to land: { hdl, aura, slot, at, shown, state, seq, … }
+local reel = { seq = 0, current = nil, busy_until = 0, armed = nil }   -- the carousel: the roll it shows, the last armed roll
 local pop_queue = {}     -- level-up pops for the graft: { seq, hdl, text, bubbles }
 local pop_seq = 0
 local last_shot = nil    -- { hdl, team, at }: the last shot's player (Numbness +)
@@ -171,7 +213,9 @@ local function clear_match()
       if p.fx[name].flag then pcall(VRFW.clear_flag, p.fx[name].flag) end
     end
   end
-  players, pending, reel_queue, knocked, records, pop_queue = {}, {}, {}, {}, {}, {}
+  if reel.current then pcall(VRFW.ui.close_menu, REEL.screen, false) end
+  players, pending, knocked, records, pop_queue = {}, {}, {}, {}, {}
+  reel.current, reel.armed, reel.busy_until = nil, nil, 0
   last_shot, timed_count = nil, 0
   pcall(VRFW.native.table_clear, "AuraReworked.SoulsPlayer")
 end
@@ -428,51 +472,71 @@ end
 
 -- ---------------------------------------------------------------------------------------------- the reel
 
-local function roll(p, aura, T)
+-- a roll of the totem's own move: its slot is drawn now and lands later (the carousel's stop or its time)
+local function roll(p, aura, T, why)
   p.rolls = p.rolls + 1
   local slot = 1
   local ok, rng = pcall(VRFW.rng, "aura_reworked.souls_reel", { match.seed, p.hdl, aura, p.rolls })
   if ok and rng then slot = rng:below(#T.slots) + 1 end
   local s = T.slots[slot]
-  local shown = REEL.show and p.team == match.user
-  local item = { hdl = p.hdl, aura = aura, slot = slot, at = now() + REEL.land_ms, shown = shown }
+  local item = { hdl = p.hdl, aura = aura, slot = slot, at = now() + REEL.land_ms, shown = REEL.show and p.team == match.user,
+    state = "armed", armed_at = now(), taken = false }
   pending[#pending + 1] = item
-  local st = p.pairs[aura]
-  if shown then
-    while #reel_queue >= REEL.queue do table.remove(reel_queue, 1) end
-    reel_seq = reel_seq + 1
-    local labels = {}
-    local miss = 0
-    for i, x in ipairs(T.slots) do
-      labels[i] = text(x.skill.text, x.level)
-      if x.skill.effect == "none" then miss = miss + 2 ^ (i - 1) end
-    end
-    reel_queue[#reel_queue + 1] = { seq = reel_seq, title = T.name ~= "" and text(T.name, nil) or A.key(aura), level = text("aura_reworked.reel_level", st and st.level or 1),
-      slot = slot, labels = labels, miss = miss }
-    item.seq = reel_seq
+  info(string.format("actor %s T%d: totem %s rolls slot %d/%d (%s) at the %s", hex(p.hdl), p.team, A.key(aura), slot,
+    #T.slots, s.text, why))
+  return item
+end
+
+local function land_item(item, why)
+  if item.landed then return end
+  item.landed = true
+  local p = players[item.hdl]
+  local T = totem_of(item.aura)
+  if p and T and p.active and p.active.aura == item.aura then
+    local s = T.slots[item.slot]
+    info(string.format("actor %s T%d: reel %s: slot %d %s (%s) -> %s", hex(p.hdl), p.team, A.key(item.aura), item.slot, s.text,
+      why, apply_result(p, s.skill, s.level)))
+  elseif p then
+    info(string.format("actor %s: reel %s landed after the totem ended: no effect", hex(item.hdl), A.key(item.aura)))
   end
-  info(string.format("actor %s T%d: totem %s rolls slot %d/%d (%s)%s; lands in %.1f s", hex(p.hdl), p.team, A.key(aura), slot, #T.slots,
-    s.text, shown and " on the reel" or " (not shown)", REEL.land_ms / 1000))
+  if reel.current == item then
+    reel.current = nil
+    reel.busy_until = now() + (REEL.hold + REEL.close) * 1000
+  end
 end
 
 local function land_pending()
   local t = now()
   local keep = {}
   for _, item in ipairs(pending) do
-    if t >= item.at then
-      local p = players[item.hdl]
-      local T = totem_of(item.aura)
-      if p and T and p.active and p.active.aura == item.aura then
-        local s = T.slots[item.slot]
-        info(string.format("actor %s T%d: reel %s: slot %d %s -> %s", hex(p.hdl), p.team, A.key(item.aura), item.slot, s.text, apply_result(p, s.skill, s.level)))
-      elseif p then
-        info(string.format("actor %s: reel %s landed after the totem ended: no effect", hex(item.hdl), A.key(item.aura)))
-      end
-    else
-      keep[#keep + 1] = item
-    end
+    if not item.landed and t >= item.at then land_item(item, item.state == "open" and "the carousel did not report its stop" or "time") end
+    if not item.landed then keep[#keep + 1] = item end
   end
   pending = keep
+end
+
+-- the carousel shows `item` (the user's roll): its screen is opened; it lands when the screen reports the stop
+local function show(item, where)
+  item.state = "shown_at_" .. where
+  if not item.shown then return false end
+  if reel.current or now() < reel.busy_until then
+    info(string.format("actor %s: reel %s lands without the carousel (another one is showing)", hex(item.hdl), A.key(item.aura)))
+    return false
+  end
+  reel.seq = reel.seq + 1
+  item.seq = reel.seq
+  reel.current = item
+  local ok, opened, why = pcall(VRFW.ui.open_menu, REEL.screen)
+  if not ok or not opened then
+    warn(string.format("the carousel screen %s did not open (%s): the roll lands without it", REEL.screen,
+      tostring(ok and why or opened)))
+    reel.current = nil
+    return false
+  end
+  item.state = "open"
+  item.at = now() + REEL.land_ms + REEL.late_ms
+  info(string.format("actor %s: reel %s #%d on the carousel (%s)", hex(item.hdl), A.key(item.aura), item.seq, where))
+  return true
 end
 
 local function expire_timed()
@@ -491,30 +555,64 @@ local function expire_timed()
   end
 end
 
--- CMND_AURAREWORKED_SOULS_REEL(seen) -> seq, title, level, slot, label1..label6, missMask, open, spin, stop, result, close,
--- rowsPerSecond: the oldest shown roll newer than `seen` (nothing when none). The graft keeps the last seq it played.
-function AuraReworked.Souls.Reel(seen)
-  seen = tonumber(seen) or 0
-  -- a HUD that saw more rolls than this session made (the scripts restarted): start over
-  if seen > reel_seq then seen = 0 end
-  for _, r in ipairs(reel_queue) do
-    if r.seq > seen then
-      local l = r.labels
-      return r.seq, r.title, r.level, r.slot, l[1] or "", l[2] or "", l[3] or "", l[4] or "", l[5] or "", l[6] or "", r.miss,
-        REEL.open, REEL.spin, REEL.stop, REEL.result, REEL.close, REEL.rows
-    end
+-- the short name of a slot's label: the label without its level part (the text key reel_level, «Nv.2»)
+local function short_name(label, level_text)
+  if level_text ~= "" and #label > #level_text and label:sub(-#level_text) == level_text then
+    return (label:sub(1, -#level_text - 1):gsub("%s+$", ""))
   end
-  return 0
+  return label
+end
+
+-- CMND_AURAREWORKED_SOULS_REEL() -> seq, slot, layout, cards (nothing when the carousel shows no roll): asked once by
+-- the carousel's screen when it opens. layout = "key=value;…" (config.toml [souls.reel], the plate colours r g b and
+-- mr mg mb of a miss); cards = one line per slot "icon<TAB>level<TAB>miss<TAB>name<TAB>level text" (icon = the
+-- family's sprite name; level 0 and miss 1 for a miss).
+function AuraReworked.Souls.Reel()
+  local item = reel.current
+  if not item or item.landed then return 0 end
+  local T = totem_of(item.aura)
+  if not T then return 0 end
+  local c = REEL.elements[A.element(item.aura)] or REEL.neutral
+  local cards = {}
+  for i, x in ipairs(T.slots) do
+    local miss = x.skill.effect == "none"
+    local level_text = miss and "" or text("aura_reworked.reel_level", x.level)
+    cards[i] = table.concat({ x.skill.icon or "", miss and 0 or x.level, miss and 1 or 0,
+      short_name(text(x.skill.text, x.level), level_text), level_text }, "\t")
+  end
+  local look = string.format("%s;r=%.4f;g=%.4f;b=%.4f;mr=%.4f;mg=%.4f;mb=%.4f", REEL.layout, c[1], c[2], c[3], REEL.miss[1],
+    REEL.miss[2], REEL.miss[3])
+  return item.seq, item.slot, look, table.concat(cards, "\n")
+end
+
+-- CMND_AURAREWORKED_SOULS_REEL_LANDED(seq): the carousel stopped on the result of roll `seq`
+function AuraReworked.Souls.ReelLanded(seq)
+  local item = reel.current
+  if item and item.seq == tonumber(seq) then land_item(item, "carousel stopped") end
+  return true
 end
 
 -- a cut-in or a match scene is playing (the framework's match events cutin_start / cutin_end): the pops hide meanwhile
 local scene_playing = false
 VRFW.on("cutin_start", function(ev)
   scene_playing = true
+  -- the first cut-in after the totem move's command is that move's: the carousel opens over it
+  local item = reel.armed
+  reel.armed = nil
+  if item and item.state == "armed" and now() - item.armed_at <= REEL.window_ms then
+    item.cutin = show(item, "cut-in")
+  end
   return nil
 end)
 VRFW.on("cutin_end", function(ev)
   scene_playing = false
+  -- the move's cut-in is over: its roll lands now if the carousel has not stopped yet, and the carousel closes
+  local item = reel.current
+  if item and item.cutin then
+    land_item(item, "cut-in ended")
+    reel.busy_until = 0
+    pcall(VRFW.ui.close_menu, REEL.screen, true)
+  end
   return nil
 end)
 
@@ -669,7 +767,7 @@ VRFW.on("match_start", function(ev)
   match.no = match.no + 1
   match.seed = match.no * 7919 + (now() % 100000)
   match.frame = 0
-  info(string.format("match #%d: reel seed %d; top level %s, reel %s, rival levels %s", match.no, match.seed,
+  info(string.format("match #%d: reel seed %d; top level %s, carousel %s, rival levels %s", match.no, match.seed,
     tostring(OPT.top_level), tostring(REEL.show), tostring(RULE.cpu)))
   return nil
 end)
@@ -704,7 +802,28 @@ VRFW.on("goal", function(ev)
   return nil
 end)
 
--- the totem's own move: LP and a roll of the reel
+-- the totem's own move is commanded (before its cut-in): the roll, armed for the next cut-in
+VRFW.on("event_build", function(ev)
+  if not match.on then return nil end
+  local hdl = ev.actor and tonumber(ev.actor.handle)
+  local skill = tonumber(ev.skill)
+  if not hdl or not skill or skill == 0 then return nil end
+  hdl, skill = hdl % 4294967296, skill % 4294967296
+  local p = players[hdl]
+  if not p or not p.active then return nil end
+  local aura = p.active.aura
+  local own = A.move(aura)
+  local T = totem_of(aura)
+  if own == 0 or own ~= skill or not T then return nil end
+  -- the same command built again (one move, several builds): one roll
+  local last = p.last_roll
+  if last and not last.taken and now() - last.armed_at <= REEL.window_ms then return nil end
+  p.last_roll = roll(p, aura, T, "move's command")
+  reel.armed = p.last_roll
+  return nil
+end)
+
+-- the totem's own move resolves: LP; its roll is taken (shown over play when no cut-in showed it), or rolled now
 VRFW.on("match:skill_used:post", function(ev)
   if not match.on then return nil end
   -- the hook hands the handle as a signed number (0x8000000D < 0): back to u32 before the player lookup
@@ -723,7 +842,19 @@ VRFW.on("match:skill_used:post", function(ev)
     hex(aura), A.key(aura), hex(own), (own ~= 0 and own == skill and T) and "reel" or "not the totem's move"))
   if own == 0 or own ~= skill or not T then return nil end
   add_lp(p, RULE.per_own_move or 0, "own move")
-  roll(p, aura, T)
+  local item = p.last_roll
+  if item and not item.taken and now() - item.armed_at <= REEL.stale_ms then
+    item.taken = true
+    if item.state == "armed" then
+      if reel.armed == item then reel.armed = nil end
+      show(item, "move (no cut-in)")
+    end
+  else
+    item = roll(p, aura, T, "move's use")
+    item.taken = true
+    p.last_roll = item
+    show(item, "move (no command seen)")
+  end
   return nil
 end)
 

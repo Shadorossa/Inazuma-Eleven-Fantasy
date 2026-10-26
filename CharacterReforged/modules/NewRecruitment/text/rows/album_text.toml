@@ -1,0 +1,66 @@
+# New Recruitment › signing a player from BetterQoL's «Álbum de jugadores» (option «Fichajes» = «Álbum» or «Ambos»;
+# assets\lua\_all\new_recruitment_album.lua). Rows of menu_text, read by id = crc32(row id); «%s» = the player's name.
+# After a signing the pachangas' line new_recruitment_pachangas_join_done («¡%s se ha unido a tu equipo!») is shown.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the album's button guide entry on A
+[[row]]
+id = "new_recruitment_album_guide"
+es = "Fichar"
+en = "Recruit"
+fr = "Recruter"
+de = "Verpflichten"
+it = "Ingaggia"
+pt = "Contratar"
+ja = "スカウト"
+zh_hans = "招募"
+zh_hant = "招募"
+
+[[row]]
+id = "new_recruitment_album_ask"
+es = "¿Quieres fichar a %s?"
+en = "Do you want to recruit %s?"
+fr = "Veux-tu recruter %s ?"
+de = "Möchtest du %s verpflichten?"
+it = "Vuoi ingaggiare %s?"
+pt = "Queres contratar %s?"
+ja = "%sをスカウトしますか？"
+zh_hans = "要招募%s吗？"
+zh_hant = "要招募%s嗎？"
+
+[[row]]
+id = "new_recruitment_album_owned"
+es = "%s ya está en tu club."
+en = "%s is already in your club."
+fr = "%s est déjà dans ton club."
+de = "%s ist schon in deinem Verein."
+it = "%s è già nel tuo club."
+pt = "%s já está no teu clube."
+ja = "%sはすでにクラブにいます。"
+zh_hans = "%s已经在你的俱乐部了。"
+zh_hant = "%s已經在你的俱樂部了。"
+
+[[row]]
+id = "new_recruitment_album_full"
+es = "No hay sitio en el banco para %s."
+en = "There is no room in the bank for %s."
+fr = "Il n'y a plus de place dans la banque pour %s."
+de = "In der Bank ist kein Platz für %s."
+it = "Non c'è posto nella banca per %s."
+pt = "Não há lugar no banco para %s."
+ja = "バンクに%sを入れる空きがありません。"
+zh_hans = "仓库没有空位容纳%s。"
+zh_hant = "倉庫沒有空位容納%s。"
+
+[[row]]
+id = "new_recruitment_album_failed"
+es = "No se ha podido fichar a %s."
+en = "%s could not be recruited."
+fr = "Impossible de recruter %s."
+de = "%s konnte nicht verpflichtet werden."
+it = "Non è stato possibile ingaggiare %s."
+pt = "Não foi possível contratar %s."
+ja = "%sをスカウトできませんでした。"
+zh_hans = "无法招募%s。"
+zh_hant = "無法招募%s。"

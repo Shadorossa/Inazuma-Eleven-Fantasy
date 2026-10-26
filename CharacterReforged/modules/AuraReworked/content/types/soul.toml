@@ -23,6 +23,7 @@ lp_scale = { type = "number", default = 1.0, min = 0, max = 10, doc = "this tote
 doc = "one skill family of the reel: what it does (`effect`) and its values per skill level"
 name = { type = "name", required = true, doc = "the family's name (a-z 0-9 _), used by the totems' slots" }
 text = { type = "string", required = true, ref = "text_key", doc = "text key of its reel label (<mod>.<key>); {level} = the skill level" }
+icon = { type = "string", default = "", doc = "its card icon on the skill carousel: a sprite name of the game's team-buff icons (icon_teambuff15); empty = no icon" }
 effect = { type = "string", required = true, values = ["move_power", "point_cost", "shot_vs_keeper", "keeper_vs_shot", "level_points", "team_stamina", "team_tension", "team_stamina_tension", "move_speed", "untouchable", "knockdown", "none"], doc = "the mechanism: see [effects]" }
 move_kinds = { type = "strings", default = [], values = ["shoot", "dribble", "block", "catch"], doc = "move_power: the kinds of his moves it powers (see [move_kinds])" }
 values = { type = "numbers", default = [], min = -100, max = 1000, doc = "per skill level (level 1 first): the effect's percent (see [effects])" }

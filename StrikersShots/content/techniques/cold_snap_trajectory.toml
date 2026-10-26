@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Flecha de hielo (Cold Snap, whs03390), cut-in ev60_03390.
+#
+# In the cut-in (c0300) the ball flies off as an ice arrow drawing its ice trail along a curved path. Flight (owner's
+# rule: every aura shot one straight level line): straight and level at 1.0 m into the goal, so the upright ice trail
+# (up to ~0.9 m wide) runs clear of the grass behind the ball. unblockable = false: the game's block rules (this mod
+# changes no block rule). Heights are the ball centre over the pitch (m); one point = a level flight; straight = true.
+
+# Flecha de hielo (whs03390).
+[[edit]]
+target = "whs03390"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

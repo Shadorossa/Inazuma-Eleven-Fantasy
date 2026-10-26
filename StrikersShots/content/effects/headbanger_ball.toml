@@ -1,0 +1,24 @@
+# «Cabezazo bazuca» (Headbanger, whs01520; fire shot, cut-in ev60_01520): while the ball flies to the goal it wears the
+# end of the cut-in's shot cut (c0500, held at frame 356 from the aura's first frame): the ball inside its small yellow
+# flame head and glow, and the long red / yellow / white streak of light behind it, out of the kick point, revealed by
+# the distance the ball has flown (never stretched), at its cut-in length (~7 m), its far end fading out, x1, instead of
+# the plain fire special-shot aura (ega0075c). The kick's smoke, sand, hit flashes, swirl rings and spikes stay out.
+# The object is ev6015hb00 (effect/event/ev60/ev6015hb00/), built by research/scripts/headbanger_ball_fx.py from the
+# cut-in's effect object ev60015200. The trigger copies the fire special-shot aura's row (like = "ega0075c"):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "headbanger"
+from = "ega0075c"
+object = "effect/event/ev60/ev6015hb00/ev6015hb00.objbin"
+
+[[shot_aura]]
+name = "headbanger"
+when = { techniques = ["whs01520"] }
+aura = "headbanger"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

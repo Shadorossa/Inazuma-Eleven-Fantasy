@@ -1,0 +1,29 @@
+# «Estocada de Lancelot» (Lancelot Lunge, whs01780; fire shot, cut-in ev60_01780): while the ball flies to the goal
+# after the cut-in it keeps the look of the end of the cut-in's shot cut (c0500, frame 290): its fire swirl and the
+# fire grains it sheds, facing the camera from any side (billboards), and its KESHIN (Lancelot, the cut-in's own
+# keshin model k000020, in its own proportions) charging with it head first, ~1 m behind the fire, coming out of the
+# kick point as the ball leaves it, instead of the plain fire special-shot aura (ega0075c).
+# The object is ev6178ll00 (effect/event/ev60/ev6178ll00/), built by research/scripts/lancelot_lunge_ball_fx.py from
+# the cut-in's effect object ev60017800 and the keshin model chr/_keshin/k000020 (baked as rigid bone segments by
+# waza_replay_aura.py): c0500 held at 290 from the aura's first frame (the keshin's charge over 274-290 going on, back
+# and forth), ball at the origin flying +Z, x1. docs/game/media/lancelot-lunge-ball-fx.md.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\lancelot_lunge_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "lancelot_lunge"
+from = "ega0075c"
+object = "effect/event/ev60/ev6178ll00/ev6178ll00.objbin"
+
+[[shot_aura]]
+name = "lancelot_lunge"
+when = { techniques = ["whs01780"] }
+aura = "lancelot_lunge"
+like = "ega0075c"
+# born at the kick point and run on the ball's distance from it, never on the shooter's motion: the cut-in ball's own
+# 0.44 m a frame (c0500, 286-290) (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.44

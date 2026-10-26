@@ -1,0 +1,23 @@
+# «Baile de mariposas» (Butterfly Trance, whs00730; mountain shot, cut-in ev60_00730): while the ball flies to the goal
+# after the cut-in it keeps the look of the end of the cut-in's last cut (c0030): the golden-yellow comet flame and its
+# lights on the ball and the light-blue rings it sends out every 8 frames, instead of the plain mountain special-shot
+# aura. The object is ev6073bt00 (effect/event/ev60/ev6073bt00/), built by research/scripts/butterfly_trance_ball_fx.py
+# from the cut-in's effect object ev60007300: c0030's frame 362 held, ball at the origin, the comet's long axis along
+# +Z (the flight), x1; three of the cut-in's rings sent out again and again, each facing along the flight, growing and
+# fading where it was sent out. Left out: the speed lines and the arena backdrop rings.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "butterfly_trance"
+from = "ega0075a"
+object = "effect/event/ev60/ev6073bt00/ev6073bt00.objbin"
+
+[[shot_aura]]
+name = "butterfly_trance"
+when = { techniques = ["whs00730"] }
+aura = "butterfly_trance"
+like = "ega0075a"

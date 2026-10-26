@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro espejismo (Mirage Shot, whs01190, cut-in ev60_01190).
+#
+# Measured: in c0300 the camera backs away from the cut-in's ball along one straight level line (the ball flies
+# straight into the sun, at the camera's height).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.20 m the whole way (the mirage trail reaches 0.69 m under the ball at most, fading
+# out before: it never touches the grass). unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Tiro espejismo (whs01190).
+[[edit]]
+target = "whs01190"
+trajectory = { points = [[0.0, 1.20]], straight = true, unblockable = false }

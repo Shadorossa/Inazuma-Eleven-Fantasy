@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Balón de petróleo (Gusher Crusher, whs02490), cut-in ev60_02490.
+#
+# A ground shot (owner 2026-10-24): one straight line from the kick point into the goal along the pitch, the ball
+# centre at 0.11 m (on the grass, the ball's radius) the whole way, so the aura's ground oil lies on the pitch
+# (research/scripts/gusher_crusher_ball_fx.py FLIGHT_HEIGHT: keep the two equal). unblockable = false: the game's
+# block rules. Heights are the ball centre over the pitch (m); one point = a level flight.
+
+# Balón de petróleo (whs02490).
+[[edit]]
+target = "whs02490"
+trajectory = { points = [[0.0, 0.11]], unblockable = false }

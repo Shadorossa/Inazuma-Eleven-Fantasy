@@ -1,0 +1,27 @@
+# «Double-Trouble» («Torbellino gemelo», whs03160; fire shot, cut-in ev60_03160): while the ball flies to the goal it
+# wears the cut-in's last shot (c0400, frame 362): its two fire whirlwinds wound round the flight as a double helix,
+# the ball inside the left spinning yellow / white whirl on the flight axis, the second whirl orbiting it 1.1 m off,
+# their long tubes of swirling flame rings with soft cyan glows trailing as two strands 180 deg apart (a turn every
+# 7 m) that stay still in the world as the ball flies on, coming out of the kick point (on the distance clock, never
+# stretched) and fading out at the far end, x0.5.
+# The object is ev6316dt00 (effect/event/ev60/ev6316dt00/), built by research/scripts/double_trouble_ball_fx.py from
+# ev60031600.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\double_trouble_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "double_trouble"
+from = "ega0075c"
+object = "effect/event/ev60/ev6316dt00/ev6316dt00.objbin"
+
+[[shot_aura]]
+name = "double_trouble"
+when = { techniques = ["whs03160"] }
+aura = "double_trouble"
+like = "ega0075c"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

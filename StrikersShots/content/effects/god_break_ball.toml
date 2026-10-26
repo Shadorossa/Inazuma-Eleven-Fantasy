@@ -1,0 +1,24 @@
+# «Disparo sagrado» (God Break, whs00900; wind shot, cut-in ev60_00900): while the ball flies to the goal it keeps the
+# look of the end of the cut-in's shot cut (c0200, frames 198-228, held at 228): the white head and the golden haze of
+# light round the ball, the twelve-ray star radiating from it (camera-facing, the same from the touchline as from behind,
+# its light flowing out along the rays, gently pulsing), the golden light shafts sweeping round it in the flight's
+# upright plane (star and shafts cut 4 m from the ball with a soft end) and the two white arcs curling round it, their
+# light flowing, x0.35 (a seamless loop: whole texture periods, whole turns, whole pulses), instead of the plain wind
+# special-shot aura (ega0075b). The object is ev6009gb00 (effect/event/ev60/ev6009gb00/), built by
+# research/scripts/god_break_ball_fx.py from the cut-in's effect object ev60009000. The trigger copies the wind
+# special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame
+# (aura-balon-tiro.md §2b). Its flight: content\techniques\god_break_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "god_break"
+from = "ega0075b"
+object = "effect/event/ev60/ev6009gb00/ev6009gb00.objbin"
+
+[[shot_aura]]
+name = "god_break"
+when = { techniques = ["whs00900"] }
+aura = "god_break"
+like = "ega0075b"

@@ -207,18 +207,18 @@ ja = "プロフィール"
 zh_hans = "资料"
 zh_hant = "資料"
 
-# the guide's keys (the game's button tags): type
+# the guide's keys (the game's button tags): type (Y toggles «Nombre» / «Juego»)
 [[row]]
 id = "BetterQoL.Album.KeysType"
-es = "<CMD_FUNCL2><CMD_FUNCR2>"
-en = "<CMD_FUNCL2><CMD_FUNCR2>"
-fr = "<CMD_FUNCL2><CMD_FUNCR2>"
-de = "<CMD_FUNCL2><CMD_FUNCR2>"
-it = "<CMD_FUNCL2><CMD_FUNCR2>"
-pt = "<CMD_FUNCL2><CMD_FUNCR2>"
-ja = "<CMD_FUNCL2><CMD_FUNCR2>"
-zh_hans = "<CMD_FUNCL2><CMD_FUNCR2>"
-zh_hant = "<CMD_FUNCL2><CMD_FUNCR2>"
+es = "<CMD_FUNC3>"
+en = "<CMD_FUNC3>"
+fr = "<CMD_FUNC3>"
+de = "<CMD_FUNC3>"
+it = "<CMD_FUNC3>"
+pt = "<CMD_FUNC3>"
+ja = "<CMD_FUNC3>"
+zh_hans = "<CMD_FUNC3>"
+zh_hant = "<CMD_FUNC3>"
 
 # the guide's keys: group
 [[row]]
@@ -233,7 +233,7 @@ ja = "<CMD_FUNCL1><CMD_FUNCR1>"
 zh_hans = "<CMD_FUNCL1><CMD_FUNCR1>"
 zh_hant = "<CMD_FUNCL1><CMD_FUNCR1>"
 
-# the guide's keys: page (also drawn beside «Página N/M» under the list)
+# the guide's keys: the other column, a page at the list's edge (also drawn beside «Página N/M» under the list)
 [[row]]
 id = "BetterQoL.Album.KeysPage"
 es = "<CMD_LEFT><CMD_RIGHT>"
@@ -246,15 +246,15 @@ ja = "<CMD_LEFT><CMD_RIGHT>"
 zh_hans = "<CMD_LEFT><CMD_RIGHT>"
 zh_hant = "<CMD_LEFT><CMD_RIGHT>"
 
-# the guide's keys: the player plate's pages
+# the guide's keys: the player plate's pages (L2 / R2, Q / E)
 [[row]]
 id = "BetterQoL.Album.KeysPlate"
-es = "<CMD_FUNC4><CMD_FUNC3>"
-en = "<CMD_FUNC4><CMD_FUNC3>"
-fr = "<CMD_FUNC4><CMD_FUNC3>"
-de = "<CMD_FUNC4><CMD_FUNC3>"
-it = "<CMD_FUNC4><CMD_FUNC3>"
-pt = "<CMD_FUNC4><CMD_FUNC3>"
-ja = "<CMD_FUNC4><CMD_FUNC3>"
-zh_hans = "<CMD_FUNC4><CMD_FUNC3>"
-zh_hant = "<CMD_FUNC4><CMD_FUNC3>"
+es = "<CMD_FUNCL2><CMD_FUNCR2>"
+en = "<CMD_FUNCL2><CMD_FUNCR2>"
+fr = "<CMD_FUNCL2><CMD_FUNCR2>"
+de = "<CMD_FUNCL2><CMD_FUNCR2>"
+it = "<CMD_FUNCL2><CMD_FUNCR2>"
+pt = "<CMD_FUNCL2><CMD_FUNCR2>"
+ja = "<CMD_FUNCL2><CMD_FUNCR2>"
+zh_hans = "<CMD_FUNCL2><CMD_FUNCR2>"
+zh_hant = "<CMD_FUNCL2><CMD_FUNCR2>"

@@ -1,0 +1,24 @@
+# «Fizzy Fire Lemonade» («Granizado de fuego alto», whs03210, forest shot, cut-in ev60_03210): the look of the cut-in's
+# final shot (c0400, held at frame 410) on the ball: the ball inside its black web sphere, skimming the pitch, the sandy
+# dust it throws up round its foot and over it, the dust streams it leaves behind along the ground (coming out of the
+# kick point as the ball moves away, never stretched, fading out at their far end), the dirt lip under it, and the
+# furrow it ploughs, laid on the grass where the ball passes (fixed on the pitch from the kick point, never stretched,
+# fading out 10-16 m behind the ball); the dust keeps flowing. x0.2 (the cut-in draws this shot 5x the match scale).
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60032100 by
+# research/scripts/fizzy_fire_lemonade_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\fizzy_fire_lemonade_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fizzy_fire_lemonade"
+from = "ega0075d"
+object = "effect/event/ev60/ev6321ff00/ev6321ff00.objbin"
+
+[[shot_aura]]
+name = "fizzy_fire_lemonade"
+when = { techniques = ["whs03210"] }
+aura = "fizzy_fire_lemonade"
+like = "ega0075d"
+# the dust streams and the furrow stay where the ball passed: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

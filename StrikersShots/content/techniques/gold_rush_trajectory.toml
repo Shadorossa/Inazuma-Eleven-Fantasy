@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Fiebre del oro (Gold Rush, whs02510, cut-in ev60_02510): one straight level line at
+# 1.2 m from the kick point into the goal point, whatever the shot's length (the aura's trail runs straight behind the
+# ball). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Fiebre del oro (whs02510).
+[[edit]]
+target = "whs02510"
+trajectory = { points = [[0.0, 1.2]], straight = true, unblockable = false }

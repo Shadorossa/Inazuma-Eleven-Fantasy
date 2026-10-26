@@ -1,0 +1,25 @@
+# «Twin Sun Smash» («Doble trallazo planetario», whs02120; mountain shot, cut-in ev60_02120): while the ball flies to
+# the goal it wears the cut-in's last shot (c0300, held at frame 355): the ball is the blazing sun, its cratered
+# surface with the red spot, its white glow and its golden rim, inside the wide soft orange glow, centred on the ball,
+# x2.5 (as big as the sun reads in the cut-in). The red spot, white glow, rim and orange glow face the camera
+# (billboards, as the cut-in camera sees them), so the sun looks the same from the touchline. The sun's own motion
+# loops over the cut's last 34 frames. The burst ring at the release and the red flash as the sun passes the camera
+# stay in the cut-in. It falls onto the goal (content\techniques\twin_sun_smash_trajectory.toml).
+# The object is ev6212ts00 (effect/event/ev60/ev6212ts00/), built by research/scripts/twin_sun_smash_ball_fx.py from
+# ev60021200.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\twin_sun_smash_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "twin_sun_smash"
+from = "ega0075a"
+object = "effect/event/ev60/ev6212ts00/ev6212ts00.objbin"
+
+[[shot_aura]]
+name = "twin_sun_smash"
+when = { techniques = ["whs02120"] }
+aura = "twin_sun_smash"
+like = "ega0075a"

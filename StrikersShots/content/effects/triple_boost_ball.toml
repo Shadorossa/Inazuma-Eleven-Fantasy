@@ -1,0 +1,29 @@
+# «Triple Boost» («Remate triple», whs00870; fire shot, cut-in ev60_00870): while the ball flies to the goal it wears
+# the end of the cut-in's last shot (c0600, held at frame 357): the white-hot core round the ball inside its spiky fire
+# burst and the ring of flames behind it, and the long red-orange flame trail (its two layers and short inner streak,
+# with the fire sparks along it) streaming straight behind the ball, out of the kick point and fading at its far end.
+# The cut-in's curving trail is laid straight along the flight; two half-alpha copies turned +-20 deg about the flight
+# give the flat trail depth from the touchline. x1. The jump, kicks and earlier flame trails of the first two kickers
+# and the outer ring that fades out before the cut's end stay out.
+# The object is ev6008tb00 (effect/event/ev60/ev6008tb00/), built by research/scripts/triple_boost_ball_fx.py from
+# ev60008700.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire long-shot aura's row (like = "ega0085c"). Flight:
+# content\techniques\triple_boost_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "triple_boost"
+from = "ega0085c"
+object = "effect/event/ev60/ev6008tb00/ev6008tb00.objbin"
+
+[[shot_aura]]
+name = "triple_boost"
+when = { techniques = ["whs00870"] }
+aura = "triple_boost"
+like = "ega0085c"
+# born at the kick point and run on the ball's distance from it: the trail comes out of the kick point
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

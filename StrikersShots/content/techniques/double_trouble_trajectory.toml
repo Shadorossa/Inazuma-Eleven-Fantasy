@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Torbellino gemelo (Double-Trouble, whs03160, cut-in ev60_03160).
+#
+# In the cut-in (c0400) two balls fly to the goal along curving whirlwind tubes; the aura winds both whirlwinds into a
+# double helix round the flight (research/scripts/double_trouble_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.60 m the whole way: the turning helix reaches ~2.0 m off the flight (its strands
+# 1.1 m off it, the flame tubes and glows round them; FLIGHT_HEIGHT in the generator), so it stays clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Torbellino gemelo (whs03160).
+[[edit]]
+target = "whs03160"
+trajectory = { points = [[0.0, 2.60]], straight = true, unblockable = false }

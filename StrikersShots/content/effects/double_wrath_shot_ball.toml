@@ -1,0 +1,26 @@
+# «Chut de 200 toques» (Double Wrath Shot, whs00640 / whs00640_or; forest shot, cut-in ev60_00640): while the ball
+# flies to the goal it is wrapped in the red aura of the cut-in's final shot (c0500): the three ball aura shells of the
+# ball constraint (_900_BallAura, _910_BallAura1, _920_BallAura1), the ball in their head and their flame running ~1 m
+# behind it, pulsing on their 8-frame beat (304-312) with their textures scrolling, instead of the plain forest
+# special-shot aura (ega0075d). The object is ev6064dw00 (effect/event/ev60/ev6064dw00/), built by
+# research/scripts/double_wrath_shot_ball_fx.py from the cut-in's effect object ev60006400. The shells come out of the
+# kick point, revealed by distance (never stretched), their tail fading out; the aura runs on the distance clock
+# (anchor = "kick", drift 0.75 m a frame). The trigger copies the forest special-shot aura's row (like = "ega0075d"):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b), so the aura follows
+# the flight (content\techniques\double_wrath_shot_trajectory.toml).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "double_wrath_shot"
+from = "ega0075d"
+object = "effect/event/ev60/ev6064dw00/ev6064dw00.objbin"
+
+[[shot_aura]]
+name = "double_wrath_shot"
+when = { techniques = ["whs00640", "whs00640_or"] }
+aura = "double_wrath_shot"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

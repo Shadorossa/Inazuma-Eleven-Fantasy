@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Caída galáctica (Galactic GigaFall, whs02630, cut-in ev60_02630). Owner 2026-10-24:
+# the comet falls onto the goal: the ball starts 9 m above the kick point and comes in one straight line down into the
+# goal at 2.0 m (declared; kept out of _flight_height.toml's lowering by keep_declared); the aura is turned along that
+# falling flight. In the cut-in's last shot (c0400) the ball falls from 18.41 m to 5.79 m over 7.06 m on the ground,
+# a straight line 60.8 deg down (research/scripts/shot_trajectory_from_cutin.py --move galactic_gigafall: the event
+# ball b000001 c_add_1_0, (-2.48, 18.41, 41.54) -> (-1.06, 5.79, 48.46)).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Caída galáctica (whs02630).
+[[edit]]
+target = "whs02630"
+trajectory = { points = [[0.0, 9.0]], goal_points = [[0.0, 2.0]], start = { height = 9.0 }, unblockable = false }

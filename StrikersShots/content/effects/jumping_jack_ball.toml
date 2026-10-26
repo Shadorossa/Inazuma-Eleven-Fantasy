@@ -1,0 +1,25 @@
+# «Jumping Jack» («Salto incandescente», whs01490; mountain shot, cut-in ev60_01490): while the ball flies to the goal
+# it wears the cut-in's last shot (c0040, held at frame 314 from the aura's first frame): the fire swirl wrapped round
+# the ball, its flames flowing, and the yellow-white streak behind it (crossed copies: the same from the touchline),
+# both straight behind the ball, coming out of the kick point and fading at their tail, x0.8. The red sky backdrop,
+# the wind streaks and the kick flashes stay out.
+# The object is ev6014jj00 (effect/event/ev60/ev6014jj00/), built by research/scripts/jumping_jack_ball_fx.py from
+# ev60014900.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\jumping_jack_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "jumping_jack"
+from = "ega0075a"
+object = "effect/event/ev60/ev6014jj00/ev6014jj00.objbin"
+
+[[shot_aura]]
+name = "jumping_jack"
+when = { techniques = ["whs01490"] }
+aura = "jumping_jack"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,23 @@
+# «Optimal Trajectory» («Trayectoria perfecta», whs01560, forest shot, cut-in ev60_01560): the end of the cut-in's last
+# shot (c0200, frame 398) on the ball: the white ball in its spiky mint-green glow (camera-facing, the same round star
+# from every side, throbbing as in the cut-in) and the mint ribbon the cut-in draws behind it from the kick point, laid
+# straight behind the ball along the flight (two crossed ribbons, readable from the touchline), coming out of the kick
+# point as the ball moves away (on the distance clock, never stretched) and fading out softly at its far end, x1.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60015600 by
+# research/scripts/optimal_trajectory_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\optimal_trajectory_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "optimal_trajectory"
+from = "ega0075d"
+object = "effect/event/ev60/ev6156ot00/ev6156ot00.objbin"
+
+[[shot_aura]]
+name = "optimal_trajectory"
+when = { techniques = ["whs01560"] }
+aura = "optimal_trajectory"
+like = "ega0075d"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

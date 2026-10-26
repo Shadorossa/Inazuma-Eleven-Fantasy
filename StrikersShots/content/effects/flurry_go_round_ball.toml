@@ -1,0 +1,29 @@
+# «Tiro circense» (Flurry-Go-Round, whs03260; fire shot, cut-in ev60_03260): the cut-in has no flying event ball; its
+# last shot (c0500, frame 320, held) fires five balls of fire one after another out of a fire ring, in single file
+# along one path, with three long flame trails behind them. While the ball flies to the goal it wears that line: the
+# ball inside the first fire ball, the other four following it at their cut-in distances, the trails behind them, all
+# straight along the flight (each flame pointing straight back, all five one size), the balls swaying round the flight
+# one after another, their flames breathing, the trails rippling; the followers and the trails coming out of the
+# kick point as the ball moves away (never stretched) and the trails fading at their far end, the flames' and trails'
+# textures flowing on, x1, instead of the plain fire special-shot aura (ega0075c). Left out: the fire ring and the hit
+# flash at the kick point (gone before the balls arrive). The object is ev6032fr00 (effect/event/ev60/ev6032fr00/),
+# built by research/scripts/flurry_go_round_ball_fx.py from the cut-in's effect object ev60032600. The trigger copies
+# the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the ball's velocity every
+# frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "flurry_go_round"
+from = "ega0075c"
+object = "effect/event/ev60/ev6032fr00/ev6032fr00.objbin"
+
+[[shot_aura]]
+name = "flurry_go_round"
+when = { techniques = ["whs03260"] }
+aura = "flurry_go_round"
+like = "ega0075c"
+# the line of fire balls comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

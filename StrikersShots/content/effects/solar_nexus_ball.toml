@@ -1,0 +1,25 @@
+# «Solar Nexus» («Tormenta solar», whs02130; fire shot, cut-in ev60_02130): while the ball flies to the goal it wears
+# the cut-in's last shot (c0020, held at frame 360, the sun shot down from the sky): the sun round the ball (its core,
+# the red / yellow / white throbbing glows, the swirl and the sparks) and the corkscrew of golden swirl shells and rings
+# turning behind it, coming out of the kick point and fading at its far end (~5.6 m), x0.6. The sky, clouds and light
+# streaks of the backdrop and the charge swirls stay out.
+# The object is ev6021sn00 (effect/event/ev60/ev6021sn00/), built by research/scripts/solar_nexus_ball_fx.py from
+# ev60021300.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"); the distance clock reveals the corkscrew
+# from the kick point. Flight: content\techniques\solar_nexus_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "solar_nexus"
+from = "ega0075c"
+object = "effect/event/ev60/ev6021sn00/ev6021sn00.objbin"
+
+[[shot_aura]]
+name = "solar_nexus"
+when = { techniques = ["whs02130"] }
+aura = "solar_nexus"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

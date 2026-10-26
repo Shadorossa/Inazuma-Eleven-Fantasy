@@ -1,0 +1,23 @@
+# «Full goleador» (Sweet Deal, whs01300; forest shot, cut-in ev60_01300): the end of the cut-in's final shot (c0400,
+# held at frame 440) on the ball: the blue glow round the ball, turning, and the long blue streak straight behind it,
+# wide at the ball and tapering back; the streak comes out of the kick point as the ball moves away (on the distance
+# clock, never stretched) and fades out at its far end. x1 (the cut-in's ball is at match scale). The trigger copies the
+# forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the ball's velocity every
+# frame. The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60013000 by
+# research/scripts/sweet_deal_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\sweet_deal_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "sweet_deal"
+from = "ega0075d"
+object = "effect/event/ev60/ev6013sd00/ev6013sd00.objbin"
+
+[[shot_aura]]
+name = "sweet_deal"
+when = { techniques = ["whs01300"] }
+aura = "sweet_deal"
+like = "ega0075d"
+# the streak comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

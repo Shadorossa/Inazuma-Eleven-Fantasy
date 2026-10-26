@@ -1,0 +1,23 @@
+# «Destello de fuerza» (Force Flash, whs10040; mountain shot, cut-in ev60_10040): the ball flies inside the pink-red
+# swirl of flames of the cut-in's last shot (c0400), a cup round the ball opening back along the flight and turning
+# about it, with its soft pink haze and the white glow round the ball (a camera-facing billboard); behind it the
+# cut-in's wind: grey wind rings given off round the ball, left where they are born, growing and fading, and the lane
+# of wind blown up from the pitch either side of its way, laid from the kick point as the ball passes, fading out
+# behind it (distance clock: anchor "kick", 0.75 m a frame).
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60100400 by
+# research/scripts/force_flash_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\force_flash_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "force_flash"
+from = "ega0075a"
+object = "effect/event/ev60/ev6104ff00/ev6104ff00.objbin"
+
+[[shot_aura]]
+name = "force_flash"
+when = { techniques = ["whs10040"] }
+aura = "force_flash"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

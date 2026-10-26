@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Full goleador (Sweet Deal, whs01300, cut-in ev60_01300): one straight level line at
+# 1.2 m from the kick point into the goal point, whatever the shot's length (the aura's streak runs straight behind the
+# ball). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Full goleador (whs01300).
+[[edit]]
+target = "whs01300"
+trajectory = { points = [[0.0, 1.2]], straight = true, unblockable = false }

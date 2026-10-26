@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Bestia del trueno (Thunder Beast, whs01010), cut-in ev60_01010.
+#
+# In the cut-in (c0400) the ball flies level, 1.26 m up at the aura's scale. Flight: straight and level 1.0 m up into
+# the goal. unblockable = false: the game's block rules. Heights are the ball centre over the pitch (m); one point = a
+# level flight.
+
+# Bestia del trueno (whs01010).
+[[edit]]
+target = "whs01010"
+trajectory = { points = [[0.0, 1.0]], unblockable = false }

@@ -1,0 +1,23 @@
+# «Mermaid Smash» («Choque de sirena», whs02450, wind shot, cut-in ev60_02450): the end of the cut-in's last shot
+# (c0300) on the ball (owner 2026-10-24: «Mejora choque de sirena para la estela que le sigue»): the ball in its pink
+# glow (its flat round glows camera-facing) and the big pink / white flame trail the cut-in draws behind it, laid
+# straight behind the ball along the flight at the cut-in's own shape and length (~3.6 m), coming out of the kick point
+# as the ball moves away (on the distance clock, never stretched) and fading out at its far end.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60024500 by
+# research/scripts/mermaid_smash_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\mermaid_smash_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "mermaid_smash"
+from = "ega0075b"
+object = "effect/event/ev60/ev6024ms00/ev6024ms00.objbin"
+
+[[shot_aura]]
+name = "mermaid_smash"
+when = { techniques = ["whs02450"] }
+aura = "mermaid_smash"
+like = "ega0075b"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

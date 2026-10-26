@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Trance temporal (Time Trance, whs03130, cut-in ev60_03130).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_03130 c0300 is held still in the air over frames 327-387, then
+# flies 22 m straight along +Z, level, over frames 387-471, in a void (no pitch under it).
+# Flight: one straight level line from the kick point to the goal, the ball centre at 1.0 m the whole way
+# (research/scripts/time_trance_ball_fx.py FLIGHT_H).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Trance temporal (whs03130).
+[[edit]]
+target = "whs03130"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

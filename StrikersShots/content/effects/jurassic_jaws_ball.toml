@@ -1,0 +1,25 @@
+# «Jurassic Jaws» («Chut prehistórico», whs01960 and its mixi-max key whs01960_mm; mountain shot, cut-in ev60_01960):
+# while the ball flies to the goal it wears the cut-in's last shot (c0300) in a seamless loop: the crown of red / pink
+# curved fang blades radiating round the ball as at the cut-in's end, its axis along the flight (the full crown seen
+# from behind and from the front), with the fangs' own slight motion, and the head the ball flies in, the white-hot
+# burst with its red flame spikes at the crown's centre (camera-facing: round and centred on the ball from every side,
+# pulsing as in the cut-in)
+# with the red flame tongues streaming behind it, instead of the plain mountain special-shot aura (ega0075a). x1 (the
+# cut-in's ball is the match ball's size). The object is ev6196jj00 (assets\data\{common,dx11}\effect\event\ev60\
+# ev6196jj00\), built by research/scripts/jurassic_jaws_ball_fx.py from ev60019600.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "jurassic_jaws_head"
+from = "ega0075a"
+object = "effect/event/ev60/ev6196jj00/ev6196jj00.objbin"
+
+[[shot_aura]]
+name = "jurassic_jaws_head"
+when = { techniques = ["whs01960", "whs01960_mm"] }
+aura = "jurassic_jaws_head"
+like = "ega0075a"

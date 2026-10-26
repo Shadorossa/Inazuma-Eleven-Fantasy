@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro centrífugo (Centrifugal Blast, whs02860, cut-in ev60_02860): one straight level
+# line at 2.2 m from the kick point into the goal point, whatever the shot's length (the aura's cone, up to 1.9 m from
+# the ball's line, stays above the pitch). unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); goal_points count back from the goal point, points from the kick; the
+# first / last height is held.
+
+# Tiro centrífugo (whs02860).
+[[edit]]
+target = "whs02860"
+trajectory = { points = [[0.0, 2.2]], straight = true, unblockable = false }

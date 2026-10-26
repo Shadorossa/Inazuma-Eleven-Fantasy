@@ -1,0 +1,27 @@
+# «Tormenta de fuego» (Fireball Storm, whs10195 and whs10195_or, same cut-in; fire shot, cut-in ev60_10195): while the
+# ball flies to the goal it wears the cut-in's last shot (c0200, the ball running down out of the sky inside a fire
+# tornado, held at frame 210, the last frame of the ball's aura before it passes the camera, from the aura's first
+# frame): the ball's fire aura and the fire tornado winding round its way (outer and inner fire swirls, two fire
+# lines), laid straight behind the ball, swaying in a wave that runs back along it and spinning about the flight,
+# coming out of the kick point as the ball flies (never stretched) and fading
+# out at the far end, x0.5. The sparks left in the world and the black backdrop stay out.
+# The object is ev6195fs00 (effect/event/ev60/ev6195fs00/), built by research/scripts/fireball_storm_10195_ball_fx.py
+# from ev60101950.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\fireball_storm_10195_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fireball_storm_10195"
+from = "ega0075c"
+object = "effect/event/ev60/ev6195fs00/ev6195fs00.objbin"
+
+[[shot_aura]]
+name = "fireball_storm_10195"
+when = { techniques = ["whs10195", "whs10195_or"] }
+aura = "fireball_storm_10195"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

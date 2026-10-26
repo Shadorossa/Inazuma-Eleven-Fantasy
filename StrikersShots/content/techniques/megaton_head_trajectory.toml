@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cabezazo megatón (Megaton Head, whs00910, cut-in ev60_00910).
+#
+# Measured: the comet's head (effect joint shoot_mov, where the aura holds the ball) of ev60_00910 c0400 comes down
+# from 3.20 m at effect frame 299 to 1.36 m at frame 347, the end of the shot.
+# Flight: one straight level line from the kick point to the goal, the ball centre at 1.40 m the whole way, the
+# cut-in's height at the end of its last shot. unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Cabezazo megatón (whs00910).
+[[edit]]
+target = "whs00910"
+trajectory = { points = [[0.0, 1.40]], straight = true, unblockable = false }

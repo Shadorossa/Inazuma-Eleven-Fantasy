@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Círculo de espadas (Gladius Arch, whs01040, cut-in ev60_01040). Nacho
+# 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0300) the ball dives from ~7 m down to the ground with the swords flying after it. In the match
+# (owner 2026-10-24, the shot auras' straight-flight rule): one straight level line from the kick point to the goal,
+# 1.5 m up, so the sword arch following the ball is never tipped and never touches the pitch.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Círculo de espadas (whs01040).
+[[edit]]
+target = "whs01040"
+trajectory = { points = [[0.0, 1.50]], straight = true, unblockable = false }

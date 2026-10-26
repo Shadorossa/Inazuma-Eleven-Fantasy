@@ -1,0 +1,19 @@
+# «Amanecer detonante» (Solar Flex, whs03090; fire shot, cut-in ev60_03090): the ball flies inside the small sun of the
+# cut-in's shot cut (c0400), aligned to the flight: its round glows, spiky stars and rings as camera-facing billboards
+# (the same round sun from the touchline, the chase and the front), the cross glints and lightning crossed so they read
+# from every side, and its cones of light rays opening round the ball, all looping as in the cut-in.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60030900 by
+# research/scripts/solar_flex_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\solar_flex_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "solar_flex"
+from = "ega0075c"
+object = "effect/event/ev60/ev6309sf00/ev6309sf00.objbin"
+
+[[shot_aura]]
+name = "solar_flex"
+when = { techniques = ["whs03090"] }
+aura = "solar_flex"
+like = "ega0075c"

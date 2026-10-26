@@ -1,0 +1,24 @@
+# «Gusher Crusher» («Balón de petróleo», whs02490; fire shot, cut-in ev60_02490): while the ball skims the pitch to
+# the goal it is inside the cut-in's shot cut (c0400) while its ball skims the oil inside the wave (frames 302-368,
+# replayed, then looped: the ball always in the wave's head): the glossy black oil wave over the ball, its lights, the
+# oil splashes on the ground and the oil wake behind it (coming out of the kick point as the ball moves, its tail
+# fading out); the ball itself wears the cut-in's oil ball (_16d01_oil_ball_a1, its waves and light, as it rises out of
+# the oil in c0300, its pulse looped). The cut-in's ground oil lies on the pitch under the ground shot.
+# The object is ev6024gc00 (effect/event/ev60/ev6024gc00/), built by research/scripts/gusher_crusher_ball_fx.py from
+# ev60024900.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\gusher_crusher_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "gusher_crusher"
+from = "ega0075c"
+object = "effect/event/ev60/ev6024gc00/ev6024gc00.objbin"
+
+[[shot_aura]]
+name = "gusher_crusher"
+when = { techniques = ["whs02490"] }
+aura = "gusher_crusher"
+like = "ega0075c"

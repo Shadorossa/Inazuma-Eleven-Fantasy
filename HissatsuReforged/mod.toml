@@ -14,20 +14,25 @@ former_ids = ["hissatsu_reforged"]
 #                                               (200_icon\15_icon_common\move_icons.toml) and the detail card's long +
 #                                               counter shot tag (102_team\team02\team02_02\move_tags_combined.toml)
 #   text\keys.toml                              the «Mods» screen's name and description
-# Modules (docs/framework/mod-families.md): a mod that belongs here requires hissatsu_reforged and declares
-# [module] of = "hissatsu_reforged" (Hissatsu Effects order 10, Hissatsu Level Up order 20).
+#   modules\<Module>\                           the embedded module mods, shipped in this folder (docs/framework/
+#                                               mod-families.md §1.3): HissatsuEffects (order 10), HissatsuLevelUp
+#                                               (order 20); each keeps its own id, prefix, version, texts and save data
+# Modules (docs/framework/mod-families.md): a mod that belongs here requires HissatsuReforged and declares
+# [module] of = "HissatsuReforged".
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description
 # (text\keys.toml) in the game's language.
 name = "Hissatsu Reforged"
 prefix = "HissatsuReforged"
 folder = "HissatsuReforged"
-version = "1.1.0"
+version = "1.3.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Rebalances the game's special moves: new minimum and maximum power, tension cost and recast time for 683 of the game's moves. The power each grade adds stays the game's. A move with two properties (long shot and counter shot) shows both icons in every move list and on its card. The base of the special-move mods: Hissatsu Effects and Hissatsu Level Up are its modules."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-22"
+updated = "2026-10-23"
+# 1.2.0 (owner 2026-10-23: «HissatsuEffects y HissatsuLevelUp deben ir como módulos de HissatsuReforged»): both are
+# embedded modules (modules\HissatsuEffects\, modules\HissatsuLevelUp\); their ids, prefixes, saves and texts unchanged
 # vr_framework 2.4.13: the technique type's [[edit]] (power_min / power_max / tp / recast), the technique engine's move
 # icon sets (CMND_VRFW_MOVE_ICONS) and the mod families ([module] rows of this mod's entry on the «Mods» screen). Works
 # on the base game: Inazuma Fantasy and Character Reforged are not needed.

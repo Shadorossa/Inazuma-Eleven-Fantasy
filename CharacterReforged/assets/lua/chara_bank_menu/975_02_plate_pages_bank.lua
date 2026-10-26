@@ -120,8 +120,9 @@ end
 -- evolution grade read at the move's own list position) and restored right after. A row whose move needs a level above
 -- the player's (CMND_VRFW_CHARACTER_LEARN_LEVEL, the framework's learn levels) is drawn as the retail plate draws a move
 -- not learned yet: no move at that position and the learn table (0xCF25A8AF) answering that move and its level there,
--- so the retail fill shows its padlock and «Nv. N». Victory Road: the retail rows untouched. No engine call while the
--- chunk loads.
+-- so the retail fill shows its padlock and «Nv. N». In a match (plate type 1, e.g. the pause «Formación») the rows get
+-- the player's soccer handle: the rows are those of its card (F.Card), or of the team member row he plays from.
+-- Victory Road: the retail rows untouched. No engine call while the chunk loads.
 EVT_PPG_FANTASY_MOVES = EVT_PPG_FANTASY_MOVES or {}
 do
   local F = EVT_PPG_FANTASY_MOVES
@@ -191,9 +192,60 @@ do
     return rows
   end
 
+  -- the plate type of this VM's personal plate (personal_plate_inc SetPersonalPlateType: 1 = a match, its move rows
+  -- get the match player's soccer handle); nil = not set
+  EVT_PPG_Wrap("SetPersonalPlateType", function(orig)
+    return function(kind, ...)
+      F.plateType = kind
+      return orig(kind, ...)
+    end
+  end)
+
+  F.CARD_OF_SOCCER_CHARA = 24           -- GetSoccerCharaInfo(soccer handle, 24) -> ok, the player's card
+
+  -- the card whose moves a plate row shows: the handle itself, or in a match the card of the soccer handle (the
+  -- retail match fill reads the card the same way); nil = no card
+  function F.Card(hdl)
+    if F.plateType ~= 1 then
+      return hdl
+    end
+    if type(GetSoccerCharaInfo) ~= "function" then
+      return nil
+    end
+    local ok, found, card = pcall(GetSoccerCharaInfo, hdl, F.CARD_OF_SOCCER_CHARA)
+    if ok and found ~= false and type(card) == "number" and card ~= 0 then
+      return card
+    end
+    return nil
+  end
+
+  -- in a match, a player who plays a team member row (CharacterReforged.Page.MatchMemberSet: the set the hyper page
+  -- shows too): his loadout's non-aura moves as the rows; nil = he plays his card's own set
+  local function MatchMemberRows(hdl, list)
+    local page = type(CharacterReforged) == "table" and CharacterReforged.Page or nil
+    if F.plateType ~= 1 or type(page) ~= "table" or type(page.MatchMemberSet) ~= "function" then
+      return nil
+    end
+    local ok, member = pcall(page.MatchMemberSet, hdl)
+    if not ok or type(member) ~= "table" or type(member.techniques) ~= "table" then
+      return nil
+    end
+    local rows = {}
+    for i = 1, F.ROW_COUNT do
+      local id = U32(member.techniques[i])
+      local slot = member.rows ~= nil and member.rows[i] or nil
+      if id ~= 0 then
+        rows[i] = {move = id, position = (slot ~= nil and list[slot] == id) and slot or nil, slot = slot}
+      else
+        rows[i] = {move = 0}
+      end
+    end
+    return rows
+  end
+
   -- the 6 rows of card `hdl`: { [1..6] = {move = id, position = list position of that move or nil, slot = the row's
-  -- list position (an aura position, an empty one or the move's own)} }; the framework's effective skill set when it
-  -- answers, else the same rule read here
+  -- list position (an aura position, an empty one or the move's own)} }; in a match a team member row's loadout,
+  -- else the framework's effective skill set when it answers, else the same rule read here
   function F.Rows(call, hdl)
     local list, free, auras = {}, {}, {}
     for p = 0, F.ROW_COUNT - 1 do
@@ -204,6 +256,10 @@ do
       else
         free[#free + 1] = p
       end
+    end
+    local member = MatchMemberRows(hdl, list)
+    if member ~= nil then
+      return member
     end
     local served = ServiceRows(call, hdl, list)
     if served ~= nil then
@@ -233,16 +289,22 @@ do
         return orig(hdl, slot, ...)
       end
       local call = funcLuaCommand
-      local okRows, rows = pcall(F.Rows, F.raw_call or call, hdl)
+      local card = F.Card(hdl)
+      if card == nil then
+        F.shown[slot] = nil
+        return orig(hdl, slot, ...)
+      end
+      local okRows, rows = pcall(F.Rows, F.raw_call or call, card)
       if not okRows or type(rows) ~= "table" then
         F.shown[slot] = nil
         return orig(hdl, slot, ...)
       end
       local row = rows[slot + 1] or {move = 0}
-      F.shown[slot] = {hdl = hdl, move = row.move, slot = row.slot or slot}
-      -- a move above the player's level: the retail «not learned yet» row (padlock + its level)
+      F.shown[slot] = {hdl = card, move = row.move, slot = row.slot or slot}
+      -- a move above the player's level: the retail «not learned yet» row (padlock + its level); the match fill has
+      -- no learn table (the match plays the set as it is)
       local need = 0
-      if row.move ~= 0 then
+      if row.move ~= 0 and F.plateType ~= 1 then
         local okL, n, lv = pcall(call, F.LEARN_LEVEL, hdl, row.move)
         if okL and type(n) == "number" and type(lv) == "number" and n > lv then
           need = n
@@ -261,7 +323,7 @@ do
       end
       local grade = GetSkillEvoLevelByCharaStHdl
       funcLuaCommand = function(cmd, a, b, ...)
-        if a == hdl then
+        if a == card then
           if cmd == F.GET_SKILL and b == slot then
             return need > 0 and 0 or row.move
           end
@@ -276,7 +338,7 @@ do
       end
       if type(grade) == "function" then
         GetSkillEvoLevelByCharaStHdl = function(h, p, ...)
-          if h == hdl and p == slot then
+          if h == card and p == slot then
             if row.position == nil then
               return 0
             end

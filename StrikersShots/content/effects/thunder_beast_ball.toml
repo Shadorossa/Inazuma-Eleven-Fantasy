@@ -1,0 +1,26 @@
+# «Thunder Beast» («Bestia del trueno», whs01010; wind shot, cut-in ev60_01010): while the ball flies to the goal it
+# keeps the end of the cut-in's shot cut (c0400, held at frame 455, the texture flow running on): the bright ball with
+# its blue cone fan, the white trail line inside the light-blue energy beam (crossed copies: a tube from every side)
+# and the purple / cyan lightning bolts crackling along it (their blinks replayed from the cut-in, looped). Everything
+# behind the ball comes out of the kick point as the ball moves away, never stretched, its far end fading out over the
+# last 45 % of the trail; x0.931. The object is ev6101tb00 (effect/event/ev60/ev6101tb00/), built by
+# research/scripts/thunder_beast_ball_fx.py from ev60010100.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\thunder_beast_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "thunder_beast"
+from = "ega0075b"
+object = "effect/event/ev60/ev6101tb00/ev6101tb00.objbin"
+
+[[shot_aura]]
+name = "thunder_beast"
+when = { techniques = ["whs01010"] }
+aura = "thunder_beast"
+like = "ega0075b"
+# its kick-point part stays on the kicker: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

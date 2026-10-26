@@ -1,0 +1,21 @@
+# «Colmillo retorcido» (Fangtasmagoria, whs02250 / whs02250_mm; mountain shot, cut-in ev60_02250): while the ball flies
+# to the goal it is inside the end of the cut-in's shot cut (c0300, frames 300-330 looped): its blue glows on the event
+# ball and the ring of blue fangs round it, x1, instead of the plain mountain special-shot aura (ega0075a). The object
+# is ev6225ft00 (effect/event/ev60/ev6225ft00/), built by research/scripts/fangtasmagoria_ball_fx.py from the cut-in's
+# effect object ev60022500 with the parts the automatic pipeline (ls_auto_aura.py) kept, every part placed relative to
+# the ball (the fangs never fall behind it) and a seamless loop. The trigger copies the mountain special-shot aura's row
+# (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fangtasmagoria"
+from = "ega0075a"
+object = "effect/event/ev60/ev6225ft00/ev6225ft00.objbin"
+
+[[shot_aura]]
+name = "fangtasmagoria"
+when = { techniques = ["whs02250", "whs02250_mm"] }
+aura = "fangtasmagoria"
+like = "ega0075a"

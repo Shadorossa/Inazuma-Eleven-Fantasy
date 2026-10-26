@@ -6,8 +6,8 @@
 # The object ev6273ic00 (assets\data\{common,dx11}\effect\event\ev60\ev6273ic00\) is built by
 # research/scripts/ixaal_canon_ball_fx.py from the cut-in's effect object ev60027300 (cutin_replay_aura.py; c0300's
 # formed beam 430-448 replayed, then its own cycles; every part in the cut-in's orientation, x0.4, priorities <= 30);
-# the mouth and the beast stay at the kick point by sliding back from the ball at the shot's 25 m/s
-# (content\techniques\ixaal_canon_trajectory.toml). One aura, one trigger per element: each copies its element's
+# the beam starts on the kick point and grows to the ball, never stretched; the mouth and the beast stay on the kick
+# point (the distance clock: the clip runs on the ball's distance from it). One aura, one trigger per element: each copies its element's
 # special-shot aura row (like), whose callback turns +Z along the ball's velocity. docs/game/media/ixaal-canon-ball-fx.md.
 # Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
 # the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
@@ -23,9 +23,15 @@ name = "ixaal_canon"
 when = { techniques = ["whs02730"] }
 aura = "ixaal_canon"
 like = "ega0075b"
+# its kick-point part stays on the kicker: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
 
 [[shot_aura]]
 name = "ixaal_canon_mountain"
 when = { techniques = ["whs02731"] }
 aura = "ixaal_canon"
 like = "ega0075a"
+# its kick-point part stays on the kicker: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

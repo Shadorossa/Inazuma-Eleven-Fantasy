@@ -1,0 +1,29 @@
+# «Auriga asolador» (Twin Gallop, whs03370; wind shot, cut-in ev60_03370): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0400): the white-violet ball light, the blue spiky burst round
+# the ball and the fan of cyan / blue / magenta light streaks trailing behind it, instead of the plain wind
+# special-shot aura. The object is ev6337tg00 (effect/event/ev60/ev6337tg00/), built by
+# research/scripts/twin_gallop_ball_fx.py from the cut-in's effect object ev60033700: c0400's last 31 frames (425-456)
+# looped on every part, ball at the origin, the streaks' long axis along +Z (the flight), x1; the burst and the streaks
+# come out of the kick point as the ball flies (never stretched, nothing behind the kick point) and fade out over the
+# last 30 % of their length; the ball light discs face the camera. Left out: the white wind lines, the black backdrop,
+# ground wind and drift smoke. Its flight: content	echniques	win_gallop_trajectory.toml (level, 1.0 m up).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "twin_gallop"
+from = "ega0075b"
+object = "effect/event/ev60/ev6337tg00/ev6337tg00.objbin"
+
+[[shot_aura]]
+name = "twin_gallop"
+when = { techniques = ["whs03370"] }
+aura = "twin_gallop"
+like = "ega0075b"
+# the burst and the streaks come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,25 @@
+# «Alas de halcón» (Thunderclaw, whs01800; wind shot, cut-in ev60_01800): the end of the cut-in's final shot (c0400,
+# held at frame 506) on the ball, x0.45: the blue wind vortex swirling round the ball and opening behind it, its white
+# cores, the light disc round the ball (the same round glow from every side), and trailing it the two falcon feathers
+# turning about the flight, the long wind lines and the streak ribbons; everything of the cut kept, at its final look
+# from the first frame, the wind flowing on; the vortex and the trail born at the kick point and revealed as the ball
+# moves away (on the distance clock, never stretched), fading out at their far end.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60018000 by
+# research/scripts/thunderclaw_ball_fx.py (never committed: research/mods/StrikersShots/README.md). The trigger copies
+# the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the ball's velocity every
+# frame. Its flight: content\techniques\thunderclaw_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "thunderclaw"
+from = "ega0075b"
+object = "effect/event/ev60/ev6180tc00/ev6180tc00.objbin"
+
+[[shot_aura]]
+name = "thunderclaw"
+when = { techniques = ["whs01800"] }
+aura = "thunderclaw"
+like = "ega0075b"
+# the vortex and the trail come out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

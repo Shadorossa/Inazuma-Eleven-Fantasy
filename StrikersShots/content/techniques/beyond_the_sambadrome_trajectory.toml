@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Samba letal (Beyond the Sambadrome, whs03170, cut-in ev60_03170).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.60 m the whole way (as at the cut-in's last frame; the shed feathers reach 1.1 m
+# under the ball: they never touch the grass). unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Samba letal (whs03170).
+[[edit]]
+target = "whs03170"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }

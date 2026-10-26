@@ -1,0 +1,24 @@
+# «Tiro centrífugo» (Centrifugal Blast, whs02860; wind shot, cut-in ev60_02860): the end of the cut-in's final shot
+# (c0400, held at frame 400) on the ball: the spinning pink and white spiked cone round the ball with its light disc,
+# and the long rainbow cone (orange, yellow, white and green, a scrolling green streak, yellow lightning and drifting
+# particle streaks) straight behind it, widening back; the cone comes out of the kick point as the ball moves away (on
+# the distance clock, never stretched) and fades out at its far end. x0.28. The trigger copies the wind special-shot
+# aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame. The object
+# under assets\data is generated on the author's PC from the game's own cut-in effect ev60028600 by
+# research/scripts/centrifugal_blast_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\centrifugal_blast_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "centrifugal_blast"
+from = "ega0075b"
+object = "effect/event/ev60/ev6028cb00/ev6028cb00.objbin"
+
+[[shot_aura]]
+name = "centrifugal_blast"
+when = { techniques = ["whs02860"] }
+aura = "centrifugal_blast"
+like = "ega0075b"
+# the cone comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

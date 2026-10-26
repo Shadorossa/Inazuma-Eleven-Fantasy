@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Estocada de Lancelot (Lancelot Lunge, whs01780, cut-in ev60_01780). Nacho
+# 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in (c0500) the ball flies dead level at 1.06-1.15 m (37.2 m) with the keshin charging after it. In the
+# match (owner 2026-10-24, the shot auras' straight-flight rule): one straight level line from the kick point to the
+# goal at the cut-in's height, 1.10 m, so the keshin flying with the ball is never tipped.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move lancelot_lunge): the event ball (s00) of
+# ev60_01780 c0500, event frames 1260-1320: [[0.00, 1.06], [17.73, 1.15], [37.20, 1.15]] (0.04 m).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Estocada de Lancelot (whs01780).
+[[edit]]
+target = "whs01780"
+trajectory = { points = [[0.0, 1.10]], straight = true, unblockable = false }

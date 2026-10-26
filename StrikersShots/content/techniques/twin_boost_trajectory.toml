@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Remate combinado (Twin Boost, whs00020, cut-in ev60_00020).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_00020 c0600 is kicked low and runs ~10 m along +Z, level, 0.36 m
+# up over frames 357-404, inside its fire comet, which reaches 1 m round the ball (the aura sets it along the flight).
+# Flight: one straight level line from the kick point to the goal, the ball centre at 1.05 m the whole way, so the comet
+# skims the grass instead of sinking into the pitch (research/scripts/twin_boost_ball_fx.py FLIGHT_H).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Remate combinado (whs00020).
+[[edit]]
+target = "whs00020"
+trajectory = { points = [[0.0, 1.05]], straight = true, unblockable = false }

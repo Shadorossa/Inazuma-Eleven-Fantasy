@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro dinamita (Dynamite Shot, whs00170, cut-in ev60_00170): one straight level line
+# at 3.0 m from the kick point into the goal point, whatever the shot's length, so the glow round the ball stays clear
+# of the grass (the aura's trail runs straight behind the ball). unblockable = false: the game's block rules (this mod
+# changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Tiro dinamita (whs00170).
+[[edit]]
+target = "whs00170"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

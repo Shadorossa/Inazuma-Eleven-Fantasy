@@ -1,0 +1,22 @@
+# «Caída planetaria» (Falling Planet, whs02110; mountain shot, cut-in ev60_02110): while the ball flies to the goal it
+# is inside the end of the cut-in's shot cut (c0300, frames 310-360 looped): its fifteen parts on the event ball, x1,
+# instead of the plain mountain special-shot aura (ega0075a). The object is ev6211fp00 (effect/event/ev60/ev6211fp00/),
+# built by research/scripts/falling_planet_ball_fx.py from the cut-in's effect object ev60021100 with the settings the
+# automatic pipeline (ls_auto_aura.py) derived for it (the same object data as Living Shots' automatic aura
+# ev602110au). The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns
+# +Z along the ball's velocity every frame (aura-balon-tiro.md §2b), so the aura follows the falling flight
+# (content\techniques\falling_planet_trajectory.toml).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "falling_planet"
+from = "ega0075a"
+object = "effect/event/ev60/ev6211fp00/ev6211fp00.objbin"
+
+[[shot_aura]]
+name = "falling_planet"
+when = { techniques = ["whs02110"] }
+aura = "falling_planet"
+like = "ega0075a"

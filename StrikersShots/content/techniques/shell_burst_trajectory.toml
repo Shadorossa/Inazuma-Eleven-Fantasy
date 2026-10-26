@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cañonazo de fragmentos (Shell Burst, whs02230), cut-in ev60_02230.
+#
+# In the cut-in (c0400) the ball sits in the centre cell of the green honeycomb panel, 1.87 m over the pitch, and the
+# seven cells fire their rays level toward the goal (research/scripts/shell_burst_ball_fx.py FLIGHT_HEIGHT). Flight:
+# straight and level at that height into the goal, through the panel's centre cell. unblockable = false: the game's
+# block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count from the
+# kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Cañonazo de fragmentos (whs02230).
+[[edit]]
+target = "whs02230"
+trajectory = { points = [[0.0, 1.87]], straight = true, unblockable = false }

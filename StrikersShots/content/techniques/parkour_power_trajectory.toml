@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Parkour Power (whs02440, cut-in ev60_02440).
+#
+# Measured: the event ball (b000001 slot s01) of ev60_02440 c0040 flies down at the camera from effect frame ~334,
+# 0.51 m a frame.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.30 m the whole way, so the comet's shell (~0.7 m in radius) stays clear of the
+# grass. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre
+# over the pitch (m); the height is held.
+
+# Parkour Power (whs02440).
+[[edit]]
+target = "whs02440"
+trajectory = { points = [[0.0, 1.30]], straight = true, unblockable = false }

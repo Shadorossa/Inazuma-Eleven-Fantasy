@@ -1,0 +1,23 @@
+# «Dirt Ball» («Bola de fango», whs00360; mountain shot, cut-in ev60_00360): while the ball flies to the goal it wears
+# the cut-in's last shot after the mud ball bursts (c0040, held at frame 374): the yellow aura round the ball, its wide
+# yellow glow, the white glow inside it, the white ring hugging the ball and the yellow swirl, all four facing the
+# camera (billboards) and centred on the ball, so it looks the same from the touchline as from the front, x3. The mud
+# ball, its burst and the mud chunks stay at the kick point.
+# The object is ev6036db00 (effect/event/ev60/ev6036db00/), built by research/scripts/dirt_ball_ball_fx.py from
+# ev60003600.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\dirt_ball_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dirt_ball"
+from = "ega0075a"
+object = "effect/event/ev60/ev6036db00/ev6036db00.objbin"
+
+[[shot_aura]]
+name = "dirt_ball"
+when = { techniques = ["whs00360"] }
+aura = "dirt_ball"
+like = "ega0075a"

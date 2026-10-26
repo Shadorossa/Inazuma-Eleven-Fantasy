@@ -48,3 +48,6 @@ name = "the_earth_infinity_beam"
 when = { techniques = ["whs02650"] }
 aura = "the_earth_infinity_beam"
 like = "ega0075a"
+# its kick-point part stays on the kicker: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

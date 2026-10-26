@@ -1,0 +1,113 @@
+schema = "VRFW.changelog/1"
+# Strikers Shots: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+lang = "es"
+name = "Strikers Shots"
+
+[en]
+name = "Strikers Shots"
+
+[fr]
+name = "Strikers Shots"
+
+[de]
+name = "Strikers Shots"
+
+[it]
+name = "Strikers Shots"
+
+[pt]
+name = "Strikers Shots"
+
+[ja]
+name = "Strikers Shots"
+
+[zh_hans]
+name = "Strikers Shots"
+
+[zh_hant]
+name = "Strikers Shots"
+
+[[release]]
+icon = "general"
+notes = [
+    "Cámara de banda que sigue el tiro como en la tele.",
+    "Siete auras de tiro terminadas, como en su escena.",
+    "Tiros con aura en línea recta a la portería.",
+    "Goles especiales que rompen la portería (opción).",
+    "Solo visual: no cambia potencia ni bloqueos.",
+]
+
+[release.en]
+notes = [
+    "Touchline camera that follows the shot like on TV.",
+    "Seven finished shot auras, as in their scene.",
+    "Aura shots fly straight into the goal.",
+    "Special goals that smash the net (optional scene).",
+    "Visual only: no power or block changes.",
+]
+
+[release.fr]
+notes = [
+    "Caméra latérale qui suit le tir comme à la télé.",
+    "Sept auras de tir finies, comme dans leur scène.",
+    "Les tirs avec aura filent droit vers le but.",
+    "Buts spéciaux qui brisent le but (scène optionnelle).",
+    "Purement visuel : puissance et contres inchangés.",
+]
+
+[release.de]
+notes = [
+    "Seitenkamera folgt dem Schuss wie im Fernsehen.",
+    "Sieben fertige Schussauren wie in ihrer Szene.",
+    "Schüsse mit Aura fliegen gerade ins Tor.",
+    "Spezialtore zerstören das Tor (Szene optional).",
+    "Nur optisch: Stärke und Blocks bleiben gleich.",
+]
+
+[release.it]
+notes = [
+    "Telecamera laterale che segue il tiro come in TV.",
+    "Sette aure di tiro finite, come nella loro scena.",
+    "I tiri con aura volano dritti in porta.",
+    "Gol speciali che rompono la porta (scena opzionale).",
+    "Solo grafica: potenza e blocchi invariati.",
+]
+
+[release.pt]
+notes = [
+    "Câmera lateral que segue o chute como na TV.",
+    "Sete auras de chute acabadas, como na sua cena.",
+    "Chutes com aura voam retos para o gol.",
+    "Gols especiais que quebram o gol (cena opcional).",
+    "Só visual: não muda força nem bloqueios.",
+]
+
+[release.ja]
+notes = [
+    "テレビ中継のようなサイドカメラでシュートを追う。",
+    "演出どおりの完成したシュートオーラが７つ。",
+    "オーラ付きシュートはゴールへ一直線。",
+    "ゴールを破壊する特殊ゴール（演出は省略可）。",
+    "見た目のみ：威力やブロックは変わらない。",
+]
+
+[release.zh_hans]
+notes = [
+    "边线镜头像电视转播一样跟随射门。",
+    "七个与演出一致的完成射门光环。",
+    "带光环的射门直线飞向球门。",
+    "特殊进球会击碎球门（可跳过演出）。",
+    "仅视觉效果：不改变威力与封堵。",
+]
+
+[release.zh_hant]
+notes = [
+    "邊線鏡頭像電視轉播一樣跟隨射門。",
+    "七個與演出一致的完成射門光環。",
+    "帶光環的射門直線飛向球門。",
+    "特殊進球會擊碎球門（可跳過演出）。",
+    "僅視覺效果：不改變威力與封堵。",
+]

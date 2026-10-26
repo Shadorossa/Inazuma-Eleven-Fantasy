@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro elefantino (Tusk Force, whs02500, cut-in ev60_02500): one straight level line at
+# 1.8 m from the kick point into the goal point, whatever the shot's length (the cut-in's fireball flies at the camera
+# at 1.7-2.2 m). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball
+# centre over the pitch (m); goal_points count back from the goal point, points from the kick; the first / last height
+# is held.
+
+# Tiro elefantino (whs02500).
+[[edit]]
+target = "whs02500"
+trajectory = { points = [[0.0, 1.8]], straight = true, unblockable = false }

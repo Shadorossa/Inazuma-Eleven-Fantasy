@@ -1,0 +1,29 @@
+# «Círculo de espadas» (Gladius Arch, whs01040; mountain shot, cut-in ev60_01040): while the ball flies to the goal
+# after the cut-in it keeps the look of the cut-in's shot cut (c0300): its yellow comet streaming straight behind it
+# along the flight, and the cut-in's seven swords (the waza model ev60_01040, in their own proportions) following it
+# in an arch, hilts on a half circle round the ball's way, blades pointing out and forward, each in its soft glow,
+# swaying gently in a smooth wave round the arch; the swords come out of the kick point as the ball leaves it,
+# instead of the plain mountain special-shot aura (ega0085a).
+# The object is ev6104ga00 (effect/event/ev60/ev6104ga00/), built by research/scripts/gladius_arch_ball_fx.py from
+# the cut-in's effect object ev60010400 and the waza model chr/_waza/ev60_01040 (baked as rigid bone segments by
+# waza_replay_aura.py): the comet held at 310, ball at the origin flying +Z, x1.
+# The trigger copies the mountain special-shot aura's row (like = "ega0085a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\gladius_arch_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "gladius_arch"
+from = "ega0085a"
+object = "effect/event/ev60/ev6104ga00/ev6104ga00.objbin"
+
+[[shot_aura]]
+name = "gladius_arch"
+when = { techniques = ["whs01040"] }
+aura = "gladius_arch"
+like = "ega0085a"
+# born at the kick point and run on the ball's distance from it, never on the shooter's motion: the cut-in ball's own
+# 0.45 m a frame (c0300, 264-306) (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.45

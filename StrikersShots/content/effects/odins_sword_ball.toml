@@ -1,0 +1,39 @@
+# «Odin Sword» («Espada de Odín», whs01070, mountain shot, cut-in ev60_01070): the cut-in's rune circle on the pitch
+# and the sword coming out of it (owner 2026-10-24: «el punto fijo va a ser el suelo y va a salir hacia la portería de
+# abajo a arriba, con la marca del suelo y la espada saliendo de ella»). Two effects:
+# * odins_sword_mark (object ev6107om00, `ground_effect`): the rune circle spelling ODIN SWORD flat on the pitch at the
+#   kick point (2 cm over the grass), its two rune rings turning, the green light rising round it, its ground glow and
+#   the white light where the sword comes out, for the whole flight (it goes with the aura when the shot ends);
+# * odins_sword (object ev6107os00, `aura`, on the distance clock): the yellow crystal sword, its point round the ball
+#   (the ball where the point meets the blade, as in the cut-in), its blade reaching back to the circle: a 60 m blade
+#   revealed from the kick point as the ball flies, so it always runs from the circle to the ball, never stretched;
+#   its white core and shine streaks at their cut-in length behind the ball; aligned to the rising flight; and the
+#   vertical rune circles it leaves on its way (owner 2026-10-24: «ponle los círculos que va dejando la espada de odín
+#   según pasa y se desvanecen»): one every 9 m, centred on the flight, across it, left where it was born, growing,
+#   its runes turning and fading out as in the cut-in.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60010700 by
+# research/scripts/odins_sword_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\odins_sword_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "odins_sword"
+from = "ega0075a"
+object = "effect/event/ev60/ev6107os00/ev6107os00.objbin"
+
+[[effect]]
+name = "odins_sword_mark"
+from = "ega0021"
+object = "effect/event/ev60/ev6107om00/ev6107om00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "odins_sword"
+when = { techniques = ["whs01070"] }
+aura = "odins_sword"
+like = "ega0075a"
+# the blade comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the rune circle stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "odins_sword_mark" }

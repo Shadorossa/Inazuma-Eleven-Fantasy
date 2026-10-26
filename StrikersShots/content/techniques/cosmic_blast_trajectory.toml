@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Disparo cósmico (Cosmic Blast, whs00740, cut-in ev60_00740).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.80 m the whole way (the cone of space and the rings stay clear of the grass at
+# x0.33). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); the height is held.
+
+# Disparo cósmico (whs00740).
+[[edit]]
+target = "whs00740"
+trajectory = { points = [[0.0, 2.80]], straight = true, unblockable = false }

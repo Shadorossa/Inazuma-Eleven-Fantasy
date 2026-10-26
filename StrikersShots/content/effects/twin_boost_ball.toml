@@ -1,0 +1,26 @@
+# «Remate combinado» (Twin Boost, whs00020; fire shot, cut-in ev60_00020): while the ball runs to the goal it keeps the
+# look of the cut-in's shot cut (c0600, held at frame 399): its fire comet on the event ball, x1, steady (the cut-in's
+# fast pulse left out: it flickered in flight), the two swirls turning about the flight, looped, instead of the plain
+# fire special-shot aura (ega0075c); the streak of fire sparks the cut-in lays from the kick point comes out of the kick
+# point as the ball moves away, never stretched, its far end fading out. The object is ev6002tw00
+# (effect/event/ev60/ev6002tw00/), built by research/scripts/twin_boost_ball_fx.py from the cut-in's effect object
+# ev60000200. The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z
+# along the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\twin_boost_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "twin_boost"
+from = "ega0075c"
+object = "effect/event/ev60/ev6002tw00/ev6002tw00.objbin"
+
+[[shot_aura]]
+name = "twin_boost"
+when = { techniques = ["whs00020"] }
+aura = "twin_boost"
+like = "ega0075c"
+# born at the kick point and run on the ball's distance from it: the spark streak comes out of the kick point
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

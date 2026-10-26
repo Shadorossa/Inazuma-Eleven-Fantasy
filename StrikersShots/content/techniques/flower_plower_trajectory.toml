@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Polen devastador (Flower Plower, whs02150, cut-in ev60_02150): one straight level line
+# at 1.6 m from the kick point into the goal point, whatever the shot's length (the aura's cone runs straight behind
+# the ball, its dust cloud clear of the pitch). unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); goal_points count back from the goal point, points from the
+# kick; the first / last height is held.
+
+# Polen devastador (whs02150).
+[[edit]]
+target = "whs02150"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }

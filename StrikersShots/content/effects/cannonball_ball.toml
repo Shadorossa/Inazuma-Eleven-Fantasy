@@ -1,0 +1,35 @@
+# «Cannonball» («Bala de cañón», whs03080, mountain shot, cut-in ev60_03080): the end of the cut-in's last shot (c0400)
+# on the pitch (owner 2026-10-25: «me gustaría que el cañón fuese el punto fijo y de ahí salga el aura amarilla»).
+# Two effects:
+# * cannonball_mouth (object ev6308cp00, `ground_effect`): the charged fireball at the cannon's mouth, standing at the
+#   kick point, its centre at the flight's height, its glows facing the camera (round from every side); it stays the
+#   whole flight, the band firing out of it, and goes with the band when the shot ends;
+# * cannonball (object ev6308cb00, `aura`, on the distance clock): the flat yellow-orange fire band from the mouth to
+#   the ball, born at the kick point and revealed as the ball flies, never stretched, its texture flowing on, drawn
+#   crossed (it reads from the touchline as from behind), the ball inside its soft front end with a glow round it.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60030800 by
+# research/scripts/cannonball_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\cannonball_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "cannonball"
+from = "ega0075c"
+object = "effect/event/ev60/ev6308cb00/ev6308cb00.objbin"
+
+[[effect]]
+name = "cannonball_mouth"
+from = "ega0021"
+object = "effect/event/ev60/ev6308cp00/ev6308cp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "cannonball"
+when = { techniques = ["whs03080"] }
+aura = "cannonball"
+like = "ega0075c"
+# the band comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the fireball stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "cannonball_mouth" }

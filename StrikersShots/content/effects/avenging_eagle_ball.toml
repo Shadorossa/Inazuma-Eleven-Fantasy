@@ -1,0 +1,22 @@
+# «Águila implacable» (Avenging Eagle, whs03340; mountain shot, cut-in ev60_03340): while the ball flies to the goal
+# after the cut-in it keeps the look of the cut-in's last cut (c0600, the ball diving out of the sky): its cyan glow
+# and white-cyan core, the cyan-white beam behind it (coming out of the kick point, its far end fading) and the soft
+# white rings it sends out every 10 frames, growing and fading where they were sent out (looped), instead of the
+# plain mountain special-shot aura (ega0075a). The object is ev6334ae00 (effect/event/ev60/ev6334ae00/), built by
+# research/scripts/avenging_eagle_ball_fx.py from the cut-in's effect object ev60033400: c0600 held at its end (423),
+# ball at the origin flying +Z, x0.704. Left out: the sky backdrop and clouds, the shot aura left at the kick point.
+# It replaces the automatic aura of whs03340. Its flight: content\techniques\avenging_eagle_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "avenging_eagle"
+from = "ega0075a"
+object = "effect/event/ev60/ev6334ae00/ev6334ae00.objbin"
+
+[[shot_aura]]
+name = "avenging_eagle"
+when = { techniques = ["whs03340"] }
+aura = "avenging_eagle"
+like = "ega0075a"

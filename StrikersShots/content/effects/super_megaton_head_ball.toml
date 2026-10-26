@@ -1,0 +1,29 @@
+# «Cabezazo supermegatón» (Super Megaton Head, whs03110; mountain shot, cut-in ev60_03110): while the ball flies to the
+# goal after the cut-in it keeps the look of the cut-in's last shot (c0400, after the header): the flame burst on the
+# ball, the long golden light streak out of it, and behind it the tunnel of yellow spirals turning about the flight,
+# the grey wind swirls and the lightning, instead of the plain mountain special-shot aura (ega0075a).
+# The object is ev6031sm00 (effect/event/ev60/ev6031sm00/), built by research/scripts/super_megaton_head_ball_fx.py
+# from the cut-in's effect object ev60031100: c0400 held at frame 382 from the aura's first frame, looped, ball at the
+# origin flying +Z, x0.5 (the tunnel ~2.4 m across, the head ~0.7 m round the ball); the trail (~11 m) comes out of the
+# kick point as the ball moves away, never stretched, its far end faded, the spirals turning on at the cut-in's rate
+# and the lightning flickering on; the wind swirls are billboards, round from every side.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\super_megaton_head_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "super_megaton_head"
+from = "ega0075a"
+object = "effect/event/ev60/ev6031sm00/ev6031sm00.objbin"
+
+[[shot_aura]]
+name = "super_megaton_head"
+when = { techniques = ["whs03110"] }
+aura = "super_megaton_head"
+like = "ega0075a"
+# the trail comes out of the kick point: the clip runs on the ball's distance from the kick point
+# (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

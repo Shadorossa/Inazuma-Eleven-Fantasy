@@ -1,0 +1,59 @@
+schema = "VRFW.text_key/1"
+# Texts of «Strikers Shots» (format of the text engine: docs/framework/types/text.md): the «Mods» screen's name and
+# description, and the «Saltar la cinemática de gol especial» row of «Opciones de mods» (options.toml).
+# The On / Off value names are mod_options' own. A language missing here falls back to English.
+default_lang = "en"
+
+[en.new]
+mod_name = "Strikers Shots"
+mod_description = "Shots at goal like a TV broadcast: while a shot at goal of your team flies, the camera shows it from the touchline (turned toward the goal while a shot can be chained), then your camera comes back. Seven finished shot auras: Chaos Break, Doom Break, Black Dawn, Pegasus Punch, Meteor Attack, Avenging Eagle and Doom Dive Drive keep the look of their cut-in while the ball flies. Aura shots fly a straight line into the goal and the blue shot band on the pitch is hidden. Special goals: scoring with Meteoric Fire Tornado, Inazuma Break, Shadow Empress or Ultimate Eleven Assault smashes the goal (Ultimate Eleven Assault's scene is golden); option «Skip special goal scene» in Mod options. Visual only: no power, cost or block change. Works with Living Shots, which adds the other shot auras."
+skip_goal_scene = "Skip special goal scene"
+skip_goal_scene_help = "On: goals scored with this mod's moves show the normal goal scene."
+
+[es.new]
+mod_name = "Strikers Shots"
+mod_description = "Tiros a portería como en la tele: mientras vuela un tiro a portería de tu equipo, la cámara lo muestra desde la banda (girada hacia la portería mientras se puede encadenar) y luego vuelve tu cámara. Siete auras de tiro terminadas: Remate caótico, Mangual letal, Alba oscura, Golpe justiciero, Ataque meteorito, Águila implacable y Aguijón letal conservan el aspecto de su cinemática mientras vuela el balón. Los tiros con aura vuelan en línea recta a la portería y se oculta la franja azul del tiro en el campo. Goles especiales: marcar con Tornado de fuego meteoro, Ruptura relámpago, Emperatriz oscura o Impulso del equipo definitivo rompe la portería (la escena de Impulso del equipo definitivo es dorada); opción «Saltar la cinemática de gol especial» en Opciones de mods. Solo visual: no cambia potencia, coste ni bloqueos. Funciona junto a Living Shots, que añade las demás auras de tiro."
+skip_goal_scene = "Saltar la cinemática de gol especial"
+skip_goal_scene_help = "Activado: los goles con técnicas de este mod muestran el gol normal."
+
+[fr.new]
+mod_name = "Strikers Shots"
+mod_description = "Des tirs cadrés comme à la télé : pendant qu'un tir cadré de votre équipe vole, la caméra le montre depuis la ligne de touche (tournée vers le but quand un tir peut être enchaîné), puis votre caméra revient. Sept auras de tir finies gardent l'aspect de leur cinématique pendant que le ballon vole. Les tirs avec aura filent en ligne droite vers le but et la bande bleue du tir sur le terrain est masquée. Buts spéciaux : marquer avec Tornade de feu météore, Éclair pulvérisant, Impératrice des ombres ou Attaque équipe ultime brise le but (la scène d'Attaque équipe ultime est dorée) ; option « Passer la scène de but spéciale » dans Options des mods. Purement visuel : puissance, coût et contres inchangés. Fonctionne avec Living Shots, qui ajoute les autres auras de tir."
+skip_goal_scene = "Passer la scène de but spéciale"
+skip_goal_scene_help = "Activé : les buts marqués avec ce mod montrent le but normal."
+
+[de.new]
+mod_name = "Strikers Shots"
+mod_description = "Torschüsse wie im Fernsehen: Während ein Torschuss deines Teams fliegt, zeigt die Kamera ihn von der Seitenlinie (zum Tor gedreht, solange ein Schuss verkettet werden kann), danach kehrt deine Kamera zurück. Sieben fertige Schussauren behalten das Aussehen ihrer Zwischensequenz, während der Ball fliegt. Schüsse mit Aura fliegen gerade ins Tor und das blaue Schussband auf dem Platz wird ausgeblendet. Spezialtore: Ein Tor mit Meteor-Feuertornado, Blitzausbruch, Schattenkaiserin oder Sturm der Äonen zerstört das Tor (die Szene von Sturm der Äonen ist golden); Option „Spezial-Torszene überspringen“ in den Mod-Optionen. Nur optisch: Stärke, Kosten und Blocks bleiben gleich. Funktioniert mit Living Shots, das die übrigen Schussauren hinzufügt."
+skip_goal_scene = "Spezial-Torszene überspringen"
+skip_goal_scene_help = "An: Tore mit Techniken dieses Mods zeigen die normale Torszene."
+
+[it.new]
+mod_name = "Strikers Shots"
+mod_description = "Tiri in porta come in TV: mentre vola un tiro in porta della tua squadra, la telecamera lo mostra dalla linea laterale (girata verso la porta mentre il tiro si può concatenare), poi torna la tua telecamera. Sette aure di tiro finite mantengono l'aspetto della loro scena mentre il pallone vola. I tiri con aura volano in linea retta verso la porta e la fascia blu del tiro sul campo è nascosta. Gol speciali: segnare con Tornado di Fuoco Meteora, Ariete Inazuma, Imperatrice Oscura o Assalto della Squadra Invincibile distrugge la porta (la scena di Assalto della Squadra Invincibile è dorata); opzione «Salta la scena del gol speciale» in Opzioni delle mod. Solo visivo: potenza, costo e blocchi non cambiano. Funziona con Living Shots, che aggiunge le altre aure di tiro."
+skip_goal_scene = "Salta la scena del gol speciale"
+skip_goal_scene_help = "Attivato: i gol con le tecniche di questa mod mostrano il gol normale."
+
+[pt.new]
+mod_name = "Strikers Shots"
+mod_description = "Chutes a gol como na TV: enquanto voa um chute a gol da sua equipe, a câmera mostra-o a partir da lateral (virada para o gol enquanto o chute pode ser encadeado) e depois volta a sua câmera. Sete auras de chute acabadas mantêm o visual da sua cena enquanto a bola voa. Os chutes com aura voam em linha reta para o gol e a faixa azul do chute no campo fica oculta. Gols especiais: marcar com Furacão Meteórico, Relâmpago Destruidor, Imperatriz das Sombras ou Ataque dos Onze Supremos destrói o gol (a cena de Ataque dos Onze Supremos é dourada); opção «Saltar a cena de golo especial» em Opções de mods. Apenas visual: não muda potência, custo nem bloqueios. Funciona com Living Shots, que adiciona as outras auras de chute."
+skip_goal_scene = "Saltar a cena de golo especial"
+skip_goal_scene_help = "Ativado: os golos com técnicas deste mod mostram o golo normal."
+
+[ja.new]
+mod_name = "Strikers Shots"
+mod_description = "テレビ中継のようなシュート：自チームのゴールへのシュートが飛んでいる間、カメラがサイドラインから映し（シュートチェインが可能な間はゴールの方へ向き）、その後いつものカメラに戻ります。完成した７つのシュートオーラが、ボールが飛んでいる間もカットインの見た目を保ちます。オーラ付きのシュートはゴールへ一直線に飛び、フィールド上の青いシュートラインは表示されません。特殊ゴール：メテオッド・ファイアトルネード、イナズマブレイク、エンプレス・シャドウ、最強イレブン波動で得点するとゴールが壊れます（最強イレブン波動の演出は金色）。「MODオプション」に「特殊ゴール演出をスキップ」の設定があります。見た目だけの変更で、威力・消費・ブロックは変わりません。ほかのシュートオーラを追加する Living Shots と一緒に使えます。"
+skip_goal_scene = "特殊ゴール演出をスキップ"
+skip_goal_scene_help = "オン：このMODの必殺技でのゴールは通常のゴール演出になります。"
+
+[zh_hans.new]
+mod_name = "Strikers Shots"
+mod_description = "像电视转播一样的射门：本队射向球门的球飞行时，镜头从边线拍摄（可以连续射门时转向球门），之后回到你的镜头。七个完成的射门光环在球飞行时保持过场演出中的外观。带光环的射门直线飞向球门，球场上的蓝色射门带被隐藏。特殊进球：用陨星·烈焰龙卷风、闪电爆破、帝影裁决或最强十一人波动进球会击碎球门（最强十一人波动的演出为金色）；“模组选项”中有“跳过特殊进球演出”选项。仅为视觉效果：威力、消耗和阻挡都不变。可与添加其他射门光环的 Living Shots 一起使用。"
+skip_goal_scene = "跳过特殊进球演出"
+skip_goal_scene_help = "开：用本模组必杀技的进球显示普通进球演出。"
+
+[zh_hant.new]
+mod_name = "Strikers Shots"
+mod_description = "像電視轉播一樣的射門：本隊射向球門的球飛行時，鏡頭從邊線拍攝（可以連續射門時轉向球門），之後回到你的鏡頭。七個完成的射門光環在球飛行時保持過場演出中的外觀。帶光環的射門直線飛向球門，球場上的藍色射門帶被隱藏。特殊進球：用隕石烈焰龍捲風、閃電爆破、帝影裁決或最強十一人波動進球會擊碎球門（最強十一人波動的演出為金色）；「模組選項」中有「跳過特殊進球演出」選項。僅為視覺效果：威力、消耗和攔截都不變。可與添加其他射門光環的 Living Shots 一起使用。"
+skip_goal_scene = "跳過特殊進球演出"
+skip_goal_scene_help = "開：用本模組必殺技的進球顯示普通進球演出。"

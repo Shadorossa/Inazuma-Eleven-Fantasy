@@ -1,0 +1,23 @@
+# «Aguijón letal» (Doom Dive Drive, whs01580 / whs01580_mm; fire shot, cut-in ev60_01580): while the ball flies to the
+# goal after the cut-in it keeps the look of the cut-in's last cut (c0500): the red-hot ball in its glow shells and its
+# dark-blue swirl, and the black lightning cracks with their blue glow coming out from round it, flickering as in the
+# cut-in, instead of the plain fire special-shot aura (ega0075c). The cut's speed-line backdrop is not part of it.
+# The object is ev6158dd00 (effect/event/ev60/ev6158dd00/), built by research/scripts/doom_dive_drive_ball_fx.py from
+# the cut-in's effect object ev60015800: c0500's last 66 frames (331-397) looped on every part, ball at the origin
+# flying +Z, x0.726.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "doom_dive_drive"
+from = "ega0075c"
+object = "effect/event/ev60/ev6158dd00/ev6158dd00.objbin"
+
+[[shot_aura]]
+name = "doom_dive_drive"
+when = { techniques = ["whs01580", "whs01580_mm"] }
+aura = "doom_dive_drive"
+like = "ega0075c"

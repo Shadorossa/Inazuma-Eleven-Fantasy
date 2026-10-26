@@ -1,0 +1,28 @@
+# «Unicorn Boost» («Remate unicornio», whs01210; mountain shot, cut-in ev60_01210): while the ball flies to the goal it
+# wears the end of the cut-in's last shot (c0400, held at frame 370): the glows, wind swirls and short streaks round
+# the ball, and the giant unicorn galloping with it, the ball just in front of its chest under its head: the solid
+# unicorn (its cut-in material) and its glowing aura shell (its own material), in its own proportions, level along the
+# flight, running the gallop cycle of «Twin Gallop»'s horses (the cut-in's unicorn only leaps once), one stride every
+# 50 frames, seamless from the first frame, born at the kick point.
+# x0.4 of the cut-in size (the unicorn ~4.6 m long). The backdrop, the release burst left at the kick point and the
+# earlier cuts stay out.
+# The object is ev6121ub00 (effect/event/ev60/ev6121ub00/), built by research/scripts/unicorn_boost_ball_fx.py from
+# ev60012100 with the waza model ev60_01210 baked in and the shell of ev60012100_unicorn grafted in.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\unicorn_boost_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "unicorn_boost"
+from = "ega0075a"
+object = "effect/event/ev60/ev6121ub00/ev6121ub00.objbin"
+
+[[shot_aura]]
+name = "unicorn_boost"
+when = { techniques = ["whs01210"] }
+aura = "unicorn_boost"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

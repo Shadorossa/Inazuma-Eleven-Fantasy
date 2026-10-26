@@ -1,0 +1,22 @@
+# «Cabezazo megatón» (Megaton Head, whs00910; mountain shot, cut-in ev60_00910): while the ball flies to the goal it is
+# inside the head of the comet of the cut-in's last shot (c0400): the orange, yellow and white head glows round the
+# ball, the flames and the long tail streaming straight back along the flight, their texture flowing for the whole
+# flight, x0.15, the tail coming out of the kick point and fading out, instead of the plain mountain special-shot aura
+# (ega0075a). The object is ev6091mh00 (effect/event/ev60/ev6091mh00/), built by research/scripts/megaton_head_ball_fx.py
+# from the cut-in's effect object ev60009100. The trigger copies the mountain special-shot aura's row
+# (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b), so
+# the aura follows the flight (content\techniques\megaton_head_trajectory.toml).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "megaton_head"
+from = "ega0075a"
+object = "effect/event/ev60/ev6091mh00/ev6091mh00.objbin"
+
+[[shot_aura]]
+name = "megaton_head"
+when = { techniques = ["whs00910"] }
+aura = "megaton_head"
+like = "ega0075a"

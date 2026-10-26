@@ -1,0 +1,31 @@
+# «Omnisabiduría divina» (God Alone Knows, whs02900, wind shot, cut-in ev60_02900; its own cut-in, not God Knows'
+# ev60_00340): while the ball runs along the pitch to the goal after the cut-in it keeps the look of the cut-in's last
+# shot (c0500, the ball out of its trench running on the ground) instead of the plain wind special-shot aura
+# (ega0075b): inside its white-gold energy sphere, the dust crown it throws up round the sphere and the dust waves
+# rising behind it, the back fire it drags, the debris and the rocks tumbling out; the furrow it ploughs (the
+# cut-in's trench and cracks) is laid on the grass as the ball passes (fixed on the pitch from the kick point, never
+# stretched), under the sphere.
+# The object ev6290ga00 (effect/event/ev60/ev6290ga00/) is built by research/scripts/god_alone_knows_ball_fx.py from
+# the cut-in's effect object ev60029000 (cutin_replay_aura.py; c0500 held at frame 570 with its texture scrolls running
+# on, the rocks' flights cycled, x0.25, priorities <= 30); docs/game/media/god-alone-knows-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; skillEffectBitFlag 0): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). No other technique key uses ev60_02900.
+# Its flight: content\techniques\god_alone_knows_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "god_alone_knows_orb"
+from = "ega0075b"
+object = "effect/event/ev60/ev6290ga00/ev6290ga00.objbin"
+
+[[shot_aura]]
+name = "god_alone_knows_orb"
+when = { techniques = ["whs02900"] }
+aura = "god_alone_knows_orb"
+like = "ega0075b"
+# born at the kick point and run on the ball's distance from it: the furrow stays where the ball ploughed it
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

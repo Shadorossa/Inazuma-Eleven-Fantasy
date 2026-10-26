@@ -1,0 +1,25 @@
+# «Ninja Toad» («Sapo ninja», whs02790; mountain shot, cut-in ev60_02790): while the ball flies to the goal it wears
+# the end of the cut-in's last shot (c0050, held at frame 474): the green spiky flame sleeve round the ball with its
+# white heart and a small glow, and the green comet tail laid straight behind it (~5.2 m), out of the kick point and
+# fading at its far end. The ninja and toad shots before it, the bounce's yellow burst and lights, the kick's rings and
+# the screen streaks stay out.
+# The object is ev6279nt00 (effect/event/ev60/ev6279nt00/), built by research/scripts/ninja_toad_ball_fx.py from
+# ev60027900.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\ninja_toad_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "ninja_toad"
+from = "ega0075a"
+object = "effect/event/ev60/ev6279nt00/ev6279nt00.objbin"
+
+[[shot_aura]]
+name = "ninja_toad"
+when = { techniques = ["whs02790"] }
+aura = "ninja_toad"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,10 @@
+# «Caseta del club» (play_guide_top_menu): the rows BetterQoL adds to its list («Estadísticas del club», «Álbum de
+# jugadores»; grafts util_club_stats_row / util_album_row) need a place on screen. The list layer has 7 instances but its
+# locator object places 5 of them; attach_slots gives every instance an attach row and a joint after the last one
+# (docs/framework/types/menu.md), so «Ayuda» stays last in the list instead of being drawn on the header.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "play_guide_top_menu"
+layer = "mainmenu90_12_list_item_small"
+attach_slots = true

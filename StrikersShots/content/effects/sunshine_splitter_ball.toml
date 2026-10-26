@@ -1,0 +1,24 @@
+# «Espada solar» (Sunshine Splitter, whs10020; fire shot, cut-in ev60_10020): while the ball flies to the goal it wears
+# the cut-in's last shot (c0040, frame 505, held): the sword of sunfire, its golden flame band with the yellow / white
+# core strips and the bright head round the ball, laid straight behind it, coming out of the kick point as the ball
+# moves away and fading at its far end, x0.3, instead of the plain fire special-shot aura (ega0075c). The object is
+# ev6102ss00 (effect/event/ev60/ev6102ss00/), built by research/scripts/sunshine_splitter_ball_fx.py from the cut-in's
+# effect object ev60100200. The trigger copies the fire special-shot aura's row (like = "ega0075c"):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "sunshine_splitter"
+from = "ega0075c"
+object = "effect/event/ev60/ev6102ss00/ev6102ss00.objbin"
+
+[[shot_aura]]
+name = "sunshine_splitter"
+when = { techniques = ["whs10020"] }
+aura = "sunshine_splitter"
+like = "ega0075c"
+# the sword comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

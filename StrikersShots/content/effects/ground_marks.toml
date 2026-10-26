@@ -1,0 +1,19 @@
+# «Strikers Shots»: the ground-trail pieces (content\techniques\*.toml `ground_trail`, docs/game/mechanics/move-mini-effects.md §9.12).
+# Built on the retail grounding dust ega2011, the one battle effect proven to draw when the effect manager plays it loose
+# in a match: research/scripts/ground_mark_fx.py makes a [[recolor]] copy of ega2011 per move
+# (container, skeleton, effect_define template row and group: ega2011's), drops its particles and puts in the move's
+# OWN ground mark from its cut-in (meshes baked flat at the frame the mark is fully drawn, its material and textures,
+# priority <= 30, the root still), 1.4 x 1.8 m along +Z (the play request turns it along the shot); clips `life` (lit
+# 3.5 s, faded to 0 in 1 s) and `gone` (alpha 0): in = life, loop = gone, so a piece plays once and stays invisible.
+# Files generated on the author's PC under assets\data\{common,dx11}\effect\battle\common\egx*\ (never committed).
+# Every mark has depth test on, no soft fade, its leading
+# edge on the ball's point (body behind), and is played 0.12 m over the pitch; the technique type removes each piece
+# after `life` s and all of them on save / goal / shot end (content\techniques\*.toml, move-mini-effects.md §9.14).
+schema = "VRFW.effect/1"
+
+# Mangual letal / Doom Break (whs01410): the c0400 furrow the ball drags (Effect_T1_24) of ev60014100, frame 435.
+[[effect]]
+name = "doom_break_mark"
+from = "ega2011"
+object = "effect/battle/common/egx1410/egx1410.objbin"
+clips = { in = "life", loop = "gone", out = "" }

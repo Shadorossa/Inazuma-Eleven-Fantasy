@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Fisura celestial (Crack Shot, whs03350, cut-in ev60_03350).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_03350 c0400 flies 23 m along +Z, 2.3 m -> 0.97 m up over frames
+# 446-516, levelling out.
+# Flight: one straight level line from the kick point to the goal, the ball centre at 0.97 m (its height in the
+# cut-in's last shot) the whole way (research/scripts/crack_shot_ball_fx.py FLIGHT_H).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Fisura celestial (whs03350).
+[[edit]]
+target = "whs03350"
+trajectory = { points = [[0.0, 0.97]], straight = true, unblockable = false }

@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chut vitral (Divine Drive, whs03040, cut-in ev60_03040).
+#
+# Measured: in c0500 the ball is volleyed out of the crystal 12.9 m over the ground at effect frame ~426 and flies down
+# 47 deg along the beam, 19.5 m, to 463 (research/scripts/divine_drive_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# (the crystal's centre) to the goal, the ball centre at 3.0 m the whole way: the cut-in's 12.9 m kick point brought
+# down to the highest level flight this mod's _flight_height.toml leaves as measured (as Cañón X).
+# unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Chut vitral (whs03040).
+[[edit]]
+target = "whs03040"
+trajectory = { points = [[0.0, 3.00]], straight = true, unblockable = false }

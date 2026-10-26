@@ -1,0 +1,7 @@
+# Strikers Shots: technique-type defaults of this mod (docs/framework/technique.md §4e). They apply to this mod's own
+# declarations only (technique_engine minifx::mod_straight reads the declaring mod's file).
+
+[trajectory]
+# Every aura shot of this mod flies one straight line from its start to the goal point. The points of each move's
+# flight stay in its file; `trajectory.straight = false` in a move flies its curve again.
+straight = true

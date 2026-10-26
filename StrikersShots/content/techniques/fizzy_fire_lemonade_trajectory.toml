@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Granizado de fuego alto (Fizzy Fire Lemonade, whs03210, cut-in ev60_03210): one
+# straight level line at 0.56 m from the kick point into the goal point, whatever the shot's length: the ball skims the
+# pitch as in the cut-in's last shot, the foot of its dust 0.02 m over the grass and the furrow the aura lays on the
+# pitch under it (research/scripts/fizzy_fire_lemonade_ball_fx.py flight_h). unblockable = false: the game's block rules
+# (this mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Granizado de fuego alto (whs03210).
+[[edit]]
+target = "whs03210"
+trajectory = { points = [[0.0, 0.56]], straight = true, unblockable = false }

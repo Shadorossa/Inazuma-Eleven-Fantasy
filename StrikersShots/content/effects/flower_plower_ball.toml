@@ -1,0 +1,24 @@
+# «Polen devastador» (Flower Plower, whs02150; mountain shot, cut-in ev60_02150): the end of the cut-in's final shot
+# (c0400, held at frame 366) on the ball: the glowing red head round the ball, the long red cone of pollen beams behind
+# it with its pollen puffs, the rose petals born round the ball and left behind along the path (spinning, drifting
+# outward, shrinking away) with their soft glows, the blinking sparks and the dust cloud under it; everything behind
+# the head comes out of the kick point as the ball moves away (on the distance clock, never stretched) and fades out at its far end. x0.5. The trigger copies the mountain special-shot aura's row
+# (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame. The object under
+# assets\data is generated on the author's PC from the game's own cut-in effect ev60021500 by
+# research/scripts/flower_plower_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\flower_plower_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "flower_plower"
+from = "ega0075a"
+object = "effect/event/ev60/ev6215fp00/ev6215fp00.objbin"
+
+[[shot_aura]]
+name = "flower_plower"
+when = { techniques = ["whs02150"] }
+aura = "flower_plower"
+like = "ega0075a"
+# the cone comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

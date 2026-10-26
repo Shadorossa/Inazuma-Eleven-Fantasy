@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cascabel (Sidewinder, whs01650), cut-in ev60_01650.
+#
+# One straight level line 0.40 m up from the kick to the goal (owner 2026-10-24: horizontal; in the cut-in's shot cut
+# c0030 the ball flies nearly level, its centre 0.32-0.45 m over the pitch). unblockable = false: the game's block
+# rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count from the kick;
+# one point = a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Cascabel (whs01650).
+[[edit]]
+target = "whs01650"
+trajectory = { points = [[0.0, 0.40]], straight = true, unblockable = false }

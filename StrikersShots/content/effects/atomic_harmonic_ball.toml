@@ -1,0 +1,26 @@
+# «Atomic Harmonic» («Movimientos armónicos», whs01790; forest shot, cut-in ev60_01790): while the ball flies to the
+# goal it wears the cut-in's last cut (c0300, held at frame 344, once the kick's energy sphere has burst into the
+# shot): the two blue / white streaks of light behind the ball (5 m, the ball at their head, their light flowing on),
+# coming out of the kick point and fading at their tail, and the four light-blue rings the shot sends out every 10
+# frames, across the flight and centred on it, growing 1.3 -> 2.5 m across and fading as they ride along with the ball
+# 0.4 to 13 m behind it. The kick's energy sphere, its rays and ripples, the smoke and clouds stay out.
+# The object is ev6179ah00 (effect/event/ev60/ev6179ah00/), built by research/scripts/atomic_harmonic_ball_fx.py from
+# ev60017900.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"); the distance clock reveals the streaks
+# from the kick point. Flight: content\techniques\atomic_harmonic_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "atomic_harmonic"
+from = "ega0075d"
+object = "effect/event/ev60/ev6179ah00/ev6179ah00.objbin"
+
+[[shot_aura]]
+name = "atomic_harmonic"
+when = { techniques = ["whs01790"] }
+aura = "atomic_harmonic"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

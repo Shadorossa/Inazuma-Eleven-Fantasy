@@ -1,0 +1,30 @@
+# «Bullseye Blaze» («Chut al rojo vivo», whs03310, fire shot, cut-in ev60_03310): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last shot (c0500, the burning ball coming down at the goal; owner
+# 2026-10-24: «el mismo efecto del final de fuego, los aros que se van creando y el carril de fuego que se crea en el
+# suelo»): the fire on the ball as at the shot's end; the fire rings it gives off, one every 5 frames, each born on the
+# ball, centred on the flight and facing along it, growing and fading where it was given off; and the fire lane on the
+# pitch, the two walls of flames either side of the ball's way and the red glow between them, laid where the ball
+# passes (fixed on the pitch from the kick point, never stretched) and fading out 14-22 m behind the ball, instead of
+# the plain fire special-shot aura (ega0075c).
+# The object is ev6331bb00 (effect/event/ev60/ev6331bb00/), built by research/scripts/bullseye_blaze_ball_fx.py from
+# the cut-in's effect object ev60033100 (cutin_replay_aura.py; c0500 held at 290 with its texture flow running on, the
+# six rings replayed from their births, the lane in 1-2 m slices; priorities <= 30). The trigger copies the fire
+# special-shot aura's row (like = "ega0075c": its callback turns +Z along the ball's velocity). Its flight:
+# content\techniques\bullseye_blaze_trajectory.toml. No other technique key uses ev60_03310.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "bullseye_blaze"
+from = "ega0075c"
+object = "effect/event/ev60/ev6331bb00/ev6331bb00.objbin"
+
+[[shot_aura]]
+name = "bullseye_blaze"
+when = { techniques = ["whs03310"] }
+aura = "bullseye_blaze"
+like = "ega0075c"
+# the rings and the lane stay where the ball passed: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,29 @@
+# «Ventisca de fuego» (Fire Blizzard: whs00850, wind, and whs00940, fire, the same two-player shot; cut-ins
+# ev60_00850 / ev60_00940, the same cuts and camera, one effect object): while the
+# ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0500): the swirl of fire and
+# ice sheets round the ball, both elements at once (fire arms between the ice arms) and the blizzard, x0.25, instead of
+# the plain special-shot aura of its element (ega0075b wind / ega0075c fire).
+# The object is ev6085fb00 (effect/event/ev60/ev6085fb00/), built by research/scripts/fire_blizzard_ball_fx.py from
+# the cut-in's effect object ev60008500. docs/game/media/fire-blizzard-ball-fx.md.
+# Each trigger copies its element's special-shot aura row (like): CB_SkillShootBallAura turns +Z along the ball's
+# velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\fire_blizzard_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fire_blizzard"
+from = "ega0075b"
+object = "effect/event/ev60/ev6085fb00/ev6085fb00.objbin"
+
+[[shot_aura]]
+name = "fire_blizzard"
+when = { techniques = ["whs00850"] }
+aura = "fire_blizzard"
+like = "ega0075b"
+
+[[shot_aura]]
+name = "fire_blizzard_fire"
+when = { techniques = ["whs00940"] }
+aura = "fire_blizzard"
+like = "ega0075c"

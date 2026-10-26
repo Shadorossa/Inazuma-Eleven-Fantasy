@@ -1,0 +1,16 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Aguijón letal (Doom Dive Drive, whs01580, whs01580_mm, cut-in ev60_01580) (docs/framework/types/technique.md
+# `trajectory`): one level line at 1.0 m from the kick point into the goal point (owner 2026-10-24: horizontal,
+# never rising or falling; never the game's own curved / arched path), whatever the shot's length.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m): points from the kick, goal_points counted back from the goal point; the first / last height is held.
+
+# Aguijón letal (whs01580).
+[[edit]]
+target = "whs01580"
+trajectory = { points = [[0.0, 1.0]], goal_points = [[0.0, 1.0]], unblockable = false }
+
+# Aguijón letal (whs01580_mm).
+[[edit]]
+target = "whs01580_mm"
+trajectory = { points = [[0.0, 1.0]], goal_points = [[0.0, 1.0]], unblockable = false }

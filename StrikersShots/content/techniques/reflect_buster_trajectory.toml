@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Disparo con rebotes (Reflect Buster, whs00280, cut-in ev60_00280): its own flight,
+# as heights over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# One level line at 1.2 m from the kick point into the goal point (owner 2026-10-24: horizontal, never rising or
+# falling; never the game's own curved / arched path), whatever the shot's length.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Disparo con rebotes (Reflect Buster, whs00280).
+[[edit]]
+target = "whs00280"
+trajectory = { points = [[0.0, 1.2]], goal_points = [[0.0, 1.2]], unblockable = false }

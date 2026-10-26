@@ -1,0 +1,25 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tornado de fuego (Fire Tornado, whs00030, cut-in ev60_00030) and of the two moves that
+# wear its recoloured aura, Tornado oscuro (Dark Tornado, whs00430) and Tornado inverso (Back Tornado, whs00320).
+#
+# Measured: in Fire Tornado's last cut (c0040) the event ball leaves the tornado 7.1 m up and comes down a gentle line,
+# reaching 2.0 m at the goal end (research/scripts/shot_trajectory_from_cutin.py --points --move fire_tornado).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.0 m (the measured line's goal-end height) the whole way; the three moves share the
+# aura, so they share the flight. unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Tornado de fuego (whs00030).
+[[edit]]
+target = "whs00030"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }
+
+# Tornado oscuro (whs00430).
+[[edit]]
+target = "whs00430"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }
+
+# Tornado inverso (whs00320).
+[[edit]]
+target = "whs00320"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

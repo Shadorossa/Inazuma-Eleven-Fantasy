@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro giratorio (Spinning Shot, whs00130), cut-in ev60_00130.
+#
+# In the cut-in (c0050) the ball flies off the kick low and almost level, drawing its long yellow trail.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.20 m the whole way, so the flame head (~0.5 m in radius) and the crossed trail
+# (~0.4 m across its middle) stay clear of the grass. unblockable = false: the game's block rules (this mod changes no
+# block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Tiro giratorio (whs00130).
+[[edit]]
+target = "whs00130"
+trajectory = { points = [[0.0, 1.20]], straight = true, unblockable = false }

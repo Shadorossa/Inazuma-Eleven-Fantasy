@@ -1,0 +1,27 @@
+# «Pegasus Shot» («Remate Pegaso», whs01200; forest shot, cut-in ev60_01200): while the ball flies to the goal it wears
+# the end of the cut-in's last shot (c0300, held at frame 340): the cyan comet round the ball (its head, shells, waves
+# and the ball lights), the comet tail and its two streak tails straight behind it (born at the kick point, the tail
+# fading out), and the glowing blue pegasus of the cut-in (its own material) flying right behind and above the ball in
+# its cut-in pose (0.6 m higher), gently swaying and its wings beating on as in the cut-in (one 60-frame beat looped seamlessly from
+# the first frame), born at the kick point. At the cut-in size. The speed-line dome and the fake-particle speed fields round the
+# close camera and the earlier cuts stay out.
+# The object is ev6120ps00 (effect/event/ev60/ev6120ps00/), built by research/scripts/pegasus_shot_ball_fx.py from
+# ev60012000 with the pegasus of ev60012000_pegasus grafted in.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\pegasus_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "pegasus_shot"
+from = "ega0075d"
+object = "effect/event/ev60/ev6120ps00/ev6120ps00.objbin"
+
+[[shot_aura]]
+name = "pegasus_shot"
+when = { techniques = ["whs01200"] }
+aura = "pegasus_shot"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,27 @@
+# «Galactic GigaFall» («Caída galáctica», whs02630, void shot, cut-in ev60_02630): while the ball flies to the goal it
+# is the bright head of the cut-in's OWN galaxy comet, as its last shot (c0400) shows it, in a seamless loop: the
+# throbbing head lights round the ball (camera-facing, as in the cut-in), the white spiralling galaxy tails trailing
+# straight behind it along the flight (texture flowing, the set turning slowly) and the falling stars, rings of star
+# specks born on the ball one after another that widen and drift back until they go out (a 144-frame cycle), and the
+# blue / white-cyan glow fans filling the comet (faded across their width and toward their far end: no straight
+# edge), instead of the plain void special-shot aura (ega0075e). The tails and glow come out of the kick point (never
+# stretched) and fade out at their far end. Dropped: the dark backdrop and the space scene of c0100-c0300; x0.1875 of
+# the cut-in size (owner 2026-10-24: the tails ~6 m behind the ball, the head ~0.7 m across).
+# The object is ev6263gg00 (assets\data\{common,dx11}\effect\event\ev60\ev6263gg00\), built by
+# research/scripts/galactic_gigafall_ball_fx.py from ev60026300; docs/game/media/galactic-gigafall-ball-fx.md.
+# The trigger copies the void special-shot aura's row (like = "ega0075e", skillColorIdx 4): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). No _or / _mm variant uses this cut-in.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "galactic_gigafall_comet"
+from = "ega0075e"
+object = "effect/event/ev60/ev6263gg00/ev6263gg00.objbin"
+
+[[shot_aura]]
+name = "galactic_gigafall_comet"
+when = { techniques = ["whs02630"] }
+aura = "galactic_gigafall_comet"
+like = "ega0075e"

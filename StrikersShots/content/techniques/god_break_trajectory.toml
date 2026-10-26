@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Disparo sagrado (God Break, whs00900, cut-in ev60_00900).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_00900 c0200 flies level at 1.0 m (1.02 m -> 1.00 m over effect
+# frames 193-228), straight along the effect's +Y, inside its light.
+# Flight: one straight level line from the kick point to the goal, the ball centre at 1.0 m the whole way.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Disparo sagrado (whs00900).
+[[edit]]
+target = "whs00900"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

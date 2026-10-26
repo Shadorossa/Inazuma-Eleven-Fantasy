@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Ofensiva danzarina (Flash Dance, whs02800, cut-in ev60_02800).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_02800 c0400 is kicked at effect frame ~288 at 16 m and dives
+# along its way down to 1.6 m at 320 (the aura's held frame), then slows into the goal.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.00 m the whole way (the glowing sphere round the ball is ~0.4 m across, the flame
+# streak behind it stays well over the grass). unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Ofensiva danzarina (whs02800).
+[[edit]]
+target = "whs02800"
+trajectory = { points = [[0.0, 1.00]], straight = true, unblockable = false }

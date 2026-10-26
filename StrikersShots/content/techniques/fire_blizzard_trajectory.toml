@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Ventisca de fuego (Fire Blizzard, whs00850 / whs00940), cut-ins ev60_00850 /
+# ev60_00940.
+#
+# In the cut-in (c0500) the ball is lobbed up to 8.5 m. Flight (owner rules 2026-10-21: never curved; a high shot
+# starts at most 4.5 m up and ends at about 2.0 m): one straight line from 4.5 m at the kick into 2.0 m at the goal.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick.
+
+# Ventisca de fuego (whs00850).
+[[edit]]
+target = "whs00850"
+trajectory = { points = [[0.0, 4.5]], goal_points = [[0.0, 2.0]], unblockable = false }
+
+# Ventisca de fuego (whs00940).
+[[edit]]
+target = "whs00940"
+trajectory = { points = [[0.0, 4.5]], goal_points = [[0.0, 2.0]], unblockable = false }

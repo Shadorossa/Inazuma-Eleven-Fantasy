@@ -1,0 +1,23 @@
+# «Coletazo de dragón» (Dragon's Tail, whs01750; mountain shot, cut-in ev60_01750): while the ball flies to the goal it
+# is inside the end of the cut-in's shot cut (c0400, frames 370-413): its glow, light and sparkle parts on the event
+# ball as the automatic aura showed them, plus the cut-in's green dragon tail trailing behind the ball (the scaled tail
+# model chr/_waza/ev60_01750 baked as rigid segments, with the effect's tail skin `_615__26_shippo_skin11` and yellow
+# aura `_101__10_shippo_aura_yellow1` skinned on their bones; 1.6 m long, its base on the ball, aligned to the flight), swaying as in the cut-in in a seamless 40-frame loop, x1, instead of the
+# plain mountain special-shot aura (ega0075a). The object is ev6175dt00 (effect/event/ev60/ev6175dt00/), built by
+# research/scripts/dragon_s_tail_ball_fx.py from the cut-in's effect object ev60017500. The trigger copies the mountain
+# special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame
+# (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dragon_s_tail"
+from = "ega0075a"
+object = "effect/event/ev60/ev6175dt00/ev6175dt00.objbin"
+
+[[shot_aura]]
+name = "dragon_s_tail"
+when = { techniques = ["whs01750"] }
+aura = "dragon_s_tail"
+like = "ega0075a"

@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chilena de pingüino (Penguin Volley, whs02870 and whs02875; cut-ins ev60_02870 /
+# ev60_02875, the same animation).
+#
+# Measured: the event ball (b000001 slot s00) of c0800 flies almost level over 501-531 (1.28 -> 1.14 m over the event's
+# ground, mean 1.2 m; 0.9 deg down) at ~17 m/s along the flight.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at the cut-in's 1.2 m the whole way. unblockable = false: the game's block rules (this
+# mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Chilena de pingüino (whs02870, fire).
+[[edit]]
+target = "whs02870"
+trajectory = { points = [[0.0, 1.20]], straight = true, unblockable = false }
+
+# Chilena de pingüino (whs02875, forest).
+[[edit]]
+target = "whs02875"
+trajectory = { points = [[0.0, 1.20]], straight = true, unblockable = false }

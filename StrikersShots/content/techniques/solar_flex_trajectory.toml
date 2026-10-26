@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Amanecer detonante (Solar Flex, whs03090), cut-in ev60_03090.
+#
+# In the cut-in (c0400) the ball dives at the camera from ~9 m to ~4.6 m over the pitch inside its sun. Flight (owner's
+# rule 2026-10-24: every aura shot a straight level line, at most 3 m high): straight and level at 3 m into the goal,
+# so the sun (~5 m across with its back glow) and its ray trail fly clear of the grass. unblockable = false: the game's
+# block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count from the
+# kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Amanecer detonante (whs03090).
+[[edit]]
+target = "whs03090"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

@@ -1,0 +1,25 @@
+# «Doom Break» («Mangual letal», whs01410, mountain shot, combo move, cut-in ev60_01410): while the ball flies to the
+# goal after the cut-in it keeps the look of the cut-in's last cut (c0400, the ball just fired) instead of the plain
+# mountain special-shot aura (ega0075a): inside the black-red spiked ball (the «flail» and its 12 needles, tumbling),
+# its red glow and the two wind shells round it, the brown dust wake behind it, sparks and debris.
+# The object is ev6141db00 (assets\data\{common,dx11}\effect\event\ev60\ev6141db00\), built by
+# research/scripts/doom_break_ball_fx.py from the cut-in's effect object ev60014100 (c0400 held at frame 435, the ball's
+# tumble and the sparks replayed, texture flow running on through a 30 s loop; placed through its top-level joints,
+# the root still): the ball at the origin, its run along +Z, x1.0. docs/game/media/doom-break-ball-fx.md.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b). The aura lives from the first flight frame to the end of
+# the shot like every [[shot_aura]] (the framework starts and stops it: no per-aura key).
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "doom_break_flail"
+from = "ega0075a"
+object = "effect/event/ev60/ev6141db00/ev6141db00.objbin"
+
+[[shot_aura]]
+name = "doom_break_flail"
+when = { techniques = "whs01410" }
+aura = "doom_break_flail"
+like = "ega0075a"

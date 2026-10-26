@@ -1,0 +1,22 @@
+# «Ataque de paladín» (Paladin Strike, whs01140; mountain shot, cut-in ev60_01140): while the ball flies to the goal
+# after the cut-in it keeps the look of the end of the cut-in's last cut (c0300): the paladin's lance of light, its head
+# on the ball and its tails streaming back, instead of the plain mountain special-shot aura. The object is ev6114ps00
+# (effect/event/ev60/ev6114ps00/), built by research/scripts/paladin_strike_ball_fx.py from the cut-in's effect object
+# ev60011400: c0300's frame 222 held from the aura's first frame (no cut-in motion replayed), ball at the origin,
+# the lance's long axis along +Z (the flight), x1. Left out: the backdrop, the kick flash, rings, hits and light lines.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "paladin_strike"
+from = "ega0075a"
+object = "effect/event/ev60/ev6114ps00/ev6114ps00.objbin"
+
+[[shot_aura]]
+name = "paladin_strike"
+when = { techniques = ["whs01140"] }
+aura = "paladin_strike"
+like = "ega0075a"

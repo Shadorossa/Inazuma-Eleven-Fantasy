@@ -1,0 +1,30 @@
+# «Cabezazo gigatón» (Gigaton Head, whs02070 and its mixi-max key whs02070_mm; mountain shot, cut-in ev60_02070): while
+# the ball flies to the goal after the cut-in it keeps the look of the end of the cut-in (c0200, after the header): the
+# giant golden fist flying behind the ball, the ball on its knuckles, the pulsing golden glow round the ball, and
+# behind the fist the yellow spiral ribbons, the white light streak, the grey wind clouds and the lightning, instead of
+# the plain mountain special-shot aura (ega0075a).
+# The object is ev6070gh00 (effect/event/ev60/ev6070gh00/), built by research/scripts/gigaton_head_ball_fx.py from the
+# cut-in's effect object ev60020700: c0200 held at frame 352 from the aura's first frame, looped, ball at the origin
+# flying +Z, x1 (the fist ~2.1 m across, its centre 1.0 m behind the ball, in its own toon material and proportions);
+# the trail behind it (~12 m) comes out of the kick point as the ball moves away, never stretched, its far end faded,
+# the spirals turning and the lightning flickering on; the glow disc is a billboard, round from every side.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\gigaton_head_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "gigaton_head"
+from = "ega0075a"
+object = "effect/event/ev60/ev6070gh00/ev6070gh00.objbin"
+
+[[shot_aura]]
+name = "gigaton_head"
+when = { techniques = ["whs02070", "whs02070_mm"] }
+aura = "gigaton_head"
+like = "ega0075a"
+# the trail behind the fist comes out of the kick point: the clip runs on the ball's distance from the kick point
+# (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,26 @@
+# «RC Shot» («Tiro radiocontrol», whs01320; fire shot, cut-in ev60_01320): while the ball skims the pitch to the goal
+# it wears the cut-in's last shot (c0500, held at frame 435 from the aura's first frame): the fire dome the ball runs
+# in, its yellow nose and blue spiky collar sitting on the grass, the orange flame round the ball, the red and pale
+# speed lines blinking in turn, the yellow spiky shock arcs shed at the nose and sliding back as they grow and fade,
+# the soft ground glow under the ball, and the flat yellow / blue streak it leaves on the ground (out of the kick
+# point, fading at its tail), x0.6.
+# The object is ev6013rc00 (effect/event/ev60/ev6013rc00/), built by research/scripts/rc_shot_ball_fx.py from
+# ev60013200.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0085c"). Flight:
+# content\techniques\rc_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "rc_shot"
+from = "ega0085c"
+object = "effect/event/ev60/ev6013rc00/ev6013rc00.objbin"
+
+[[shot_aura]]
+name = "rc_shot"
+when = { techniques = ["whs01320"] }
+aura = "rc_shot"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75

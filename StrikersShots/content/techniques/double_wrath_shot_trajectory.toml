@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chut de 200 toques (Double Wrath Shot, whs00640 / whs00640_or, cut-in ev60_00640).
+#
+# Measured: in c0500 the event ball (b000001 slot s00) is kicked at effect frame 296 high in the air after the two
+# hundred touches and flies over 300-320 from 13.55 m to 12.72 m (13 deg down) at ~11 m/s.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 3.0 m the whole way: the cut-in's ~13 m aerial shot brought down to the highest level
+# flight (3 m). unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Chut de 200 toques (whs00640).
+[[edit]]
+target = "whs00640"
+trajectory = { points = [[0.0, 3.00]], straight = true, unblockable = false }
+
+# Chut de 200 toques, joint version (whs00640_or).
+[[edit]]
+target = "whs00640_or"
+trajectory = { points = [[0.0, 3.00]], straight = true, unblockable = false }

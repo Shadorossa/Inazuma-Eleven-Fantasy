@@ -1,0 +1,38 @@
+# «Divine Drive» («Chut vitral», whs03040, wind shot, cut-in ev60_03040): the end of the cut-in's last shot (c0500) on
+# the pitch (owner 2026-10-24: «debe salir de un punto quieto que es el cristal donde el jugador pega la patada en el cut
+# in y mantener el efecto de cristalera rota del disparo en el rayo aura del balón»). Two effects:
+# * divine_drive_crystal (object ev6304vp00, `ground_effect`): the crystal the ball is volleyed out of, standing at the
+#   kick point at the flight's height: at the kick it breaks and its pieces burst out and stay there (they never fly
+#   with the ball), with the glows, the ring and the star that light up round it (camera-facing); it stays the whole
+#   flight, the beam firing out of it, and goes with the beam when the shot ends;
+# * divine_drive (object ev6304vb00, `aura`, on the distance clock): the blue beam from the crystal to the ball, born at
+#   the kick point and revealed as the ball flies, as wide (the cut-in's widest section) at the start as at the end,
+#   never stretched (its texture flowing on), crossed so it reads from the touchline and from behind, with a rounded,
+#   fading head round the ball; along it the shards of the broken stained-glass window flying with the shot, their
+#   cut-in shapes and texture, repeated back from the ball and revealed from the kick point.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60030400 by
+# research/scripts/divine_drive_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\divine_drive_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "divine_drive"
+from = "ega0075b"
+object = "effect/event/ev60/ev6304vb00/ev6304vb00.objbin"
+
+[[effect]]
+name = "divine_drive_crystal"
+from = "ega0021"
+object = "effect/event/ev60/ev6304vp00/ev6304vp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "divine_drive"
+when = { techniques = ["whs03040"] }
+aura = "divine_drive"
+like = "ega0075b"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the crystal stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "divine_drive_crystal" }

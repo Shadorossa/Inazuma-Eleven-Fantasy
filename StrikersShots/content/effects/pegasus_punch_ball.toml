@@ -1,0 +1,25 @@
+# «Golpe justiciero» (Pegasus Punch, whs01820; wind shot, cut-in ev60_01820): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0400, the ball diving from 20.2 m): its green wind shells, lights
+# and sparks, trailing the long aura cone and the two ribbons, shedding the wind rings and sparks along its way, instead
+# of the plain wind special-shot aura (ega0075b).
+# The object is ev6182pp00 (effect/event/ev60/ev6182pp00/), built by research/scripts/pegasus_punch_ball_fx.py from the
+# cut-in's effect object ev60018200: c0400 replayed from its first frame (406), then held at frame 464, ball at the
+# origin flying +Z, x1. Nothing else is alive in c0400. docs/game/media/pegasus-punch-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\pegasus_punch_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "pegasus_punch"
+from = "ega0075b"
+object = "effect/event/ev60/ev6182pp00/ev6182pp00.objbin"
+
+[[shot_aura]]
+name = "pegasus_punch"
+when = { techniques = ["whs01820"] }
+aura = "pegasus_punch"
+like = "ega0075b"
+# the aura's replay (58 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
+fit = { replay = 58 }

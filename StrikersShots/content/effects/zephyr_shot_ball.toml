@@ -1,0 +1,23 @@
+# «Zephyr Shot» («Tiro vendaval», whs01460, wind shot, cut-in ev60_01460): the cut-in's last shot (c0040, held at
+# frame 359) on the ball: the ball in its cyan wind glow at the mouth of the white whirlwind tunnel the cut-in draws
+# behind it, a cyan light streak running through the tunnel and small blue lightning arcs flickering round its mouth;
+# the tunnel ~12 m long, its wind flowing, coming out of the kick point as the ball moves away (on the distance clock,
+# never stretched) and fading out at its far end; x1.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60014600 by
+# research/scripts/zephyr_shot_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\zephyr_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "zephyr_shot"
+from = "ega0075b"
+object = "effect/event/ev60/ev6046zs00/ev6046zs00.objbin"
+
+[[shot_aura]]
+name = "zephyr_shot"
+when = { techniques = ["whs01460"] }
+aura = "zephyr_shot"
+like = "ega0075b"
+# the tunnel comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

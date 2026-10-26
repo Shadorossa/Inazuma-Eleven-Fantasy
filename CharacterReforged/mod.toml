@@ -3,13 +3,13 @@ former_ids = ["character_reforged"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Character Reforged"
-version = "1.30.0"
+version = "1.34.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The shared base of the mods split out of Inazuma Fantasy: every character's own stats (Lv 200 values, growth, level curve), moveset (4 special moves + aura) and the level cap 200 (config.toml [level] cap, 99..999: EXP and stats follow it); the custom pairing / creation flow of the aura mods (All Miximaxed, Custom Change Mode, Aura Points, All Keshin Armed), the pairing rules as data and the common texts; the one-row player header of the player page («Ficha» and every screen with the player header: portrait, nickname and «SIGUIENTE» gone; name, element, position, gender, level and number on one band) with a slot where other mods hang their pieces (Stamina Points: the max PE); the paged player page (PERFIL with the player's 3D model and description, ATRIBUTOS with the stats as gauge rows and the Normal / Miximax view, SUPERTÉCNICAS, the Hiper page of the new set's aura / mix slots, Pasivas, the page dots; other mods add their values through its slots); the optional skill table (6 special moves + an aura slot + a mix slot; off by default, row «Tabla de habilidades» of the mod options); the duplicate-players hook (a save duplicated into another slot gets the duplicate rules other mods declare: one card per character with No More Rarities; a rule may ask for the same pass on every load of a player slot, after a one-time backup of that save). The ídolos' «Equipación del momento»: each Ídolo and Diamond card wears the kit of its moment (its team's kit of its era, derived from the game's tables, or the moment_kit its card declares) in matches, menus, face icons and Kizuna town, switched on or off per player in «Equipamiento». Works with the VR-Framework alone."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-23"
+updated = "2026-10-24"
 # 1.9.12 (2026-10-19): module Aura Points 1.1.5 (one rule «nothing pays with the hyper gauge»: the gauge hidden and its
 # gains off; mode change, kizuna trans and awakening power start free while it holds; the rival on the same points)
 # This mod's own names (TOML keys [CharacterReforged.X], Lua CharacterReforged.X, commands CMND_CHARACTERREFORGED_*); never VRFW.
@@ -23,6 +23,10 @@ folder = "CharacterReforged"
 # 130_lineup_pages.lua, VRFW_PlayerPages.ShowWhen of vr_framework 2.4.242: no dot, no empty page)
 # 1.9.0 (Nacho 2026-10-19): the player page's model in front of the band on BetterMenu's roster again, through the
 # framework's capture quad binding (VRFW.render.capture_bind of vr_framework 2.5.0)
+# 1.33.0 (owner 2026-10-24): module Aura Reworked 1.10.0: the totem's skill carousel inside the cut-in of its own
+# move (a screen of its own, VRFW.ui.open_menu of VRFW 2.151.0), replacing the reel under the scoreboard
+# 1.32.0 (owner 2026-10-24): content\transforms\aura_stack.toml [rules] stack = keshin, aura, miximax: the Mix-Max
+# starts while the keshin or the totem is out and the spirit is summoned over a running Mix-Max (VRFW 2.149.0)
 # 1.30.0 (owner 2026-10-23): option «Cooldown entre auras» (options.toml aura_cooldown: off / 5 / 10 / 15 / 20 / 30 s,
 # default 10; content\transforms\aura_cooldown.toml [rules] team_aura_cooldown_option of VRFW 2.105.0)
 # 1.9.25 (owner 2026-10-20): option «Máx. auras por equipo» (options.toml team_aura_max, default 3; content\transforms\team_limit.toml

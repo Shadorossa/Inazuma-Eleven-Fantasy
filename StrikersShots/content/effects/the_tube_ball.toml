@@ -1,0 +1,21 @@
+# «Cañón de agua» (The Tube, whs01160; wind; cut-in ev60_01160): while the ball flies to the goal it shows only its own
+# animation from the cut-in's shot cut (c0300, held at its last pose): the two water shells round the ball (a ragged bowl,
+# closed side forward, opening trailing) turned along the flight, x1. The water tube, the white-water strip and the
+# particle clouds round the flight are left out: they are not on the ball. The object is ev6116tb00
+# (effect/event/ev60/ev6116tb00/), built by research/scripts/the_tube_ball_fx.py from the cut-in's effect object
+# ev60011600. The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z
+# along the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\the_tube_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "the_tube"
+from = "ega0075b"
+object = "effect/event/ev60/ev6116tb00/ev6116tb00.objbin"
+
+[[shot_aura]]
+name = "the_tube"
+when = { techniques = ["whs01160"] }
+aura = "the_tube"
+like = "ega0075b"

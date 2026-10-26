@@ -1,0 +1,36 @@
+# «Chilena de pingüino» (Penguin Volley: whs02870 fire, cut-in ev60_02870; whs02875 forest, cut-in ev60_02875): while
+# the ball flies to the goal after the cut-in it keeps the look of the cut-in's last shot (c0800, frame 531): the ball
+# inside the head of the central white beam with its coloured light core, and the six penguins in the cut-in's fan round
+# it (three on each side), each with its own white streak, flying at the ball's pace, their wings beating; the beam and
+# the streaks come out of the kick point (never stretched, their tails fading), instead of the plain fire / forest
+# special-shot aura (ega0075c / ega0075d).
+# The two cut-ins play the same animation in different colours (the beam's light lilac on 02870, blue on 02875; the
+# penguins' texture), so each key has its own object: ev6287pv00 (from ev60028700, penguins ev60_02870) and ev6287pv50
+# (from ev60028750, penguins ev60_02871) (effect/event/ev60/), built by research/scripts/penguin_volley_ball_fx.py.
+# The trigger copies the element's special-shot aura row (like = "ega0075c" / "ega0075d"): CB_SkillShootBallAura turns
+# +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\penguin_volley_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "penguin_volley_fire"
+from = "ega0075c"
+object = "effect/event/ev60/ev6287pv00/ev6287pv00.objbin"
+
+[[effect]]
+name = "penguin_volley_forest"
+from = "ega0075d"
+object = "effect/event/ev60/ev6287pv50/ev6287pv50.objbin"
+
+[[shot_aura]]
+name = "penguin_volley_fire"
+when = { techniques = ["whs02870"] }
+aura = "penguin_volley_fire"
+like = "ega0075c"
+
+[[shot_aura]]
+name = "penguin_volley_forest"
+when = { techniques = ["whs02875"] }
+aura = "penguin_volley_forest"
+like = "ega0075d"

@@ -1,0 +1,22 @@
+# «Dark Matter» («Carga negativa», whs01350, forest shot, cut-in ev60_01350): the cut-in's last shot (c0030, held at
+# frame 322) on the ball: the dark comet that bursts out of the black hole, the ball inside its rounded black head in
+# a soft white glow, and behind it the black core column wrapped in white swirl bands (their texture flow running on,
+# whole periods per loop), ~2.5 m long, coming out of the kick point as the ball moves away (on the distance clock,
+# never stretched) and fading out at its far end; x0.55. The black-hole disc itself (10-12 m across) is left out.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60013500 by
+# research/scripts/dark_matter_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\dark_matter_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dark_matter"
+from = "ega0075d"
+object = "effect/event/ev60/ev6013dm00/ev6013dm00.objbin"
+
+[[shot_aura]]
+name = "dark_matter"
+when = { techniques = ["whs01350"] }
+aura = "dark_matter"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

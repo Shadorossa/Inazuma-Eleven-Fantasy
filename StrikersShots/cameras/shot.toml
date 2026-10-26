@@ -1,0 +1,30 @@
+schema = "VRFW.match_camera/2"
+# «Strikers Shots»'s match camera (VR-Framework match camera service, docs/framework/camera.md). The camera
+# drive content\camera_drives\shot_view.toml requests `StrikersShots.shot` while a shot at goal is shown, at its
+# `priority` (above BetterQoL's «Lateral»), and releases it after the shot (goal, save, block, out, the keeper's
+# scene). The drive also turns the camera into this view and back (`turn_in_s` / `turn_out_s`) and holds it
+# every frame. Restart the game after a change of this file.
+
+# The side view of a shot, broadcast style: high on the far touchline, looking down at the play and following
+# it along the line. The camera always stands on the touchline (+ touchline_margin), whatever the ball's position:
+# the distance to the ball changes, the fov keeps the framing.
+[[preset]]
+name = "shot"
+kind = "chase_rows"
+yaw = 90.0            # 90 = the usual touchline (the far one from the «Lateral» camera), 270 = the other one
+pitch = 20.0          # degrees above the horizontal (5..85): how much the camera looks down
+distance = 40.0       # metres: the reference distance (the camera rows, and the framing kept by fov_mode)
+fov = 35.0            # vertical field of view at the reference distance (~45 m of pitch across)
+# one pitch, held: the in-play updater (0x153A120) never sweeps it with the ball's depth (never overhead, never under
+# the pitch)
+fixed_pitch = true
+# the retail camera option forced to "H" / "H" during the shot; the player's choice comes back at the release
+option = "horizontal"
+# where the camera stands: on the touchline the yaw faces, this many metres outside it (the pitch's size is read from
+# the game; fallback_half_width when it cannot be read: 30 = an 11-a-side pitch)
+anchor = "touchline"
+touchline_margin = 10.0
+fallback_half_width = 30.0
+# "keep_framing": the fov follows the distance so the same width of pitch is seen; "fixed": always `fov`
+fov_mode = "keep_framing"
+# height = 18.0       # optional: a fixed camera height above the ball instead of the fixed pitch (the pitch follows)

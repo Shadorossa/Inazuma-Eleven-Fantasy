@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Campo umbrío (Shadow Swarm, whs03220), cut-in ev60_03220.
+#
+# In the cut-in (c0500) the ball flies level while the shadow arms reach after it. Flight: straight and level 1.6 m up
+# into the goal (the arms reach down to ~1.5 m under the ball and stay clear of the pitch; never curved).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); points count from the kick; one point = a level flight; straight = true: one straight line from the kick
+# to the goal at that height.
+
+# Campo umbrío (whs03220).
+[[edit]]
+target = "whs03220"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }

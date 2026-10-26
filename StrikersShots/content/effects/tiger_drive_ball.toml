@@ -1,0 +1,25 @@
+# «Remate del tigre» (Tiger Drive, whs00960; mountain shot, cut-in ev60_00960): while the ball flies to the goal it
+# wears the cut-in's last shot (c0030, held at frame 312 from the aura's first frame): the golden fireball, the ball
+# inside its swirls turning about the flight and its lights, and the golden streak running straight behind it, x1.
+# The streak comes out of the kick point as the ball flies (distance clock, never stretched) and fades out at its far
+# end. The tiger only appears in the cut-in's first cut, not in its last shot, so it is not part of the aura.
+# The object is ev6096td00 (effect/event/ev60/ev6096td00/), built by research/scripts/tiger_drive_ball_fx.py from
+# ev60009600.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"); the distance clock (anchor = "kick",
+# drift 0.75 m a frame) reveals the streak from the kick point. Flight: content\techniques\tiger_drive_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "tiger_drive"
+from = "ega0075a"
+object = "effect/event/ev60/ev6096td00/ev6096td00.objbin"
+
+[[shot_aura]]
+name = "tiger_drive"
+when = { techniques = ["whs00960"] }
+aura = "tiger_drive"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

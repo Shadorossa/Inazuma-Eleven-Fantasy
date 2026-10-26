@@ -1,0 +1,26 @@
+# «Tri-Pegasus» («Tripegaso», whs00680; wind shot, cut-in ev60_00680): while the ball flies to the goal it wears the
+# end of the cut-in's last shot (c0900, held at frame 500): the blue flame ball, its swirling flame bands and fire
+# ring round the ball, and the glowing blue pegasus of the cut-in (its own material) flying right behind and above it, level
+# along the flight, its wings beating on as in the cut-in (one 36-frame beat looped seamlessly from the first frame),
+# born at the kick point. x0.513 of the cut-in size, the pegasus x1.8 on top (wingspan ~5.4 m). The long speed streaks of the close camera and
+# the earlier cuts stay out.
+# The object is ev6068tp00 (effect/event/ev60/ev6068tp00/), built by research/scripts/tri_pegasus_ball_fx.py from
+# ev60006800 with the pegasus of ev60006800_pegasus grafted in.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\tri_pegasus_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "tri_pegasus"
+from = "ega0075b"
+object = "effect/event/ev60/ev6068tp00/ev6068tp00.objbin"
+
+[[shot_aura]]
+name = "tri_pegasus"
+when = { techniques = ["whs00680"] }
+aura = "tri_pegasus"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

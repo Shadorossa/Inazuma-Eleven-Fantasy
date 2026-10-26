@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Burbujas arcoíris (Rainbow Bubble Burst, whs01740, cut-in ev60_01740).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_01740 c0030 dives through its rainbow ribbon from 14.5 m (effect
+# frame 336) to 4.75 m (414), ~34 deg down along the ribbon's axis.
+# Flight (owner rule 2026-10-24: one straight horizontal line, the same height at the kick and at the goal): the ball
+# centre at 1.2 m the whole way, so the bubbles the aura sheds round and under the ball stay over the pitch
+# (research/scripts/rainbow_bubble_burst_ball_fx.py DOWN_DAMP). unblockable = false: the game's block rules (this mod
+# changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Burbujas arcoíris (whs01740).
+[[edit]]
+target = "whs01740"
+trajectory = { points = [[0.0, 1.2]], straight = true, unblockable = false }

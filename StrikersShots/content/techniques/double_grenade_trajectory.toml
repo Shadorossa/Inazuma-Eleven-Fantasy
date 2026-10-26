@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Granada doble (Double Grenade, whs00540), cut-in ev60_00540.
+#
+# In the cut-in (c0400) the ball flies level, 0.8 m over the dust track it leaves on the ground (research/scripts/
+# double_grenade_ball_fx.py, FLIGHT_HEIGHT). Flight: straight and level at that height into the goal. unblockable =
+# false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points
+# count from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal.
+
+# Granada doble (whs00540).
+[[edit]]
+target = "whs00540"
+trajectory = { points = [[0.0, 0.8]], straight = true, unblockable = false }

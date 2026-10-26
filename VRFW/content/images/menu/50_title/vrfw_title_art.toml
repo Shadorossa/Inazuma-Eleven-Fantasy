@@ -18,9 +18,10 @@
 #
 # A mod can serve its own title art (whole title00_01_st / title00_03_02 / title02_01 files).
 # A mod's whole file is only the BASE of an image declaration (docs/framework/types/image.md §5), so this file would
-# paint over it: it is off while such a mod says so in its config ([title_art] own = true). Without that mod the path reads the framework's own config (no such key) -> default false -> on.
+# paint over it: it is off while any active mod says so in its config.toml ([VRFW.TitleArt] own = true; the `*` path reads
+# every active mod's config, the latest in the load order wins). Without such a mod no config has the key -> default false -> on.
 schema = "VRFW.image/1"
-when = { config = "inazuma_fantasy.title_art.own", equals = false, default = false }
+when = { config = "*.VRFW.TitleArt.own", equals = false, default = false }
 
 # ---- press-start background + characters (title_menu layer title00_01_title_top_st) -------------------------------
 

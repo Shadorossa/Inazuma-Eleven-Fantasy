@@ -1,0 +1,23 @@
+# «Psycho Shot» («Psicorremate», whs00230; forest shot, cut-in ev60_00230): while the ball flies to the goal it wears
+# the cut-in's last shot (c0200, held at frame 339): the wide soft white-yellow glow, the small bright white glow on
+# the ball and the jagged yellow flame ring round the ball with its flowing flames, all three facing the camera
+# (billboards) and centred on the ball, so it looks the same from the touchline as from the front, x1. The kicker's
+# flame backdrop stays out.
+# The object is ev6023ps00 (effect/event/ev60/ev6023ps00/), built by research/scripts/psycho_shot_ball_fx.py from
+# ev60002300.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\psycho_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "psycho_shot"
+from = "ega0075d"
+object = "effect/event/ev60/ev6023ps00/ev6023ps00.objbin"
+
+[[shot_aura]]
+name = "psycho_shot"
+when = { techniques = ["whs00230"] }
+aura = "psycho_shot"
+like = "ega0075d"

@@ -7,9 +7,9 @@
 #
 # bg_cloud01_st (4952 x 4952, the ring) and bg_cloud02_st (4064 x 3752, the frame with a round hole) are whole textures
 # of title00_01_st: each picture is scaled to its texture's size (codec and mips kept by the image type).
-# Off with the rest of the title art while a mod serves its own ([title_art] own = true).
+# Off with the rest of the title art while a mod serves its own ([VRFW.TitleArt] own = true in its config.toml).
 schema = "VRFW.image/1"
-when = { config = "inazuma_fantasy.title_art.own", equals = false, default = false }
+when = { config = "*.VRFW.TitleArt.own", equals = false, default = false }
 
 [[texture]]
 atlas = "#/menu/50_title/title00/title00_01_st/title00_01_st.g4tx"

@@ -1,0 +1,27 @@
+# «Disparo cósmico» (Cosmic Blast, whs00740; forest shot, cut-in ev60_00740): while the ball flies to the goal it is the
+# end of the cut-in's shot cut (c0400, held at frame 443 from the aura's first frame): the ball inside the tip of the
+# white comet nose with its green flame streaks, the cone of space trailing behind it (dark space shells, blue / purple
+# streaks, stars, cyan rim and the cyan / purple swirls in it), and the green rings the nose sends out, each left where
+# it was sent out, growing and fading before it reaches the grass. The trail comes out of the kick point, revealed by
+# the distance the ball has flown (never stretched), its far end fading out, x0.33, instead of the plain forest
+# special-shot aura (ega0075d).
+# The object is ev6074cb00 (effect/event/ev60/ev6074cb00/), built by research/scripts/cosmic_blast_ball_fx.py from the
+# cut-in's effect object ev60007400. The trigger copies the forest special-shot aura's row (like = "ega0075d"):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# Flight: content\techniques\cosmic_blast_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "cosmic_blast"
+from = "ega0075d"
+object = "effect/event/ev60/ev6074cb00/ev6074cb00.objbin"
+
+[[shot_aura]]
+name = "cosmic_blast"
+when = { techniques = ["whs00740"] }
+aura = "cosmic_blast"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

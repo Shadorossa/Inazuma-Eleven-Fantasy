@@ -1,0 +1,19 @@
+# «Alba oscura» (Black Dawn, whs02670; wind shot, cut-in ev60_02670, effect object ev60026700): while the ball flies
+# to the goal it is the black hole of the cut-in's last cut (c0500): the black disc, its purple halo, the white back
+# light and glow (camera-facing cards: a round black sphere from every side) and the dark grains streaming behind it,
+# at its settled size from the aura's first frame (no growth, no pulse), x1.25. It replaces the automatic aura of the
+# same cut-in. The object is ev6267bd00 (effect/event/ev60/ev6267bd00/), built by research/scripts/black_dawn_ball_fx.py.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Mod «Strikers Shots»: visuals only.
+# The effect objects are generated on the author's PC from the game's own cut-in effects (never committed).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "black_dawn"
+from = "ega0075b"
+object = "effect/event/ev60/ev6267bd00/ev6267bd00.objbin"
+
+[[shot_aura]]
+name = "black_dawn"
+when = { techniques = ["whs02670"] }
+aura = "black_dawn"
+like = "ega0075b"

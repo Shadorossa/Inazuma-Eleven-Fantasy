@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Caída planetaria (Falling Planet, whs02110, cut-in ev60_02110). Owner 2026-10-24:
+# the planet falls onto the goal from higher up: the ball starts 5 m above the kick point and comes in one straight
+# line down into the goal at 2.0 m (declared; kept out of _flight_height.toml's lowering by keep_declared). In the
+# cut-in (c0300) the ball is struck down from 8.3 m to 3.4 m over 13.5 m, a straight line about 20 deg down.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Caída planetaria (whs02110).
+[[edit]]
+target = "whs02110"
+trajectory = { points = [[0.0, 5.0]], goal_points = [[0.0, 2.0]], start = { height = 5.0 }, unblockable = false }

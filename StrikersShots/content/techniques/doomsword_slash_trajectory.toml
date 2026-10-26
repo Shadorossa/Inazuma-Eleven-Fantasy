@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Proyectil letal (Doomsword Slash, whs01470), cut-in ev60_01470.
+#
+# In the cut-in (c0020) the sword leaves the flame burst ~0.9 m over the pitch and flies level toward the goal. Flight
+# (owner's rule 2026-10-24: every aura shot a straight level line): straight and level at 1.8 m, the height at which
+# the burst at the kick point (x0.5, research/scripts/doomsword_slash_ball_fx.py FLIGHT_HEIGHT) stays off the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); points count from the kick; one point = a level flight; straight = true: one straight line from the kick
+# to the goal at that height.
+
+# Proyectil letal (whs01470).
+[[edit]]
+target = "whs01470"
+trajectory = { points = [[0.0, 1.80]], straight = true, unblockable = false }

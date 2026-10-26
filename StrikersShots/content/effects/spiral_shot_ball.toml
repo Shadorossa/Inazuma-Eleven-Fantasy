@@ -1,0 +1,22 @@
+# «Spiral Shot» («Remate espiral», whs00190, wind shot, cut-in ev60_00190): the cut-in's last shot (c0400, held at
+# frame 232) on the ball: the ball inside the small yellow pinwheel turning about the flight in its soft white glow, and
+# behind it the three yellow / white spiral bands screwing round the flight (each spinning about it, whole turns per
+# loop); the bands ~9 m long, coming out of the kick point as the ball moves away (on the distance clock, never
+# stretched) and fading out at their far end; x0.781.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60001900 by
+# research/scripts/spiral_shot_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\spiral_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "spiral_shot"
+from = "ega0075b"
+object = "effect/event/ev60/ev6019ss00/ev6019ss00.objbin"
+
+[[shot_aura]]
+name = "spiral_shot"
+when = { techniques = ["whs00190"] }
+aura = "spiral_shot"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

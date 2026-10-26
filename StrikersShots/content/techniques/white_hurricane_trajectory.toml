@@ -1,0 +1,20 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Ciclón blanco (White Hurricane, whs01670; the rule covers whs01670_mm, and
+# whs01670_cro, the Chronicle copy with the same cut-in, has its own edit below), cut-in ev60_01670.
+#
+# In the cut-in (c0400) the ball is kicked down from 15.2 m out of the hurricane; where its aura is taken (frame 380,
+# research/scripts/white_hurricane_ball_fx.py FLIGHT_HEIGHT) the ball is 2.6 m over the pitch, its wind tunnel grown up
+# to it. Flight: straight and level at that height into the goal, the tunnel running straight behind the ball (the
+# former dive from 4.5 m bent the tunnel). unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); points count from the kick; one point = a level flight;
+# straight = true: one straight line from the kick to the goal at that height.
+
+# Ciclón blanco (whs01670; covers whs01670_mm).
+[[edit]]
+target = "whs01670"
+trajectory = { points = [[0.0, 2.6]], straight = true, unblockable = false }
+
+# Ciclón blanco, Chronicle copy (whs01670_cro: not an _or / _mm variant, so not covered by the base's rule).
+[[edit]]
+target = "whs01670_cro"
+trajectory = { points = [[0.0, 2.6]], straight = true, unblockable = false }

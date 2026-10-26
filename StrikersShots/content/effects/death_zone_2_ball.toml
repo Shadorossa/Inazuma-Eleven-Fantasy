@@ -1,0 +1,23 @@
+# «Death Zone 2» («Triángulo letal 2», whs00470; forest shot, cut-in ev60_00470): while the ball flies to the goal it
+# wears the cut-in's last shot (c0600, held at frame 672): the ball at the centre of the dark purple sphere, its
+# white-pink vortex swirling, the three purple flares of the triangle round its rim (one fading out and back in at a
+# time) and the purple lightning flickering round it, all facing the camera (billboards) and centred on the ball, so it
+# looks the same from the touchline as from the front, x0.12.
+# The object is ev6047dz00 (effect/event/ev60/ev6047dz00/), built by research/scripts/death_zone_2_ball_fx.py from
+# ev60004700.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\death_zone_2_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "death_zone_2"
+from = "ega0075d"
+object = "effect/event/ev60/ev6047dz00/ev6047dz00.objbin"
+
+[[shot_aura]]
+name = "death_zone_2"
+when = { techniques = ["whs00470"] }
+aura = "death_zone_2"
+like = "ega0075d"

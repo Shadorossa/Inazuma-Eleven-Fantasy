@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Aullido de lobo argénteo (Legendary Silver Wolf, whs10170, cut-in ev60_10170): one
+# straight level line at 2.7 m from the kick point into the goal point, whatever the shot's length (the two side comets
+# braid round the ball's comet 1.6 m off the flight: the turning braid stays clear of the grass).
+# unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Aullido de lobo argénteo (whs10170).
+[[edit]]
+target = "whs10170"
+trajectory = { points = [[0.0, 2.7]], straight = true, unblockable = false }

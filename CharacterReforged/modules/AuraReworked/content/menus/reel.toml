@@ -1,22 +1,55 @@
-# Souls Rework › the skill reel on the match HUD (graft research/grafts/souls_rework_reel; docs/game/mods/
-# souls-rework-design.md §5). One layer of 4 instances in the scoreboard's menu (soccer_constant_menu and its battle
-# group): instance 0 = the totem's name and level, 1..3 = the reel's rows (2 = the selected row, on its plate). Its
-# object is the retail corner button (cmn03_01_cmd_back: a plate and a text node), without collision and anchor (the graft
-# places each instance from the scoreboard's position), drawn above the technique banner (305) so the cut-in's banner
-# never covers it. Opened by the graft only while a reel runs.
+# Souls Rework › the skill carousel over the totem move's cut-in (docs/game/mods/souls-rework-design.md §5): a screen
+# of its own, aura_reworked_souls_reel_menu, opened by scripts\souls_rework.lua (VRFW.ui.open_menu) when the cut-in of
+# the totem's own move starts, or over play when no cut-in comes. Its script (assets\lua\screens\
+# aura_reworked_souls_reel_menu.lua) asks CMND_AURAREWORKED_SOULS_REEL once in OnInit for the roll, the six cards and
+# the layout, runs the spin as a coroutine (as the game's tactics_roulette_menu does), reports the landing
+# (CMND_AURAREWORKED_SOULS_REEL_LANDED) and closes itself. Registry row cloned from tactics_roulette_menu (a match
+# telop of the game, drawn over its own demos); no input, no focus.
+# Layers (pools drawn by the script, hidden until used):
+#   souls_rework_reel_quad   x25  the retail 36 x 36 quad (cmn01_10_new_icon): per card its plate (this module's
+#                                 souls_rework_reel atlas, tinted), its skill icon (the game's team-buff icons) and
+#                                 3 level diamonds; 5 cards = the 3 shown and the 2 entering / leaving
+#   souls_rework_reel_text   x10  the retail button text (cmn03_01_cmd_back, its plate meshes hidden): per card its
+#                                 name and its level
+# Draw priorities 318 (plates; icons and diamonds raised to 319) and 320 (texts): above the technique banner (305)
+# and the game's own roulette (311-316).
 schema = "VRFW.menu/2"
 
 [[object]]
-name = "souls_rework_reel_row"
+name = "souls_rework_reel_quad"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 318 } },
+]
+
+[[object]]
+name = "souls_rework_reel_text"
 from = "cmn03_01_cmd_back"
 remove_block = ["MenuCollisionSetting", "MenuAnchorComponent"]
 set = [
-    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 318 } },
+    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 320 } },
 ]
 
-[[patch]]
-menu = "soccer_constant_menu"
-add_layer = { name = "souls_rework_reel_row", object = "souls_rework_reel_row", count = 4, after = "soccer00_02_kp2_kp_empty_enemy", groups = [
-    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
-    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
-] }
+[[screen]]
+name = "aura_reworked_souls_reel_menu"
+like = "tactics_roulette_menu"
+base = "tactics_roulette_menu"
+script = "assets/lua/screens/aura_reworked_souls_reel_menu.lua"
+
+[screen.rows]
+layer = [
+    { layer = "souls_rework_reel_quad", object = "souls_rework_reel_quad", count = 25, scale = 0.01 },
+    { layer = "souls_rework_reel_text", object = "souls_rework_reel_text", count = 10, scale = 0.01 },
+]
+cmd = []
+res = [
+    "#/menu/02_btl/souls_rework_reel/souls_rework_reel.g4tx",
+    "#/menu/200_icon/08_icon_teambuff/<LG>/icon_teambuff.g4tx",
+]
+group_base = [
+    { layer = "souls_rework_reel_quad", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "souls_rework_reel_text", flags = [0, 1, 0, 0, 1, 0] },
+]
+group = [
+    { group = "aura_reworked_souls_reel_menu", flags = [1], slice = [0, 2] },
+]

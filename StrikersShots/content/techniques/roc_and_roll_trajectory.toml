@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Asalto aéreo (Roc and Roll, whs01840, cut-in ev60_01840): one straight level line at
+# 0.75 m from the kick point into the goal point, whatever the shot's length (the claw strokes round the ball reach
+# 0.7 m below its centre: their tips touch the grass over the furrows they gouge). In the cut-in's last shot (c0400) the event
+# ball dives from 9.6 m and skims the pitch at 0.34 m. unblockable = false: the game's block rules (this mod changes no
+# block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Asalto aéreo (whs01840).
+[[edit]]
+target = "whs01840"
+trajectory = { points = [[0.0, 0.75]], straight = true, unblockable = false }

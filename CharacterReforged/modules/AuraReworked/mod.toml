@@ -3,13 +3,13 @@ former_ids = ["aura_reworked"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Aura Reworked"
-version = "1.9.0"
+version = "1.10.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The aura reworks in one mod, each part switched on or off in its settings: Souls Rework (totems gain levels during the match like the souls of Inazuma Eleven GO Galaxy and spin a skill reel), Custom Change Mode (any player gets his own «Modo cambio» into any of your characters and swaps with RB+B, 60 seconds between two swaps), All Miximaxed (a miximax between any two of your players, as in Chrono Stone) and All Keshin Armed (every keshin with its armour, for every player). The game's own mode changes are sold in the Spirit Market, or in Inazuma Fantasy's Training Shop when that mod is on. Works with the VR-Framework and Character Reforged; Aura Points is optional."
 priority = 0
 tags = ["Characters", "Gameplay"]
-updated = "2026-10-23"
+updated = "2026-10-24"
 # This mod's own names (TOML keys [[AuraReworked.X]], Lua AuraReworked.X, commands CMND_AURAREWORKED_*); never VRFW.
 prefix = "AuraReworked"
 folder = "AuraReworked"
@@ -18,9 +18,11 @@ folder = "AuraReworked"
 # its own: each of its content files and script entries carries `if_mod = "<part>"` (docs/framework/merged-mods.md).
 #   Souls Rework (souls_rework): totem levels and the skill reel (docs/game/mods/souls-rework-design.md)
 #     content\types\soul.toml, content\souls\ (kind AuraReworked.soul/1: the totems, the skill families; ModManager's
-#     «Auras» totem page edits them), content\game\souls_rework.toml, content\menus\reel.toml + level_pop.toml,
-#     content\images\menu\02_btl\souls_rework_pop.toml, scripts\souls_rework.lua (+ lib\data.lua, lib\auras.lua),
-#     config.toml [souls.*]; grafts research/grafts/souls_rework_reel, souls_rework_level_pop
+#     «Auras» totem page edits them), content\game\souls_rework.toml, content\menus\reel.toml (the skill carousel's
+#     screen aura_reworked_souls_reel_menu, its script assets\lua\screens\aura_reworked_souls_reel_menu.lua) +
+#     level_pop.toml, content\images\menu\02_btl\souls_rework_pop.toml + souls_rework_reel.toml (drawn by
+#     _tools\souls_rework_reel_atlas_build.py), scripts\souls_rework.lua (+ lib\data.lua, lib\auras.lua),
+#     config.toml [souls.*]; graft research/grafts/souls_rework_level_pop
 #   Custom Change Mode (all_changed): custom «Modo cambio» (docs/game/mods/all-changed.md)
 #     content\techniques\auras\mode_change.toml, content\extra_slots\change*.toml (the swap: 60 s cooldown),
 #     content\effects\mode_change_aura.toml, content\transforms\mode_change.toml, content\game\mode_change.toml,
@@ -48,7 +50,7 @@ folder = "AuraReworked"
 # copied once from slot<N>\all_changed\ and slot<N>\all_miximaxed\ ([[VRFW.SaveImport]] of content\game).
 # vr_framework 2.4.172: [[merged]] (the four old ids keep working), the gates of VRFW.files.declarations;
 # character_reforged: the family (the [module] below), its create entry, pairing rules and player page.
-requires = ["VRFW>=2.87.0", "CharacterReforged>=1.9.15"]
+requires = ["VRFW>=2.151.0", "CharacterReforged>=1.9.15"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"
@@ -81,7 +83,7 @@ option = "all_keshin_armed"
 
 # What other mods may use (a mod that requires aura_reworked): Custom Change Mode's store (AuraReworked.Change<name>), All
 # Miximaxed's stored fusions and blob (AuraReworked.MixFusions / MixStoreBlob), the totem data keys and the totem table
-# (AuraReworked.SoulsPlayer: hdl -> level, totem, no_release). Command CMND_AURAREWORKED_SOULS_REEL / _TOTEM_LEVEL
+# (AuraReworked.SoulsPlayer: hdl -> level, totem, no_release). Command CMND_AURAREWORKED_SOULS_REEL / _REEL_LANDED / _TOTEM_LEVEL
 # (old names CMND_SOULSREWORK_*), the swap gauge CMND_ALLCHANGED_SWAP_GAUGE (content\extra_slots\change.toml).
 # «Rótulos personalizados» (Opciones de mods) offers the languages of its telops (docs/framework/content-languages.md)
 [content.languages]

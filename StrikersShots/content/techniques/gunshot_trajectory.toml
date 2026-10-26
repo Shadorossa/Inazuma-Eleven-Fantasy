@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cañonazo (Gunshot, whs01170, cut-in ev60_01170): one straight level line at 1.2 m
+# from the kick point into the goal point, whatever the shot's length (the aura's beam and spirals run straight behind
+# the ball, 0.6 m round it at most). unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Cañonazo (whs01170).
+[[edit]]
+target = "whs01170"
+trajectory = { points = [[0.0, 1.2]], straight = true, unblockable = false }

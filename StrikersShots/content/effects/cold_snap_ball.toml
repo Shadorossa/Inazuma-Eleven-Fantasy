@@ -1,0 +1,22 @@
+# «Cold Snap» («Flecha de hielo», whs03390, wind shot, cut-in ev60_03390): the end of the cut-in's last shot (c0300,
+# frame 351) on the ball: the ice arrow head round the ball (its tip light and blue halo camera-facing) and the long
+# ice trail the cut-in draws along the ball's path, laid straight behind the ball along the flight at the cut-in's own
+# shape (ribbon and ice crystals, upright with two turned copies for volume), coming out of the kick point as the ball
+# moves away (on the distance clock, never stretched) and fading out at its far end.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60033900 by
+# research/scripts/cold_snap_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\cold_snap_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "cold_snap"
+from = "ega0075b"
+object = "effect/event/ev60/ev6339cs00/ev6339cs00.objbin"
+
+[[shot_aura]]
+name = "cold_snap"
+when = { techniques = ["whs03390"] }
+aura = "cold_snap"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

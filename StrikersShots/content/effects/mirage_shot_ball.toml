@@ -1,0 +1,27 @@
+# «Mirage Shot» («Tiro espejismo», whs01190; forest shot, cut-in ev60_01190): while the ball flies to the goal it wears
+# the cut-in's last shot (c0300, held at frame 360), the ball flying into the desert sun: the ball drawn golden with a
+# bright rim inside a small soft white glow (0.6 m, facing the camera from every side), and the cut-in's golden wavy
+# mirage bands, rippling, as a heat-haze trail ~3.6 m long straight behind the ball (upright and flat, crossed, so it
+# reads from the touchline), born at the kick point and revealed as the ball flies, soft at its edges and fading out at
+# its end. The sun, its glows and ring and the kick flash stay out.
+# The object is ev6119ms00 (effect/event/ev60/ev6119ms00/), built by research/scripts/mirage_shot_ball_fx.py from
+# ev60011900.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\mirage_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "mirage_shot"
+from = "ega0075d"
+object = "effect/event/ev60/ev6119ms00/ev6119ms00.objbin"
+
+[[shot_aura]]
+name = "mirage_shot"
+when = { techniques = ["whs01190"] }
+aura = "mirage_shot"
+like = "ega0075d"
+# the trail comes out of the kick point: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

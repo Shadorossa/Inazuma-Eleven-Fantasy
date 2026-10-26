@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro circense (Flurry-Go-Round, whs03260, cut-in ev60_03260): one straight level
+# line at 1.0 m (the first fire ball's height in the cut-in's last shot) from the kick point into the goal point,
+# whatever the shot's length.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Tiro circense (whs03260).
+[[edit]]
+target = "whs03260"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

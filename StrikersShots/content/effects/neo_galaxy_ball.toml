@@ -1,0 +1,27 @@
+# «Neo Galaxy» («Neotiro galáctico», whs00880; fire shot, cut-in ev60_00880): while the ball flies to the goal it wears
+# the cut-in's last shot (c0900, held at frame 674): the burning meteor falling on the Earth, the ball at its white-hot
+# blinking head, the spiky orange / yellow flames streaming back from it (the cut-in's flip-book of six flame shapes,
+# one every 5 frames, looped seamlessly from the first frame) and the meteor's ribbons behind, coming out of the kick
+# point as the ball moves away and fading at their far end. x0.3 of the cut-in size (1.6 m across, 7.4 m long). The
+# kick's golden spiral, the sun ball in space, the backdrops and the impact on the Earth stay out.
+# The object is ev6088ng00 (effect/event/ev60/ev6088ng00/), built by research/scripts/neo_galaxy_ball_fx.py from
+# ev60008800.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\neo_galaxy_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "neo_galaxy"
+from = "ega0075c"
+object = "effect/event/ev60/ev6088ng00/ev6088ng00.objbin"
+
+[[shot_aura]]
+name = "neo_galaxy"
+when = { techniques = ["whs00880"] }
+aura = "neo_galaxy"
+like = "ega0075c"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

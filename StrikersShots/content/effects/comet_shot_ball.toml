@@ -1,0 +1,25 @@
+# «Comet Shot» («Tiro del cometa», whs00140; wind long shot, cut-in ev60_00140): while the ball flies to the goal it
+# wears the cut-in's last shot (c0400, frames 287-341, looped): the white glow round the ball with the cyan spiky aura
+# streaming back from it and the thin rings round the flight, and the long white / green comet tail laid straight
+# behind the ball, coming out of the kick point as the ball moves away and fading at its far end, x1, instead of the
+# plain wind special-shot aura (ega0085b). The object is ev6014cs00 (effect/event/ev60/ev6014cs00/), built by
+# research/scripts/comet_shot_ball_fx.py from the cut-in's effect object ev60001400.
+# The trigger copies the wind long-shot aura's row (like = "ega0085b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "comet_shot"
+from = "ega0085b"
+object = "effect/event/ev60/ev6014cs00/ev6014cs00.objbin"
+
+[[shot_aura]]
+name = "comet_shot"
+when = { techniques = ["whs00140"] }
+aura = "comet_shot"
+like = "ega0085b"
+# the tail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

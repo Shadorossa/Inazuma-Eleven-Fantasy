@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Bala de cañón (Cannonball, whs03080, cut-in ev60_03080).
+#
+# Measured: in c0400 the fire band fires from the cannon's mouth straight along the shot, its narrow end in the mouth
+# (research/scripts/cannonball_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# (the mouth's fireball) to the goal, the ball centre at 1.4 m the whole way, so the band's crossed copy stays off the
+# grass. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); the height is held.
+
+# Bala de cañón (whs03080).
+[[edit]]
+target = "whs03080"
+trajectory = { points = [[0.0, 1.40]], straight = true, unblockable = false }

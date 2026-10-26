@@ -1,0 +1,30 @@
+# «Liebre blanca» (Rabbit Run, whs02940; forest shot, cut-in ev60_02940): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0040): the pink / white beam with its white edges fired from the
+# kick point to the ball, the white glow round the ball and the small cyan / yellow / pink rabbit faces left round the
+# beam on the ball's way, instead of the plain forest special-shot aura. The object is ev6294rr00
+# (effect/event/ev60/ev6294rr00/), built by research/scripts/rabbit_run_ball_fx.py from the cut-in's effect object
+# ev60029400: c0040 held at its last frame (408), ball at the origin, the beam along +Z (the flight), x1; the beam
+# comes out of the kick point as the ball flies (never stretched, its far end fading out), drawn twice crossed so it
+# reads the same from the touchline; the rabbits stay where the ball left them and shrink away 15 m behind it, none
+# behind the kick point. Left out: the grey speed-wind backdrop. Its flight:
+# content\techniques\rabbit_run_trajectory.toml (level, 1.0 m up).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "rabbit_run"
+from = "ega0075d"
+object = "effect/event/ev60/ev6294rr00/ev6294rr00.objbin"
+
+[[shot_aura]]
+name = "rabbit_run"
+when = { techniques = ["whs02940"] }
+aura = "rabbit_run"
+like = "ega0075d"
+# the beam and the rabbits come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

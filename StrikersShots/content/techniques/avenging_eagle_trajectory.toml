@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Águila implacable (Avenging Eagle, whs03340, cut-in ev60_03340). Owner
+# 2026-10-24: the shot comes from 7 m up: the ball starts 7 m above the kick point and comes in one straight line
+# down into the goal at 2.0 m (declared, not measured; kept out of _flight_height.toml's lowering by keep_declared).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Águila implacable (whs03340).
+[[edit]]
+target = "whs03340"
+trajectory = { points = [[0.0, 7.0]], goal_points = [[0.0, 2.0]], start = { height = 7.0 }, unblockable = false }

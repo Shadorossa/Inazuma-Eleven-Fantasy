@@ -1,0 +1,20 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Bouncing Bomb («Bomba saltarina», whs01510) as its cut-in's last shot shows it (owner
+# 2026-10-24: «debe ir haciendo el efecto del plano final de los saltos en zigzag»): the ball hops from the kick to the
+# goal, touching the pitch to alternate sides of the shot's line, with a burst and its fire arc at every touch
+# (docs/framework/technique.md §4e `hops`, `ground_trail.at = "touches"`).
+#
+# Measured (research/scripts/bouncing_bomb_ball_fx.py): the event ball of ev60_01510 c0400, frames 226-272: five
+# touches 11-12 frames apart (the ball centre 0.13 m over the pitch), 2.74 m forward a hop, 2.26 m to each side of the
+# line, rising to 2.6 m between them; 40 m/s along its path; the first touch to the kicker's left.
+#   points  = [[0, 0.13]]: the touches on the pitch, to the goal point.
+#   hops    = 2.74 m a hop, 2.26 m off the line, 2.47 m over the touches.
+#   speed   = 40: the cut-in's pace (a hop in ~0.19 s, as the touch's fire arc is drawn).
+# The touch pieces: the cut-in's burst and the arc over the hop leaving it (content\effects\bouncing_bomb_ball.toml,
+# object ev6151bt00), one at each touch and at the start, turned along that hop, removed after 0.6 s (the arc's life).
+
+# Bouncing Bomb (whs01510).
+[[edit]]
+target = "whs01510"
+trajectory = { points = [[0.0, 0.13]], straight = false, speed = 40.0, unblockable = false, hops = { length = 2.74, side = 2.26, height = 2.47, first = "left" } }
+ground_trail = { effect = "StrikersShots.bouncing_bomb_touch", object = "effect/event/ev60/ev6151bt00/ev6151bt00.objbin", at = "touches", scale = 1.0, orient = true, lift = 0.0, life = 0.6 }

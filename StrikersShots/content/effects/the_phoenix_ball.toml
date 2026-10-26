@@ -1,0 +1,27 @@
+# «The Phoenix» («Fénix», whs00410, fire shot, cut-in ev60_00410): while the ball flies to the goal it keeps the end of
+# the cut-in's OWN look instead of the plain fire special-shot aura (ega0075c): the ball wrapped in its fire bands and
+# fire ring trailing ~1 m behind it, its red / yellow wave shells and glows (the last cut c0900, held at frame 505, the
+# texture flow running on), carried by the fire phoenix exactly as «Dark Phoenix» carries its ball: the same flight
+# (Dark Phoenix's c0700 motion replayed forward and back over the whole flight), size and place round the ball (the
+# ball under its breast). x0.4 of the cut-in size (phoenix ~8 m from beak to tail tips). The fake-particle sparks and
+# fire streaks left along the way from the kick point are dropped.
+# The object is ev6041ph00 (assets\data\{common,dx11}\effect\event\ev60\ev6041ph00\), built by
+# research/scripts/the_phoenix_ball_fx.py from ev60004100 + the phoenix (waza model ev60_00410 and its fire layer
+# ev60004100_wingfire, baked as rigid meshes per bone; posed by ev60_00860's c0700 pack: both phoenix models share
+# the same skeleton).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Living Shots» (shot_fx): visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "the_phoenix"
+from = "ega0075c"
+object = "effect/event/ev60/ev6041ph00/ev6041ph00.objbin"
+
+[[shot_aura]]
+name = "the_phoenix"
+when = { techniques = ["whs00410"] }
+aura = "the_phoenix"
+like = "ega0075c"

@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tormenta de fuego (Fireball Storm, whs00450 and whs01770, the same cut-in ev60_00450 /
+# ev60_01770).
+#
+# Measured: in the last cut (c0050) the event ball dives out of the sky at the camera (16.5 m up at 384, 1.9 m at 448).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.6 m the whole way, so the fireball round the ball (~0.75 m in radius at x0.4) stays
+# clear of the grass; both keys share the aura, so they share the flight. unblockable = false: the game's block rules
+# (this mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Tormenta de fuego (whs00450).
+[[edit]]
+target = "whs00450"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }
+
+# Tormenta de fuego (whs01770).
+[[edit]]
+target = "whs01770"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }

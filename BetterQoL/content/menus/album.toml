@@ -52,21 +52,22 @@ layer = [
     { layer = "util_alb_face", object = "util_alb_face", count = 20, scale = 0.01 },
     { layer = "util_alb_text", object = "util_alb_text", count = 48, scale = 0.01 },
 ]
-# the anchor takes every key: B / Esc / right click close the page (CMD_BACK), up / down move, left / right a page,
-# L2 / R2 the type, LB / RB the group, X / Y the player plate's pages
+# the anchor takes every key: B / Esc / right click close the page (CMD_BACK), up / down move, left / right the other
+# column (a page at the list's edge), Y the type, LB / RB the group, L2 / R2 the player plate's pages, A the
+# selected player's action of another mod (BetterQoL.AlbumActions; e.g. New Recruitment's «Fichar»)
 cmd = [
     { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_FUNCTION", arg = "util_alb_accept", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = "util_alb_up", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = "util_alb_down", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = "util_alb_left", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = "util_alb_right", flag = 1 },
-    { layer = "save01_02_list_item", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = "util_alb_type_prev", flag = 1 },
-    { layer = "save01_02_list_item", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = "util_alb_type_next", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = "util_alb_type_next", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = "util_alb_group_prev", flag = 1 },
     { layer = "save01_02_list_item", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = "util_alb_group_next", flag = 1 },
-    { layer = "save01_02_list_item", input = "CMD_FUNC4", command = "CMD_FUNCTION", arg = "util_alb_plate_prev", flag = 1 },
-    { layer = "save01_02_list_item", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = "util_alb_plate_next", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = "util_alb_plate_prev", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = "util_alb_plate_next", flag = 1 },
 ]
 res = [
     "#/menu/220_img/util_club_stats/util_club_stats.g4tx",

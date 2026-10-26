@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chut de luna llena (Crescent Kick, whs03320), cut-in ev60_03320.
+#
+# In the cut-in (c0500) the ball is kicked in the air about 10 m up and comes down along a crescent to 4.79 m at the
+# cut's end (research/scripts/crescent_kick_ball_fx.py FLIGHT_HEIGHT). Flight: straight and level into the goal at
+# that end height capped at 3 m. unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); points count from the kick; one point = a level flight;
+# straight = true: one straight line from the kick to the goal at that height.
+
+# Chut de luna llena (whs03320).
+[[edit]]
+target = "whs03320"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

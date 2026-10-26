@@ -24,19 +24,50 @@ start_flag = "aura_points.sp_start"
 [souls.stamina]
 resource = "aura_points.pe"
 
-# The reel over the totem move's cut-in (graft souls_rework_reel). Seconds from the move.
+# The skill carousel over the totem move's cut-in (screen aura_reworked_souls_reel_menu, content\menus\reel.toml): the
+# totem's 6 skills as small cards sliding sideways, the centre one in front and the two beside it smaller and dimmer;
+# it spins, slows down and stops with the result in the centre. It opens when the first cut-in after the totem move's
+# command starts (or over play when no cut-in comes) and closes early when that cut-in ends.
 [souls.reel]
-# false: the rolls apply without a reel
+# false: the rolls apply without the carousel
 show = true
+# seconds: fade in, spin (fast, slowing down), settle back onto the result, hold on it, fade out
 open_s = 0.2
-spin_s = 0.8
-stop_s = 0.9
-result_s = 1.2
-close_s = 0.3
-# rows per second while it spins
-spin_rows_per_s = 12
-# a second reel waits at most this many (a rival's rolls are never shown)
-queue = 2
+spin_s = 1.9
+settle_s = 0.25
+hold_s = 1.2
+close_s = 0.25
+# whole turns over the 6 cards before the result, and how far (in cards) it runs past the result before settling
+loops = 3
+settle_cards = 0.08
+# layout in screen px of 1080p, y down: the centre card's centre, the distance between card centres, the centre
+# card's size; the side cards' scale and opacity
+center_x = 960
+center_y = 96
+spacing = 214
+card_width = 224
+card_height = 60
+side_scale = 0.8
+side_alpha = 0.55
+# inside a card: the icon's size and its gap to the texts, the name's and the level's text heights, the level
+# diamonds' size and distance, the gap between the name and the level line
+icon_size = 34
+icon_gap = 10
+name_size = 21
+level_size = 15
+diamond_size = 9
+diamond_spacing = 13
+line_gap = 5
+# the cut-in that shows the carousel: the first one to start within this many seconds of the move's command
+cutin_window_s = 3
+# the plate colour of the totem's element (aura_skill_config column 8: 1 wind, 2 forest, 3 fire, 4 mountain, 5 void),
+# measured as the mean colour of the game's element move plates cmd_base_sp01..05 (soccer11_09); neutral = an
+# element outside the list (cmd_base_sp06); miss = the plate of a miss card
+element_colors = ["#0080BD", "#38A530", "#C03622", "#B07222", "#7520AD"]
+neutral_color = "#8B8B8B"
+miss_color = "#5C6070"
+# the atlas of the cards' icons (the skill families' `icon` sprites); it is in the screen's res list
+icon_atlas = "#/menu/200_icon/08_icon_teambuff/<LG>/icon_teambuff.g4tx"
 
 # The level-up pop (graft souls_rework_level_pop): a small speech bubble over the player's head with «+Nv.2» (text key
 # aura_reworked.level_pop, {level} = the new level), its tail pointing down to the head, following him: it pops in,

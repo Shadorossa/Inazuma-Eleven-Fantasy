@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Ceniza negra (Black Ash, whs01730 / whs01730_mm, cut-in ev60_01730).
+#
+# Measured: in c0030 the ball flies almost level, from 0.74 m at the kick (frame 338) to 1.19 m at 406.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick to the
+# goal, the ball centre at 1.0 m the whole way. unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Ceniza negra (whs01730).
+[[edit]]
+target = "whs01730"
+trajectory = { points = [[0.0, 1.00]], straight = true, unblockable = false }
+
+# Ceniza negra, miximax version (whs01730_mm).
+[[edit]]
+target = "whs01730_mm"
+trajectory = { points = [[0.0, 1.00]], straight = true, unblockable = false }

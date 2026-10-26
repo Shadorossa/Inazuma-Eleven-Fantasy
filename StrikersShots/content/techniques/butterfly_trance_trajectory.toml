@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Baile de mariposas (Butterfly Trance, whs00730, cut-in ev60_00730): its own flight, as
+# heights over distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# One level line at 1.0 m from the kick point into the goal point (owner 2026-10-24: horizontal, never rising or
+# falling; never the game's own curved / arched path), whatever the shot's length.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Baile de mariposas (whs00730).
+[[edit]]
+target = "whs00730"
+trajectory = { points = [[0.0, 1.0]], goal_points = [[0.0, 1.0]], unblockable = false }

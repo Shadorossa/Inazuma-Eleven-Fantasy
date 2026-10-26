@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Golpe kabuki (Kabuki Break, whs02600, cut-in ev60_02600).
+#
+# Measured: the event ball (b000001 slot s01) of ev60_02600 c0300 flies at the camera from effect frame 300 at
+# 0.7 m -> 0.4 m (in slow motion), nearly level.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.6 m the whole way, so the glow and the swirl round the ball (~1 m in radius at x2) run
+# clear of the grass. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the
+# ball centre over the pitch (m); the height is held.
+
+# Golpe kabuki (whs02600).
+[[edit]]
+target = "whs02600"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }

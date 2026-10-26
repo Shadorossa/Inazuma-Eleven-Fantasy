@@ -1,0 +1,35 @@
+# «Diamond Cutter» («Hoja diamantina», whs03140; mountain shot, cut-in ev60_03140): the end of the cut-in's last shot
+# (c0600), in two effects (owner 2026-10-25: a fixed point the comet comes out of, as in the cut-in):
+# * diamond_cutter_flash (object ev6314df00, `ground_effect`): the flash at the shot's origin (its ring, stars and
+#   glows, held at frame 453, camera-facing), standing at the kick point at the flight's height; it fades out 5 s after
+#   it appears, past any flight;
+# * diamond_cutter (object ev6314dc00, the ball aura, on the distance clock): the white-cored, violet-edged trail with
+#   its sparkle lines coming out of the flash to the ball (held at frame 465), revealed by the distance flown and never
+#   stretched in its texture, crossed so it reads from the touchline; the blue comet head (cone shells and round
+#   glows) round the ball, x0.5.
+# Both built by research/scripts/diamond_cutter_ball_fx.py from the cut-in's effect object ev60031400.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\diamond_cutter_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "diamond_cutter"
+from = "ega0075a"
+object = "effect/event/ev60/ev6314dc00/ev6314dc00.objbin"
+
+[[effect]]
+name = "diamond_cutter_flash"
+from = "ega0021"
+object = "effect/event/ev60/ev6314df00/ev6314df00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "diamond_cutter"
+when = { techniques = ["whs03140"] }
+aura = "diamond_cutter"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "diamond_cutter_flash" }

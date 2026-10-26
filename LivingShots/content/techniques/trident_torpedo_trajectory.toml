@@ -3,8 +3,8 @@ schema = "VRFW.technique/3"
 # 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
 # docs/game/mechanics/move-mini-effects.md §7).
 # In the cut-in (c0400) the ball leaves at 10.68 m and flies nearly level, easing down to 9.18 m 28.3 m on (over the
-# bar); in the match it leaves at the cut-in's 10.68 m and comes in one straight line into the goal at 2.0 m (the
-# keeper's reach), as Triple Threat.
+# bar); in the match it leaves from the keshin's trident (below) and comes in one straight line into the goal at 2.0 m
+# (the keeper's reach).
 #
 # Measured (research/scripts/shot_trajectory_from_cutin.py --points --move trident_torpedo): the event ball (s00) of
 # ev60_01850 c0400, event frames 1340-1458: [[0.00, 10.68], [9.73, 10.52], [19.70, 9.42], [28.32, 9.18]] (0.05 m).
@@ -14,5 +14,10 @@ schema = "VRFW.technique/3"
 # Torpedo tridente (whs01850).
 [[edit]]
 target = "whs01850"
-# measured flight (lowered by _flight_height.toml): trajectory = { points = [[0.0, 10.68]], goal_points = [[0.0, 2.0]], unblockable = false }
-trajectory = { points = [[0.0, 4.49]], goal_points = [[0.0, 2.0]], unblockable = false }
+# Owner 2026-10-23/24 («que vayan en caída como lo lanzaría el espíritu guerrero desde su altura hacia la portería»;
+# «como ya lanzado»; the keshin on its wave x0.4 right behind the kicker): its throw (c0400 frame 384) is 2.00 m behind
+# the kick point, its hand 4.24 m over the pitch; the ball starts where the trident is 30 frames later, 1.97 m on along
+# the line from the hand down to the goal (0.03 m behind the kick point, 4.08 m up; `python
+# research/scripts/trident_torpedo_ball_fx.py --measure`) and flies one straight line down into the goal at 2.0 m (the
+# mod's [trajectory] straight).
+trajectory = { points = [[0.0, 2.0]], start = { behind = 0.03, height = 4.08, fall = false }, unblockable = false }

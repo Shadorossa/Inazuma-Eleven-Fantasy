@@ -1,0 +1,24 @@
+# «Cañonazo» (Gunshot, whs01170; fire shot, cut-in ev60_01170): the end of the cut-in's final shot (c0300, held at
+# frame 306, the ball speeding away from the camera) on the ball: the ball in its yellow glow (its round lights facing
+# the camera from every side), the long yellow beam straight behind it and the two white wind spirals turning round that
+# beam as in the cut-in, laid along the flight, coming out of the kick point as the ball moves away (on the distance
+# clock, never stretched) and fading out at their far end. The cut-in's beam runs on ahead of the ball along its whole
+# path (unseen from its camera): cut at the ball. x1 (the cut-in's ball is at match scale).
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60011700 by
+# research/scripts/gunshot_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\gunshot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "gunshot"
+from = "ega0075c"
+object = "effect/event/ev60/ev6117gs00/ev6117gs00.objbin"
+
+[[shot_aura]]
+name = "gunshot"
+when = { techniques = ["whs01170"] }
+aura = "gunshot"
+like = "ega0075c"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

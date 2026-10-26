@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Bota propulsora (Overclock Spiral, whs02560), cut-in ev60_02560.
+#
+# In the cut-in (c0400) the ball dives as a green comet. Flight: straight and level 1.0 m up into the goal (the comet's
+# head, ~0.8 m across, stays clear of the pitch; never curved). unblockable = false: the game's block rules (this
+# mod changes no block rule). Heights are the ball centre over the pitch (m); points count from the kick; one point = a
+# level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Bota propulsora (whs02560).
+[[edit]]
+target = "whs02560"
+trajectory = { points = [[0.0, 1.00]], straight = true, unblockable = false }

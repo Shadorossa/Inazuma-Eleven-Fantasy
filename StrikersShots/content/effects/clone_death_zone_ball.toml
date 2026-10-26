@@ -1,0 +1,23 @@
+# «Clone Death Zone» («Triángulo múltiple», whs01440; forest shot): its event ev60_01440 only has lights and loads
+# Death Zone's cut-in (ev60_00080). While the ball flies to the goal it wears that cut-in's last shot (c0040, looped
+# over 612-646): the ball at the centre of the purple sphere, its white light in the core, the purple aura swirling
+# round it inside the purple and pink rings, all facing the camera (billboards) and centred on the ball, so it looks
+# the same from the touchline as from the front, x1.
+# The object is ev6144cd00 (effect/event/ev60/ev6144cd00/), built by research/scripts/clone_death_zone_ball_fx.py
+# from ev60000800.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\clone_death_zone_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "clone_death_zone"
+from = "ega0075d"
+object = "effect/event/ev60/ev6144cd00/ev6144cd00.objbin"
+
+[[shot_aura]]
+name = "clone_death_zone"
+when = { techniques = ["whs01440"] }
+aura = "clone_death_zone"
+like = "ega0075d"

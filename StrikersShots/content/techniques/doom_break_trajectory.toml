@@ -1,0 +1,16 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the ground trajectory of Mangual letal (Doom Break, whs01410): in its cut-in's last cut (c0400)
+# the ball runs low over the pitch, so in the match it skims the pitch the whole way and enters the goal low (height
+# 0.11 m = the ball's radius; same goal point x / z and flight time, the game's block rules:
+# docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7.2). Its aura
+# (content\effects\doom_break_ball.toml, ev6141db00) is lifted by the cut-in's ball height minus 0.11 m so its dust
+# wake lies on the grass (research/scripts/doom_break_ball_fx.py FLIGHT_H: keep the two equal). No power, cost or
+# block key.
+
+# Mangual letal (whs01410).
+[[edit]]
+target = "whs01410"
+# Flight (heights over distances: docs/framework/technique.md §4e): one point = flat at 0.11 m (the ground skim above).
+trajectory = { points = [[0.0, 0.11]], unblockable = false }
+# The furrow of its cut-in left along the path (content\effects\ground_marks.toml doom_break_mark, built on ega2011).
+ground_trail = { effect = "StrikersShots.doom_break_mark", object = "effect/battle/common/egx1410/egx1410.objbin", interval = 0.05, scale = 1.0, scatter = 0.0, orient = true, max_height = 100, lift = 0.12, life = 4.5 }

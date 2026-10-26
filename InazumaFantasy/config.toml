@@ -21,3 +21,8 @@ win = 1
 draw = 1
 loss = 0
 per_goal = 0
+
+# The title art (content/images/menu/50_title/title_art.toml): the mod serves its own title logo and press-start key
+# art, so the framework's own title art stays off (docs/framework/types/image.md §2.3).
+[VRFW.TitleArt]
+own = true

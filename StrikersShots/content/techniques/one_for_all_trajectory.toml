@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Uno para todos (One for All, whs03120, cut-in ev60_03120).
+#
+# Measured: in c0500 the ball is struck out of the centre of the magic circle and flies straight on along the sword
+# that slides out of it (research/scripts/one_for_all_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# (the circle's centre) to the goal, the ball centre at 1.6 m the whole way, so the circle (~1.15 m in radius at
+# x0.12) stays clear of the grass. unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Uno para todos (whs03120).
+[[edit]]
+target = "whs03120"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }

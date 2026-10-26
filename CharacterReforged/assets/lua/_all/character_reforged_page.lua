@@ -193,7 +193,8 @@ if CharacterReforged.Page == nil then
     if not (r[1] == true and r[2] == true) then
       return nil
     end
-    local value = {aura = 0, mix = 0, aura_from = -1, mix_from = -1}
+    -- techniques / rows: the non-aura moves in loadout order and their loadout positions (the move rows' set)
+    local value = {aura = 0, mix = 0, aura_from = -1, mix_from = -1, techniques = {}, rows = {}}
     for i = 1, 6 do
       local m = U32(r[2 + i])
       local okc, known, category = pcall(funcLuaCommand, Page.CMD_SKILL_INFO, m, 9)
@@ -204,6 +205,9 @@ if CharacterReforged.Page == nil then
         elseif value.aura == 0 then
           value.aura, value.aura_from = m, i - 1
         end
+      elseif m ~= 0 then
+        value.techniques[#value.techniques + 1] = m
+        value.rows[#value.rows + 1] = i - 1
       end
     end
     return value

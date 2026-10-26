@@ -1,0 +1,23 @@
+# «Ceniza negra» (Black Ash, whs01730 / whs01730_mm; forest shot, cut-in ev60_01730): while the ball flies to the goal
+# it is inside the end of the cut-in's shot cut (c0030, frames 356-406 looped): its fourteen parts on the event ball,
+# x0.838 (the black smoke and wisps, the white core and blue light, the trailing blue and black bands), instead of the
+# plain forest special-shot aura (ega0075d). The object is ev6173ba00 (effect/event/ev60/ev6173ba00/), built by
+# research/scripts/black_ash_ball_fx.py from the cut-in's effect object ev60017300 with the settings the automatic
+# pipeline (ls_auto_aura.py) derived for it (the same object data as Living Shots' automatic aura ev601730au). The
+# trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b), so the aura follows the flight
+# (content\techniques\black_ash_trajectory.toml).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "black_ash"
+from = "ega0075d"
+object = "effect/event/ev60/ev6173ba00/ev6173ba00.objbin"
+
+[[shot_aura]]
+name = "black_ash"
+when = { techniques = ["whs01730", "whs01730_mm"] }
+aura = "black_ash"
+like = "ega0075d"

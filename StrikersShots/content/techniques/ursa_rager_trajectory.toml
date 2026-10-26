@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Remate cazaosos (Ursa Rager, whs02920, cut-in ev60_02920).
+#
+# Measured: in c0500 the ball runs along its energy band, nearly level (2.8 m -> 1.6 m over ~15 m at the end of the
+# shot).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.00 m the whole way (the upright band reaches 0.82 m under the ball at most, fading
+# out before: it never touches the grass). unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Remate cazaosos (whs02920).
+[[edit]]
+target = "whs02920"
+trajectory = { points = [[0.0, 1.00]], straight = true, unblockable = false }

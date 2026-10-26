@@ -1,0 +1,35 @@
+# «Doomsword Slash» («Proyectil letal», whs01470, fire shot, cut-in ev60_01470): the end of the cut-in's last shot (c0020).
+# Two effects:
+# * doomsword_slash_burst (object ev6047dp00, `ground_effect`): the spiky blue flame burst the ball is struck out of,
+#   standing at the kick point at the flight's height, turned to the flight's yaw, its texture flowing on; it stays the
+#   whole flight, the beam firing out of it, and goes with the beam when the shot ends;
+# * doomsword_slash (object ev6047db00, `aura`, on the distance clock): the blue-black sword with the ball in its black
+#   core, its point ahead, and the black beam with blue flame edges from the burst to the sword, born at the kick point
+#   and revealed as the ball flies (the whole beam, as in the cut-in), never stretched, its front inside the sword; the
+#   flat cut-in cards drawn twice, turned 90 deg about the flight (the same from the touchline as from behind), x0.5.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60014700 by
+# research/scripts/doomsword_slash_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\doomsword_slash_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "doomsword_slash"
+from = "ega0075c"
+object = "effect/event/ev60/ev6047db00/ev6047db00.objbin"
+
+[[effect]]
+name = "doomsword_slash_burst"
+from = "ega0021"
+object = "effect/event/ev60/ev6047dp00/ev6047dp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "doomsword_slash"
+when = { techniques = ["whs01470"] }
+aura = "doomsword_slash"
+like = "ega0075c"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the burst stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "doomsword_slash_burst" }

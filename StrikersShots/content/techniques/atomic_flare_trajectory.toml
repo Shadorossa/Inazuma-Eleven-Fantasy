@@ -1,0 +1,17 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Llamarada atómica (Atomic Flare, whs00790 / whs00790_mm, cut-in ev60_00790): one
+# straight level line at 1.8 m from the kick point into the goal point, whatever the shot's length (the flame wreath,
+# ~2.5 m across, stays clear of the grass). In the cut-in's last shot (c0030) the ball, struck out of the sun 38.6 m up,
+# falls onto the pitch and runs low (0.5-1.7 m) into the goal; the aura is that low run
+# (research/scripts/atomic_flare_ball_fx.py FRAME = 330). unblockable = false: the game's block rules (this mod changes
+# no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Llamarada atómica (whs00790).
+[[edit]]
+target = "whs00790"
+trajectory = { points = [[0.0, 1.8]], straight = true, unblockable = false }
+
+# Llamarada atómica, miximax version (whs00790_mm).
+[[edit]]
+target = "whs00790_mm"
+trajectory = { points = [[0.0, 1.8]], straight = true, unblockable = false }

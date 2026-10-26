@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Flecha divina (Divine Arrows, whs00310, cut-in ev60_00310).
+#
+# Flight (owner 2026-10-24: «trayectoria lineal cerca del suelo», raso): one straight level line from the kick point to
+# the goal, the ball centre at 0.55 m the whole way (the lowest height where the burst round the ball clears the grass),
+# so the dust wall the aura raises off the pitch under its light beam (research/scripts/divine_arrows_ball_fx.py
+# FLIGHT_H) makes sense.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Flecha divina (whs00310).
+[[edit]]
+target = "whs00310"
+trajectory = { points = [[0.0, 0.55]], straight = true, unblockable = false }

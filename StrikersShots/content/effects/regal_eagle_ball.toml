@@ -1,0 +1,35 @@
+# «Águila bicéfala» (Regal Eagle, whs03150; wind shot, cut-in ev60_03150): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last shot (c0400, the twin beams fired out of the two-headed ice eagle):
+# * regal_eagle_eagle (object ev6315rp00, `ground_effect`): the two-headed ice eagle hovering behind the kick point,
+#   level, its wings beating on, and the glows at the beams' roots, stood at the kick point (the beams' roots at the
+#   flight's height);
+# * regal_eagle (object ev6315rb00, on the distance clock): the twin beams, pale yellow with a cyan core, their soft
+#   glows and the streaks along them, born at the kick point and revealed by the distance flown, continuous from the
+#   eagle's roots to the ball, the ball between their wide fronts.
+# Both built by research/scripts/regal_eagle_ball_fx.py from the cut-in's effect object ev60031500 and its waza model
+# ev60_03150 (c0400 held at its end, 422), x0.08. Left out: the charge before the beams (spheres, rings, lines), the
+# screen-space backdrop, particles and blur. It replaces the automatic aura of whs03150. Its flight:
+# content\techniques\regal_eagle_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "regal_eagle"
+from = "ega0075b"
+object = "effect/event/ev60/ev6315rb00/ev6315rb00.objbin"
+
+[[effect]]
+name = "regal_eagle_eagle"
+from = "ega0021"
+object = "effect/event/ev60/ev6315rp00/ev6315rp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "regal_eagle"
+when = { techniques = ["whs03150"] }
+aura = "regal_eagle"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "regal_eagle_eagle" }

@@ -1,0 +1,27 @@
+# «Ofensiva danzarina» (Flash Dance, whs02800; forest shot, cut-in ev60_02800): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last shot of the ball (c0400): the glowing yellow / white sphere round the
+# ball and the yellow flame streak behind it, instead of the plain forest special-shot aura (ega0075d).
+# The object is ev6028fd00 (effect/event/ev60/ev6028fd00/), built by research/scripts/flash_dance_ball_fx.py from the
+# cut-in's effect object ev60028000: c0400 held at frame 320 (the streak at its full length) from the aura's first
+# frame, ball at the origin flying +Z, x1; the streak comes out of the kick point as the ball flies and fades out at its
+# far end, its flame texture flowing on. Left out: the speed-line backdrop, the kick's burst and the kicker's body wind.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\flash_dance_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "flash_dance"
+from = "ega0075d"
+object = "effect/event/ev60/ev6028fd00/ev6028fd00.objbin"
+
+[[shot_aura]]
+name = "flash_dance"
+when = { techniques = ["whs02800"] }
+aura = "flash_dance"
+like = "ega0075d"
+# born at the kick point and run on the ball's distance from it: the streak comes out of the kick point
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

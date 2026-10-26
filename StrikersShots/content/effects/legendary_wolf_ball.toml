@@ -1,0 +1,30 @@
+# «Aullido de lobo» (Legendary Wolf, whs00600 / whs00600_mm; wind shot, cut-in ev60_00600): the end of the cut-in's
+# final shot (c0030, held at frame 394, its last full look before the ball passes the camera) on the ball: the ball on
+# the tip of its spiky red and white fang cone (swaying about the flight as in the cut-in), its glow made camera-facing,
+# and the red ribbon the cut-in draws behind it, laid straight behind the ball along the flight at the cut-in's own
+# length, coming out of the cone's back (soft front), standing upright with a flat crossed copy so it reads from the
+# touchline and from behind, coming out of the kick point as the ball moves away (on the distance clock, never
+# stretched) and fading out at its far end.
+# The cut-in's two side comets (cone, glow and ribbon each) braid round it: they orbit the
+# ball's comet 1.6 m off the flight, their ribbons swept along a double helix
+# behind them (a turn every ~7 m), the whole aura turning about the flight so the strands stay still in the world
+# as the ball flies on (whole turns a loop).
+# x1 (the cut-in's ball is at match scale).
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60006000 by
+# research/scripts/legendary_wolf_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\legendary_wolf_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "legendary_wolf"
+from = "ega0075b"
+object = "effect/event/ev60/ev6060lw00/ev6060lw00.objbin"
+
+[[shot_aura]]
+name = "legendary_wolf"
+when = { techniques = ["whs00600", "whs00600_mm"] }
+aura = "legendary_wolf"
+like = "ega0075b"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

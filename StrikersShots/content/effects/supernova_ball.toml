@@ -1,0 +1,23 @@
+# «Supernova» (whs00810; forest shot, cut-in ev60_00810): while the ball flies to the goal it wears the cut-in's last
+# shot (c0090, held at frame 777 from the aura's first frame): the dark vortex the ball flies in, its spiky purple swirl
+# round a dark disc, the pink light lines and the white / orange core on the ball, the soft blue halo behind, all
+# camera-facing (billboards) and centred on the ball, so it is the same round vortex from the touchline as from the
+# front, x0.5. The smoke clouds round the flight stay out (the cut-in's set).
+# The object is ev6081sn00 (effect/event/ev60/ev6081sn00/), built by research/scripts/supernova_ball_fx.py from
+# ev60008100.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\supernova_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "supernova"
+from = "ega0075d"
+object = "effect/event/ev60/ev6081sn00/ev6081sn00.objbin"
+
+[[shot_aura]]
+name = "supernova"
+when = { techniques = ["whs00810"] }
+aura = "supernova"
+like = "ega0075d"

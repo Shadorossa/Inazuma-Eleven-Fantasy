@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro del cometa (Comet Shot, whs00140), cut-in ev60_00140.
+#
+# In the cut-in's last shot (c0400) the ball comes down from 3.25 m (frame 290) to 1.77 m at the cut's end (341;
+# research/scripts/comet_shot_ball_fx.py). Flight: straight and level at 1.8 m into the goal. unblockable = false: the
+# game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count
+# from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that
+# height.
+
+# Tiro del cometa (whs00140).
+[[edit]]
+target = "whs00140"
+trajectory = { points = [[0.0, 1.8]], straight = true, unblockable = false }

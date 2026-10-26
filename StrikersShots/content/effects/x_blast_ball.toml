@@ -1,0 +1,36 @@
+# «X Blast» («Cañón X», whs01330, fire shot, cut-in ev60_01330): the end of the cut-in's last shot (c0300) on the pitch
+# (owner 2026-10-24: «debe ser desde la X que se debe quedar como punto quieto de inicio y el rayo rojo con el balón»).
+# Two effects:
+# * x_blast_x (object ev6133xp00, `ground_effect`): the red X standing at the kick point, its centre at the flight's
+#   height, its plane across the flight; its cards face the camera with the cut-in's X shape (the same X from the
+#   touchline as from behind the kicker), its centre glow throbbing; it stays the whole flight, the beam firing out of
+#   it, and goes with the beam when the shot ends;
+# * x_blast (object ev6133xb00, `aura`, on the distance clock): the red beam from the X to the ball, born at the kick
+#   point and revealed as the ball flies (the whole beam, as in the cut-in), never stretched, its texture flowing on,
+#   the ball inside its head.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60013300 by
+# research/scripts/x_blast_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\x_blast_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "x_blast"
+from = "ega0075c"
+object = "effect/event/ev60/ev6133xb00/ev6133xb00.objbin"
+
+[[effect]]
+name = "x_blast_x"
+from = "ega0021"
+object = "effect/event/ev60/ev6133xp00/ev6133xp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "x_blast"
+when = { techniques = ["whs01330"] }
+aura = "x_blast"
+like = "ega0075c"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the X stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "x_blast_x" }

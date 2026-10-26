@@ -1,0 +1,25 @@
+# «Chut congelante» (Freeze Shot, whs00200; forest; cut-in ev60_00200): while the ball flies to the goal it keeps the
+# look of the end of the cut-in's last shot (c0500, held at frame 298, owner 2026-10-24: «que sea como en el último
+# plano de su animación al final»): the ball inside the blue swirling ice orb (~0.55 m across, camera-facing: round
+# from the touchline as from the front), x1. Left out (owner 2026-10-24: «quita del chut congelado lo del suelo y la
+# cosa abajo del aura del balón», «quita las partículas de atrás»): the frost-particle cloud under the orb, the frost
+# particle trail and the sparkles along it, and any frozen ground; the cut-in's frozen pitch and mist banks (the
+# scenery round the shot) and the icicle burst the ball flies over (left on the pitch) stay in the cut-in.
+# The object is ev6002fs00 (effect/event/ev60/ev6002fs00/), built by research/scripts/freeze_shot_ball_fx.py from the
+# cut-in's effect object ev60002000.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\freeze_shot_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "freeze_shot"
+from = "ega0075d"
+object = "effect/event/ev60/ev6002fs00/ev6002fs00.objbin"
+
+[[shot_aura]]
+name = "freeze_shot"
+when = { techniques = ["whs00200"] }
+aura = "freeze_shot"
+like = "ega0075d"

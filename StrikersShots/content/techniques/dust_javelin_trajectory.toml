@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Dust Javelin (whs02520, cut-in ev60_02520).
+#
+# Measured: the cut-in's last shot (c0300) flies the sand javelin along its axis, ~14 deg down toward the camera; the
+# aura makes it level. Its lowest sand sits 0.86 m under the ball and its swirls rise 1.85 m over it
+# (research/scripts/dust_javelin_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.00 m the whole way (nothing in the grass). unblockable = false: the game's block
+# rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Dust Javelin (whs02520).
+[[edit]]
+target = "whs02520"
+trajectory = { points = [[0.0, 1.00]], straight = true, unblockable = false }

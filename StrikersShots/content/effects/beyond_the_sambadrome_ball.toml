@@ -1,0 +1,26 @@
+# «Beyond the Sambadrome» («Samba letal», whs03170; forest shot, cut-in ev60_03170): while the ball flies to the goal
+# it wears the cut-in's last shot (c0400, frames 270-328): the pink glow round the ball with its white core
+# (camera-facing: round from every side) and the white wisps on the ball, looped, and the pink feathers the ball sheds,
+# one every 3 frames, each fluttering where it was shed (falling behind the ball) and fading out ~10 m behind it,
+# looped seamlessly from the first frame (no feather behind the kick point). x1 of the cut-in size. The star backdrop
+# and the wing fan by the kicker stay out.
+# The object is ev6317bs00 (effect/event/ev60/ev6317bs00/), built by research/scripts/beyond_the_sambadrome_ball_fx.py
+# from ev60031700.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\beyond_the_sambadrome_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "beyond_the_sambadrome"
+from = "ega0075d"
+object = "effect/event/ev60/ev6317bs00/ev6317bs00.objbin"
+
+[[shot_aura]]
+name = "beyond_the_sambadrome"
+when = { techniques = ["whs03170"] }
+aura = "beyond_the_sambadrome"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

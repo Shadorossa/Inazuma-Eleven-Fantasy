@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chilena fulminante (Bicycle Slash, whs02480), cut-in ev60_02480.
+#
+# In the cut-in (c0200) the ball leaves the black hole 1.91 m over the pitch and flies level along the sword slash
+# toward the goal (research/scripts/bicycle_slash_ball_fx.py FLIGHT_HEIGHT). Flight: straight and level at that height
+# into the goal. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball
+# centre over the pitch (m); points count from the kick; one point = a level flight; straight = true: one straight
+# line from the kick to the goal at that height.
+
+# Chilena fulminante (whs02480).
+[[edit]]
+target = "whs02480"
+trajectory = { points = [[0.0, 1.91]], straight = true, unblockable = false }

@@ -1,0 +1,35 @@
+# «Sonic Shot» («Tiro sónico», whs01610; wind shot, cut-in ev60_01610): the end of the cut-in's last shot (c0400). Two
+# effects:
+# * sonic_shot (object ev6161ss00, `aura`, on the distance clock): the small cyan glowing ball and the white wind
+#   tunnel it flies through, a beam out of the kick point to the ball, revealed as the ball moves away, never
+#   stretched, fading at its far end, x1, instead of the plain wind special-shot aura (ega0075b);
+# * sonic_shot_rings (object ev6161sr00, `ground_effect`): the cyan sonic-boom rings born round the ball at the kick
+#   point, spreading out there while the ball flies away, then held (they go with the aura when the shot ends).
+# Both built by research/scripts/sonic_shot_ball_fx.py from the cut-in's effect object ev60016100.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "sonic_shot"
+from = "ega0075b"
+object = "effect/event/ev60/ev6161ss00/ev6161ss00.objbin"
+
+[[effect]]
+name = "sonic_shot_rings"
+from = "ega0021"
+object = "effect/event/ev60/ev6161sr00/ev6161sr00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "sonic_shot"
+when = { techniques = ["whs01610"] }
+aura = "sonic_shot"
+like = "ega0075b"
+# the tunnel comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the sonic-boom rings stay where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "sonic_shot_rings" }

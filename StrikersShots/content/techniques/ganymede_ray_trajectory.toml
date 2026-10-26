@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Rayo de Ganímedes (Ganymede Ray, whs00700, cut-in ev60_00700).
+#
+# Measured: in c0020 the event ball (b000001 slot s01) leaves the sphere at effect frame ~244 and flies straight along
+# +Z at 1.0 m inside the beam, rising to 2.0 m only over its last frames (research/scripts/ganymede_ray_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# (the sphere's centre) to the goal, the ball centre at 1.3 m the whole way, so the beam's violet fringe stays off the
+# grass. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); the height is held.
+
+# Rayo de Ganímedes (whs00700).
+[[edit]]
+target = "whs00700"
+trajectory = { points = [[0.0, 1.30]], straight = true, unblockable = false }

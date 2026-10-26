@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Alas de halcón (Thunderclaw, whs01800, cut-in ev60_01800): one straight level line at
+# 2.0 m from the kick point into the goal point, whatever the shot's length (the aura's vortex ~1.4 m round the flight
+# axis stays clear of the grass). unblockable = false: the game's block rules (this mod changes no block rule). Heights
+# are the ball centre over the pitch (m); goal_points count back from the goal point, points from the kick; the first /
+# last height is held.
+
+# Alas de halcón (whs01800).
+[[edit]]
+target = "whs01800"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

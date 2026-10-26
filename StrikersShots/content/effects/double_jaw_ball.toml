@@ -1,0 +1,34 @@
+# «Mandíbulas dobles» (Double Jaw, whs01270; fire shot, cut-in ev60_01270): while the ball zigzags to the goal along
+# the cut-in's jaw teeth it keeps the look of the cut-in's shot cut (c0300, frames 350-382, looped), x1, instead of the
+# plain fire special-shot aura (ega0075c):
+# * double_jaw (object ev6127dj00): the small red-white glow and its spinning swirls on the ball (round from every side);
+# * double_jaw_band (object ev6127db00, `ground_effect`): the red-and-white zigzag band of jaw teeth on the pitch, its
+#   origin at the kick point, one regular tooth of the cut-in (3.206 m) repeated without a seam over 61 m, at its
+#   cut-in height; on the distance clock it shows just behind the ball and fades out 20 m behind it. The ball's
+#   flight (content\techniques\double_jaw_trajectory.toml) runs along the same teeth.
+# Both objects are built by research/scripts/double_jaw_ball_fx.py from the cut-in's effect object ev60012700. The
+# trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the ball's
+# velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "double_jaw"
+from = "ega0075c"
+object = "effect/event/ev60/ev6127dj00/ev6127dj00.objbin"
+
+[[effect]]
+name = "double_jaw_band"
+from = "ega0021"
+object = "effect/event/ev60/ev6127db00/ev6127db00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "double_jaw"
+when = { techniques = ["whs01270"] }
+aura = "double_jaw"
+like = "ega0075c"
+# the band stays on the pitch from the kick point, revealed on the ball's ground distance from it (0.75 m a clip
+# frame, the generator's DRIFT; docs/framework/types/effect.md «Ground effect», «Distance clock»)
+ground_effect = { effect = "double_jaw_band", anchor = "kick", drift = 0.75 }

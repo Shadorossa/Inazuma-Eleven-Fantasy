@@ -1,13 +1,15 @@
 # Souls Rework › the reel's skill families (kind AuraReworked.soul/1, schema content\types\soul.toml;
 # docs/game/mods/souls-rework-design.md §1.4 Galaxy values, §9 the VR mapping). Edited in ModManager («Auras», a totem's
 # page) or by hand. `galaxy` names the Galaxy skill (wiki Module:WazaData `<galaxy>LV1..3`); its Galaxy values are in
-# the comment above each family. VR has no GP / TP / Shibire: each mapping is the design's (§4.2).
+# the comment above each family. VR has no GP / TP / Shibire: each mapping is the design's (§4.2). `icon` = the
+# family's card icon on the skill carousel: a sprite of the game's team-buff icons (icon_teambuff atlas).
 schema = "AuraReworked.soul/1"
 
 # Galaxy: Shoot Up +100 / +150 / +250 shoot power
 [[AuraReworked.Skill]]
 name = "shoot_up"
 text = "aura_reworked.reel_shoot_up"
+icon = "icon_teambuff02"
 effect = "move_power"
 move_kinds = ["shoot"]
 values = [10, 15, 25]
@@ -17,6 +19,7 @@ galaxy = "ShootUp"
 [[AuraReworked.Skill]]
 name = "dribble_up"
 text = "aura_reworked.reel_dribble_up"
+icon = "icon_teambuff03"
 effect = "move_power"
 move_kinds = ["dribble"]
 values = [10, 15, 25]
@@ -26,6 +29,7 @@ galaxy = "DribbleUp"
 [[AuraReworked.Skill]]
 name = "block_up"
 text = "aura_reworked.reel_block_up"
+icon = "icon_teambuff13"
 effect = "move_power"
 move_kinds = ["block"]
 values = [10, 15, 25]
@@ -35,6 +39,7 @@ galaxy = "BlockUp"
 [[AuraReworked.Skill]]
 name = "catch_up"
 text = "aura_reworked.reel_catch_up"
+icon = "icon_teambuff14"
 effect = "move_power"
 move_kinds = ["catch"]
 values = [10, 15, 25]
@@ -44,6 +49,7 @@ galaxy = "CatchUp"
 [[AuraReworked.Skill]]
 name = "sp_saving"
 text = "aura_reworked.reel_sp_saving"
+icon = "icon_teambuff18"
 effect = "point_cost"
 values = [20, 35, 50]
 galaxy = "SPSetsuyaku"
@@ -52,6 +58,7 @@ galaxy = "SPSetsuyaku"
 [[AuraReworked.Skill]]
 name = "numbness_plus"
 text = "aura_reworked.reel_numbness_plus"
+icon = "icon_teambuff15"
 effect = "shot_vs_keeper"
 values = [4, 7, 10]
 galaxy = "ShibirePlus"
@@ -60,6 +67,7 @@ galaxy = "ShibirePlus"
 [[AuraReworked.Skill]]
 name = "numbness_minus"
 text = "aura_reworked.reel_numbness_minus"
+icon = "icon_teambuff24"
 effect = "keeper_vs_shot"
 values = [-4, -7, -10]
 galaxy = "ShibireMinus"
@@ -68,6 +76,7 @@ galaxy = "ShibireMinus"
 [[AuraReworked.Skill]]
 name = "level_points_plus"
 text = "aura_reworked.reel_level_points_plus"
+icon = "icon_teambuff35"
 effect = "level_points"
 values = [20, 50, 100]
 galaxy = "LevelPPlus"
@@ -76,6 +85,7 @@ galaxy = "LevelPPlus"
 [[AuraReworked.Skill]]
 name = "stamina_recovery"
 text = "aura_reworked.reel_stamina_recovery"
+icon = "icon_teambuff32"
 effect = "team_stamina"
 values = [10, 20, 30]
 fallback = "tension_recovery"
@@ -85,6 +95,7 @@ galaxy = "GPKaifuku"
 [[AuraReworked.Skill]]
 name = "tension_recovery"
 text = "aura_reworked.reel_tension_recovery"
+icon = "icon_teambuff38"
 effect = "team_tension"
 units = [1, 2, 3]
 galaxy = "TPKaifuku"
@@ -93,6 +104,7 @@ galaxy = "TPKaifuku"
 [[AuraReworked.Skill]]
 name = "stamina_tension_recovery"
 text = "aura_reworked.reel_stamina_tension_recovery"
+icon = "icon_teambuff37"
 effect = "team_stamina_tension"
 values = [5, 10, 15]
 units = [1, 1, 2]
@@ -102,6 +114,7 @@ galaxy = "GPTPKaifuku"
 [[AuraReworked.Skill]]
 name = "super_dash"
 text = "aura_reworked.reel_super_dash"
+icon = "icon_teambuff28"
 effect = "move_speed"
 values = [20, 20, 20]
 seconds = [3, 5, 7]
@@ -111,6 +124,7 @@ galaxy = "SuperDash"
 [[AuraReworked.Skill]]
 name = "invincible"
 text = "aura_reworked.reel_invincible"
+icon = "icon_teambuff40"
 effect = "untouchable"
 seconds = [3, 4, 5]
 galaxy = "MutekiDribble"
@@ -119,6 +133,7 @@ galaxy = "MutekiDribble"
 [[AuraReworked.Skill]]
 name = "knockdown"
 text = "aura_reworked.reel_knockdown"
+icon = "icon_teambuff34"
 effect = "knockdown"
 values = [-90, -90, -90]
 seconds = [5, 6, 7]
@@ -128,5 +143,6 @@ galaxy = "Fukitobashi"
 [[AuraReworked.Skill]]
 name = "miss"
 text = "aura_reworked.reel_miss"
+icon = "icon_teambuff23"
 effect = "none"
 galaxy = "Miss"

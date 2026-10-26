@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cañón X (X Blast, whs01330, cut-in ev60_01330).
+#
+# Measured: in c0300 the ball leaves the centre of the X (5.07 m over the pitch) at effect frame ~309 and flies down
+# 14 deg to ~1.1 m at 349 (research/scripts/x_blast_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# (the X's centre) to the goal, the ball centre at 3.0 m the whole way: the cut-in's 5.07 m kick point brought down to
+# the highest level flight this mod's _flight_height.toml leaves as measured (untouched_up_to, as Cabezazo fiero).
+# unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Cañón X (whs01330).
+[[edit]]
+target = "whs01330"
+trajectory = { points = [[0.0, 3.00]], straight = true, unblockable = false }

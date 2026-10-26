@@ -1,0 +1,20 @@
+# «Bateo total» (Utter Gutsiness Bat, whs00270; fire shot, cut-in ev60_00270): while the ball flies to the goal it is
+# inside the end of the cut-in's shot cut (c0300, frames 281-288 looped): its fireball and two flame tongues streaming
+# back along the flight, x1, instead of the plain fire special-shot aura (ega0075c). The object is ev6027ub00
+# (effect/event/ev60/ev6027ub00/), built by research/scripts/utter_gutsiness_bat_ball_fx.py from the cut-in's effect
+# object ev60002700. The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "utter_gutsiness_bat"
+from = "ega0075c"
+object = "effect/event/ev60/ev6027ub00/ev6027ub00.objbin"
+
+[[shot_aura]]
+name = "utter_gutsiness_bat"
+when = { techniques = ["whs00270"] }
+aura = "utter_gutsiness_bat"
+like = "ega0075c"

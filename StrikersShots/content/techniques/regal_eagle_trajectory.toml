@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Águila bicéfala (Regal Eagle, whs03150, cut-in ev60_03150): one straight level line
+# at 1.8 m, the height of the twin beams' roots in front of the eagle hovering at the kick point
+# (research/scripts/regal_eagle_ball_fx.py FLIGHT_HEIGHT). unblockable = false: the game's block rules (this mod
+# changes no block rule). Heights are the ball centre over the pitch (m).
+
+# Águila bicéfala (whs03150).
+[[edit]]
+target = "whs03150"
+trajectory = { points = [[0.0, 1.80]], straight = true, unblockable = false }

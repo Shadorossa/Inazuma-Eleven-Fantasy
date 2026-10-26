@@ -1,0 +1,24 @@
+# «Zapatazo dual» (Dual Strike, whs00590; forest shot, cut-in ev60_00590): while the ball flies to the goal it is the
+# end of the cut-in's shot cut (c0700, held at frame 486 from the aura's first frame): the ball at the tip of its spiky
+# red / orange / yellow flame burst (the three shoot shells, the flame ring round the ball and the yellow kick glow on
+# it), and the long red / yellow streak of light behind it, out of the kick point, revealed by the distance the ball
+# has flown (never stretched), its far end fading out, x1, instead of the plain forest special-shot aura (ega0075d).
+# The object is ev6059ds00 (effect/event/ev60/ev6059ds00/), built by research/scripts/dual_strike_ball_fx.py from the
+# cut-in's effect object ev60005900. The trigger copies the forest special-shot aura's row (like = "ega0075d"):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dual_strike"
+from = "ega0075d"
+object = "effect/event/ev60/ev6059ds00/ev6059ds00.objbin"
+
+[[shot_aura]]
+name = "dual_strike"
+when = { techniques = ["whs00590"] }
+aura = "dual_strike"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

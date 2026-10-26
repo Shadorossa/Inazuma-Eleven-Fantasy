@@ -1,0 +1,27 @@
+# «Pingüino múltiple» (Clone Penguin, whs01450, forest; event ev60_01450): its event plays Pingüino emperador nº2's cut-in
+# (the event packs, camera and penguins of ev60_00400, the effect object ev60004000; the three shooters are the shooter's
+# clones). While the ball flies to the goal after the cut-in it keeps the look of that cut-in's last shot (c0080): the
+# ball inside its orange fire ball, the five penguins in their ring round it, each swaying gently, each with its white
+# streak running straight back out of its tail (never stretched, out of the kick point, its tail fading), instead of
+# the plain forest special-shot aura (ega0075d). The object is ev6145cp00 (effect/event/ev60/ev6145cp00/), built by
+# research/scripts/clone_penguin_ball_fx.py from ev60004000 and the penguins (ev60_00400): c0080 held at frame 628,
+# ball at the origin flying +Z, x0.7.
+# The trigger copies the forest special-shot aura row (like): CB_SkillShootBallAura turns +Z along the ball's velocity
+# every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\clone_penguin_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "clone_penguin"
+from = "ega0075d"
+object = "effect/event/ev60/ev6145cp00/ev6145cp00.objbin"
+
+[[shot_aura]]
+name = "clone_penguin"
+when = { techniques = ["whs01450"] }
+aura = "clone_penguin"
+like = "ega0075d"
+# the streaks come out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

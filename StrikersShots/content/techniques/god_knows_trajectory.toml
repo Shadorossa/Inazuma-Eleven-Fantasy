@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Sabiduría divina (God Knows, whs00340; covers whs00340_mm). Nacho
+# 2026-10-10: every aura move its own flight, heights over distances (docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7).
+# In the cut-in's last cut (c0050) the ball is struck down out of the sky from 12.9 m, steep at first, then easing out
+# toward the goal; in the match it comes down that curve into the goal.
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move god_knows):
+# the event ball (s00) of ev60_00340 c0050, event frames 1368-1464 (the whole cut; the orb follows it within 0.02 m):
+# [[0, 12.90], [0.87, 9.63], [4.41, 5.34], [12.33, 2.14]] (0.56 m: a curve); the last piece's slope continued to
+# 2.0 m (12.68 m in all), placed back from the goal point; the top corner rounded 3 m.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Sabiduría divina (whs00340).
+[[edit]]
+target = "whs00340"
+# measured flight (lowered by _flight_height.toml): trajectory = { goal_points = [[12.68, 12.9, 3.0], [11.81, 9.63], [8.27, 5.34], [0.0, 2.0]], unblockable = false }
+trajectory = { goal_points = [[12.68, 4.5, 3.0], [11.81, 3.75], [8.27, 2.77], [0.0, 2.0]], unblockable = false }

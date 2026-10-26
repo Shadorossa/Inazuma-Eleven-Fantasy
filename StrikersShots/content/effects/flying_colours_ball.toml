@@ -1,0 +1,21 @@
+# «Victoria tricolor» (Flying Colours, whs02830; wind shot, cut-in ev60_02830): the ball flies as the cut-in's final
+# shot (c0500) shows it, thinner and braided: the red comet on the ball, the yellow and green comets orbiting it, their
+# three tube trails twisting round the flight as a triple helix, out of the kick point as the ball moves away, their
+# far end fading out.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60028300 by
+# research/scripts/flying_colours_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\flying_colours_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "flying_colours"
+from = "ega0075b"
+object = "effect/event/ev60/ev6283fc00/ev6283fc00.objbin"
+
+[[shot_aura]]
+name = "flying_colours"
+when = { techniques = ["whs02830"] }
+aura = "flying_colours"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

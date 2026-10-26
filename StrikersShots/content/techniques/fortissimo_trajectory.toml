@@ -1,0 +1,16 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Pentagrama (Fortissimo, whs01570 / whs01570_mm, cut-in ev60_01570): one straight level
+# line at 1.6 m from the kick point into the goal point, whatever the shot's length (the aura's speed lines run straight
+# behind the ball, 1.35 m below its centre at most). In the cut-in's final shot (c0020) the event ball rises from 0.6 m
+# to 1.2 m over its first 12 m. unblockable = false: the game's block rules (this mod changes no block rule). Heights
+# are the ball centre over the pitch (m); the height is held.
+
+# Pentagrama (whs01570).
+[[edit]]
+target = "whs01570"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }
+
+# Pentagrama, miximax version (whs01570_mm).
+[[edit]]
+target = "whs01570_mm"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }

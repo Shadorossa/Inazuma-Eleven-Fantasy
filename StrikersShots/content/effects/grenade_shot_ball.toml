@@ -1,0 +1,21 @@
+# «Chut granada» (Grenade Shot, whs00070; fire shot, cut-in ev60_00070): while the ball flies to the goal it is inside
+# the end of the cut-in's shot cut (c0200, frames 203-236 looped for the whole flight): its 18 blue-white parts on the
+# event ball, x1 (the blue squares spinning round it, the wave shells, the white glows, the band and the sparks),
+# instead of the plain fire special-shot aura (ega0075c). The object is ev6007gs00 (effect/event/ev60/ev6007gs00/),
+# built by research/scripts/grenade_shot_ball_fx.py from the cut-in's effect object ev60000700. The trigger copies the
+# fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the ball's velocity every
+# frame (aura-balon-tiro.md §2b). Its flight: content\techniques\grenade_shot_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "grenade_shot"
+from = "ega0075c"
+object = "effect/event/ev60/ev6007gs00/ev6007gs00.objbin"
+
+[[shot_aura]]
+name = "grenade_shot"
+when = { techniques = ["whs00070"] }
+aura = "grenade_shot"
+like = "ega0075c"

@@ -1,0 +1,28 @@
+# «Remate del águila» (Eagle Buster, whs00720; mountain shot, cut-in ev60_00720): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last shot (c0200, the ball flying at the camera, 421-449): the golden
+# glows round the ball, round at the ball and drawn out behind it in yellow flames, pulsing on their 8-frame beat, the
+# yellow flame cards on the ball, and the soft golden rings it sends out every 10 frames, standing across the flight
+# like shock waves (the ball passes through their centre; tilted soft copies give them depth from the sideline),
+# growing and fading where they were sent out (looped), instead of the plain mountain special-shot aura (ega0075a). The object is ev6072eb00
+# (effect/event/ev60/ev6072eb00/), built by research/scripts/eagle_buster_ball_fx.py from the cut-in's effect object
+# ev60007200: c0200 held at 449, the ball on the effect's own ball joint `_80_ball_cns`, flying +Z, x0.26 (the cut-in's
+# ball is scaled up ~3.9x). Left out: the kick flash at the kick point and the earlier shots (eagle, wind, feathers,
+# ground smoke). It replaces the automatic aura of whs00720 (none was possible). Its flight:
+# content\techniques\eagle_buster_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "eagle_buster"
+from = "ega0075a"
+object = "effect/event/ev60/ev6072eb00/ev6072eb00.objbin"
+
+[[shot_aura]]
+name = "eagle_buster"
+when = { techniques = ["whs00720"] }
+aura = "eagle_buster"
+like = "ega0075a"
+# the rings are left where they were sent out: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

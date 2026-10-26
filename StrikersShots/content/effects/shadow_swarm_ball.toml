@@ -1,0 +1,23 @@
+# «Campo umbrío» (Shadow Swarm, whs03220; void; cut-in ev60_03220): while the ball flies to the goal it keeps the look of
+# the cut-in's last shot (c0500): the ball in its red-white glow with the blue-black lightning crackling on it (the glow
+# cards face the camera: billboards), and a swarm of black shadow hands (the cut-in's waza arms ev60_03220, in their own
+# proportions) appearing round and behind the ball in an endless cycle, each reaching after it as in the cut-in and
+# fading out, their long arms fading a few metres behind the hand, x1.
+# The object is ev6322ss00 (effect/event/ev60/ev6322ss00/), built by research/scripts/shadow_swarm_ball_fx.py from the
+# cut-in's effect object ev60032200 and waza model ev60_03220.
+# The trigger copies the void special-shot aura's row (like = "ega0075e"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\shadow_swarm_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "shadow_swarm"
+from = "ega0075e"
+object = "effect/event/ev60/ev6322ss00/ev6322ss00.objbin"
+
+[[shot_aura]]
+name = "shadow_swarm"
+when = { techniques = ["whs03220"] }
+aura = "shadow_swarm"
+like = "ega0075e"

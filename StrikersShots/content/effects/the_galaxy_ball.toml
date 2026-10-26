@@ -1,0 +1,24 @@
+# «The Galaxy» («Tiro galáctico», whs00390; fire shot, cut-in ev60_00390): while the ball flies to the goal it wears
+# the cut-in's last shot (c0900, held at frame 493): the ball falling from space onto the Earth as a green-white star,
+# its white core round the ball inside a green glow and a wider pale glow, the star's thin light rays twinkling round
+# it (their texture scroll runs on). All four are round cards facing the camera from every side, centred on the ball.
+# x2 of the cut-in size (the glows ~1 m across, the rays ~1.9 m). No trail: the cut-in's star has none. The kick's
+# burst of light lines, the backdrops and the orange atmosphere entry before the impact stay out.
+# The object is ev6039tg00 (effect/event/ev60/ev6039tg00/), built by research/scripts/the_galaxy_ball_fx.py from
+# ev60003900.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\the_galaxy_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "the_galaxy"
+from = "ega0075c"
+object = "effect/event/ev60/ev6039tg00/ev6039tg00.objbin"
+
+[[shot_aura]]
+name = "the_galaxy"
+when = { techniques = ["whs00390"] }
+aura = "the_galaxy"
+like = "ega0075c"

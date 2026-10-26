@@ -1,0 +1,26 @@
+# «Pentagrama» (Fortissimo, whs01570 / whs01570_mm; forest shot, cut-in ev60_01570): the end of the cut-in's final shot
+# (c0020, held at frame 270, its last full look before the ball passes the camera) on the ball, x1.6: the ball wrapped
+# in its blue flame with the white-hot core, flickering as in the cut-in, the flame's tail streaming back along the
+# flight, and the white and cyan speed lines the cut-in draws from the kick point to the ball, flowing, drawn again
+# turned about the flight (dense from the touchline as from behind), coming out of the flame's tail (soft front), born
+# at the kick point and revealed as the ball moves away (on the distance clock, never stretched), fading out at their
+# far end. The musical staff rings and waves of the cut-in burst at the kick point (they expand and fade out right
+# after the kick): left in the cut-in.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60015700 by
+# research/scripts/fortissimo_ball_fx.py (never committed: research/mods/StrikersShots/README.md). The trigger copies
+# the forest special-shot aura's row (like = "ega0075d"). Its flight: content\techniques\fortissimo_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fortissimo"
+from = "ega0075d"
+object = "effect/event/ev60/ev6157fo00/ev6157fo00.objbin"
+
+[[shot_aura]]
+name = "fortissimo"
+when = { techniques = ["whs01570", "whs01570_mm"] }
+aura = "fortissimo"
+like = "ega0075d"
+# the speed lines come out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

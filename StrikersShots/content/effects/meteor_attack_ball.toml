@@ -1,0 +1,20 @@
+# «Ataque meteorito» (Meteor Attack, whs00110; fire shot, cut-in ev60_00110): while the ball flies to the goal it is
+# inside the end of the cut-in's shot cut (c0300, frames 370-402 looped): the 12 fire aura parts on the effect joint
+# _650_Aura1_F, x0.873, instead of the plain fire special-shot aura (ega0075c). The object is ev6011ma00
+# (effect/event/ev60/ev6011ma00/), built by research/scripts/meteor_attack_ball_fx.py from the cut-in's effect object
+# ev60001100. The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z
+# along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "meteor_attack"
+from = "ega0075c"
+object = "effect/event/ev60/ev6011ma00/ev6011ma00.objbin"
+
+[[shot_aura]]
+name = "meteor_attack"
+when = { techniques = ["whs00110"] }
+aura = "meteor_attack"
+like = "ega0075c"

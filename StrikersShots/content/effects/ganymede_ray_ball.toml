@@ -1,0 +1,34 @@
+# «Ganymede Ray» («Rayo de Ganímedes», whs00700, forest shot, cut-in ev60_00700): the end of the cut-in's last shot
+# (c0020) on the pitch. Two effects:
+# * ganymede_ray_sphere (object ev6070gp00, `ground_effect`): the glowing violet sphere left where the ball was struck,
+#   its centre at the flight's height, its glows facing the camera (round from every side); it stays the whole flight,
+#   the beam firing out of it, and goes with the beam when the shot ends;
+# * ganymede_ray (object ev6070gb00, `aura`, on the distance clock): the beam (white core, cyan and violet fringes) from
+#   the sphere to the ball, born at the kick point and revealed as the ball flies, never stretched, its texture flowing
+#   on, the ball inside its soft front end; drawn upright and turned 90 deg (seen as a beam from every side).
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60007000 by
+# research/scripts/ganymede_ray_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\ganymede_ray_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "ganymede_ray"
+from = "ega0075c"
+object = "effect/event/ev60/ev6070gb00/ev6070gb00.objbin"
+
+[[effect]]
+name = "ganymede_ray_sphere"
+from = "ega0021"
+object = "effect/event/ev60/ev6070gp00/ev6070gp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "ganymede_ray"
+when = { techniques = ["whs00700"] }
+aura = "ganymede_ray"
+like = "ega0075c"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the sphere stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "ganymede_ray_sphere" }

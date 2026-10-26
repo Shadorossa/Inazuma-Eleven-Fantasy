@@ -7,7 +7,8 @@
 -- player has a mini-challenge, followed by scripts\pachangas.lua from the match events; back on the board the players
 -- whose challenge was met and whom the club does not have come up together in ONE join scene
 -- (NewRecruitment.PachangaJoinScene): each one asks in turn, Sí / No, and joins on Sí (VRFW_Recruit.Recruit, the shared
--- grant: rarity 4, one copy per character).
+-- grant: rarity 4, one copy per character) - while the option «Fichajes» allows pachangas (assets\lua\_all\
+-- new_recruitment_album.lua: «Pachangas» or «Ambos»).
 -- Handlers of the framework's board host (VRFW_Host) and globals only: nothing runs at load but their registration.
 if VRFW_Host ~= nil then
   NewRecruitment = NewRecruitment or {}
@@ -117,7 +118,8 @@ if VRFW_Host ~= nil then
     local joiners = {}
     for _, card in ipairs(p.cards) do
       call(B.SET_MET, card)
-      if VRFW_Recruit ~= nil and VRFW_Recruit.CanSign(card) == true then
+      -- the option «Fichajes» (new_recruitment.recruit_source): «Álbum» alone = no pachanga signings
+      if VRFW_Recruit ~= nil and VRFW_Recruit.CanSign(card) == true and NewRecruitment.RecruitFrom("pachangas") then
         joiners[#joiners + 1] = card
       end
     end
@@ -199,7 +201,6 @@ local J = {
   RESERVE = 822852817 --[[CMND_RESERVE_EVENT]], EVENT = 3555468931 --[[crc32("bustup_talk_vs_route")]],
   NAME = 734285930 --[[(reservation, talk name)]], MODE = 759236289 --[[(reservation, 1 = a plain talk)]],
   RUN = 398423575 --[[CMND_IS_RUN_EVENT]], SKIP = 2872569508 --[[CMND_EVENT_SKIP (menu command)]],
-  MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
   K_ASK = 3376716705 --[[new_recruitment_pachangas_join_ask]], K_REJECT = 1090898220 --[[_join_reject]],
   K_DONE = 290976732 --[[_join_done]],
   PREFIX = "new_recruitment.pachanga_",
@@ -225,32 +226,14 @@ local function text(id)
   return type(s) == "string" and s or ""
 end
 
--- a Sí / No question (the game's question window); true = «Sí»
+-- the game's question (true = «Sí») and notice windows: the module's shared ones (assets\lua\_all\
+-- new_recruitment_album.lua, also the album's)
 local function ask(s)
-  jcall(J.MSG_OPEN, s, 0, 0, 0, 0, 0, false)
-  jcall(J.MSG_KIND, 2, 0)
-  coroutine.yield()
-  local r = -1
-  while r == nil or r < 0 do
-    r = jcall(J.MSG_RESULT)
-    coroutine.yield()
-  end
-  while jcall(J.MSG_DONE) ~= true do
-    coroutine.yield()
-  end
-  return r == 0
+  return NewRecruitment.Ask(s)
 end
 
 local function notice(s)
-  jcall(J.MSG_OPEN, s, 0, 0, 0, 0, 0, false)
-  jcall(J.MSG_KIND, 1, 0)
-  coroutine.yield()
-  while jcall(J.MSG_BUSY) == true do
-    coroutine.yield()
-  end
-  while jcall(J.MSG_DONE) ~= true do
-    coroutine.yield()
-  end
+  NewRecruitment.Notice(s)
 end
 
 local function fmt(id, name)

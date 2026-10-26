@@ -1,0 +1,27 @@
+# «Heart's Desire» («Ataque de corazón», whs02420; wind shot, cut-in ev60_02420): while the ball flies to the goal it wears
+# the end of the cut-in's last shot (c0300, held at frame 466, the ball thrust level through a pink sky): the pink / white
+# fogs streaming straight back from the ball (turned onto the flight, a crossed copy each so they read from the
+# touchline), the white spirals and the whirls turning about the flight behind it, the round fogs and the white rim
+# facing along the flight, the light round from every view and the sparkles, x0.65. The trail comes out of the kick
+# point as the ball moves away and fades out at its far end. The pink sky, its bubbles and stars, the rapier, the
+# shooter and the keshin stay out.
+# The object is ev6242hd00 (effect/event/ev60/ev6242hd00/), built by research/scripts/hearts_desire_wind_ball_fx.py from
+# ev60024200.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"); the distance clock reveals the trail
+# from the kick point. Flight: content\techniques\hearts_desire_wind_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "hearts_desire_wind"
+from = "ega0075b"
+object = "effect/event/ev60/ev6242hd00/ev6242hd00.objbin"
+
+[[shot_aura]]
+name = "hearts_desire_wind"
+when = { techniques = ["whs02420"] }
+aura = "hearts_desire_wind"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,25 @@
+# «Granada doble» (Double Grenade, whs00540; fire shot, cut-in ev60_00540): while the ball flies to the goal it is the
+# end of the cut-in's shot (c0400, frames 329-359 looped), x1: the spiky blue-white star and its white glows round the
+# ball, the straight blue / cyan / white beam of light born at the kick point and revealed by the distance flown (never
+# stretched), and the dust track fanning out on the ground behind the ball, instead of the plain fire special-shot aura
+# (ega0075c). The object is ev6054dg00 (effect/event/ev60/ev6054dg00/), built by
+# research/scripts/double_grenade_ball_fx.py from the cut-in's effect object ev60005400. The trigger copies the fire
+# special-shot aura's row (like = "ega0075c"); anchor = "kick" + drift: the aura's clock runs on the distance flown
+# (0.75 m a frame), so the beam and the dust come out of the kick point. Its flight:
+# content\techniques\double_grenade_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "double_grenade"
+from = "ega0075c"
+object = "effect/event/ev60/ev6054dg00/ev6054dg00.objbin"
+
+[[shot_aura]]
+name = "double_grenade"
+when = { techniques = ["whs00540"] }
+aura = "double_grenade"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

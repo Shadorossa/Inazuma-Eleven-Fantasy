@@ -65,6 +65,17 @@ Keep = [
 ]
 ReplaceWith = "tk_hr000008"
 
+# No chest gives a shop currency that no shop takes any more (owner request 2026-10-23): the Victory crates' tables and
+# the field treasure boxes' / ball chests' tables lose every currency the game's shops charge but no visible row of the
+# built shops does (the emptied Market shops' Vs coins, BB tags / pins, tk_ki*, the tournament medal...; derived by the
+# VR-Framework from the built shop_config: Exclude = "unused_shop_currencies", docs/framework/drops.md §3). The
+# currencies a shop still charges (the story shops' cards and pages, Puntos de amistad / pasión) stay. A removed entry's
+# chance goes to the chest's other items; a table that would be left with nothing gives Puntos de amistad instead.
+[[VRFW.DropFilter]]
+Sources = ["chests"]
+Exclude = "unused_shop_currencies"
+Fallback = "tk_hr000008"                    # Puntos de amistad
+
 # The Piedra de la victoria (tk_hr000009, retail Market currency, unused here) is never given by a match of any mode:
 # the game's prize rows of it (soccer_prize_config: win and first-clear prizes, which the filter above does not edit)
 # are left out of the result and an in-match drop of it gives nothing; every other grant of it (boxes, quests,

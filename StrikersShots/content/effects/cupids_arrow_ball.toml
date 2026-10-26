@@ -1,0 +1,32 @@
+# «Flecha de Cupido» (Cupid's Arrow, whs02060; fire shot, cut-in ev60_02060): the end of the cut-in's last shot (c0030,
+# held at frame 318 from the aura's first frame): the big glossy pink heart stays at the kick point, beating, and the
+# ball flies out of its tip inside a white-pink arrowhead, a long pink stream from the heart's tip to the ball, out of
+# the kick point, revealed by the distance the ball has flown (never stretched), x1, instead of the plain fire
+# special-shot aura (ega0085c).
+# Objects ev6206cb00 (ball: stream + arrowhead) and ev6206ch00 (heart, ground effect) (effect/event/ev60/), built by
+# research/scripts/cupids_arrow_ball_fx.py from the cut-in's effect object ev60020600. The trigger copies the fire
+# special-shot aura's row (like = "ega0085c"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame
+# (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "cupids_arrow"
+from = "ega0085c"
+object = "effect/event/ev60/ev6206cb00/ev6206cb00.objbin"
+
+[[effect]]
+name = "cupids_arrow_heart"
+from = "ega0021"
+object = "effect/event/ev60/ev6206ch00/ev6206ch00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "cupids_arrow"
+when = { techniques = ["whs02060"] }
+aura = "cupids_arrow"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "cupids_arrow_heart" }

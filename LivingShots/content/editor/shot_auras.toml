@@ -33,7 +33,7 @@ Shape = "effect"
 
 [[Shape]]
 Id = "shot_aura"
-Preview = { Kind = "shot_aura", Technique = "when.techniques", Aura = "aura", Element = "color", HideBall = "hide_ball", Fit = "fit.replay", Effect = { Table = "effect", Key = "name", Object = "object", Shape = "effect" } }
+Preview = { Kind = "shot_aura", Technique = "when.techniques", Aura = "aura", Element = "color", HideBall = "hide_ball", Fit = "fit.replay", BallOffset = "ball_offset", BallSpin = "ball_spin", Effect = { Table = "effect", Key = "name", Object = "object", Shape = "effect" } }
   [[Shape.Field]]
   Key = "name"
   Type = "id"
@@ -85,6 +85,37 @@ Preview = { Kind = "shot_aura", Technique = "when.techniques", Aura = "aura", El
   Label = { es = "Ajuste al vuelo", en = "Fit to the flight" }
   Help = { es = "Estira la repetición del aura (fotogramas a 60 fps) al vuelo real, para que su final llegue al portero.", en = "Stretches the aura's replay (frames at 60 fps) to the real flight, so its end look lands on the keeper." }
   [[Shape.Field]]
+  Key = "anchor"
+  Type = "enum"
+  Values = ["kick"]
+  More = true
+  Label = { es = "Reloj por distancia", en = "Distance clock" }
+  Help = { es = "kick: el clip del aura espera en el pie y avanza con la distancia que recorre el balón desde el punto de chute, así la parte que se queda en el punto de chute cae sobre el que tira sea cual sea la velocidad del tiro. Sustituye al ajuste al vuelo.", en = "kick: the aura's clip waits on the foot and runs with the distance the ball has flown from the kick point, so the part that stays at the kick point lands on the shooter whatever the shot's speed. Replaces the fit to the flight." }
+  [Shape.Field.ValueLabels]
+  kick = { es = "Desde el punto de chute", en = "From the kick point" }
+  [[Shape.Field]]
+  Key = "drift"
+  Type = "float"
+  Min = 0.01
+  Max = 10.0
+  Step = 0.01
+  Unit = "m"
+  More = true
+  Label = { es = "Metros por fotograma", en = "Metres per frame" }
+  Help = { es = "Con el reloj por distancia: los metros que vuela el balón por fotograma del clip del aura (60 fps), la velocidad con la que se generó (0.75 = 45 m/s).", en = "With the distance clock: metres the ball flies per frame of the aura's clip (60 fps), the speed it was generated for (0.75 = 45 m/s)." }
+  [[Shape.Field]]
+  Key = "ground_effect"
+  Type = "toml"
+  More = true
+  Label = { es = "Efecto en el suelo", en = "Ground effect" }
+  Help = { es = "{ effect = \"<efecto>\" }: un segundo efecto que se queda en el campo donde sale el tiro, derecho y mirando a lo largo del vuelo, hasta que acaba el tiro.", en = "{ effect = \"<effect>\" }: a second effect that stays on the pitch where the shot starts, upright and turned along the flight, until the shot ends." }
+  [[Shape.Field]]
+  Key = "kick_effect"
+  Type = "toml"
+  More = true
+  Label = { es = "Efecto en el tirador", en = "Kick effect" }
+  Help = { es = "{ trigger = \"<chr_trigger>\", duration_s = 3.0 }: un efecto de personaje sobre el tirador desde el lanzamiento (lo que queda de pie detrás de él, derecho sea cual sea el vuelo).", en = "{ trigger = \"<chr_trigger>\", duration_s = 3.0 }: a character effect on the shooter from the launch (what stands behind him, upright whatever the flight)." }
+  [[Shape.Field]]
   Key = "trail_level"
   Type = "int"
   Min = 1
@@ -107,6 +138,20 @@ Preview = { Kind = "shot_aura", Technique = "when.techniques", Aura = "aura", El
   Type = "bool"
   Label = { es = "Ocultar el balón principal", en = "Hide the main ball" }
   Help = { es = "Mientras el aura se ve en el campo, el balón real del partido no se dibuja (para auras que llevan su propio balón o varios). Vuelve al acabar el aura.", en = "While the aura plays on the pitch the real match ball is not drawn (for auras that carry their own ball or several). It comes back when the aura ends." }
+  [[Shape.Field]]
+  Key = "ball_offset"
+  Type = "toml"
+  More = true
+  Label = { es = "Posición del balón en el aura", en = "Ball's place in the aura" }
+  Help = { es = "[x, y, z] en metros, en los ejes del aura (z = hacia donde vuela, y = arriba); el aura se coloca al revés. Sin escribir = el balón en el centro.", en = "[x, y, z] metres in the aura's axes (z = where it flies, y = up); the aura is placed the other way. Not written = the ball at the centre." }
+  [[Shape.Field]]
+  Key = "ball_spin"
+  Type = "table"
+  Of = "ball_spin"
+  Inline = true
+  More = true
+  Label = { es = "Giro del balón", en = "Ball spin" }
+  Help = { es = "El giro del balón sobre sí mismo mientras vuela el tiro. Sin escribir = el del juego.", en = "The ball's spin on itself while the shot flies. Not written = the game's." }
   [[Shape.Field]]
   Key = "remove"
   Type = "bool"
@@ -198,6 +243,12 @@ Id = "when"
   Label = { es = "Modelo del aura", en = "Aura model" }
   Help = { es = "El tótem / espíritu guerrero activo del tirador (o su armadura / Mix-Max): su modelo (k000450, a000400).", en = "The shooter's active totem / keshin (or its armour / Mix-Max form): its model (k000450, a000400)." }
   [[Shape.Field]]
+  Key = "flight_pitch"
+  Type = "toml"
+  More = true
+  Label = { es = "Inclinación del vuelo", en = "Flight pitch" }
+  Help = { es = "[mín, máx] grados que baja la línea del vuelo del tiro (de su salida a la portería; negativo = sube).", en = "[min, max] degrees the shot's flight line points down (its start to its target; negative = rising)." }
+  [[Shape.Field]]
   Key = "card"
   Type = "list"
   Of = "string"
@@ -214,6 +265,23 @@ Id = "when"
   Type = "toml"
   More = true
   Label = { es = "Estadística máxima", en = "Stat at most" }
+
+[[Shape]]
+Id = "ball_spin"
+  [[Shape.Field]]
+  Key = "enabled"
+  Type = "bool"
+  Label = { es = "Gira", en = "Spins" }
+  Help = { es = "false = el balón no gira.", en = "false = the ball does not spin." }
+  [[Shape.Field]]
+  Key = "speed"
+  Type = "float"
+  Min = 0.0
+  Max = 20.0
+  Step = 0.05
+  Unit = "×"
+  Label = { es = "Velocidad", en = "Speed" }
+  Help = { es = "Veces el giro del juego (1 = igual).", en = "Times the game's roll (1 = the same)." }
 
 [[Shape]]
 Id = "fit"

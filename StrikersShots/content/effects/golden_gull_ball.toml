@@ -1,0 +1,26 @@
+# «Golden Gull» («Ave goleadora», whs02760; fire shot, cut-in ev60_02760): while the ball flies to the goal it wears
+# the end of the cut-in's last shot (c0060, held at frame 380): the golden gull flying with the ball inside its body,
+# level with the flight, its wings beating on as in the cut-in (one 36-frame beat looped seamlessly from the first
+# frame), and the long golden trail (white heart, orange edges) streaming from its tail, out of the kick point and
+# fading at its far end. x0.7 of the cut-in size (wingspan ~3.3 m, trail ~5.8 m). The flame head and rings of the shot's
+# start, the sun, flares, feathers and goal impact stay out.
+# The object is ev6276gg00 (effect/event/ev60/ev6276gg00/), built by research/scripts/golden_gull_ball_fx.py from
+# ev60027600.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\golden_gull_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "golden_gull"
+from = "ega0075c"
+object = "effect/event/ev60/ev6276gg00/ev6276gg00.objbin"
+
+[[shot_aura]]
+name = "golden_gull"
+when = { techniques = ["whs02760"] }
+aura = "golden_gull"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

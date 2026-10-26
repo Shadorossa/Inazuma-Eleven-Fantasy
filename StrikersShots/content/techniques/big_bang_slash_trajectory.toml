@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Corte Big Bang (Big Bang Slash, whs02270), cut-in ev60_02270.
+#
+# In the cut-in (c0400) the ball dives slightly toward the goal inside its glow, the sword-slash band streaming behind it.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line, at most 3 m high): one straight level line
+# from the kick point to the goal, the ball centre at 2.60 m, so the upright band's lower edge (~2.2 m under the ball, its
+# soft side) clears the pitch. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre
+# over the pitch (m); one point = a level flight; straight = true.
+
+# Corte Big Bang (whs02270).
+[[edit]]
+target = "whs02270"
+trajectory = { points = [[0.0, 2.60]], straight = true, unblockable = false }

@@ -1,0 +1,25 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Combo cósmico (Cosmic Blaster, whs02980; the same cut-in plays for whs02980_or and
+# whs02980_or_02).
+#
+# The cut-in has no ball flight to measure (the last cut fires the stream out of the black ball, no ball).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# (the black ball's centre) to the goal, the ball centre at 2.1 m the whole way (the black hole's swirl clear of the
+# pitch), at 25 m/s (the aura's distance clock, cosmic_blaster_ball.toml drift = 25 / 60).
+# unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Combo cósmico (whs02980).
+[[edit]]
+target = "whs02980"
+trajectory = { points = [[0.0, 2.10]], straight = true, speed = 25.0, unblockable = false }
+
+# Combo cósmico (whs02980_or).
+[[edit]]
+target = "whs02980_or"
+trajectory = { points = [[0.0, 2.10]], straight = true, speed = 25.0, unblockable = false }
+
+# Combo cósmico (whs02980_or_02).
+[[edit]]
+target = "whs02980_or_02"
+trajectory = { points = [[0.0, 2.10]], straight = true, speed = 25.0, unblockable = false }

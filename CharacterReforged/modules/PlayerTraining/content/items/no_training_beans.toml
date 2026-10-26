@@ -14,3 +14,12 @@ schema = "VRFW.item/2"
 [[VRFW.MatchDropRemove]]
 Categories = [210]
 AllSources = true
+
+# No chest holds a training bean (owner request 2026-10-23): the Victory crates' tables (common_item_table, the tables
+# the box items open) and the field treasure boxes' / ball chests' tables (the maps' item tables) lose their bean
+# entries, so a chest never rolls one; the chest's other items share the bean's chance. VR-Framework [[VRFW.DropFilter]]
+# Sources = ["chests"] (docs/framework/drops.md §3); the chests are derived from the game's data, the beans from
+# item_config (category 210). A table left with nothing would keep its beans (WARN); the game has none.
+[[VRFW.DropFilter]]
+Sources = ["chests"]
+Categories = [210]                          # stat beans (item_category 210)

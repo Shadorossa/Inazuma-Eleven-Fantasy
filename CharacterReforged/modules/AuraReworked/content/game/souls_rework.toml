@@ -1,5 +1,5 @@
 # Souls Rework › what scripts\souls_rework.lua touches of the game: the soccer actors (the summon machine: totem, its
-# time), their units (the aura bits), the release button's answer, the reel command and the level-up pop command.
+# time), their units (the aura bits), the release button's answer, the carousel's commands and the level-up pop command.
 schema = "VRFW.game/2"
 if_mod = "souls_rework"                 # the part's switch (Mods options; docs/framework/merged-mods.md)
 
@@ -31,8 +31,9 @@ key = ["[[args[2] + 0x78] + 0x94]:u32"]
 
 # ------------------------------------------------------------------------------------------------ reel command
 
-# CMND_AURAREWORKED_SOULS_REEL(seen) -> seq, title, level, slot, label1..label6, missMask, open, spin, stop, result, close,
-# rowsPerSecond (graft souls_rework_reel: the next shown roll after `seen`; 0 = none)
+# CMND_AURAREWORKED_SOULS_REEL() -> seq, slot, layout, cards (the skill carousel's screen aura_reworked_souls_reel_menu,
+# asked once when it opens: the roll it shows; 0 = none). CMND_AURAREWORKED_SOULS_REEL_LANDED(seq): the carousel stopped
+# on that roll's result (it lands now).
 # CMND_AURAREWORKED_SOULS_TOTEM_LEVEL(hdl) -> ok, level, text («Lv.3» / «Nv.3»: the text key reel_level in the game's language),
 # progress (0..1 toward the next level), top (1 at the last level) of the totem the player has out now, nothing when he
 # has none (Aura Points' graft aura_points_buff_bar: the label on the totem tile's top edge and the thin next-level bar
@@ -46,6 +47,10 @@ handler = "AuraReworked.Souls.TotemLevel"
 name = "CMND_AURAREWORKED_SOULS_REEL"
 aliases = ["CMND_SOULSREWORK_REEL"]
 handler = "AuraReworked.Souls.Reel"
+
+[[VRFW.Command]]
+name = "CMND_AURAREWORKED_SOULS_REEL_LANDED"
+handler = "AuraReworked.Souls.ReelLanded"
 
 # ------------------------------------------------------------------------------------------------ level-up pop command
 

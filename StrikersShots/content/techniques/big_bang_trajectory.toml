@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Big Bang (whs01110, cut-in ev60_01110): its own flight, as heights over
+# distances (docs/framework/technique.md §4e, docs/game/mechanics/move-mini-effects.md §7).
+# One level line at 2.0 m from the kick point into the goal point (horizontal, never rising or falling), whatever the
+# shot's length: high enough for the ~3 m meteor round the ball (content\effects\big_bang_ball.toml) to clear the
+# grass, under the crossbar. The cut-in's meteor dives at 46° (c0700, 11.2 m -> 4.3 m; big_bang_ball_fx.py
+# --trajectory); the aura keeps its look, not its dive. unblockable = false: the game's block rules (this mod changes
+# no block rule). Heights are the ball centre over the pitch (m); goal_points count back from the goal point, points
+# from the kick; the first / last height is held.
+
+# Big Bang (whs01110).
+[[edit]]
+target = "whs01110"
+trajectory = { points = [[0.0, 2.0]], goal_points = [[0.0, 2.0]], unblockable = false }

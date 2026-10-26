@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cañón de agua (The Tube, whs01160), cut-in ev60_01160.
+#
+# One straight level line 1.0 m up from the kick to the goal (owner 2026-10-24: horizontal, never rising or falling;
+# the cut-in's own ball arcs through effect space, so its heights are not match heights). unblockable = false: the
+# game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count
+# from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Cañón de agua (whs01160).
+[[edit]]
+target = "whs01160"
+trajectory = { points = [[0.0, 1.00]], straight = true, unblockable = false }

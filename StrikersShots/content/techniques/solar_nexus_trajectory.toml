@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tormenta solar (Solar Nexus, whs02130, cut-in ev60_02130).
+#
+# Measured: the cut-in has no event ball; its sun (effect joint shoot2, c0020) is fired at ~320 and falls from the sky
+# to 376 (research/scripts/solar_nexus_ball_fx.py FRAME = 360, every swirl shell and ring out).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.50 m the whole way (the glows and rings, ~2 m across at most, stay off the grass).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Tormenta solar (whs02130).
+[[edit]]
+target = "whs02130"
+trajectory = { points = [[0.0, 1.50]], straight = true, unblockable = false }

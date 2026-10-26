@@ -1,0 +1,35 @@
+# «Magic Amp» («Amplificador mágico», whs02580, forest shot, cut-in ev60_02580): the end of the cut-in's last shot
+# (c0200): the ball fired from the centre of the magic circle as a green beam. Two effects:
+# * magic_amp_circle (object ev6258mp00, `ground_effect`): the magic circle standing at the kick point, its centre at
+#   the flight's height, its plane across the flight; its cards and purple back glow face the camera with the circle's
+#   shape (the same circle from the touchline as from behind the kicker); the dark green smoke ring keeps turning round
+#   the beam's root; it stays the whole flight and goes with the beam when the shot ends;
+# * magic_amp (object ev6258mb00, `aura`, on the distance clock): the green beam (outer glow and core) from the circle
+#   to the ball, born at the kick point and revealed as the ball flies, never stretched, its texture flowing on, its
+#   front fading out round the ball.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60025800 by
+# research/scripts/magic_amp_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\magic_amp_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "magic_amp"
+from = "ega0075c"
+object = "effect/event/ev60/ev6258mb00/ev6258mb00.objbin"
+
+[[effect]]
+name = "magic_amp_circle"
+from = "ega0021"
+object = "effect/event/ev60/ev6258mp00/ev6258mp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "magic_amp"
+when = { techniques = ["whs02580"] }
+aura = "magic_amp"
+like = "ega0075c"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the circle stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "magic_amp_circle" }

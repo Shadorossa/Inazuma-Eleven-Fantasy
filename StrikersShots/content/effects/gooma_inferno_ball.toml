@@ -1,0 +1,24 @@
+# «Averno de Guma» (Gooma Inferno, whs02740; fire shot, cut-in ev60_02740): the end of the cut-in's last shot (c0300,
+# held at frame 464) on the ball, x1: the ball is the white-hot flash at the round head of the beast's fire beam, the
+# shot glows turning round it, the beam streaming straight back along the flight with its fire flowing and the fire
+# grains scattered round it, born at the kick point and revealed as the ball moves away (on the distance clock, never
+# stretched), fading out at its far end. Left in the cut-in: the backdrop, the shout and front rings, the whiteouts,
+# the cheek lights, the stones, the earlier cuts' parts and the beast. docs/game/media/gooma-inferno-ball-fx.md.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60027400 by
+# research/scripts/gooma_inferno_ball_fx.py (never committed: research/mods/StrikersShots/README.md). The trigger copies
+# the fire special-shot aura's row (like = "ega0075c"). Its flight: content\techniques\gooma_inferno_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "gooma_inferno"
+from = "ega0075c"
+object = "effect/event/ev60/ev6274gi00/ev6274gi00.objbin"
+
+[[shot_aura]]
+name = "gooma_inferno"
+when = { techniques = ["whs02740"] }
+aura = "gooma_inferno"
+like = "ega0075c"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

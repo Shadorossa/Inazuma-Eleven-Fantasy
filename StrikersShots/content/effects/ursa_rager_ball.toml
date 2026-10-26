@@ -1,0 +1,27 @@
+# «Ursa Rager» («Remate cazaosos», whs02920; mountain shot, cut-in ev60_02920): while the ball flies to the goal it
+# wears the cut-in's last shot (c0500, held at frame 469): the ball running along its crimson energy band, a white-pink
+# core inside a dark red band, flowing, laid ~11.6 m straight behind the ball (~0.7 m wide at the ball, widening
+# backward; upright and flat, crossed, so it reads from the touchline), born at the kick point and revealed as the ball
+# flies, soft at its edges and fading out at its end. The bear's roar, the backdrops and the kick-point speed lines
+# stay out.
+# The object is ev6292ur00 (effect/event/ev60/ev6292ur00/), built by research/scripts/ursa_rager_ball_fx.py from
+# ev60029200.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\ursa_rager_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "ursa_rager"
+from = "ega0075a"
+object = "effect/event/ev60/ev6292ur00/ev6292ur00.objbin"
+
+[[shot_aura]]
+name = "ursa_rager"
+when = { techniques = ["whs02920"] }
+aura = "ursa_rager"
+like = "ega0075a"
+# the trail comes out of the kick point: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

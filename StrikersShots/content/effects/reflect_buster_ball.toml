@@ -1,0 +1,25 @@
+# «Disparo con rebotes» (Reflect Buster, whs00280; mountain shot, cut-in ev60_00280): while the ball flies to the goal
+# it is the end of the cut-in's last shot cut (c0400, held at frame 421 from the aura's first frame): the ball inside
+# its orange / white glow ring with the long white-cored orange light beam of its last bounce behind it, out of the
+# kick point, revealed by the distance the ball has flown up to its cut-in length (~12 m, then trailing the ball at it),
+# its front reaching into the ring (at the halo size of the last bounce) and its far end fading out, x1, instead of
+# the plain mountain special-shot aura (ega0075a).
+# The object is ev6028rb00 (effect/event/ev60/ev6028rb00/), built by research/scripts/reflect_buster_ball_fx.py from the
+# cut-in's effect object ev60002800. The trigger copies the mountain special-shot aura's row (like = "ega0075a"):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "reflect_buster"
+from = "ega0075a"
+object = "effect/event/ev60/ev6028rb00/ev6028rb00.objbin"
+
+[[shot_aura]]
+name = "reflect_buster"
+when = { techniques = ["whs00280"] }
+aura = "reflect_buster"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

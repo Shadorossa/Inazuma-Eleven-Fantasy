@@ -1,0 +1,28 @@
+# «Spinning Shot» («Tiro giratorio», whs00130; wind shot, cut-in ev60_00130): while the ball flies to the goal it wears
+# the cut-in's last shot (c0050, held at its last frame 318 from the aura's first frame): the round yellow / orange
+# flame burst with its white core round the ball (camera-facing, the same from every side, its flame flowing and
+# throbbing) and the long thin yellow trail behind it, laid straight behind the ball along the flight at the cut-in's
+# own length (~15 m), crossed so it reads from the touchline, coming out of the kick point as the ball moves away (on
+# the distance clock, never stretched) and fading out at its far end. The wind spirals of the kick stay out (left at the
+# kick point in the cut-in).
+# The object is ev6013sp00 (effect/event/ev60/ev6013sp00/), built by research/scripts/spinning_shot_ball_fx.py from
+# ev60001300.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\spinning_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "spinning_shot"
+from = "ega0075b"
+object = "effect/event/ev60/ev6013sp00/ev6013sp00.objbin"
+
+[[shot_aura]]
+name = "spinning_shot"
+when = { techniques = ["whs00130"] }
+aura = "spinning_shot"
+like = "ega0075b"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

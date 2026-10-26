@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Triángulo letal 2 (Death Zone 2, whs00470, cut-in ev60_00470): one straight level
+# line at 2.2 m from the kick point into the goal point, whatever the shot's length, so the sphere round the ball
+# (0.85 m in radius) and its flares run clear of the grass. unblockable = false: the game's block rules (this mod
+# changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Triángulo letal 2 (whs00470).
+[[edit]]
+target = "whs00470"
+trajectory = { points = [[0.0, 2.2]], straight = true, unblockable = false }

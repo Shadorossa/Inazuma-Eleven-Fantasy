@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Triángulo ZZ (Triangle ZZ, whs01550, cut-in ev60_01550): one straight level line at
+# 1.0 m from the kick point into the goal point, whatever the shot's length (the aura's trail runs straight behind the
+# ball). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Triángulo ZZ (whs01550).
+[[edit]]
+target = "whs01550"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

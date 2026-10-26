@@ -1,0 +1,24 @@
+# «Emperor Penguin X» («Pingüino emperador X», whs01310; fire shot, cut-in ev60_01310): while the ball flies to the goal
+# it wears the cut-in's last shot (c0900, held at frame 585): the ball inside its red and black fire burst with its red
+# glows and blinking bite flashes, and the five penguins in the cut-in's ring round it, each with its own white streak
+# running straight back along the flight (crossed so it reads from the touchline and from behind), in their cut-in
+# proportions and shading, each swaying gently in a loop. The streaks come out of the kick point, never stretched,
+# with soft edges all round (fading in behind their penguin, out at their tail and sides). x0.8 of the cut-in size. The earlier cuts (the giant penguins' bite, the fire wall) stay out.
+# The object is ev6131px00 (effect/event/ev60/ev6131px00/), built by research/scripts/emperor_penguin_x_ball_fx.py from
+# ev60013100 (penguins: waza model ev60_01310).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\emperor_penguin_x_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "emperor_penguin_x"
+from = "ega0075c"
+object = "effect/event/ev60/ev6131px00/ev6131px00.objbin"
+
+[[shot_aura]]
+name = "emperor_penguin_x"
+when = { techniques = ["whs01310"] }
+aura = "emperor_penguin_x"
+like = "ega0075c"

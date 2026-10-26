@@ -2,13 +2,13 @@ id = "Pressing"
 former_ids = ["pressing"]
 # name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
 name = "Pressing"
-version = "1.4.0"
+version = "1.5.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "L2 without the ball is a press button instead of the focus field: while you hold it, 2 to 4 of your AI teammates nearest to the ball carrier sprint at him (never the keeper); release it or win the ball back and they play as before. The CPU presses with the same rules instead of opening its focus field. With Aura Points, a player whose sprint bar is winded does not press, and pressing drains it like any sprint. Without the ball the L2 guide reads «Press!» and your pressers show the game's «Move Up!» arrows pointing at the carrier. With the ball, L2 is the game's."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-22"
+updated = "2026-10-24"
 # This mod's own names (Lua Pressing.X); never VRFW.
 prefix = "Pressing"
 folder = "Pressing"
@@ -23,7 +23,7 @@ folder = "Pressing"
 # The framework provides the mechanisms (docs/framework/ai-move.md: VRFW.ai.move / release, VRFW.ai.focus_field_gate,
 # VRFW.input.on, VRFW.ai.arrow, VRFW.hud.go_ahead_guide); this module only declares the rules. Aura Points (Character
 # Reforged, 1.2.0+) is optional: its sprint bar (aura_points.sprint) limits who presses when it is on.
-requires = ["VRFW>=2.12.0", "FootballReforged>=1.2.18"]
+requires = ["VRFW>=2.153.0", "FootballReforged>=1.2.18"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

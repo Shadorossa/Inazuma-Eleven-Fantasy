@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro rotativo (Spin Meister, whs01950), cut-in ev60_01950.
+#
+# In the cut-in (c0040) the ball dives from ~25 m to the goal at the head of its wind streak and ribbons.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line, at most 3 m high): one straight level line
+# from the kick point to the goal, the ball centre at 1.60 m (research/scripts/spin_meister_ball_fx.py FLIGHT_HEIGHT),
+# so the ribbons round it clear the pitch. unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); one point = a level flight; straight = true.
+
+# Tiro rotativo (whs01950).
+[[edit]]
+target = "whs01950"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }

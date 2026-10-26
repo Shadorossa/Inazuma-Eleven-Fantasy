@@ -1,0 +1,22 @@
+# «Big Bang Slash» («Corte Big Bang», whs02270, forest shot, cut-in ev60_02270): the cut-in's last shot (c0400, held at
+# frame 520) on the ball: the ball inside its green glow sphere with the white swirl streaks, and streaming back out
+# of it the long white sword-slash band with its ragged green edges (~9 m, narrowing to a point), stood upright and
+# crossed by a flat copy so it reads from the touchline and from behind, its long sides soft; the band comes out of
+# the kick point as the ball moves away (on the distance clock, never stretched), its far end fading out; x0.5.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60022700 by
+# research/scripts/big_bang_slash_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\big_bang_slash_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "big_bang_slash"
+from = "ega0075d"
+object = "effect/event/ev60/ev6022bb00/ev6022bb00.objbin"
+
+[[shot_aura]]
+name = "big_bang_slash"
+when = { techniques = ["whs02270"] }
+aura = "big_bang_slash"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

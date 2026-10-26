@@ -1,0 +1,24 @@
+# «Ruptura planetaria» (Starstriker, whs03230; wind shot, cut-in ev60_03230): while the ball flies to the goal it wears
+# the cut-in's last shot (c0600, frames 491-525, looped): the cyan glow on the ball and the long white / cyan streak with
+# its grey wind blades laid straight behind it, coming out of the kick point as the ball moves away and fading at its far
+# end, x0.855, instead of the plain wind special-shot aura (ega0075b). The object is ev6323ss00
+# (effect/event/ev60/ev6323ss00/), built by research/scripts/starstriker_ball_fx.py from the cut-in's effect object
+# ev60032300. The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z
+# along the ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "starstriker"
+from = "ega0075b"
+object = "effect/event/ev60/ev6323ss00/ev6323ss00.objbin"
+
+[[shot_aura]]
+name = "starstriker"
+when = { techniques = ["whs03230"] }
+aura = "starstriker"
+like = "ega0075b"
+# the streak comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

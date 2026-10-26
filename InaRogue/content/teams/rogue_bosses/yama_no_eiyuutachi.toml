@@ -8,7 +8,7 @@ default_lang = "en"
 name = "ct_wk_yama_no_eiyuutachi"
 key = "evt_ct_wk_yama_no_eiyuutachi"
 based_on = "tm_cro_go2_2720" # Demon's Horn: formation, kit, tactics (the wiki formation is not mapped)
-kit = 0x5D0ED184                          # team_kits_from_wiki.py: ported «Active Wear away» (3DS model 0117, kit_ports_build.py) (was 0x16DAA0FA)
+kit = { of = "tm_cro_go2_2720", flip = true }  # Demon's Horn's away kit: the wiki «Active Wear away» is not a VR kit (docs/game/data/kits-missing-in-vr.md; its port stayed in the archived Chronicles Deluxe)
 level = 70
 series = "CS"
 roster = "exact"

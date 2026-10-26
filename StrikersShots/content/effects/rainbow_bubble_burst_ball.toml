@@ -1,0 +1,26 @@
+# «Burbujas arcoíris» («Rainbow Bubble Burst», whs01740, forest shot, cut-in ev60_01740): while the ball flies to the
+# goal it keeps the look of the cut-in's last cut (c0030): the rainbow ribbon trailing straight back along the flight
+# (the ball in its front tip, its colours flowing), coming out of the kick point as the ball moves away and then
+# keeping its length (~6.6 m) to the goal, its far end fading out; and the cut-in's soap bubbles bursting out of the
+# ball in an endless cycle, swirling round it as in the cut-in and drifting back along the ribbon, fading out at its
+# end; the bubbles face the camera from any side (billboards). x1 of the cut-in size. Dropped: the backdrop rainbow,
+# the rings, the kick cuts' rainbows, the sparkles and the ball's own glows. The object is ev6174rb00
+# (assets\data\{common,dx11}\effect\event\ev60\ev6174rb00\), built by research/scripts/rainbow_bubble_burst_ball_fx.py
+# from ev60017400. Its flight: content\techniques\rainbow_bubble_burst_trajectory.toml (level, 1.2 m).
+# The trigger copies the forest special-shot aura's row (like = "ega0085d"); CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame, so the ribbon runs straight back along the flight.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "rainbow_bubble_burst"
+from = "ega0085d"
+object = "effect/event/ev60/ev6174rb00/ev6174rb00.objbin"
+
+[[shot_aura]]
+name = "rainbow_bubble_burst"
+when = { techniques = ["whs01740"] }
+aura = "rainbow_bubble_burst"
+like = "ega0085d"
+# the ribbon comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

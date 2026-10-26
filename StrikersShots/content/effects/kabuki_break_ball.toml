@@ -1,0 +1,23 @@
+# «Kabuki Break» («Golpe kabuki», whs02600; forest shot, cut-in ev60_02600): while the ball flies to the goal it wears
+# the cut-in's final shot (c0300, held at frame 330): the white glowing ball with the red / black kabuki face painted
+# on it, wrapped in the light blue-white swirl, giving off the wind rings, which stay where they were sent out, and the light blue-white streak behind it out of the kick point (revealed by distance, its tail fading). The glow
+# and the face face the camera (billboards) and sit on the ball, so the face reads the same from the touchline as from
+# the front, x2. The kick's flame burst stays out (gone before the shot's final state).
+# The object is ev6026kb00 (effect/event/ev60/ev6026kb00/), built by research/scripts/kabuki_break_ball_fx.py from
+# ev60026000.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\kabuki_break_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "kabuki_break"
+from = "ega0075d"
+object = "effect/event/ev60/ev6026kb00/ev6026kb00.objbin"
+
+[[shot_aura]]
+name = "kabuki_break"
+when = { techniques = ["whs02600"] }
+aura = "kabuki_break"
+like = "ega0075d"

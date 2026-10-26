@@ -1,0 +1,25 @@
+# «Parkour Power» («Taconazo parkour», whs02440; wind shot, cut-in ev60_02440): while the ball flies to the goal it
+# wears the cut-in's last shot (c0040, held at frame 339 from the aura's first frame): the comet, the ball in the white
+# core of the spiky blue shell with its cyan wisps, a fan of cyan / blue wind streaks behind it that come out of the
+# kick point and fade at their far end. Every part is turned straight along the flight and faces the camera about it,
+# so it looks the same from the touchline as in the cut-in.
+# The object is ev6024pp00 (effect/event/ev60/ev6024pp00/), built by research/scripts/parkour_power_ball_fx.py from
+# ev60024400.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"); anchor = "kick" + drift: the aura's clock
+# runs on the distance flown. Flight: content\techniques\parkour_power_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "parkour_power"
+from = "ega0075b"
+object = "effect/event/ev60/ev6024pp00/ev6024pp00.objbin"
+
+[[shot_aura]]
+name = "parkour_power"
+when = { techniques = ["whs02440"] }
+aura = "parkour_power"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Pájaro ardiente (Flaming Firebird, whs03190, cut-in ev60_03190).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.50 m the whole way (the bird's lowest flames stay well over the grass).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+# hide_ball: the real match ball is not drawn while the shot flies (owner 2026-10-25: only the flame bird shows, the
+# ball's place at its heart); drawn again when the shot is over.
+
+# Pájaro ardiente (whs03190).
+[[edit]]
+target = "whs03190"
+trajectory = { points = [[0.0, 1.50]], straight = true, unblockable = false }
+hide_ball = true

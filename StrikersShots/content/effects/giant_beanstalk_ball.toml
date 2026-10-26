@@ -1,0 +1,34 @@
+# «Giant Beanstalk» («Habichuelas mágicas», whs02550; forest shot, cut-in ev60_02550): while the ball flies to the goal
+# it wears the cut-in's last shot (c0300, held at frame 414 from the aura's first frame): the white wind spirals
+# turning round the ball and round the stalk behind it (ev6255gb00); the giant beanstalk (ground effect ev6255gs00)
+# planted at the kick point, coming out of the grass and growing after the ball along its way, curving up to the
+# ball's height, the ball held in the curled tendrils of its tip, a gentle sway along it.
+# Both objects are built by research/scripts/giant_beanstalk_ball_fx.py from ev60025500 and the waza model
+# ev60_02551.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0085d"). Flight:
+# content\techniques\giant_beanstalk_trajectory.toml. Distance clock: the cut-in ball's 0.30 m a frame (c0300,
+# 400-414) (docs/framework/types/effect.md «Distance clock»), the ground effect's too (its clip frame = the ground
+# distance / 0.30: the stalk's tip at the ball).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "giant_beanstalk"
+from = "ega0085d"
+object = "effect/event/ev60/ev6255gb00/ev6255gb00.objbin"
+
+[[effect]]
+name = "giant_beanstalk_stalk"
+from = "ega0021"
+object = "effect/event/ev60/ev6255gs00/ev6255gs00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "giant_beanstalk"
+when = { techniques = ["whs02550"] }
+aura = "giant_beanstalk"
+like = "ega0085d"
+anchor = "kick"
+drift = 0.30
+ground_effect = { effect = "giant_beanstalk_stalk", anchor = "kick", drift = 0.30 }

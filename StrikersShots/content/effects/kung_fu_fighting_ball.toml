@@ -1,0 +1,25 @@
+# «Técnica kung-fu» (Kung Fu Fighting, whs00530; mountain shot, cut-in ev60_00530): while the ball flies to the goal it
+# wears the cut-in's last shot (c0500, held at frame 366 from the aura's first frame): the fire comet, the ball inside
+# the white core of two nested flame teardrops (the orange spiky outer flame round them) and the long red and yellow
+# flame streaks trailing behind it, their fire textures flowing all the way, x0.557. The trail comes out of the kick
+# point as the ball flies (distance clock, never stretched) and fades out at its far end.
+# The object is ev6053kf00 (effect/event/ev60/ev6053kf00/), built by research/scripts/kung_fu_fighting_ball_fx.py from
+# ev60005300.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"); the distance clock (anchor = "kick",
+# drift 0.75 m a frame) reveals the trail from the kick point. Flight: content\techniques\kung_fu_fighting_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "kung_fu_fighting"
+from = "ega0075a"
+object = "effect/event/ev60/ev6053kf00/ev6053kf00.objbin"
+
+[[shot_aura]]
+name = "kung_fu_fighting"
+when = { techniques = ["whs00530"] }
+aura = "kung_fu_fighting"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

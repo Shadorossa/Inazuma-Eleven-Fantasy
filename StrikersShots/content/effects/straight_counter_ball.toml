@@ -1,0 +1,26 @@
+# «Contragolpe» (Straight Counter, whs02660; wind shot, cut-in ev60_02660): while the ball flies to the goal after the
+# cut-in it keeps the look of the end of the cut-in (c0200): the boxing glove punching along the flight with the ball
+# inside its fist, and the two red-orange tails flowing out of its cuff (flame cells streaming back, flickering),
+# instead of the plain wind special-shot aura (ega0075b).
+# The object is ev6266sc00 (effect/event/ev60/ev6266sc00/), built by research/scripts/straight_counter_ball_fx.py from
+# the cut-in's effect object ev60026600 and its waza model chr/_waza/ev60_02660 (the glove, in its own proportions and
+# shading, ~1.7 m across): c0200 from 272, held at 302, ball at the origin flying +Z, x1; the tails come out of the kick
+# point as the ball moves away, never stretched, their front and far end faded.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Its flight:
+# content\techniques\straight_counter_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "straight_counter"
+from = "ega0075b"
+object = "effect/event/ev60/ev6266sc00/ev6266sc00.objbin"
+
+[[shot_aura]]
+name = "straight_counter"
+when = { techniques = ["whs02660"] }
+aura = "straight_counter"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

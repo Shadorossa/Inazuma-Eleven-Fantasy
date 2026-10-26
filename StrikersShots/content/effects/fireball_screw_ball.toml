@@ -1,0 +1,23 @@
+# «Fireball Screw» («Torbellino de fuego», whs01180 / whs01180_mm, fire shot, cut-in ev60_01180): the cut-in's last
+# shot (c0400, held at frame 348) on the ball: the ball in its white-hot fire glow at the head of the big fire screw
+# tunnel the cut-in draws behind it, laid straight behind the ball along the flight (a round tunnel, the same from every
+# side), its flames flowing, ~14 m long, coming out of the kick point as the ball moves away (on the distance clock,
+# never stretched) and fading out at its far end; x1.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60011800 by
+# research/scripts/fireball_screw_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\fireball_screw_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fireball_screw"
+from = "ega0075c"
+object = "effect/event/ev60/ev6018fs00/ev6018fs00.objbin"
+
+[[shot_aura]]
+name = "fireball_screw"
+when = { techniques = ["whs01180", "whs01180_mm"] }
+aura = "fireball_screw"
+like = "ega0075c"
+# the tunnel comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,24 @@
+# «Bota propulsora» (Overclock Spiral, whs02560; fire; cut-in ev60_02560): while the ball flies to the goal it keeps the
+# look of the cut-in's last shot (c0400, held at frame 413): a green comet, the ball inside its yellow-white head in a
+# flaming yellow / green / white collar, its green, yellow and white tail cones and the long soft green glow round them
+# coming out of the kick point as the ball moves away (the glow's end faded), the blue lightning flashing along the
+# tail, x1. The round head discs face the camera and the flat cones turn about the flight to face it (billboards), so it
+# looks the same from the touchline as from the front. The shock-wave spirals stay at the kick point in the cut-in.
+# The object is ev6025os00 (effect/event/ev60/ev6025os00/), built by research/scripts/overclock_spiral_ball_fx.py from
+# the cut-in's effect object ev60025600.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\overclock_spiral_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "overclock_spiral"
+from = "ega0075c"
+object = "effect/event/ev60/ev6025os00/ev6025os00.objbin"
+
+[[shot_aura]]
+name = "overclock_spiral"
+when = { techniques = ["whs02560"] }
+aura = "overclock_spiral"
+like = "ega0075c"

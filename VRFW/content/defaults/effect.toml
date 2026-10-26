@@ -44,6 +44,13 @@ intro = 12
 outro = 0.25
 outro_min = 6
 
+# Defaults for a [[shot_aura]] `anchor = "kick"` (distance clock): the aura's clip plays the ball's distance from the
+# kick point / `drift` frames. max_rate = fastest playback speed the clock asks for (catching up after a jump of the
+# ball); launch_speed = ball speed (m/s) that counts as the kick when the shot's flight was not published.
+[shot_aura.anchor]
+max_rate = 4.0
+launch_speed = 5.0
+
 # Event files edited by [[event_effect]] / [[attach]] / [[event_timing]] / [[event_command]] (`%s` = lower-case event name).
 [event_lists]
 eff = "data/common/event_cfg/eff/%s_eff.cfg.bin"

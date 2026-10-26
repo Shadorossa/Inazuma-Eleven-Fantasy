@@ -1,0 +1,23 @@
+# «Cascabel» (Sidewinder, whs01650; mountain shot, cut-in ev60_01650): while the ball flies to the goal it is inside the
+# end of the cut-in's shot cut (c0030, frames 256-289 looped): its fourteen parts on the ball, x0.947 (the settings the
+# automatic pipeline derived), with the green aura round the ball (its two glows, two swirl bands and four swirl arcs)
+# facing the camera from every side, as the cut-in's camera shows it: a round green ball of light, never a flat disc,
+# its swirl still turning in a smooth loop.
+# The white wind rings and light streaks stay as the cut-in has them. The object is ev6165sw00
+# (effect/event/ev60/ev6165sw00/), built by research/scripts/sidewinder_ball_fx.py from the cut-in's effect object
+# ev60016500. The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns
+# +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content/techniques/sidewinder_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "sidewinder"
+from = "ega0075a"
+object = "effect/event/ev60/ev6165sw00/ev6165sw00.objbin"
+
+[[shot_aura]]
+name = "sidewinder"
+when = { techniques = ["whs01650"] }
+aura = "sidewinder"
+like = "ega0075a"

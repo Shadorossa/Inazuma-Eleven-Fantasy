@@ -1,0 +1,24 @@
+# «Fiebre del oro» (Gold Rush, whs02510; mountain shot, cut-in ev60_02510): the end of the cut-in's final shot (c0200,
+# held at frame 380) on the ball: the white wind spiral trailing straight behind the ball, its ribbons turning about
+# the flight and their wind flowing back along them, and the gold nuggets the ball sheds along its way, tumbling; both
+# come out of the kick point as the ball moves away (on the distance clock, never stretched) and fade out at their far
+# end. x1 (the cut-in's ball is at match scale). The trigger copies the mountain special-shot aura's row
+# (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60025100 by
+# research/scripts/gold_rush_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\gold_rush_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "gold_rush"
+from = "ega0075a"
+object = "effect/event/ev60/ev6251gr00/ev6251gr00.objbin"
+
+[[shot_aura]]
+name = "gold_rush"
+when = { techniques = ["whs02510"] }
+aura = "gold_rush"
+like = "ega0075a"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

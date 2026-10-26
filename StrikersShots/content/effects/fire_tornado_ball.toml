@@ -1,0 +1,61 @@
+# «Tornado de fuego» (Fire Tornado, whs00030; fire shot, cut-in ev60_00030) and its recoloured copies «Tornado oscuro»
+# (Dark Tornado, whs00430, cut-in ev60_00430) and «Tornado inverso» (Back Tornado, whs00320, cut-in ev60_00320): while
+# the ball flies to the goal after the cut-in it keeps the look of Fire Tornado's last cut (c0040, the ball shot out of
+# the fire tornado): its fire head (spinning, throbbing flame shell, flame waves, red and yellow glow), its two long fire
+# streaks (~30 m) and the small fire chunks shed along them, instead of the plain special-shot aura.
+# The objects are built by research/scripts/fire_tornado_ball_fx.py from the cut-in's effect object ev60000300: c0040
+# held at frame 268 from the aura's first frame, ball at the origin flying +Z, x1; the streaks and chunks come out of
+# the kick point as the ball flies (never stretched) and fade out at their far end. Left out: the fire tornado round the
+# player and the kick parts (they stay at the kick point in the cut-in).
+# * fire_tornado (ev6003ft00): the cut-in's own colours;
+# * dark_tornado (ev6043dt00): the same shapes recoloured from Dark Tornado's cut-in object ev60004300 (indigo / violet
+#   fire, dark streaks);
+# * back_tornado (ev6032bt00): the same shapes recoloured from Back Tornado's cut-in object ev60003200 (blue wind).
+# The colours are measured per part from the target object's parts of the same role (texture x material x vertex
+# colour); the copies' textures carry their own names.
+# Each trigger copies its element's special-shot aura row (like): CB_SkillShootBallAura turns +Z along the ball's
+# velocity every frame (aura-balon-tiro.md §2b). The clip runs on the ball's distance from the kick point (anchor =
+# "kick", 0.75 m a clip frame: the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»). Their
+# flight: content\techniques\fire_tornado_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fire_tornado"
+from = "ega0075c"
+object = "effect/event/ev60/ev6003ft00/ev6003ft00.objbin"
+
+[[effect]]
+name = "dark_tornado"
+from = "ega0075d"
+object = "effect/event/ev60/ev6043dt00/ev6043dt00.objbin"
+
+[[effect]]
+name = "back_tornado"
+from = "ega0075b"
+object = "effect/event/ev60/ev6032bt00/ev6032bt00.objbin"
+
+[[shot_aura]]
+name = "fire_tornado"
+when = { techniques = ["whs00030"] }
+aura = "fire_tornado"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "dark_tornado"
+when = { techniques = ["whs00430"] }
+aura = "dark_tornado"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "back_tornado"
+when = { techniques = ["whs00320"] }
+aura = "back_tornado"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

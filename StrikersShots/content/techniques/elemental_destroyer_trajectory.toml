@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Furia de los elementos (Elemental Destroyer, whs01720, cut-in ev60_01720).
+#
+# Measured: in c0300 the ball flies the beam's head ~10 m over the cut-in's ground, nearly level (3 deg down over
+# 456-486; research/scripts/elemental_destroyer_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.5 m the whole way, so the beam (~2 m across) flies clear of the pitch.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Furia de los elementos (whs01720).
+[[edit]]
+target = "whs01720"
+trajectory = { points = [[0.0, 2.5]], straight = true, unblockable = false }

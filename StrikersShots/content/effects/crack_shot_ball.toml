@@ -1,0 +1,22 @@
+# «Fisura celestial» (Crack Shot, whs03350; mountain shot, cut-in ev60_03350): while the ball runs to the goal it keeps
+# the look of the cut-in's last shot (c0400, frame 516), where it comes head-on at the camera: its glowing shell (the
+# dark rim sphere, the front flare, the aura cap and the flowing shells) as one round head of light round the event
+# ball, the same from every side (camera-facing), x1, instead of the plain mountain special-shot aura (ega0075a). The
+# object is ev6335cs00 (effect/event/ev60/ev6335cs00/), built by research/scripts/crack_shot_ball_fx.py from the
+# cut-in's effect object ev60033500. The trigger copies the mountain special-shot aura's row (like = "ega0075a"):
+# CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight:
+# content\techniques\crack_shot_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "crack_shot"
+from = "ega0075a"
+object = "effect/event/ev60/ev6335cs00/ev6335cs00.objbin"
+
+[[shot_aura]]
+name = "crack_shot"
+when = { techniques = ["whs03350"] }
+aura = "crack_shot"
+like = "ega0075a"

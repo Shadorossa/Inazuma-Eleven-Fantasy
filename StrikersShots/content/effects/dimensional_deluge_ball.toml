@@ -1,0 +1,38 @@
+# «Dimensional Deluge» («Tormenta dimensional», whs02020, forest shot, cut-in ev60_02020): the end of the cut-in's last
+# shot (c0200) on the pitch. Two effects:
+# * dimensional_deluge_rift (object ev6202dp00, `ground_effect`): the red star-shaped rift standing at the kick point,
+#   its centre at the flight's height, its plane across the flight; its cards face the camera with the cut-in's star
+#   shape (the same star from the touchline as from behind the kicker), its dark core and red glow; with it the pink
+#   wind rings standing on the ball's way out of it, each coming in as the ball reaches it. It stays the whole flight
+#   and goes with the storm when the shot ends;
+# * dimensional_deluge (object ev6202db00, `aura`, on the distance clock): the purple storm, a twisting tube from the
+#   rift to the ball, born at the kick point and revealed as the ball flies (the whole storm, as in the cut-in), never
+#   stretched, its texture flowing on; the ball inside its front, in the cut-in's two throbbing glows (round from every
+#   side).
+# x0.6 of the cut-in size (the rift ~3 m across, the storm ~1.4 m thick). The objects under assets\data are generated on
+# the author's PC from the game's own cut-in effect ev60020200 by research/scripts/dimensional_deluge_ball_fx.py (never
+# committed: research/mods/StrikersShots/README.md). The trigger copies the forest special-shot aura's row
+# (like = "ega0075d"). Its flight: content\techniques\dimensional_deluge_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dimensional_deluge"
+from = "ega0075d"
+object = "effect/event/ev60/ev6202db00/ev6202db00.objbin"
+
+[[effect]]
+name = "dimensional_deluge_rift"
+from = "ega0021"
+object = "effect/event/ev60/ev6202dp00/ev6202dp00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "dimensional_deluge"
+when = { techniques = ["whs02020"] }
+aura = "dimensional_deluge"
+like = "ega0075d"
+# the storm comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the rift stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "dimensional_deluge_rift" }

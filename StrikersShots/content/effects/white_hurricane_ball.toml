@@ -1,0 +1,24 @@
+# «White Hurricane» («Ciclón blanco», whs01670, its _mm variant whs01670_mm and the Chronicle copy whs01670_cro, wind
+# shot, cut-in ev60_01670): the end of the cut-in's last shot (c0400, frame 380) on the ball (owner 2026-10-24: «Revisa
+# el ciclón blanco, está fatal ahora mismo»): the ball inside its white wind sheath, at the cut-in's own size, and the
+# hurricane's white wind tunnel laid straight behind it along the flight (~15 m, its wind flowing and turning), coming
+# out of the kick point as the ball moves away (on the distance clock, never stretched) and fading out at its far end;
+# white as in the cut-in, the same from the touchline as from the front.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60016700 by
+# research/scripts/white_hurricane_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\white_hurricane_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "white_hurricane_wind"
+from = "ega0075b"
+object = "effect/event/ev60/ev6167wh00/ev6167wh00.objbin"
+
+[[shot_aura]]
+name = "white_hurricane_wind"
+when = { techniques = ["whs01670", "whs01670_mm", "whs01670_cro"] }
+aura = "white_hurricane_wind"
+like = "ega0075b"
+# the tunnel comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

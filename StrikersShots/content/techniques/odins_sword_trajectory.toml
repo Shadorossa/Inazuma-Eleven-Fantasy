@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Espada de Odín (Odin Sword, whs01070, cut-in ev60_01070). Owner 2026-10-24: the shot
+# goes toward the goal from below upward, the sword coming out of the rune circle on the pitch: the ball starts 0.3 m
+# over the kick point and rises in one straight line into the goal at 2.6 m (declared; kept out of
+# _flight_height.toml's lowering by keep_declared). In the cut-in (c0100) the sword leaves the circle rising about
+# 14 deg (5.2 m over 21 m); the goal end is kept at a high but normal shot's height (1.5-2.6 m at the goal line).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); goal_points count back from the goal point, points from the kick; the first / last height is held.
+
+# Espada de Odín (whs01070).
+[[edit]]
+target = "whs01070"
+trajectory = { points = [[0.0, 0.3]], goal_points = [[0.0, 2.6]], start = { height = 0.3 }, unblockable = false }

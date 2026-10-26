@@ -1,0 +1,24 @@
+id = "StrikersShots"
+# the snake-case spelling of the id, accepted everywhere a mod id is read (requires, enabled.toml, option values)
+former_ids = ["strikers_shots"]
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "Strikers Shots"
+# the mod's own name prefix: its TOML keys / rule ids are StrikersShots.X
+prefix = "StrikersShots"
+folder = "StrikersShots"
+version = "0.1.171"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Shots at goal like a TV broadcast: while a shot at goal of your team flies, the camera shows it from the touchline (turned toward the goal while a shot can be chained), then your camera comes back. Seven finished shot auras: Chaos Break flies inside its white-gold sphere with its fire and ice rings, Doom Break skims the pitch inside its spiked ball and leaves a furrow, Black Dawn is a black hole with its purple halo, Pegasus Punch dives in its green wind cone, Meteor Attack burns in its fire aura, Avenging Eagle dives from 7 m up in its cyan beam and white rings and Doom Dive Drive flies as a red-hot ball with its blue-glowing black lightning. Aura shots fly a straight line into the goal and the blue shot band on the pitch is hidden. Special goals: scoring with Meteoric Fire Tornado, Inazuma Break, Shadow Empress or Ultimate Eleven Assault smashes the goal (Ultimate Eleven Assault's scene is golden); option «Skip special goal scene» in Mod options. Visual only: no power, cost or block change. Works with Living Shots, which adds the other shot auras."
+priority = 0
+tags = ["Visual"]
+updated = "2026-10-24"
+# Data only (no DLL, no Lua): the shot camera content\camera_drives\shot_view.toml ([[VRFW.CameraDrive]],
+# docs/framework/camera-drive.md) with the presets cameras\shot.toml / chain.toml, the shot auras of content\effects\
+# ([[effect]] + [[shot_aura]], docs/framework/effect.md §6) with their flights in content\techniques\, the special goals
+# content\techniques\goal_smash.toml (+ its scenes in content\base_tables\ and assets\effect\event\ev71\) and the
+# option options.toml. `provides` makes an installed copy of the old standalone Goal Smash mod skipped.
+requires = ["VRFW>=2.154.0"]
+provides = ["goal_smash=1.0.0"]
+conflicts = []

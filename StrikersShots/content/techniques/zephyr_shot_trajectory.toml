@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro vendaval (Zephyr Shot, whs01460), cut-in ev60_01460.
+#
+# In the cut-in (c0040) the ball flies level at ~0.8 m out of its whirlwind tunnel toward the goal.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line, at most 3 m high): one straight level line
+# from the kick point to the goal, the ball centre at 1.40 m (research/scripts/zephyr_shot_ball_fx.py FLIGHT_HEIGHT),
+# so the ~2.6 m-wide tunnel round it clears the pitch. unblockable = false: the game's block rules (this mod changes
+# no block rule). Heights are the ball centre over the pitch (m); one point = a level flight; straight = true.
+
+# Tiro vendaval (whs01460).
+[[edit]]
+target = "whs01460"
+trajectory = { points = [[0.0, 1.40]], straight = true, unblockable = false }

@@ -1,0 +1,22 @@
+# «Cabezazo yoyó» (Gyro Head, whs00550; mountain shot, cut-in ev60_00550): while the ball flies to the goal it is
+# inside the end of the cut-in's shot cut (c0400, frames 301-331): its blue shot light, the yellow and white twisted
+# ribbons and the swirls round the event ball, x1, the ribbons and swirls spinning on about the flight at the cut-in's
+# own rate, the glows looped, the trail coming out of the kick point and fading out, instead of the plain mountain
+# special-shot aura (ega0075a). The object is ev6055gh00 (effect/event/ev60/ev6055gh00/), built by
+# research/scripts/gyro_head_ball_fx.py from the cut-in's effect object ev60005500. The trigger copies the mountain
+# special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame
+# (aura-balon-tiro.md §2b), so the aura follows the flight (content\techniques\gyro_head_trajectory.toml).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "gyro_head"
+from = "ega0075a"
+object = "effect/event/ev60/ev6055gh00/ev6055gh00.objbin"
+
+[[shot_aura]]
+name = "gyro_head"
+when = { techniques = ["whs00550"] }
+aura = "gyro_head"
+like = "ega0075a"

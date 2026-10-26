@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chut congelante (Freeze Shot, whs00200, cut-in ev60_00200).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_00200 c0500 rises from 0.18 m over the cut-in's frozen pitch at
+# effect frame 272 to 0.92 m at frame 298, the end of the shot (research/scripts/freeze_shot_ball_fx.py holds the aura
+# there). Flight: one straight level line from the kick point to the goal, the ball centre at 0.92 m the whole way.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Chut congelante (whs00200).
+[[edit]]
+target = "whs00200"
+trajectory = { points = [[0.0, 0.92]], straight = true, unblockable = false }

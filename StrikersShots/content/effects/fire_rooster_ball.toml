@@ -1,0 +1,23 @@
+# «Fire Rooster» («Pájaro de fuego», whs00370; fire shot, cut-in ev60_00370): while the ball flies to the goal it wears
+# the cut-in's last shot (c0040, held at frame 331): the fire bird flying with the ball at its heart, the ball inside
+# its small fire and soft orange light, the bird's two fire wings (three layers a side) beating on as in the cut-in
+# (one 60-frame beat looped seamlessly from the first frame), the bird level with the flight. x0.6 of the cut-in size
+# (wingspan ~5 m). The kick's fire lines and rings, the wind and the fire grains along the way stay out.
+# The object is ev6037fr00 (effect/event/ev60/ev6037fr00/), built by research/scripts/fire_rooster_ball_fx.py from
+# ev60003700.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\fire_rooster_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fire_rooster"
+from = "ega0075c"
+object = "effect/event/ev60/ev6037fr00/ev6037fr00.objbin"
+
+[[shot_aura]]
+name = "fire_rooster"
+when = { techniques = ["whs00370"] }
+aura = "fire_rooster"
+like = "ega0075c"

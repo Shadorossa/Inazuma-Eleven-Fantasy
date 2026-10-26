@@ -2,14 +2,46 @@ id = "VRFW"
 former_ids = ["vr_framework"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\rows\mod_info.toml)
 name = "VRFW"
-version = "2.135.0"
+version = "2.154.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The base of the VR ModLoader's mods, in one mod: characters and teams declared by mods and their rarity (chara), mod texts in 9 languages (text), the save slots (the slot screen before the game starts), per-mod save data tied to the slot and the mods' save flags (save), global game rules declared by mods: parameters (game_param and the other property tables), controls and buttons (system), mod audio and voice packs (audio), match rulesets (match), special move animations (anim), row changes in any game table (tables), game modes declared by mods (modes), special move name banners, the «Mod options» tab and the title menu's «Mods» screen (graphics). Built into the VR ModLoader (winmm.dll): no DLL of its own. Needed by the mods that use any of its parts."
 # the base loads first: the mods that use it load after it (and win their conflicts)
 priority = -10
 tags = ["Framework"]
-updated = "2026-10-23"
+updated = "2026-10-24"
+# 2.154.0: trajectory.zigzag = { length, low, high }: sharp fixed-length teeth from the flight's start, the last cut at
+# the goal; any profile of more than three pieces is served whole by the segment provider; points up to 32 a list;
+# ground_effect.anchor = "kick" + drift: the ground effect runs on the distance clock (ground distance from the start).
+# 2.150.0: trajectory.hops = { length, side, height, first }: the ball hops to the goal (one quadratic arc a hop,
+# touches to alternate sides of the line), any number of hops (the multi-Bezier segment provider hook);
+# ground_trail.at = "touches": a piece at each touch, turned along its hop.
+# 2.148.0: options.toml `migrate_from = "<mod>.<row>"` (or a list): a row that moved from another mod takes that
+# row's saved value once at boot when it has none yet; the old value is kept.
+# 2.147.0: shot aura distance clock: an aura first seen past its `in` clip is started again from `in`; the clock
+# follows the component's current clip and the instance's scale; the census line lists the instance's objects.
+# 2.146.0: [[shot_aura]] ground_effect: a second effect of the shot on the ball's trail slot, pinned on the pitch at the
+# flight's start (yaw along the flight, upright) until the shot ends.
+# 2.145.0: shot aura distance clock: the frames played are read back from the clip (every clip of the aura, nested
+# parts too), a clip ahead of the ball is pulled back to it, the match pause holds it; one summary line per shot.
+# 2.144.0: [[chr_trigger]] attach: the copied rows' place on the character (position kind, scale kind, mode), e.g. the
+# root on the pitch (c_global_0_0) for a kick effect that must not turn with the body.
+# 2.143.0: [[shot_aura]] kick_effect: a character effect held on the shooter from the launch (a part of an aura
+# that stands on the pitch behind him, upright whatever the flight); [[chr_trigger]] rows: copy only some rows of `like`.
+# 2.141.0: [[shot_aura]] when.flight_pitch (the degrees the shot's flight line points down, from the flight the technique
+# type publishes): aura variants made for one descent; a rule with when.aura_model goes on the ball's trigger list only
+# when a match player can use an aura of one of its models (services::aura_models, shared with the shot's condition).
+# 2.140.0: [[VRFW.DropFilter]] Sources = ["chests"] (the Victory crates' and the field treasure boxes' / ball chests'
+# loot tables, derived from the game's data), Exclude = "unused_shop_currencies" (the game's shop currencies no visible
+# row of the built shops charges), Fallback (the item a table gets instead of being left empty).
+# 2.139.0: menu [[patch]] attach_slots = true: every instance of a list layer gets an attach row and a layout joint
+# (continuing the last two), so rows a script adds past the retail locators are drawn in the list.
+# 2.138.0: [[shot_aura]] anchor = "kick" + drift (distance clock): the aura's clip holds on the foot and then plays the
+# ball's distance from the kick point / drift frames, so a part fixed at the kick point lands on the shooter at any shot speed.
+# 2.137.0: team shot_music = "<mod>.<song>" (a music library track, from its mod's bgm bank) and "none" (no shot
+# music over a lower mod's value).
+# 2.136.0: [[shot_aura]] ball_offset (the ball's place inside the aura, metres in the aura's axes) and ball_spin
+# ({ enabled = false } / { speed = x }: the game's ball roll while the aura plays); ModManager previews both.
 # 2.135.0: the ball's trigger list keeps only the retail rows and the auras of every move the match's players can use
 # (unit slots incl. form variants, linked moves of slotted keshin / armour / Mix-Max / totem / mode change commands, the
 # plates, the transform engine's forms); new auras stay within the resource registries minus [trigger_lists] pool_reserve.

@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Kung Fu Fighting (whs00530, cut-in ev60_00530).
+#
+# Measured: the event ball of ev60_00530 c0500 flies off along +Z from the kick (320), rising gently (0.55 m -> 1.13 m
+# over 320-366).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.20 m the whole way, so the flame round the ball (~0.65 m in radius at x0.557) stays
+# clear of the grass. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball
+# centre over the pitch (m); the height is held.
+
+# Kung Fu Fighting (whs00530).
+[[edit]]
+target = "whs00530"
+trajectory = { points = [[0.0, 1.20]], straight = true, unblockable = false }

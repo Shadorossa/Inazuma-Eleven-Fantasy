@@ -1,21 +1,39 @@
-# «Torpedo tridente» (Trident Torpedo, whs01850; wind shot, cut-in ev60_01850): while the ball flies to the goal
-# after the cut-in it keeps the look of the cut-in's last cut (c0400, the ball kicked out of the whirlpool 10.7 m up,
-# flying on and easing down to 9.2 m): its blue light, white tip, water auras and wave shell, born at the kick with
-# the kick wave, instead of the plain wind special-shot aura (ega0075b). The object is ev6185tt00
-# (effect/event/ev60/ev6185tt00/), built by research/scripts/trident_torpedo_ball_fx.py from the cut-in's effect
-# object ev60018500: c0400 replayed from the kick (340), then held at frame 458, ball at the origin flying +Z, x1.
-# Left out: the scenery (sky, clouds, sea and waves), the whirlpool and the water drops at the kick point, the
-# wind-up's glints and aura, the keshin. docs/game/media/trident-torpedo-ball-fx.md. The trigger copies the wind
-# special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame
-# (aura-balon-tiro.md §2b). Its flight: content\techniques\trident_torpedo_trajectory.toml. Mod «Living Shots»
-# (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own cut-in effects by
-# research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
+# «Torpedo tridente» (Trident Torpedo, whs01850; wind shot, cut-in ev60_01850), in two effects (owner 2026-10-24):
+# * the ball aura (ev6185tt00): while the ball flies to the goal it keeps the look of the cut-in's last cut (c0400): its
+#   blue light, white tip, water auras and wave shell, born at the kick with the kick wave, carrying the keshin's
+#   trident (thrown: its tip on the ball, its shaft straight back along the flight), instead of the plain wind
+#   special-shot aura (ega0075b). The trigger copies the wind special-shot aura's row (like = "ega0075b"):
+#   CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b);
+# * the keshin behind the kicker (ev6185tk00): the keshin after its throw on the whole wave of the cut-in, smaller
+#   (x0.4), the wave's base on the pitch, its front 1 m behind the kicker, fading out over 3 s: a character effect held
+#   on the shooter from the launch (kick_effect + [[chr_trigger]]): it stands upright with him, whatever the flight.
+# Both built by research/scripts/trident_torpedo_ball_fx.py from the cut-in's effect object ev60018500 (c0400 replayed
+# from the kick (340), held at frame 458); the keshin's own model per shooter: trident_torpedo_ball_variants.toml.
+# docs/game/media/trident-torpedo-ball-fx.md. Its flight: content\techniques\trident_torpedo_trajectory.toml. Mod
+# «Living Shots» (shot_fx): visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/LivingShots/README.md).
 schema = "VRFW.effect/1"
 
 [[effect]]
 name = "trident_torpedo"
 from = "ega0075b"
 object = "effect/event/ev60/ev6185tt00/ev6185tt00.objbin"
+
+# the keshin on its wave behind the kicker: a character effect (a copy of the keshin aura's row ega0500a, placed by `attach`)
+[[effect]]
+name = "trident_torpedo_stand"
+from = "ega0500a"
+object = "effect/event/ev60/ev6185tk00/ev6185tk00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[chr_trigger]]
+name = "living_shots.trident_torpedo_stand"
+like = "0x1B2E56DC"
+rows = ["ega0500a"]
+effects = { ega0500a = "trident_torpedo_stand" }
+# on the shooter's root on the pitch, at its own size, not on his hips: position kind c_global_0_0 (cmd_effect_config
+# CMD_EFF_POS_KIND_DEF 0xBD14251B), scale kind 1 (0x7D7D7FF4), mode 0 (the keshin aura's row: c_c_1_1, body-type scale)
+attach = { point = "0xBD14251B", reference = "0x7D7D7FF4", mode = 0 }
 
 [[shot_aura]]
 name = "trident_torpedo"
@@ -24,3 +42,5 @@ aura = "trident_torpedo"
 like = "ega0075b"
 # the aura's replay (118 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
 fit = { replay = 118 }
+# the keshin on its wave held on the shooter from the launch (its fade is 3 s)
+kick_effect = { trigger = "living_shots.trident_torpedo_stand", duration_s = 3.5 }

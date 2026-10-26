@@ -1,0 +1,30 @@
+# «Bouncing Bomb» («Bomba saltarina», whs01510, fire shot, cut-in ev60_01510): the ball hops to the goal in a zigzag as
+# the cut-in's last shot (c0400) shows it (owner 2026-10-24: «debe ir haciendo el efecto del plano final de los saltos
+# en zigzag»; the flight: content\techniques\bouncing_bomb_trajectory.toml `hops`). Two effects:
+# * bouncing_bomb (object ev6151bb00): the burning ball, its red and yellow cores and the fire and flame waves streaming
+#   behind it, as at the top of a hop; the game turns it along the ball's velocity, up and down each hop, across the
+#   zigzag;
+# * bouncing_bomb_touch (object ev6151bt00): what each touch leaves on the pitch, the scorch and the flash, the fire
+#   burst and its rising flame waves, the sparks and the fire arc drawn over the hop leaving it; played by the technique
+#   type at each touch (`ground_trail.at = "touches"`), turned along that hop, removed after 0.6 s.
+# The objects under assets\data are generated on the author's PC from the game's own cut-in effect ev60015100 by
+# research/scripts/bouncing_bomb_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Replaces the
+# automatic aura of the move (content\effects\auto\, a beam from the kick point).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "bouncing_bomb"
+from = "ega0075c"
+object = "effect/event/ev60/ev6151bb00/ev6151bb00.objbin"
+
+[[effect]]
+name = "bouncing_bomb_touch"
+from = "ega2011"
+object = "effect/event/ev60/ev6151bt00/ev6151bt00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "bouncing_bomb"
+when = { techniques = ["whs01510"] }
+aura = "bouncing_bomb"
+like = "ega0075c"

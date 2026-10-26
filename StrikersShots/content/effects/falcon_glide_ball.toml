@@ -1,0 +1,40 @@
+# «Vuelo de halcón» (Falcon Glide, whs02690, wind; with the same cut-in «Vuelo de águila calva» / Bald Eagle Glide
+# whs02691, mountain; cut-in ev60_02690): while the ball flies to the goal after the cut-in it keeps the look of the
+# cut-in's last cut (c0400, the ball gliding low with the falcon): the falcon itself (the waza model a000030, baked)
+# flying with it (the totem model in its own proportions, ~3 m, the ball in its talons), its blue lights, the dust
+# cloud rolling behind it and the dust puffs it kicks up, instead of the plain special-shot aura of its element
+# (ega0075b / ega0075a). The object is ev6269fg00 (effect/event/ev60/ev6269fg00/), built by
+# research/scripts/falcon_glide_ball_fx.py from the cut-in's effect object ev60026900 and the falcon: c0400 replayed
+# from its first frame (350), then held at frame 458, ball at the origin flying +Z, parts x0.2. Left out: the 48 m
+# wind streaks, the earlier cuts' parts. docs/game/media/falcon-glide-ball-fx.md.
+# One aura, one trigger per element: each copies its element's special-shot aura row (like): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight:
+# content\techniques\falcon_glide_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "falcon_glide"
+from = "ega0075b"
+object = "effect/event/ev60/ev6269fg00/ev6269fg00.objbin"
+
+[[shot_aura]]
+name = "falcon_glide"
+when = { techniques = ["whs02690"] }
+aura = "falcon_glide"
+like = "ega0075b"
+# born at the kick point and run on the ball's distance from it, never on the shooter's motion: the replay's 108
+# frames over the cut-in ball's own 0.21 m a frame (23 m of glide) (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.21
+
+[[shot_aura]]
+name = "falcon_glide_mountain"
+when = { techniques = ["whs02691"] }
+aura = "falcon_glide"
+like = "ega0075a"
+# born at the kick point and run on the ball's distance from it, never on the shooter's motion: the replay's 108
+# frames over the cut-in ball's own 0.21 m a frame (23 m of glide) (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.21

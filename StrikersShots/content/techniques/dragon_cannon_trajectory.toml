@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cañón dragón (Dragon Cannon, whs00580, cut-in ev60_00580).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_00580 c0500 is shot at effect frame ~225 from 7.3 m and dives
+# at the camera along +Z to 2.2 m (33.6 m on, 298).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.40 m the whole way, so the fire rings it sends out (2.3 m in radius at their
+# widest) never reach the grass. unblockable = false: the game's block rules (this mod changes no block rule). Heights
+# are the ball centre over the pitch (m); the height is held.
+
+# Cañón dragón (whs00580).
+[[edit]]
+target = "whs00580"
+trajectory = { points = [[0.0, 2.40]], straight = true, unblockable = false }

@@ -1,0 +1,22 @@
+# «Spin Meister» («Tiro rotativo», whs01950, wind shot, cut-in ev60_01950): the cut-in's last shot (c0040, held at frame
+# 380) on the ball: the ball at the cyan tip of a long blue wind streak, white wind ribbons twisting round it and
+# trailing behind, turning about the flight as in the cut-in; the trail comes out of the kick point as the ball moves
+# away (on the distance clock, never stretched) and fades out at its far end; x0.538.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60019500 by
+# research/scripts/spin_meister_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\spin_meister_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "spin_meister"
+from = "ega0075b"
+object = "effect/event/ev60/ev6195sm00/ev6195sm00.objbin"
+
+[[shot_aura]]
+name = "spin_meister"
+when = { techniques = ["whs01950"] }
+aura = "spin_meister"
+like = "ega0075b"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

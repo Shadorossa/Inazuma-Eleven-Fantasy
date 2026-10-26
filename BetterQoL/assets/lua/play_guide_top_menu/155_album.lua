@@ -2,8 +2,9 @@
 -- util_album_row) opens the page util_album_menu (content\menus\album.toml, script assets\lua\screens\util_album_menu.lua)
 -- the way this menu opens its «Archivo de escenas» (UpdateSceneArchiveCoroutine), as «Estadísticas del club» does:
 -- input off, the Caseta's picture closed and its list hidden, the header titled «Álbum de jugadores» (header type 9:
--- the «Galería» icon), the page opened; the Caseta's button guide shows the page's keys (L2 / R2 type, LB / RB group,
--- left / right page, X / Y the player plate's pages). When the page is gone (B / Esc / right click) the player plate it
+-- the «Galería» icon), the page opened; the Caseta's button guide shows the page's keys (Y type, LB / RB group,
+-- left / right column and page, L2 / R2 the player plate's pages; first A and its label when another mod offers an
+-- action on the selected player: BetterQoL.AlbumActions). When the page is gone (B / Esc / right click) the player plate it
 -- opened is closed too (asked again until it is gone), the plate's parameter cleared and the menu camera's offset put
 -- back; then the Caseta comes back with its cursor on the row and its own «Aceptar». Runs as a coroutine resumed from
 -- Step. Engine calls only from the menu callbacks.
@@ -40,8 +41,8 @@ if UTIL_ALB == nil then
                 365833060 --[[BetterQoL.Album.GuidePage]], 3053135 --[[BetterQoL.Album.GuidePlate]] },
       icons = { 953629953 --[[BetterQoL.Album.KeysType]], 1489102165 --[[BetterQoL.Album.KeysGroup]],
                 2684607496 --[[BetterQoL.Album.KeysPage]], 1151301323 --[[BetterQoL.Album.KeysPlate]] },
-      cmds = { 2704260807 --[[CMD_FUNCR2]], 942075773 --[[CMD_FUNCR1]], 2075023265 --[[CMD_RIGHT]],
-               3421673595 --[[CMD_FUNC3]] },
+      cmds = { 3421673595 --[[CMD_FUNC3]], 942075773 --[[CMD_FUNCR1]], 2075023265 --[[CMD_RIGHT]],
+               2704260807 --[[CMD_FUNCR2]] },
     },
     TITLE = 4006794419,                   -- BetterQoL.Album.Row
     CLOSE_AGAIN = 30, CLOSE_MAX = 600,    -- frames between the plate's close requests; frames before giving up
@@ -78,6 +79,30 @@ local function Guide(g)
   M(AL.C.GUIDE_CMD, AL.MENU, AL.GUIDE, g.cmds)
 end
 
+-- the page's guide: first the A entry of each action another mod offers now (BetterQoL.AlbumActions, its text id
+-- `guide`; docs/game/ui/album.md §5), then the page's own keys
+local function PageGuide()
+  local g = { texts = {}, icons = {}, cmds = {} }
+  local acts = type(BetterQoL.AlbumActions) == "table" and BetterQoL.AlbumActions or {}
+  for _, a in ipairs(acts) do
+    if type(a) == "table" and type(a.guide) == "number" and type(a.On) == "function" then
+      local ok, on = pcall(a.On)
+      if ok and on == true then
+        g.texts[#g.texts + 1] = a.guide
+        g.icons[#g.icons + 1] = AL.GUIDE_OWN.icons[1]
+        g.cmds[#g.cmds + 1] = AL.GUIDE_OWN.cmds[1]
+        break
+      end
+    end
+  end
+  for k = 1, #AL.GUIDE_PAGE.texts do
+    g.texts[#g.texts + 1] = AL.GUIDE_PAGE.texts[k]
+    g.icons[#g.icons + 1] = AL.GUIDE_PAGE.icons[k]
+    g.cmds[#g.cmds + 1] = AL.GUIDE_PAGE.cmds[k]
+  end
+  return g
+end
+
 local function Camera()
   local ok, has, x, y, z = pcall(funcLuaCommand, AL.C.CAM_GET, AL.CAM)
   return (ok and has == true and type(x) == "number") and {x, y or 0, z or 0} or nil
@@ -95,7 +120,7 @@ local function Visit()
   M(AL.C.ANIME, AL.PICTURE, 0, AL.OPEN_ANIME, 2)
   M(AL.C.HIDE_MENU, AL.MENU)
   Header(AL.HEADER.PAGE_TYPE, AL.TITLE)
-  Guide(AL.GUIDE_PAGE)
+  Guide(PageGuide())
   pcall(funcLuaCommand, AL.C.OPEN_MENU, AL.PAGE)
   Log("page open asked (row " .. tostring(row) .. ")")
   coroutine.yield()

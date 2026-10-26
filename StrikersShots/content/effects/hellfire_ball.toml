@@ -1,0 +1,26 @@
+# «Hellfire» («Llamarada infernal», whs00980; fire shot, cut-in ev60_00980): while the ball flies to the goal it wears
+# the cut-in's last shot (c0300, held at frame 298): the ball at the heart of its round fire burst and red / orange
+# glow, two fire cones streaming back from it, and the three twisting fire lines with their sparks trailing out of the
+# kick point (laid straight along the flight, their twist round each other kept), revealed by the distance flown, their
+# far end fading out. The round glows face the camera: the same from the touchline.
+# The object is ev6098hf00 (effect/event/ev60/ev6098hf00/), built by research/scripts/hellfire_ball_fx.py from
+# ev60009800.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"); the distance clock runs from the kick point
+# (anchor = "kick", drift 0.75 m a frame). Flight:
+# content\techniques\hellfire_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "hellfire"
+from = "ega0075c"
+object = "effect/event/ev60/ev6098hf00/ev6098hf00.objbin"
+
+[[shot_aura]]
+name = "hellfire"
+when = { techniques = ["whs00980"] }
+aura = "hellfire"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

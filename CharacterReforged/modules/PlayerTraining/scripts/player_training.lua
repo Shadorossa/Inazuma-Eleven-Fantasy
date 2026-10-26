@@ -14,8 +14,9 @@
 -- (rule 0 pairs / 1 pool / 2 trade; position 1 GK 2 FW 3 MF 4 DF; growthType 0 slow 1 normal 2 fast; fresh = 1 drops
 -- the working copy first.) A session per character holds the committed deltas (prm_growth[0..7] + the Suerte delta of
 -- the slot blob training.json, lib/training_store.lua) and a working copy SET / RESET change; nothing reaches the game
--- before COMMIT (prm_growth written in memory, saved by the game at its next save; Suerte into the blob). A session whose
--- committed prm_growth no longer matches memory (a load, a slot switch) is rebuilt from memory first. Cards of a locked
+-- before COMMIT (prm_growth written in memory, saved by the game at its next save; Suerte into the blob). Sessions are
+-- per (handle, card); a session whose committed prm_growth no longer matches memory (a load, a slot switch) is rebuilt
+-- from memory first. Cards of a locked
 -- rarity (config.toml [training] locked_rarities) answer -9. The per-card values (Libertad, Suerte, position, growth)
 -- are Character Reforged's (its exports); the commands answer false until it published them. The trained points reach
 -- matches through the framework's match-build service ([[VRFW.MatchStat]] PlayerTraining.TrainedPoints, while the
@@ -144,24 +145,29 @@ local function committed_of(pl, hdl)
   return c
 end
 
+-- sessions are per (handle, card): a handle a menu fills with another card in turn (the album's player sheet) keeps
+-- one session per card, so browsing never drops a working copy
+local function session_key(hdl, param_id) return string.format("%08X:%08X", hdl, CS.u32(param_id)) end
+
 -- the session of hdl (created or rebuilt from memory when needed): pl, session or nil + error code
 local function session(hdl, fresh)
   local pl, e = load_player(hdl)
   if not pl then return nil, e end
-  local s = SESSIONS[hdl]
-  local stale = not s or s.param_id ~= pl.view.param_id
-  if s and not stale then
+  local key = session_key(hdl, pl.view.param_id)
+  local s = SESSIONS[key]
+  local stale = false
+  if s then
     for i = 0, 7 do
       if s.committed[i] ~= pl.mem_g[i + 1] then stale = true end
     end
   end
-  if fresh or stale then
-    if not fresh and s then
-      warn(string.format("%s: prm_growth changed under an open session (load / slot switch): working copy dropped", hex(hdl)))
+  if fresh or stale or not s then
+    if stale and not fresh then
+      warn(string.format("%s (id %d): prm_growth changed under an open session (load / slot switch): working copy dropped", hex(hdl), pl.view.param_id))
     end
     local c = committed_of(pl, hdl)
-    s = { param_id = pl.view.param_id, committed = c, working = R.copy(c) }
-    SESSIONS[hdl] = s
+    s = { hdl = hdl, param_id = pl.view.param_id, committed = c, working = R.copy(c) }
+    SESSIONS[key] = s
   end
   return pl, s
 end
@@ -242,7 +248,13 @@ end
 function PlayerTraining.Cancel(hdl)
   if not active() then return false end
   hdl = hdl_arg(hdl)
-  if hdl == 0 then SESSIONS = {} else SESSIONS[hdl] = nil end
+  if hdl == 0 then
+    SESSIONS = {}
+  else
+    for k, s in pairs(SESSIONS) do
+      if s.hdl == hdl then SESSIONS[k] = nil end
+    end
+  end
   return true
 end
 

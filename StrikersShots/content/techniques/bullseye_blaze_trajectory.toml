@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Chut al rojo vivo (Bullseye Blaze, whs03310, cut-in ev60_03310).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_03310 c0500 comes down at the goal over its fire lane, 1.58 m
+# over the pitch at effect frame 290 (the aura's look, research/scripts/bullseye_blaze_ball_fx.py FLIGHT_H), 1.39 m at
+# 294. Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick
+# point to the goal at the cut-in's 1.58 m, low over the lane the aura lays on the pitch under it. unblockable = false:
+# the game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); the height
+# is held.
+
+# Chut al rojo vivo (whs03310).
+[[edit]]
+target = "whs03310"
+trajectory = { points = [[0.0, 1.58]], straight = true, unblockable = false }

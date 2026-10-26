@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Contragolpe (Straight Counter, whs02660, cut-in ev60_02660).
+#
+# Measured: in the cut-in (c0200) the event ball (b000001 slot s01) is punched at effect frame 250 and flies level along
+# +Z at 1.06 m. Flight: one straight level line from the kick point to the goal, the ball centre at 1.06 m the whole
+# way (the glove round it clears the grass). unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Contragolpe (whs02660).
+[[edit]]
+target = "whs02660"
+trajectory = { points = [[0.0, 1.06]], straight = true, unblockable = false }

@@ -1,0 +1,29 @@
+# «Asalto aéreo» (Roc and Roll, whs01840; mountain shot, cut-in ev60_01840): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last shot (c0400, the ball skimming the pitch after the claws struck it
+# down) instead of the plain mountain special-shot aura (ega0075a): its black core, blue light, dark shells and rims
+# (the rims facing the camera from every side), the black claw strokes gripping it with the dust they throw up on the
+# pitch, and behind it the tracks the claws gouge in the pitch with the dust streaks along them, born at the kick point
+# and laid as the ball passes (never stretched, fading out at their far end).
+# The object ev6184rr00 (assets\data\{common,dx11}\effect\event\ev60\ev6184rr00\) is built by
+# research/scripts/roc_and_roll_ball_fx.py from the cut-in's effect object ev60018400 (cutin_replay_aura.py; c0400
+# held at frame 458 from the aura's first frame, its texture flows running on and the dark shells breathing; flight
+# along +Z, level, x1, priorities <= 30). The trigger row copies the mountain special-shot aura's (like = "ega0075a": its
+# callback turns +Z along the ball's velocity). Its flight: content\techniques\roc_and_roll_trajectory.toml. No other
+# technique key uses ev60_01840.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "roc_and_roll"
+from = "ega0075a"
+object = "effect/event/ev60/ev6184rr00/ev6184rr00.objbin"
+
+[[shot_aura]]
+name = "roc_and_roll"
+when = { techniques = ["whs01840"] }
+aura = "roc_and_roll"
+like = "ega0075a"
+# the tracks come out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

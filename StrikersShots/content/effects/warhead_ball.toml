@@ -1,0 +1,25 @@
+# «Cabezazo cohete» (Warhead, whs01530; fire shot, cut-in ev60_01530): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last shot (c0400, after the header): the rocket's flame round the ball, the
+# speed waves wrapped round it and the trail ribbons it pulls from the kick point, instead of the plain fire
+# special-shot aura (ega0075c).
+# The object is ev6015wh00 (effect/event/ev60/ev6015wh00/), built by research/scripts/warhead_ball_fx.py from the
+# cut-in's effect object ev60015300: c0400 held at its last frame (312) from the aura's first frame, ball at the origin
+# flying +Z, x1; the trail ribbons come out of the kick point as the ball flies and fade out at their far end. Left
+# out: the shock-wave discs that stay at the kick point and the kicker's body auras. The ribbons fade across their
+# width and at their tail, the flame and waves toward their back ends; the waves and ribbons blink as in the cut-in.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\warhead_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "warhead"
+from = "ega0075c"
+object = "effect/event/ev60/ev6015wh00/ev6015wh00.objbin"
+
+[[shot_aura]]
+name = "warhead"
+when = { techniques = ["whs01530"] }
+aura = "warhead"
+like = "ega0075c"

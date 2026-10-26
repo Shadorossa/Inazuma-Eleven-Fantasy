@@ -1,0 +1,26 @@
+# «Giro atómico» (Atomic Spin, whs02200; forest long shot, cut-in ev60_02200): while the ball flies to the goal it
+# wears the cut-in's last shot (c0400, held at frame 299 from the aura's first frame, the last frame before the ball
+# passes the camera): the white-hot ball inside its golden swirl, the swirl turning, and the thin golden streaks
+# running straight behind it, x1. The streaks come out of the kick point as the ball flies (distance clock, never
+# stretched) and fade out at their far end. The starburst and the shock rings stay at the kick point in the cut-in,
+# not on the ball, so they are not part of the aura.
+# The object is ev6220as00 (effect/event/ev60/ev6220as00/), built by research/scripts/atomic_spin_ball_fx.py from
+# ev60022000.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest long-shot aura's row (like = "ega0085d"); the distance clock (anchor = "kick",
+# drift 0.75 m a frame) reveals the streaks from the kick point. Flight: content\techniques\atomic_spin_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "atomic_spin"
+from = "ega0085d"
+object = "effect/event/ev60/ev6220as00/ev6220as00.objbin"
+
+[[shot_aura]]
+name = "atomic_spin"
+when = { techniques = ["whs02200"] }
+aura = "atomic_spin"
+like = "ega0085d"
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Atomic Spin (whs02200, cut-in ev60_02200).
+#
+# Measured: the event ball of ev60_02200 c0400 is struck at 286 and flies down at the camera, passing it at 302
+# (research/scripts/atomic_spin_ball_fx.py FRAME = 299, the last frame its swirl is drawn).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.50 m the whole way. unblockable = false: the game's block rules (this mod changes no
+# block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Atomic Spin (whs02200).
+[[edit]]
+target = "whs02200"
+trajectory = { points = [[0.0, 1.50]], straight = true, unblockable = false }

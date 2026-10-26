@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Pingüino múltiple (Clone Penguin, whs01450, event ev60_01450).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.10 m the whole way (the penguins and their streaks reach about 1 m under the ball at x0.7, swaying: they
+# never touch the grass). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the
+# ball centre over the pitch (m); the height is held.
+
+# Pingüino múltiple (whs01450).
+[[edit]]
+target = "whs01450"
+trajectory = { points = [[0.0, 2.10]], straight = true, unblockable = false }

@@ -1,0 +1,24 @@
+# «Triangle Z» («Triángulo Z», whs00260, fire shot, cut-in ev60_00260): the end of the cut-in's final shot (c0800, held
+# at frame 478) on the ball: the ball inside its spiky fire burst, and the fire ribbon the cut-in draws behind it, laid
+# straight behind the ball along the flight at the cut-in's own shape and length (narrow at the burst, widening
+# behind it), standing upright with a flat crossed copy so it reads from the touchline and from behind, its sides soft,
+# coming out of the kick point as the ball moves away (on the distance clock, never stretched) and fading out at its
+# far end. x1 (the cut-in's ball is at match scale).
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60002600 by
+# research/scripts/triangle_z_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\triangle_z_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "triangle_z"
+from = "ega0075c"
+object = "effect/event/ev60/ev6026tz00/ev6026tz00.objbin"
+
+[[shot_aura]]
+name = "triangle_z"
+when = { techniques = ["whs00260"] }
+aura = "triangle_z"
+like = "ega0075c"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

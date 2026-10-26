@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Liebre blanca (Rabbit Run, whs02940, cut-in ev60_02940): one straight level line
+# from the kick point to the goal, the ball centre at 1.0 m the whole way (as the beam flies in the cut-in, near the
+# ground). Heights are the ball centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Liebre blanca (whs02940).
+[[edit]]
+target = "whs02940"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

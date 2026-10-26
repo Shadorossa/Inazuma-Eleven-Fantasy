@@ -1,0 +1,25 @@
+# «Cabezazo fiero» (Hot Head, whs02820; fire shot, cut-in ev60_02820): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last shot (c0600, the header flying at the goal): the flames and lights on
+# the ball, the fire beam behind it coming out of the kick point (never stretched, its tail fading) and the fire rings
+# the ball gives off, one every 18 frames, each born on the ball, centred on the flight and facing along it, growing
+# and fading where it was sent out, instead of the plain fire special-shot aura (ega0075c).
+# The object is ev6282hh00 (effect/event/ev60/ev6282hh00/), built by research/scripts/hot_head_ball_fx.py from the
+# cut-in's effect object ev60028200: c0600 looped over 387-417 from the aura's first frame (the automatic aura's look,
+# kept as it was), ball at the origin flying +Z, x1, with the cut-in's two fire rings replayed. Left out: the kick
+# ring left at the header, the scenery and smoke.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\hot_head_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "hot_head"
+from = "ega0075c"
+object = "effect/event/ev60/ev6282hh00/ev6282hh00.objbin"
+
+[[shot_aura]]
+name = "hot_head"
+when = { techniques = ["whs02820"] }
+aura = "hot_head"
+like = "ega0075c"

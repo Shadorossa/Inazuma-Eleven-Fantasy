@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Hoja diamantina (Diamond Cutter, whs03140), cut-in ev60_03140.
+#
+# In the cut-in's last shot (c0600) the comet flies in mid-air with no pitch in view
+# (research/scripts/diamond_cutter_ball_fx.py). Flight: straight and level at 1.5 m into the goal. unblockable = false:
+# the game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points
+# count from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal at
+# that height.
+
+# Hoja diamantina (whs03140).
+[[edit]]
+target = "whs03140"
+trajectory = { points = [[0.0, 1.5]], straight = true, unblockable = false }

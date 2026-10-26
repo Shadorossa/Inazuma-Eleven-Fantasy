@@ -1189,11 +1189,13 @@ summary = "the side's own shoot zone is running"
 commands = ["CMD_PASS_01"]
 move_actions = [0]
 
-# The AI move override of the mods' scripts (VRFW.ai.move, docs/framework/ai-move.md): the action ids whose target an
-# override replaces (executor table .data 0x1E6AC00: 0 = move to the target, 15 = press the target) and the dash type
-# whose engine status is its sprint (TeamDashStart's status table: 1 = dash, 2 = dash attack).
+# The AI move override of the mods' scripts (VRFW.ai.move, docs/framework/ai-move.md): a player with an order gets his
+# target in the executor output (whatever action the game chose), run as chase_action when he chases a player (15 =
+# the game's press: he keeps running into the target) or move_action when he goes to a point (0 = move to the target),
+# and the dash type whose engine status is his sprint (TeamDashStart's status table: 1 = dash, 2 = dash attack).
 [ai_move]
-actions = [0, 15]
+chase_action = 15
+move_action = 0
 sprint_dash_type = 1
 
 [[condition]]

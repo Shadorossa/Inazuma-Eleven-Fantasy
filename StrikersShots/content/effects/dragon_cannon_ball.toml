@@ -1,0 +1,27 @@
+# «Cañón dragón» (Dragon Cannon, whs00580; fire shot, cut-in ev60_00580): while the ball flies to the goal it keeps
+# the look of the cut-in's last shot (c0500, the ball flying at the camera): the white-hot core wrapped in its fire
+# vortex, the flame swirls throbbing as in the cut-in, all facing the camera (billboards) and centred on the ball, so it
+# looks the same from the touchline as from the front; and the fire rings the ball sends out, one every 10 frames,
+# each born on the ball, centred on the flight and facing along it, growing and dissolving where it was sent out; and
+# the red dragon chasing it, its head just behind the ball, its body (~10 m, its own proportions, cut-in shading)
+# straight back along the flight, gently undulating, coming out of the kick point; instead of the plain fire special-shot aura (ega0075c).
+# The object is ev6058dc00 (effect/event/ev60/ev6058dc00/), built by research/scripts/dragon_cannon_ball_fx.py from the
+# cut-in's effect object ev60005800: c0500, the vortex's throb looped over 222-258 from the aura's first frame, ball at
+# the origin flying +Z, x1, the cut-in's three fire rings replayed with the first ring's growth. Left out: the burst
+# ring at the release and the earlier cuts' kick, jump, backdrops and fire lines.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\dragon_cannon_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dragon_cannon"
+from = "ega0075c"
+object = "effect/event/ev60/ev6058dc00/ev6058dc00.objbin"
+
+[[shot_aura]]
+name = "dragon_cannon"
+when = { techniques = ["whs00580"] }
+aura = "dragon_cannon"
+like = "ega0075c"
