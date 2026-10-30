@@ -1,0 +1,26 @@
+# «Grand Fire» («Fuego total», whs01230; fire long shot, 3 players, cut-in ev60_01230): the cut-in's last shot (c0300)
+# as the ball's aura: the fire comet round the ball (x0.25) and the wave of fire it pushes ahead of it at the cut-in's
+# own size against the ball (flames 4-8 m tall, 30 m wide), the scorched trail burnt into the pitch out of the kick
+# point (its narrow groove laid from the kick point, and its wide burnt mark laid on the pitch where the wave passes,
+# fixed there and fading far behind the ball; textures never stretched; drawn under the fire) and the flames and smoke
+# behind the ball, every part behind the ball coming out of the kick point as the ball moves away, the far end fading;
+# nothing under the grass.
+# Built by research/scripts/grand_fire_ball_fx.py from the cut-in's effect object ev60012300 (object ev6123gf00).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire long-shot aura's row (like = "ega0085c"). Flight:
+# content\techniques\grand_fire_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "grand_fire"
+from = "ega0085c"
+object = "effect/event/ev60/ev6123gf00/ev6123gf00.objbin"
+
+[[shot_aura]]
+name = "grand_fire"
+when = { techniques = ["whs01230"] }
+aura = "grand_fire"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75

@@ -12,14 +12,14 @@
 -- No engine call at load time: the lists are read in OnInit.
 
 local OG = {
-  TITLE = 3617010308,       -- CMND_VRFW_BLOCKED_TITLE () -> items, silenced functions, hidden layers, OnFunction ids
-  LOG = 3661580131,         -- CMND_EVT_LOG
-  LAYER_NUM = 1175615627,   -- CMND_GET_CREATE_LAYER_NUM (as SetupItemButtonNum asks it)
+  TITLE = VRFW_Cmd.VRFW_BLOCKED_TITLE,       -- CMND_VRFW_BLOCKED_TITLE () -> items, silenced functions, hidden layers, OnFunction ids
+  LOG = VRFW_Cmd.EVT_LOG,         -- CMND_EVT_LOG
+  LAYER_NUM = VRFW_Cmd.GET_CREATE_LAYER_NUM,   -- CMND_GET_CREATE_LAYER_NUM (as SetupItemButtonNum asks it)
   UPPER = 2250456639,       -- title00_07_item_button_upper
   MENU = 3874253475,        -- title_menu_2
   INPUT = 1558704558,       -- menu input on / off
-  VISIBLE = 711242136,      -- CMND_SET_LAYER_VISIBLE
-  SOUND = 1917805374,       -- play a system sound
+  VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,      -- CMND_SET_LAYER_VISIBLE
+  SOUND = VRFW_Cmd.SND_PLAY_SE,       -- play a system sound
   BUZZER = 2086672038,      -- sy0003 (the retail «not available» buzzer)
   ID = "vr_framework.online_guard",
 }

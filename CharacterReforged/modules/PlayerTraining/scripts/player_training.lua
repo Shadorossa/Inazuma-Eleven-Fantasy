@@ -1,5 +1,5 @@
 -- Player Training › classic training (Chrono Stone rules): each player spreads his Libertad points over his base stats
--- (docs/game/mechanics/training-classic.md, stat-training.md). Moved from Inazuma Fantasy's scripts\training.lua on
+-- (docs/game/mechanics/training-classic.md). Moved from Inazuma Fantasy's scripts\training.lua on
 -- 2026-10-14 (same rules, answers and saved data). The commands are content\game\player_training.toml; the old names
 -- CMND_EVT_TRAIN_* are aliases (the training window evt_training_menu and the skill table's training mode call them):
 --
@@ -32,9 +32,8 @@ local S = require "lib/training_store"
 
 PlayerTraining = PlayerTraining or {}
 
-local function info(...) VRFW.log("training:", ...) end
-local function warn(...) VRFW.warn("training:", ...) end
-local function err(...) VRFW.error("training:", ...) end
+require "VRFW/lib/basics"
+local info, warn, err = VRFW.logger("training")
 
 local ERR_BAD_ARGS, ERR_NOT_READY, ERR_NO_DATA, ERR_WRITE, ERR_LOCKED = -1, -2, -6, -8, -9
 local N = R.N
@@ -49,17 +48,8 @@ local STORE -- { slot, file }
 
 -- ---------------------------------------------------------------------------------------------- helpers
 
-local function num(v)
-  if type(v) == "number" then return v end
-  if type(v) == "string" then return tonumber(v) end
-  return nil
-end
-
-local function int(v)
-  v = num(v)
-  if not v or v ~= v then return nil end
-  return v >= 0 and math.floor(v) or math.ceil(v)
-end
+local function num(v) return VRFW.value.num(v, nil) end
+local function int(v) return VRFW.value.int(v, nil) end
 
 local function hdl_arg(v) return CS.u32(num(v) or 0) end
 
@@ -69,7 +59,8 @@ local function idx_arg(v)
   return nil
 end
 
-local function hex(v) return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536) end
+local Id = require "VRFW/lib/ids"
+local hex = Id.hex
 
 local function list(d)
   local t = {}

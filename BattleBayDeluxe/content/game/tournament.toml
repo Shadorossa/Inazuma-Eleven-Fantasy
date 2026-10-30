@@ -74,7 +74,8 @@ needs = ["session"]
 # bb_tournament_campaign.json), the next tournament match written into the block (index 0)
 name = "CMND_BBD_TOURN_PREPARE"
 handler = "BattleBayDeluxe.TournPrepare"
-needs = ["session"]
+# 1.59.0: a league home match reads the player team's enjoy row (its own stadium)
+needs = ["session", "enjoy", "EnjoyTable", "EnjoyRow"]
 
 [[VRFW.Command]]
 # -> true: the match request failed: the Campaña's block fields back at once
@@ -88,3 +89,32 @@ needs = ["session"]
 name = "CMND_BBD_TOURN_STILL_IN"
 handler = "BattleBayDeluxe.TournStillIn"
 needs = ["session"]
+
+[[VRFW.Command]]
+# 1.49.0: «Equipos: Personalizado», the teams picked by hand: op (0 begin, 1 toggle, 2 keep, 3 cancel, 4 count), fmt,
+# team, player -> table { teams, n, max, ok, on, why } (scripts\tournament.lua BattleBayDeluxe.TournPick)
+name = "CMND_BBD_TOURN_PICK"
+handler = "BattleBayDeluxe.TournPick"
+needs = ["session"]
+
+# 1.61.0 (owner 2026-10-29): the League hub's «Plantilla» opens the game's team dock for the league team
+# (scripts\league_squad.lua, graft bb_tournament BBT_HubTeamEditor over the VR-Framework's VRFW_TeamEditor); the order
+# left there is written over the team in memory before every league match: its member rows (the Draft's MemberRow
+# layout, draft.toml) and its record's formation (team_config col 4 at +0x18 in memory, docs/framework/random-team.md).
+# 1.67.0: the dock shows the team's own kit (+0x1C, team_config col 5) and emblem (+0x20, col 6) too.
+[[VRFW.Struct]]
+name = "LeagueTeamRecord"
+size = 0x30
+fields = { formation = { at = 0x18, type = "u32" }, kit = { at = 0x1C, type = "u32" }, emblem = { at = 0x20, type = "u32" } }
+
+[[VRFW.Command]]
+# -> table { ok, why, kind ("copy" / "own" / "draft"), team, formation, level, emblem, members = { { slot, param } … } }
+name = "CMND_BBD_LEAGUE_SQUAD"
+handler = "BattleBayDeluxe.LeagueSquad"
+needs = ["session", "FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "LeagueTeamRecord"]
+
+[[VRFW.Command]]
+# formation, "position:param,…" (dock positions 0-18 of the team's players) -> table { ok, why, changed }
+name = "CMND_BBD_LEAGUE_SQUAD_SET"
+handler = "BattleBayDeluxe.LeagueSquadSet"
+needs = ["session", "FindTeamConfig", "RosterRowsCode", "RosterParamCode", "RosterSlotCode", "TeamRecord", "TeamConfig", "MemberRow", "LeagueTeamRecord"]

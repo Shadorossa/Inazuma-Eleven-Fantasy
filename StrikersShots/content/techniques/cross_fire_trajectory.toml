@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Fuego cruzado (Cross Fire; whs00950 fire, whs03400 wind, the same cut-in)
+# (docs/framework/types/technique.md `trajectory`): one level line at 1.6 m from the kick point into the goal point
+# (owner 2026-10-24: horizontal, never rising or falling; never the game's own curved / arched path), whatever the
+# shot's length. The coils' lowest edge stays ~0.5 m over the pitch.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m): points from the kick, goal_points counted back from the goal point; the first / last height is held.
+# Inazuma Fantasy's whs00950_or / whs03400_or are not edited here (its own moves, loaded after this mod); the aura
+# (content\effects\cross_fire_ball.toml) covers them.
+
+# Fuego cruzado (whs00950, fire).
+[[edit]]
+target = "whs00950"
+trajectory = { points = [[0.0, 1.6]], goal_points = [[0.0, 1.6]], unblockable = false }
+
+# Fuego cruzado (whs03400, wind).
+[[edit]]
+target = "whs03400"
+trajectory = { points = [[0.0, 1.6]], goal_points = [[0.0, 1.6]], unblockable = false }

@@ -1,0 +1,13 @@
+# Schema of the sprite redirect: sprites a game atlas is asked for are taken from an atlas of the declaring mod.
+# Unknown keys, wrong types or out-of-range values leave the declaration out with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.sprite_redirect/1"
+folder = "content/sprite_redirects"
+
+[entry.SpriteRedirect]
+doc = "every request of one of `sprites` in the game atlas `atlas` is served from `own_atlas` (an atlas the mod builds with its image declarations); the game atlas gets no entry"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+atlas = { type = "string", required = true, doc = "the game atlas the game's code names: #/menu/…/x.g4tx" }
+own_atlas = { type = "string", required = true, doc = "the mod's own atlas holding the sprites: #/menu/…/y.g4tx" }
+sprites = { type = "strings", required = true, doc = "sprite names (the game asks by their crc32)" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

@@ -332,6 +332,12 @@ order = 54
   description_text = 0xB23752C9
   in_ie1 = 0
 
+  [character.new_model]
+  id = 0x5DAB3F92  # crc32("InazumaFantasy.byron_love_idol_model")
+  from = "c01001900"
+  [character.new_model.cells]
+  head_mesh_path = "_face/01_IE1/c90000146/c90000146.g4md"  # his IE3 icon look (content/models/characters/c90000146.toml)
+
   [character.text.ja]
   description = "[芸術的/げいじゅつてき]なプレイで[敵/てき]をも[魅了/みりょう]する。\nその[姿/すがた]は[神/かみ]のように[美/うつく]しい。"
 

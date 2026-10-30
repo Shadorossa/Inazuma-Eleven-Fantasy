@@ -1,0 +1,8 @@
+schema = "VRFW.passive_slots/1"
+# BetterQoL › modes without player passives: while a mode some mod lists as [[off_mode]] (passive_config declarations)
+# is the current mode, BetterQoL.passives_off is 1 (content/game/passive_config.toml) and the framework sets its key
+# vrfw.passive.all_off, the one test the other mods read.
+
+[[VRFW.NoPassives]]
+name = "off_modes"
+state = "BetterQoL.passives_off"

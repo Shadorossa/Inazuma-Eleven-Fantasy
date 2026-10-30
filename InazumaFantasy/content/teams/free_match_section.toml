@@ -1,0 +1,30 @@
+schema = "VRFW.team/2"
+# «Inazuma Eleven Fantasy»: Inazuma Fantasy's section of the «Partido libre» / «Competir contra bots» section bar, on
+# page 2 (VR-Framework section pages, docs/framework/team-sections.md). Its icon is the outlined F
+# (content\images\menu\200_icon\16_icon_list_tab\icon_list_tab.toml), its name a menu_text row
+# (text\rows\free_match_section.toml).
+# Teams: the mod's own (content\teams\*.toml). Each is a new game of the section: the generic free match
+# fbtl_free_001's class-9 row against the team, listed from the start: its hidden piece takes the status of the first
+# Chronicle piece (fbtl_cro01_010_010), as the Cross section's piece does. The classes below make rows 7 / 8 from row 9
+# (class AI of each class) and set the levels.
+
+[[VRFW.FreeMatchTab]]
+Id = "fantasy"
+Text = "InazumaFantasy.free_match_section_fantasy"
+Icon = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx:icon_list_tab_series11"
+IconOff = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx:icon_list_tab_series11_off"
+Order = 200
+Page = 2
+Template = "fbtl_free_001"
+Unlock = "fbtl_cro01_010_010"
+Teams = [
+  { Team = "InazumaFantasy.ct_ft_leyenda_viva" },
+  { Team = "InazumaFantasy.ct_ft_llama_eterna" },
+  { Team = "InazumaFantasy.ct_ft_punishment" },
+  { Team = "InazumaFantasy.ct_ft_crossed_japan" },
+]
+VRFW.Difficulties = [
+  { Difficulty = 7, Level = 50 },
+  { Difficulty = 8, Level = 125 },
+  { Difficulty = 9, Level = 200 },
+]

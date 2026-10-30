@@ -1,0 +1,15 @@
+schema = "VRFW.team/2"
+# Chronicle Deluxe: the Chrono Storm of the free match (Chrono Stone tab): the line-up the player fields against Ragnarok
+# in the Chronicle (pltm_cro_ie5_19) with Bai Long and his Mix-Max Zhuge Liang (item 0x1C5FD563) on the bench. Only the
+# free match plays it (content/teams/90_rules/free_match.toml [[VRFW.FreeMatchGame]]).
+default_lang = "en"
+
+[[team]]
+name = "fm_chrono_storm"
+based_on = "pltm_cro_ie5_19"            # Chrono Storm, against Ragnarok
+  [[team.member]]                       # Bai Long, substitute, with his Mix-Max
+  card = 0x07DB0ECC
+  slot = 11
+  moves = [0x1C097E46, 0x3297683F, 0x89D614F5, 0x0E4E083A]
+  levels = [48, 72, 94, 114]
+  mix = 0x1C5FD563

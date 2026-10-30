@@ -1,0 +1,25 @@
+# «Emperatriz oscura» (Shadow Empress, whs10090; fire shot, cut-in ev60_10090): while the ball flies to the goal it
+# wears the cut-in's last shot (c0500, the ball coming down off its 14.9 m perch straight at the camera, held at frame
+# 488 from the aura's first frame): the white-hot core (round from every side) in its dark purple flame cluster, the
+# flames streaming back from the ball like a comet and burning like living fire (each flame shell licking about the
+# flight and stretching along it out of phase, the core flickering, the texture flow 3x faster; seamless), the far end
+# fading, x1.8 (~1.3 m across).
+# Nothing else of the cut-in is alive in that shot.
+# The object is ev61009se0 (effect/event/ev60/ev61009se0/), built by research/scripts/shadow_empress_ball_fx.py from
+# ev60100900 (docs/game/media/shadow-empress-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\shadow_empress_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "shadow_empress"
+from = "ega0075c"
+object = "effect/event/ev60/ev61009se0/ev61009se0.objbin"
+
+[[shot_aura]]
+name = "shadow_empress"
+when = { techniques = ["whs10090"] }
+aura = "shadow_empress"
+like = "ega0075c"

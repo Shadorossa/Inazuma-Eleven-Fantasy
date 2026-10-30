@@ -1,0 +1,19 @@
+# VR-Framework pick cards: the new screen vrfw_pick_cards_menu (src vrfw_pick_cards_menu.lua), a «pick 1 of N» reward
+# screen whose cards a mod's script sets (PickCards.Set, scripts\pick_cards.lua; docs/framework/pick-cards.md).
+# Declared in the framework's menus\pick_cards.toml (layers, objects), built with `menu_assemble.py build --mod
+# vr_framework` and packed by framework_pack.py as assets\lua\screens\vrfw_pick_cards_menu.lua. Opened by
+# VRFW_PickCards.Show (assets\lua\menu\_all\83_pick_cards.lua); nothing opens it until a mod sets cards.
+name = "pick_cards"
+order = 123
+mod = "VRFW"
+requires = []
+conflicts = []
+wraps = []
+description = "Pick cards screen (vrfw_pick_cards_menu)"
+
+[[files]]
+path = "common/script/lua/menu/vrfw_pick_cards_menu.lua.bin"
+
+  [[files.ops]]
+  type = "new_file"
+  src = "vrfw_pick_cards_menu.lua"

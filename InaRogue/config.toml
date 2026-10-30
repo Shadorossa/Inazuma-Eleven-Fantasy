@@ -13,12 +13,16 @@ slot = 4
 # INAROGUE save are cleaned when its menus open. Only records of the INAROGUE save (slot 4) tagged 0x10000000.
 [rogue]
 grant_without_role = true
+# highest tier the Fichaje / rival recruits / Tienda offer, by phase: [from_phase, tier]
+recruit_tiers = [[1, 2], [3, 3], [6, 4], [9, 5]]
 # INAROGUE as an OVERLAY on the player's own slot (docs/game/engine/save-overlay-session.md; Nacho 2026-10-07: «no
 # debería pasarse a la 4ª ranura»): entering INAROGUE never switches the save slot. The player's game stays the loaded
 # slot (kept as a memory image, its file never written meanwhile); INAROGUE's game and data are swapped in from its own
 # storage (slot 4's file + modloader_saves\slot4\inarogue) and every INAROGUE save goes there; leaving restores
 # the player's game from memory. false = the old slot-4 switch (black fade + GAME_RESET), same data.
 session_entry = true
+# Debug: true = CMND_EVT_RL_SESSION_BEGIN accepts the test session (kind 1, the debug checklist); false refuses it.
+session_debug = false
 # Debug (docs/game/modes/inarogue.md §8.10): true = every INAROGUE player card (tier 1-5 of the draw pool, no coach /
 # manager cards) is in the INAROGUE bank as if owned, so the «Plantilla de equipo» offers all of them for a run. Kept in
 # memory only (the bank file never stores them; false = the normal bank again); no unlock counts and the first-run gift
@@ -44,6 +48,115 @@ phase_step = 3
 boss_per_phase = 2
 run_end_per_phase = 2
 abandon_pct = 50
+
+# «Espíritus» (PokeRogue candies, docs/game/mods/inarogue-loop-v2.md «Espíritus»): a player recruited again while he is
+# in the collection gives spirits of that player (per collection card) instead of a duplicate; at a new run they buy
+# starter cost levels. tiers = spirits each level costs (level 1, 2, …): -1 starter cost each, never below `floor`.
+# amounts = spirits a duplicate gives by where it came from (the node kind of a beaten rival, the Tienda, an event).
+[rogue.spirits]
+tiers = [5, 10, 20, 35]
+floor = 1
+
+[rogue.spirits.amounts]
+small = 2
+full = 3
+elite = 5
+boss = 8
+big_boss = 12
+epic = 5
+gate = 6
+shop = 3
+event = 3
+other = 3
+
+# The v2 runs (docs/game/mods/inarogue-loop-v2.md §4.1, §5): a run is `stages` boards, the boss of the last one is the
+# final boss: beating it wins the run; then it may go on in endless mode (`endless`) for personal records. Runs started
+# before v2 keep their old endless board; runs started under the 3-stage layout (1.25.0-1.34.0) keep it until they end
+# ([rogue.run.layout_3]). Coins are the run currency (lost at the run end).
+#   big_boss_every  every n-th phase boss is a «big boss» (+big_boss_levels, coins x big_boss_coin_mult, the boss relic
+#                   weights; the other phase bosses offer the Élite reward); 0 = none
+#   map_curve       [from_stage, columns, width] of the board
+#   map_content     [type, from_stage, weight]: 1 Cofre, 2 Tienda (line), 3 Evento, 4 Fichaje, 5 Gacha (line),
+#                   6 Élite, 7 Tragaperras (line)
+#   content_nodes / content_lines   content nodes / line events per stage (the last value repeats)
+#   rival_levels    [stage, level] keyframes (linear inside a stage); elite / boss / final boss bonus on top
+#   coins_win       coins of a won [5v5, 11v11, Élite, boss, épico, puerta]; + coins_per_stage per stage after the first
+#   recruit_offers  players of the beaten rival offered after a won match (recruit_after: the node kinds that offer)
+#   recruit_cost    shop price of a player of tier 1-5; shop_players / shop_items: offers of a Tienda line
+#   item_weights    relic rarity weights [common, rare, epic, legendary] per source; item_offers: relics to choose from
+#   slot_bet / slot_odds   Tragaperras bet and % [lose, x2, x3, a relic]
+#   rogue_points_won (+ rogue_points_per_ascension per level): Rogue points of a won run
+#   weekly_challenges  challenges the weekly run draws
+[rogue.run]
+stages = 10
+endless = true
+map_curve = [[1, 5, 3], [3, 6, 3], [5, 7, 3], [7, 7, 4], [9, 8, 4], [11, 8, 4], [16, 9, 4], [25, 10, 5]]
+map_content = [[1, 1, 18], [2, 1, 16], [3, 1, 20], [4, 1, 10], [5, 3, 8], [6, 2, 14], [7, 4, 8]]
+content_nodes = [2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5]
+content_lines = [1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3]
+# a smooth climb: the stage 5 big boss is level 50, the stage 10 final boss level 100 (+ Ascension); endless goes on
+# (the levels a match can really take are bounded by content\growth LevelCap and the rival rows' ladders)
+rival_levels = [[1, 6], [2, 13], [3, 20], [4, 27], [5, 35], [6, 43], [7, 51], [8, 60], [9, 69], [10, 78], [11, 87], [20, 130], [50, 250], [100, 999]]
+# a match level above what the game plays now (game_state vrfw.level.max: 99, or a [VRFW.Level] Max with Npc = true
+# such as Character Reforged's 200) is played at that cap and each missing level adds this share to every rival stat
+over_cap_stat_per_level = 0.01
+elite_bonus = 3
+boss_bonus = 4
+final_boss_bonus = 6
+big_boss_every = 5
+big_boss_levels = 3
+big_boss_coin_mult = 2.0
+# endless (after the stage 10 win): the rivals' stats x this, [phase, multiplier] keyframes (linear), on top of
+# their level; never a level past what the engine plays
+endless_scaling = [[10, 1.0], [15, 1.15], [20, 1.35], [30, 1.8], [50, 3.0], [100, 6.0]]
+start_coins = 15
+coins_win = [8, 12, 20, 30, 20, 25]
+coins_per_stage = 2
+recruit_offers = 3
+recruit_after = ["small", "full", "elite", "boss", "epic", "gate"]
+recruit_cost = [15, 25, 40, 60, 90]
+shop_players = 2
+shop_items = 2
+item_price_scale = 1.0
+item_offers = 3
+slot_bet = 10
+slot_odds = [50, 35, 12, 3]
+rogue_points_won = 50
+rogue_points_per_ascension = 10
+weekly_challenges = 2
+# starter budget points added per won run (PokeRogue starter points; [rogue] budget_max caps the total)
+budget_per_win = 2
+
+# run talents (content/rogue/talent_pool.toml): Tienda price per rarity [common, rare, epic], talents offered by a
+# Tienda line and by an Élite reward (its other cards are relics)
+talent_price = [25, 40, 60]
+shop_talents = 1
+elite_talents = 1
+
+# the first v2 layout (3 stages): only runs started under it read it, until they end
+[rogue.run.layout_3]
+stages = 3
+map_curve = [[1, 7, 3], [2, 8, 3], [3, 9, 4], [4, 9, 4], [8, 10, 4], [12, 11, 5]]
+map_content = [[1, 1, 18], [2, 1, 16], [3, 1, 20], [4, 1, 10], [5, 2, 8], [6, 1, 14], [7, 2, 8]]
+content_nodes = [3, 4, 4, 5]
+content_lines = [2, 2, 3, 3]
+rival_levels = [[1, 6], [2, 14], [3, 24], [4, 32], [10, 60], [25, 99]]
+elite_bonus = 3
+boss_bonus = 4
+final_boss_bonus = 6
+big_boss_every = 0
+
+[rogue.run.talent_weights]
+shop = [60, 30, 10]
+elite = [30, 50, 20]
+event = [60, 30, 10]
+
+[rogue.run.item_weights]
+chest = [60, 30, 9, 1]
+elite = [30, 45, 20, 5]
+boss = [0, 20, 50, 30]
+shop = [50, 30, 15, 5]
+event = [55, 30, 12, 3]
 
 # Avatars (tab «Personajes» of the INAROGUE «Tienda»): catalogue content\rogue\avatars.toml (generated by
 # research/scripts/rogue_avatars_build.py: prices and unlock phases by tier there). unlock_all = debug (all owned).
@@ -157,3 +270,16 @@ chance = 0.05
 # board complete. Without both an aura item is used up per player (retail). The retail mode-change auras keep their own
 # rule (§5b: one copy, no Sello). The armour (172) is left out: it is never equipped alone (it comes with its keshin).
 # Never in INAROGUE (as the Sello).
+
+# The game's own match rewards while the INAROGUE save is loaded: false = a match gives none of the retail items (in-match
+# drops and prize rows of every item category: cards, bond items, PP...), content\items\no_retail_drops.toml; true = the
+# game's drops again. A run's rewards are INAROGUE's own (fragments, loot, items).
+[drops]
+retail = false
+
+# The roguelite tiers read each card's Lv99-equivalent stat total: a card whose chara_param holds Lv200 values (layout
+# col 43 = 2) has them divided by the factor of its growth type (col 44: 0 slow, 1 normal, 2 fast).
+[stats]
+lv200_factor_slow = 1.5
+lv200_factor_normal = 1.35
+lv200_factor_fast = 1.25

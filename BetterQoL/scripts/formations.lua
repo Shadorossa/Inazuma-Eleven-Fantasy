@@ -15,9 +15,8 @@ local MAX_EXTRA = 248 -- the menu's own row array holds 256 rows; the game's lis
 local SEP = "\1"
 local TEXT_LANGS = { "ja", "en", "es", "fr", "de", "it", "pt", "zh_hans", "zh_hant" } -- fallback only
 
-local function u32(v)
-  return bit32.band(v or 0, 0xFFFFFFFF)
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 local function cell_text(v)
   if type(v) == "table" then

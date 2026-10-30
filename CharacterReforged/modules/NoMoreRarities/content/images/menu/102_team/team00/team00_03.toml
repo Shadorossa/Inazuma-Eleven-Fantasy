@@ -3,75 +3,118 @@ schema = "VRFW.image/1"
 # position look the mod's Lua draws outside a reserved slot (assets/lua/_all/no_more_rarities_card_look.lua,
 # POSITION_LOOKS); the game's own rarity sprites stay untouched. Derived from the game's own pixels, the
 # same in every language file of the atlas. Do not edit.
+# In the mod's own atlas no_more_rarities_big_cards (never the game's team00_03: content\sprite_redirects\card_look.toml serves
+# them when the game asks it), one texture with every sprite at a fixed place.
+
+[[texture]]
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
+name = "no_more_rarities_big_cards"
+size = [2036, 292]
 
 # icon_chr_base01_l16 (new): goalkeeper card <- the game's icon_chr_base01_l04
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_base01_l16"
+texture = "no_more_rarities_big_cards"
+x = 960
+y = 0
 png = "team00_03/icon_chr_base01_l16.png"
 
 # icon_chr_color01_l16 (new): goalkeeper card <- the game's icon_chr_color01_l04
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_color01_l16"
+texture = "no_more_rarities_big_cards"
+x = 0
+y = 0
 png = "team00_03/icon_chr_color01_l16.png"
 
 # icon_chr_base01_l17 (new): defender card <- the game's icon_chr_base01_l02
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_base01_l17"
+texture = "no_more_rarities_big_cards"
+x = 1176
+y = 0
 png = "team00_03/icon_chr_base01_l17.png"
 
 # icon_chr_color01_l17 (new): defender card <- the game's icon_chr_color01_l02
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_color01_l17"
+texture = "no_more_rarities_big_cards"
+x = 160
+y = 0
 png = "team00_03/icon_chr_color01_l17.png"
 
 # icon_chr_base01_l18 (new): midfielder card <- the game's icon_chr_base01_l01
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_base01_l18"
+texture = "no_more_rarities_big_cards"
+x = 1392
+y = 0
 png = "team00_03/icon_chr_base01_l18.png"
 
 # icon_chr_color01_l18 (new): midfielder card <- the game's icon_chr_color01_l01
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_color01_l18"
+texture = "no_more_rarities_big_cards"
+x = 320
+y = 0
 png = "team00_03/icon_chr_color01_l18.png"
 
 # icon_chr_base01_l19 (new): forward card <- the game's icon_chr_base01_type_l03 (team00_03.g4tx) with the shape of its icon_chr_base01_l01
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_base01_l19"
+texture = "no_more_rarities_big_cards"
+x = 1608
+y = 0
 png = "team00_03/icon_chr_base01_l19.png"
 
 # icon_chr_color01_l19 (new): forward card <- the game's icon_chr_color01_type_l03 (team00_03.g4tx) with the shape of its icon_chr_color01_l01
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_color01_l19"
+texture = "no_more_rarities_big_cards"
+x = 480
+y = 0
 png = "team00_03/icon_chr_color01_l19.png"
 
 # icon_chr_base01_l20 (new): coach card <- the game's icon_chr_base01_l02, shading kept, (196, 202, 212) -> (252, 252, 253)
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_base01_l20"
+texture = "no_more_rarities_big_cards"
+x = 1824
+y = 0
 png = "team00_03/icon_chr_base01_l20.png"
 
 # icon_chr_color01_l20 (new): coach side gradient <- the alpha of the game's icon_chr_color01_l02 in (255, 255, 255)
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_color01_l20"
+texture = "no_more_rarities_big_cards"
+x = 640
+y = 0
 png = "team00_03/icon_chr_color01_l20.png"
 
 # icon_chr_base01_l21 (new): manager card <- the game's icon_chr_base01_l02, shading kept, (214, 64, 146) -> (255, 168, 212)
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_base01_l21"
+texture = "no_more_rarities_big_cards"
+x = 0
+y = 160
 png = "team00_03/icon_chr_base01_l21.png"
 
 # icon_chr_color01_l21 (new): manager side gradient <- the alpha of the game's icon_chr_color01_l02 in (255, 122, 190)
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_big_cards.g4tx"
 name = "icon_chr_color01_l21"
+texture = "no_more_rarities_big_cards"
+x = 800
+y = 0
 png = "team00_03/icon_chr_color01_l21.png"

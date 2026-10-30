@@ -28,13 +28,17 @@ function SetupCommonSkillTelop(a1, a2)
         ret = ret .. string.gsub(evt_sfx, "{n}", tostring(evt_grade + 1))
       end
     end
-    -- Hissatsu Level Up 1.0.4: the save's retail «Nueva posibilidad» (abl_000001, no longer the upgrade book) logged once
-    -- per save slot; the mod asks with -1, the stock is never converted
+    -- Hissatsu Level Up 1.12.0: the save's old upgrade book stock becomes the mod's raise item, once per save slot; the
+    -- mod answers -1 with the two item ids
     do
-      local evt_rok, evt_need = pcall(funcLuaCommand, 3037746156 --[[CMND_HISSATSULEVELUP_RETAIL_STOCK]], -1)
-      if evt_rok and evt_need == true then
-        local evt_nok, evt_num = pcall(funcLuaCommand, 2011560392 --[[CMND_GET_ITEM_NUM]], 39851619 --[[abl_000001]], false)
+      local evt_rok, evt_need, evt_old, evt_new = pcall(funcLuaCommand, 3037746156 --[[CMND_HISSATSULEVELUP_RETAIL_STOCK]], -1)
+      if evt_rok and evt_need == true and type(evt_old) == "number" and type(evt_new) == "number" then
+        local evt_nok, evt_num = pcall(funcLuaCommand, 2011560392 --[[CMND_GET_ITEM_NUM]], evt_old, false)
         if evt_nok and type(evt_num) == "number" then
+          if evt_num > 0 then
+            pcall(funcLuaCommand, 425598937 --[[CMND_DELETE_ITEM]], evt_old, evt_num)
+            pcall(funcLuaCommand, 1897915498 --[[CMND_ADD_ITEM_ONLY]], evt_new, evt_num)
+          end
           pcall(funcLuaCommand, 3037746156 --[[CMND_HISSATSULEVELUP_RETAIL_STOCK]], evt_num)
         end
       end

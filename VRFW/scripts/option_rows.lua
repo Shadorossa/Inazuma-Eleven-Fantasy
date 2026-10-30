@@ -6,8 +6,8 @@ OptionRows = OptionRows or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("option_rows:", ...) end
-local function warn(...) VRFW.warn("option_rows:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("option_rows")
 
 -- settings row record: setting type, value list (text ids), u16 count, shown index and base (value = index + base)
 local ROW_TYPE, ROW_LIST, ROW_COUNT, ROW_INDEX, ROW_BASE = 0x08, 0x10, 0x18, 0x1C, 0x20
@@ -29,10 +29,7 @@ local function wr(ty, at, v)
   return (pcall(VRFW.mem.write, ty, at, v))
 end
 
-local function crc(s)
-  local f = VRFW.crc32 or (VRFW.ui and VRFW.ui.crc32)
-  return f(s) % 4294967296
-end
+local crc = VRFW.crc32
 
 -- declaring mod's option: the new value is chosen
 local function chosen(r)

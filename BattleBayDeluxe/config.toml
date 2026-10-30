@@ -97,9 +97,10 @@ penalty_kicks = 5
 # The rulebook of the player's knockout matches (extra time + penalties; content\rules\bbd_knockout.toml). Another
 # mod's rulebook id may go here.
 knockout_rules = "bbd_knockout"
-# The rulebook of the tournament's FINAL (content\rules\bbd_final.toml: the knockout's rules plus the game's own
-# tournament-final end, the champions' celebration with the trophy lift, then its photo scene). "" = the knockout
-# rulebook above, no celebration.
+# The rulebook of the tournament's FINAL (content\rules\bbd_final.toml: the knockout's rules). "" = the knockout
+# rulebook above. A won final (as a won League, the Campaña's 7th match and a completed Reto diario) ends with the
+# champions' celebration of the game's Victory Road final: the trophy lift, then its photo scene, then the result
+# screen (scripts\lib\trophy_celebration.lua).
 final_rules = "bbd_final"
 # The final is played in one of these stadiums, drawn once per tournament (kept in the save: a reload never changes
 # it) and shown on the tournament screen. Maps of the game's stadium list (soccer_game_option); [] = the Battle Bay's
@@ -128,3 +129,90 @@ exclude_same_kit_as = ["tm_prc_050200"]
 exclude_same_emblem_as = ["tm_cro_original_0700"]
 # these teams themselves
 exclude_teams = []
+
+[league]
+# The «Liga» (1.45.0): Campaña screen > «Liga» in its header. A round robin of every team (each matchday pairs them
+# all: the player plays his match, the others are simulated as the Torneo's); 3 points a win, 1 a draw; ties: goal
+# difference, goals scored, head to head. The team pool, the minor teams filter, the simulation and the exclusions are
+# the [tournament] ones. These keys are only where the options' cursor starts (chosen in the game before each league).
+# An even count from 4 to 36 (the options offer only the counts the Battle Bay pool fills).
+teams = 12
+# «Ida y vuelta»: true = every pair plays twice (home and away), false = once
+double = false
+# Teams on one page of the standings (4 to 18; more teams = more pages, L1 / R1)
+rows_per_page = 12
+# «Sin selecciones nacionales» (where the options' cursor starts): true = no national side in the league
+no_national = false
+# The national sides (declared data: the team data has no such flag): team keys (team_config); every team with one of
+# these keys or the same name (the Battle Bay copies of the Chronicle teams) counts as one
+national_teams = [
+  "tm_cro_ie3_0200",  # Big Waves
+  "tm_cro_ie3_0300",  # Leones del Desierto
+  "tm_cro_ie3_0400",  # Neo Japón
+  "tm_cro_ie3_0500",  # Dragones de Fuego
+  "tm_cro_legend_IE3_05",  # Grifos de Rosa
+  "tm_cro_legend_IE3_06",  # Brocken Brigade
+  "tm_cro_legend_IE3_07",  # Caimanes del Cabo
+  "tm_cro_ie3_0600",  # Knights of Queen
+  "tm_cro_ie3_0800",  # Los Emperadores
+  "tm_cro_ie3_0900",  # Unicorn
+  "tm_cro_ie3_1000",  # Los Rojos
+  "tm_cro_ie3_1100",  # Orfeo
+  "tm_cro_ie3_1500",  # Os Reis
+  "tm_cro_ie3_1800",  # Pequeños Gigantes
+  "tm_cro_legend_IE3_04",  # Ases Internacionales
+  "tm_cro_legend_IE2_06",  # Selección nacional A
+  "tm_cro_legend_IE2_11",  # Selección nacional B
+  "tm_cro_go2_2100",  # Inazuma Japón Legendario
+  "tm_cro_go3_0200",  # Dragones de Fuego
+  "tm_cro_go3_0300",  # Big Waves
+  "tm_cro_go3_0400",  # Cimitarras
+  "tm_cro_go3_0500",  # Muay Tigers
+  "tm_cro_go3_0600",  # Resistencia Japón
+  "tm_cro_go3_0700",  # Storm Wolves
+  "tm_cro_orion_0100",  # Bisonte Rojo
+  "tm_cro_orion_0200",  # Demonios Brillantes
+  "tm_cro_orion_0300",  # Bailarines Eternos
+  "tm_cro_orion_0400",  # Ejército del Fénix Árabe
+  "tm_cro_orion_0500",  # Tropa Acrobática del Fútbol
+  "tm_cro_orion_0600",  # Gigantes Invencibles
+  "tm_cro_legend_ORION_06",  # Unicornios con Estrellas
+  "tm_cro_orion_0700",  # Navy Invader
+  "tm_cro_orion_0900",  # Olé de Samba
+  "tm_cro_orion_1000",  # Guardianes de la Reina
+  "tm_cro_orion_1200",  # Chispas Perfectas
+  "tm_cro_legend_ORION_02",  # Selección Mundial
+  "tm_cro_legend_ORION_08",  # Neo Japón Implacable
+]
+# Club variants («… A» / «… B») are compared on the team names of this language (team_text)
+name_language = "es"
+# Top scorers of the simulated matches: a starter's share of his team's goals = his kick stat x his position's weight
+scorer_weight_forward = 1.0
+scorer_weight_midfielder = 0.45
+
+[net]
+# The «Sala privada» match (scripts/net_match.lua): both PCs play it as the Campaña's match of this soccer game, at this
+# difficulty (0-3: the teammates' AI of both sides), the host's team against the guest's at the guest team's stadium
+game = 0x8F85B173
+difficulty = 1
+
+[daily_challenge]
+# The «Reto diario» (1.75.0; the «Campaña» row's menu): a run of matches that is the same for every player on a given
+# UTC day. Seed = the date (YYYYMMDD) + salt + version through the VR-Framework's seeded generator: change the salt or
+# raise the version to get other runs on the same days (every player needs the same values). docs/game/modes/
+# bb-daily-challenge.md
+salt = "BattleBayDeluxe.DailyChallenge"
+version = 1
+# Matches of a run (1-3): the run is complete when every one is won; a lost match is played again (no limit)
+matches = 3
+# The game's difficulty of each match (1 Principiante, 2 Intermedio, 3 Avanzado, 4 Desafiante; a shorter list repeats
+# its last value). A mod that owns the AI difficulty ([difficulty] owner_states) still sets it.
+difficulty = [2, 2, 3]
+# Days whose result (completed, best run) the save keeps
+keep_days = 60
+
+[daily_challenge.pool]
+# The teams the draw takes (the player's loaned team and the rivals, all different): team table rows of this level
+# whose key matches one of these globs (* = anything), listed by the Battle Bay, one per team name, in key order
+level = 40
+team_keys = ["bbcr_*_bb"]

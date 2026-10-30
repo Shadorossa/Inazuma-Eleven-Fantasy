@@ -121,31 +121,30 @@ local N = {BG = 2, LINE = 120, TILE = 60, UI = 12, TITLE = 8, HELP = 1, CARD = 2
            REWARD = 2, DROP = 4}
 
 local C = {
-  TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
+  TEXT = @crc:CMND_SET_MENU_TEXT_STRING@, MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@, LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,
   SPRITE = 558735651,         -- (layer, textureCrc, spriteCrc, nodeCrc, 0, idx)
-  LOAD_TEX = 839427544,
+  LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@,
   TEX_LOADING = 1506186496,   -- (textureCrc) -> true while still loading
-  SCALE = 3778714801,
-  POS = 1389957207,
-  ATTACH_TRACE = 1774843228,
-  OPEN_LAYER = 629267548,
-  FOCUS_ENABLE = 3518307824, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
+  SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@,
+  POS = @crc:CMND_SET_LAYER_LOCAL_POS@,
+  ATTACH_TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@,
+  OPEN_LAYER = @crc:CMND_OPEN_LAYER@,
+  FOCUS_ENABLE = @crc:CMND_SET_ENABLE_CTRL_FOCUS@, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
   HIT_ZONE = 855005857,        -- (layer, idx, bool): the instance's engine mouse zone
-  HOVER_FOCUS = 2206938151,   -- (layer, idx, bool): CMND_SET_ON_CHANGE_FOCUS_MOUSE
+  HOVER_FOCUS = @crc:CMND_SET_ON_CHANGE_FOCUS_MOUSE@,   -- (layer, idx, bool): CMND_SET_ON_CHANGE_FOCUS_MOUSE
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
-  SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
+  SE = @crc:CMND_SND_PLAY_SE@, MENU_ACTIVE = 1558704558, CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@,
   FADE = 609722083, FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568, P_EXISTS = 2947612279, P_GET = 3522198769,
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
-  TEXT_VISIBLE = 1505208242,
-  TEXT_GET = 4074371074,
-  PRIM_COLOR = 855211291,     -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b)
+  TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@,
+  TEXT_GET = @crc:CMND_TEXT_GET@,
+  PRIM_COLOR = @crc:CMND_SET_PRIM_COLOR@,     -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b)
   ROTATE = 3476640154,        -- (layer, x, y, z radians, idx): retail SetLayerLocalRotate (kizuna_menu)
   ITEM_ICON = 3508889864,     -- (layer, idx, mesh, slot, item): the item's own icon on a quad (as every game list)
-  TEXT_SIZE = 3549540977,     -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node) -> width, height
-  DROP_PREVIEW = 1376251505,  -- CMND_VRFW_DROP_PREVIEW (game, max, difficulty...) -> item ids, the most relevant first
-  DROP_LIST_OF = 1446336384,  -- CMND_VRFW_DROP_LIST_OF (game, difficulty, start, count) -> total, then item, percent
-  LOG = 3661580131,
+  TEXT_SIZE = @crc:CMND_GET_MENU_TEXT_RECT_SIZE@,     -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, idx, node) -> width, height
+  DROP_PREVIEW = @crc:CMND_VRFW_DROP_PREVIEW@,  -- CMND_VRFW_DROP_PREVIEW (game, max, difficulty...) -> item ids, the most relevant first
+  DROP_LIST_OF = @crc:CMND_VRFW_DROP_LIST_OF@,  -- CMND_VRFW_DROP_LIST_OF (game, difficulty, start, count) -> total, then item, percent
+  LOG = @crc:CMND_EVT_LOG@,
 }
 local MESH_QUAD = 312193881     -- the cmn01_10 quad's mesh
 local NODE_QUAD = 1909474081    -- icon_new01 (the cmn01_10 quad's sprite node)
@@ -1310,9 +1309,9 @@ local function Decide()
     return
   end
   Log("match", B.key, tile.id, "game", tile.game, "difficulty", tile.difficulty, "level", tile.level)
-  funcLuaCommand(C.P_CLEAR, KEY_PICK_CHAIN)
+  VRFW_Param.Clear(KEY_PICK_CHAIN)
   if HUB ~= nil then
-    funcLuaCommand(C.P_SET, KEY_PICK_CHAIN, 0, B.i + 1, 1)   -- the opener plays the tile of THIS chain
+    VRFW_Param.Set(KEY_PICK_CHAIN, B.i + 1)   -- the opener plays the tile of THIS chain
   end
   Close(focus)
 end
@@ -1419,8 +1418,8 @@ end
 
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------
 function OnInit()
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_CLEAR, KEY_PICK_CHAIN)
+  VRFW_Param.Clear(KEY_RESULT)
+  VRFW_Param.Clear(KEY_PICK_CHAIN)
   for _, path in ipairs(VRFW_ScreenArt.Atlases(ART_SCREEN)) do
     Atlas(path)                   -- the declared art's atlases, asked now (drawn once in)
   end
@@ -1429,15 +1428,15 @@ function OnInit()
   B = nil
   pay_check = nil
   local i = -1
-  if funcLuaCommand(C.P_EXISTS, KEY_CHAIN) then
-    i = Int(funcLuaCommand(C.P_GET, KEY_CHAIN))
-    funcLuaCommand(C.P_CLEAR, KEY_CHAIN)
+  if VRFW_Param.Has(KEY_CHAIN) then
+    i = Int(VRFW_Param.Get(KEY_CHAIN))
+    VRFW_Param.Clear(KEY_CHAIN)
   end
   HUB, mode, hfocus, htop = nil, "board", 1, 1
   local hub_slot = nil
-  if funcLuaCommand(C.P_EXISTS, KEY_HUB) then
-    hub_slot = Int(funcLuaCommand(C.P_GET, KEY_HUB))
-    funcLuaCommand(C.P_CLEAR, KEY_HUB)
+  if VRFW_Param.Has(KEY_HUB) then
+    hub_slot = Int(VRFW_Param.Get(KEY_HUB))
+    VRFW_Param.Clear(KEY_HUB)
   end
   if VRFW_Chain == nil then
     Log("error", "VRFW_Chain missing (the menu part's lua\\_all\\30_chain.lua did not run in this VM)")

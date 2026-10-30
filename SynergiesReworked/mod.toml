@@ -14,19 +14,19 @@ former_ids = ["synergies_reworked"]
 name = "Synergies Reworked"
 prefix = "SynergiesReworked"
 folder = "SynergiesReworked"
-version = "1.2.0"
+version = "1.36.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Reworks some of the game's team synergies so they ask for players of a team or a group instead of a few named characters. El linaje oscuro: Ray Dark plus two players of Royal Academy, Zeus, Orfeo, Eclipse or Team D. Las gerentes más allegadas and Las gerentes de GO: any three female managers of their series. Los maestros de Alius: one Alius captain plus a player of each of the other two Alius teams. Los guerreros de Santuario: one player of Oscuridad Ancestral plus one of Luz Eterna. Líderes del Protocolo Omega: Alpha, Beta or Gamma plus two players of Protocol Omega 1.0, 2.0 or 3.0. The names, icons and effects stay the game's; the synergy panel shows the nexus, the teams' crests, the manager icon with the required series and who is still missing."
+description = "Reworks some of the game's team synergies so they ask for players of a team or a group instead of a few named characters. El linaje oscuro: Ray Dark plus two players of Royal Academy, Zeus, Orfeo, Eclipse or Team D. Las gerentes más allegadas and Las gerentes de GO: any three female managers of their series. Los maestros de Alius: one Alius captain plus a player of each of the other two Alius teams. Los guerreros de Santuario: one player of Oscuridad Ancestral plus one of Luz Eterna. Líderes del Protocolo Omega: Alpha, Beta or Gamma plus two players of Protocol Omega 1.0, 2.0 or 3.0. Marcados por Orion (renamed): any three players marked by Orion. El alma de los Campeones Raimon: one player of each of the four Raimon teams. Los cuatro magníficos (a new synergy, sold in the synergy shop): Ted Autumn, Alan Sumner, Verne Spring and George Winters together; its icon is the four of them on the flag. Estrellas asiáticas (renamed): any three players of the Asian-stage national teams of IE3, Orion and Galaxy. El emperador y sus vasallos (renamed): Heath Moore plus any player of Academia Plenilunio. Japón en la sombra (a new synergy): one player of Neo Japón plus one of Resistencia Japón; its icon is an eclipsed rising sun (red sun, blue shadow). Los chicos de la Segunda Fase (a new synergy): any three players of Ragnah, Gir, Gar, Zan, Aullido Lunar and Nosfanáticos, plus the young Zanark and Fei Rune; its icon is the double helix of Ragnah's emblem. Los cinco hermanos Blackley and Los cinco hermanos Whitely (new synergies, offensive and defensive): any three of the five brothers; their icons are a black and a white die showing five. The icons stay the game's, except the two of the new synergies; the synergy panel shows the nexus, the teams' crests, the manager icon with the required series and who is still missing."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-22"
+updated = "2026-10-30"
 # vr_framework 2.2.215: the synergy type with nexus, pools as card sets (teams / series / role / gender), `slots` +
 # `skip_nexus_team`, `slot_members` and the panel drawing (nexus icon, crests, minifaces). Works on the base game:
 # Inazuma Fantasy and Character Reforged are not needed (the pools read the game's own characters).
 # vr_framework 2.57.0: an emptied row's face stays off (no player behind a crest); the shop's effects page without the
 # rows' crests and minifaces.
-requires = ["VRFW>=2.57.0"]
+requires = ["VRFW>=2.273.0"]
 conflicts = []
 permissions = []
 

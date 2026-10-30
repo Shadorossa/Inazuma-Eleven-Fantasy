@@ -8,9 +8,9 @@ do
   local CHD_EXPN = {
     CARD_LAYER = 1774749226,
     TEXT = 170976702,
-    CMD_TEXT_VISIBLE = 1505208242,   -- CMND_SET_MENU_TEXT_VISIBLE (layer, text, visible, idx)
+    CMD_TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@,   -- CMND_SET_MENU_TEXT_VISIBLE (layer, text, visible, idx)
     CMD_NODE_VISIBLE = 2158717427,   -- (layer, node, visible, idx)
-    LOG = 3661580131,                -- CMND_EVT_LOG
+    LOG = @crc:CMND_EVT_LOG@,                -- CMND_EVT_LOG
     logged = false,
   }
 

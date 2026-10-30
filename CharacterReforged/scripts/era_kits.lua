@@ -22,18 +22,11 @@ local PARAM, BASE, SERIES, TEAM, UNIFORM = "character/chara_param", "character/c
 
 local STATE = { done = false, kits = {} }
 
-local function u32(v)
-  if type(v) == "boolean" then return v and 1 or 0 end
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return math.floor(v) % 4294967296
-end
-local function hex(v)
-  v = u32(v)
-  return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
-end
-local function info(...) VRFW.log("era kits:", ...) end
-local function warn(...) VRFW.warn("era kits:", ...) end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
+local hex = Id.hex
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("era kits")
 
 -- a number, a "0x…" text or a decimal text -> u32 (nil = not a number)
 local function id_of(v)

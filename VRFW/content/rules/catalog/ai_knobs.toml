@@ -18,6 +18,8 @@ schema = "VRFW.rule_catalog/1"
 #   type      f32 | u32 (globals: the encoding is taken from memory when it holds the retail value)
 #   retail    globals: the game's value (checked before every first write)
 #   min, max  the range a profile value is clamped to
+#   rate_kinds  property: the GetAIRate kinds that read this member (Ai.GetRate 0x1485B30, the per-player rate the
+#             positioning and target code asks); a match role (VRFW.match_role/1) changes the member where they read it
 #   verified  true = offset read in the game's code (the property class registration 0xA1260, command handlers,
 #             readers); false = inferred (docs/game/engine/match-ai.md §3.6)
 #
@@ -57,6 +59,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [5]
 summary = "chance to pass when a pass is possible"
 
 [[knob]]
@@ -67,6 +70,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [10]
 summary = "chance to slide-tackle"
 
 [[knob]]
@@ -120,6 +124,72 @@ verified = true
 summary = "chance to dodge a tackle at the right moment"
 
 [[knob]]
+name = "attention"
+where = "property"
+offset = 0x5C
+type = "f32"
+min = 0.0
+max = 200.0
+verified = true
+rate_kinds = [17]
+summary = "how much teammates prefer him as a target (added to his score in the tactic target choice; retail 0)"
+
+[[knob]]
+name = "sideAttention"
+where = "property"
+offset = 0x60
+type = "f32"
+min = -100.0
+max = 100.0
+verified = true
+rate_kinds = [24]
+summary = "target preference that depends on his side of the pitch (retail 0)"
+
+[[knob]]
+name = "posOffsetRateFW"
+where = "property"
+offset = 0x64
+type = "f32"
+min = -1.0
+max = 1.0
+verified = true
+rate_kinds = [12]
+summary = "depth offset of his spot while he plays in the forward group, in half-pitch lengths (retail 0; «Move up!» writes it)"
+
+[[knob]]
+name = "posOffsetRateMF"
+where = "property"
+offset = 0x68
+type = "f32"
+min = -1.0
+max = 1.0
+verified = true
+rate_kinds = [13]
+summary = "depth offset of his spot while he plays in the midfield group, in half-pitch lengths (retail 0; «Move up!» writes it)"
+
+[[knob]]
+name = "posOffsetRateDF"
+where = "property"
+offset = 0x6C
+type = "f32"
+min = -1.0
+max = 1.0
+verified = true
+rate_kinds = [14]
+summary = "depth offset of his spot while he plays in the defender group, in half-pitch lengths (retail 0)"
+
+[[knob]]
+name = "sideOffsetRate"
+where = "property"
+offset = 0x70
+type = "f32"
+min = -1.0
+max = 1.0
+verified = true
+rate_kinds = [25]
+summary = "side offset of his spot, scaled by a ball-side factor (retail 0)"
+
+[[knob]]
 name = "focusAtkSkillRate"
 where = "property"
 offset = 0x74
@@ -127,6 +197,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [2]
 summary = "attacker uses a move in a duel"
 
 [[knob]]
@@ -137,6 +208,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [3]
 summary = "defender uses a move in a duel"
 
 [[knob]]
@@ -257,6 +329,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [7]
 summary = "passes out of a duel"
 
 [[knob]]
@@ -267,6 +340,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [22, 23]
 summary = "uses the power charge in a duel"
 
 [[knob]]
@@ -287,6 +361,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [4]
 summary = "keeper uses a move against a special shot"
 
 [[knob]]
@@ -317,6 +392,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [26]
 summary = "chains a teammate's shot"
 
 [[knob]]
@@ -327,6 +403,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [1]
 summary = "uses a shot move in the zone"
 
 [[knob]]
@@ -337,6 +414,7 @@ type = "f32"
 min = 0.0
 max = 10.0
 verified = true
+rate_kinds = [20]
 summary = "seconds after the zone starts before it may shoot"
 
 [[knob]]
@@ -347,6 +425,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [6]
 summary = "passes inside the zone"
 
 [[knob]]
@@ -367,6 +446,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [15]
 summary = "uses a special tactic"
 
 [[knob]]
@@ -377,6 +457,7 @@ type = "f32"
 min = 0.0
 max = 1.0
 verified = true
+rate_kinds = [16]
 summary = "uses a super tactic"
 
 [[knob]]
@@ -387,6 +468,7 @@ type = "f32"
 min = 0.0
 max = 300.0
 verified = true
+rate_kinds = [18]
 summary = "tension it keeps after a move (a move that would drop below is skipped)"
 
 [[knob]]
@@ -971,6 +1053,31 @@ min = 0.0
 max = 100000.0
 summary = "pass target value away from rivals"
 
+# ------------------------------------------------------------------------------------------------ positions
+# [[position]]: the field positions a match role (VRFW.match_role/1, `Positions`) names: the card's main position
+# (chara_param main_position, VRFW.chara.card(id).position) the role chooser filters by, and the match's position
+# group byte (the CharaAI role byte, the group Ai.PositionOffset 0x1656060 gets).
+
+[[position]]
+name = "goalkeeper"
+card_position = 1
+group = 0x10
+
+[[position]]
+name = "forward"
+card_position = 2
+group = 0x80
+
+[[position]]
+name = "midfielder"
+card_position = 3
+group = 0x40
+
+[[position]]
+name = "defender"
+card_position = 4
+group = 0x20
+
 # ------------------------------------------------------------------------------------------------ per-team behaviours
 
 [[team]]
@@ -1309,6 +1416,9 @@ name = "SoccerAIProperty_9"
 
 [[class]]
 name = "SoccerAIProperty_Coach"
+# the class the game loads for the user's team in Commander mode (SetCoachAI 0x14AE0F0 on: SetTeamAIProperty with this
+# hash; off: the row's class). A script's profile with a class replaces it (docs/framework/match-ai.md §7)
+commander = true
 
 [[class]]
 name = "SoccerAIProperty_Tutorial"

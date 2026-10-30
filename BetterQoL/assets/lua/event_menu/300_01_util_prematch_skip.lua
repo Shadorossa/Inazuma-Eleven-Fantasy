@@ -13,32 +13,26 @@ UTIL_XS.HOLD_CMD = 3211130387             -- CMND_BETTERQOL_XSKIP_COVER(on) -> 1
 UTIL_XS.JUMP = 3594158133                 -- param crc32("util_xskip_jump"): 1 = the direct jump ended the event (no cover)
 UTIL_XS.JUMP_CMD = 313471770             -- CMND_BETTERQOL_XSKIP_JUMP(on) -> 1 (Utilities content\game\prematch_skip.toml)
 UTIL_XS.BLACK0 = 2073416348                -- param crc32("util_xskip_black0"): 1 = fade layer 0 set black for the kick-off fade in
-UTIL_XS.PARAM_HAS = 2947612279
-UTIL_XS.PARAM_GET = 3522198769
-UTIL_XS.PARAM_DEL = 3363400568
-UTIL_XS.PARAM_SET = 3860611758
 UTIL_XS.LOG = 3661580131                  -- CMND_EVT_LOG (loader log; absent without the Lua bridge: pcall)
 function UTIL_XS.Log(...)
   pcall(funcLuaCommand, UTIL_XS.LOG, "utilities prematch skip:", ...)
 end
 function UTIL_XS.Get(key)
-  local ok, has = pcall(funcLuaCommand, UTIL_XS.PARAM_HAS, key)
-  if ok and has then
-    local ok2, v = pcall(funcLuaCommand, UTIL_XS.PARAM_GET, key)
-    if ok2 and type(v) == "number" then
+  if VRFW_Param.Has(key) then
+    local v = VRFW_Param.Get(key)
+    if type(v) == "number" then
       return v
     end
   end
   return 0
 end
 function UTIL_XS.Set(key, v)
-  pcall(funcLuaCommand, UTIL_XS.PARAM_DEL, key)
-  pcall(funcLuaCommand, UTIL_XS.PARAM_SET, key, 0, v, 1)
+  VRFW_Param.Clear(key)
+  VRFW_Param.Set(key, v)
 end
 function UTIL_XS.Del(key)
-  local ok, has = pcall(funcLuaCommand, UTIL_XS.PARAM_HAS, key)
-  if ok and has then
-    pcall(funcLuaCommand, UTIL_XS.PARAM_DEL, key)
+  if VRFW_Param.Has(key) then
+    VRFW_Param.Clear(key)
   end
 end
 function UTIL_XS.Online()                 -- network match / observer: retail only (same test as the pre-match lineups)
@@ -156,8 +150,8 @@ local UTIL_XS_TEXT_BTN = 950238781        -- _text_btn01
 local UTIL_XS_GLYPH = 1097287577          -- menu_text "<CMD_FUNC4>" (X / its keyboard key, as <CMD_FUNC3> is Y here)
 local UTIL_XS_LABEL = "utilities.prematch_skip"
 local UTIL_XS_LABEL_CRC = 1667839001      -- crc32("utilities.prematch_skip")
-local UTIL_XS_HOLD_CMD = 2866165771       -- CMND_BETTERQOL_XSKIP_HOLD
-local UTIL_XS_INPUT = 4265778440          -- CMND_CHECK_INPUT_CMD
+local UTIL_XS_HOLD_CMD = 2866165771
+local UTIL_XS_INPUT = 4265778440
 local UTIL_XS_KEY = 2293079475              -- CMD_UTIL_XSKIP_HOLD
 local UTIL_XS_CTRLS = {2917185202 --[[EVENT_CTRL_VISUAL]], 3237690481 --[[EVENT_CTRL_TALK]]}
 local UTIL_XS_SHOW_S = 3                  -- s the guide stays after the last input (retail n = 3)
@@ -201,10 +195,10 @@ local function UtilXsBar(r)
 end
 
 local function UtilXsOpen()               -- as the retail OpenButtonGuideUI does it for the Y guide
-  if not funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], UTIL_XS_GUIDE, 0) then
-    funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], UTIL_XS_GUIDE, 0)
-  elseif funcLuaMenuCommand(1914009721 --[[CMND_IS_END_ANIME?]], UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]], 1, 0) then
-    funcLuaMenuCommand(1748788158 --[[CMND_PLAY_ANIME]], UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]])
+  if not funcLuaMenuCommand(2640875187, UTIL_XS_GUIDE, 0) then
+    funcLuaMenuCommand(629267548, UTIL_XS_GUIDE, 0)
+  elseif funcLuaMenuCommand(1914009721, UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]], 1, 0) then
+    funcLuaMenuCommand(1748788158, UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]])
   end
   util_xs.open = true
   util_xs.showT = UTIL_XS_SHOW_S
@@ -213,7 +207,7 @@ end
 local function UtilXsClose()
   if util_xs.open then
     util_xs.open = false
-    pcall(funcLuaMenuCommand, 652384334 --[[CMND_END_ANIME]], UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]])
+    pcall(funcLuaMenuCommand, 652384334, UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]])
   end
 end
 
@@ -222,7 +216,7 @@ local function UtilXsReady()              -- the X guide belongs on screen now
 end
 
 local function UtilXsSkip(src)            -- the retail skip of RunCoroutineSkipButton
-  local ok, r = pcall(funcLuaMenuCommand, 2872569508 --[[CMND_EVENT_SKIP]])
+  local ok, r = pcall(funcLuaMenuCommand, 2872569508)
   if ok and r then
     pcall(funcLuaCommand, 155728325)
   end
@@ -235,11 +229,11 @@ local function UtilXsSkip(src)            -- the retail skip of RunCoroutineSkip
 end
 
 local function UtilXsText()
-  local ok, id = pcall(funcLuaCommand, 3096244543 --[[CMND_VRFW_TEXT_ID]], UTIL_XS_LABEL)
+  local ok, id = pcall(funcLuaCommand, 3096244543, UTIL_XS_LABEL)
   if not (ok and type(id) == "number" and id ~= 0) then
     id = UTIL_XS_LABEL_CRC
   end
-  local s = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], id)
+  local s = funcLuaCommand(4074371074, id)
   return type(s) == "string" and s or ""
 end
 
@@ -387,9 +381,9 @@ end
 local util_xs_prev_setup = OnSetupLayer
 function OnSetupLayer(a1, a2)
   if a1 == UTIL_XS_GUIDE then             -- the retail setup of the Y guide, with the X glyph and the Utilities label
-    local glyph = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], UTIL_XS_GLYPH, 0)
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, UTIL_XS_TEXT_GUIDE, UtilXsText(), a2)
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, UTIL_XS_TEXT_BTN, type(glyph) == "string" and glyph or "<CMD_FUNC4>", a2)
+    local glyph = funcLuaCommand(4074371074, UTIL_XS_GLYPH, 0)
+    funcLuaMenuCommand(1083631230, a1, UTIL_XS_TEXT_GUIDE, UtilXsText(), a2)
+    funcLuaMenuCommand(1083631230, a1, UTIL_XS_TEXT_BTN, type(glyph) == "string" and glyph or "<CMD_FUNC4>", a2)
     funcLuaMenuCommand(541357333, a1, UTIL_XS_BAR, 0, a2)
     funcLuaMenuCommand(1595998683, a1, UTIL_XS_BAR, 0, 0, a2)
     return

@@ -3,12 +3,23 @@
 # change's own centre (icon_sp_area11) recoloured on the Totem tab's frame. The retail sprites are untouched.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/200_icon/aura_reworked_own/aura_reworked_icon_common.g4tx"
+name = "aura_reworked_icon_common"
+size = [292, 96]
+
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/aura_reworked_own/aura_reworked_icon_common.g4tx"
 name = "evt_mode_change_tab_on"
+texture = "aura_reworked_icon_common"
+x = 148
+y = 0
 png = "mode_change_tab/evt_mode_change_tab_on.png"
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/aura_reworked_own/aura_reworked_icon_common.g4tx"
 name = "evt_mode_change_tab_off"
+texture = "aura_reworked_icon_common"
+x = 0
+y = 0
 png = "mode_change_tab/evt_mode_change_tab_off.png"

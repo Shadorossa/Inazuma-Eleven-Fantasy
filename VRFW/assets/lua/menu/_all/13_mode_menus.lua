@@ -5,7 +5,7 @@
 -- VRFW_Host dispatcher for a stem patch that redefines OnInit later); a second report of the same open changes
 -- nothing. No engine call at load time.
 do
-  local MENU = 3259281399         -- crc32("CMND_VRFW_MODE_CURRENT_MENU")
+  local MENU = VRFW_Cmd.VRFW_MODE_CURRENT_MENU         -- crc32("CMND_VRFW_MODE_CURRENT_MENU")
 
   local script = type(EVT_PATCH) == "table" and EVT_PATCH.script or nil
   local stem = type(script) == "string" and (script:gsub("_%d+%.%d+%.%d+[%.%d]*$", "")) or nil

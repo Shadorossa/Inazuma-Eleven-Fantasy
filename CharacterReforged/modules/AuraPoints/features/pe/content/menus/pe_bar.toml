@@ -99,3 +99,8 @@ add_layer = { name = "stamina_points_pe_sprint", object = "stamina_points_pe_spr
     { group = "soccer_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
     { group = "soccer_battle_inplay_menu", flags = [0, 0, 0, 0, 1, 0] },
 ] }
+
+# the mod's own atlas aura_points_hud (the tag, gloss and sprint sprites: content\images\...\stamina_points_bars.toml)
+[[patch]]
+menu = "soccer_inplay_menu"
+res = ["#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"]

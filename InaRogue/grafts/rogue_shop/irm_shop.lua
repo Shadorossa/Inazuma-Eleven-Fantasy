@@ -5,14 +5,13 @@
 do
   local SH = {
     MENU = 2441995583,            -- evt_rogue_shop_menu (research/grafts/rogue_shop/evt_rogue_shop_menu.lua)
-    TEXT = "Tienda",
-    MISSING = "Falta la pantalla de la tienda (evt_rogue_shop_menu). Reinstala Inazuma Fantasy.",
-    POINTS = 622568634,           -- CMND_EVT_RL_POINTS () -> pending, earned, given, spent, itemKey, itemIdGuess, enabled, active
-    GIVEN = 3018215530,           -- CMND_EVT_RL_POINTS_GIVEN (n) -> code, pendingLeft
-    REG_FIND = 2175579023,        -- CMND_VRFW_REG_FIND ("item", key) -> id
-    ITEM_NUM = 2011560392,        -- CMND_GET_ITEM_NUM (item, false)
-    ADD_ITEM = 1897915498,        -- CMND_ADD_ITEM_ONLY (item, n, window)
-    LOG = 3661580131,
+    MISSING = {4193999850 --[[InaRogue.shop.missing]]},   -- the screen evt_rogue_shop_menu is not installed
+    POINTS = @crc:CMND_EVT_RL_POINTS@,           -- CMND_EVT_RL_POINTS () -> pending, earned, given, spent, itemKey, itemIdGuess, enabled, active
+    GIVEN = @crc:CMND_EVT_RL_POINTS_GIVEN@,           -- CMND_EVT_RL_POINTS_GIVEN (n) -> code, pendingLeft
+    REG_FIND = @crc:CMND_VRFW_REG_FIND@,        -- CMND_VRFW_REG_FIND ("item", key) -> id
+    ITEM_NUM = @crc:CMND_GET_ITEM_NUM@,        -- CMND_GET_ITEM_NUM (item, false)
+    ADD_ITEM = @crc:CMND_ADD_ITEM_ONLY@,        -- CMND_ADD_ITEM_ONLY (item, n, window)
+    LOG = @crc:CMND_EVT_LOG@,
   }
   local function cmd(...)
     local r = table.pack(pcall(funcLuaCommand, ...))
@@ -49,7 +48,7 @@ do
 
   EVT_IR_EXTRA = EVT_IR_EXTRA or {}
   EVT_IR_EXTRA.shop = {
-    text = function() return SH.TEXT end,
+    text = function() return T(SHOP_LABEL) end,
     open = function()
       if type(SL) == "table" and not SL.rogue and type(IRM_EnterRogue) == "function" then
         IRM_EnterRogue()          -- like every other entry: outside slot 4 it enters the INAROGUE save first
@@ -57,9 +56,9 @@ do
       end
       EVT_RP_Flush("shop")
       if type(OpenChild) == "function" then
-        OpenChild(SH.MENU, SH.MISSING)
+        OpenChild(SH.MENU, T(SH.MISSING))
       else
-        funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], SH.MENU)
+        funcLuaCommand(@crc:CMND_OPEN_MENU_OBJECT@, SH.MENU)
       end
     end,
   }

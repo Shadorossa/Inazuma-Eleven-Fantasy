@@ -21,20 +21,19 @@
 local BLOB = "skill_partners.json"
 local FILE_VERSION = 2
 local MAX_PARTNERS = 3
-local CACHE_MS = 30000
 local HELD_STALE_MS = 250
-local ACTOR_STRIDE, ACTOR_MAX = 0x570, 0x3A
 local REC_ROLE, ROLE_COACH, ROLE_MANAGER = 0x20, 0x10, 0x20
 
-local function u32(v)
-  return bit32.band(v or 0, 0xFFFFFFFF)
-end
+local Id = require "VRFW/lib/ids"
+local Actors = require "VRFW/lib/actors"
+require "VRFW/lib/save_doc"
+local u32 = Id.u32
 
 local function arg_u32(v)
   if type(v) ~= "number" then
     return 0
   end
-  return u32(v >= 0 and math.floor(v) or math.ceil(v))
+  return u32(v)
 end
 
 local function key(v)
@@ -126,47 +125,36 @@ local function upgrade_free_slot_lists(f)
   end
 end
 
-local function load_file()
-  local text, err = VRFW.save.blob(BLOB)
-  if text == nil then
-    if err then
-      VRFW.error(BLOB .. ": " .. tostring(err) .. " (starting empty)")
+-- the active slot's file: an unreadable one is left as it is (an empty one is used); version 1 is upgraded
+local DOC = VRFW.save.doc(BLOB, {
+  aside = false,
+  pretty = true,
+  log = "combo partners",
+  default = function() return { version = FILE_VERSION, players = {} } end,
+  decode = function(f)
+    f.players = f.players or {}
+    if (f.version or 1) < 2 then
+      upgrade_free_slot_lists(f)
     end
-    return { version = FILE_VERSION, players = {} }
-  end
-  local f, e = VRFW.json.decode(text)
-  if type(f) ~= "table" then
-    VRFW.error(BLOB .. ": " .. tostring(e) .. " (starting empty)")
-    return { version = FILE_VERSION, players = {} }
-  end
-  f.players = f.players or {}
-  if (f.version or 1) < 2 then
-    upgrade_free_slot_lists(f)
-  end
-  f.version = FILE_VERSION
-  return f
-end
+    f.version = FILE_VERSION
+    return f
+  end,
+})
 
-local cache -- { slot, time, file }
-
+-- the file read again (the menus)
 local function load_fresh()
-  local f = load_file()
-  cache = { VRFW.slots.active(), VRFW.now(), f }
-  return f
+  DOC:forget()
+  return (DOC:get())
 end
 
--- the match hook: the cached file (reloaded after CACHE_MS or a slot change)
+-- the match hook: the cached file (read again for another slot or after a slot load)
 local function load_cached()
-  if cache and cache[1] == VRFW.slots.active() and VRFW.now() - cache[2] < CACHE_MS then
-    return cache[3]
-  end
-  return load_fresh()
+  return (DOC:get())
 end
 
 local function write(f, what)
-  local ok, where = VRFW.save.blob_write(BLOB, VRFW.json.encode(f, true))
+  local ok, where = DOC:put(f, nil, true)
   if ok then
-    cache = { VRFW.slots.active(), VRFW.now(), f }
     VRFW.log(what .. " -> " .. tostring(where))
   else
     VRFW.error("write: " .. tostring(where))
@@ -230,24 +218,15 @@ end
 
 -- ---------------------------------------------------------------------------------------------- the match
 
-local function actor_at(i)
-  local base = VRFW.game.soccer_actors()
-  if not base then
-    return nil
-  end
-  local ok, a = pcall(VRFW.mem.struct, "Actor", base + i * ACTOR_STRIDE)
+-- the actor record (struct Actor) at an address of the match's actor table
+local function actor_record(address)
+  local ok, a = pcall(VRFW.mem.struct, "Actor", address)
   return ok and a or nil
 end
 
 local function actor_of_handle(hdl)
-  if hdl == 0 then
-    return nil
-  end
-  local a = actor_at(bit32.band(hdl, 0xFF))
-  if a and a.handle == hdl then
-    return a
-  end
-  return nil
+  local e = Actors.of(hdl)
+  return e and actor_record(e.address) or nil
 end
 
 local function owner_of_actor(a)
@@ -261,15 +240,12 @@ end
 -- on-pitch teammates of `team` (except `exec`): { actor handle, saved owner }
 local function teammates(team, exec)
   local v = {}
-  for i = 0, ACTOR_MAX - 1 do
-    local a = actor_at(i)
-    if not a then
-      break
-    end
-    local hdl = a.handle
-    if hdl ~= 0 and hdl ~= exec and bit32.band(hdl, 0xFF) == i and a.team == team then
-      local ok, on = pcall(VRFW.call, "IsActorOnPitch", VRFW.mem.addr(a), 0)
-      if ok and bit32.band(on or 0, 0xFF) ~= 0 then
+  for _, e in ipairs(Actors.list()) do
+    local hdl = e.handle
+    if hdl ~= exec and bit32.band(hdl, 0xFF) == e.index and e.team == team then
+      local ok, on = pcall(VRFW.call, "IsActorOnPitch", e.address, 0)
+      local a = ok and bit32.band(on or 0, 0xFF) ~= 0 and actor_record(e.address)
+      if a then
         local o = owner_of_actor(a)
         if o then
           v[#v + 1] = { hdl, o }

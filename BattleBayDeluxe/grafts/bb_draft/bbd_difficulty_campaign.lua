@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_draft, the Campaña / Torneo grid without the difficulty window while a mod owns the AI
+-- BattleBayDeluxe bb_draft, the Campaña / Torneo grid without the difficulty window while a mod owns the AI
 -- difficulty (enjoy_team_select_menu_campaign; bbd_difficulty_common.lua). The retail team decide (OnDecideFocus on
 -- the grid) hides the grid and opens the difficulty window; the window's start button decide starts the Campaña, or
 -- (Torneo) lets scripts\campaign.lua's Decide hook draw the run. With an owned difficulty the window does not open:

@@ -32,12 +32,12 @@
 if VRFW_EmblemGrid == nil then
   local EG = {
     C = {
-      CHECK_INPUT = 4265778440, LAYER_VISIBLE = 711242136, OPEN_LAYER = 629267548, LOCAL_POS = 1389957207,
-      LOCAL_SCALE = 3778714801, MESH_VISIBLE = 3405944500, NODE_VISIBLE = 2158717427, TEXT_VISIBLE = 2735666188,
-      SET_TEXT = 1083631230, COLOR = 801406373, EMBLEM = 3190452549, LOADING = 1277042906, SET_PRIO = 1491630496,
-      POINTER = 558229292, POINTER_MOVED = 3272825600, SND = 3073642526,
+      CHECK_INPUT = VRFW_Cmd.CHECK_INPUT_CMD, LAYER_VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE, OPEN_LAYER = VRFW_Cmd.OPEN_LAYER, LOCAL_POS = VRFW_Cmd.SET_LAYER_LOCAL_POS,
+      LOCAL_SCALE = VRFW_Cmd.SET_LAYER_LOCAL_SCALE, MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE, NODE_VISIBLE = 2158717427, TEXT_VISIBLE = 2735666188,
+      SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING, COLOR = 801406373, EMBLEM = 3190452549, LOADING = 1277042906, SET_PRIO = VRFW_Cmd.SET_DRAW_PRIORITY,
+      POINTER = 558229292, POINTER_MOVED = 3272825600, SND = VRFW_Cmd.SND_PLAY,
       SPRITE = 558735651,          -- (layer, texture crc, sprite crc, texture slot crc, 0, instance)
-      LOAD_TEX = 839427544,        -- CMND_LOAD_MENU_RES_TEXTURE (path)
+      LOAD_TEX = VRFW_Cmd.LOAD_MENU_RES_TEXTURE,        -- CMND_LOAD_MENU_RES_TEXTURE (path)
       TEX_LOADING = 1506186496,    -- (texture crc) -> true while still loading
     },
     CTRLS = {1332654303 --[[MENU_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]]},
@@ -109,8 +109,8 @@ if VRFW_EmblemGrid == nil then
             all = {0x1000}, l1 = {0x400}, r1 = {0x800}, l2 = {0x100}, r2 = {0x200}}
   EG.VK = {up = {0x26}, down = {0x28}, left = {0x25}, right = {0x27}, enter = {0x0D}, back = {0x1B, 0x08},
            l1 = {0x21}, r1 = {0x22}, l2 = {0x51}, r2 = {0x45}}
-  EG.C.PAD = 2864033604 --[[CMND_VRFW_INPUT_PAD]]
-  EG.C.KEY = 3182184968 --[[CMND_VRFW_INPUT_KEY]]
+  EG.C.PAD = VRFW_Cmd.VRFW_INPUT_PAD
+  EG.C.KEY = VRFW_Cmd.VRFW_INPUT_KEY
 
   local G = {}
   G.__index = G
@@ -150,11 +150,11 @@ if VRFW_EmblemGrid == nil then
     g.px, g.py, g.cx, g.cy = o.px or 210, o.py or 236, o.cx or 960, o.cy or 540
     g.scale, g.prio, g.log = o.scale or 1, o.prio, o.log or function() end
     g.pad = o.input == "pad"
-    local have = M(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], g.tile)
+    local have = M(VRFW_Cmd.GET_CREATE_LAYER_NUM, g.tile)
     g.per = math.max(1, math.min(g.cols * g.rows, type(have) == "number" and have or 0))
     g.ok = type(have) == "number" and have > 0
     if g.label ~= nil then
-      local hl = M(1175615627, g.label)
+      local hl = M(VRFW_Cmd.GET_CREATE_LAYER_NUM, g.label)
       g.label_ok = type(hl) == "number" and hl >= 2 * g.per
     end
     g.items, g.sel, g.frame = {}, 0, 0

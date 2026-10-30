@@ -41,11 +41,11 @@
       end
       if n == 0 then
         funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
-        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga bonus", tag, "dock", dock, "empty 5v5 team: refused")
+        pcall(funcLuaCommand, 3661580131, "EVT pachanga bonus", tag, "dock", dock, "empty 5v5 team: refused")
         return false
       end
       local okc, ok = pcall(funcLuaCommand, SWAP, dock, 1)
-      pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga bonus", tag, "dock", dock, "5v5 members", n,
+      pcall(funcLuaCommand, 3661580131, "EVT pachanga bonus", tag, "dock", dock, "5v5 members", n,
         "swap", tostring(okc and ok))
       if not (okc and ok) then
         funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
@@ -62,7 +62,7 @@
       if type(wf) == "function" then
         waitFalse = function(...)
           local r = table.pack(wf(...))
-          if swapped and not funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], PARAM_MENU) then
+          if swapped and not funcLuaMenuCommand(2231168902, PARAM_MENU) then
             back()
           end
           return table.unpack(r, 1, r.n)
@@ -81,7 +81,6 @@ do
   local PB = {
     KEY = 3765585767,
     LAYER = 898430957,
-    EXISTS = 2947612279, GET = 3522198769, DEL = 3363400568,
     FRAME = 4234291499,              -- team14_03_formation_frame
     FIELD_MESH = 852487707,
     FIELD5_MESH = 2881929121,     -- evt_bank5_field's field
@@ -99,14 +98,14 @@ do
     HIDE = {[3966159602] = true,     -- soccer11_40_synergy_attachment_button_pillar
             [212184996] = true},     -- soccer11_40_synergy_attachment_button_flag
     REFUSE = {[2722879973] = true, [3966159602] = true, [212184996] = true},   -- + soccer11_12_formation_button
-    on = false, dock = nil, tick = 0, logs = 0,
+    on = false, dock = nil, logs = 0,
   }
   EVT_PB = PB
 
   function PB.log(...)
     if PB.logs < 30 and type(funcLuaCommand) == "function" then
       PB.logs = PB.logs + 1
-      pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga bank", ...)
+      pcall(funcLuaCommand, 3661580131, "EVT pachanga bank", ...)
     end
   end
 
@@ -156,12 +155,55 @@ do
 
   function PB.hide()
     for L in pairs(PB.HIDE) do
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, 0, false)
-      pcall(funcLuaMenuCommand, 3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], L, false)
+      pcall(funcLuaMenuCommand, 711242136, L, 0, false)
+      pcall(funcLuaMenuCommand, 3518307824, L, false)
     end
-    pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], PB.FRAME, PB.FIELD_MESH, false, 0)
-    pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], PB.LAYER, PB.FIELD5_MESH, true, 0)
-    pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA?]], PB.LAYER, 0, 0, 1)
+    pcall(funcLuaMenuCommand, 3405944500, PB.FRAME, PB.FIELD_MESH, false, 0)
+    pcall(funcLuaMenuCommand, 3405944500, PB.LAYER, PB.FIELD5_MESH, true, 0)
+    pcall(funcLuaMenuCommand, 4231609516, PB.LAYER, 0, 0, 1)
+  end
+
+  -- the retail refreshes show the hidden buttons / the 11v11 field again (CMND_UPDATE_SYNERGY_BUTTON and the
+  -- INCLUDE's own layer / mesh / alpha calls): while the bank is on the 5v5 team those calls keep the look of PB.hide
+  function PB.guard()
+    if type(VRFW_Host) ~= "table" or type(VRFW_Host.HookCommand) ~= "function" then
+      return
+    end
+    local menu = {menu = true}
+    VRFW_Host.HookCommand(711242136, function(nxt, id, layer, index, visible, ...)
+      if PB.on and PB.HIDE[layer] and visible then
+        return nxt(id, layer, index, false, ...)
+      end
+      return nxt(id, layer, index, visible, ...)
+    end, "Pachangas.bank_layer_visible", menu)
+    VRFW_Host.HookCommand(3518307824, function(nxt, id, layer, enabled, ...)
+      if PB.on and PB.HIDE[layer] and enabled then
+        return nxt(id, layer, false, ...)
+      end
+      return nxt(id, layer, enabled, ...)
+    end, "Pachangas.bank_layer_focus", menu)
+    VRFW_Host.HookCommand(3405944500, function(nxt, id, layer, mesh, visible, ...)
+      if PB.on and layer == PB.FRAME and mesh == PB.FIELD_MESH then
+        return nxt(id, layer, mesh, false, ...)
+      end
+      if PB.on and layer == PB.LAYER and mesh == PB.FIELD5_MESH then
+        return nxt(id, layer, mesh, true, ...)
+      end
+      return nxt(id, layer, mesh, visible, ...)
+    end, "Pachangas.bank_mesh_visible", menu)
+    VRFW_Host.HookCommand(4231609516, function(nxt, id, layer, index, a3, alpha, ...)
+      if PB.on and layer == PB.LAYER then
+        return nxt(id, layer, index, a3, 1, ...)
+      end
+      return nxt(id, layer, index, a3, alpha, ...)
+    end, "Pachangas.bank_field_alpha", menu)
+    VRFW_Host.HookCommand({1195645349, 3964547760}, function(nxt, id, layer, ...)
+      local r = table.pack(nxt(id, layer, ...))
+      if PB.on and PB.HIDE[layer] then
+        PB.hide()
+      end
+      return table.unpack(r, 1, r.n)
+    end, "Pachangas.bank_synergy_button", menu)
   end
 
   -- first free 5v5 slot of `set` (positions 0..18: 5 starters, 11 bench, 3 support), -1 = full
@@ -193,15 +235,18 @@ do
     return function(...)
       PB.on, PB.dock = false, nil
       pcall(function()
-        if funcLuaCommand(PB.EXISTS, PB.KEY) then
-          PB.dock = funcLuaCommand(PB.GET, PB.KEY)
-          funcLuaCommand(PB.DEL, PB.KEY)
-          PB.on = type(PB.dock) == "number" and funcLuaCommand(3004482920 --[[CMND_GET_PLAY_GAME_MODE?]]) ~= 2
+        if VRFW_Param.Has(PB.KEY) then
+          PB.dock = VRFW_Param.Get(PB.KEY)
+          VRFW_Param.Clear(PB.KEY)
+          PB.on = type(PB.dock) == "number" and funcLuaCommand(3004482920) ~= 2
         end
       end)
+      if PB.on then
+        PB.guard()
+      end
       local r = table.pack(orig(...))
       if PB.on and type(OnInitFormationCommon) == "function" and type(SetFormationLayer) == "function" then
-        local ok, got, fid = pcall(funcLuaCommand, 1033065575 --[[CMND_GET_TEAM_SET_INFO]], PB.dock, 1, 4)
+        local ok, got, fid = pcall(funcLuaCommand, 1033065575, PB.dock, 1, 4)
         local e = select(2, pcall(OnInitFormationCommon, (ok and got) and fid or nil, nil, PB.dock, nil, nil, nil, true))
         SetFormationLayer(PB.LAYER)
         PB.log("5v5 bank of dock", PB.dock, "formation", tostring(fid), tostring(e))
@@ -241,7 +286,7 @@ do
       if PB.on and a1 == PB.FRAME then
         -- before the retail open builds the cards: they must not hang on the 11v11 pitch
         for _, label in ipairs(PB.FRAME_LABELS) do
-          pcall(funcLuaMenuCommand, 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], PB.FRAME, 0, label, false)
+          pcall(funcLuaMenuCommand, 1774843228, PB.FRAME, 0, label, false)
         end
       end
       local r = table.pack(orig(a1, a2, ...))
@@ -250,9 +295,9 @@ do
       end
       if PB.on and a1 == PB.LAYER then
         pcall(function()
-          PB.log("bank5 field open", tostring(funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], PB.LAYER)),
-            "visible", tostring(funcLuaMenuCommand(1262717583 --[[CMND_IS_LAYER_VISIBLE]], PB.LAYER, 0)),
-            "field mesh", tostring(funcLuaMenuCommand(2277921386 --[[CMND_IS_MESH_VISIBLE]], PB.LAYER, PB.FIELD5_MESH, 0)))
+          PB.log("bank5 field open", tostring(funcLuaMenuCommand(2640875187, PB.LAYER)),
+            "visible", tostring(funcLuaMenuCommand(1262717583, PB.LAYER, 0)),
+            "field mesh", tostring(funcLuaMenuCommand(2277921386, PB.LAYER, PB.FIELD5_MESH, 0)))
         end)
       end
       return table.unpack(r, 1, r.n)
@@ -278,7 +323,7 @@ do
       local r = table.pack(orig(a1, a2, ...))
       if PB.on and type(a1) == "number" and type(a2) == "number" then
         pcall(function()
-          local p = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], PB.FRAME, 0, 2160862211)
+          local p = funcLuaMenuCommand(1927054058, PB.FRAME, 0, 2160862211)
           funcLuaMenuCommand(3609943765, PB.FRAME, 0, p, a1 - a2 + 1)
         end)
       end
@@ -290,8 +335,8 @@ do
       local r = table.pack(orig(a1, a2, ...))
       if PB.on then
         pcall(function()
-          local ok, name = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO?]], a1, a2, 6)
-          funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], PB.FRAME, 2193213954 --[[_text_teamname01]],
+          local ok, name = funcLuaCommand(1033065575, a1, a2, 6)
+          funcLuaMenuCommand(1083631230, PB.FRAME, 2193213954 --[[_text_teamname01]],
             ok and name or "", 0)
         end)
       end
@@ -307,10 +352,10 @@ do
     if type(SetCharaBankInputEnabled) == "function" then
       SetCharaBankInputEnabled(false)
     end
-    funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], 2197290544 --[[soccer_parameter_menu]])
+    funcLuaCommand(433545986, 2197290544 --[[soccer_parameter_menu]])
     coroutine.yield()
     waitFalse(function()
-      return funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], 2197290544 --[[soccer_parameter_menu]])
+      return funcLuaMenuCommand(2231168902, 2197290544 --[[soccer_parameter_menu]])
     end)
     coroutine.yield()
     funcLuaMenuCommand(1558704558, 3358148956 --[[chara_bank_menu]], true)
@@ -335,19 +380,6 @@ do
         return select(2, EVT_Bonus5(PB.dock, "bank", orig, ...))
       end
       return orig(...)
-    end
-  end)
-
-  wrapcb("Step", function(orig)
-    return function(...)
-      local r = table.pack(orig(...))
-      if PB.on then
-        PB.tick = PB.tick + 1
-        if PB.tick % 8 == 0 then
-          PB.hide()
-        end
-      end
-      return table.unpack(r, 1, r.n)
     end
   end)
 end

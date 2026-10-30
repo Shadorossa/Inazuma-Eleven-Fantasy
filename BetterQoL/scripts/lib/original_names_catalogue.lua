@@ -10,11 +10,13 @@ local SERIES_TABLE = "character/chara_series"
 local BELONG_TABLE = "character/belong_team"
 local CHARA_TABLE = "character/chara_base"
 
+local Id = require "VRFW/lib/ids"
+
 local function u32(v)
   if type(v) ~= "number" then
     return 0
   end
-  return bit32.band(v, 0xFFFFFFFF)
+  return Id.u32(v)
 end
 M.u32 = u32
 

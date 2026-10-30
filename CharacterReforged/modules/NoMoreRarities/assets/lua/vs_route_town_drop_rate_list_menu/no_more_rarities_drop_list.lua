@@ -27,7 +27,7 @@ if type(rawget(_ENV, "UpdateListItem_DropChara")) == "function" and NoMoreRariti
   local ROW_TEXTURE = 2268931645         -- #/menu/10_win/win05/win05_38/<LG>/win05_38.g4tx
   local BAND_SLOT = 94010567             -- list_drop_chr_rarity01: the band mesh's texture slot
   local SWAP_SPRITE = 558735651          -- (layer, texture, sprite, slot, 0, instance)
-  local SPIRIT_CARD = 1545473289         -- CMND_GET_SPIRIT_CHARA_PARAM_ID (chara, rarity) -> the spirit's card
+  local SPIRIT_CARD = VRFW_Cmd.GET_SPIRIT_CHARA_PARAM_ID         -- (chara, rarity) -> the spirit's card
   -- the row band of each position look (NoMoreRarities.POSITION_LOOKS key); the forward's crc made on first use
   local DROP_BAND_OF_LOOK = {
     goalkeeper = 1978697800,             -- list_drop_chr_rarity04 (gold)

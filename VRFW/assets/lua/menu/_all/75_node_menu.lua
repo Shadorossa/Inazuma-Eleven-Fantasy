@@ -9,7 +9,7 @@
 -- Log: "LUAPRINT … VRFW_NODE_MENU …".
 if VRFW_NodeMenu == nil then
   local N = {
-    OF_PIECE = 1787427826,           -- CMND_VRFW_NODE_MENU_OF_PIECE (pieceId) -> handler, node, key
+    OF_PIECE = VRFW_Cmd.VRFW_NODE_MENU_OF_PIECE,           -- CMND_VRFW_NODE_MENU_OF_PIECE (pieceId) -> handler, node, key
     by_idx = {},                     -- board piece index -> {handler, node, key} or false (cached)
   }
   VRFW_NodeMenu = N

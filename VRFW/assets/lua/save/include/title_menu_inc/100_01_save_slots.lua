@@ -662,7 +662,7 @@ local VRFW_SS_TXT = {
   },
 }
 function VRFW_SS_Text(key)
-  local ok, s = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], VRFW_SS_TXT.ID[key])
+  local ok, s = pcall(funcLuaCommand, 4074371074, VRFW_SS_TXT.ID[key])
   if ok and type(s) == "string" and s ~= "" then
     return s
   end
@@ -689,7 +689,6 @@ local VRFW_SS_G = {
   PRE_RESET = 3015544382,         -- menu command BackToTitleTop runs before closing (meaning unknown)
   OPEN_MENU = 433545986, EXIST_MENU = 2231168902, CLOSE_MENU = 320421347,
   MENU_ACTIVE = 1558704558, FOCUS_ENABLE = 3518307824, ANIME = 3781155141,
-  P_HAS = 2947612279, P_GET = 3522198769, P_CLEAR = 3363400568,
   MSG_OPEN = 2289627655, MSG_BUSY = 898725220, MSG_DONE = 682363669,
   SE = 1917805374,
   OPEN_LAYER = 629267548, CLOSE_LAYER = 1273612389,
@@ -802,7 +801,7 @@ local function VRFW_SS_FadeIn()
   funcLuaCommand(VRFW_SS_G.FADE, 0, 0.3)
   coroutine.yield()
   local k = 0
-  while funcLuaCommand(1215256347 --[[CMND_BRIGHT_IS_FADE]]) and k < VRFW_SS_FADE_FRAMES do
+  while funcLuaCommand(1215256347) and k < VRFW_SS_FADE_FRAMES do
     k = k + 1
     coroutine.yield()
   end
@@ -904,17 +903,17 @@ function VRFW_SS_BeforeGameStart(gamestartLayer)
   local function Reopen()
     funcLuaMenuCommand(VRFW_SS_G.OPEN_LAYER, gamestartLayer)
   end
-  funcLuaCommand(VRFW_SS_G.P_CLEAR, VRFW_SS_KEY_RESULT)
+  VRFW_Param.Clear(VRFW_SS_KEY_RESULT)
   funcLuaCommand(VRFW_SS_G.OPEN_MENU, VRFW_SS_MENU)
   coroutine.yield()
   while funcLuaMenuCommand(VRFW_SS_G.EXIST_MENU, VRFW_SS_MENU) do
     coroutine.yield()
   end
   local r = 0
-  if funcLuaCommand(VRFW_SS_G.P_HAS, VRFW_SS_KEY_RESULT) then
-    r = funcLuaCommand(VRFW_SS_G.P_GET, VRFW_SS_KEY_RESULT) or 0
+  if VRFW_Param.Has(VRFW_SS_KEY_RESULT) then
+    r = VRFW_Param.Get(VRFW_SS_KEY_RESULT) or 0
   end
-  funcLuaCommand(VRFW_SS_G.P_CLEAR, VRFW_SS_KEY_RESULT)
+  VRFW_Param.Clear(VRFW_SS_KEY_RESULT)
   r = math.floor(tonumber(r) or 0)
   -- the menu may have duplicated into / deleted the active slot: the loader then fell back to slot 1 (locked)
   local a2 = VRFW_SS_Call(VRFW_SS_LOADER.GET_SLOT)

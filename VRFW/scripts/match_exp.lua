@@ -9,6 +9,11 @@
 -- One log line per match, and one per player when a rule applies.
 
 MatchExp = MatchExp or {}
+-- The result of the last finished match, published at its result builder before the result screen: MatchResult.last =
+-- { game, difficulty, won, outcome, score_for, score_against, seq } (the user's side; outcome = "win" | "draw" |
+-- "loss", the game's own judge; seq counts the results published this session), then the signal `vrfw.match_result`
+-- (VRFW.on("signal:vrfw.match_result", fn)). A match left before its end has no result builder: nothing is published.
+MatchResult = MatchResult or {}
 
 local D = require "lib/declarations"
 
@@ -21,7 +26,9 @@ local EXP_MAX = 99999999
 -- result block (MatchExpResultBlock): 30 entries of 20 B (+0 match handle, +0xC EXP), the total EXP, the result flags
 local ENTRIES, ENTRY_SIZE, ENTRY_COUNT, ENTRY_EXP = 0xAFC, 0x14, 30, 0xC
 local TOTAL_EXP = 0xDC8
+-- the judge (Match.EndPrizes): +0xDE8 won, +0xDE9 lost, +0xDEA drawn; bit 0 of +0xD74 set = +0xD75 / +0xD76 / +0xD77
 local RESULT_OVERRIDE_FLAGS, RESULT_OVERRIDE_WON, RESULT_WON = 0xD74, 0xD75, 0xDE8
+local RESULT_OVERRIDE_LOST, RESULT_OVERRIDE_DRAWN, RESULT_LOST, RESULT_DRAWN = 0xD76, 0xD77, 0xDE9, 0xDEA
 -- match info (MatchExpInfo)
 local INFO_GAME, INFO_DIFFICULTY, INFO_USER_TEAM, INFO_SCORES, INFO_SCORE_SIDE = 4, 0x15, 0x4C, 0x2C26, 0x2C29
 -- match teams (MatchExpParty): the team array pointer, the team stride, the member slots (16 B: match handle, saved handle)
@@ -41,19 +48,13 @@ local RANKS = nil         -- the match ranks, best first
 local LIVE = false
 local LAST = nil          -- { block, game, written = { [entry address] = exp } } of the last rewrite
 
-local function int(v)
-  if type(v) ~= "number" or v ~= v then return 0 end
-  return v >= 0 and math.floor(v) or math.ceil(v)
-end
+require "VRFW/lib/basics"
+local function int(v) return VRFW.value.int(v, 0) end
 
-local function u32(v)
-  return int(tonumber(v) or 0) % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
 
-local function hex(v)
-  v = u32(v)
-  return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
-end
+local hex = Id.hex
 
 local function rd(ty, addr)
   if not addr or addr < 0x10000 then return nil end
@@ -306,6 +307,30 @@ local function exp_to_rise(need, rate, level, now_exp, levels, stop_level)
   return math.floor(total + 0.5)
 end
 
+-- the finished match's result for every mod (MatchResult.last + signal vrfw.match_result)
+local function publish()
+  local minfo, block = global("MatchExpInfo"), global("MatchExpResultBlock")
+  if not minfo or not block then return end
+  local user = int(rd("u8", minfo + INFO_USER_TEAM) or 255)
+  if user > 1 then return end
+  local side = int(rd("u8", minfo + INFO_SCORE_SIDE) or user)
+  if side > 1 then side = user end
+  local f, a = int(rd("u8", minfo + INFO_SCORES + side) or 0), int(rd("u8", minfo + INFO_SCORES + 1 - side) or 0)
+  local override = int(rd("u8", block + RESULT_OVERRIDE_FLAGS) or 0) % 2 == 1
+  local function flag(own, overridden)
+    return int(rd("u8", block + (override and overridden or own)) or 0) ~= 0
+  end
+  local won = flag(RESULT_WON, RESULT_OVERRIDE_WON)
+  local outcome = won and "win" or (flag(RESULT_DRAWN, RESULT_OVERRIDE_DRAWN) and "draw")
+    or (flag(RESULT_LOST, RESULT_OVERRIDE_LOST) and "loss") or (f > a and "win" or (f < a and "loss" or "draw"))
+  local game = u32(rd("u32", minfo + INFO_GAME))
+  MatchResult.seq = (MatchResult.seq or 0) + 1
+  MatchResult.last = { game = game, difficulty = int(rd("u8", minfo + INFO_DIFFICULTY) or -1), won = won,
+    outcome = outcome, score_for = f, score_against = a, seq = MatchResult.seq }
+  info(string.format("result: game %s, %s %d-%d", hex(game), outcome, f, a))
+  pcall(VRFW.signal, "vrfw.match_result")
+end
+
 local function rewrite()
   local minfo, block, party = global("MatchExpInfo"), global("MatchExpResultBlock"), global("MatchExpParty")
   if not minfo or not block or not party then return end
@@ -394,20 +419,21 @@ local function rewrite()
 end
 
 VRFW.on("hook:" .. HOOK .. ":post", function(ev)
+  local okp, ep = pcall(publish)
+  if not okp then warn("result not published (" .. tostring(ep) .. ")") end
   local ok, e = pcall(rewrite)
   if not ok then warn("rewrite failed (" .. tostring(e) .. "): the game's EXP") end
   return nil
 end)
 
--- the detour only while a rule is declared
+-- the detour always: the match result is published for every mod; the EXP rewrite only where a rule is declared
 local function start()
-  if #load_rules() == 0 then return end
   local ok, done, e = pcall(VRFW.hook.apply, HOOK)
   LIVE = ok and done == true
   if not LIVE then
     warn(string.format("detour %s not installed (%s): the game's match EXP", HOOK, tostring(ok and e or done)))
   else
-    info(string.format("on: %d rule(s)", #RULES))
+    info(string.format("on: %d rule(s), match results published", #load_rules()))
   end
 end
 

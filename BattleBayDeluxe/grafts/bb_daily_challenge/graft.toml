@@ -1,0 +1,35 @@
+# Battle Bay «Reto diario» (docs/game/modes/bb-daily-challenge.md) of the mod Battle Bay Deluxe: the run lives in the
+# mod's scripts (scripts\daily_challenge.lua, commands CMND_BBD_DAILY_*, content\game\daily_challenge.toml, config.toml
+# [daily_challenge]); the matches are the game's own Battle Bay campaign matches on the lent campaign block; texts
+# evt_bbd_dc_* (text\rows\menu_text.toml). Uses bb_tournament's helpers (BBT_Choose, BBT_Call, BBT_HOST,
+# BBT_S.co) appended before it in the same files.
+#   bb_stadium_top_menu             bbdc_top.lua: the «Campaña» row's menu (campaign entry / «Reto diario»; «Reto
+#                                   diario» starts the run's next match at once), the sync at every opening (before
+#                                   the Torneo's)
+#   bb_stadium_campaign_end_window  bbdc_end.lua: «continue» goes back to the top menu during a run
+# Order 349: after bb_tournament (346), bb_net_room (347) and bb_active_team (348): its OnInit sync runs first.
+# Globals only (BBDC*); nothing runs at chunk load.
+name = "bb_daily_challenge"
+mod = "BattleBayDeluxe"
+order = 349
+module = "lua_bridge"
+requires = ["bb_tournament"]
+conflicts = []
+wraps = ["OnInit", "OnDecideFocus", "Step"]
+description = "Battle Bay: the «Campaña» row's menu with the «Reto diario», a seeded run of 3 matches that is the same for everyone each day"
+
+[[files]]
+stem = "bb_stadium_top_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbdc_top.lua"
+  marker = "bb_daily_challenge top"
+
+[[files]]
+stem = "bb_stadium_campaign_end_window"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbdc_end.lua"
+  marker = "bb_daily_challenge end"

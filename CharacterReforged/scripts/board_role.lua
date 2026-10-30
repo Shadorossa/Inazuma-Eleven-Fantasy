@@ -7,7 +7,7 @@
 --   CMND_CHARACTERREFORGED_SET_ROLE(charaStHdl, role)  -> status, roleAfter (status -10 = matches missing: roleAfter =
 --        how many)
 --
--- The role is the badge item on the record (rec8+0x1BC = an inventory handle of abl_000002 coach / abl_000003
+-- The role is the badge item on the record (rec8 CharaData.Badge = an inventory handle of abl_000002 coach / abl_000003
 -- manager). SET_ROLE unequips with the engine's 0xE790D0(&hdl, &badgeHdl) and equips with 0xE73630(&hdl, &itemId), which
 -- takes a free copy of the item. «Sin rol» always ends with no badge (a handle the engine did not release is released
 -- by hand) and without the creation-time staff bits 0x30. The match requirement is Utilities' (`utilities.role_medal.*`
@@ -17,37 +17,27 @@ CharacterReforged = CharacterReforged or {}
 CharacterReforged.BoardRole = CharacterReforged.BoardRole or {}
 local R = CharacterReforged.BoardRole
 
-local function info(...) VRFW.log("board_role:", ...) end
-local function warn(...) VRFW.warn("board_role:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("board_role")
 
 local ST_OK, ST_REFUSED = 1, 0
 local ST_BAD_ARGS, ST_NOT_READY, ST_EXCEPTION, ST_NO_RECORD, ST_NEED_MATCHES = -1, -2, -4, -5, -10
 
 local BADGE_COACH, BADGE_MANAGER = 0x9B6947D9, 0xEC6E774F -- abl_000002 / abl_000003
-local OFF_ATTR, OFF_BADGE, OFF_PLAY_COUNT = 0x20, 0x1BC, 0x1E8
 local ATTR_NATIVE_COACH, ATTR_NATIVE_MANAGER = 0x10, 0x20
-local TWO32 = 4294967296
 
 local ON = false
 local HANDLE_BUFFER, ITEM_BUFFER
+local LAYOUT = nil   -- the profile offsets of the character data and the inventory record (set at the start)
 
 -- ---------------------------------------------------------------------------------------------- helpers
 
-local function u32(v)
-  if type(v) ~= "number" then return 0 end
-  local n = v >= 0 and math.floor(v) or math.ceil(v)
-  return n % TWO32
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
-local function int(v)
-  if type(v) ~= "number" or v ~= v then return nil end
-  return v >= 0 and math.floor(v) or math.ceil(v)
-end
+local function int(v) return VRFW.value.int(v, nil) end
 
-local function hex(v)
-  v = u32(v)
-  return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
-end
+local hex = Id.hex
 
 local function read(kind, addr)
   local ok, v = pcall(VRFW.mem.read, kind, addr)
@@ -61,7 +51,28 @@ end
 
 local band = bit32.band
 
--- the inventory record of a handle (item id +4, stock +0x10, equipped +0x14), nil when unknown
+-- the game profile's offset of a struct field (game\<build>\structs.toml), nil when the running build lacks it
+local function profile_field(name)
+  local ok, v = pcall(VRFW.game.field, name)
+  if ok and type(v) == "number" then return v end
+  return nil
+end
+
+-- the character data's role fields (profile [struct.CharaData]) and the inventory record's item fields
+-- ([struct.InventoryRecord]); nil when the running build's profile lacks one
+local function layout()
+  local l = {
+    handle = profile_field("CharaData.Handle"), attribute = profile_field("CharaData.Attribute"),
+    badge = profile_field("CharaData.Badge"), play_count = profile_field("CharaData.PlayCount"),
+    item = profile_field("InventoryRecord.Item"), equipped = profile_field("InventoryRecord.Equipped"),
+  }
+  for _, name in ipairs({ "handle", "attribute", "badge", "play_count", "item", "equipped" }) do
+    if l[name] == nil then return nil end
+  end
+  return l
+end
+
+-- the inventory record of a handle (InventoryRecord: item id, stock, equipped copies), nil when unknown
 local function inv_record(inv)
   if inv == 0 then return nil end
   local items = VRFW.game.character_reforged_items()
@@ -73,7 +84,7 @@ end
 
 local function item_of(inv)
   local p = inv_record(inv)
-  return p and read("u32", p + 4) or 0
+  return p and read("u32", p + LAYOUT.item) or 0
 end
 
 -- rec8 of a character handle, checked against the handle
@@ -82,7 +93,7 @@ local function record_of(hdl)
   if hdl == 0 or kind >= 0xD then return nil end
   local ok, r = pcall(VRFW.chara.record, hdl)
   if not ok or not r or not r.addr or r.addr < 0x10000 then return nil end
-  if read("u32", r.addr) ~= hdl then return nil end
+  if read("u32", r.addr + LAYOUT.handle) ~= hdl then return nil end
   return r.addr
 end
 
@@ -90,10 +101,10 @@ end
 local function state(hdl)
   local rec8 = record_of(hdl)
   if not rec8 then return nil end
-  local badge = read("u32", rec8 + OFF_BADGE)
+  local badge = read("u32", rec8 + LAYOUT.badge)
   if badge == nil then return nil end
   local item = badge ~= 0 and item_of(badge) or 0
-  return rec8, badge, item, read("u16", rec8 + OFF_PLAY_COUNT) or 0, read("u32", rec8 + OFF_ATTR) or 0
+  return rec8, badge, item, read("u16", rec8 + LAYOUT.play_count) or 0, read("u32", rec8 + LAYOUT.attribute) or 0
 end
 
 local function role_of_item(item)
@@ -154,16 +165,16 @@ local function engine(fn, hdl, value)
   return (pcall(VRFW.call, fn, HANDLE_BUFFER, ITEM_BUFFER))
 end
 
--- the badge release of 0xE790D0 by hand: one equipped copy of the stack back, then +0x1BC = 0
+-- the badge release of 0xE790D0 by hand: one equipped copy of the stack back, then the badge field = 0
 local function release_by_hand(rec8, badge)
   local p = inv_record(badge)
   if p then
-    local item, equipped = read("u32", p + 4), read("u32", p + 0x14)
+    local item, equipped = read("u32", p + LAYOUT.item), read("u32", p + LAYOUT.equipped)
     if (item == BADGE_COACH or item == BADGE_MANAGER) and equipped and equipped > 0 then
-      write("u32", p + 0x14, equipped - 1)
+      write("u32", p + LAYOUT.equipped, equipped - 1)
     end
   end
-  write("u32", rec8 + OFF_BADGE, 0)
+  write("u32", rec8 + LAYOUT.badge, 0)
 end
 
 local function set_role(hdl, role)
@@ -189,7 +200,7 @@ local function set_role(hdl, role)
       local rec8, _, _, _, a = state(hdl)
       if not rec8 then return nil, ST_NO_RECORD end
       local cleared = a - band(a, ATTR_NATIVE_COACH + ATTR_NATIVE_MANAGER)
-      write("u32", rec8 + OFF_ATTR, cleared)
+      write("u32", rec8 + LAYOUT.attribute, cleared)
       info(string.format("SET_ROLE(%s): creation-time staff bits cleared (attribute 0x%X -> 0x%X)", hex(hdl), a, cleared))
     end
     if p.equip then
@@ -231,9 +242,12 @@ end
 
 HANDLE_BUFFER = VRFW.mem.buffer("character_reforged_role_hdl", 8)
 ITEM_BUFFER = VRFW.mem.buffer("character_reforged_role_item", 8)
-ON = VRFW.is_on("CharacterReforged.BadgeEquip") and VRFW.is_on("CharacterReforged.BadgeUnequip")
+LAYOUT = layout()
+ON = VRFW.is_on("CharacterReforged.BadgeEquip") and VRFW.is_on("CharacterReforged.BadgeUnequip") and LAYOUT ~= nil
 if ON then
   info("role commands active (CMND_CHARACTERREFORGED_GET_ROLE / _SET_ROLE)")
+elseif LAYOUT == nil then
+  VRFW.error("board_role: the game profile has no CharaData / InventoryRecord role fields: the role slot cannot change roles")
 else
   VRFW.error("board_role: badge signatures not resolved: the role slot cannot change roles")
 end

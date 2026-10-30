@@ -7,7 +7,7 @@ do
 @COMMON@
   local steps = 0
   local function hideTelop()
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], 949862058 --[[act02_01_telop]], 0, false)
+    pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, 949862058 --[[act02_01_telop]], 0, false)
   end
   for _, name in ipairs({"SetupLog", "PlayStampAnime"}) do
     local orig = _ENV[name]

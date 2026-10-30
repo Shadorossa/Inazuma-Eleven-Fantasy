@@ -1,0 +1,27 @@
+schema = "VRFW.shop/2"
+
+# Synergies Reworked › «Los cinco hermanos Whitely» in the retail synergy shop (0x5B032CEA, the Mercado de fichas that sells
+# the synergies for the cards of their members: here 10 cards of each of the four eldest brothers, rarity 4; the shop
+# shows at most 4 card costs).
+[[edit]]
+target = "0x5B032CEA"
+  [[edit.entry]]
+  item = "five_whitely_brothers"
+  stock = 1
+  costs = [
+    { currency = "eins_whitely_card", count = 10 },
+    { currency = "zwei_whitely_card", count = 10 },
+    { currency = "drei_whitely_card", count = 10 },
+    { currency = "vier_whitely_card", count = 10 },
+  ]
+
+# Inazuma Fantasy's training shop also sells it, at the price of every other synergy there (1 Punto de pasión, stock 1);
+# only while Inazuma Fantasy is active.
+[[edit]]
+target = "inazuma_fantasy_2.training_shop"
+if_mod = "inazuma_fantasy_2"
+  [[edit.entry]]
+  item = "five_whitely_brothers"
+  price = 1
+  currency = "tk_bb000001"
+  stock = 1

@@ -7,8 +7,8 @@
 local D = require "lib/declarations"
 local E = require "lib/game_entries"
 
-local function info(...) VRFW.log("resource_rules:", ...) end
-local function warn(...) VRFW.warn("resource_rules:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("resource_rules")
 
 -- Gauges a [[VRFW.ShotSpend]] may name: gauge -> { key -> patch that turns the key's `false` on }.
 local GAUGES = {

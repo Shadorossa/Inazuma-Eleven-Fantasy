@@ -11,6 +11,7 @@
 
 local U = require "lib/rogue/util"
 local J = require "lib/rogue/json"
+local Rules = require "lib/rogue/run_rules"
 local info, warn, err = U.logger("rogue unlocks")
 
 local X = {}
@@ -46,11 +47,16 @@ local function node_accepts(sel, kind)
   return kind == 3
 end
 
+-- the rule texts: InaRogue.unlock.* rows (text/rows/rogue_screens.toml), in the game's language
+local function T(name, ...)
+  return Rules.text("InaRogue.unlock." .. name, ...)
+end
+
 local function node_word(sel)
-  if sel == "any" then return "un partido" end
-  if sel == "elite" then return "un partido Élite" end
-  if sel == "boss_or_elite" then return "un jefe o un Élite" end
-  return "un jefe de fase"
+  if sel == "any" then return T("node_any") end
+  if sel == "elite" then return T("node_elite") end
+  if sel == "boss_or_elite" then return T("node_boss_or_elite") end
+  return T("node_boss")
 end
 
 -- one condition table -> a rule, or nil + why
@@ -78,46 +84,53 @@ function X.parse_cond(t)
   }
 end
 
--- the Spanish description of a rule (the hint when the card has none)
+-- the description of a rule in the game's language (the hint when the card has none)
 function X.describe(c, coach_name)
   local ty = c.type
   local function ph(s)
-    if c.phase > 1 then return s .. string.format(" (fase %d o más)", c.phase) end
+    if c.phase > 1 then return T("from_phase", s, c.phase) end
     return s
   end
-  if ty == "phase" then return string.format("Llega a la fase %d", c.phase) end
+  if ty == "phase" then return T("phase", c.phase) end
   if ty == "boss_phase" then
-    if c.phase <= 1 then return "Supera a tu primer jefe de fase" end
-    return string.format("Supera al jefe de la fase %d", c.phase)
+    if c.phase <= 1 then return T("first_boss") end
+    return T("boss_phase", c.phase)
   end
   if ty == "beat" then
-    local s = "Gana a " .. c.rival
-    if c.node == "boss" then s = s .. " como jefe de fase" elseif c.node == "elite" then s = s .. " en un Élite"
-    elseif c.node == "boss_or_elite" then s = s .. " como jefe o en un Élite" end
-    return ph(s)
+    local key = "beat"
+    if c.node == "boss" then key = "beat_boss" elseif c.node == "elite" then key = "beat_elite"
+    elseif c.node == "boss_or_elite" then key = "beat_boss_or_elite" end
+    return ph(T(key, c.rival))
   end
   if ty == "with_player" then
-    local who = c.label ~= "" and c.label or string.format("%d jugador(es) concretos", #c.params)
-    return ph(string.format("Gana %s con %s en tu equipo", node_word(c.node), who))
+    local who = c.label ~= "" and c.label or T("chosen_players", #c.params)
+    return ph(T("with_player", node_word(c.node), who))
   end
-  if ty == "wins" then return string.format("Gana %d partidos", c.count) end
-  if ty == "bosses" then return string.format("Supera a %d jefes de fase", c.count) end
-  if ty == "runs" then return string.format("Termina %d partidas", c.count) end
-  if ty == "runs_won" then return string.format("Gana %d partidas", c.count) end
-  if ty == "album" then return string.format("Reúne %d cartas en el álbum", c.count) end
+  if ty == "wins" then return T("wins", c.count) end
+  if ty == "bosses" then return T("bosses", c.count) end
+  if ty == "runs" then return T("runs", c.count) end
+  if ty == "runs_won" then return T("runs_won", c.count) end
+  if ty == "album" then return T("album", c.count) end
   if ty == "rival_with_player" then
-    local who = c.label ~= "" and c.label or string.format("%d jugador(es) invitados", #c.params)
-    return string.format("Gana a %s cuando %s juegue con ellos", c.rival, who)
+    local who = c.label ~= "" and c.label or T("guest_players", #c.params)
+    return T("rival_with_player", c.rival, who)
   end
-  if ty == "beat_era" then return string.format("Gana a %s de la era %s", node_word(c.node), string.upper(c.era)) end
+  if ty == "beat_era" then return T("beat_era", node_word(c.node), string.upper(c.era)) end
   local name = (coach_name and coach_name(c.coach)) or c.coach
   if ty == "coach_runs_won" then
-    if c.count <= 1 then return "Gana una partida con " .. name end
-    return string.format("Gana %d partidas con %s", c.count, name)
+    if c.count <= 1 then return T("coach_run_won", name) end
+    return T("coach_runs_won", c.count, name)
   end
-  if ty == "coach_boss_phase" then return string.format("Supera al jefe de la fase %d con %s", c.phase, name) end
-  if ty == "coach_wins" then return string.format("Gana %d partidos con %s", c.count, name) end
+  if ty == "coach_boss_phase" then return T("coach_boss_phase", c.phase, name) end
+  if ty == "coach_wins" then return T("coach_wins", c.count, name) end
   return ""
+end
+
+-- the rule descriptions joined as «a and b and c» in the game's language
+function X.join(parts)
+  local s = parts[1] or ""
+  for i = 2, #parts do s = T("and", s, parts[i]) end
+  return s
 end
 
 -- ---------------------------------------------------------------------------------------- catalogue
@@ -194,10 +207,10 @@ end
 function X.hint_text(card)
   local h = U.trim(card.hint)
   if h ~= "" then return h end
-  if #card.when == 0 then return "Se desbloquea en INAROGUE" end
+  if #card.when == 0 then return T("in_inarogue") end
   local parts = {}
   for i, w in ipairs(card.when) do parts[i] = X.describe(w) end
-  return table.concat(parts, " y ")
+  return X.join(parts)
 end
 
 -- ---------------------------------------------------------------------------------------- store

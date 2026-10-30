@@ -20,7 +20,7 @@
 -- No engine call at load time.
 if VRFW_Host ~= nil then
   local ROWS = 284009563   -- vsroute01_16_sub_list
-  local CLEAR_GET = 4034518619   -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
+  local CLEAR_GET = VRFW_Cmd.GET_CHRONICLE_CLEAR_STATUS   -- (slot, difficulty)
   local FOCUS_GET = 2603265800   -- (layer) -> the focused row index (0-based)
 
   local LABEL = {
@@ -36,13 +36,13 @@ if VRFW_Host ~= nil then
     HIDE_NODES = {1849899120 --[[_pos_class01]], 44923504 --[[_pos_lv01]], 3597743423 --[[_pos_team_lv01]],
       2442161064 --[[_pos_list_left01]]},
     C = {
-      OPEN = 629267548, VISIBLE = 711242136, SCALE = 3778714801, POS = 1389957207, GET_POS = 2834507455,
-      MESH_VISIBLE = 3405944500, TEXT = 1083631230, LAYER_NUM = 1175615627,
-      DRAW_PRIORITY = 1491630496,   -- CMND_SET_DRAW_PRIORITY (layer, instance, priority, children)
+      OPEN = VRFW_Cmd.OPEN_LAYER, VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE, SCALE = VRFW_Cmd.SET_LAYER_LOCAL_SCALE, POS = VRFW_Cmd.SET_LAYER_LOCAL_POS, GET_POS = VRFW_Cmd.GET_LAYER_LOCAL_POS,
+      MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE, TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING, LAYER_NUM = VRFW_Cmd.GET_CREATE_LAYER_NUM,
+      DRAW_PRIORITY = VRFW_Cmd.SET_DRAW_PRIORITY,   -- CMND_SET_DRAW_PRIORITY (layer, instance, priority, children)
       NODE_SCALE = 2885415772,      -- (layer, instance, node, width, height): the text node's box
       NODE_POS = 2575768773,        -- (layer, instance, node, axis 0 x / 1 y, value)
       NODE_VISIBLE = 2158717427,    -- (layer, node, bool, instance)
-      TEXT_VISIBLE = 1505208242,    -- (layer, text node, bool, instance)
+      TEXT_VISIBLE = VRFW_Cmd.SET_MENU_TEXT_VISIBLE,    -- (layer, text node, bool, instance)
     },
     -- screen px (1920 x 1080, y down) of the battle-kind list of a normal piece as placed: the first row's centre
     -- line, the rows' spacing (vsroute01_15c `_atc_listNN`, 70 px apart), half a row's height, the gap between two

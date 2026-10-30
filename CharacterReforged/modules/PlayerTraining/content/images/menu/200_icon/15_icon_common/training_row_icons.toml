@@ -5,6 +5,11 @@
 # player_training_mode (PlayerTraining.TrainingMode.DarkIcon) swaps the copy in wherever the retail icon goes (MENU_DEF.GetStatusParamIconName).
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
+name = "player_training_icon_common"
+size = [584, 80]
+
 [[recipe]]
 name = "trn_icon_parameter01"
 game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
@@ -12,8 +17,11 @@ sprite = "icon_parameter01"
 ops = [{ op = "fill", rgb = [20, 48, 96] }]
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
 name = "evt_trn_icon_parameter01"
+texture = "player_training_icon_common"
+x = 0
+y = 0
 recipe = "trn_icon_parameter01"
 
 [[recipe]]
@@ -23,8 +31,11 @@ sprite = "icon_parameter02"
 ops = [{ op = "fill", rgb = [20, 48, 96] }]
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
 name = "evt_trn_icon_parameter02"
+texture = "player_training_icon_common"
+x = 84
+y = 0
 recipe = "trn_icon_parameter02"
 
 [[recipe]]
@@ -34,8 +45,11 @@ sprite = "icon_parameter03"
 ops = [{ op = "fill", rgb = [20, 48, 96] }]
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
 name = "evt_trn_icon_parameter03"
+texture = "player_training_icon_common"
+x = 168
+y = 0
 recipe = "trn_icon_parameter03"
 
 [[recipe]]
@@ -45,8 +59,11 @@ sprite = "icon_parameter04"
 ops = [{ op = "fill", rgb = [20, 48, 96] }]
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
 name = "evt_trn_icon_parameter04"
+texture = "player_training_icon_common"
+x = 252
+y = 0
 recipe = "trn_icon_parameter04"
 
 [[recipe]]
@@ -56,8 +73,11 @@ sprite = "icon_parameter05"
 ops = [{ op = "fill", rgb = [20, 48, 96] }]
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
 name = "evt_trn_icon_parameter05"
+texture = "player_training_icon_common"
+x = 336
+y = 0
 recipe = "trn_icon_parameter05"
 
 [[recipe]]
@@ -67,8 +87,11 @@ sprite = "icon_parameter06"
 ops = [{ op = "fill", rgb = [20, 48, 96] }]
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
 name = "evt_trn_icon_parameter06"
+texture = "player_training_icon_common"
+x = 420
+y = 0
 recipe = "trn_icon_parameter06"
 
 [[recipe]]
@@ -78,6 +101,9 @@ sprite = "icon_parameter07"
 ops = [{ op = "fill", rgb = [20, 48, 96] }]
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
 name = "evt_trn_icon_parameter07"
+texture = "player_training_icon_common"
+x = 504
+y = 0
 recipe = "trn_icon_parameter07"

@@ -7,25 +7,39 @@
   local RF = {
     SLOT = @crc:CMND_EVT_SLOT_ROGUE@,         -- () -> rogueSlot, active, returnSlot, rogueHasGame
     OWNED = @crc:CMND_EVT_RL_FORM_OWNED@,     -- (formId) -> locked, owned, rarity, ownedCount, total
-    LOG = 3661580131,                   -- CMND_EVT_LOG
-    FORM_INFO = 2649030357,             -- (7, formId) -> ok, nounId (the row's name); (8, formId) -> ok, descId
+    LOG = @crc:CMND_EVT_LOG@,                   -- CMND_EVT_LOG
+    FORM_INFO = @crc:CMND_GET_SOCCER_FORMATION_INFO@,             -- (7, formId) -> ok, nounId (the row's name); (8, formId) -> ok, descId
     LIST = 3873858080,                  -- win05_01_general_sub_list_formation (focus layer of the list)
     ITEM = 1027507646,                  -- win05_02_general_sub_list_item (one instance per visible row)
     LIST_IDX = 1335605971,              -- () -> focused data index
     T_ON = 808187266, T_OFF = 3180095505, -- _text_list_base01_on / _off
     GRAY_BASE = 1409068817,             -- _list_base01_gray (retail grey row base)
     TEXT_GRAY = 2484004035,             -- (layer, inst, textNode, amount 0 normal .. 0.5 grey)
-    MESH = 3405944500,                  -- CMND_SET_MESH_VISIBLE (layer, mesh, visible, inst)
-    TEXT = 1083631230,                  -- CMND_SET_MENU_TEXT_STRING (layer, node, text, inst)
+    MESH = @crc:CMND_SET_MESH_VISIBLE@,                  -- CMND_SET_MESH_VISIBLE (layer, mesh, visible, inst)
+    TEXT = @crc:CMND_SET_MENU_TEXT_STRING@,                  -- CMND_SET_MENU_TEXT_STRING (layer, node, text, inst)
     INFO = 2021684813, INFO_DESC = 3237700098, -- the formation panel and its description text
-    SE = 1917805374, SE_NG = 2086672038,
-    GET_VS = 3713813716,                -- CMND_GET_VS_USE_TEAM_SET
-    GET_SET = 1033065575,               -- CMND_GET_TEAM_SET_INFO (set, team, 4) -> ok, formId
-    SET_SET = 1506470613,               -- CMND_SET_TEAM_SET_INFO (set, team, 3, formId)
+    SE = @crc:CMND_SND_PLAY_SE@, SE_NG = 2086672038,
+    GET_VS = @crc:CMND_GET_VS_USE_TEAM_SET@,                -- CMND_GET_VS_USE_TEAM_SET
+    GET_SET = @crc:CMND_GET_TEAM_SET_INFO@,               -- CMND_GET_TEAM_SET_INFO (set, team, 4) -> ok, formId
+    SET_SET = @crc:CMND_SET_TEAM_SET_INFO@,               -- CMND_SET_TEAM_SET_INFO (set, team, 3, formId)
     DEFAULT = 2484170522,               -- 4-4-2 Diamante (retail, always owned)
-    LOCKED_DESC = "Formación bloqueada (rareza %d de 4).\nSe gana en INAROGUE: partidos, Élite y jefes (las mejores).\nTienes %d de %d formaciones.",
+    LOCKED_DESC = @crc:InaRogue.formation.locked@,   -- text row: rarity, owned, total
+    TEXT_GET = @crc:CMND_TEXT_GET@,              -- CMND_TEXT_GET (text id) -> the text in the game's language
     on = nil, idx = {}, tint = {}, focus = nil, logs = 0,
   }
+
+  -- a text row in the game's language ("" when missing); {1}.. = values
+  function RF.text(id, ...)
+    local ok, s = pcall(funcLuaCommand, RF.TEXT_GET, id)
+    if not ok or type(s) ~= "string" then
+      return ""
+    end
+    local a = table.pack(...)
+    return (s:gsub("{(%d)}", function(k)
+      local v = a[tonumber(k)]
+      return v == nil and "" or tostring(v)
+    end))
+  end
 
   function RF.log(...)
     if RF.logs < 40 then
@@ -132,7 +146,7 @@
         RF.focus = id
         local lk, rar, n, tot = RF.locked(id)
         if lk then
-          local s = string.format(RF.LOCKED_DESC, tonumber(rar) or 0, tonumber(n) or 0, tonumber(tot) or 0)
+          local s = RF.text(RF.LOCKED_DESC, tonumber(rar) or 0, tonumber(n) or 0, tonumber(tot) or 0)
           pcall(funcLuaMenuCommand, RF.TEXT, RF.INFO, RF.INFO_DESC, s, 0)
         end
       end

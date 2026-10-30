@@ -18,10 +18,9 @@
 -- No engine call at load time.
 
 local MT = {
-  LOG = 3661580131,          -- CMND_EVT_LOG
-  SET = 3352504786,          -- CMND_VRFW_MENU_SCENE_SET (state, arg) -> 1 | 0, state
-  STATE = 2588710643,        -- CMND_VRFW_MENU_SCENE_STATE () -> state, key, …
-  PARAM_SET = 3860611758, PARAM_HAS = 2947612279, PARAM_CLEAR = 3363400568,
+  LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
+  SET = VRFW_Cmd.VRFW_MENU_SCENE_SET,          -- CMND_VRFW_MENU_SCENE_SET (state, arg) -> 1 | 0, state
+  STATE = VRFW_Cmd.VRFW_MENU_SCENE_STATE,        -- CMND_VRFW_MENU_SCENE_STATE () -> state, key, …
   GO = 2860602156,           -- param vrfw_menu_scene_go
   OPTIONS = 1432246941,      -- param vrfw_menu_scene_options
   HUD_OFF = 3499142076,      -- param vrfw_menu_scene_hud_off
@@ -31,7 +30,6 @@ local MT = {
   STORY_PICK = 1790329263,   -- param vrfw_menu_scene_story_pick: the submenu opens and picks that entry itself
   STORY_WAIT = 2392182225,   -- param vrfw_menu_scene_story_wait: ms to wait before the submenu opens (with STORY_PICK)
   NEW_GAME = 953037506,      -- the title's next state for a new story
-  PARAM_GET = 3522198769,
   STORY_INFO = 3984017190,   -- () -> ok, story saves, …
   CONTINUE = 3935651977,     -- the title's next state «Continue»
   READ_REQUEST = 3391522747, -- the title menu's request: ok, item
@@ -40,14 +38,14 @@ local MT = {
   BLACK_FADE = 609722083,
   FADE_DONE = 2259183189,
   SAVE_WORKING = 1979970074,
-  CARRY = 2310157611,        -- CMND_VRFW_SLOT_CARRY (1 keep, 0 drop) -> kept, KiB, play s, players, why
-  TB_DIRECT = 2048294502,    -- CMND_VRFW_MENU_TOPBAR_DIRECT () -> true: the reset goes straight into the next state
-  GAME_RESET = 3897105282,   -- CMND_GAME_RESET
+  CARRY = VRFW_Cmd.VRFW_SLOT_CARRY,        -- CMND_VRFW_SLOT_CARRY (1 keep, 0 drop) -> kept, KiB, play s, players, why
+  TB_DIRECT = VRFW_Cmd.VRFW_MENU_TOPBAR_DIRECT,    -- CMND_VRFW_MENU_TOPBAR_DIRECT () -> true: the reset goes straight into the next state
+  GAME_RESET = VRFW_Cmd.GAME_RESET,   -- CMND_GAME_RESET
   NO_PRESS_START = 937976662, -- (true) the next title opens the main menu at once
   CHRONICLE_WAIT = 53570903, -- param vrfw_menu_scene_chronicle_wait (value = ms of the push-in): Modo Crónica straight to the map
   CHRONICLE_ITEM = 130186018, -- the title's «Modo Crónica» item
   PICK_WAIT = 2171674033,    -- param vrfw_menu_scene_pick_wait (ms of the push-in): a menu_pick hotspot pressed its tile
-  PENDING = 3277277325,      -- CMND_VRFW_MENU_SCENE_PENDING (action): waits for the menu after the leave's reset
+  PENDING = VRFW_Cmd.VRFW_MENU_SCENE_PENDING,      -- CMND_VRFW_MENU_SCENE_PENDING (action): waits for the menu after the leave's reset
   LEAVE_WHITE = 2048703318,  -- param vrfw_menu_scene_leave_white: the leave's fade is the white one
   ID = "vr_framework.menu_scene",
   STILL_HERE = 900,          -- frames after the reset: the reset did not take (the retail hand-over runs)
@@ -69,13 +67,13 @@ end
 
 -- a param cleared only when it is set (the retail way)
 local function MT_Clear(k)
-  if MT_Call(MT.PARAM_HAS, k) == true then
-    MT_Call(MT.PARAM_CLEAR, k)
+  if VRFW_Param.Has(k) then
+    VRFW_Param.Clear(k)
   end
 end
 
 local function MT_Has(k)
-  return MT_Call(MT.PARAM_HAS, k) == true
+  return VRFW_Param.Has(k)
 end
 
 -- a menu scene is up under the title (the framework's run state: its one owner)
@@ -127,23 +125,20 @@ if VRFW_Host ~= nil then
       mt_leaving = false           -- a new main menu visit
       mt_white_logged = false
       mt_chronicle_ms = nil
-      local menu = funcLuaMenuCommand
       local reads = 0
-      funcLuaMenuCommand = function(id, ...)
-        if id == MT.READ_REQUEST then
-          -- once a second: asking the state lets the framework release its black cover if the main menu never
-          -- reached «up» over a menu scene (CMND_VRFW_MENU_SCENE_STATE)
-          reads = reads + 1
-          if reads % 60 == 1 then pcall(funcLuaCommand, 2588710643) end
-          if reads == 1 then
-            -- the title reads requests: its menu is fully open (title_menu_2 waits for this before «up»)
-            pcall(funcLuaCommand, MT.PARAM_SET, MT.TITLE_READY, 0, 1, 1)
-          end
+      local function read_request(menu, id, ...)
+        -- once a second: asking the state lets the framework release its black cover if the main menu never
+        -- reached «up» over a menu scene (CMND_VRFW_MENU_SCENE_STATE)
+        reads = reads + 1
+        if reads % 60 == 1 then pcall(funcLuaCommand, VRFW_Cmd.VRFW_MENU_SCENE_STATE) end
+        if reads == 1 then
+          -- the title reads requests: its menu is fully open (title_menu_2 waits for this before «up»)
+          VRFW_Param.Set(MT.TITLE_READY, 1)
         end
-        if id == MT.READ_REQUEST and not MT_Has(MT.GO) and MT_Has(MT.CHRONICLE_WAIT) then
+        if not MT_Has(MT.GO) and MT_Has(MT.CHRONICLE_WAIT) then
           local r = table.pack(menu(id, ...))
           if r[1] == true and r[2] == MT.CHRONICLE_ITEM then
-            mt_chronicle_ms = tonumber(MT_Call(MT.PARAM_GET, MT.CHRONICLE_WAIT)) or 0
+            mt_chronicle_ms = tonumber(VRFW_Param.Get(MT.CHRONICLE_WAIT)) or 0
             MT_Clear(MT.CHRONICLE_WAIT)
             if MT_SceneUp() then
               MT_Call(MT.PENDING, "chronicle_map")
@@ -155,31 +150,26 @@ if VRFW_Host ~= nil then
           end
           return table.unpack(r, 1, r.n)
         end
-        if id == MT.READ_REQUEST and not MT_Has(MT.GO) and MT_Has(MT.PICK_WAIT) then
+        if not MT_Has(MT.GO) and MT_Has(MT.PICK_WAIT) then
           local r = table.pack(menu(id, ...))
           if r[1] == true then
             -- a menu_pick hotspot: the tile's own request, the title ends after the push-in (the next menu picks)
-            mt_chronicle_ms = MT_SceneUp() and (tonumber(MT_Call(MT.PARAM_GET, MT.PICK_WAIT)) or 0) or nil
+            mt_chronicle_ms = MT_SceneUp() and (tonumber(VRFW_Param.Get(MT.PICK_WAIT)) or 0) or nil
             MT_Clear(MT.PICK_WAIT)
             MT_Log("menu pick: tile", tostring(r[2]), "pressed, the title ends after", tostring(mt_chronicle_ms), "ms")
           end
           return table.unpack(r, 1, r.n)
         end
-        if id == MT.READ_REQUEST and MT_Has(MT.GO) then
+        if MT_Has(MT.GO) then
           MT_Clear(MT.GO)
-          MT_Call(MT.PARAM_SET, MT.OPTIONS, 0, 1, 1)
+          VRFW_Param.Set(MT.OPTIONS, 1)
           MT_Call(MT.SET, "options", "the title pressed Options: the save loads, setting_top_menu opens")
           MT_Log("request: Options pressed for the scene")
           return true, MT.ITEM_OPTIONS
         end
         return menu(id, ...)
       end
-      local r = table.pack(pcall(nxt, ...))
-      funcLuaMenuCommand = menu
-      if not r[1] then
-        error(r[2], 0)
-      end
-      return table.unpack(r, 2, r.n)
+      return VRFW_Host.WithCommands({ menu = { [MT.READ_REQUEST] = read_request } }, nxt, ...)
     end,
   })
 
@@ -194,24 +184,19 @@ if VRFW_Host ~= nil then
       if not okst or state ~= "switching" then
         return nxt(...)
       end
-      local cmd = funcLuaCommand
       local made = 0
-      funcLuaCommand = function(id, a1, a2, ...)
-        if id == MT.BLACK_FADE and a1 == 0 and type(a2) == "number" and a2 > 0 then
+      local function instant(cmd, id, a1, a2, ...)
+        if a1 == 0 and type(a2) == "number" and a2 > 0 then
           made = made + 1
           return cmd(id, a1, 0, ...)
         end
         return cmd(id, a1, a2, ...)
       end
-      local r = table.pack(pcall(nxt, ...))
-      funcLuaCommand = cmd
-      if not r[1] then
-        error(r[2], 0)
-      end
+      local r = table.pack(VRFW_Host.WithCommands({ [MT.BLACK_FADE] = instant }, nxt, ...))
       if made > 0 then
         MT_Log("title start over the scene's map: its fade-in made instant (", made, "fade(s)), the cover hides it")
       end
-      return table.unpack(r, 2, r.n)
+      return table.unpack(r, 1, r.n)
     end,
   })
 
@@ -225,9 +210,8 @@ if VRFW_Host ~= nil then
       end
       local opening = MT_Has(MT.OPTIONS)
       local white = not opening and MT_Has(MT.LEAVE_WHITE)
-      local cmd = funcLuaCommand
-      funcLuaCommand = function(id, a1, ...)
-        if white and (id == MT.WHITE_FADE or id == MT.BLACK_FADE) then
+      local function fade(cmd, id, a1, ...)
+        if white then
           if not mt_white_logged then
             mt_white_logged = true
             MT_Log("leave: the action ends in white: the title's fade is the white one (", tostring(a1), ")")
@@ -242,12 +226,7 @@ if VRFW_Host ~= nil then
         end
         return cmd(id, a1, ...)
       end
-      local r = table.pack(pcall(nxt, ...))
-      funcLuaCommand = cmd
-      if not r[1] then
-        error(r[2], 0)
-      end
-      return table.unpack(r, 2, r.n)
+      return VRFW_Host.WithCommands({ [MT.WHITE_FADE] = fade, [MT.BLACK_FADE] = fade }, nxt, ...)
     end,
   })
 
@@ -293,19 +272,19 @@ if VRFW_Host ~= nil then
       if not MT_Has(MT.STORY_GO) then
         if MT_Has(MT.STORY_PICK) and MT_Has(MT.STORY_WAIT) then
           -- a submenu entry picked in the scene: the push-in first, then the game's submenu (it picks the entry)
-          local w = tonumber(MT_Call(MT.PARAM_GET, MT.STORY_WAIT)) or 0
+          local w = tonumber(VRFW_Param.Get(MT.STORY_WAIT)) or 0
           MT_Clear(MT.STORY_WAIT)
           local t = 0
           while t < w / 1000 do
             t = t + (MT_Call(1549797111) or 0.016)
             coroutine.yield()
           end
-          MT_Log("story submenu: entry", tostring(MT_Call(MT.PARAM_GET, MT.STORY_PICK)), "- 1 picked by the scene after", math.floor(w), "ms")
+          MT_Log("story submenu: entry", tostring(VRFW_Param.Get(MT.STORY_PICK)), "- 1 picked by the scene after", math.floor(w), "ms")
         end
         return nxt(...)
       end
-      local wait = tonumber(MT_Call(MT.PARAM_GET, MT.STORY_GO)) or 800
-      local kind = MT_Has(MT.STORY_KIND) and tonumber(MT_Call(MT.PARAM_GET, MT.STORY_KIND)) or 1
+      local wait = tonumber(VRFW_Param.Get(MT.STORY_GO)) or 800
+      local kind = MT_Has(MT.STORY_KIND) and tonumber(VRFW_Param.Get(MT.STORY_KIND)) or 1
       MT_Clear(MT.STORY_GO)
       MT_Clear(MT.STORY_KIND)
       local okc, has, saves = pcall(funcLuaCommand, MT.STORY_INFO)
@@ -327,13 +306,13 @@ if VRFW_Host ~= nil then
         -- story_mode_top_menu «Partida nueva»: the new game's data, its start chapter param
         MT_Call(2583455227)
         MT_Clear(501194956)
-        MT_Call(MT.PARAM_SET, 501194956, 0, 23538565, 1)
+        VRFW_Param.Set(501194956, 23538565)
       end
       -- story_mode_top_menu «Continuar» / «Partida nueva»: not the Historia+ start, the story start step, the board bit
       -- cleared
-      MT_Call(3964465990, 1554597423, false)
+      MT_Call(VRFW_Cmd.SET_TEMP_BIT_FLAG, 1554597423, false)
       MT_Call(1665212515)
-      MT_Call(3964465990, 1255964678, false)
+      MT_Call(VRFW_Cmd.SET_TEMP_BIT_FLAG, 1255964678, false)
       -- the next state is the story (no root menu, no VS menu): the scene's own Options request had set one, and the
       -- leave's straight reset opens what the title wrote
       pcall(funcLuaMenuCommand, 3479138216, 0)

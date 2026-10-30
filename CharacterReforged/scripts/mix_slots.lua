@@ -46,20 +46,13 @@ local BLOB, TABLE, DEFAULTS = "hiper_slots.json", "MixSlot", "MovesetDefault"
 local OPTION = "skill_set_view"
 local REC_PLACED, REC_NATIVE, REC_ROUTE, REC_LIST, LIST_ENTRY = 0x94, 0xC8, 0x1AC, 0x50, 8
 local BOARD_SLOTS, LIST_SLOTS = 9, 6
-local ROUTE_EVERY_MS = 3000
 
-local function u32(v)
-  if type(v) == "boolean" then return v and 1 or 0 end
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return math.floor(v) % 4294967296
-end
-local function hex(v)
-  v = u32(v)
-  return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
-end
-local function info(...) VRFW.log("skill set:", ...) end
-local function warn(...) VRFW.warn("skill set:", ...) end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
+local hex = Id.hex
+require "VRFW/lib/basics"
+require "VRFW/lib/save_doc"
+local info, warn = VRFW.logger("skill set")
 
 local function rd(ty, at)
   if not at or at < 0x10000 then return nil end
@@ -324,41 +317,46 @@ local function key(card) return string.format("%08X", u32(card)) end
 -- CARDS_PER_TICK cards per tick, and writes each table at once at the end (VRFW.native.table_replace), so the match
 -- never reads a half-written table.
 local CARDS_PER_TICK = 150
-local SWEEP = { running = false, dirty = true, next_at = 0 }
+local SWEEP = { running = false, dirty = true }
 local CONTEXT = "FormContext"
 local CONTEXT_LOG = { logged = false, on = nil }
 
+-- the mix store of a slot: { version = 1, migrated, mix = { ["<card hex>"] = mix id } }; an unreadable file is left as it
+-- is (an empty store is used)
+local MIX_DOC = VRFW.save.doc(BLOB, {
+  aside = false,
+  log = "mix slots",
+  default = function() return { version = 1, migrated = false, mix = {} } end,
+  decode = function(v)
+    local st = { version = 1, migrated = v.migrated == true, mix = {} }
+    for k, x in pairs(type(v.mix) == "table" and v.mix or {}) do
+      local id = u32(tonumber(tostring(x), 16) or 0)
+      if id ~= 0 and tonumber(k, 16) then st.mix[string.upper(k)] = id end
+    end
+    return st
+  end,
+  encode = function(st)
+    local mix = {}
+    for k, id in pairs(st.mix) do mix[k] = string.format("%08X", id) end
+    return { version = 1, migrated = st.migrated, mix = mix }
+  end,
+})
+
+-- the active slot's store; another slot than the cached one (a slot load resets it; an overlay session's return
+-- loads no slot) marks the slot change for the next tick
 local function load()
   local s = save_slot()
   if ST.slot == s and ST.st then return ST.st end
-  local st = { version = 1, migrated = false, mix = {} }
-  local ok, data = pcall(VRFW.save.get_blob, s, BLOB)
-  if ok and type(data) == "string" and #data > 0 then
-    local ok2, v = pcall(VRFW.json.decode, data)
-    if ok2 and type(v) == "table" then
-      st.migrated = v.migrated == true
-      for k, x in pairs(type(v.mix) == "table" and v.mix or {}) do
-        local id = u32(tonumber(tostring(x), 16) or 0)
-        if id ~= 0 and tonumber(k, 16) then st.mix[string.upper(k)] = id end
-      end
-    else
-      warn(string.format("slot %d %s not readable: empty mix store used (the file is left as it is)", s, BLOB))
-    end
-  end
-  ST.slot, ST.st = s, st
+  if ST.slot ~= -1 and ST.slot ~= s then ST.changed = true end
+  ST.slot, ST.st = s, (MIX_DOC:load(s))
   SWEEP.dirty = true                                -- the tables follow on the next ticks (never inside a command)
-  return st
+  return ST.st
 end
 
 local function save()
-  local st = ST.st or load()
-  local mix = {}
-  for k, id in pairs(st.mix) do mix[k] = string.format("%08X", id) end
-  local ok, text = pcall(VRFW.json.encode, { version = 1, migrated = st.migrated, mix = mix })
-  if not ok then return false, tostring(text) end
-  local okw, why = pcall(VRFW.save.set_blob, ST.slot, BLOB, text)
-  if not okw then return false, tostring(why) end
-  if why == false then return false, "not written" end
+  local st = load()
+  local ok, why = MIX_DOC:write(st, ST.slot, true)
+  if not ok then return false, tostring(why) end
   return true
 end
 
@@ -367,7 +365,7 @@ function CharacterReforged.MixGet(card)
 end
 -- the stored mix of a card (the projection reads it; the cached state when loaded)
 function CharacterReforged.MixStored(card)
-  local st = ST.st or load()
+  local st = load()
   return st.mix[key(card)] or 0
 end
 
@@ -516,11 +514,10 @@ end
 local function sweep_start(on, report_why)
   local st = load()
   local cards = owned()
-  -- the roster is not readable yet (boot, a save loading): nothing is written, the sweep runs again in ROUTE_EVERY_MS
-  -- with a fresh read
+  -- the roster is not readable yet (boot, a save loading): nothing is written, the sweep stays due for the next menu open
   if #cards == 0 then
     OWNED.list = nil
-    SWEEP.running, SWEEP.dirty = false, false
+    SWEEP.running, SWEEP.dirty = false, true
     SWEEP.report_next = SWEEP.report_next or report_why
     return
   end
@@ -626,9 +623,17 @@ function CharacterReforged.PublishCardRows(card, p)
   CARD_ROWS_AT[card] = now
   local r = record(card)
   if not r then return end
-  local row = context_row({ hdl = card, param = u32(r.param or 0) }, p, board(r.addr), CharacterReforged.SkillSetOnNow())
+  local on = CharacterReforged.SkillSetOnNow()
+  if on then
+    -- the branch rule for the shown card (a branch switch or a new recruit), without a whole-roster scan
+    local route = rd("u32", r.addr + REC_ROUTE)
+    if route ~= nil and route ~= 0 then pcall(VRFW.mem.write, "u32", r.addr + REC_ROUTE, 0) end
+  end
+  local row = context_row({ hdl = card, param = u32(r.param or 0) }, p, board(r.addr), on)
   pcall(VRFW.native.table_set, CONTEXT, card, row)
-  local st = ST.st or load()
+  -- a running sweep may have read this card before the edit: one more sweep follows it
+  if SWEEP.running then SWEEP.dirty = true end
+  local st = load()
   local stored = st.mix[key(card)] or 0
   if stored ~= 0 then
     pcall(VRFW.native.table_set, TABLE, card, stored)
@@ -687,7 +692,7 @@ end
 
 -- one slice of the running sweep -> true when it has finished
 local function sweep_step()
-  local st = ST.st or load()
+  local st = load()
   local cards = SWEEP.cards or {}
   local last = math.min(#cards, SWEEP.next_card + CARDS_PER_TICK - 1)
   for i = SWEEP.next_card, last do
@@ -719,7 +724,8 @@ local function force_branch1()
   return n, #cards
 end
 
-local RT = { on = nil, option_dirty = true, next_route = 0, edge = false }
+-- branch_due: the whole-roster branch rule runs once after an option edge, a save load or a match (not on a timer)
+local RT = { on = nil, option_dirty = true, branch_due = true, edge = false }
 
 -- the option «Tabla de habilidades» read again: at the first step and after each option change (event option_changed)
 local function option_check()
@@ -733,22 +739,21 @@ local function option_check()
   end
   RT.edge = on
   RT.why = "option on"
-  RT.next_route = 0
+  RT.branch_due = true
   SWEEP.dirty, SWEEP.running = true, false
 end
 
 local function tick()
-  local now = VRFW.now()
-  if VRFW.slots.ready() and ST.slot ~= VRFW.slots.active() then
-    ST.slot, ST.st = -1, nil
+  if ST.changed then
+    ST.changed = false
     OWNED.list = nil
-    SWEEP.running = false
-    pcall(load)
+    SWEEP.running, SWEEP.dirty = false, true
+    RT.branch_due = true
   end
   if RT.option_dirty then option_check() end
   local idle = RT.on ~= nil and VRFW.slots.ready() and not (VRFW.in_match and VRFW.in_match())
-  if RT.on and idle and now >= RT.next_route then
-    RT.next_route = now + ROUTE_EVERY_MS
+  if RT.on and idle and RT.branch_due then
+    RT.branch_due = false
     local ok, n, total = pcall(force_branch1)
     if not ok then
       warn("branch rule: " .. tostring(n))
@@ -766,9 +771,9 @@ local function tick()
   if not idle then return end
   if SWEEP.running then
     pcall(sweep_step)
-  elseif SWEEP.dirty or now >= SWEEP.next_at then
-    -- the tables follow the lists and boards (edited in either view) every ROUTE_EVERY_MS
-    SWEEP.next_at = now + ROUTE_EVERY_MS
+  elseif SWEEP.dirty then
+    -- whole-roster sweep only when due (option, save load, slot switch, game reset, match end); a card edited in a menu
+    -- is published at once by PublishCardRows
     local why = SWEEP.report_next
     SWEEP.report_next = nil
     local ok, e = pcall(sweep_start, RT.on == true, why)
@@ -807,11 +812,17 @@ end
 VRFW.on("tick", function() pcall(tick) end)
 -- any option: a parent row switched off changes what this row answers too
 VRFW.on("option_changed", function() RT.option_dirty = true end)
+-- a match can teach moves and bring recruits: the tables and the branch rule are due again after it
+VRFW.on("match_end", function()
+  OWNED.list = nil
+  SWEEP.dirty = true
+  RT.branch_due = true
+end)
 VRFW.on("menu:open:post", function() pcall(menu_step) end)
 VRFW.on("slot_load", function()
   ST.slot, ST.st = -1, nil
   OWNED.list = nil
-  RT.next_route = 0
+  RT.branch_due = true
   if RT.on then RT.edge, RT.why = true, "save loaded" end
   pcall(publish_defaults)
   SWEEP.dirty, SWEEP.running = true, false
@@ -822,6 +833,7 @@ VRFW.on("game_reset", function()
   OWNED.list = nil
   DEF.done = false
   SWEEP.dirty, SWEEP.running = true, false
+  RT.branch_due = true
 end)
--- (match_start: no publish any more; MixSlot is the last sweep's, at most a few seconds older than the kick-off and
--- written whole, never a partial table)
+-- (match_start: no publish any more; MixSlot is the last whole sweep's plus every card published when a menu showed
+-- it, written whole, never a partial table)

@@ -75,8 +75,8 @@ end
 -- gacha is not covered.
 local BOX_LAYER = 1676790659              -- clean_hud_chr_box
 local SMALL_LIST = 530619243              -- mainmenu90_12_list_item_small
-local GET_LOCAL_POS = 2834507455          -- CMND_GET_LAYER_LOCAL_POS (layer, instance) -> x, y, z
-local SET_LOCAL_POS = 1389957207          -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, instance)
+local GET_LOCAL_POS = VRFW_Cmd.GET_LAYER_LOCAL_POS          -- (layer, instance) -> x, y, z
+local SET_LOCAL_POS = VRFW_Cmd.SET_LAYER_LOCAL_POS          -- (layer, x, y, z, instance)
 local ROW_PITCH = 108                     -- layout px between the two big rows (Cadena de Crónica -222, Universo -330)
 local first_seen = {}                     -- layer .. ":" .. instance -> {x, y, z} before any move
 

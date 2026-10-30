@@ -1,0 +1,46 @@
+# «Coletazo de Belion» (Belion Whip, whs02720, forest; with the same cut-in «Coletazo de Begiran» / Begiran Whip
+# whs02721, void, and «Coletazo de Pelion» / Pelion Whip whs02722, wind; cut-in ev60_02720): while the ball flies to
+# the goal after the cut-in it keeps the look of the end of the cut-in's last cut (c0300, the ball whipped on inside
+# the X slash blades): its glowing core, grids and spiked rings facing along the flight, and the blue / purple X slash
+# blades curled round it, turning about the flight and trailing behind, instead of the plain special-shot aura of its
+# element (ega0075d / ega0075e / ega0075b). The blades' trail comes out of the kick point as the ball flies and fades
+# at its far end. The object is ev6272bw00 (effect/event/ev60/ev6272bw00/), built by
+# research/scripts/belion_whip_ball_fx.py from the cut-in's effect object ev60027200: c0300's frame 434 held from the
+# aura's first frame, spins in whole turns per loop, the ball at the origin, the flight along +Z, x1. Left out: the
+# black backdrop, the pink strike flash X, the shock, the earlier cuts' parts and the beast (it stays at the kick).
+# One aura, one trigger per element: each copies its element's special-shot aura row (like): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight:
+# content\techniques\belion_whip_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "belion_whip"
+from = "ega0075d"
+object = "effect/event/ev60/ev6272bw00/ev6272bw00.objbin"
+
+[[shot_aura]]
+name = "belion_whip"
+when = { techniques = ["whs02720"] }
+aura = "belion_whip"
+like = "ega0075d"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "belion_whip_void"
+when = { techniques = ["whs02721"] }
+aura = "belion_whip"
+like = "ega0075e"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "belion_whip_wind"
+when = { techniques = ["whs02722"] }
+aura = "belion_whip"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

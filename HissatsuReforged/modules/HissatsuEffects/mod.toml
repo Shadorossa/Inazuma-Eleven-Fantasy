@@ -8,24 +8,37 @@ former_ids = ["hissatsu_effects"]
 name = "Hissatsu Effects"
 prefix = "HissatsuEffects"
 folder = "HissatsuEffects"
-version = "1.4.0"
+version = "1.27.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Gameplay effects for special moves of the game. Excalibur gets stronger the farther it flies and is also a counter shot; Doom Rain splits into 7 balls that blocks take away one by one; Electric Trap locks the shot it stops; Needle Hammer steals tension; Grand Fire gains power for each fire team mate; Emperor Penguin No. 1 spends PE for more power (with Inazuma Fantasy's PE); Power Shield clears the ball low. Double Tornado takes the elements of its two performers, with its tornadoes recoloured to match. The move card of the Habilidades list gets a second page (Q / E, LT / RT) that explains the move's effect. With Living Shots on, the shots also get its flights and auras."
+description = "Gameplay effects for special moves of the game. Excalibur gets stronger the farther it flies and is also a counter shot; Doom Rain splits into 7 balls that blocks take away one by one; Electric Trap locks the shot it stops; Needle Hammer steals tension; Grand Fire gains power for each fire team mate; Emperor Penguin No. 1 spends PE for more power (with Inazuma Fantasy's PE); Power Shield clears the ball low. Double Tornado takes the elements of its two performers, with its tornadoes recoloured to match. Almost every other special move gets an effect of its own when it is used (more power or less tension under a condition of the match, the pitch, the players around its user or the technique families his teammates carry), for every player, the CPU included. The move card of the Habilidades list gets a second page (Q / E, LT / RT) that explains the move's effect. With Living Shots on, the shots also get its flights and auras."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-23"
+updated = "2026-10-30"
 # 1.4.0 (owner 2026-10-23): an embedded module of Hissatsu Reforged (research/mods/HissatsuReforged/modules/
 # HissatsuEffects/); its id, prefix, grafts and texts unchanged
+# 1.13.0 (owner 2026-10-28): the 129 moves whose v1 family line was removed by families v2 get an effect of their
+# own again (same rules: only their own execution, any player, no grade scaling, small values).
+# 1.22.0 (owner 2026-10-29): feasibility pass: 69 effects whose condition could not happen in play (distance, chain,
+# shot-block, dribble range, extra time) replaced; Disparo rodante: +12 % power when it continues a shot chain
+# 1.23.0 (owner 2026-10-29): move card texts in all 9 languages; ball-height effects and 3 doubtful lines replaced; wing
+# zones cover both wings (VRFW zone `both_sides`)
+# 1.9.0 (owner 2026-10-28): technique effects for 891 effect lines of retail moves as behaviour rules
+# 1.10.0 (owner 2026-10-28): the proposal's use-count / chain / rival / ball-height / partner / aura / duel-value /
+# shot-through / knockdown effects replace their interim substitutes; clock effects count thirds of the real half
+# (content\rules\technique_effects_*.toml: only the move being used, any player, the CPU included; no grade scaling),
+# their card sentences (text\en.toml, text\es.toml) shown on the card's page 2 through
+# CMND_HISSATSUEFFECTS_MOVE_RULE_TEXTS (content\game\technique_effect_texts.toml, scripts\technique_effect_texts.lua).
+# Needs VRFW 2.191.0 (rule conditions score_margin / near / team_family, rule `text`).
 # vr_framework: the technique type's mini-effect / ball / dual-element keys and CMND_VRFW_TECHNIQUE_BALL_EFFECT /
 # CMND_VRFW_TECHNIQUE_MINI_FX (the card page), the effect type's [[recolor]], the core's if_mod / if_not_mod.
-# shot_fx (Living Shots) is optional (not in requires) and owns every visual part (flights, auras, the hidden real ball of
-# Doom Rain); this mod is gameplay only. Living Shots adds only hide_ball to its Doom Rain split_shot (merged key by
-# key since VRFW 2.4.7).
+# Living Shots / Strikers Shots are optional (not in requires) and own every visual part (flights, auras, the hidden
+# real ball of Doom Rain); this mod is gameplay only. Strikers Shots adds only hide_ball to its Doom Rain split_shot
+# (merged key by key since VRFW 2.4.7).
 # Inazuma Fantasy is not needed; with it, Emperor Penguin No. 1 pays its PE (IF's module stamina).
 # hissatsu_reforged: its base (the special-move balance, the double icon its Excalibur shows); this mod is one of its
 # modules (below).
-requires = ["VRFW>=2.4.13", "HissatsuReforged>=1.0.0"]
+requires = ["VRFW>=2.260.0", "HissatsuReforged>=1.5.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"
@@ -35,7 +48,7 @@ loader_min = "1.7.0"
 # skill tab handlers (menu lua _all/22_skill_tabs.lua: icons / titles / filters of the declared tabs, the spare tab
 # plates) never ran. Early, the host sits on top of these functions and serves their promoted locals.
 lua_early = true
-permissions = []
+permissions = ["command"]
 
 [exports]
 functions = []

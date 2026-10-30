@@ -1,0 +1,27 @@
+# Skill Duel: its settings (read by scripts/skill_duel.lua; restart the game after a change).
+# docs/game/mods/skill-duel.md
+
+[skill_duel]
+# THE DEFENDER'S REACH: how far his hand tip is from his centre (metres, arms at rest; a side-step stretches the arm
+# on that side, as in the game). The game sets it from DF / AT (1.98 m for the weakest defender, 2.51 m at DF = AT,
+# 4.37 m for the strongest). Here it is placed in this band instead:
+#   reach_min_m / reach_max_m        the weakest / strongest defender's reach
+#   hand_scale_min / hand_scale_max  his hand size (1 = the model's hand; the game's is 1.1 to 1.4)
+# The hand alone is 1.8 m x the hand size, so reach_min_m below that gives the hand alone.
+reach_min_m = 2.0
+reach_max_m = 3.4
+hand_scale_min = 1.1
+hand_scale_max = 1.3
+# HOW MUCH THE STATS MOVE IT: 0 = every duel at the middle of the band (2.7 m, hand 1.2), 1 = the whole band.
+# 0.3 (the default): the weakest defender 2.49 m, DF = AT 2.70 m, the strongest 2.91 m.
+stat_weight = 0.3
+
+# THE CONTACT: when the attacker's path crosses the defender's body, arm or hand (he read the side), the defender
+# wins. A stronger attacker may slip through: contact_slip_per_point % per point of AT - DF, at most
+# contact_slip_max_percent % (never when DF >= AT). 0 = a contact never lets the attacker through.
+# Past the hand the attacker wins, as in the game. A special move against a special move keeps the game's power duel.
+contact_slip_per_point = 0.2
+contact_slip_max_percent = 0
+
+# true: one loader.log line per new DF / AT pair (the reach the duel gets) and per duel result the contact rule changes.
+log = true

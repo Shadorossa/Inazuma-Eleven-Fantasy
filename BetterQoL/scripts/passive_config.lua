@@ -28,14 +28,12 @@ local C = require "lib/pc_core"
 BetterQoL.PassiveConfig = BetterQoL.PassiveConfig or {}
 local PC = BetterQoL.PassiveConfig
 
-local function info(...) VRFW.log("passive_config:", ...) end
-local function warn(...) VRFW.warn("passive_config:", ...) end
-local function err(...) VRFW.error("passive_config:", ...) end
+require "VRFW/lib/basics"
+local info, warn, err = VRFW.logger("passive_config")
 
 local N = C.N_SLOTS
 local FIELD_BUILD, FIELD_PARAM_BUILD = 36, 20
 local DIAMOND_RARITY = 8
-local SCAN_EVERY_MS = 5000
 
 local CFG, LAYOUT, RULES, UNLOCK = nil, nil, nil, "configured"
 -- the rule of the player's archetype (pc_core player_rule): nil = the game's archetype untouched, else
@@ -50,9 +48,10 @@ local ACTIVE = false
 local STORE = nil           -- the active save slot's store
 local LIST = nil            -- the list the menu pages through { hdl, slot, category, rarity, ids }
 local ROW1 = 0              -- the character of the last plate query for slot 1 (CMND_BETTERQOL_PC_SPECIAL)
-local LAST_SCAN, LAST_SEQ = -SCAN_EVERY_MS, -1
+-- a watermark scan is due: set when the store is loaded and on every slot, mode or match event (archetype mode)
+local WATERMARK_DUE, LAST_SEQ = true, -1
 local INACTIVE_LOGGED = {}
-local HITS_LUA, HITS_FILTER = 0, 0
+local LOGGED_ANSWER = {}    -- last logged plate / archetype answer per query key (log on change only)
 local BUF
 
 -- ---------------------------------------------------------------------------------------------- arguments
@@ -485,11 +484,10 @@ local function ensure_store()
   local slot = VRFW.slots.active()
   if not STORE or STORE.slot ~= slot or (STORE.unread and VRFW.now() - STORE.unread > 2000) then
     STORE = load_store(slot)
+    WATERMARK_DUE = true
   end
-  if STORE.watermark ~= nil or mode_slot() or not C.archetype_mode(RULES) then return end
-  local now = VRFW.now()
-  if now - LAST_SCAN < SCAN_EVERY_MS then return end
-  LAST_SCAN = now
+  if not WATERMARK_DUE or STORE.watermark ~= nil or mode_slot() or not C.archetype_mode(RULES) then return end
+  WATERMARK_DUE = false
   local v = VRFW.chara.saved()
   if #v == 0 then return end
   local max = 0
@@ -874,6 +872,7 @@ local function follow_slots()
   local seq = VRFW.slots.event_seq()
   if seq ~= LAST_SEQ then
     LAST_SEQ = seq
+    WATERMARK_DUE = true
     refresh("slot event", SLICE_GAME_MS)
   elseif STORE and STORE.slot ~= VRFW.slots.active() then
     refresh("slot changed", SLICE_GAME_MS)
@@ -894,10 +893,14 @@ end
 -- logged and the player written again). At match start / end also the match copies of the configured players (the
 -- match builder reads the copies): the log says whether the configuration is what the match reads.
 
--- team sets [[g_gameRoot]+0x69A8] + 0x1E0 + team * 0x4A8, members at +0x80 (29 x 0x10 B, +0 the handle); the user's
--- match team [[g_gameRoot]+0x6A58] + 0x2C29 (the framework's VRFW.chara layout, nie.exe v7.1.2)
-local TEAM_SETS_FIRST, TEAM_STRIDE, TEAM_MEMBERS, MEMBER_STRIDE, MEMBER_COUNT = 0x1E0, 0x4A8, 0x80, 0x10, 29
-local USER_TEAM_AT = 0x2C29
+-- the match teams of the party block (Party.MatchTeams: a pointer to two [struct.PartyMatchTeam], members
+-- [struct.PartyMatchMember]) and the user's match team (MatchInfo.UserTeam): offsets from the game profile
+local LIVE_LAYOUT_NAMES = {
+  match_teams = "Party.MatchTeams", team_size = "PartyMatchTeam", team_members = "PartyMatchTeam.Members",
+  member_size = "PartyMatchMember", member_handle = "PartyMatchMember.Handle", member_count = "Party.MatchTeamMemberCount",
+  user_team = "MatchInfo.UserTeam",
+}
+local LIVE_LAYOUT, LIVE_LAYOUT_DONE = nil, false
 local LIVE_BUF, LIVE_ON = nil, nil
 
 local function live_ready()
@@ -957,24 +960,46 @@ local function compare(S, hdl, owner, copy, details)
   return checked, bad
 end
 
+-- the profile's numbers of the live check (nil when one is missing: warned once)
+local function live_layout()
+  if not LIVE_LAYOUT_DONE then
+    LIVE_LAYOUT_DONE = true
+    local out = {}
+    for key, name in pairs(LIVE_LAYOUT_NAMES) do
+      local ok, v = pcall(VRFW.game.field, name)
+      if not ok or type(v) ~= "number" then
+        warn("live check: the game profile has no " .. name .. ": match teams not checked")
+        return nil
+      end
+      out[key] = v
+    end
+    LIVE_LAYOUT = out
+  end
+  return LIVE_LAYOUT
+end
+
 local function team_members(team)
+  local L = live_layout()
+  if not L then return nil end
   local okg, sets = pcall(VRFW.game.utilities_team_sets)
   if not okg or not sets or sets < 0x10000 then return nil end
-  local okb, base = pcall(VRFW.mem.read, "ptr", sets + TEAM_SETS_FIRST)
+  local okb, base = pcall(VRFW.mem.read, "ptr", sets + L.match_teams)
   if not okb or not base or base < 0x10000 then return nil end
-  base = base + team * TEAM_STRIDE
+  base = base + team * L.team_size
   local out = {}
-  for j = 0, MEMBER_COUNT - 1 do
-    local okm, h = pcall(VRFW.mem.read, "u32", base + TEAM_MEMBERS + j * MEMBER_STRIDE)
+  for j = 0, L.member_count - 1 do
+    local okm, h = pcall(VRFW.mem.read, "u32", base + L.team_members + j * L.member_size + L.member_handle)
     if okm and h and h ~= 0 then out[#out + 1] = h end
   end
   return out
 end
 
 local function user_team()
+  local L = live_layout()
+  if not L then return nil end
   local okg, mi = pcall(VRFW.game.utilities_match_info)
   if not okg or not mi or mi < 0x10000 then return nil end
-  local ok, t = pcall(VRFW.mem.read, "u8", mi + USER_TEAM_AT)
+  local ok, t = pcall(VRFW.mem.read, "u8", mi + L.user_team)
   if ok and t and t <= 1 then return t end
   return nil
 end
@@ -1052,9 +1077,11 @@ end
 
 -- ---------------------------------------------------------------------------------------------- the plate (retail filter)
 
-local function log_filter(msg)
-  HITS_FILTER = HITS_FILTER + 1
-  if HITS_FILTER <= 12 then info(msg) end
+-- logs an answer only when it differs from the last one logged for the same query key
+local function log_on_change(key, value, fmt, ...)
+  if LOGGED_ANSWER[key] == value then return end
+  LOGGED_ANSWER[key] = value
+  info(string.format(fmt, ...))
 end
 
 local function plate_value(field, id, ver, unlocked)
@@ -1114,8 +1141,7 @@ function PC.PlateInfo(h, slot, field, _copy, preview)
     local locked = pr ~= nil and pr.card ~= C.BLOCKED and C.kind(RULES, k) == C.SPECIAL and not C.slot_open(RULES, pr.card, pr.rarity, k) and eff[k] == 0
     unlocked = not locked and (forced or (own ~= nil and conf == nil and CFG.always_unlocked) or unlocked_retail(h, k))
   end
-  HITS_LUA = HITS_LUA + 1
-  if HITS_LUA <= 10 then info(string.format("plate chara 0x%08X slot %d field %d -> %s 0x%08X", h, k, field, what, ver)) end
+  log_on_change(h * 64 + k * 8 + field, what .. ver, "plate chara 0x%08X slot %d field %d -> %s 0x%08X", h, k, field, what, ver)
   return true, true, plate_value(field, id, ver, unlocked)
 end
 
@@ -1347,7 +1373,7 @@ function PC.CharaStatus(h, field)
   if field ~= FIELD_BUILD or not PLAYER then return false end
   local a, name = archetype_of(h)
   if not a then return false end
-  log_filter(string.format("chara 0x%08X archetype icon -> %d (%s)", h, a, name))
+  log_on_change(-h - 1, a, "chara 0x%08X archetype icon -> %d (%s)", h, a, name)
   return true, a
 end
 
@@ -1433,6 +1459,7 @@ for _, trig in ipairs({ "mode_enter", "mode_leave", "match_start", "match_end" }
     if next(OFF_KEYS) ~= nil then fill_off_modes() end
     if not ACTIVE then return end
     LAST_SEQ = VRFW.slots.event_seq()
+    WATERMARK_DUE = true
     refresh(trig)
     local ok, e = pcall(live_check, trig, trig == "match_start" or trig == "match_end")
     if not ok then err("live check (" .. trig .. "): " .. tostring(e)) end

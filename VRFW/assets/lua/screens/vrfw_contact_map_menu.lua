@@ -51,7 +51,14 @@ local T = {
   REQ_BEAT = 3395213988,                           -- vrfw_cm_req_beat "Beat %s" (a team page: a match against that team won)
   TEAMS_NONE = 239112625,
   SOLD_AT = 1992691150,                            -- vrfw_cm_sold_at "Signed on: %s" (a team page's ghost)                          -- vrfw_cm_teams_none (a map of team pages with none open yet)
-  REQ_PAY = 2211476719,                            -- vrfw_cm_req_pay "x%d (%d)" (the price, owned; after the spirit's name)
+  GO = 2207531302, CLOSE = 1089859595,             -- vrfw_cm_go «Go» / vrfw_cm_close «Close» (a ghost's window buttons)
+  GO_HINT = 4001254672,                            -- vrfw_cm_go_hint (a ghost's card: Accept opens his home page)
+  REQ_PAY = 2211476719,                           -- vrfw_cm_req_pay "x%d (%d)" (the price, owned; after the spirit's name)
+  REQ_TITLE = 53176105,                            -- vrfw_cm_req_title "Requirements" (the requirement card's header)
+  REQ_COUNT = 2915326752,                          -- vrfw_cm_req_count "%s / %d" (a plate's have / need, the header's met / all)
+  -- a plate's name of a counted requirement (its numbers are the plate's have / need): vrfw_cm_req_*_short
+  REQ_SHORT = {team_level = 559733864, element = 3410057724, position = 3410057724, wins = 3355883171,
+               goals = 2743560636},
   -- team pages: a player at a level, the harder clears, the trials, «Dimitir» (vrfw_cm_* rows)
   REQ_PLAYER_LEVEL = 4185569193, REQ_BEAT_MORE = 1292820146,
   TRIAL = {1082028622, 3363525476, 2492399005},   -- vrfw_cm_trial_hold / _goals / _steals (by the objective's kind)
@@ -96,6 +103,9 @@ local L_TITLE = 2025982372      -- vrfw_cm_title   x10  (551) list rows' text
 local L_CARDTXT = 1541069194    -- vrfw_cm_cardtxt x4   (551) the card's lines
 local L_REQ = 3347854986        -- vrfw_cm_req     x5   (462) the card's row icons (4 requirements + the price's coin)
 local L_REQOK = 1997209491      -- vrfw_cm_reqok   x4   (463) their met / unmet badges
+-- vrfw_cm_req also holds 7-10 the plates' bar fills; the plate layers are fields of
+-- INFO.PLATES (L_PLATE vrfw_cm_reqplate x5 (456): 4 plates + the header's counter chip; L_BAR vrfw_cm_reqbar x4
+-- (460): the bar tracks) - the main chunk is at its local limit
 local L_BUST = 4140378829      -- vrfw_cm_bust     x162 (457) player busts: the game's miniface + kit
 local L_BUSTICON = 2593122072  -- vrfw_cm_busticon x1   (461) the card's player bust
 -- pools (tiles vanished while moving on a network): a whole network fits at the widest zoom (IE2:
@@ -113,7 +123,7 @@ local L_BUSTICON = 2593122072  -- vrfw_cm_busticon x1   (461) the card's player 
 -- (tiles 200, links 210, player busts 162, gate faces 60), and the widest zoom now also fits the faces in view
 -- (DrawNetwork: zoom in while the players / gates in view need more busts / faces than the pools hold), so every cell
 -- drawn has its face.
-local N = {LINE = 210, TILE = 200, FACE = 60, BUST = 162, TAG = 70, UI = 8, TITLE = 20, CARDTXT = 6, REQ = 5,
+local N = {LINE = 210, TILE = 200, FACE = 60, BUST = 162, TAG = 70, UI = 8, TITLE = 20, CARDTXT = 12, REQ = 5,
            CARD_BUSTS = 4, full = false}
 -- a player is drawn as the game's own face
 -- icon of a character card (team00_01_chara_card_for_list, portrait only, the rest of the card hidden): the native
@@ -139,7 +149,7 @@ local BUST = {
     "_gauge_exp_l01", "_icon_synergy_l01", "_icon_synergy_l02", "_leader_base01", "_gtxt_leader01"},
   HIDE_NODES = {"_pos_base02", "_pos_leader01", "_pos_ai_role01", "_num_chr_l01", "_num_chr_l02", "_pos_gauge_exp_l01"},
   key = {},      -- [layer][idx] = the chara key drawn there (the composite is built once per key)
-  wait = {},     -- "layer:idx" -> {layer, idx}: shown when its face has loaded
+  chara = {},    -- "layer:idx" -> the chara id of that key (its face, drawn by VRFW_FaceIcon)
 }
 
 local C = {
@@ -152,7 +162,6 @@ local C = {
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
   SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
   FADE = 609722083, FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568, P_EXISTS = 2947612279, P_GET = 3522198769,
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
   TEXT_VISIBLE = 1505208242, TEXT_GET = 4074371074,
   PRIM_COLOR = 855211291, ROTATE = 3476640154, LOG = 3661580131,
@@ -161,7 +170,7 @@ local C = {
   CM_MAP = 3205285167,        -- CMND_VRFW_CONTACT_MAP (map, lang)
   SAVE_GET = 2187277743,      -- CMND_VRFW_SAVE_GET (owner, key, default)
   SAVE_SET = 2574269955,      -- CMND_VRFW_SAVE_SET (owner, key, value, commit)
-  FACE = 552280324, RESET_FACE = 4176779611, FACE_LOADING = 1277042906, NODE_VISIBLE = 2158717427,
+  NODE_VISIBLE = 2158717427,
   NAME_VISIBLE = 2735666188, CHARA_OF_PARAM = 347353059, LAYER_NUM = 1175615627, IS_VISIBLE = 1262717583,
   MENU_CALL = 830228314,      -- (menu, "global function", args...): runs a function in another menu's VM
   CHECK_INPUT = 4265778440,   -- CMND_CHECK_INPUT_CMD (ctrl, input)
@@ -214,6 +223,13 @@ local FALLBACK = {
   badge_unmet = {"circle", {0.92, 0.28, 0.28}},
   badge_new = {"circle", {1, 0.84, 0.20}},             -- a player who can be signed and was not looked at yet («!»)
   card_panel = {"square", {0.13, 0.29, 0.64}},          -- the cost / requirements card (tinted darker on screen)
+  requirement_plate_met = {"square", {0.20, 0.50, 0.95}},     -- a requirement line met / not met / unused
+  requirement_plate_unmet = {"square", {0.30, 0.36, 0.52}},
+  requirement_plate_empty = {"square", {0.16, 0.22, 0.40}},
+  requirement_bar_base = {"square", {0.10, 0.12, 0.18}},      -- a line's progress bar: its track and its fill
+  requirement_bar_met = {"square", {0.35, 0.85, 0.45}},
+  requirement_bar_unmet = {"square", {1, 0.60, 0.15}},
+  requirement_counter = {"square", {0.08, 0.13, 0.30}},       -- the header's met / all chip (slanted like the plates)
   -- a team page's card border by state: the colours of the card's own frame mesh (CmPages.CardBorder; the plain
   -- frame is its sprite): in the club green, signable now blue, not yet red
   card_border_signed = {"frame", {0.30, 1, 0.45}},
@@ -278,6 +294,18 @@ local HEADROW = {TEMP_ADD = 3380562877, TEMP_FREE = 1829720801, hdl = nil}
 local INFO = {CX = 1580, CY = 236, W = 620, H = 252, ICON_X = 1300, TEXT_X = 1330, ICON = 32, GAP = 8, CHAR_W = 19,
               YS = {136, 172, 208, 244, 286, 324}, NAME_S = 0.78, LINE_S = 0.62, CLIP = 40, BLANK = "________",
               TINT = {0.55, 0.6, 0.8}}
+-- the requirement card of a player: a header ("Requirements" centred, met / all on a chip at the right), then ALWAYS 4 plates filled from the top (art roles requirement_plate_met / _unmet / _empty): the
+-- requirement's icon with its met / unmet badge, its name, a progress bar (requirement_bar_base + _met / _unmet fill)
+-- and "have / need" right-aligned; an empty line is a dim plate. The price is the first plate
+-- (CmPages.PricePlate); under the plates: the state / story lines (LINE_Y). Every Y is a row centre in screen px
+-- (1080p); X / W centre and width. The plate sprite's slanted body spans x 1310..1849 at the top / 1298..1837 at the
+-- bottom: the icon (ICON_X, its badge) and the counter (right-aligned at COUNT_R) stay inside it.
+INFO.PLATES = {L_PLATE = 857504632, L_BAR = 4149169221, X = 1580, W = 592, H = 34, Y = {165, 203, 241, 279},
+               HEAD_Y = 128, LINE_Y = {318, 346}, ICON_X = 1330, ICON = 28, TEXT_X = 1352, TEXT_S = 0.56,
+               HEAD_S = 0.64, CLIP = 24, NOTE_CLIP = 40, COUNT_R = 1836, BAR_W = 96, BAR_H = 12, BAR_IN = 2,
+               BAR_GAP = 14, CHIP_X = 1805, CHIP_W = 88, CHIP_H = 26, CHIP_IX = 4, FILL_IX = 7, TXT_COUNT = 6,
+               TXT_HEAD = 10, TXT_TALLY = 11, TOP = 110, BOTTOM = 306,
+               MET = "[CG]", UNMET = "[CR]", RESET = "[C]"}
 -- a card is exactly its miniface's box (PLATE = FACE: no blue margin around the face); the pitch
 -- (CELL) is kept so the grid stays centred in the same area; the badges sit in the card's bottom-right corner
 local GRID = {COLS = 6, ROWS = 4, CELL = 176, TOP = 236, FACE = 0.72, CHECK = 0.35, REQNG = 0.26}
@@ -391,8 +419,7 @@ local function Message(text)
 end
 
 local function Close(result)
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_SET, KEY_RESULT, 0, result, 1)
+  VRFW_Param.Replace(KEY_RESULT, result)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
   funcLuaCommand(C.CLOSE_MENU, MENU)
 end
@@ -848,12 +875,12 @@ end
 
 -- a map's name: its series' name when the map has one (team pages of a Chronicle route), else its title row
 -- team pages: series names, «owns any card of the character» answers (a global: the main chunk is at its 200 locals)
-CmPages = {series = {}, own = {}}
+CmPages = {series = {}, own = {}, trail = {}}
 function CmPages.MapTitle(m)
   local sid = m and Int(m.series) or 0
   if sid ~= 0 then
     if CmPages.series[sid] == nil then
-      local ok, okc, s = pcall(funcLuaMenuCommand, 964991930 --[[CMND_GET_CHARA_SERIES_INFO]], 1, sid)
+      local ok, okc, s = pcall(funcLuaMenuCommand, 964991930, 1, sid)
       CmPages.series[sid] = (ok and okc and type(s) == "string" and s ~= "") and s or false
     end
     if CmPages.series[sid] then
@@ -979,7 +1006,6 @@ end
 local function HideBust(layer, idx)
   if layer ~= nil then
     Hide(layer, idx)
-    BUST.wait[layer .. ":" .. idx] = nil
   end
 end
 
@@ -1008,28 +1034,24 @@ local function DrawBust(layer, idx, card, x, y, size)
       return
     end
     BUST.tries[tk] = nil
-    funcLuaMenuCommand(C.RESET_FACE, layer, idx, BUST.TEX)
     local ok, chara = pcall(funcLuaCommand, C.CHARA_OF_PARAM, card)
     if not ok or type(chara) ~= "number" or chara == 0 then
       chara = card
     end
-    pcall(SetDisableForceCharaInvalidUseTarget)
-    funcLuaMenuCommand(C.FACE, layer, idx, false, BUST.MESH, BUST.TEX, 0, 0, chara, 0, false, true)
-    pcall(SetEnableForceCharaInvalidUseTarget)
     BUST.key[layer][idx] = card
+    BUST.chara[tk] = chara
   end
-  local loading = funcLuaMenuCommand(C.FACE_LOADING, layer, idx) == true
-  funcLuaMenuCommand(C.MESH_VISIBLE, layer, BUST.MESH, not loading, idx)
-  BUST.wait[layer .. ":" .. idx] = loading and {layer, idx} or nil
+  -- the face mesh stays hidden while the face loads (VRFW_FaceIcon.Settle in Step)
+  VRFW_FaceIcon.Face(layer, idx, BUST.chara[layer .. ":" .. idx], BUST.MESH, BUST.TEX,
+    {kit = 0, keeper = false, use_args = true})
   funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, true)
 end
 
 -- the busts still loading: shown once their face is in (Step)
 local function BustStep()
-  for k, w in pairs(BUST.wait) do
-    if funcLuaMenuCommand(C.FACE_LOADING, w[1], w[2]) ~= true then
-      funcLuaMenuCommand(C.MESH_VISIBLE, w[1], BUST.MESH, true, w[2])
-      BUST.wait[k] = nil
+  if VRFW_FaceIcon.Pending() then
+    VRFW_FaceIcon.Settle()
+    if not VRFW_FaceIcon.Pending() then
       OtNote("face in")
     end
   end
@@ -1288,6 +1310,9 @@ local function ReqLines(node)
   return out
 end
 
+-- ===== EVT contact_map drawing BEGIN =====
+-- vrfw_contact_map_menu, part 2 of 7 (graft contact_map appends it to vrfw_contact_map_menu.lua; one chunk):
+-- the screen's drawing parts: backgrounds, requirement plates, cards, the list and the zone pins.
 -- ---- drawing --------------------------------------------------------------------------------------------------------
 local function HideAll()
   for i = 0, N.TILE - 1 do
@@ -1383,42 +1408,22 @@ local function HideReqs()
   end
   Hide(L_REQ, REQ.CHECK.BOX_IX)
   Hide(L_REQ, REQ.CHECK.MARK_IX)
+  local P = INFO.PLATES
+  for k = 0, 3 do
+    Hide(P.L_PLATE, k)
+    Hide(P.L_BAR, k)
+    Hide(L_REQ, P.FILL_IX + k)
+    Hide(L_CARDTXT, P.TXT_COUNT + k)
+  end
+  Hide(P.L_PLATE, P.CHIP_IX)
+  Hide(L_CARDTXT, P.TXT_HEAD)
+  Hide(L_CARDTXT, P.TXT_TALLY)
 end
 
--- one icon per requirement (kind -> its art role, or the game's element icon), met / unmet badge
+-- a requirement kind -> its art role
 local REQ_ROLE = {team_level = "requirement_level", wins = "requirement_wins", goals = "requirement_goals",
                   item = "requirement_item", player = "requirement_player", cleared = "requirement_wins",
                   unlock = "requirement_wins", trial = "requirement_goals"}
-
-local function DrawReqs(reqs)
-  for k = 0, N.REQ - 1 do
-    local r = reqs and reqs[k + 1]
-    if r == nil then
-      Hide(L_REQ, k)
-      Hide(L_REQOK, k)
-    else
-      local x = REQ.X + k * REQ.DX
-      local drawn = false
-      if r.kind == "element" and ELEM_ICON[r.element] ~= nil then
-        local tc = Tex(COMMON_TEX)
-        if tc then
-          QuadTex(L_REQ, k, tc, CRC32(ELEM_ICON[r.element]), x, REQ.Y, REQ.SIZE, REQ.SIZE)
-          drawn = true
-        end
-      end
-      if not drawn then
-        local role = REQ_ROLE[r.kind] or "requirement_item"
-        if r.kind == "position" then
-          role = "requirement_position_" .. tostring(r.position)
-        end
-        Quad(L_REQ, k, role, x, REQ.Y, REQ.SIZE, REQ.SIZE)
-      end
-      local ok = VRFW_Recruit.Have(r) >= (r.count or 1)
-      Quad(L_REQOK, k, ok and "badge_met" or "badge_unmet",
-        x + REQ.SIZE * 0.36, REQ.Y + REQ.SIZE * 0.36, REQ.BADGE, REQ.BADGE)
-    end
-  end
-end
 
 -- a node whose own requirements are not all met (the tile's badge)
 local function ReqsUnmet(node)
@@ -1522,7 +1527,7 @@ local function StatusPlate(card, level)
     -- the description: the shop plate's box (the portrait in its square, the retail rarity colours)
     pcall(UpdateCharaStatusPlateInfoByCharaParamId, L_STATUS, 0, card, 0, 6, nil, nil, false, nil, nil, -1, -1, nil, nil,
       true)
-    pcall(funcLuaMenuCommand, 3781155141 --[[CMND_PLAY_ANIME_TYPE]], L_STATUS, 0, 902337421 --[[offset01]], 0, 2892647586 --[[shop]])
+    pcall(funcLuaMenuCommand, 3781155141, L_STATUS, 0, 902337421 --[[offset01]], 0, 2892647586 --[[shop]])
     HR.Band(L_STATUS, 0, {explain = true})
     -- no rarity banner on the card: the plates' fill and their animation show it, so its node and mesh go off after
     -- the fill and the animation call, once per player
@@ -1560,16 +1565,21 @@ function ReqRow(r)
   local need = r.count or 1
   local ok = have >= need
   local count = need > 1 and ("  " .. tostring(math.min(have, need)) .. "/" .. tostring(need)) or ""
+  -- the third value: the name alone (a plate shows have / need apart); the icon carries have / need
   if r.kind == "player" then
     local name = (r.name or "") ~= "" and r.name or Text(T.UNKNOWN)
+    local ic = {bust = r.ids and r.ids[1], ok = ok, have = have, need = need}
     if (r.level or 0) > 1 then
-      return Fmt(T.REQ_PLAYER_LEVEL, CmClip(name, INFO.CLIP - 16), r.level), {bust = r.ids and r.ids[1], ok = ok}
+      local l = Fmt(T.REQ_PLAYER_LEVEL, CmClip(name, INFO.CLIP - 16), r.level)
+      return l, ic, l
     end
-    return Fmt(T.REQ_SIGN, CmClip(name, INFO.CLIP - 10)), {bust = r.ids and r.ids[1], ok = ok}
+    local l = Fmt(T.REQ_SIGN, CmClip(name, INFO.CLIP - 10))
+    return l, ic, l
   elseif r.kind == "item" then
     local title = (r.title ~= nil and r.title ~= 0) and Text(r.title) or ItemTitle(r.id)
-    return Fmt(T.REQ_GET, CmClip(title, INFO.CLIP - 14)) .. "  " .. tostring(math.min(have, need)) .. "/" .. tostring(need),
-      {item = r.id, role = "requirement_item", ok = ok}
+    local l = Fmt(T.REQ_GET, CmClip(title, INFO.CLIP - 14))
+    return l .. "  " .. tostring(math.min(have, need)) .. "/" .. tostring(need),
+      {item = r.id, role = "requirement_item", ok = ok, have = have, need = need}, l
   end
   local role = REQ_ROLE[r.kind] or "requirement_item"
   if r.kind == "position" then
@@ -1593,13 +1603,20 @@ function ReqRow(r)
   elseif r.kind == "trial" then
     text = CmPages.TrialText(r)
   end
-  return text .. count, {role = role, ok = ok}
+  local short = text
+  local sid = T.REQ_SHORT[r.kind]
+  if sid ~= nil then
+    local what = r.kind == "element" and Text(T.ELEM[r.element] or T.UNKNOWN)
+      or (r.kind == "position" and Text(T.POS[r.position] or T.UNKNOWN) or nil)
+    short = what ~= nil and Fmt(sid, what) or Text(sid)
+  end
+  return text .. count, {role = role, ok = ok, have = have, need = need}, short
 end
 
 -- a row's icon: {bust = chara_param} the miniface with kit, {item = id} the item's own icon (the requirement's
 -- drawing until it is there), {role = name} a requirement's art role; ok = true / false: the met / unmet badge
-local function RowIcon(k, ic, y)
-  local x, sz = INFO.ICON_X, INFO.ICON
+local function RowIcon(k, ic, y, x, sz)
+  x, sz = x or INFO.ICON_X, sz or INFO.ICON
   if ic == nil then
     Hide(L_REQ, k)
     Hide(L_REQOK, k)
@@ -1637,7 +1654,118 @@ local function RowIcon(k, ic, y)
   end
 end
 
-local function Card(lines, face, icon, icons)
+-- the requirement card's header and its 4 plates; rows[k] = {label, ic} (ReqRow's name + icon; ic nil: a note
+-- line, no bar / count) or nil (an empty line). Lines fill from the top: row 1 is always the first plate.
+function CmPages.ReqPlates(rows)
+  local P = INFO.PLATES
+  local met, all = 0, 0
+  for k = 1, 4 do
+    local i, y, r = k - 1, P.Y[k], rows[k]
+    if r == nil then
+      Quad(P.L_PLATE, i, "requirement_plate_empty", P.X, y, P.W, P.H)
+      RowIcon(i, nil, y)
+      Hide(L_CARDTXT, i)
+      Hide(P.L_BAR, i)
+      Hide(L_REQ, P.FILL_IX + i)
+      Hide(L_CARDTXT, P.TXT_COUNT + i)
+    else
+      local ic = r[2]
+      local counted = ic ~= nil and ic.need ~= nil
+      local ok = ic ~= nil and ic.ok == true
+      if counted then
+        all = all + 1
+        met = met + (ok and 1 or 0)
+      end
+      if ok then
+        Quad(P.L_PLATE, i, "requirement_plate_met", P.X, y, P.W, P.H)
+      else
+        Quad(P.L_PLATE, i, "requirement_plate_unmet", P.X, y, P.W, P.H)
+      end
+      RowIcon(i, ic, y, P.ICON_X, P.ICON)
+      local x = ic ~= nil and P.TEXT_X or P.ICON_X - P.ICON / 2
+      Line(L_CARDTXT, i, CmClip(r[1], counted and P.CLIP or P.NOTE_CLIP), x, y, P.TEXT_S)
+      if counted then
+        -- "have / need" right-aligned (have green when met, red when not), the bar left of it
+        local plain = Fmt(T.REQ_COUNT, tostring(ic.have), ic.need)
+        local w = CmPages.TextWidth(L_CARDTXT, P.TXT_COUNT + i, plain) * P.TEXT_S
+        Line(L_CARDTXT, P.TXT_COUNT + i, Fmt(T.REQ_COUNT, (ok and P.MET or P.UNMET) .. tostring(ic.have) .. P.RESET,
+          ic.need), P.COUNT_R - w, y, P.TEXT_S)
+        local bx = P.COUNT_R - w - P.BAR_GAP - P.BAR_W / 2
+        Quad(P.L_BAR, i, "requirement_bar_base", bx, y, P.BAR_W, P.BAR_H)
+        local inner = P.BAR_W - 2 * P.BAR_IN
+        local fw = inner * math.max(0, math.min(1, ic.have / math.max(1, ic.need)))
+        if fw >= 1 then
+          Quad(L_REQ, P.FILL_IX + i, ok and "requirement_bar_met" or "requirement_bar_unmet",
+            bx - inner / 2 + fw / 2, y, fw, P.BAR_H - 2 * P.BAR_IN)
+        else
+          Hide(L_REQ, P.FILL_IX + i)
+        end
+      else
+        Hide(P.L_BAR, i)
+        Hide(L_REQ, P.FILL_IX + i)
+        Hide(L_CARDTXT, P.TXT_COUNT + i)
+      end
+    end
+  end
+  -- the header: the title centred on the card, met / all on its chip at the right
+  local title = Text(T.REQ_TITLE)
+  Line(L_CARDTXT, P.TXT_HEAD, title, INFO.CX - CmPages.TextWidth(L_CARDTXT, P.TXT_HEAD, title) * P.HEAD_S / 2,
+    P.HEAD_Y, P.HEAD_S)
+  if all > 0 then
+    Quad(P.L_PLATE, P.CHIP_IX, "requirement_counter", P.CHIP_X, P.HEAD_Y, P.CHIP_W, P.CHIP_H)
+    local plain = Fmt(T.REQ_COUNT, tostring(met), all)
+    local w = CmPages.TextWidth(L_CARDTXT, P.TXT_TALLY, plain) * P.TEXT_S
+    Line(L_CARDTXT, P.TXT_TALLY, Fmt(T.REQ_COUNT, (met == all and P.MET or P.UNMET) .. tostring(met) .. P.RESET, all),
+      P.CHIP_X - w / 2, P.HEAD_Y, P.TEXT_S)
+  else
+    Hide(P.L_PLATE, P.CHIP_IX)
+    Hide(L_CARDTXT, P.TXT_TALLY)
+  end
+end
+
+-- a player's price as the requirement card's first plate (nil without a price): the spirit's / currency's name, its
+-- element icon (else the currency item's icon), what the player has / the price
+function CmPages.PricePlate(n)
+  local need = Price(n)
+  if need <= 0 then
+    return nil
+  end
+  local have = VRFW_Recruit.Wallet(CmPages.PriceOf(n)) or 0
+  local ic = {role = "requirement_item", ok = have >= need, have = have, need = need}
+  if (n.pay_element or 0) ~= 0 then
+    ic.elem = n.pay_element
+  elseif (n.spirit or 0) == 0 and SET ~= nil and (SET.rc or 0) ~= 0 then
+    ic.item = SET.rc
+  end
+  return {CmPages.PayUnit(n), ic}
+end
+
+-- the requirement plates of a player: the price first, then his requirements, at most 4 lines; what does not fit
+-- is counted on the last line ("+N")
+function CmPages.PlateRows(n, reqs)
+  local rows = {}
+  local price = CmPages.PricePlate(n)
+  if price ~= nil then
+    rows[1] = price
+  end
+  local left = 0
+  for _, r in ipairs(reqs) do
+    if #rows < 4 then
+      local _, ic, l = ReqRow(r)
+      rows[#rows + 1] = {l, ic}
+    else
+      left = left + 1
+    end
+  end
+  if left > 0 then
+    rows[4][1] = rows[4][1] .. " +" .. tostring(left)
+  end
+  return rows
+end
+
+-- the card; `plates` (a player's requirements, CmPages.ReqPlates rows): the header + 4 plates, then lines[5] / [6]
+-- (the price / the state) under them; without it the lines are the card's title rows
+local function Card(lines, face, icon, icons, plates)
   HideReqs()
   HideBust(L_BUSTICON, 0)
   local card = type(face) == "table" and Int(face.card) or 0
@@ -1658,16 +1786,28 @@ local function Card(lines, face, icon, icons)
       Hide(L_ICON, 0)
     end
   end
-  Quad(L_CARD, 0, "card_panel", INFO.CX, INFO.CY, INFO.W, INFO.H)
+  -- a requirement card with no line under its plates ends just under them (TOP .. BOTTOM)
+  local P = INFO.PLATES
+  if plates ~= nil and (lines[5] or "") == "" and (lines[6] or "") == "" then
+    Quad(L_CARD, 0, "card_panel", INFO.CX, (P.TOP + P.BOTTOM) / 2, INFO.W, P.BOTTOM - P.TOP)
+  else
+    Quad(L_CARD, 0, "card_panel", INFO.CX, INFO.CY, INFO.W, INFO.H)
+  end
   Tint(L_CARD, 0, INFO.TINT)        -- a darker blue than the panel: the rows stand out
   icons = icons or {}
-  for i = 0, N.CARDTXT - 1 do
+  local first = 0
+  if plates ~= nil then
+    CmPages.ReqPlates(plates)
+    first = 4
+  end
+  for i = first, 5 do
     local ic = icons[i + 1]
+    local y = plates ~= nil and INFO.PLATES.LINE_Y[i - 3] or INFO.YS[i + 1]
     if i < N.REQ then
-      RowIcon(i, ic, INFO.YS[i + 1])
+      RowIcon(i, ic, y)
     end
     local x = ic ~= nil and INFO.TEXT_X or INFO.ICON_X - INFO.ICON / 2
-    Line(L_CARDTXT, i, CmClip(lines[i + 1], INFO.CLIP), x, INFO.YS[i + 1],
+    Line(L_CARDTXT, i, CmClip(lines[i + 1], INFO.CLIP), x, y,
       (i == 0 and icons[1] == nil and lines[2] ~= nil and icon == nil and not model) and INFO.NAME_S or INFO.LINE_S)
   end
 end
@@ -1676,7 +1816,11 @@ local function PlayerCard(i)
   local n = MAP.nodes[i]
   if n.kind == "ghost" then
     -- a player of this team signed on another page: who he is and that page
-    Card({Fmt(T.SOLD_AT, (n.sold_at or "") ~= "" and n.sold_at or Text(T.UNKNOWN))}, n, nil)
+    local lines = {Fmt(T.SOLD_AT, (n.sold_at or "") ~= "" and n.sold_at or Text(T.UNKNOWN))}
+    if n.sold_map ~= nil and (n.sold_team or 0) ~= 0 then
+      lines[2] = Text(T.GO_HINT)
+    end
+    Card(lines, n, nil)
     return
   end
   local st = State(i)
@@ -1695,19 +1839,12 @@ local function PlayerCard(i)
       rows[#rows + 1] = {t, nil}
     end
     for _, r in ipairs(n.reqs or {}) do
-      local l, ic = ReqRow(r)
+      local _, ic, l = ReqRow(r)
       rows[#rows + 1] = {l, ic}
-    end
-    for k = 1, 4 do
-      if rows[k] ~= nil then
-        lines[k], icons[k] = rows[k][1], rows[k][2]
-      else
-        lines[k], icons[k] = ReqRow(nil)
-      end
     end
     lines[5] = Text(T.STORY_ONLY)
     lines[6] = st == "done" and state or ""
-    Card(lines, n, nil, icons)
+    Card(lines, n, nil, icons, {rows[1], rows[2], rows[3], rows[4]})
     return
   end
   if MAP.pitch then
@@ -1717,39 +1854,18 @@ local function PlayerCard(i)
     for _, r in ipairs(n.reqs or {}) do
       rows[#rows + 1] = r
     end
-    local tr = #rows < 4 and CmPages.OpenTrial(n) or nil
+    local tr = #rows < (Price(n) > 0 and 3 or 4) and CmPages.OpenTrial(n) or nil
     if tr ~= nil and tr ~= rows[1] then
       rows[#rows + 1] = tr
     end
-    for k = 1, 4 do
-      if rows[k] ~= nil then
-        lines[k], icons[k] = ReqRow(rows[k])
-      else
-        lines[k], icons[k] = "", nil
-      end
-    end
+    -- the price is the first plate (owner 2026-10-29: no price line under the plates)
     lines[5], lines[6] = "", ""
-    Card(lines, n, nil, icons)
-    -- the price line: the check box (marked once he is in the club), the spirit's name, its element icon, the price
-    -- and what the player has
-    CmPages.PriceLine(st == "done", CmPages.PayUnit(n), (n.pay_element or 0) ~= 0 and n.pay_element or nil,
-      Fmt(T.REQ_PAY, Price(n), VRFW_Recruit.Wallet(CmPages.PriceOf(n))), INFO.YS[5])
+    Card(lines, n, nil, icons, CmPages.PlateRows(n, rows))
     return
   end
-  for k = 1, 4 do
-    lines[k], icons[k] = ReqRow(n.reqs and n.reqs[k])
-  end
-  if n.reqs ~= nil and #n.reqs > 4 then
-    lines[4] = lines[4] .. " +" .. tostring(#n.reqs - 4)
-  end
-  lines[5] = tostring(Price(n)) .. " " .. CmPages.PayName(n)
-  if (n.spirit or 0) ~= 0 then
-    icons[5] = {role = "requirement_item"}
-  else
-    icons[5] = (SET.rc or 0) ~= 0 and {item = SET.rc, role = "requirement_item"} or nil
-  end
-  lines[6] = state
-  Card(lines, n, nil, icons)
+  -- the price is the first plate, the state under the plates
+  lines[5], lines[6] = state, ""
+  Card(lines, n, nil, icons, CmPages.PlateRows(n, n.reqs or {}))
 end
 
 local function TileCard(i)
@@ -1856,17 +1972,6 @@ local function RowPlatesOff()
   funcLuaMenuCommand(C.LAYER_VISIBLE, L_CURSOR, 0, false)
 end
 
-local function ZonePos(z, k)
-  local zz = MAP.zones[z]
-  if zz.x >= 0 and zz.y >= 0 then
-    local s, x0, y0 = AreaFit(1920, 1080)     -- declared on the 1920 x 1080 background, drawn fitted into AREA
-    return x0 + zz.x * s, y0 + zz.y * s
-  end
-  local rows = math.ceil(#MAP.zones / PIN.COLS)       -- the rows fit into AREA's height
-  local dy = rows > 1 and math.min(PIN.DY, (AREA.Y1 - PIN.PLATE - PIN.Y0) / (rows - 1)) or PIN.DY
-  return PIN.X0 + ((k - 1) % PIN.COLS) * PIN.DX, PIN.Y0 + math.floor((k - 1) / PIN.COLS) * dy
-end
-
 local function ZoneFace(z)
   local first = nil
   for _, i in ipairs(ZoneMembers(z)) do
@@ -1904,7 +2009,11 @@ local function DrawZones()
   end
   Hide(L_UI, 0)
 end
+-- ===== EVT contact_map drawing END =====
 
+-- ===== EVT contact_map team pages BEGIN =====
+-- vrfw_contact_map_menu, part 3 of 7 (graft contact_map appends it to vrfw_contact_map_menu.lua; one chunk):
+-- the team pages of a map ([VRFW.ContactMap.Teams], functions of CmPages).
 -- ---- team pages ([VRFW.ContactMap.Teams]): the pitch, the price per player, «signed once», «!», trials, «Dimitir»
 -- (functions of the global CmPages: the main chunk is at its 200 locals)
 CmPages.PITCH = {X0 = 120, X1 = 960, Y0 = 190, Y1 = 960, BENCH_X = 1110, BENCH_Y0 = 200, BENCH_DY = 84, PLATE = 96,
@@ -1930,7 +2039,7 @@ CmPages.CARD = {HW = 104, HH = 80,      -- half the size of a lineup card on the
                 NEW_TAG = 40}                     -- the «!» badges use the tag pool from this index (the borders below it)
 -- the retail card selection (soccer_formation_menu_inc): the card's own «Focus» animation (its cyan frame) and the
 -- cursor arrow (cmn05_01_cursor) at the card's left; cur = {layer, idx, priority} of the focused card
-CmPages.FOCUS = {ANIM = 2734777837 --[[Focus]], TYPE = 973515837, PLAY = 3781155141 --[[CMND_PLAY_ANIME_TYPE]],
+CmPages.FOCUS = {ANIM = 2734777837 --[[Focus]], TYPE = 973515837, PLAY = 3781155141,
                  cur = nil,
                  -- the leader card's number primitives' dummies (_num_chr_dmy_l01 / l02 / s01 / s02): never drawn here
                  NUMBERS = {1451641049, 3482261859, 1107078292, 3639999790}}
@@ -1941,7 +2050,7 @@ CmPages.FORM_SPAN = {TOP = 3984567298 --[[_pos_formation01_lu]], BOTTOM = 227852
 
 -- a locator of a lineup layer (layer-local, y up): x, y; nil when the layer does not have it
 function CmPages.FormPose(layer, joint)
-  local ok, x, y, _, found = pcall(funcLuaMenuCommand, 2373227714 --[[CMND_GET_MESH_POSE]], layer, 0, joint)
+  local ok, x, y, _, found = pcall(funcLuaMenuCommand, 2373227714, layer, 0, joint)
   if ok and found ~= false and type(x) == "number" and type(y) == "number" then
     return x, y
   end
@@ -1979,6 +2088,12 @@ function CmPages.SetupFormLayer(a1, a2)
   local F = CmPages.FORM
   if a1 == F.FRAME and type(SetFormationLayer) == "function" then
     pcall(SetFormationLayer, a1)
+    -- the team banner shows no team level («Nv.» and its digits)
+    local HR = type(VRFW_UI) == "table" and VRFW_UI.HeaderRow or nil
+    if HR ~= nil then
+      pcall(HR.LevelOff, a1, a2)
+      pcall(funcLuaMenuCommand, C.NODE_VISIBLE, a1, HR.LEVEL_GROUP, false, a2 or 0)
+    end
   elseif a1 == F.CARD or a1 == F.LEADER then
     pcall(funcLuaMenuCommand, 4233535095, a1, a2, false)
     pcall(funcLuaMenuCommand, 2628464193, a1, a2, 550)
@@ -2085,7 +2200,7 @@ function CmPages.Lineup(z)
         for _, mesh in ipairs(CmPages.FOCUS.NUMBERS) do
           pcall(funcLuaMenuCommand, C.MESH_VISIBLE, F.LEADER, mesh, false, 0)
         end
-        pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA]], F.LEADER, 0, 0,
+        pcall(funcLuaMenuCommand, 4231609516, F.LEADER, 0, 0,
           sold[Int(param)] and 1 or CmPages.PITCH.GHOST_ALPHA)
         F.coach = true
       elseif okp and oks and type(slot) == "number" and slot < 19 and slot < ncard then
@@ -2093,7 +2208,7 @@ function CmPages.Lineup(z)
         pcall(UpdateMemberCharaIconInfoByChrParamId, param, slot, form, kit, lv[Int(param)] or 1, num, uni, 4)
         pcall(funcLuaMenuCommand, C.LAYER_VISIBLE, F.CARD, slot, true)
         -- a member sold on another page (or not at all) stays on the lineup, translucent
-        pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA]], F.CARD, slot, 0,
+        pcall(funcLuaMenuCommand, 4231609516, F.CARD, slot, 0,
           sold[Int(param)] and 1 or CmPages.PITCH.GHOST_ALPHA)
       end
     end
@@ -2197,7 +2312,7 @@ function CmPages.FocusCard(layer, idx, x, y, hw)
   if Fo.cur == nil then
     local okp, prio = pcall(funcLuaMenuCommand, 1018283794 --[[the instance's draw priority]], layer, idx)
     Fo.cur = {layer, idx, (okp and type(prio) == "number") and prio or 652}
-    pcall(funcLuaMenuCommand, Fo.PLAY, layer, idx, Fo.ANIM, 0, Fo.TYPE)
+    -- no «Focus» animation: it keeps the retail white frame on every card the cursor has left; the frame is the sprite and colour CardBorder sets
     pcall(funcLuaMenuCommand, 1491630496 --[[draw priority]], layer, idx, Fo.cur[3] + 30, true)
   end
   -- the arrow: placed on the screen as the list rows place it (no attach: the input anchor re-attaches the cursor)
@@ -2231,7 +2346,7 @@ end
 -- the width in px of `s` on a text instance at scale 1: the game's measure (CMND_GET_MENU_TEXT_RECT_SIZE, as the
 -- retail SetupLockIconPos), else a per-character estimate
 function CmPages.TextWidth(layer, idx, s)
-  local ok, w = pcall(funcLuaMenuCommand, 3549540977 --[[CMND_GET_MENU_TEXT_RECT_SIZE]], layer, idx, TEXT_ON, s)
+  local ok, w = pcall(funcLuaMenuCommand, 3549540977, layer, idx, TEXT_ON, s)
   if ok and type(w) == "number" and w > 0 then
     return w
   end
@@ -2240,39 +2355,6 @@ function CmPages.TextWidth(layer, idx, s)
     n = n + 1
   end
   return n * INFO.CHAR_W
-end
-
--- a team page's price line at row y: the check box at the icon column, the spirit's name, the element icon right of
--- the name (placed from the name's measured width), then `rest` (the price and what the player has)
-function CmPages.PriceLine(on, unit, elem, rest, y)
-  local s, sz, gap = INFO.LINE_S, INFO.ICON, INFO.GAP
-  CmPages.OwnedBox(on, INFO.ICON_X, y)
-  Line(L_CARDTXT, 4, unit, INFO.TEXT_X, y, s)
-  local x = INFO.TEXT_X + CmPages.TextWidth(L_CARDTXT, 4, unit) * s + gap
-  local tc = elem ~= nil and ELEM_ICON[elem] ~= nil and Tex(COMMON_TEX) or nil
-  if tc then
-    QuadTex(L_REQ, 4, tc, CRC32(ELEM_ICON[elem]), x + sz / 2, y, sz, sz)
-    x = x + sz + gap
-  else
-    Hide(L_REQ, 4)
-  end
-  Line(L_CARDTXT, 5, rest, x, y, s)
-end
-
--- the game's check box at (x, y), its mark on when `on`; hidden while its atlas loads (Step redraws)
-function CmPages.OwnedBox(on, x, y)
-  local tc = Tex(REQ.CHECK.TEX)
-  if not tc then
-    Hide(L_REQ, REQ.CHECK.BOX_IX)
-    Hide(L_REQ, REQ.CHECK.MARK_IX)
-    return
-  end
-  QuadTex(L_REQ, REQ.CHECK.BOX_IX, tc, REQ.CHECK.BOX, x, y, REQ.CHECK.SIZE, REQ.CHECK.SIZE)
-  if on then
-    QuadTex(L_REQ, REQ.CHECK.MARK_IX, tc, REQ.CHECK.MARK, x + 2, y - 4, REQ.CHECK.MARK_SIZE, REQ.CHECK.MARK_SIZE)
-  else
-    Hide(L_REQ, REQ.CHECK.MARK_IX)
-  end
 end
 
 function CmPages.PayName(n)
@@ -2406,7 +2488,7 @@ function CmPages.DrawPitch()
       if not CmPages.IsBigCard(layer, idx) then
         hw, hh = B.SMALL_HW, B.SMALL_HH
       end
-      pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA]], layer, idx, 0,
+      pcall(funcLuaMenuCommand, 4231609516, layer, idx, 0,
         n.kind == "ghost" and P.GHOST_ALPHA or 1)
       Hide(L_TILE, k)
       Hide(L_FACE, k)
@@ -2565,7 +2647,7 @@ function CmPages.Trial()
     return
   end
   local ok, started = pcall(funcLuaCommand, C.MENU_CALL, HUB.menu or 0, "VRFW_RecruitTrial", r.friendly, r.game,
-    r.difficulty or 1, r.tag or 0, r.sub or 0, r.objective or 0)
+    r.difficulty or 1, r.tag or 0, r.sub or 0, r.objective or 0, r.friendly_team or "")
   Log("trial", tostring(r.friendly), r.game, r.tag, r.sub, tostring(ok), tostring(started))
   if not ok or started == false then
     funcLuaCommand(C.SE, SE_NG)
@@ -2601,7 +2683,11 @@ function CmPages.Release()
   CmPages.Recruited()
   Message(Fmt(T.RELEASE_DONE, n.name))
 end
+-- ===== EVT contact_map team pages END =====
 
+-- ===== EVT contact_map views BEGIN =====
+-- vrfw_contact_map_menu, part 4 of 7 (graft contact_map appends it to vrfw_contact_map_menu.lua; one chunk):
+-- drawing the grid, network and shop views, the title and the button guide (DrawAll).
 local function GridPage()
   return math.floor((focus.grid - 1) / (GRID.COLS * GRID.ROWS))
 end
@@ -2984,7 +3070,11 @@ local function DrawAll()
   end
   funcLuaMenuCommand(C.LAYER_VISIBLE, L_GUIDE_LINE, 0, false)
 end
+-- ===== EVT contact_map views END =====
 
+-- ===== EVT contact_map navigation BEGIN =====
+-- vrfw_contact_map_menu, part 5 of 7 (graft contact_map appends it to vrfw_contact_map_menu.lua; one chunk):
+-- opening and leaving views, moving the focus (keys, stick).
 -- ---- navigation -----------------------------------------------------------------------------------------------------
 local function SetMode(m)
   mode = m
@@ -3084,12 +3174,13 @@ local function OpenMap(i)
   end
   CmPages.own = {}
   CmPages.LoadSeen()
-  if #MAP.zones > 0 and not CmPages.direct and CmPages.HideLockedZones() == 0 then
+  if #MAP.zones > 0 and not CmPages.direct and not CmPages.going and CmPages.HideLockedZones() == 0 then
     MAP = nil
     funcLuaCommand(C.SE, SE_NG)
     Message(Text(T.TEAMS_NONE))
     return
   end
+  CmPages.all = CmPages.going == true       -- every page kept (a ghost's «Go»: his home page may still be locked)
   LoadRecord()
   CmPages.WaiveSigned()
   if MAP.kind == "network" then
@@ -3130,7 +3221,7 @@ end
 
 -- opened on one team page: the page of the match the hub chose (CMND_VRFW_CONTACT_FIND)
 function CmPages.OpenDirect()
-  local f = Call(93238014 --[[CMND_VRFW_CONTACT_FIND]], SET.key, CmPages.direct)
+  local f = Call(93238014, SET.key, CmPages.direct)
   if type(f) ~= "table" or f.map == nil then
     Log("direct", "no team page for game", CmPages.direct)
     return false
@@ -3146,6 +3237,90 @@ function CmPages.OpenDirect()
     end
   end
   return false
+end
+
+-- a team page by its map and team (zone.team): the map opened again (all = its locked pages kept), then that page.
+-- false: no such map or page (the screen may be on that map's list then)
+function CmPages.OpenPage(map_key, team, all)
+  for mi, m in ipairs(SET.maps) do
+    if m.key == map_key then
+      CmPages.going = all
+      OpenMap(mi)
+      CmPages.going = false
+      if MAP == nil or MAP.key ~= map_key then
+        return false
+      end
+      for z, zz in ipairs(MAP.zones) do
+        if zz.team == team then
+          if mode ~= "grid" or zone ~= z then
+            OpenZone(z)
+          end
+          return true
+        end
+      end
+      return false
+    end
+  end
+  return false
+end
+
+-- a ghost (a starter of this page signed on another page): the game's yes / no window with «Go» / «Close» (labels by
+-- the framework's general window, parameters vrfw_window_yes_text / _no_text). Go opens his home page on this screen
+-- (from the recruit data: the node's sold_map / sold_team), the cursor on him; Back returns here (CmPages.trail).
+function CmPages.GhostAsk(i)
+  local n = MAP.nodes[i]
+  local text = Fmt(T.SOLD_AT, (n.sold_at or "") ~= "" and n.sold_at or Text(T.UNKNOWN))
+  local from_team = MAP.zones[zone] and MAP.zones[zone].team or nil
+  if n.sold_map == nil or (n.sold_team or 0) == 0 or from_team == nil then
+    funcLuaCommand(C.SE, SE_NG)
+    Message(text)
+    return
+  end
+  funcLuaCommand(C.SE, SE_DECIDE)
+  funcLuaCommand(C.P_SET, 4261573565 --[[vrfw_window_yes_text]], 0, T.GO, 1)
+  funcLuaCommand(C.P_SET, 1121728934 --[[vrfw_window_no_text]], 0, T.CLOSE, 1)
+  local go = Ask(text)
+  funcLuaCommand(C.P_CLEAR, 4261573565)
+  funcLuaCommand(C.P_CLEAR, 1121728934)
+  if not go then
+    return
+  end
+  local from = {map = MAP.key, team = from_team, grid = focus.grid, all = CmPages.all}
+  if not CmPages.OpenPage(n.sold_map, n.sold_team, true) then
+    Log("go", "no page", n.sold_map, n.sold_team, "for card", n.card)
+    CmPages.OpenPage(from.map, from.team, from.all)
+    focus.grid = from.grid
+    DrawAll()
+    funcLuaCommand(C.SE, SE_NG)
+    Message(text)
+    return
+  end
+  CmPages.trail[#CmPages.trail + 1] = from
+  for g, k in ipairs(members) do
+    local m = MAP.nodes[k]
+    local same = m.kind == "player" and m.card == n.card
+    for _, c in ipairs(m.kind == "player" and m.cards or {}) do
+      same = same or c == n.card
+    end
+    if same then
+      focus.grid = g
+      break
+    end
+  end
+  DrawAll()
+  Log("go", "card", n.card, "to", n.sold_map, n.sold_team, "from", from.map, from.team, "depth", #CmPages.trail)
+end
+
+-- Back on a page «Go» opened: the page the player came from, the cursor where it was. false: none (a normal Back)
+function CmPages.GoBack()
+  local from = table.remove(CmPages.trail)
+  if from == nil or not CmPages.OpenPage(from.map, from.team, from.all) then
+    return false
+  end
+  focus.grid = from.grid
+  DrawAll()
+  Log("go back", from.map, from.team, "depth", #CmPages.trail)
+  return true
 end
 
 local function OpenShop()
@@ -3226,6 +3401,9 @@ CmPages.Recruited = function()
 end
 
 local function Back()
+  if mode == "grid" and #CmPages.trail > 0 and CmPages.GoBack() then
+    return
+  end
   if CmPages.direct and mode ~= "shop" then
     Leave(0)                          -- opened on one team page by its hub: back to the hub
     return
@@ -3434,7 +3612,11 @@ function KEYS.Move(dx, dy)
     MoveNear(dx, dy)
   end
 end
+-- ===== EVT contact_map navigation END =====
 
+-- ===== EVT contact_map actions BEGIN =====
+-- vrfw_contact_map_menu, part 6 of 7 (graft contact_map appends it to vrfw_contact_map_menu.lua; one chunk):
+-- signing, buying, Accept, and the network view's zoom, pan and pointer.
 -- ---- actions --------------------------------------------------------------------------------------------------------
 local function Recruit(i)
   local n = MAP.nodes[i]
@@ -3537,8 +3719,7 @@ local function Decide()
   elseif mode == "grid" then
     local i = members[focus.grid]
     if i ~= nil and MAP.nodes[i].kind == "ghost" then
-      funcLuaCommand(C.SE, SE_NG)       -- signed on another page, never here
-      Message(Fmt(T.SOLD_AT, (MAP.nodes[i].sold_at or "") ~= "" and MAP.nodes[i].sold_at or Text(T.UNKNOWN)))
+      CmPages.GhostAsk(i)               -- signed on another page, never here: «Go» opens that page
     elseif i ~= nil then
       Recruit(i)
     end
@@ -3678,7 +3859,11 @@ local function PollPointer()
     CmNetZoom(ev.wheel < 0 and NET.WHEEL or 1 / NET.WHEEL)   -- wheel up = zoom in (the target: eased)
   end
 end
+-- ===== EVT contact_map actions END =====
 
+-- ===== EVT contact_map callbacks BEGIN =====
+-- vrfw_contact_map_menu, part 7 of 7 (graft contact_map appends it to vrfw_contact_map_menu.lua; one chunk):
+-- the engine callbacks (OnInit, OnSetupLayer, Step, ...).
 -- ---- callbacks ------------------------------------------------------------------------------------------------------
 function OnInit()
   OT.f, OT.lines, OT.setup, OT.ev = 0, 0, {}, {}
@@ -3701,7 +3886,10 @@ function OnInit()
     Log("art: plain fallback (vrfw_plain) for", #plain, "role(s):", table.concat(plain, " "))
   end
   ready, open_guard, SET, MAP, mode = false, 20, nil, nil, "list"
-  HUB.menu, HUB.on, BUST.key, BUST.wait = nil, false, {}, {}
+  for layer in pairs(BUST.key) do
+    VRFW_FaceIcon.Forget(layer)   -- the busts are built again from scratch
+  end
+  HUB.menu, HUB.on, BUST.key, BUST.chara = nil, false, {}, {}
   if funcLuaCommand(C.P_EXISTS, KEY_PARENT) then
     local parent = Int(funcLuaCommand(C.P_GET, KEY_PARENT))
     funcLuaCommand(C.P_CLEAR, KEY_PARENT)
@@ -3711,7 +3899,7 @@ function OnInit()
   -- the body types the model's pose has (the framework reads menu_chara_model_pose_config): a player of another body
   -- type gets no model (the pose command would crash the game, see evt_menu_kit.lua#CharaModel)
   local bodies = nil
-  local list = Call(2091146409 --[[CMND_VRFW_MODEL_POSE_BODIES]], 2328706751 --[[the retail shop pose]])
+  local list = Call(2091146409, 2328706751 --[[the retail shop pose]])
   if type(list) == "table" and #list > 0 then
     bodies = {}
     for _, b in ipairs(list) do
@@ -3721,12 +3909,39 @@ function OnInit()
   Log("model pose bodies", type(list) == "table" and #list or -1)
   -- each player in his own team's kit (everybody wore the generic Raimon kit): the framework
   -- derives it per card from the data (CMND_VRFW_CONTACT_KIT); 0 = the default
-  local function Kit(pid)
-    local r = Call(1949693836 --[[CMND_VRFW_CONTACT_KIT]], pid)
-    if type(r) == "table" and type(r.uniform) == "number" then
-      return r.uniform, tonumber(r.flags) or 0
+  -- a player of the shown team page (slots 0-15) wears that team's own kit; staff keep theirs
+  local function TeamKit(pid)
+    local team = CmPages.FORM.filled
+    if type(team) ~= "number" or team == 0 then
+      return nil
     end
-    return 0, 0
+    local okc, cnt = funcLuaCommand(2151743654, team, 8)
+    for m = 0, ((okc and type(cnt) == "number") and cnt or 0) - 1 do
+      local okp, param = funcLuaCommand(34355761, team, m, 0)
+      if okp and Int(param) == Int(pid) then
+        local _, slot = funcLuaCommand(34355761, team, m, 7)
+        if type(slot) == "number" and slot < 16 then
+          local _, uni = funcLuaCommand(2151743654, team, 4)
+          if type(uni) == "number" and uni ~= 0 then
+            return uni
+          end
+        end
+        return nil
+      end
+    end
+    return nil
+  end
+  local function Kit(pid)
+    local r = Call(1949693836, pid)
+    local u, f = 0, 0
+    if type(r) == "table" and type(r.uniform) == "number" then
+      u, f = r.uniform, tonumber(r.flags) or 0
+    end
+    local ok, tu = pcall(TeamKit, pid)
+    if ok and tu ~= nil then
+      u = tu
+    end
+    return u, f
   end
   Model = EVT_CharaModelNew(L_MODEL, {kit = Kit, shadow = L_SHADOW, log = Log, pose = 2328706751, bodies = bodies})
   -- (RS turned the 3D player): the shop list base's model control (the right stick turns the model)
@@ -3801,6 +4016,7 @@ function OnInit()
   end
   VRFW_Recruit.Refresh()                        -- the club counts of the element / position requirements, fresh
   CmPages.direct = nil
+  CmPages.trail, CmPages.going, CmPages.all = {}, false, false
   if funcLuaCommand(C.P_EXISTS, 3811836272 --[[vrfw_contact_game]]) then
     CmPages.direct = Int(funcLuaCommand(C.P_GET, 3811836272))
     funcLuaCommand(C.P_CLEAR, 3811836272)
@@ -3873,6 +4089,16 @@ local function OpenOwnLayers()
   end
   funcLuaMenuCommand(C.OPEN_LAYER, L_REQ, REQ.CHECK.BOX_IX)    -- the team page's check box
   funcLuaMenuCommand(C.OPEN_LAYER, L_REQ, REQ.CHECK.MARK_IX)
+  local P = INFO.PLATES                                           -- the requirement card's plates, bars, header
+  for i = P.FILL_IX, P.FILL_IX + 3 do
+    funcLuaMenuCommand(C.OPEN_LAYER, L_REQ, i)
+  end
+  for i = 0, P.CHIP_IX do
+    funcLuaMenuCommand(C.OPEN_LAYER, P.L_PLATE, i)
+  end
+  for i = 0, 3 do
+    funcLuaMenuCommand(C.OPEN_LAYER, P.L_BAR, i)
+  end
 end
 
 function OnSetupLayer(a1, a2)
@@ -3903,7 +4129,8 @@ function OnSetupLayer(a1, a2)
   elseif a1 == L_RETAIL_BG then
     funcLuaMenuCommand(C.LAYER_VISIBLE, a1, a2, false)
   elseif a1 == L_BACK or a1 == L_ZONEART or a1 == L_LINE or a1 == L_TILE or a1 == L_FACE or a1 == L_TAG or a1 == L_UI or a1 == L_CARD
-      or a1 == L_ICON or a1 == L_REQ or a1 == L_REQOK or a1 == L_BUST or a1 == L_BUSTICON then
+      or a1 == L_ICON or a1 == L_REQ or a1 == L_REQOK or a1 == L_BUST or a1 == L_BUSTICON
+      or a1 == INFO.PLATES.L_PLATE or a1 == INFO.PLATES.L_BAR then
     Hide(a1, a2)                -- DrawAll draws what is used when the anchor opens
     if a1 == L_TILE then
       DropEngineZone(a1, a2)
@@ -4094,7 +4321,8 @@ local function OtStep()
       [L_TITLE] = "title", [L_CARDTXT] = "cardtxt", [L_BUST] = "bust", [L_BUSTICON] = "busticon", [L_REQ] = "req",
       [L_REQOK] = "reqok", [L_BACK] = "back", [L_ZONEART] = "zoneart", [L_CARD] = "card", [L_ICON] = "icon",
       [L_PANEL] = "panel", [L_MODEL] = "model", [L_SHADOW] = "shadow", [L_STATUS] = "status", [L_SLANT] = "slant",
-      [L_PPROW] = "pprow", [L_ROW] = "row", [L_HEADER] = "header"}
+      [L_PPROW] = "pprow", [L_ROW] = "row", [L_HEADER] = "header", [INFO.PLATES.L_PLATE] = "reqplate",
+      [INFO.PLATES.L_BAR] = "reqbar"}
   end
   local parts = {}
   for layer, n in pairs(OT.setup) do
@@ -4203,3 +4431,4 @@ function Step()
     end
   end
 end
+-- ===== EVT contact_map callbacks END =====

@@ -1,0 +1,26 @@
+schema = "VRFW.shop/2"
+
+# Synergies Reworked › «Los cuatro magníficos» in the retail synergy shop (0x5B032CEA, the Mercado de fichas that sells
+# the 35 synergies for the cards of their members: here 10 cards of each of the four, rarity 4).
+[[edit]]
+target = "0x5B032CEA"
+  [[edit.entry]]
+  item = "four_magnificent"   # the item of this mod (the engine numbers mod items with the mod's internal id: the bare name resolves)
+  stock = 1
+  costs = [
+    { currency = "season_autumn_card", count = 10 },
+    { currency = "season_summer_card", count = 10 },
+    { currency = "season_spring_card", count = 10 },
+    { currency = "season_winter_card", count = 10 },
+  ]
+
+# Inazuma Fantasy's training shop also sells it, at the price of every other synergy there (1 Punto de pasión, stock 1); only
+# while Inazuma Fantasy is active (internal ids, as the other mods' rows for that shop).
+[[edit]]
+target = "inazuma_fantasy_2.training_shop"
+if_mod = "inazuma_fantasy_2"
+  [[edit.entry]]
+  item = "four_magnificent"
+  price = 1
+  currency = "tk_bb000001"
+  stock = 1

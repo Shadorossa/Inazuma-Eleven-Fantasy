@@ -25,18 +25,14 @@ local V = require "lib/chara_view"
 
 CharacterReforged = CharacterReforged or {}
 
-local function info(...) VRFW.log("stats:", ...) end
-local function warn(...) VRFW.warn("stats:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("stats")
 
 local ERR_BAD_ARGS = -1
 local READY = false
 local PLAYERS, CURVE = {}, nil
 
-local function num(v)
-  if type(v) == "number" then return v end
-  if type(v) == "string" then return tonumber(v) end
-  return nil
-end
+local function num(v) return VRFW.value.num(v, nil) end
 
 local function set_state(k, v)
   local ok, e = pcall(VRFW.state.set, k, v)

@@ -35,8 +35,6 @@ do
   Board.AVATAR_DENIED = -4                           -- the refusal code of the avatar (CMND_CHARACTERREFORGED_CREATE_REFUSAL)
   Board.PIECE_INFO = 4147077179                      -- (piece) -> layerIdx, posIdx, skillId, selectedSkillId, category, … (GetEffectPieceInfoFromMenu)
   Board.AURA_CATEGORY = 1                            -- an aura piece of the board
-  Board.PARAM_HAS = 2947612279                       -- parameter store: has (key)
-  Board.PARAM_GET = 3522198769                       -- parameter store: get (key)
   Board.PARAM_CHARA = 4161869490                     -- the player the team dock passes (OnInit reads and clears it)
   Board.ITEM_NUM = 2011560392                        -- CMND_GET_ITEM_NUM (item) -> copies owned
   Board.ADD_ITEM = 1897915498                        -- CMND_ADD_ITEM_ONLY (item, count, flag) -> inventory handle
@@ -51,8 +49,6 @@ do
   -- when its parent is not the passive inherit menu; read with 3185911119, written with 2565779025)
   -- the partner's moves (1.7.22): the bank picker reads the base and the row (bank_create_moves_hooks.lua: Aceptar on a
   -- card -> his special moves on the plate -> the system's confirmation) and writes the picked moves back
-  Board.PARAM_DELETE = 3363400568                     -- parameter store: delete (key)
-  Board.PARAM_SET = 3860611758                        -- parameter store: set (key, 0, value, 1)
   Board.KEY_BASE = 2918576166                         -- character_reforged_create_base: the base (the bank reads and clears it)
   Board.KEY_EARLY = 1743709088                        -- character_reforged_create_bank_early: the list already opened the bank
   Board.KEY_ROW = 416963278                           -- character_reforged_create_row: the system's row
@@ -78,8 +74,8 @@ do
   -- an aura piece is about to list its auras: every system's «create» item listed, a free copy owned
   function Board.BeforeList(hdl, piece)
     Board.aura = false
-    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_LIST_BASE)
-    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_EARLY)     -- a flag left by an earlier list is never this one's
+    VRFW_Param.Clear(Board.KEY_LIST_BASE)
+    VRFW_Param.Clear(Board.KEY_EARLY)     -- a flag left by an earlier list is never this one's
     if type(piece) ~= "number" or piece < 0 or type(hdl) ~= "number" or hdl == 0 then
       return
     end
@@ -93,7 +89,7 @@ do
       return                                         -- no system declared, or Character Reforged's script is not running
     end
     Board.aura = true
-    funcLuaCommand(Board.PARAM_SET, Board.KEY_LIST_BASE, 0, hdl, 1)
+    VRFW_Param.Set(Board.KEY_LIST_BASE, hdl)
     Board.Withhold(hdl)                              -- rows this player may not be the base of: not listed
     for i = 1, count do
       local create = answer[i + 1]
@@ -131,12 +127,12 @@ do
   -- before the bank opens: the base and the row for its move step (a system without `moves` leaves the bank retail)
   function Board.BankKeys(hdl, row)
     for _, key in ipairs(Board.KEY_MOVES) do
-      funcLuaCommand(Board.PARAM_DELETE, key)
+      VRFW_Param.Clear(key)
     end
-    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_BASE)
-    funcLuaCommand(Board.PARAM_SET, Board.KEY_BASE, 0, hdl, 1)
-    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_ROW)
-    funcLuaCommand(Board.PARAM_SET, Board.KEY_ROW, 0, row, 1)
+    VRFW_Param.Clear(Board.KEY_BASE)
+    VRFW_Param.Set(Board.KEY_BASE, hdl)
+    VRFW_Param.Clear(Board.KEY_ROW)
+    VRFW_Param.Set(Board.KEY_ROW, row)
   end
 
   -- after the bank closed: the picked moves (0 = none); every key of this flow cleared
@@ -144,14 +140,14 @@ do
     local moves = {}
     for i, key in ipairs(Board.KEY_MOVES) do
       local move = 0
-      if funcLuaCommand(Board.PARAM_HAS, key) == true then
-        move = funcLuaCommand(Board.PARAM_GET, key)
+      if VRFW_Param.Has(key) then
+        move = VRFW_Param.Get(key)
       end
       moves[i] = type(move) == "number" and move or 0
-      funcLuaCommand(Board.PARAM_DELETE, key)
+      VRFW_Param.Clear(key)
     end
-    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_BASE)
-    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_ROW)
+    VRFW_Param.Clear(Board.KEY_BASE)
+    VRFW_Param.Clear(Board.KEY_ROW)
     return moves[1], moves[2]
   end
 
@@ -185,7 +181,7 @@ do
     end
     Board.aura = false
     funcLuaCommand(Board.FLAG_SET, Board.FLAG, 0)
-    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_LIST_BASE)
+    VRFW_Param.Clear(Board.KEY_LIST_BASE)
     Board.Withhold(nil)
     local row, slot, store = funcLuaCommand(Board.PICKED, hdl)
     if type(row) ~= "number" or row <= 0 or type(slot) ~= "number" or slot < 0 then
@@ -195,8 +191,8 @@ do
     Board.Log("2 picked", "row", row, "slot", slot, "store", store)
     local plate_before = funcLuaCommand(Board.EXIST, Board.PLATE_MENU) == true
     -- the list opened the bank itself (CharacterReforged.CreateCard.OpenBankEarly): only wait for it
-    local early = funcLuaCommand(Board.PARAM_HAS, Board.KEY_EARLY) == true
-    funcLuaCommand(Board.PARAM_DELETE, Board.KEY_EARLY)
+    local early = VRFW_Param.Has(Board.KEY_EARLY)
+    VRFW_Param.Clear(Board.KEY_EARLY)
     -- the avatar for a system whose rules say avatar_may_pair = false: never created, whatever route placed the row
     local avatar_may_pair = select(6, funcLuaCommand(Board.MOVES, row))
     local denied = avatar_may_pair == false and funcLuaCommand(Board.IS_AVATAR, hdl) == true
@@ -276,8 +272,8 @@ do
     return function(...)
       Board.chara, Board.piece, Board.aura = nil, -1, false
       pcall(function()
-        if funcLuaCommand(Board.PARAM_HAS, Board.PARAM_CHARA) == true then
-          Board.chara = funcLuaCommand(Board.PARAM_GET, Board.PARAM_CHARA)
+        if VRFW_Param.Has(Board.PARAM_CHARA) then
+          Board.chara = VRFW_Param.Get(Board.PARAM_CHARA)
         end
       end)
       return previous(...)

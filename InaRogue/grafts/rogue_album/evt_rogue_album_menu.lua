@@ -30,55 +30,79 @@ INCLUDE("LUA_SOCCER_FORMATION_MENU_INC")      -- NameSetting_CharaCardForSoccer 
 
 local G = {BX = 40, BY = 90, BW = 1160, BH = 826, LX = 64, RX = 620, PY = 102, PW = 556, PH = 802, SPINE = 620, ROW0 = 116, ROW_H = 108, ROWS = 7, COLS = 3, SX0 = 58, SDX = 166, SW = 108, SH = 97, SDY = 5, STRIP = 16, CARD_S = 0.7, CARD_W = 154, CARD_H = 116, PLX = 26, PLW = 504, PLH = 60, PLY = 24, EMX = 60, EMS = 76, EMY = 54, HNX = 110, HCX = 438, HTY = 54, PNY = 889, Q = 36, TXT_H = 68, TXT_S_NUM = 0.44, TXT_S_HDR = 0.72, TXT_S_CNT = 0.6, TXT_S_PAGE = 0.46, GLOW_W = 124, GLOW_H = 97, WIN_X = 960, WIN_Y = 530, FLIP_FRAMES = 18, IX = 1240, IY = 90, IW = 640, IH = 826, I_PAD = 64, I_NAME_W = 560, I_NAME_H = 85, I_NAME_Y = 66, I_CARD_X = 194, I_CARD_Y = 248, PANEL_S = 2, I_GX1 = 425, I_GX2 = 545, I_GY1 = 187, I_GY2 = 309, I_BOX_W = 110, I_BOX_H = 110, I_POS_W = 84, I_POS_H = 48, I_ELEM_S = 52, I_CLUB_S = 72, I_UNK_S = 48, I_OL = 3, I_ROW_Y = 452, I_ROW_H = 96, I_R1_W = 172, I_R1_DX = 194, I_ROW2_Y = 572, I_R2_W = 250, I_R2_DX = 136, I_LBL_DY = -24, I_NUM_DY = 16, TXT_S_ITITLE = 0.8, TXT_S_ILBL = 0.5, TXT_S_INUM = 1.2, TXT_S_IVAL = 0.85, TXT_EM = 34.7}
 
--- ---- texts: menu_text rows (9 languages, rogue_album_book_build.py TEXTS); the Spanish literal is the fallback ------
+-- ---- texts: InaRogue text\rows\menu_text.toml (9 languages) ----------------------------------------------------
 local TXT = {
-  title = {3060551858, "ÁLBUM"},
-  guide = {1472524268, "Álbum: {1} / {2} ({3} %)"},
-  order_fmt = {3566418499, "Orden: {1}"},
-  orders = {{4025622523, "Equipos"}, {2566205293, "Rareza"}, {33324759, "Faltan"},
-            {1996181057, "Conseguidas"}, {3902790626, "Recientes"}, {2677599092, "Coste"}},
-  sec_tier = {4214316866, "{1} estrellas"},
-  sec_date = {1966210994, "Fichados el {1}"},
-  sec_cost = {3347668020, "Coste {1}"},
-  sec_cont = {954544168, "{1} (sigue)"},
-  others = {3744171950, "Otros"},
-  number = {1761750796, "Nº {1}"},
-  missing = {2515480623, "Sin conseguir"},
-  missing_hint = {1959910142, "Todavía no lo tienes: consíguelo en las partidas de INAROGUE."},
-  rarity = {1213369886, "Rareza INAROGUE: {1}★"},
-  cost = {2423906937, "Coste: {1}"},
-  games = {1652098024, "Partidas jugadas: {1}"},
-  goals = {1518221046, "Goles marcados: {1}"},
-  obtained = {1185439226, "Obtención"},
-  source = {2685947691, "Origen"},
+  title = {3060551858 --[[evt_album_title]]},
+  guide = {1472524268 --[[evt_album_guide]]},
+  order_fmt = {3566418499 --[[evt_album_order_fmt]]},
+  orders = {
+    {4025622523 --[[evt_album_order_0]]},
+    {2566205293 --[[evt_album_order_1]]},
+    {33324759 --[[evt_album_order_2]]},
+    {1996181057 --[[evt_album_order_3]]},
+    {3902790626 --[[evt_album_order_4]]},
+    {2677599092 --[[evt_album_order_5]]},
+  },
+  sec_tier = {4214316866 --[[evt_album_sec_tier]]},
+  sec_date = {1966210994 --[[evt_album_sec_date]]},
+  sec_cost = {3347668020 --[[evt_album_sec_cost]]},
+  sec_cont = {954544168 --[[evt_album_sec_cont]]},
+  others = {3744171950 --[[evt_album_others]]},
+  number = {1761750796 --[[evt_album_number]]},
+  missing = {2515480623 --[[evt_album_missing]]},
+  missing_hint = {1959910142 --[[evt_album_missing_hint]]},
+  rarity = {1213369886 --[[evt_album_rarity]]},
+  cost = {2423906937 --[[evt_album_cost]]},
+  games = {1652098024 --[[evt_album_games]]},
+  goals = {1518221046 --[[evt_album_goals]]},
+  obtained = {1185439226 --[[evt_album_obtained]]},
+  source = {2685947691 --[[evt_album_source]]},
   -- how the card was obtained (bank::source 1-5; 0 unknown = «-»)
-  src = {{38803732, "Inicial"}, {2606319790, "Fichaje"}, {3965614136, "Sorteo"}, {1916464539, "Prueba"}, {87940365, "Otro"}},
-  signed = {3777620123, "Fichado el"},
-  collected = {1661473787, "Conseguida"},
-  pos = {{4221915126, "Portero"}, {1655447116, "Delantero"}, {363540186, "Centrocampista"},
-         {2345646969, "Defensa"}},
-  elem = {{876558299, "Viento"}, {2906023521, "Bosque"}, {3660666615, "Fuego"},
-          {1146471252, "Montaña"}},
-  empty = {4120712477, "No hay cartas en esta vista. Pulsa <CMD_FUNC2> para cambiar el orden."},
-  no_loader = {59215208, "El álbum necesita el vr-loader con el módulo «rogue» activado (app: Proyecto > Loader)."},
+  src = {
+    {38803732 --[[evt_album_src_1]]},
+    {2606319790 --[[evt_album_src_2]]},
+    {3965614136 --[[evt_album_src_3]]},
+    {1916464539 --[[evt_album_src_4]]},
+    {87940365 --[[evt_album_src_5]]},
+  },
+  signed = {3777620123 --[[evt_album_signed]]},
+  collected = {1661473787 --[[evt_album_collected]]},
+  pos = {{4221915126 --[[evt_album_pos_1]]}, {1655447116 --[[evt_album_pos_2]]}, {363540186 --[[evt_album_pos_3]]},
+         {2345646969 --[[evt_album_pos_4]]}},
+  elem = {
+    {876558299 --[[evt_ir_album_elem_1]]},
+    {2906023521 --[[evt_ir_album_elem_2]]},
+    {3660666615 --[[evt_ir_album_elem_3]]},
+    {1146471252 --[[evt_ir_album_elem_4]]},
+  },
+  empty = {4120712477 --[[evt_album_empty]]},
+  no_loader = {59215208 --[[evt_album_no_loader]]},
   -- collection tabs (text\rows\menu_text.toml, 9 languages)
-  tab = {617554132, "Colección"},
-  tabs = {{3407070724, "Jugadores"}, {841114752, "Objetos"}, {1174318997, "Equipos"}},
-  section = {1211904281, "Sección"},
-  items_hint = {2005755933, "Todavía no lo tienes: consíguelo en una partida de INAROGUE."},
-  team_hint = {1187990596, "Todavía no te has enfrentado a este equipo en INAROGUE."},
-  teams_guide = {2874921695, "Equipos: {1} / {2} ({3} %)"},
-  price = {1469188608, "Precio"},
-  max_level = {2317055604, "Nivel máx."},
-  times = {2156774997, "Veces"},
-  first_time = {3703694009, "Primera vez"},
-  rarity_label = {2261309733, "Rareza"},
-  wins = {713533372, "Victorias"},
-  matches = {1667849804, "Partidos"},
-  best_phase = {3564389543, "Mejor fase"},
-  first_met = {3282860382, "Primer partido"},
-  team_type = {75571628, "Tipo"},
-  team_kinds = {{1558791157, "Pachanga"}, {3319796303, "Partido"}, {3001492185, "Jefe especial"}},
+  tab = {617554132 --[[evt_album_tab]]},
+  tabs = {
+    {3407070724 --[[evt_album_tab_players]]},
+    {841114752 --[[evt_album_tab_items]]},
+    {1174318997 --[[evt_album_tab_teams]]},
+  },
+  section = {1211904281 --[[evt_album_section]]},
+  items_hint = {2005755933 --[[evt_album_items_hint]]},
+  team_hint = {1187990596 --[[evt_album_team_hint]]},
+  teams_guide = {2874921695 --[[evt_album_teams_guide]]},
+  price = {1469188608 --[[evt_album_price]]},
+  max_level = {2317055604 --[[evt_album_max_level]]},
+  times = {2156774997 --[[evt_album_times]]},
+  first_time = {3703694009 --[[evt_album_first_time]]},
+  rarity_label = {2261309733 --[[evt_album_rarity_name]]},
+  wins = {713533372 --[[evt_album_wins]]},
+  matches = {1667849804 --[[evt_album_matches]]},
+  best_phase = {3564389543 --[[evt_album_best_phase]]},
+  first_met = {3282860382 --[[evt_album_first_met]]},
+  team_type = {75571628 --[[evt_album_type]]},
+  team_kinds = {
+    {1558791157 --[[evt_album_team_kind_1]]},
+    {3319796303 --[[evt_album_team_kind_2]]},
+    {3001492185 --[[evt_album_team_kind_3]]},
+  },
 }
 local UNKNOWN = "???"
 local DATE_FMT = "%02d/%02d/%04d"
@@ -132,7 +156,7 @@ local L_INFO = 1138116562
 Tabs.L_BACK = 3851532210       -- evt_album_back x42: the rarity card base of an item / team sticker
 Tabs.L_ICON = 3989528414       -- evt_album_icon x42: the item icon / team crest on it
 local BOOK_LAYERS = {[L_BOOK] = 1, [L_SLOT] = 42, [L_PLATE] = 14, [L_EMBLEM] = 8,
-                     [L_TEXT] = 76, [L_OVER] = 2, [L_LEAF] = 1, [L_INFO_BG] = 1, [L_INFO] = 5,
+                     [L_TEXT] = 78, [L_OVER] = 2, [L_LEAF] = 1, [L_INFO_BG] = 1, [L_INFO] = 5,
                      [Tabs.L_BACK] = 42, [Tabs.L_ICON] = 42}
 local WIN_LABEL = 3773505316
 local CARD_LABEL = 2137633855
@@ -140,6 +164,7 @@ local MARK_LABEL = 1312789106
 local N_SLOTS = 42
 local N_HDR = 8
 local PER_PAGE = G.ROWS * G.COLS
+local PILL_HALF_W, PILL_GAP, GLYPH_W = 35, 6, 17   -- the page-number pill's half width in the book art and the gap to its button glyph
 local HDR_PER_PAGE = N_HDR / 2
 local PANEL = N_SLOTS            -- card instance of the info card
 local T_NUM0, T_HDR0, T_PAGE0 = 0, N_SLOTS, N_SLOTS + 2 * N_HDR   -- text instances
@@ -156,6 +181,7 @@ Tabs.PLATE_BIG_BACK = PLATE_OL_ELEM   -- Objetos / Equipos: plate 8 = the rarity
 Tabs.PLATE_TAB0 = N_HDR + 2           -- evt_album_plate 10-12: the tab buttons, 13: the active tab's frame
 Tabs.PLATE_TAB_ON = Tabs.PLATE_TAB0 + Tabs.N_TABS
 Tabs.T_TAB0 = T_INFO0 + 13            -- evt_album_text 73-75: the tab labels
+local T_GLYPH0 = T_INFO0 + 16   -- evt_album_text 76-77: the LB / RB glyphs beside the page pills (screens.toml count 78)
 -- the tab buttons at the foot of the info page (relative to IX / IY), the big icon / crest of the info card
 Tabs.TAB_Y, Tabs.TAB_W, Tabs.TAB_H, Tabs.TAB_DX, Tabs.TAB_ON_PAD, Tabs.TXT_S_TAB = 726, 184, 56, 196, 10, 0.55
 Tabs.BIG_BACK_W, Tabs.BIG_BACK_H, Tabs.BIG_ICON_S, Tabs.STICKER_BACK_H, Tabs.STICKER_ICON_S = 300, 186, 150, 67, 54
@@ -190,7 +216,6 @@ local C = {
   CLOSE_MENU = 320421347,     -- CMND_CLOSE_MENU_OBJECT
   FADE = 609722083,           -- (1 out / 0 in, seconds)
   FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568,   -- parameter store (numbers only)
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_DONE = 682363669, MSG_BUSY = 898725220,
 }
 local CUR = 3313461902          -- crc32("cursor"): the anchor row's cursor label
@@ -418,13 +443,10 @@ end
 --@lib evt_menu_kit.lua#Pointer
 local Ptr = EVT_PointerNew()
 
--- a menu_text row in the game's language (fallback: the Spanish literal)
+-- a menu_text row in the game's language ("" when missing)
 local function T(t)
   local s = Call(CMD_TEXT_GET, t[1])
-  if type(s) == "string" and s ~= "" then
-    return s
-  end
-  return t[2]
+  return type(s) == "string" and s or ""
 end
 
 -- "{1}".. placeholders
@@ -909,8 +931,11 @@ local function DrawSide(side)
   end
   if rows ~= nil then
     SetText(T_PAGE0 + side, tostring(p + 1), PageX(side) + G.PW / 2 - 8 * #tostring(p + 1) * G.TXT_S_PAGE, G.PNY, G.TXT_S_PAGE)
+    -- the page-turn glyph (icon tag: pad / keyboard glyph by device) in its own text instance, beside the pill: LB left of the left page's, RB right of the right page's
+    SetText(T_GLYPH0 + side, side == 0 and "<CMD_FUNCL1>" or "<CMD_FUNCR1>", PageX(side) + G.PW / 2 + (side == 0 and -(PILL_HALF_W + PILL_GAP + GLYPH_W) or PILL_HALF_W + PILL_GAP), G.PNY, G.TXT_S_PAGE)
   else
     SetText(T_PAGE0 + side, nil)
+    SetText(T_GLYPH0 + side, nil)
   end
 end
 
@@ -933,19 +958,6 @@ local function ShowGlow()
   SetQuad(L_OVER, OVER_GLOW, TEX, "evt_album_glow", x + G.SW / 2, y + G.STRIP + (G.SH - G.STRIP) / 2, G.GLOW_W, G.GLOW_H)
 end
 
-local function SectionTitle(pos)
-  if pos < 0 then
-    return nil
-  end
-  local p, row = Call(RL.ALBUM, 10, order, pos)
-  local rows = PageRows(Int(p))
-  if rows == nil then
-    return nil
-  end
-  local rr = rows[Int(row)]
-  return rr and Section(rr.sec) or nil
-end
-
 local function UpdateGuideLine()
   local t
   if not has_loader then
@@ -964,7 +976,8 @@ local function UpdateGuideLine()
 end
 
 local function UpdateButtonGuide()
-  local texts, icons, offs, cmds = {TXT.tab[1], G_PAGE}, {Tabs.I_FUNC3, I_R1}, {0, 0}, {Tabs.K_FUNC3, K_R1}
+  -- no «Cambiar página» entry: the page pills carry the LB / RB glyphs (the keys still turn the page)
+  local texts, icons, offs, cmds = {TXT.tab[1]}, {Tabs.I_FUNC3}, {0}, {Tabs.K_FUNC3}
   if tab == Tabs.TAB_PLAYERS then
     table.insert(texts, 1, G_SORT)
     table.insert(icons, 1, I_FUNC2)
@@ -1399,8 +1412,8 @@ end
 -- ---- closing ------------------------------------------------------------------------------------------------------
 local function Close(result)
   closing = true
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_SET, KEY_RESULT, 0, result, 1)
+  VRFW_Param.Clear(KEY_RESULT)
+  VRFW_Param.Set(KEY_RESULT, result)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
   funcLuaCommand(C.CLOSE_MENU, MENU)
 end
@@ -1415,7 +1428,7 @@ end
 
 -- ---- engine callbacks -----------------------------------------------------------------------------------------
 function OnInit()
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
   funcLuaMenuCommand(C.LOAD_TEX, TEX)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_RARITY)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_EMBLEM)

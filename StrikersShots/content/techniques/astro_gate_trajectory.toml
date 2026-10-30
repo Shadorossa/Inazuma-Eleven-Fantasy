@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Puerta astral (Astro Gate, whs01260, cut-in ev60_01260).
+#
+# In the cut-in's last shot (c0300) the ball skims the pitch dead level 0.49 m up, its dust wake low on the pitch.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level skim from the kick point
+# to the goal at 0.5 m. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the
+# ball centre over the pitch (m); the height is held.
+
+# Puerta astral (whs01260).
+[[edit]]
+target = "whs01260"
+trajectory = { points = [[0.0, 0.5]], straight = true, unblockable = false }

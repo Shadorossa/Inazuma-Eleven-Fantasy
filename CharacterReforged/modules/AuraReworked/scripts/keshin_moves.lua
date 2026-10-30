@@ -16,13 +16,15 @@ if VRFW.option("all_keshin_armed") == 0 then return end
 
 local A = require "lib/auras"
 
-local function info(...) VRFW.log("aura_reworked keshin:", ...) end
+require "VRFW/lib/basics"
+local info = VRFW.logger("aura_reworked keshin")
 
 local band = bit32.band
-local function hex(v) return string.format("0x%X", v or 0) end
+local Id = require "VRFW/lib/ids"
+local hex = Id.hex
+local Actors = require "VRFW/lib/actors"
 
 -- game layout (docs/game/mechanics/keshin-armed.md §2.2): the soccer actors and the summon machine
-local ACTOR_MAX, ACTOR_STRIDE = 0x3A, 0x570
 local SUMMON_ACTIVE = 2
 local ATTR_KESHIN, ATTR_ARMOUR = 1, 2
 
@@ -32,11 +34,7 @@ local seen = {}           -- hdl -> { at = VRFW.now(), aura = the aura he runs t
 local own = {}            -- aura -> its keshin's own move (cache)
 local said = {}           -- hdl -> the aura already logged
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return math.floor(v) % 4294967296
-end
+local u32 = Id.u32
 
 -- the keshin's own move of aura `aura` (an armour: its keshin's)
 local function own_move(aura)
@@ -49,12 +47,6 @@ local function own_move(aura)
   end
   own[aura] = m
   return m
-end
-
-local function base_actors()
-  local ok, b = pcall(VRFW.game["Match.SoccerActors.ViaSkillUsed"])
-  if ok and type(b) == "number" and b >= 0x10000 then return b end
-  return nil
 end
 
 VRFW.on("match_start", function(ev)
@@ -89,12 +81,11 @@ end
 -- candidate (the command's actor among them)
 VRFW.on("match:aura:post", function(ev)
   if not on then return nil end
-  local base = base_actors()
-  if not base then return nil end
-  for i = 0, ACTOR_MAX - 1 do
-    local actor = base + i * ACTOR_STRIDE
+  if not Actors.base() then return nil end
+  for _, entry in ipairs(Actors.list()) do
+    local actor = entry.address
     local a = VRFW.mem.read_struct("KmActor", actor)
-    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == i and a.team <= 1 then
+    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == entry.index and a.team <= 1 then
       local _, alive = running(actor, a.hdl)
       if alive then cand[u32(a.hdl)] = true end
     end
@@ -108,9 +99,9 @@ local function aura_of(h)
   local now = VRFW.now()
   local s = seen[h]
   if s and s.at == now then return s.aura end
-  local base = base_actors()
+  local entry = Actors.of(h)
   local aura, alive = 0, false
-  if base then aura, alive = running(base + band(h, 0xFF) * ACTOR_STRIDE, h) end
+  if entry then aura, alive = running(entry.address, h) end
   if not alive then cand[h] = nil end
   seen[h] = { at = now, aura = aura }
   return aura

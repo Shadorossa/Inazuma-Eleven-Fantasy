@@ -2,8 +2,9 @@
 # A mod that raises a limit ships the same `[limit.<id>]` with a new `max` (merged key by key, later mod wins).
 # Keys of a limit:
 #   table     = table index id (`folder/id`)
-#   measure   = "rows", "max_value" (largest value of `column`; uses value + 1 slots) or "rows_per_group" (see [limit.<id>.group])
-#   column    = schema column name (measure "max_value")
+#   measure   = "rows", "max_value" (largest value of `column`; uses value + 1 slots), "distinct_values" (different
+#               non-zero values of `column`: the numbers taken of a spread number space) or "rows_per_group" (see [limit.<id>.group])
+#   column    = schema column name (measures "max_value" and "distinct_values")
 #   where     = optional { column = int, ... }: only rows whose cells equal these values
 #   max       = engine capacity (max_value: slots, so the largest valid value is max - 1)
 #   declared  = optional [limits] key of defaults\limits.toml whose effective value raises `max`
@@ -40,15 +41,14 @@ join = { key = "battleId", table = "vsroute/vs_route_piece", slice = "eventInfoR
 ignore = [255]
 
 [limit.clear_bits]
-# sort_no indexes the match clear bits.
+# sort_no indexes the match clear bits. The allocator spreads new numbers over 2560..32767 (crc32 of the key), so the
+# largest sort_no is always near the top: what fills up is the count of different numbers taken.
 table = "soccer/soccer_game_difficulty"
-measure = "max_value"
+measure = "distinct_values"
 column = "sort_no"
-max = 32768
-declared = "clear_bits"
-ceiling = 32768
-retail = 2560
-what = "sort_no indexes the match clear bits (2560..32767: the framework's extension, needs the slot service); a sort_no >= the capacity has no bit"
+max = 32767
+retail = 2559
+what = "sort_no 1..32767 each have a match clear bit (2560..32767: the framework's extension, needs the slot service); when every number is taken new games get no clear bit"
 doc = "docs/framework/clear-bits.md"
 
 [limit.menu_registry]

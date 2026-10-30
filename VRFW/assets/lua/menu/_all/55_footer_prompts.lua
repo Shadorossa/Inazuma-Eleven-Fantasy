@@ -28,7 +28,7 @@
 -- When is asked every time the guide is set (no cache). No engine call at load time.
 if VRFW_FooterPrompts == nil then
   local F = {
-    LOG = 3661580131,            -- CMND_EVT_LOG
+    LOG = VRFW_Cmd.EVT_LOG,            -- CMND_EVT_LOG
     GUIDE = 1138543975,          -- mainmenu01_06_base_button_guide
     GUIDE_TEXTS = 2209673388,    -- (menu, guide, texts, glyphs, offsets, spare1, spare2)
     GUIDE_KEYS = 452337289,      -- (menu, guide, commands)
@@ -261,10 +261,10 @@ if VRFW_FooterPrompts == nil then
   local function glyph_position(menu, entry)
     local ok, x, y
     if menu == nil then
-      ok, x, y = pcall(funcLuaMenuCommand, 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]], F.HOLD.GUIDE_BUTTON, entry,
+      ok, x, y = pcall(funcLuaMenuCommand, VRFW_Cmd.GET_MESH_GLOBAL_POSITION, F.HOLD.GUIDE_BUTTON, entry,
         F.HOLD.GLYPH_NODE)
     else
-      ok, x, y = pcall(funcLuaMenuCommand, 499270986, F.HOLD.GUIDE_BUTTON, entry, F.HOLD.GLYPH_NODE, menu)
+      ok, x, y = pcall(funcLuaMenuCommand, VRFW_Cmd.GET_MESH_GLOBAL_POSITION, F.HOLD.GUIDE_BUTTON, entry, F.HOLD.GLYPH_NODE, menu)
     end
     -- (0, 0) is what a missing node answers
     if ok and type(x) == "number" and type(y) == "number" and (x ~= 0 or y ~= 0) then
@@ -303,28 +303,28 @@ if VRFW_FooterPrompts == nil then
       return false
     end
     local L = d.Ring
-    if funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L) ~= true then
+    if funcLuaMenuCommand(VRFW_Cmd.IS_EXIST_LAYER, L) ~= true then
       return false
     end
-    if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], L, 0) ~= true then
-      funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], L, 0)
+    if funcLuaMenuCommand(VRFW_Cmd.IS_OPEN_LAYER, L, 0) ~= true then
+      funcLuaMenuCommand(VRFW_Cmd.OPEN_LAYER, L, 0)
       d.ready, d.glyph_set = false, false
       return true
     end
-    if funcLuaMenuCommand(3057768039 --[[CMND_IS_LOADING]], L) == true then
+    if funcLuaMenuCommand(VRFW_Cmd.IS_LOADING_LAYER, L) == true then
       return true
     end
     if not d.ready then
       d.ready = true
-      funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], L, 0, F.HOLD.PRIORITY, true)
-      funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], L, F.HOLD.RING_SCALE, F.HOLD.RING_SCALE, 1, 0)
+      funcLuaMenuCommand(VRFW_Cmd.SET_DRAW_PRIORITY, L, 0, F.HOLD.PRIORITY, true)
+      funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_LOCAL_SCALE, L, F.HOLD.RING_SCALE, F.HOLD.RING_SCALE, 1, 0)
       funcLuaMenuCommand(541357333 --[[rate init]], L, F.HOLD.RING_RATE, 0, 0)
     end
     if not d.glyph_set then
       -- read at every hold, so the glyph follows the device in use
       d.glyph_set = true
-      local ok, glyph = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], d.Icon)
-      funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING]], L, F.HOLD.RING_TEXT,
+      local ok, glyph = pcall(funcLuaCommand, VRFW_Cmd.TEXT_GET, d.Icon)
+      funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, L, F.HOLD.RING_TEXT,
         (ok and type(glyph) == "string") and glyph or "", 0)
     end
     local x, y = ring_position(d)
@@ -333,12 +333,12 @@ if VRFW_FooterPrompts == nil then
         d.warned = true
         F.Log(d.Name .. ": the guide glyph of entry " .. tostring(d.Entry or 0) .. " was not found; ring hidden")
       end
-      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, 0, false)
+      funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, L, 0, false)
       return true
     end
-    funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], L, x, y, 0, 0)
+    funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_LOCAL_POS, L, x, y, 0, 0)
     funcLuaMenuCommand(1595998683 --[[CMND_SET_RATE]], L, F.HOLD.RING_RATE, 0, math.max(0, math.min(1, progress)), 0)
-    funcLuaMenuCommand(711242136, L, 0, true)
+    funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, L, 0, true)
     return true
   end
 
@@ -350,9 +350,9 @@ if VRFW_FooterPrompts == nil then
     end
     d.glyph_set = false
     local L = d.Ring
-    if funcLuaMenuCommand(262659071, L) == true and funcLuaMenuCommand(2640875187, L, 0) == true then
+    if funcLuaMenuCommand(VRFW_Cmd.IS_EXIST_LAYER, L) == true and funcLuaMenuCommand(VRFW_Cmd.IS_OPEN_LAYER, L, 0) == true then
       funcLuaMenuCommand(1595998683, L, F.HOLD.RING_RATE, 0, 0, 0)
-      funcLuaMenuCommand(711242136, L, 0, false)
+      funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, L, 0, false)
     end
   end
 

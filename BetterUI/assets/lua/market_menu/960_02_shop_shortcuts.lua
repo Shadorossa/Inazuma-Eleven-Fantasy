@@ -23,28 +23,28 @@ CLEAN_HUD_SS_MWAIT = 900 -- frames to wait for the old entry to close (a shop in
 CLEAN_HUD_SS_M = {depth = 0, wrapped = false, muted = 0}
 
 function CLEAN_HUD_SS_MLog(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT shop_shortcuts market", ...)
+  pcall(funcLuaCommand, 3661580131, "EVT shop_shortcuts market", ...)
 end
 
 function CLEAN_HUD_SS_MHas(k)
-  return funcLuaCommand(2947612279, k) == true
+  return VRFW_Param.Has(k)
 end
 
 function CLEAN_HUD_SS_MTake(k)
   if not CLEAN_HUD_SS_MHas(k) then
     return nil
   end
-  local v = funcLuaCommand(3522198769, k)
-  funcLuaCommand(3363400568, k)
+  local v = VRFW_Param.Get(k)
+  VRFW_Param.Clear(k)
   return v
 end
 
 function CLEAN_HUD_SS_MSet(k, v)
   if CLEAN_HUD_SS_MHas(k) then
-    funcLuaCommand(3363400568, k)
+    VRFW_Param.Clear(k)
   end
   if v ~= nil then
-    funcLuaCommand(3860611758, k, 0, v, 1)
+    VRFW_Param.Set(k, v)
   end
 end
 
@@ -91,7 +91,7 @@ end
 
 -- list index of the next / previous entry (wrapping), nil when there is no other one
 function CLEAN_HUD_SS_MNext(idx, v)
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], CLEAN_HUD_SS_LIST)
+  local n = funcLuaMenuCommand(1175615627, CLEAN_HUD_SS_LIST)
   if type(n) ~= "number" or n < 2 or type(idx) ~= "number" then
     CLEAN_HUD_SS_MLog("no other entry", tostring(n), tostring(idx))
     return nil
@@ -102,18 +102,18 @@ end
 -- the entry that was left is gone and no fade is running
 function CLEAN_HUD_SS_MReady()
   for _, m in ipairs(CLEAN_HUD_SS_GONE) do
-    if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], m) == true then
+    if funcLuaMenuCommand(2231168902, m) == true then
       return false
     end
   end
-  return funcLuaCommand(1215256347 --[[CMND_BRIGHT_IS_FADE]]) ~= true and funcLuaCommand(316436678) ~= true
+  return funcLuaCommand(1215256347) ~= true and funcLuaCommand(316436678) ~= true
 end
 
 -- a switch that cannot go on: the Mercado back on screen (the retail lines CLEAN_HUD_SS_MMuted skipped)
 function CLEAN_HUD_SS_MRestore()
-  local text_get = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], 605995789)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], CLEAN_HUD_SS_HEADER, 1220590795 --[[_text_sub_title02]], text_get, 0)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], CLEAN_HUD_SS_HEADER, 1152304044 --[[_icon_header_main_dmy01]], false, 0)
+  local text_get = funcLuaCommand(4074371074, 605995789)
+  funcLuaMenuCommand(1083631230, CLEAN_HUD_SS_HEADER, 1220590795 --[[_text_sub_title02]], text_get, 0)
+  funcLuaMenuCommand(3405944500, CLEAN_HUD_SS_HEADER, 1152304044 --[[_icon_header_main_dmy01]], false, 0)
   funcLuaMenuCommand(2171393651, CLEAN_HUD_SS_GUIDE, true)
   funcLuaMenuCommand(1558704558, CLEAN_HUD_SS_MARKET, true)
   funcLuaMenuCommand(66378409, CLEAN_HUD_SS_MARKET)
@@ -151,7 +151,7 @@ do
     while r[1] do
       local okv, v = pcall(CLEAN_HUD_SS_MHas, CLEAN_HUD_SS_KEY)
       if okv and v then
-        v = funcLuaCommand(3522198769, CLEAN_HUD_SS_KEY)
+        v = VRFW_Param.Get(CLEAN_HUD_SS_KEY)
       else
         v = nil
       end

@@ -1,0 +1,13 @@
+schema = "BetterQoL.album/1"
+# No More Rarities › BetterQoL's «Álbum de jugadores» (docs/game/ui/album.md): the special cards whose rarity this
+# module's option removes are not listed (rows, «Especiales», counts). The option values and tiers are those of
+# options.toml removed_rarities: 0 basic only, 1 basic + Ídolo, 2 basic + Diamante, 3 all; Ídolo = rarities 5-7,
+# Diamante = 8 (docs/game/characters/rarity-removal.md §0). The basic rarities (0-4) are the album's normal cards.
+# Read only when BetterQoL is enabled.
+
+[[hide_rarities]]
+option = "no_more_rarities.removed_rarities"
+when = [
+  { values = [1, 3], rarities = [5, 6, 7] },    # Ídolo
+  { values = [2, 3], rarities = [8] },          # Diamante
+]

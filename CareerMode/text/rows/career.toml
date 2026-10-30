@@ -1,0 +1,2800 @@
+# Texts of the career mode: the title row button (content\menus\title_row.toml) and the hub screen
+# evt_career_menu (assets\lua\screens\evt_career_menu.lua, which reads them with CMND_TEXT_GET(crc32(id))).
+# «{1}», «{2}» = values the screen fills in. Format: docs/game/engine/text-engine.md §2.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the mode's name: title row button, header
+[[row]]
+id = "CareerMode.Title"
+es = "Modo carrera"
+en = "Career Mode"
+fr = "Mode Carrière"
+de = "Karrieremodus"
+it = "Modalità carriera"
+pt = "Modo carreira"
+ja = "キャリアモード"
+zh_hans = "生涯模式"
+zh_hant = "生涯模式"
+
+# the title row button's balloon
+[[row]]
+id = "CareerMode.TitleFlavor"
+es = "Lleva un club por la SuperLiga, las ligas y el Fútbol Frontier."
+en = "Lead a club through the SuperLiga, the leagues and the Football Frontier."
+fr = "Mène un club à travers la SuperLigue, les ligues et le Football Frontier."
+de = "Führe einen Verein durch die SuperLiga, die Ligen und den Football Frontier."
+it = "Guida un club tra SuperLega, campionati e Football Frontier."
+pt = "Leva um clube pela SuperLiga, pelas ligas e pelo Futebol Frontier."
+ja = "クラブを率いてスーパーリーグ、各リーグ、フットボールフロンティアを戦おう。"
+zh_hans = "率领俱乐部征战超级联赛、各联赛与足球边境大赛。"
+zh_hant = "率領俱樂部征戰超級聯賽、各聯賽與足球邊境大賽。"
+
+# the career's one season
+[[row]]
+id = "CareerMode.Season"
+es = "Temporada de carrera"
+en = "Career season"
+fr = "Saison de carrière"
+de = "Karrieresaison"
+it = "Stagione carriera"
+pt = "Época de carreira"
+ja = "キャリアシーズン"
+zh_hans = "生涯赛季"
+zh_hant = "生涯賽季"
+
+# no club found: the source mod is missing
+[[row]]
+id = "CareerMode.NeedsBattleBayDeluxe"
+es = "Este modo necesita los equipos de Battle Bay Deluxe."
+en = "This mode needs the Battle Bay Deluxe teams."
+fr = "Ce mode a besoin des équipes de Battle Bay Deluxe."
+de = "Dieser Modus braucht die Teams von Battle Bay Deluxe."
+it = "Questa modalità richiede le squadre di Battle Bay Deluxe."
+pt = "Este modo precisa das equipas do Battle Bay Deluxe."
+ja = "このモードにはBattle Bay Deluxeのチームが必要です。"
+zh_hans = "此模式需要Battle Bay Deluxe的球队。"
+zh_hant = "此模式需要Battle Bay Deluxe的球隊。"
+
+# a league: {1} = its letter
+[[row]]
+id = "CareerMode.LeagueTitle"
+es = "Liga {1}"
+en = "League {1}"
+fr = "Ligue {1}"
+de = "Liga {1}"
+it = "Lega {1}"
+pt = "Liga {1}"
+ja = "リーグ{1}"
+zh_hans = "{1}联赛"
+zh_hant = "{1}聯賽"
+
+# home: continue the career
+[[row]]
+id = "CareerMode.Continue"
+es = "Continuar"
+en = "Continue"
+fr = "Continuer"
+de = "Fortsetzen"
+it = "Continua"
+pt = "Continuar"
+ja = "つづきから"
+zh_hans = "继续"
+zh_hant = "繼續"
+
+# home: start a new career
+[[row]]
+id = "CareerMode.NewCareer"
+es = "Nueva carrera"
+en = "New career"
+fr = "Nouvelle carrière"
+de = "Neue Karriere"
+it = "Nuova carriera"
+pt = "Nova carreira"
+ja = "新しいキャリア"
+zh_hans = "新生涯"
+zh_hant = "新生涯"
+
+# home: back to the title
+[[row]]
+id = "CareerMode.Exit"
+es = "Salir"
+en = "Exit"
+fr = "Quitter"
+de = "Verlassen"
+it = "Esci"
+pt = "Sair"
+ja = "やめる"
+zh_hans = "退出"
+zh_hant = "退出"
+
+# the career panel's title
+[[row]]
+id = "CareerMode.YourCareer"
+es = "Tu carrera"
+en = "Your career"
+fr = "Ta carrière"
+de = "Deine Karriere"
+it = "La tua carriera"
+pt = "A tua carreira"
+ja = "あなたのキャリア"
+zh_hans = "你的生涯"
+zh_hant = "你的生涯"
+
+# home without a career, line 1
+[[row]]
+id = "CareerMode.Intro1"
+es = "Elige un club; cada jugador existe una sola vez en tu carrera."
+en = "Pick a club; every player exists only once in your career."
+fr = "Choisis un club ; chaque joueur n'existe qu'une fois dans ta carrière."
+de = "Wähle einen Verein; jeder Spieler gibt es nur einmal in deiner Karriere."
+it = "Scegli un club; ogni giocatore esiste una sola volta nella carriera."
+pt = "Escolhe um clube; cada jogador existe só uma vez na tua carreira."
+ja = "クラブを選ぼう。選手はキャリアの中でひとりずつしか存在しません。"
+zh_hans = "选择一支俱乐部；每名球员在生涯中只存在一次。"
+zh_hant = "選擇一支俱樂部；每名球員在生涯中只存在一次。"
+
+# home without a career, line 2
+[[row]]
+id = "CareerMode.Intro2"
+es = "SuperLiga: todos los clubes, sistema suizo; pasan los mejores."
+en = "SuperLiga: every club, Swiss system; the best go on."
+fr = "SuperLigue : tous les clubs, système suisse ; les meilleurs passent."
+de = "SuperLiga: alle Vereine, Schweizer System; die Besten kommen weiter."
+it = "SuperLega: tutti i club, sistema svizzero; passano i migliori."
+pt = "SuperLiga: todos os clubes, sistema suíço; passam os melhores."
+ja = "スーパーリーグ：全クラブのスイス式。上位が勝ち抜けます。"
+zh_hans = "超级联赛：全部俱乐部，瑞士制；成绩最好的晋级。"
+zh_hant = "超級聯賽：全部俱樂部，瑞士制；成績最好的晉級。"
+
+# home without a career, line 3
+[[row]]
+id = "CareerMode.Intro3"
+es = "Un sorteo con bombos reparte los clasificados en ligas."
+en = "A draw with pots deals the qualified clubs into leagues."
+fr = "Un tirage avec des chapeaux répartit les qualifiés en ligues."
+de = "Eine Auslosung mit Töpfen verteilt die Qualifizierten auf Ligen."
+it = "Un sorteggio con le urne divide le qualificate in campionati."
+pt = "Um sorteio com potes reparte os apurados pelas ligas."
+ja = "ポット抽選で勝ち抜けたクラブを各リーグに振り分けます。"
+zh_hans = "通过分档抽签将晋级俱乐部分入各联赛。"
+zh_hant = "透過分檔抽籤將晉級俱樂部分入各聯賽。"
+
+# home without a career, line 4
+[[row]]
+id = "CareerMode.Intro4"
+es = "Los mejores de cada liga juegan el Fútbol Frontier."
+en = "The best of each league play the Football Frontier."
+fr = "Les meilleurs de chaque ligue jouent le Football Frontier."
+de = "Die Besten jeder Liga spielen den Football Frontier."
+it = "I migliori di ogni campionato giocano il Football Frontier."
+pt = "Os melhores de cada liga jogam o Futebol Frontier."
+ja = "各リーグの上位がフットボールフロンティアに挑みます。"
+zh_hans = "各联赛的佼佼者参加足球边境大赛。"
+zh_hant = "各聯賽的佼佼者參加足球邊境大賽。"
+
+# the start window's title
+[[row]]
+id = "CareerMode.StartTitle"
+es = "Empezar carrera"
+en = "Start career"
+fr = "Commencer la carrière"
+de = "Karriere starten"
+it = "Inizia carriera"
+pt = "Começar carreira"
+ja = "キャリアを始める"
+zh_hans = "开始生涯"
+zh_hant = "開始生涯"
+
+# {1} = the club
+[[row]]
+id = "CareerMode.StartLine1"
+es = "¿Empezar la carrera con {1}?"
+en = "Start the career with {1}?"
+fr = "Commencer la carrière avec {1} ?"
+de = "Karriere mit {1} starten?"
+it = "Iniziare la carriera con {1}?"
+pt = "Começar a carreira com {1}?"
+ja = "{1}でキャリアを始めますか？"
+zh_hans = "要以{1}开始生涯吗？"
+zh_hant = "要以{1}開始生涯嗎？"
+
+# {1} = the league, {2} = matchdays
+[[row]]
+id = "CareerMode.StartLine2"
+es = "SuperLiga de {1} clubes · {2} jornadas"
+en = "SuperLiga of {1} clubs · {2} rounds"
+fr = "SuperLigue de {1} clubs · {2} journées"
+de = "SuperLiga mit {1} Vereinen · {2} Runden"
+it = "SuperLega di {1} club · {2} giornate"
+pt = "SuperLiga de {1} clubes · {2} jornadas"
+ja = "スーパーリーグ {1}クラブ・全{2}節"
+zh_hans = "超级联赛 {1}支俱乐部・{2}轮"
+zh_hant = "超級聯賽 {1}支俱樂部・{2}輪"
+
+# the replace window, line 1
+[[row]]
+id = "CareerMode.ReplaceLine1"
+es = "Una carrera nueva sustituye a la actual."
+en = "A new career replaces the current one."
+fr = "Une nouvelle carrière remplace l'actuelle."
+de = "Eine neue Karriere ersetzt die aktuelle."
+it = "Una nuova carriera sostituisce quella attuale."
+pt = "Uma nova carreira substitui a atual."
+ja = "新しいキャリアは今のキャリアと入れ替わります。"
+zh_hans = "新生涯将取代当前生涯。"
+zh_hant = "新生涯將取代當前生涯。"
+
+# the replace window, line 2
+[[row]]
+id = "CareerMode.ReplaceLine2"
+es = "La actual se guarda aparte al empezar la nueva."
+en = "The current one is set aside when the new one starts."
+fr = "L'actuelle est mise de côté quand la nouvelle commence."
+de = "Die aktuelle wird beim Start der neuen beiseitegelegt."
+it = "Quella attuale viene messa da parte all'inizio della nuova."
+pt = "A atual é guardada à parte quando a nova começa."
+ja = "新しいキャリアを始めると、今のキャリアは別に保管されます。"
+zh_hans = "开始新生涯时，当前生涯会另行保存。"
+zh_hant = "開始新生涯時，當前生涯會另行保存。"
+
+# hub page
+[[row]]
+id = "CareerMode.NextMatch"
+es = "Próximo partido"
+en = "Next match"
+fr = "Prochain match"
+de = "Nächstes Spiel"
+it = "Prossima partita"
+pt = "Próximo jogo"
+ja = "次の試合"
+zh_hans = "下一场比赛"
+zh_hant = "下一場比賽"
+
+# the club plays at home
+[[row]]
+id = "CareerMode.Home"
+es = "Local"
+en = "Home"
+fr = "Domicile"
+de = "Heim"
+it = "Casa"
+pt = "Casa"
+ja = "ホーム"
+zh_hans = "主场"
+zh_hant = "主場"
+
+# the club plays away
+[[row]]
+id = "CareerMode.Away"
+es = "Visitante"
+en = "Away"
+fr = "Extérieur"
+de = "Auswärts"
+it = "Trasferta"
+pt = "Fora"
+ja = "アウェー"
+zh_hans = "客场"
+zh_hant = "客場"
+
+# {1} = page, {2} = pages
+[[row]]
+id = "CareerMode.Page"
+es = "Página {1}/{2}"
+en = "Page {1}/{2}"
+fr = "Page {1}/{2}"
+de = "Seite {1}/{2}"
+it = "Pagina {1}/{2}"
+pt = "Página {1}/{2}"
+ja = "{1}/{2}ページ"
+zh_hans = "第{1}/{2}页"
+zh_hant = "第{1}/{2}頁"
+
+# standings column: played
+[[row]]
+id = "CareerMode.ColPlayed"
+es = "PJ"
+en = "P"
+fr = "J"
+de = "Sp"
+it = "G"
+pt = "J"
+ja = "試"
+zh_hans = "赛"
+zh_hant = "賽"
+
+# standings column: won
+[[row]]
+id = "CareerMode.ColWon"
+es = "G"
+en = "W"
+fr = "G"
+de = "S"
+it = "V"
+pt = "V"
+ja = "勝"
+zh_hans = "胜"
+zh_hant = "勝"
+
+# standings column: drawn
+[[row]]
+id = "CareerMode.ColDrawn"
+es = "E"
+en = "D"
+fr = "N"
+de = "U"
+it = "N"
+pt = "E"
+ja = "分"
+zh_hans = "平"
+zh_hant = "平"
+
+# standings column: lost
+[[row]]
+id = "CareerMode.ColLost"
+es = "P"
+en = "L"
+fr = "P"
+de = "N"
+it = "P"
+pt = "D"
+ja = "敗"
+zh_hans = "负"
+zh_hant = "負"
+
+# standings column: goals for
+[[row]]
+id = "CareerMode.ColFor"
+es = "GF"
+en = "GF"
+fr = "BP"
+de = "T"
+it = "GF"
+pt = "GM"
+ja = "得"
+zh_hans = "进"
+zh_hant = "進"
+
+# standings column: goals against
+[[row]]
+id = "CareerMode.ColAgainst"
+es = "GC"
+en = "GA"
+fr = "BC"
+de = "GT"
+it = "GS"
+pt = "GS"
+ja = "失"
+zh_hans = "失"
+zh_hant = "失"
+
+# standings column: goal difference
+[[row]]
+id = "CareerMode.ColDiff"
+es = "DG"
+en = "GD"
+fr = "DB"
+de = "TD"
+it = "DR"
+pt = "DG"
+ja = "差"
+zh_hans = "净"
+zh_hant = "淨"
+
+# standings column: points
+[[row]]
+id = "CareerMode.ColPoints"
+es = "Pts"
+en = "Pts"
+fr = "Pts"
+de = "Pkt"
+it = "Pt"
+pt = "Pts"
+ja = "点"
+zh_hans = "分"
+zh_hant = "分"
+
+# footer
+[[row]]
+id = "CareerMode.KeyAccept"
+es = "A: Aceptar"
+en = "A: Accept"
+fr = "A : Valider"
+de = "A: Bestätigen"
+it = "A: Conferma"
+pt = "A: Aceitar"
+ja = "A：決定"
+zh_hans = "A：确定"
+zh_hant = "A：確定"
+
+# footer
+[[row]]
+id = "CareerMode.KeyBack"
+es = "B: Volver"
+en = "B: Back"
+fr = "B : Retour"
+de = "B: Zurück"
+it = "B: Indietro"
+pt = "B: Voltar"
+ja = "B：もどる"
+zh_hans = "B：返回"
+zh_hant = "B：返回"
+
+# footer: change the league
+[[row]]
+id = "CareerMode.KeyLeague"
+es = "L1/R1: Liga"
+en = "L1/R1: League"
+fr = "L1/R1 : Ligue"
+de = "L1/R1: Liga"
+it = "L1/R1: Lega"
+pt = "L1/R1: Liga"
+ja = "L1/R1：リーグ"
+zh_hans = "L1/R1：联赛"
+zh_hant = "L1/R1：聯賽"
+
+# footer: draw the leagues again
+[[row]]
+id = "CareerMode.KeyRedraw"
+es = "Y: Nuevo sorteo"
+en = "Y: Redraw"
+fr = "Y : Nouveau tirage"
+de = "Y: Neu auslosen"
+it = "Y: Nuovo sorteggio"
+pt = "Y: Novo sorteio"
+ja = "Y：抽選しなおす"
+zh_hans = "Y：重新抽签"
+zh_hant = "Y：重新抽籤"
+
+# a window: accept
+[[row]]
+id = "CareerMode.KeyYes"
+es = "A: Sí"
+en = "A: Yes"
+fr = "A : Oui"
+de = "A: Ja"
+it = "A: Sì"
+pt = "A: Sim"
+ja = "A：はい"
+zh_hans = "A：是"
+zh_hant = "A：是"
+
+# a window: refuse
+[[row]]
+id = "CareerMode.KeyNo"
+es = "B: No"
+en = "B: No"
+fr = "B : Non"
+de = "B: Nein"
+it = "B: No"
+pt = "B: Não"
+ja = "B：いいえ"
+zh_hans = "B：否"
+zh_hant = "B：否"
+
+# hub tab
+[[row]]
+id = "CareerMode.TabHome"
+es = "Inicio"
+en = "Home"
+fr = "Accueil"
+de = "Start"
+it = "Home"
+pt = "Início"
+ja = "ホーム"
+zh_hans = "首页"
+zh_hant = "首頁"
+
+# hub tab
+[[row]]
+id = "CareerMode.TabCalendar"
+es = "Calendario"
+en = "Calendar"
+fr = "Calendrier"
+de = "Spielplan"
+it = "Calendario"
+pt = "Calendário"
+ja = "日程"
+zh_hans = "赛程"
+zh_hant = "賽程"
+
+# hub tab: the competitions (tables, the World Cup's groups, the knockouts)
+[[row]]
+id = "CareerMode.TabCompetition"
+es = "Competición"
+en = "Competition"
+fr = "Compétition"
+de = "Wettbewerb"
+it = "Competizione"
+pt = "Competição"
+ja = "大会"
+zh_hans = "赛事"
+zh_hant = "賽事"
+
+# hub tab
+[[row]]
+id = "CareerMode.TabSquad"
+es = "Plantilla"
+en = "Squad"
+fr = "Effectif"
+de = "Kader"
+it = "Rosa"
+pt = "Plantel"
+ja = "メンバー"
+zh_hans = "阵容"
+zh_hant = "陣容"
+
+# a hub tab of a later version
+[[row]]
+id = "CareerMode.ComingSoon"
+es = "Disponible en una próxima versión."
+en = "Available in a coming version."
+fr = "Disponible dans une prochaine version."
+de = "In einer nächsten Version verfügbar."
+it = "Disponibile in una prossima versione."
+pt = "Disponível numa próxima versão."
+ja = "今後のバージョンで追加されます。"
+zh_hans = "将在后续版本中推出。"
+zh_hant = "將在後續版本中推出。"
+
+# Inicio tile: the club
+[[row]]
+id = "CareerMode.YourClub"
+es = "Tu club"
+en = "Your club"
+fr = "Ton club"
+de = "Dein Verein"
+it = "Il tuo club"
+pt = "O teu clube"
+ja = "あなたのクラブ"
+zh_hans = "你的俱乐部"
+zh_hant = "你的俱樂部"
+
+# Inicio tile: last results
+[[row]]
+id = "CareerMode.Form"
+es = "Forma"
+en = "Form"
+fr = "Forme"
+de = "Form"
+it = "Forma"
+pt = "Forma"
+ja = "調子"
+zh_hans = "状态"
+zh_hant = "狀態"
+
+# Inicio form tile without matches
+[[row]]
+id = "CareerMode.NoResults"
+es = "Sin partidos jugados todavía"
+en = "No matches played yet"
+fr = "Aucun match joué"
+de = "Noch keine Spiele"
+it = "Nessuna partita giocata"
+pt = "Ainda sem jogos"
+ja = "まだ試合はありません"
+zh_hans = "尚未进行比赛"
+zh_hant = "尚未進行比賽"
+
+# a won match chip
+[[row]]
+id = "CareerMode.FormW"
+es = "V"
+en = "W"
+fr = "V"
+de = "S"
+it = "V"
+pt = "V"
+ja = "勝"
+zh_hans = "胜"
+zh_hant = "勝"
+
+# a drawn match chip
+[[row]]
+id = "CareerMode.FormD"
+es = "E"
+en = "D"
+fr = "N"
+de = "U"
+it = "N"
+pt = "E"
+ja = "分"
+zh_hans = "平"
+zh_hant = "平"
+
+# a lost match chip
+[[row]]
+id = "CareerMode.FormL"
+es = "D"
+en = "L"
+fr = "D"
+de = "N"
+it = "S"
+pt = "D"
+ja = "敗"
+zh_hans = "负"
+zh_hant = "負"
+
+# Inicio tile: news
+[[row]]
+id = "CareerMode.News"
+es = "Noticias"
+en = "News"
+fr = "Actualités"
+de = "Neuigkeiten"
+it = "Notizie"
+pt = "Notícias"
+ja = "ニュース"
+zh_hans = "新闻"
+zh_hant = "新聞"
+
+# club card: the stars
+[[row]]
+id = "CareerMode.Rating"
+es = "Valoración"
+en = "Rating"
+fr = "Note"
+de = "Wertung"
+it = "Valutazione"
+pt = "Avaliação"
+ja = "評価"
+zh_hans = "评价"
+zh_hant = "評價"
+
+# club card: attack line
+[[row]]
+id = "CareerMode.LineAttack"
+es = "ATA"
+en = "ATT"
+fr = "ATT"
+de = "ANG"
+it = "ATT"
+pt = "ATA"
+ja = "攻"
+zh_hans = "攻"
+zh_hant = "攻"
+
+# club card: midfield line
+[[row]]
+id = "CareerMode.LineMidfield"
+es = "MED"
+en = "MID"
+fr = "MIL"
+de = "MIT"
+it = "CEN"
+pt = "MED"
+ja = "中"
+zh_hans = "中"
+zh_hant = "中"
+
+# club card: defence line
+[[row]]
+id = "CareerMode.LineDefence"
+es = "DEF"
+en = "DEF"
+fr = "DÉF"
+de = "ABW"
+it = "DIF"
+pt = "DEF"
+ja = "守"
+zh_hans = "守"
+zh_hant = "守"
+
+# club card: {1} = the shape (3-5-2)
+[[row]]
+id = "CareerMode.Formation"
+es = "Formación  {1}"
+en = "Formation  {1}"
+fr = "Formation  {1}"
+de = "Formation  {1}"
+it = "Modulo  {1}"
+pt = "Formação  {1}"
+ja = "フォーメーション  {1}"
+zh_hans = "阵型  {1}"
+zh_hant = "陣型  {1}"
+
+# club card: best players
+[[row]]
+id = "CareerMode.BestPlayers"
+es = "Mejores jugadores"
+en = "Best players"
+fr = "Meilleurs joueurs"
+de = "Beste Spieler"
+it = "Migliori giocatori"
+pt = "Melhores jogadores"
+ja = "注目選手"
+zh_hans = "最佳球员"
+zh_hant = "最佳球員"
+
+# {1} = level
+[[row]]
+id = "CareerMode.Level"
+es = "Nivel {1}"
+en = "Level {1}"
+fr = "Niveau {1}"
+de = "Level {1}"
+it = "Livello {1}"
+pt = "Nível {1}"
+ja = "レベル{1}"
+zh_hans = "等级{1}"
+zh_hant = "等級{1}"
+
+# {1} = level
+[[row]]
+id = "CareerMode.LevelShort"
+es = "Nv {1}"
+en = "Lv {1}"
+fr = "Nv {1}"
+de = "Lv {1}"
+it = "Lv {1}"
+pt = "Nv {1}"
+ja = "Lv{1}"
+zh_hans = "Lv{1}"
+zh_hant = "Lv{1}"
+
+# {1} = club, {2} = clubs
+[[row]]
+id = "CareerMode.ClubOf"
+es = "Club {1} de {2}"
+en = "Club {1} of {2}"
+fr = "Club {1} sur {2}"
+de = "Verein {1} von {2}"
+it = "Club {1} di {2}"
+pt = "Clube {1} de {2}"
+ja = "クラブ {1}/{2}"
+zh_hans = "俱乐部 {1}/{2}"
+zh_hant = "俱樂部 {1}/{2}"
+
+# position badge
+[[row]]
+id = "CareerMode.PosGK"
+es = "POR"
+en = "GK"
+fr = "GB"
+de = "TW"
+it = "POR"
+pt = "GR"
+ja = "GK"
+zh_hans = "门将"
+zh_hant = "門將"
+
+# position badge
+[[row]]
+id = "CareerMode.PosFW"
+es = "DEL"
+en = "FW"
+fr = "AT"
+de = "ST"
+it = "ATT"
+pt = "AV"
+ja = "FW"
+zh_hans = "前锋"
+zh_hant = "前鋒"
+
+# position badge
+[[row]]
+id = "CareerMode.PosMF"
+es = "MED"
+en = "MF"
+fr = "MI"
+de = "MF"
+it = "CC"
+pt = "MD"
+ja = "MF"
+zh_hans = "中场"
+zh_hant = "中場"
+
+# position badge
+[[row]]
+id = "CareerMode.PosDF"
+es = "DEF"
+en = "DF"
+fr = "DÉ"
+de = "AB"
+it = "DIF"
+pt = "DF"
+ja = "DF"
+zh_hans = "后卫"
+zh_hant = "後衛"
+
+# squad column
+[[row]]
+id = "CareerMode.ColPlayer"
+es = "Jugador"
+en = "Player"
+fr = "Joueur"
+de = "Spieler"
+it = "Giocatore"
+pt = "Jogador"
+ja = "選手"
+zh_hans = "球员"
+zh_hant = "球員"
+
+# squad column
+[[row]]
+id = "CareerMode.ColPos"
+es = "Pos."
+en = "Pos."
+fr = "Pos."
+de = "Pos."
+it = "Ruolo"
+pt = "Pos."
+ja = "ポジ"
+zh_hans = "位置"
+zh_hant = "位置"
+
+# squad column
+[[row]]
+id = "CareerMode.ColLevel"
+es = "Nv"
+en = "Lv"
+fr = "Nv"
+de = "Lv"
+it = "Lv"
+pt = "Nv"
+ja = "Lv"
+zh_hans = "等级"
+zh_hant = "等級"
+
+# squad column
+[[row]]
+id = "CareerMode.ColRating"
+es = "Valoración"
+en = "Rating"
+fr = "Note"
+de = "Wertung"
+it = "Valutazione"
+pt = "Avaliação"
+ja = "評価"
+zh_hans = "评价"
+zh_hant = "評價"
+
+# squad: the starters line
+[[row]]
+id = "CareerMode.Starters"
+es = "Titulares"
+en = "Starters"
+fr = "Titulaires"
+de = "Startelf"
+it = "Titolari"
+pt = "Titulares"
+ja = "スタメン"
+zh_hans = "首发"
+zh_hant = "首發"
+
+# squad: the bench line
+[[row]]
+id = "CareerMode.Bench"
+es = "Banquillo"
+en = "Bench"
+fr = "Remplaçants"
+de = "Bank"
+it = "Panchina"
+pt = "Suplentes"
+ja = "ベンチ"
+zh_hans = "替补"
+zh_hant = "替補"
+
+# footer: change the hub tab
+[[row]]
+id = "CareerMode.KeyTab"
+es = "L1/R1: Sección"
+en = "L1/R1: Section"
+fr = "L1/R1 : Section"
+de = "L1/R1: Bereich"
+it = "L1/R1: Sezione"
+pt = "L1/R1: Secção"
+ja = "L1/R1：切り替え"
+zh_hans = "L1/R1：切换"
+zh_hant = "L1/R1：切換"
+
+# footer: change the club
+[[row]]
+id = "CareerMode.KeyClub"
+es = "Izq/Der: Club"
+en = "Left/Right: Club"
+fr = "Gauche/Droite : Club"
+de = "Links/Rechts: Verein"
+it = "Sinistra/Destra: Club"
+pt = "Esq./Dir.: Clube"
+ja = "左右：クラブ"
+zh_hans = "左右：俱乐部"
+zh_hant = "左右：俱樂部"
+
+# footer: change the league with left / right
+[[row]]
+id = "CareerMode.KeyLeagueSide"
+es = "Izq/Der: Liga"
+en = "Left/Right: League"
+fr = "Gauche/Droite : Ligue"
+de = "Links/Rechts: Liga"
+it = "Sinistra/Destra: Lega"
+pt = "Esq./Dir.: Liga"
+ja = "左右：リーグ"
+zh_hans = "左右：联赛"
+zh_hant = "左右：聯賽"
+
+# footer: change the page with up / down
+[[row]]
+id = "CareerMode.KeyPageUpDown"
+es = "Arriba/Abajo: Página"
+en = "Up/Down: Page"
+fr = "Haut/Bas : Page"
+de = "Hoch/Runter: Seite"
+it = "Su/Giù: Pagina"
+pt = "Cima/Baixo: Página"
+ja = "上下：ページ"
+zh_hans = "上下：翻页"
+zh_hant = "上下：翻頁"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga1"
+es = "Inazuma Eleven"
+en = "Inazuma Eleven"
+fr = "Inazuma Eleven"
+de = "Inazuma Eleven"
+it = "Inazuma Eleven"
+pt = "Inazuma Eleven"
+ja = "イナズマイレブン"
+zh_hans = "闪电十一人"
+zh_hant = "閃電十一人"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga2"
+es = "Inazuma Eleven 2"
+en = "Inazuma Eleven 2"
+fr = "Inazuma Eleven 2"
+de = "Inazuma Eleven 2"
+it = "Inazuma Eleven 2"
+pt = "Inazuma Eleven 2"
+ja = "イナズマイレブン2"
+zh_hans = "闪电十一人2"
+zh_hant = "閃電十一人2"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga3"
+es = "Inazuma Eleven 3"
+en = "Inazuma Eleven 3"
+fr = "Inazuma Eleven 3"
+de = "Inazuma Eleven 3"
+it = "Inazuma Eleven 3"
+pt = "Inazuma Eleven 3"
+ja = "イナズマイレブン3"
+zh_hans = "闪电十一人3"
+zh_hant = "閃電十一人3"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga4"
+es = "Inazuma Eleven GO"
+en = "Inazuma Eleven GO"
+fr = "Inazuma Eleven GO"
+de = "Inazuma Eleven GO"
+it = "Inazuma Eleven GO"
+pt = "Inazuma Eleven GO"
+ja = "イナズマイレブンGO"
+zh_hans = "闪电十一人GO"
+zh_hant = "閃電十一人GO"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga5"
+es = "GO Chrono Stone"
+en = "GO Chrono Stone"
+fr = "GO Chrono Stone"
+de = "GO Chrono Stone"
+it = "GO Chrono Stone"
+pt = "GO Chrono Stone"
+ja = "GO クロノ・ストーン"
+zh_hans = "GO 时空之石"
+zh_hant = "GO 時空之石"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga6"
+es = "GO Galaxy"
+en = "GO Galaxy"
+fr = "GO Galaxy"
+de = "GO Galaxy"
+it = "GO Galaxy"
+pt = "GO Galaxy"
+ja = "GO ギャラクシー"
+zh_hans = "GO 银河"
+zh_hant = "GO 銀河"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga7"
+es = "Ares"
+en = "Ares"
+fr = "Ares"
+de = "Ares"
+it = "Ares"
+pt = "Ares"
+ja = "アレスの天秤"
+zh_hans = "阿瑞斯的天平"
+zh_hant = "阿瑞斯的天平"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga8"
+es = "Orion"
+en = "Orion"
+fr = "Orion"
+de = "Orion"
+it = "Orion"
+pt = "Orion"
+ja = "オリオンの刻印"
+zh_hans = "猎户座的刻印"
+zh_hant = "獵戶座的刻印"
+
+# club pick group: the game
+[[row]]
+id = "CareerMode.Saga9"
+es = "Victory Road"
+en = "Victory Road"
+fr = "Victory Road"
+de = "Victory Road"
+it = "Victory Road"
+pt = "Victory Road"
+ja = "英雄たちのヴィクトリーロード"
+zh_hans = "英雄们的胜利之路"
+zh_hant = "英雄們的勝利之路"
+
+# club pick group: clubs of no known game
+[[row]]
+id = "CareerMode.Saga99"
+es = "Otros"
+en = "Others"
+fr = "Autres"
+de = "Andere"
+it = "Altri"
+pt = "Outros"
+ja = "その他"
+zh_hans = "其他"
+zh_hant = "其他"
+
+# footer: change the game group
+[[row]]
+id = "CareerMode.KeyGame"
+es = "L1/R1: Juego"
+en = "L1/R1: Game"
+fr = "L1/R1 : Jeu"
+de = "L1/R1: Spiel"
+it = "L1/R1: Gioco"
+pt = "L1/R1: Jogo"
+ja = "L1/R1：作品"
+zh_hans = "L1/R1：作品"
+zh_hant = "L1/R1：作品"
+
+# {1} = the season
+[[row]]
+id = "CareerMode.SeasonN"
+es = "Temporada {1}"
+en = "Season {1}"
+fr = "Saison {1}"
+de = "Saison {1}"
+it = "Stagione {1}"
+pt = "Época {1}"
+ja = "シーズン{1}"
+zh_hans = "第{1}赛季"
+zh_hant = "第{1}賽季"
+
+# the season's phase
+[[row]]
+id = "CareerMode.Phase_superliga"
+es = "SuperLiga"
+en = "SuperLiga"
+fr = "SuperLigue"
+de = "SuperLiga"
+it = "SuperLega"
+pt = "SuperLiga"
+ja = "スーパーリーグ"
+zh_hans = "超级联赛"
+zh_hant = "超級聯賽"
+
+# the season's phase
+[[row]]
+id = "CareerMode.Phase_pots"
+es = "Sorteo de las ligas"
+en = "Draw of the leagues"
+fr = "Tirage des ligues"
+de = "Auslosung der Ligen"
+it = "Sorteggio dei campionati"
+pt = "Sorteio das ligas"
+ja = "リーグ抽選"
+zh_hans = "联赛抽签"
+zh_hant = "聯賽抽籤"
+
+# the season's phase
+[[row]]
+id = "CareerMode.Phase_league"
+es = "Ligas"
+en = "Leagues"
+fr = "Ligues"
+de = "Ligen"
+it = "Campionati"
+pt = "Ligas"
+ja = "リーグ戦"
+zh_hans = "联赛"
+zh_hant = "聯賽"
+
+# the season's phase
+[[row]]
+id = "CareerMode.Phase_frontier"
+es = "Fútbol Frontier"
+en = "Football Frontier"
+fr = "Football Frontier"
+de = "Football Frontier"
+it = "Football Frontier"
+pt = "Futebol Frontier"
+ja = "フットボールフロンティア"
+zh_hans = "足球边境大赛"
+zh_hant = "足球邊境大賽"
+
+# the season's phase
+[[row]]
+id = "CareerMode.Phase_over"
+es = "Temporada terminada"
+en = "Season over"
+fr = "Saison terminée"
+de = "Saison beendet"
+it = "Stagione finita"
+pt = "Época terminada"
+ja = "シーズン終了"
+zh_hans = "赛季结束"
+zh_hant = "賽季結束"
+
+# the first competition
+[[row]]
+id = "CareerMode.SuperLiga"
+es = "SuperLiga"
+en = "SuperLiga"
+fr = "SuperLigue"
+de = "SuperLiga"
+it = "SuperLega"
+pt = "SuperLiga"
+ja = "スーパーリーグ"
+zh_hans = "超级联赛"
+zh_hant = "超級聯賽"
+
+# {1} = round
+[[row]]
+id = "CareerMode.RoundSuperLiga"
+es = "SuperLiga · Jornada {1}"
+en = "SuperLiga · Round {1}"
+fr = "SuperLigue · Journée {1}"
+de = "SuperLiga · Runde {1}"
+it = "SuperLega · Giornata {1}"
+pt = "SuperLiga · Jornada {1}"
+ja = "スーパーリーグ 第{1}節"
+zh_hans = "超级联赛 第{1}轮"
+zh_hant = "超級聯賽 第{1}輪"
+
+# calendar row: {1} = round
+[[row]]
+id = "CareerMode.RoundSuperLigaShort"
+es = "SL J{1}"
+en = "SL R{1}"
+fr = "SL J{1}"
+de = "SL R{1}"
+it = "SL G{1}"
+pt = "SL J{1}"
+ja = "SL 第{1}節"
+zh_hans = "超 第{1}轮"
+zh_hant = "超 第{1}輪"
+
+# {1} = matchday
+[[row]]
+id = "CareerMode.RoundLeague"
+es = "Liga · Jornada {1}"
+en = "League · Matchday {1}"
+fr = "Ligue · Journée {1}"
+de = "Liga · Spieltag {1}"
+it = "Campionato · Giornata {1}"
+pt = "Liga · Jornada {1}"
+ja = "リーグ 第{1}節"
+zh_hans = "联赛 第{1}轮"
+zh_hant = "聯賽 第{1}輪"
+
+# calendar row: {1} = matchday
+[[row]]
+id = "CareerMode.RoundLeagueShort"
+es = "Liga J{1}"
+en = "Lg MD{1}"
+fr = "Lg J{1}"
+de = "Liga ST{1}"
+it = "Camp G{1}"
+pt = "Liga J{1}"
+ja = "リーグ 第{1}節"
+zh_hans = "联 第{1}轮"
+zh_hant = "聯 第{1}輪"
+
+# Football Frontier round
+[[row]]
+id = "CareerMode.FrontierPlayoff"
+es = "Fútbol Frontier · Dieciseisavos"
+en = "Football Frontier · Round of 32"
+fr = "Football Frontier · Seizièmes"
+de = "Football Frontier · Sechzehntelfinale"
+it = "Football Frontier · Sedicesimi"
+pt = "Futebol Frontier · 16 avos"
+ja = "フロンティア 2回戦"
+zh_hans = "边境大赛 32强"
+zh_hant = "邊境大賽 32強"
+
+# Football Frontier round, short
+[[row]]
+id = "CareerMode.FrontierPlayoffShort"
+es = "Dieciseisavos"
+en = "Round of 32"
+fr = "Seizièmes"
+de = "1/16-Finale"
+it = "Sedicesimi"
+pt = "16 avos"
+ja = "2回戦"
+zh_hans = "32强"
+zh_hant = "32強"
+
+# Football Frontier round
+[[row]]
+id = "CareerMode.FrontierRound16"
+es = "Fútbol Frontier · Octavos"
+en = "Football Frontier · Round of 16"
+fr = "Football Frontier · Huitièmes"
+de = "Football Frontier · Achtelfinale"
+it = "Football Frontier · Ottavi"
+pt = "Futebol Frontier · Oitavos"
+ja = "フロンティア 3回戦"
+zh_hans = "边境大赛 16强"
+zh_hant = "邊境大賽 16強"
+
+# Football Frontier round, short
+[[row]]
+id = "CareerMode.FrontierRound16Short"
+es = "Octavos"
+en = "Round of 16"
+fr = "Huitièmes"
+de = "Achtelfinale"
+it = "Ottavi"
+pt = "Oitavos"
+ja = "3回戦"
+zh_hans = "16强"
+zh_hant = "16強"
+
+# Football Frontier round
+[[row]]
+id = "CareerMode.FrontierQuarter"
+es = "Fútbol Frontier · Cuartos"
+en = "Football Frontier · Quarter-finals"
+fr = "Football Frontier · Quarts"
+de = "Football Frontier · Viertelfinale"
+it = "Football Frontier · Quarti"
+pt = "Futebol Frontier · Quartos"
+ja = "フロンティア 準々決勝"
+zh_hans = "边境大赛 八强"
+zh_hant = "邊境大賽 八強"
+
+# Football Frontier round, short
+[[row]]
+id = "CareerMode.FrontierQuarterShort"
+es = "Cuartos"
+en = "Quarter-finals"
+fr = "Quarts"
+de = "Viertelfinale"
+it = "Quarti"
+pt = "Quartos"
+ja = "準々決勝"
+zh_hans = "八强"
+zh_hant = "八強"
+
+# Football Frontier round
+[[row]]
+id = "CareerMode.FrontierSemi"
+es = "Fútbol Frontier · Semifinal"
+en = "Football Frontier · Semi-final"
+fr = "Football Frontier · Demi-finale"
+de = "Football Frontier · Halbfinale"
+it = "Football Frontier · Semifinale"
+pt = "Futebol Frontier · Meia-final"
+ja = "フロンティア 準決勝"
+zh_hans = "边境大赛 半决赛"
+zh_hant = "邊境大賽 半決賽"
+
+# Football Frontier round, short
+[[row]]
+id = "CareerMode.FrontierSemiShort"
+es = "Semifinal"
+en = "Semi-final"
+fr = "Demi-finale"
+de = "Halbfinale"
+it = "Semifinale"
+pt = "Meia-final"
+ja = "準決勝"
+zh_hans = "半决赛"
+zh_hant = "半決賽"
+
+# Football Frontier round
+[[row]]
+id = "CareerMode.FrontierFinal"
+es = "Fútbol Frontier · Final"
+en = "Football Frontier · Final"
+fr = "Football Frontier · Finale"
+de = "Football Frontier · Finale"
+it = "Football Frontier · Finale"
+pt = "Futebol Frontier · Final"
+ja = "フロンティア 決勝"
+zh_hans = "边境大赛 决赛"
+zh_hant = "邊境大賽 決賽"
+
+# Football Frontier round, short
+[[row]]
+id = "CareerMode.FrontierFinalShort"
+es = "Final"
+en = "Final"
+fr = "Finale"
+de = "Finale"
+it = "Finale"
+pt = "Final"
+ja = "決勝"
+zh_hans = "决赛"
+zh_hant = "決賽"
+
+# after a score decided on penalties
+[[row]]
+id = "CareerMode.Pens"
+es = "(pen.)"
+en = "(pens)"
+fr = "(t.a.b.)"
+de = "(i.E.)"
+it = "(rig.)"
+pt = "(g.p.)"
+ja = "(PK)"
+zh_hans = "(点球)"
+zh_hant = "(點球)"
+
+# the next match: play it
+[[row]]
+id = "CareerMode.PlayKey"
+es = "A  Jugar"
+en = "A  Play"
+fr = "A  Jouer"
+de = "A  Spielen"
+it = "A  Gioca"
+pt = "A  Jogar"
+ja = "A  試合開始"
+zh_hans = "A  开始比赛"
+zh_hant = "A  開始比賽"
+
+# the next match: simulate it
+[[row]]
+id = "CareerMode.SimKey"
+es = "Y  Simular"
+en = "Y  Simulate"
+fr = "Y  Simuler"
+de = "Y  Simulieren"
+it = "Y  Simula"
+pt = "Y  Simular"
+ja = "Y  シミュレート"
+zh_hans = "Y  模拟"
+zh_hant = "Y  模擬"
+
+# footer: simulate the match
+[[row]]
+id = "CareerMode.KeySim"
+es = "Y: Simular"
+en = "Y: Simulate"
+fr = "Y : Simuler"
+de = "Y: Simulieren"
+it = "Y: Simula"
+pt = "Y: Simular"
+ja = "Y：シミュレート"
+zh_hans = "Y：模拟"
+zh_hant = "Y：模擬"
+
+# a round without the club's match: simulate it
+[[row]]
+id = "CareerMode.SimRoundKey"
+es = "A  Simular jornada"
+en = "A  Simulate round"
+fr = "A  Simuler la journée"
+de = "A  Runde simulieren"
+it = "A  Simula giornata"
+pt = "A  Simular jornada"
+ja = "A  この節を進める"
+zh_hans = "A  模拟本轮"
+zh_hant = "A  模擬本輪"
+
+# the club no longer plays this competition
+[[row]]
+id = "CareerMode.OutOfCompetition"
+es = "Tu club ya no juega esta competición."
+en = "Your club no longer plays this competition."
+fr = "Ton club ne joue plus cette compétition."
+de = "Dein Verein spielt diesen Wettbewerb nicht mehr."
+it = "Il tuo club non gioca più questa competizione."
+pt = "O teu clube já não joga esta competição."
+ja = "あなたのクラブはこの大会から敗退しました。"
+zh_hans = "你的俱乐部已不再参加此赛事。"
+zh_hant = "你的俱樂部已不再參加此賽事。"
+
+# the club has no match this round
+[[row]]
+id = "CareerMode.NoMatchThisRound"
+es = "Tu club no juega en esta ronda."
+en = "Your club has no match this round."
+fr = "Ton club ne joue pas ce tour."
+de = "Dein Verein spielt in dieser Runde nicht."
+it = "Il tuo club non gioca in questo turno."
+pt = "O teu clube não joga nesta ronda."
+ja = "あなたのクラブはこのラウンドは試合がありません。"
+zh_hans = "你的俱乐部本轮没有比赛。"
+zh_hant = "你的俱樂部本輪沒有比賽。"
+
+# the draw of the leagues
+[[row]]
+id = "CareerMode.DrawTitle"
+es = "Sorteo de las ligas"
+en = "Draw of the leagues"
+fr = "Tirage des ligues"
+de = "Auslosung der Ligen"
+it = "Sorteggio dei campionati"
+pt = "Sorteio das ligas"
+ja = "リーグ抽選"
+zh_hans = "联赛抽签"
+zh_hant = "聯賽抽籤"
+
+# {1} = the club's SuperLiga place, {2} = qualified clubs
+[[row]]
+id = "CareerMode.DrawLine"
+es = "Tu club acabó {1}.º: entre los {2} clasificados."
+en = "Your club finished {1}th: among the {2} qualified."
+fr = "Ton club a fini {1}e : parmi les {2} qualifiés."
+de = "Dein Verein wurde {1}.: unter den {2} Qualifizierten."
+it = "Il tuo club ha chiuso {1}º: tra le {2} qualificate."
+pt = "O teu clube ficou em {1}.º: entre os {2} apurados."
+ja = "あなたのクラブは{1}位：勝ち抜け{2}クラブに入りました。"
+zh_hans = "你的俱乐部排名第{1}：跻身{2}支晋级球队。"
+zh_hant = "你的俱樂部排名第{1}：躋身{2}支晉級球隊。"
+
+# open the draw of the leagues
+[[row]]
+id = "CareerMode.DrawKey"
+es = "A  Ver el sorteo"
+en = "A  See the draw"
+fr = "A  Voir le tirage"
+de = "A  Zur Auslosung"
+it = "A  Vedi il sorteggio"
+pt = "A  Ver o sorteio"
+ja = "A  抽選を見る"
+zh_hans = "A  查看抽签"
+zh_hant = "A  查看抽籤"
+
+# {1} = pot number
+[[row]]
+id = "CareerMode.Pot"
+es = "Bombo {1}"
+en = "Pot {1}"
+fr = "Chapeau {1}"
+de = "Topf {1}"
+it = "Urna {1}"
+pt = "Pote {1}"
+ja = "ポット{1}"
+zh_hans = "第{1}档"
+zh_hant = "第{1}檔"
+
+# footer: draw the next ball
+[[row]]
+id = "CareerMode.KeyDrawBall"
+es = "A: Sacar bola"
+en = "A: Draw a ball"
+fr = "A : Tirer une boule"
+de = "A: Kugel ziehen"
+it = "A: Estrai una pallina"
+pt = "A: Tirar bola"
+ja = "A：ボールを引く"
+zh_hans = "A：抽一个球"
+zh_hant = "A：抽一個球"
+
+# footer: draw every ball left
+[[row]]
+id = "CareerMode.KeyDrawAll"
+es = "Y: Sacar todas"
+en = "Y: Draw them all"
+fr = "Y : Tout tirer"
+de = "Y: Alle ziehen"
+it = "Y: Estrai tutte"
+pt = "Y: Tirar todas"
+ja = "Y：すべて引く"
+zh_hans = "Y：全部抽出"
+zh_hant = "Y：全部抽出"
+
+# footer: the leagues start
+[[row]]
+id = "CareerMode.KeyStartLeagues"
+es = "A: Empezar las ligas"
+en = "A: Start the leagues"
+fr = "A : Lancer les ligues"
+de = "A: Ligen starten"
+it = "A: Inizia i campionati"
+pt = "A: Começar as ligas"
+ja = "A：リーグ開始"
+zh_hans = "A：开始联赛"
+zh_hant = "A：開始聯賽"
+
+# {1} = the season
+[[row]]
+id = "CareerMode.SeasonOver"
+es = "Temporada {1} terminada"
+en = "Season {1} over"
+fr = "Saison {1} terminée"
+de = "Saison {1} beendet"
+it = "Stagione {1} finita"
+pt = "Época {1} terminada"
+ja = "シーズン{1}終了"
+zh_hans = "第{1}赛季结束"
+zh_hant = "第{1}賽季結束"
+
+# {1} = SuperLiga place, {2} = qualified clubs
+[[row]]
+id = "CareerMode.Out_superliga"
+es = "{1}.º de la SuperLiga: solo pasan los {2} primeros."
+en = "{1}th in the SuperLiga: only the top {2} go on."
+fr = "{1}e de la SuperLigue : seuls les {2} premiers passent."
+de = "{1}. der SuperLiga: nur die ersten {2} kommen weiter."
+it = "{1}º in SuperLega: passano solo le prime {2}."
+pt = "{1}.º da SuperLiga: só passam os {2} primeiros."
+ja = "スーパーリーグ{1}位：上位{2}クラブのみ勝ち抜け。"
+zh_hans = "超级联赛第{1}名：只有前{2}名晋级。"
+zh_hant = "超級聯賽第{1}名：只有前{2}名晉級。"
+
+# the club missed the Football Frontier
+[[row]]
+id = "CareerMode.Out_league"
+es = "Tu club no entró en el Fútbol Frontier."
+en = "Your club missed the Football Frontier."
+fr = "Ton club a manqué le Football Frontier."
+de = "Dein Verein hat den Football Frontier verpasst."
+it = "Il tuo club ha mancato il Football Frontier."
+pt = "O teu clube falhou o Futebol Frontier."
+ja = "フットボールフロンティア出場を逃しました。"
+zh_hans = "你的俱乐部无缘足球边境大赛。"
+zh_hant = "你的俱樂部無緣足球邊境大賽。"
+
+# the club was knocked out
+[[row]]
+id = "CareerMode.Out_frontier"
+es = "Tu club cayó eliminado en el Fútbol Frontier."
+en = "Your club was knocked out of the Football Frontier."
+fr = "Ton club a été éliminé du Football Frontier."
+de = "Dein Verein schied im Football Frontier aus."
+it = "Il tuo club è stato eliminato dal Football Frontier."
+pt = "O teu clube foi eliminado do Futebol Frontier."
+ja = "フットボールフロンティアで敗退しました。"
+zh_hans = "你的俱乐部在足球边境大赛中被淘汰。"
+zh_hant = "你的俱樂部在足球邊境大賽中被淘汰。"
+
+# how far the club went
+[[row]]
+id = "CareerMode.Reached_SuperLiga"
+es = "Tu club jugó la SuperLiga."
+en = "Your club played the SuperLiga."
+fr = "Ton club a joué la SuperLigue."
+de = "Dein Verein spielte die SuperLiga."
+it = "Il tuo club ha giocato la SuperLega."
+pt = "O teu clube jogou a SuperLiga."
+ja = "スーパーリーグを戦いました。"
+zh_hans = "你的俱乐部参加了超级联赛。"
+zh_hant = "你的俱樂部參加了超級聯賽。"
+
+# how far the club went
+[[row]]
+id = "CareerMode.Reached_League"
+es = "Tu club jugó su liga."
+en = "Your club played its league."
+fr = "Ton club a joué sa ligue."
+de = "Dein Verein spielte seine Liga."
+it = "Il tuo club ha giocato il suo campionato."
+pt = "O teu clube jogou a sua liga."
+ja = "リーグ戦を戦いました。"
+zh_hans = "你的俱乐部参加了联赛。"
+zh_hant = "你的俱樂部參加了聯賽。"
+
+# how far the club went
+[[row]]
+id = "CareerMode.Reached_Playoff"
+es = "Tu club llegó a los dieciseisavos del Fútbol Frontier."
+en = "Your club reached the Football Frontier round of 32."
+fr = "Ton club a atteint les seizièmes du Football Frontier."
+de = "Dein Verein erreichte das Sechzehntelfinale des Football Frontier."
+it = "Il tuo club è arrivato ai sedicesimi del Football Frontier."
+pt = "O teu clube chegou aos 16 avos do Futebol Frontier."
+ja = "フロンティア2回戦に進出しました。"
+zh_hans = "你的俱乐部打进了边境大赛32强。"
+zh_hant = "你的俱樂部打進了邊境大賽32強。"
+
+# how far the club went
+[[row]]
+id = "CareerMode.Reached_Round16"
+es = "Tu club llegó a los octavos del Fútbol Frontier."
+en = "Your club reached the Football Frontier round of 16."
+fr = "Ton club a atteint les huitièmes du Football Frontier."
+de = "Dein Verein erreichte das Achtelfinale des Football Frontier."
+it = "Il tuo club è arrivato agli ottavi del Football Frontier."
+pt = "O teu clube chegou aos oitavos do Futebol Frontier."
+ja = "フロンティア3回戦に進出しました。"
+zh_hans = "你的俱乐部打进了边境大赛16强。"
+zh_hant = "你的俱樂部打進了邊境大賽16強。"
+
+# how far the club went
+[[row]]
+id = "CareerMode.Reached_Quarter"
+es = "Tu club llegó a los cuartos del Fútbol Frontier."
+en = "Your club reached the Football Frontier quarter-finals."
+fr = "Ton club a atteint les quarts du Football Frontier."
+de = "Dein Verein erreichte das Viertelfinale des Football Frontier."
+it = "Il tuo club è arrivato ai quarti del Football Frontier."
+pt = "O teu clube chegou aos quartos do Futebol Frontier."
+ja = "フロンティア準々決勝に進出しました。"
+zh_hans = "你的俱乐部打进了边境大赛八强。"
+zh_hant = "你的俱樂部打進了邊境大賽八強。"
+
+# how far the club went
+[[row]]
+id = "CareerMode.Reached_Semi"
+es = "Tu club llegó a la semifinal del Fútbol Frontier."
+en = "Your club reached the Football Frontier semi-final."
+fr = "Ton club a atteint la demi-finale du Football Frontier."
+de = "Dein Verein erreichte das Halbfinale des Football Frontier."
+it = "Il tuo club è arrivato in semifinale del Football Frontier."
+pt = "O teu clube chegou à meia-final do Futebol Frontier."
+ja = "フロンティア準決勝に進出しました。"
+zh_hans = "你的俱乐部打进了边境大赛半决赛。"
+zh_hant = "你的俱樂部打進了邊境大賽半決賽。"
+
+# how far the club went
+[[row]]
+id = "CareerMode.Reached_Final"
+es = "Tu club llegó a la final del Fútbol Frontier."
+en = "Your club reached the Football Frontier final."
+fr = "Ton club a atteint la finale du Football Frontier."
+de = "Dein Verein erreichte das Finale des Football Frontier."
+it = "Il tuo club è arrivato in finale del Football Frontier."
+pt = "O teu clube chegou à final do Futebol Frontier."
+ja = "フロンティア決勝に進出しました。"
+zh_hans = "你的俱乐部打进了边境大赛决赛。"
+zh_hant = "你的俱樂部打進了邊境大賽決賽。"
+
+# the club won the Football Frontier
+[[row]]
+id = "CareerMode.Reached_Champion"
+es = "¡Tu club ganó el Fútbol Frontier!"
+en = "Your club won the Football Frontier!"
+fr = "Ton club a gagné le Football Frontier !"
+de = "Dein Verein hat den Football Frontier gewonnen!"
+it = "Il tuo club ha vinto il Football Frontier!"
+pt = "O teu clube venceu o Futebol Frontier!"
+ja = "フットボールフロンティア優勝！"
+zh_hans = "你的俱乐部赢得了足球边境大赛！"
+zh_hant = "你的俱樂部贏得了足球邊境大賽！"
+
+# the season's champion
+[[row]]
+id = "CareerMode.Champion"
+es = "Campeón del Fútbol Frontier"
+en = "Football Frontier champion"
+fr = "Champion du Football Frontier"
+de = "Football-Frontier-Meister"
+it = "Campione del Football Frontier"
+pt = "Campeão do Futebol Frontier"
+ja = "フットボールフロンティア優勝"
+zh_hans = "足球边境大赛冠军"
+zh_hant = "足球邊境大賽冠軍"
+
+# start the next season
+[[row]]
+id = "CareerMode.NextSeasonKey"
+es = "A  Siguiente temporada"
+en = "A  Next season"
+fr = "A  Saison suivante"
+de = "A  Nächste Saison"
+it = "A  Prossima stagione"
+pt = "A  Próxima época"
+ja = "A  次のシーズンへ"
+zh_hans = "A  下个赛季"
+zh_hant = "A  下個賽季"
+
+# {1} = round, {2} = rounds
+[[row]]
+id = "CareerMode.NewsSuperLiga1"
+es = "SuperLiga: jornada {1} de {2}."
+en = "SuperLiga: round {1} of {2}."
+fr = "SuperLigue : journée {1} sur {2}."
+de = "SuperLiga: Runde {1} von {2}."
+it = "SuperLega: giornata {1} di {2}."
+pt = "SuperLiga: jornada {1} de {2}."
+ja = "スーパーリーグ：第{1}節/全{2}節"
+zh_hans = "超级联赛：第{1}轮/共{2}轮"
+zh_hant = "超級聯賽：第{1}輪/共{2}輪"
+
+# {1} = qualified, {2} = clubs
+[[row]]
+id = "CareerMode.NewsSuperLiga2"
+es = "Pasan a las ligas {1} de {2} clubes."
+en = "{1} of {2} clubs go on to the leagues."
+fr = "{1} clubs sur {2} passent aux ligues."
+de = "{1} von {2} Vereinen kommen in die Ligen."
+it = "{1} club su {2} passano ai campionati."
+pt = "Passam às ligas {1} de {2} clubes."
+ja = "{2}クラブ中{1}クラブがリーグへ進みます。"
+zh_hans = "{2}支俱乐部中有{1}支进入联赛。"
+zh_hant = "{2}支俱樂部中有{1}支進入聯賽。"
+
+# {1} = SuperLiga place
+[[row]]
+id = "CareerMode.NewsPots1"
+es = "Tu club acabó {1}.º en la SuperLiga."
+en = "Your club finished {1}th in the SuperLiga."
+fr = "Ton club a fini {1}e de la SuperLigue."
+de = "Dein Verein wurde {1}. der SuperLiga."
+it = "Il tuo club ha chiuso {1}º in SuperLega."
+pt = "O teu clube ficou em {1}.º na SuperLiga."
+ja = "スーパーリーグ{1}位で終えました。"
+zh_hans = "你的俱乐部在超级联赛中排名第{1}。"
+zh_hant = "你的俱樂部在超級聯賽中排名第{1}。"
+
+# the draw is next
+[[row]]
+id = "CareerMode.NewsPots2"
+es = "Toca el sorteo de las ligas."
+en = "The draw of the leagues is next."
+fr = "Place au tirage des ligues."
+de = "Jetzt kommt die Auslosung der Ligen."
+it = "Ora il sorteggio dei campionati."
+pt = "Segue-se o sorteio das ligas."
+ja = "次はリーグ抽選です。"
+zh_hans = "接下来是联赛抽签。"
+zh_hant = "接下來是聯賽抽籤。"
+
+# {1} = the club's league
+[[row]]
+id = "CareerMode.NewsLeague1"
+es = "Tu club juega la {1}."
+en = "Your club plays {1}."
+fr = "Ton club joue la {1}."
+de = "Dein Verein spielt in der {1}."
+it = "Il tuo club gioca la {1}."
+pt = "O teu clube joga a {1}."
+ja = "あなたのクラブは{1}で戦います。"
+zh_hans = "你的俱乐部参加{1}。"
+zh_hant = "你的俱樂部參加{1}。"
+
+# who reaches the Football Frontier
+[[row]]
+id = "CareerMode.NewsLeague2"
+es = "1.º-2.º: octavos del Frontier · 3.º-6.º: dieciseisavos."
+en = "1st-2nd: Frontier round of 16 · 3rd-6th: round of 32."
+fr = "1er-2e : huitièmes · 3e-6e : seizièmes du Frontier."
+de = "1.-2.: Achtelfinale · 3.-6.: Sechzehntelfinale."
+it = "1º-2º: ottavi · 3º-6º: sedicesimi del Frontier."
+pt = "1.º-2.º: oitavos · 3.º-6.º: 16 avos do Frontier."
+ja = "1・2位：3回戦から／3〜6位：2回戦から"
+zh_hans = "第1-2名：16强／第3-6名：32强"
+zh_hant = "第1-2名：16強／第3-6名：32強"
+
+# the knockout phase
+[[row]]
+id = "CareerMode.NewsFrontier1"
+es = "Fútbol Frontier: eliminatorias a partido único."
+en = "Football Frontier: single-match knockouts."
+fr = "Football Frontier : élimination directe sur un match."
+de = "Football Frontier: K.-o.-Runden in einem Spiel."
+it = "Football Frontier: eliminazione diretta in gara secca."
+pt = "Futebol Frontier: eliminatórias a jogo único."
+ja = "フットボールフロンティア：一発勝負のトーナメント"
+zh_hans = "足球边境大赛：单场淘汰赛"
+zh_hant = "足球邊境大賽：單場淘汰賽"
+
+# a future SuperLiga round
+[[row]]
+id = "CareerMode.ToBeDrawn"
+es = "Rival por decidir"
+en = "Rival to be decided"
+fr = "Adversaire à définir"
+de = "Gegner offen"
+it = "Avversario da definire"
+pt = "Adversário por definir"
+ja = "対戦相手未定"
+zh_hans = "对手待定"
+zh_hant = "對手待定"
+
+# the SuperLiga cut line
+[[row]]
+id = "CareerMode.CutSuperLiga"
+es = "Pasan a las ligas"
+en = "Go on to the leagues"
+fr = "Qualifiés pour les ligues"
+de = "Weiter in die Ligen"
+it = "Passano ai campionati"
+pt = "Passam às ligas"
+ja = "リーグ進出ライン"
+zh_hans = "晋级联赛"
+zh_hant = "晉級聯賽"
+
+# the league's Football Frontier line
+[[row]]
+id = "CareerMode.CutFrontier"
+es = "Fútbol Frontier"
+en = "Football Frontier"
+fr = "Football Frontier"
+de = "Football Frontier"
+it = "Football Frontier"
+pt = "Futebol Frontier"
+ja = "フロンティア出場"
+zh_hans = "边境大赛资格"
+zh_hant = "邊境大賽資格"
+
+# key hint: left / right change the competition
+[[row]]
+id = "CareerMode.KeyCompetition"
+es = "Izq/Der: Competición"
+en = "Left/Right: Competition"
+fr = "Gauche/Droite : Compétition"
+de = "Links/Rechts: Wettbewerb"
+it = "Sx/Dx: Competizione"
+pt = "Esq/Dir: Competição"
+ja = "左右：大会"
+zh_hans = "左右：赛事"
+zh_hant = "左右：賽事"
+
+# competition: the Fútbol Frontier's knockout
+[[row]]
+id = "CareerMode.CompFrontier"
+es = "Fútbol Frontier"
+en = "Football Frontier"
+fr = "Football Frontier"
+de = "Football Frontier"
+it = "Football Frontier"
+pt = "Futebol Frontier"
+ja = "フロンティア"
+zh_hans = "边境大赛"
+zh_hant = "邊境大賽"
+
+# competition: the World Cup (its groups, then its knockout)
+[[row]]
+id = "CareerMode.CompWorldCup"
+es = "Mundial"
+en = "World Cup"
+fr = "Coupe du monde"
+de = "Weltmeisterschaft"
+it = "Mondiale"
+pt = "Mundial"
+ja = "ワールドカップ"
+zh_hans = "世界杯"
+zh_hant = "世界盃"
+
+# key hint: up / down switch the World Cup between its groups and its knockout
+[[row]]
+id = "CareerMode.KeyWorldCupPage"
+es = "Arriba/Abajo: Grupos/Cuadro"
+en = "Up/Down: Groups/Bracket"
+fr = "Haut/Bas : Groupes/Tableau"
+de = "Hoch/Runter: Gruppen/Turnierbaum"
+it = "Su/Giù: Gironi/Tabellone"
+pt = "Cima/Baixo: Grupos/Quadro"
+ja = "上下：グループ／トーナメント表"
+zh_hans = "上下：小组／对阵图"
+zh_hant = "上下：小組／對陣圖"
+
+# squad: a player signed from the free players
+[[row]]
+id = "CareerMode.Signed"
+es = "Fichado"
+en = "Signed"
+fr = "Recrue"
+de = "Neu"
+it = "Acquisto"
+pt = "Contratado"
+ja = "新加入"
+zh_hans = "新签"
+zh_hant = "新簽"
+
+# standings column
+[[row]]
+id = "CareerMode.ColTeam"
+es = "Equipo"
+en = "Team"
+fr = "Équipe"
+de = "Team"
+it = "Squadra"
+pt = "Equipa"
+ja = "チーム"
+zh_hans = "球队"
+zh_hant = "球隊"
+
+# calendar: a weekday, short (1 Monday .. 7 Sunday)
+[[row]]
+id = "CareerMode.Weekday1"
+es = "Lun"
+en = "Mon"
+fr = "Lun"
+de = "Mo"
+it = "Lun"
+pt = "Seg"
+ja = "月"
+zh_hans = "周一"
+zh_hant = "週一"
+
+# calendar: a weekday, short (1 Monday .. 7 Sunday)
+[[row]]
+id = "CareerMode.Weekday2"
+es = "Mar"
+en = "Tue"
+fr = "Mar"
+de = "Di"
+it = "Mar"
+pt = "Ter"
+ja = "火"
+zh_hans = "周二"
+zh_hant = "週二"
+
+# calendar: a weekday, short (1 Monday .. 7 Sunday)
+[[row]]
+id = "CareerMode.Weekday3"
+es = "Mié"
+en = "Wed"
+fr = "Mer"
+de = "Mi"
+it = "Mer"
+pt = "Qua"
+ja = "水"
+zh_hans = "周三"
+zh_hant = "週三"
+
+# calendar: a weekday, short (1 Monday .. 7 Sunday)
+[[row]]
+id = "CareerMode.Weekday4"
+es = "Jue"
+en = "Thu"
+fr = "Jeu"
+de = "Do"
+it = "Gio"
+pt = "Qui"
+ja = "木"
+zh_hans = "周四"
+zh_hant = "週四"
+
+# calendar: a weekday, short (1 Monday .. 7 Sunday)
+[[row]]
+id = "CareerMode.Weekday5"
+es = "Vie"
+en = "Fri"
+fr = "Ven"
+de = "Fr"
+it = "Ven"
+pt = "Sex"
+ja = "金"
+zh_hans = "周五"
+zh_hant = "週五"
+
+# calendar: a weekday, short (1 Monday .. 7 Sunday)
+[[row]]
+id = "CareerMode.Weekday6"
+es = "Sáb"
+en = "Sat"
+fr = "Sam"
+de = "Sa"
+it = "Sab"
+pt = "Sáb"
+ja = "土"
+zh_hans = "周六"
+zh_hant = "週六"
+
+# calendar: a weekday, short (1 Monday .. 7 Sunday)
+[[row]]
+id = "CareerMode.Weekday7"
+es = "Dom"
+en = "Sun"
+fr = "Dim"
+de = "So"
+it = "Dom"
+pt = "Dom"
+ja = "日"
+zh_hans = "周日"
+zh_hant = "週日"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month1"
+es = "enero"
+en = "January"
+fr = "janvier"
+de = "Januar"
+it = "gennaio"
+pt = "janeiro"
+ja = "1月"
+zh_hans = "1月"
+zh_hant = "1月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month2"
+es = "febrero"
+en = "February"
+fr = "février"
+de = "Februar"
+it = "febbraio"
+pt = "fevereiro"
+ja = "2月"
+zh_hans = "2月"
+zh_hant = "2月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month3"
+es = "marzo"
+en = "March"
+fr = "mars"
+de = "März"
+it = "marzo"
+pt = "março"
+ja = "3月"
+zh_hans = "3月"
+zh_hant = "3月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month4"
+es = "abril"
+en = "April"
+fr = "avril"
+de = "April"
+it = "aprile"
+pt = "abril"
+ja = "4月"
+zh_hans = "4月"
+zh_hant = "4月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month5"
+es = "mayo"
+en = "May"
+fr = "mai"
+de = "Mai"
+it = "maggio"
+pt = "maio"
+ja = "5月"
+zh_hans = "5月"
+zh_hant = "5月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month6"
+es = "junio"
+en = "June"
+fr = "juin"
+de = "Juni"
+it = "giugno"
+pt = "junho"
+ja = "6月"
+zh_hans = "6月"
+zh_hant = "6月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month7"
+es = "julio"
+en = "July"
+fr = "juillet"
+de = "Juli"
+it = "luglio"
+pt = "julho"
+ja = "7月"
+zh_hans = "7月"
+zh_hant = "7月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month8"
+es = "agosto"
+en = "August"
+fr = "août"
+de = "August"
+it = "agosto"
+pt = "agosto"
+ja = "8月"
+zh_hans = "8月"
+zh_hant = "8月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month9"
+es = "septiembre"
+en = "September"
+fr = "septembre"
+de = "September"
+it = "settembre"
+pt = "setembro"
+ja = "9月"
+zh_hans = "9月"
+zh_hant = "9月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month10"
+es = "octubre"
+en = "October"
+fr = "octobre"
+de = "Oktober"
+it = "ottobre"
+pt = "outubro"
+ja = "10月"
+zh_hans = "10月"
+zh_hant = "10月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month11"
+es = "noviembre"
+en = "November"
+fr = "novembre"
+de = "November"
+it = "novembre"
+pt = "novembro"
+ja = "11月"
+zh_hans = "11月"
+zh_hant = "11月"
+
+# calendar: a month's name
+[[row]]
+id = "CareerMode.Month12"
+es = "diciembre"
+en = "December"
+fr = "décembre"
+de = "Dezember"
+it = "dicembre"
+pt = "dezembro"
+ja = "12月"
+zh_hans = "12月"
+zh_hant = "12月"
+
+# a date: {1} weekday, {2} day, {3} month, {4} year
+[[row]]
+id = "CareerMode.DateLong"
+es = "{1} {2} de {3} de {4}"
+en = "{1} {2} {3} {4}"
+fr = "{1} {2} {3} {4}"
+de = "{1}, {2}. {3} {4}"
+it = "{1} {2} {3} {4}"
+pt = "{1}, {2} de {3} de {4}"
+ja = "{4}年{3}{2}日（{1}）"
+zh_hans = "{4}年{3}{2}日 {1}"
+zh_hant = "{4}年{3}{2}日 {1}"
+
+# a short date: {1} day, {2} month (two digits)
+[[row]]
+id = "CareerMode.DateShort"
+es = "{1}/{2}"
+en = "{1}/{2}"
+fr = "{1}/{2}"
+de = "{1}.{2}."
+it = "{1}/{2}"
+pt = "{1}/{2}"
+ja = "{2}/{1}"
+zh_hans = "{2}/{1}"
+zh_hant = "{2}/{1}"
+
+# calendar page title: {1} month, {2} year
+[[row]]
+id = "CareerMode.MonthYear"
+es = "{1} de {2}"
+en = "{1} {2}"
+fr = "{1} {2}"
+de = "{1} {2}"
+it = "{1} {2}"
+pt = "{1} de {2}"
+ja = "{2}年{1}"
+zh_hans = "{2}年{1}"
+zh_hant = "{2}年{1}"
+
+# Inicio: today's date ({1})
+[[row]]
+id = "CareerMode.TodayIs"
+es = "Hoy: {1}"
+en = "Today: {1}"
+fr = "Aujourd'hui : {1}"
+de = "Heute: {1}"
+it = "Oggi: {1}"
+pt = "Hoje: {1}"
+ja = "今日：{1}"
+zh_hans = "今天：{1}"
+zh_hant = "今天：{1}"
+
+# Inicio: a transfer window is open ({1} its last day)
+[[row]]
+id = "CareerMode.WindowOpen"
+es = "Mercado abierto — cierra el {1}"
+en = "Transfer window open — closes {1}"
+fr = "Mercato ouvert — ferme le {1}"
+de = "Transferfenster offen — schließt am {1}"
+it = "Mercato aperto — chiude il {1}"
+pt = "Mercado aberto — fecha a {1}"
+ja = "移籍市場オープン — {1}まで"
+zh_hans = "转会窗口开放 — {1}关闭"
+zh_hant = "轉會窗口開放 — {1}關閉"
+
+# Inicio: the transfer window is closed ({1} the next one's first day)
+[[row]]
+id = "CareerMode.WindowClosed"
+es = "Mercado cerrado — abre el {1}"
+en = "Transfer window closed — opens {1}"
+fr = "Mercato fermé — ouvre le {1}"
+de = "Transferfenster zu — öffnet am {1}"
+it = "Mercato chiuso — apre il {1}"
+pt = "Mercado fechado — abre a {1}"
+ja = "移籍市場クローズ — {1}から"
+zh_hans = "转会窗口关闭 — {1}开放"
+zh_hant = "轉會窗口關閉 — {1}開放"
+
+# calendar day: the draw of the leagues, short
+[[row]]
+id = "CareerMode.DrawShort"
+es = "Sorteo"
+en = "Draw"
+fr = "Tirage"
+de = "Auslosung"
+it = "Sorteggio"
+pt = "Sorteio"
+ja = "抽選"
+zh_hans = "抽签"
+zh_hant = "抽籤"
+
+# calendar day: the club plays at home, short
+[[row]]
+id = "CareerMode.HomeShort"
+es = "L"
+en = "H"
+fr = "D"
+de = "H"
+it = "C"
+pt = "C"
+ja = "H"
+zh_hans = "主"
+zh_hant = "主"
+
+# calendar day: the club plays away, short
+[[row]]
+id = "CareerMode.AwayShort"
+es = "V"
+en = "A"
+fr = "E"
+de = "A"
+it = "T"
+pt = "F"
+ja = "A"
+zh_hans = "客"
+zh_hant = "客"
+
+# calendar legend: a match of the club
+[[row]]
+id = "CareerMode.LegendMatch"
+es = "Partido"
+en = "Match"
+fr = "Match"
+de = "Spiel"
+it = "Partita"
+pt = "Jogo"
+ja = "試合"
+zh_hans = "比赛"
+zh_hant = "比賽"
+
+# calendar legend: transfer window days
+[[row]]
+id = "CareerMode.LegendWindow"
+es = "Mercado"
+en = "Transfers"
+fr = "Mercato"
+de = "Transfers"
+it = "Mercato"
+pt = "Mercado"
+ja = "移籍市場"
+zh_hans = "转会窗口"
+zh_hant = "轉會窗口"
+
+# calendar legend: World Cup days
+[[row]]
+id = "CareerMode.LegendWorldCup"
+es = "Mundial"
+en = "World Cup"
+fr = "Coupe du monde"
+de = "WM"
+it = "Mondiale"
+pt = "Mundial"
+ja = "ワールドカップ"
+zh_hans = "世界杯"
+zh_hant = "世界盃"
+
+# calendar legend: days without matches
+[[row]]
+id = "CareerMode.LegendBreak"
+es = "Parón"
+en = "Break"
+fr = "Trêve"
+de = "Pause"
+it = "Sosta"
+pt = "Pausa"
+ja = "中断期間"
+zh_hans = "休赛期"
+zh_hant = "休賽期"
+
+# calendar legend: today
+[[row]]
+id = "CareerMode.LegendToday"
+es = "Hoy"
+en = "Today"
+fr = "Aujourd'hui"
+de = "Heute"
+it = "Oggi"
+pt = "Hoje"
+ja = "今日"
+zh_hans = "今天"
+zh_hant = "今天"
+
+# calendar: the month's events beside the month ({1} month)
+[[row]]
+id = "CareerMode.MonthEvents"
+es = "Partidos de {1}"
+en = "{1} fixtures"
+fr = "Matchs de {1}"
+de = "Spiele im {1}"
+it = "Partite di {1}"
+pt = "Jogos de {1}"
+ja = "{1}の試合"
+zh_hans = "{1}赛程"
+zh_hant = "{1}賽程"
+
+# calendar: no event in the month
+[[row]]
+id = "CareerMode.NoEventsMonth"
+es = "Sin partidos este mes"
+en = "No matches this month"
+fr = "Aucun match ce mois-ci"
+de = "Keine Spiele in diesem Monat"
+it = "Nessuna partita questo mese"
+pt = "Sem jogos este mês"
+ja = "今月は試合なし"
+zh_hans = "本月无比赛"
+zh_hant = "本月無比賽"
+
+# footer: change the month with the arrows
+[[row]]
+id = "CareerMode.KeyMonth"
+es = "Flechas: Mes"
+en = "Arrows: Month"
+fr = "Flèches : Mois"
+de = "Pfeile: Monat"
+it = "Frecce: Mese"
+pt = "Setas: Mês"
+ja = "十字キー：月"
+zh_hans = "方向键：月份"
+zh_hant = "方向鍵：月份"
+
+# World Cup round: a group matchday ({1})
+[[row]]
+id = "CareerMode.WorldCupGroup"
+es = "Mundial · Grupos, jornada {1}"
+en = "World Cup · Groups, matchday {1}"
+fr = "Coupe du monde · Groupes, journée {1}"
+de = "WM · Gruppen, Spieltag {1}"
+it = "Mondiale · Gironi, giornata {1}"
+pt = "Mundial · Grupos, jornada {1}"
+ja = "ワールドカップ・グループ第{1}節"
+zh_hans = "世界杯·小组赛第{1}轮"
+zh_hant = "世界盃·小組賽第{1}輪"
+
+# World Cup round, short: a group matchday ({1})
+[[row]]
+id = "CareerMode.WorldCupGroupShort"
+es = "MUN J{1}"
+en = "WC MD{1}"
+fr = "CdM J{1}"
+de = "WM {1}."
+it = "MOND G{1}"
+pt = "MUN J{1}"
+ja = "W杯 第{1}節"
+zh_hans = "世界杯 {1}"
+zh_hant = "世界盃 {1}"
+
+# World Cup knockout round
+[[row]]
+id = "CareerMode.WorldCupRound32"
+es = "Mundial · Dieciseisavos"
+en = "World Cup · Round of 32"
+fr = "Coupe du monde · Seizièmes"
+de = "WM · Sechzehntelfinale"
+it = "Mondiale · Sedicesimi"
+pt = "Mundial · 16 avos"
+ja = "ワールドカップ・ベスト32"
+zh_hans = "世界杯·32强"
+zh_hant = "世界盃·32強"
+
+# World Cup knockout round, short
+[[row]]
+id = "CareerMode.WorldCupRound32Short"
+es = "MUN 1/16"
+en = "WC R32"
+fr = "CdM 1/16"
+de = "WM 1/16"
+it = "MOND 1/16"
+pt = "MUN 1/16"
+ja = "W杯 32強"
+zh_hans = "世界杯 32强"
+zh_hant = "世界盃 32強"
+
+# World Cup knockout round
+[[row]]
+id = "CareerMode.WorldCupRound16"
+es = "Mundial · Octavos"
+en = "World Cup · Round of 16"
+fr = "Coupe du monde · Huitièmes"
+de = "WM · Achtelfinale"
+it = "Mondiale · Ottavi"
+pt = "Mundial · Oitavos"
+ja = "ワールドカップ・ベスト16"
+zh_hans = "世界杯·16强"
+zh_hant = "世界盃·16強"
+
+# World Cup knockout round, short
+[[row]]
+id = "CareerMode.WorldCupRound16Short"
+es = "MUN 1/8"
+en = "WC R16"
+fr = "CdM 1/8"
+de = "WM 1/8"
+it = "MOND 1/8"
+pt = "MUN 1/8"
+ja = "W杯 16強"
+zh_hans = "世界杯 16强"
+zh_hant = "世界盃 16強"
+
+# World Cup knockout round
+[[row]]
+id = "CareerMode.WorldCupQuarter"
+es = "Mundial · Cuartos"
+en = "World Cup · Quarter-finals"
+fr = "Coupe du monde · Quarts"
+de = "WM · Viertelfinale"
+it = "Mondiale · Quarti"
+pt = "Mundial · Quartos"
+ja = "ワールドカップ・準々決勝"
+zh_hans = "世界杯·四分之一决赛"
+zh_hant = "世界盃·八強賽"
+
+# World Cup knockout round, short
+[[row]]
+id = "CareerMode.WorldCupQuarterShort"
+es = "MUN 1/4"
+en = "WC QF"
+fr = "CdM 1/4"
+de = "WM VF"
+it = "MOND 1/4"
+pt = "MUN 1/4"
+ja = "W杯 準々決勝"
+zh_hans = "世界杯 1/4"
+zh_hant = "世界盃 八強"
+
+# World Cup knockout round
+[[row]]
+id = "CareerMode.WorldCupSemi"
+es = "Mundial · Semifinal"
+en = "World Cup · Semi-final"
+fr = "Coupe du monde · Demi-finale"
+de = "WM · Halbfinale"
+it = "Mondiale · Semifinale"
+pt = "Mundial · Meia-final"
+ja = "ワールドカップ・準決勝"
+zh_hans = "世界杯·半决赛"
+zh_hant = "世界盃·準決賽"
+
+# World Cup knockout round, short
+[[row]]
+id = "CareerMode.WorldCupSemiShort"
+es = "MUN Semi"
+en = "WC SF"
+fr = "CdM 1/2"
+de = "WM HF"
+it = "MOND Semi"
+pt = "MUN Meia"
+ja = "W杯 準決勝"
+zh_hans = "世界杯 半决赛"
+zh_hant = "世界盃 準決賽"
+
+# World Cup knockout round
+[[row]]
+id = "CareerMode.WorldCupFinal"
+es = "Mundial · Final"
+en = "World Cup · Final"
+fr = "Coupe du monde · Finale"
+de = "WM · Finale"
+it = "Mondiale · Finale"
+pt = "Mundial · Final"
+ja = "ワールドカップ・決勝"
+zh_hans = "世界杯·决赛"
+zh_hant = "世界盃·決賽"
+
+# World Cup knockout round, short
+[[row]]
+id = "CareerMode.WorldCupFinalShort"
+es = "MUN Final"
+en = "WC Final"
+fr = "CdM Finale"
+de = "WM Finale"
+it = "MOND Finale"
+pt = "MUN Final"
+ja = "W杯 決勝"
+zh_hans = "世界杯 决赛"
+zh_hant = "世界盃 決賽"
+
+# standings title: a World Cup group ({1} its letter)
+[[row]]
+id = "CareerMode.GroupTitle"
+es = "Grupo {1}"
+en = "Group {1}"
+fr = "Groupe {1}"
+de = "Gruppe {1}"
+it = "Girone {1}"
+pt = "Grupo {1}"
+ja = "グループ{1}"
+zh_hans = "{1}组"
+zh_hant = "{1}組"
+
+# standings: the line under the places that go on to the World Cup knockout
+[[row]]
+id = "CareerMode.CutGroup"
+es = "Pasan a la eliminatoria"
+en = "Through to the knockout"
+fr = "Qualifiés pour la phase finale"
+de = "Weiter in die K.-o.-Runde"
+it = "Passano alla fase a eliminazione"
+pt = "Passam à eliminatória"
+ja = "決勝トーナメント進出"
+zh_hans = "晋级淘汰赛"
+zh_hant = "晉級淘汰賽"
+
+# phase name: the World Cup
+[[row]]
+id = "CareerMode.Phase_worldcup"
+es = "Mundial"
+en = "World Cup"
+fr = "Coupe du monde"
+de = "WM"
+it = "Mondiale"
+pt = "Mundial"
+ja = "ワールドカップ"
+zh_hans = "世界杯"
+zh_hant = "世界盃"
+
+# Inicio: the World Cup offer's title
+[[row]]
+id = "CareerMode.WorldCupOfferTitle"
+es = "¡Llamada del Mundial!"
+en = "World Cup call!"
+fr = "L'appel de la Coupe du monde !"
+de = "Ruf zur WM!"
+it = "Chiamata dal Mondiale!"
+pt = "Chamada do Mundial!"
+ja = "ワールドカップのオファー！"
+zh_hans = "世界杯邀请！"
+zh_hant = "世界盃邀請！"
+
+# Inicio: the national side offered to the player (its name below)
+[[row]]
+id = "CareerMode.WorldCupOffer"
+es = "Te ofrecen dirigir a la selección:"
+en = "You are offered the national side:"
+fr = "On te propose de diriger la sélection :"
+de = "Dir wird die Nationalelf angeboten:"
+it = "Ti offrono di guidare la nazionale:"
+pt = "Oferecem-te a seleção:"
+ja = "代表監督のオファー："
+zh_hans = "邀请你执教国家队："
+zh_hant = "邀請你執教國家隊："
+
+# Inicio: the call-up to make ({1} players)
+[[row]]
+id = "CareerMode.WorldCupOffer2"
+es = "Elige tus {1} convocados."
+en = "Pick your {1}-player squad."
+fr = "Choisis tes {1} sélectionnés."
+de = "Wähle deine {1} Spieler."
+it = "Scegli i tuoi {1} convocati."
+pt = "Escolhe os teus {1} convocados."
+ja = "{1}人のメンバーを選ぼう。"
+zh_hans = "选出你的{1}人名单。"
+zh_hant = "選出你的{1}人名單。"
+
+# Inicio: the key that opens the call-up
+[[row]]
+id = "CareerMode.WorldCupPickKey"
+es = "A  Convocatoria"
+en = "A  Call-up"
+fr = "A  Sélection"
+de = "A  Kader"
+it = "A  Convocazioni"
+pt = "A  Convocatória"
+ja = "A  メンバー選考"
+zh_hans = "A  选拔名单"
+zh_hant = "A  選拔名單"
+
+# call-up page title ({1} the national side)
+[[row]]
+id = "CareerMode.WorldCupSquadTitle"
+es = "Convocatoria · {1}"
+en = "Call-up · {1}"
+fr = "Sélection · {1}"
+de = "Kader · {1}"
+it = "Convocazioni · {1}"
+pt = "Convocatória · {1}"
+ja = "メンバー選考・{1}"
+zh_hans = "选拔名单·{1}"
+zh_hant = "選拔名單·{1}"
+
+# call-up: players picked ({1}) of the squad size ({2})
+[[row]]
+id = "CareerMode.WorldCupCount"
+es = "Convocados: {1}/{2}"
+en = "Called up: {1}/{2}"
+fr = "Sélectionnés : {1}/{2}"
+de = "Nominiert: {1}/{2}"
+it = "Convocati: {1}/{2}"
+pt = "Convocados: {1}/{2}"
+ja = "選出：{1}/{2}"
+zh_hans = "已选：{1}/{2}"
+zh_hant = "已選：{1}/{2}"
+
+# call-up: goalkeepers picked ({1}), at least ({2})
+[[row]]
+id = "CareerMode.WorldCupKeepers"
+es = "Porteros: {1} (mín. {2})"
+en = "Goalkeepers: {1} (min. {2})"
+fr = "Gardiens : {1} (min. {2})"
+de = "Torhüter: {1} (min. {2})"
+it = "Portieri: {1} (min. {2})"
+pt = "Guarda-redes: {1} (mín. {2})"
+ja = "GK：{1}（最低{2}）"
+zh_hans = "门将：{1}（至少{2}）"
+zh_hant = "門將：{1}（至少{2}）"
+
+# call-up: the squad is not complete ({1} players, {2} goalkeepers)
+[[row]]
+id = "CareerMode.WorldCupNeedFull"
+es = "Necesitas {1} jugadores y {2} porteros."
+en = "You need {1} players and {2} goalkeepers."
+fr = "Il faut {1} joueurs et {2} gardiens."
+de = "Du brauchst {1} Spieler und {2} Torhüter."
+it = "Servono {1} giocatori e {2} portieri."
+pt = "Precisas de {1} jogadores e {2} guarda-redes."
+ja = "{1}人とGK{2}人が必要です。"
+zh_hans = "需要{1}名球员和{2}名门将。"
+zh_hant = "需要{1}名球員和{2}名門將。"
+
+# call-up: a player who is called up
+[[row]]
+id = "CareerMode.Called"
+es = "Convocado"
+en = "Called up"
+fr = "Sélectionné"
+de = "Nominiert"
+it = "Convocato"
+pt = "Convocado"
+ja = "選出"
+zh_hans = "入选"
+zh_hant = "入選"
+
+# footer: call up / leave out the player
+[[row]]
+id = "CareerMode.KeyToggle"
+es = "A: Convocar/Quitar"
+en = "A: Call up/Drop"
+fr = "A : Sélectionner/Retirer"
+de = "A: Nominieren/Streichen"
+it = "A: Convoca/Togli"
+pt = "A: Convocar/Tirar"
+ja = "A：選出/外す"
+zh_hans = "A：入选/移除"
+zh_hant = "A：入選/移除"
+
+# footer: confirm the call-up
+[[row]]
+id = "CareerMode.KeyConfirmSquad"
+es = "Y: Confirmar"
+en = "Y: Confirm"
+fr = "Y : Confirmer"
+de = "Y: Bestätigen"
+it = "Y: Conferma"
+pt = "Y: Confirmar"
+ja = "Y：決定"
+zh_hans = "Y：确认"
+zh_hant = "Y：確認"
+
+# news: the World Cup, the side the player coaches ({1})
+[[row]]
+id = "CareerMode.NewsWorldCup1"
+es = "Mundial: diriges a {1}."
+en = "World Cup: you coach {1}."
+fr = "Coupe du monde : tu diriges {1}."
+de = "WM: Du trainierst {1}."
+it = "Mondiale: guidi {1}."
+pt = "Mundial: orientas {1}."
+ja = "ワールドカップ：{1}を指揮。"
+zh_hans = "世界杯：你执教{1}。"
+zh_hant = "世界盃：你執教{1}。"
+
+# news: the World Cup's format ({1} countries, {2} groups, {3} teams in the knockout)
+[[row]]
+id = "CareerMode.NewsWorldCup2"
+es = "{1} selecciones, {2} grupos; pasan {3}."
+en = "{1} nations, {2} groups; {3} go through."
+fr = "{1} sélections, {2} groupes ; {3} qualifiées."
+de = "{1} Nationen, {2} Gruppen; {3} weiter."
+it = "{1} nazionali, {2} gironi; {3} qualificate."
+pt = "{1} seleções, {2} grupos; {3} avançam."
+ja = "{1}か国・{2}組、決勝T進出{3}チーム。"
+zh_hans = "{1}支国家队分{2}组，{3}队进淘汰赛。"
+zh_hant = "{1}支國家隊分{2}組，{3}隊進淘汰賽。"
+
+# news: the player's side is out of the World Cup ({1})
+[[row]]
+id = "CareerMode.NewsWorldCupOut"
+es = "{1} queda fuera del Mundial."
+en = "{1} are out of the World Cup."
+fr = "{1} est éliminé de la Coupe du monde."
+de = "{1} ist aus der WM ausgeschieden."
+it = "{1} è fuori dal Mondiale."
+pt = "{1} está fora do Mundial."
+ja = "{1}はワールドカップ敗退。"
+zh_hans = "{1}被淘汰出世界杯。"
+zh_hant = "{1}被淘汰出世界盃。"
+
+# news: the World Cup's champion ({1})
+[[row]]
+id = "CareerMode.WorldCupChampion"
+es = "Campeón del Mundial: {1}"
+en = "World Cup winners: {1}"
+fr = "Champion du monde : {1}"
+de = "Weltmeister: {1}"
+it = "Campione del mondo: {1}"
+pt = "Campeão do Mundial: {1}"
+ja = "ワールドカップ優勝：{1}"
+zh_hans = "世界杯冠军：{1}"
+zh_hant = "世界盃冠軍：{1}"
+
+# transfers: a club refuses to sell, its squad would be short ({1} club, {2} its squad size)
+[[row]]
+id = "CareerMode.TransferRefusedShortSquad"
+es = "{1} no vende: con {2} jugadores se quedaría corto."
+en = "{1} won't sell: with {2} players it would be short."
+fr = "{1} ne vend pas : avec {2} joueurs, l'effectif serait trop court."
+de = "{1} verkauft nicht: mit {2} Spielern wäre der Kader zu klein."
+it = "{1} non vende: con {2} giocatori resterebbe a corto."
+pt = "{1} não vende: com {2} jogadores ficaria curto."
+ja = "{1}は売却を拒否：{2}人では人数が足りなくなる。"
+zh_hans = "{1}拒绝出售：只有{2}名球员，阵容会不足。"
+zh_hant = "{1}拒絕出售：只有{2}名球員，陣容會不足。"
+
+# squad tab key hint: the club's call-up for its matches (a squad larger than a match takes)
+[[row]]
+id = "CareerMode.KeyCallUp"
+es = "A: Convocatoria"
+en = "A: Call-up"
+fr = "A : Convocation"
+de = "A: Kader"
+it = "A: Convocazione"
+pt = "A: Convocatória"
+ja = "A：招集"
+zh_hans = "A：征召"
+zh_hant = "A：徵召"

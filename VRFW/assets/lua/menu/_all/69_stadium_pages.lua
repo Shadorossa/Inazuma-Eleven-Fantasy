@@ -20,14 +20,14 @@ if VRFW_StadiumPages == nil then
     CMD_WINDOW_POSITION = 63483614,   -- (x, y): the window's position
     CMD_LIST_FOCUS = 3647847018,      -- (row, list locator): the focused row
     CMD_LIST_READY = 3444627471,      -- (list locator) -> the list can take a focus
-    CMD_CLOSE_OBJECT = 320421347,     -- CMND_CLOSE_MENU_OBJECT
-    CMD_IS_CLOSING_OBJECT = 1193349555, -- CMND_IS_CLOSING_MENU_OBJECT
-    MENU_IS_OPEN_LAYER = 2640875187,  -- CMND_IS_OPEN_LAYER (layer, index, menu object)
+    CMD_CLOSE_OBJECT = VRFW_Cmd.CLOSE_MENU_OBJECT,     -- CMND_CLOSE_MENU_OBJECT
+    CMD_IS_CLOSING_OBJECT = VRFW_Cmd.IS_CLOSING_MENU_OBJECT, -- CMND_IS_CLOSING_MENU_OBJECT
+    MENU_IS_OPEN_LAYER = VRFW_Cmd.IS_OPEN_LAYER,  -- CMND_IS_OPEN_LAYER (layer, index, menu object)
     MENU_FOCUSED_ROW = 1727549139,    -- (list locator, sub_window) -> the focused row
     MENU_CHECK_ROW = 3497892782,      -- (list locator, row, sub_window): the check mark
-    MENU_DRAW_PRIORITY = 1491630496,  -- CMND_SET_DRAW_PRIORITY (layer, index, priority, flag, menu object)
-    LOG = 3661580131,                 -- CMND_EVT_LOG
-    TEXT_GET = 4074371074,            -- CMND_TEXT_GET
+    MENU_DRAW_PRIORITY = VRFW_Cmd.SET_DRAW_PRIORITY,  -- CMND_SET_DRAW_PRIORITY (layer, index, priority, flag, menu object)
+    LOG = VRFW_Cmd.EVT_LOG,                 -- CMND_EVT_LOG
+    TEXT_GET = VRFW_Cmd.TEXT_GET,            -- CMND_TEXT_GET
     TEXT_PREVIOUS = "vrfw_stadium_list_previous",
     TEXT_NEXT = "vrfw_stadium_list_next",
     CALLBACK = "VRFW_StadiumPages_Pick",
@@ -291,7 +291,7 @@ if VRFW_StadiumPages == nil then
   end
 
   -- funcLuaCommand while a paged window is up: row names, focus and position addressed by the menu's row numbers
-  function P.Command(...)
+  function P.Command(nxt, ...)
     local o = P.open
     if o ~= nil then
       local command, a1, a2 = ...
@@ -301,26 +301,26 @@ if VRFW_StadiumPages == nil then
         if slot == nil then
           return true
         end
-        return P.raw_command(command, slot, select(3, ...))
+        return nxt(command, slot, select(3, ...))
       elseif command == P.CMD_LIST_FOCUS and type(a1) == "number" then
         o.locator = a2
-        return P.raw_command(command, P.SlotOf(o, a1) or 0, select(3, ...))
+        return nxt(command, P.SlotOf(o, a1) or 0, select(3, ...))
       elseif command == P.CMD_WINDOW_POSITION then
         o.position = table.pack(select(2, ...))
       elseif command == P.CMD_CLOSE_OBJECT and a1 == P.SUB_WINDOW and o.step == nil then
         P.open = nil
       end
     end
-    return P.raw_command(...)
+    return nxt(...)
   end
 
   -- funcLuaMenuCommand while a paged window is up: the focused row, the check mark and the rows' draw priorities
-  function P.MenuCommand(...)
+  function P.MenuCommand(nxt, ...)
     local o = P.open
     if o ~= nil and o.step == nil then
       local command, a1, a2, a3 = ...
       if command == P.MENU_FOCUSED_ROW and a2 == P.SUB_WINDOW then
-        local slot = P.raw_menu(...)
+        local slot = nxt(...)
         local row = type(slot) == "number" and P.RowOf(o, slot) or nil
         return type(row) == "number" and row or 0
       elseif command == P.MENU_CHECK_ROW and a3 == P.SUB_WINDOW and type(a2) == "number" then
@@ -329,14 +329,14 @@ if VRFW_StadiumPages == nil then
         if slot == nil then
           return -1
         end
-        return P.raw_menu(command, a1, slot, select(4, ...))
+        return nxt(command, a1, slot, select(4, ...))
       elseif command == P.MENU_IS_OPEN_LAYER and a3 == P.SUB_WINDOW then
         o.locator = o.locator or a1
       elseif command == P.MENU_DRAW_PRIORITY and select(6, ...) == P.SUB_WINDOW then
         o.priorities[#o.priorities + 1] = table.pack(...)
       end
     end
-    return P.raw_menu(...)
+    return nxt(...)
   end
 
   -- the wrappers of this VM, made the first time a long list opens (the engine registers funcLuaCommand after the
@@ -349,9 +349,12 @@ if VRFW_StadiumPages == nil then
       return false
     end
     P.hooked = true
-    P.raw_command, P.raw_menu = funcLuaCommand, funcLuaMenuCommand
-    funcLuaCommand = P.Command
-    funcLuaMenuCommand = P.MenuCommand
+    -- the window's own calls go past every command handler (VRFW_Host)
+    P.raw_command, P.raw_menu = VRFW_Host.RealCommand, VRFW_Host.RealMenuCommand
+    VRFW_Host.HookCommand({P.CMD_ROW_NAME, P.CMD_LIST_FOCUS, P.CMD_WINDOW_POSITION, P.CMD_CLOSE_OBJECT}, P.Command,
+      "VRFW.stadium_pages")
+    VRFW_Host.HookCommand({P.MENU_FOCUSED_ROW, P.MENU_CHECK_ROW, P.MENU_IS_OPEN_LAYER, P.MENU_DRAW_PRIORITY},
+      P.MenuCommand, "VRFW.stadium_pages", {menu = true})
     local step = Step
     Step = function(...)
       local ok, problem = pcall(P.Tick)

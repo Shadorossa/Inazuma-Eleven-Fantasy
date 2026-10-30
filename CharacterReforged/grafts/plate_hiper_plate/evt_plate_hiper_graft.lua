@@ -30,7 +30,6 @@ EVT_PHI = {L = 3095103815, TEX = 2815298114 --[[team00_30.g4tx]], TEX_T02 = 3964
 @HIPER_CARD@
 EVT_PH_BANDS = EVT_HC.BANDS        -- shared card component (evt_hiper_card.lua)
 
-EVT_PH_DEBUG = false                -- lines in evt_loader\loader.log (CMND_EVT_LOG; nothing without the loader)
 EVT_PH_ON_PAGE = true               -- false: leave the windows at their retail popup position (no label switching)
 EVT_PH_TYPE_IN_NAME = true          -- "Lancelot (Keshin)"
 -- the empty page's texts are menu_text rows in the 9 languages (research/scripts/plate_hiper_text_build.py):
@@ -38,14 +37,17 @@ EVT_PH_TYPE_IN_NAME = true          -- "Lancelot (Keshin)"
 -- Without the rows (text files not installed yet) the page shows no text rather than a literal of one language.
 EVT_PH_EMPTY_NAME_ID = 2275178128     -- crc32("evt_ph_empty_name")
 function EVT_PH_Text(id)
-  local ok, s = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], id)
+  local ok, s = pcall(funcLuaCommand, @crc:CMND_TEXT_GET@, id)
   if ok and type(s) == "string" and s ~= "" then
     return s
   end
   return ""
 end
-EVT_PH_TYPE_NAME = {[0] = "Espíritu guerrero", "Armadura", "Miximax", "Tótem", "Vínculo", "Poder de despertar", "Cambio de modo",
-  "Despertar"}
+-- the aura type's name by SKILL_INFO 13: menu_text rows (the mod's text\rows\player_page.toml, or the game's own row)
+EVT_PH_TYPE_TEXT = {[0] = 1062365891 --[[evt_ph_aura_type_keshin]], 1189211136 --[[game: Armadura]],
+  3579953349 --[[evt_ph_aura_type_miximax]], 3532071432 --[[evt_ph_aura_type_totem]], 233210732 --[[game: Vínculo]],
+  3317872453 --[[evt_ph_aura_type_awakening_power]], 2936103857 --[[evt_ph_aura_type_mode_change]],
+  3823808964 --[[game: Despertar]]}
 
 local L_STATUS = 730911947          -- soccer11_05_formation_status_base (holds the attach labels)
 local L_DETAIL = 2628045944         -- team02_02_skill_detail_info
@@ -65,12 +67,12 @@ local EVT_PH_ATTACH = {
 }
 
 local C = {
-  LAYER_VISIBLE = 711242136, IS_LAYER_VISIBLE = 1262717583, EXIST_LAYER = 262659071,
-  IS_OPEN_LAYER = 2640875187, OPEN_LAYER = 629267548, TRACE = 1774843228, LOC_VISIBLE = 2158717427,
-  MESH_VISIBLE = 3405944500, TEXT = 1083631230, TEXT_VISIBLE = 1505208242, TEXT_PLATE = 1172899594,
+  LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@, IS_LAYER_VISIBLE = @crc:CMND_IS_LAYER_VISIBLE@, EXIST_LAYER = @crc:CMND_IS_EXIST_LAYER@,
+  IS_OPEN_LAYER = @crc:CMND_IS_OPEN_LAYER@, OPEN_LAYER = @crc:CMND_OPEN_LAYER@, TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, LOC_VISIBLE = 2158717427,
+  MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@, TEXT = @crc:CMND_SET_MENU_TEXT_STRING@, TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@, TEXT_PLATE = @crc:CMND_UPDATE_TEXT_PLATE@,
   SPRITE = 558735651, LIST_VISIBLE = 2171393651, PRIM_VISIBLE = 1233047821,
-  SKILL_INFO = 2580586398, NAME_TEXT = 720417636, BOARD_INV = 632801955, INV_ITEM = 2662166687,
-  GET_SKILL = 903078840, TENSION_SCALE = 3413028567, EVT_LOG = 3661580131,
+  SKILL_INFO = @crc:CMND_GET_SOCCER_SKILL_INFO@, NAME_TEXT = 720417636, BOARD_INV = 632801955, INV_ITEM = 2662166687,
+  GET_SKILL = 903078840, TENSION_SCALE = 3413028567, EVT_LOG = @crc:CMND_EVT_LOG@,
 }
 local TX_TEAM02_02 = 3964676290     -- #/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx
 
@@ -79,9 +81,6 @@ local evt_ph_plate_type = 0         -- SetPersonalPlateType (2 = rpg locator set
 local evt_ph_detail_dirty = false   -- team02_02 was drawn as "empty" (nodes hidden that the retail fill never restores)
 
 local function EVT_PH_Log(...)
-  if EVT_PH_DEBUG then
-    pcall(funcLuaCommand, C.EVT_LOG, "plate_hiper", ...)
-  end
 end
 
 local function EVT_PH_U32(v)
@@ -277,8 +276,10 @@ end
 
 local function EVT_PH_NameWithType(name, skill)
   local t = EVT_PH_AuraType(skill)
-  if EVT_PH_TYPE_IN_NAME and name ~= nil and t ~= nil and EVT_PH_TYPE_NAME[t] ~= nil then
-    return string.format("%s (%s)", name, EVT_PH_TYPE_NAME[t])
+  local label = (EVT_PH_TYPE_IN_NAME and name ~= nil and t ~= nil and EVT_PH_TYPE_TEXT[t] ~= nil)
+    and EVT_PH_Text(EVT_PH_TYPE_TEXT[t]) or ""
+  if label ~= "" then
+    return string.format("%s (%s)", name, label)
   end
   return name
 end
@@ -301,7 +302,7 @@ local M_SIXTH_BASE = 2682382918     -- _sixth_base01
 local LOC_PAGE04 = 3145665477       -- _pos_page04 (parent of _atc_sixth01, where our windows are attached)
 local TX_S1105 = 1156047165         -- #/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx
 local SP_SIXTH_TITLE = 2885965654   -- gtxt_sixthsense01 (sprite the title mesh is built with = swap node)
-local SP_HIPER_TITLE = 1002432688   -- evt_gtxt_hiper01 (added to every soccer11_05.g4tx by the builder)
+local SP_HIPER_TITLE = 1002432688   -- evt_gtxt_hiper01 (Character Reforged's own atlas character_reforged_titles)
 
 function EVT_PH_Decor(ptype)
   if not EVT_PH_DOTS or not EVT_PH_Exists(L_STATUS) then
@@ -319,7 +320,8 @@ function EVT_PH_Decor(ptype)
   for t, m in pairs(DOT_ON) do
     funcLuaMenuCommand(C.MESH_VISIBLE, L, m, t == ptype, 0)
   end
-  funcLuaMenuCommand(C.SPRITE, L, TX_S1105, hiper and SP_HIPER_TITLE or SP_SIXTH_TITLE, SP_SIXTH_TITLE, 0, 0)
+  funcLuaMenuCommand(C.SPRITE, L, hiper and 3705043947 --[[#/menu/00_soccer/soccer11/character_reforged_titles/<LG>/character_reforged_titles.g4tx]] or TX_S1105,
+    hiper and SP_HIPER_TITLE or SP_SIXTH_TITLE, SP_SIXTH_TITLE, 0, 0)
   funcLuaMenuCommand(C.MESH_VISIBLE, L, M_SIXTH_TITLE, hiper or ptype == 3, 0)
   funcLuaMenuCommand(C.MESH_VISIBLE, L, M_SIXTH_BASE, ptype == 3, 0)
   EVT_PH_HideArrowKeys()
@@ -575,7 +577,7 @@ function EVT_PHI.MxGet(chara)
   -- the face-icon key retail uses for a miximax partner (the retail miximax window path), not the chara id
   local okk, face = pcall(funcLuaCommand, 347353059, f.partner)
   f.face = (okk and type(face) == "number" and face ~= 0) and face or f.chara
-  local okn, a, b = pcall(funcLuaCommand, 4060384944 --[[CMND_GET_CHARA_INFO]], f.chara, 10)
+  local okn, a, b = pcall(funcLuaCommand, @crc:CMND_GET_CHARA_INFO@, f.chara, 10)
   f.name = (okn and type(b) == "string" and b) or (okn and type(a) == "string" and a) or nil
   return f
 end
@@ -676,10 +678,10 @@ EVT_PHI.POOL = 1160095859           -- crc32("evt_ph_peg_pool")
 EVT_PHI.POOL_K, EVT_PHI.POOL_CX, EVT_PHI.POOL_CY, EVT_PHI.POOL_PRIO = 3.0, 180, -7, 575
 EVT_PHI.POOL_DX, EVT_PHI.POOL_DY = 0, 0
 EVT_PHI.POOL_LOGS = 0
-C.DRAW_PRIORITY = 1491630496        -- CMND_SET_DRAW_PRIORITY (layer, inst, prio, bool)
-C.MESH_POSE = 2373227714            -- CMND_GET_MESH_POSE (layer, inst, node) -> x, y, z, found
-C.LOCAL_POS = 1389957207            -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, inst)
-C.LOCAL_SCALE = 3778714801          -- CMND_SET_LAYER_LOCAL_SCALE (layer, sx, sy, sz, inst)
+C.DRAW_PRIORITY = @crc:CMND_SET_DRAW_PRIORITY@        -- (layer, inst, prio, bool)
+C.MESH_POSE = @crc:CMND_GET_MESH_POSE@            -- (layer, inst, node) -> x, y, z, found
+C.LOCAL_POS = @crc:CMND_SET_LAYER_LOCAL_POS@            -- (layer, x, y, z, inst)
+C.LOCAL_SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@          -- (layer, sx, sy, sz, inst)
 
 -- instances the installed data has: {face = 2 or 3, row = 1 or 3, tens = 0 or 2}; the new layout is remembered once seen
 local function EVT_PH_PoseY(L, node)
@@ -965,15 +967,15 @@ function EVT_PHI.PegTagPlace()
   local peg = st.peg
   EVT_PH_Open(T, 0)
   local key = CALC_CRC(peg.kind == 2 and "evt_ph_sp_label" or "evt_ph_peg_label")
-  local okt, unit = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], key)
+  local okt, unit = pcall(funcLuaCommand, @crc:CMND_TEXT_GET@, key)
   if not okt or type(unit) ~= "string" or unit == "" then
     unit = peg.kind == 2 and "SP" or "PEG"
   end
   local text = string.format("%d %s", math.floor(peg.pool + 0.5), unit)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING]], T, 1899787537 --[[_text_area01]], text, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, T, 1899787537 --[[_text_area01]], text, 0)
   funcLuaMenuCommand(2735666188, T, 1899787537, true, 0)
   local c = peg.kind == 2 and EVT_HC.SP_RGB or EVT_HC.PEG_RGB
-  pcall(funcLuaMenuCommand, 855211291 --[[CMND_SET_PRIM_COLOR]], T, 0, 3516146179 --[[_area_base01]], c[1], c[2], c[3])
+  pcall(funcLuaMenuCommand, @crc:CMND_SET_PRIM_COLOR@, T, 0, 3516146179 --[[_area_base01]], c[1], c[2], c[3])
   local G, s = EVT_PHI.GEO, st.s or 1
   local x, y
   local a = EVT_PHI.armourAt
@@ -1201,28 +1203,6 @@ end
 -- the band sprite of an aura skill: family by aura type (SKILL_INFO 13), 01..05 by element (SKILL_INFO 7); element 5
 -- of a common skill (800895612) counts as 6 and, like any other value, falls back to 01 (retail Update*DetailInfo)
 EVT_PHI.Band = EVT_HC.Band
-
--- stat gains of `chara`'s fusion (the page slot character_reforged.page_stat_gain, CharacterReforged.Page.GainsRaw:
--- a mod's command (base) -> ok, favouredMask, 9 gains in stat idx
--- order), as 3 lines of "Stat +N"; favoured stats in [CPASSIVE01]..[C]. Same text as PL.MxGainsText (skill_slots_v2).
-EVT_PH_MX_STAT_NAME = {"Disparo", "Control", "Técnica", "Presión", "Físico", "Inteligencia", "Agilidad", "Rapidez", "Suerte"}
-function EVT_PH_MxGainsText(chara)
-  local page = type(CharacterReforged) == "table" and CharacterReforged.Page or nil
-  local r = (type(page) == "table" and type(page.GainsRaw) == "function") and page.GainsRaw(chara) or {false}
-  if not r[1] or not r[2] or type(r[4]) ~= "number" then
-    return nil
-  end
-  local mask = tonumber(r[3]) or 0
-  local parts = {}
-  for _, i in ipairs({1, 2, 3, 4, 5, 6, 7, 9}) do   -- 8 stats: slot 8 (Rapidez) retired 2026-09-30
-    local g = tonumber(r[3 + i]) or 0
-    local fav = math.floor(mask / 2 ^ (i - 1)) % 2 == 1
-    local s = string.format("%s +%d", EVT_PH_MX_STAT_NAME[i], g)
-    parts[#parts + 1] = fav and ("[CPASSIVE01]" .. s .. "[C]") or s
-  end
-  return table.concat({table.concat(parts, "   ", 1, 3), table.concat(parts, "   ", 4, 6),
-    table.concat(parts, "   ", 7, 8)}, "\n")
-end
 
 -- 2026-10-06 (Nacho, player page round 5): the Hiper page shows ONE aura. A miximax shows its own card only; L3 on
 -- the page (research/grafts/plate_pages) toggles EVT_PH_MX_VIEW = the keshin / totem that miximax gives the player
@@ -1510,7 +1490,7 @@ for _, fname in ipairs({"OnSetupLayer", "OnOpenLayer", "OnOpenEndLayer", "OnClos
     return function(...)
       local r = orig(...)
       if fname == "OnSetupLayer" and EVT_R9 ~= nil and (...) == EVT_R9.EXTRA then
-        pcall(funcLuaMenuCommand, 711242136, EVT_R9.EXTRA, 0, false)
+        pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, EVT_R9.EXTRA, 0, false)
       end
       pcall(EVT_PHI.Guard)
       if fname == "PostStep" and EVT_PH_PENDING ~= nil then
@@ -1648,7 +1628,7 @@ EVT_R9.EXTRA = 3201974232 --[[evt_soccer11_06_9x_formation_status_graph_extra]]
 EVT_R9.N = 8                                       -- axes (9 until 2026-09-30: Rapidez retired)
 EVT_R9.STAT = {0, 2, 5, 6, 4, 3, 1, 8}             -- label group g -> stat idx of the page slot (8 = Suerte)
 EVT_R9.RATES = {2460373999, 196018773, 2091397827, 3805063008, 2513147894, 214091340, 2076571354, 3950701387}                         -- graph01..graph08
-EVT_R9.MENU_CTRL, EVT_R9.MENU_CTRL_AN, EVT_R9.CHECK_INPUT = 1332654303, 2748927068, 4265778440
+EVT_R9.MENU_CTRL, EVT_R9.MENU_CTRL_AN, EVT_R9.CHECK_INPUT = 1332654303, 2748927068, @crc:CMND_CHECK_INPUT_CMD@
 EVT_R9.CMD_TOGGLE = 579943758                       -- CMD_FUNC5: pad L3 / keyboard B (unbound on the plate,
                                                     -- the dock and the formation menus; R3 = CMD_FUNC6 is the plate's)
 EVT_R9.HINT_KEY = 1361529897                        -- UI flag "evt_r9_mx_hint": L3 can toggle (dock / formation guide)
@@ -1663,7 +1643,7 @@ EVT_R9.TRACE = {{4047450161, 0}, {3860701432, 0}, {3839308931, 0}, {4092961866, 
 function EVT_R9.Trace(layer, inst)
   local rpg = evt_ph_plate_type == 2
   for _, t in ipairs(EVT_R9.TRACE) do
-    funcLuaMenuCommand(1774843228, layer, inst, t[1], (t[2] == 1) == rpg)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, layer, inst, t[1], (t[2] == 1) == rpg)
   end
 end
 
@@ -1705,7 +1685,7 @@ function EVT_R9.SetRates(l1, inst, vals, top)
   for grp = 1, EVT_R9.N do
     local rate = EVT_R9.RATES[(EVT_R9.N - (grp - 1)) % EVT_R9.N + 1]
     if not funcLuaMenuCommand(1203687233, l1, rate, 0, inst) then
-      local gi = funcLuaMenuCommand(112302847, l1, inst, rate)
+      local gi = funcLuaMenuCommand(@crc:CMND_GET_GROUP_INDEX@, l1, inst, rate)
       funcLuaMenuCommand(541357333, l1, rate, gi, inst)
     end
     funcLuaMenuCommand(1595998683, l1, rate, 0, vals[grp] / top * 0.75, inst)
@@ -1713,7 +1693,7 @@ function EVT_R9.SetRates(l1, inst, vals, top)
 end
 
 function EVT_R9.Draw(l1, l2, l3, chara, a5, l4, l5)
-  if not funcLuaMenuCommand(262659071, EVT_R9.EXTRA) then
+  if not funcLuaMenuCommand(@crc:CMND_IS_EXIST_LAYER@, EVT_R9.EXTRA) then
     return
   end
   EVT_R9.chara = chara
@@ -1748,7 +1728,7 @@ function EVT_R9.Draw(l1, l2, l3, chara, a5, l4, l5)
         funcLuaMenuCommand(1233047821, l2, inst, st, false)
       end
     end
-    local prim = funcLuaMenuCommand(1927054058, l2, inst, style)
+    local prim = funcLuaMenuCommand(@crc:CMND_SEARCH_PRIM_INDEX@, l2, inst, style)
     funcLuaMenuCommand(3609943765, l2, inst, prim, shown[grp])
     funcLuaMenuCommand(551395392, l2, inst, false)
     funcLuaMenuCommand(1233047821, l2, inst, style, true)
@@ -1776,17 +1756,23 @@ function EVT_R9.Draw(l1, l2, l3, chara, a5, l4, l5)
   end
   EVT_R9.SetRates(l1, 0, shown, top)
   -- Miximax view: instance 1 = the normal values, over the boosted radar
-  if funcLuaMenuCommand(1175615627, l1) ~= nil and (tonumber(funcLuaMenuCommand(1175615627, l1)) or 1) > 1 then
-    funcLuaMenuCommand(711242136, l1, 1, EVT_R9.mx == true)
+  if funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, l1) ~= nil and (tonumber(funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, l1)) or 1) > 1 then
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, l1, 1, EVT_R9.mx == true)
     if EVT_R9.mx then
       EVT_R9.SetRates(l1, 1, base, top)
       funcLuaMenuCommand(801406373, l1, 1, 2038497104, 1, 1, 1)
       funcLuaMenuCommand(801406373, l1, 0, 2038497104, 1, 0.78, 0.25)
     end
   end
-  EVT_R9.Log("draw", tostring(chara), EVT_R9.mx and "miximax" or "normal", tostring(mask), table.concat(shown, ","),
-    "radar", tostring(funcLuaMenuCommand(262659071, l1)), tostring(EVT_R9.RadarShown()),
-    tostring(funcLuaMenuCommand(1175615627, l1)), "top", tostring(top))
+  -- logged only when the drawn player, view or values change (the page redraws the same radar several times a second)
+  local drawn = table.concat({tostring(chara), EVT_R9.mx and "miximax" or "normal", tostring(mask), table.concat(shown, ","),
+    tostring(top)}, " ")
+  if drawn ~= EVT_R9.last_drawn then
+    EVT_R9.last_drawn = drawn
+    EVT_R9.Log("draw", tostring(chara), EVT_R9.mx and "miximax" or "normal", tostring(mask), table.concat(shown, ","),
+      "radar", tostring(funcLuaMenuCommand(@crc:CMND_IS_EXIST_LAYER@, l1)), tostring(EVT_R9.RadarShown()),
+      tostring(funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, l1)), "top", tostring(top))
+  end
 end
 
 EVT_PH_Wrap("UpdateCharaParameterGraphByCharaStHdl", function(orig)
@@ -1806,16 +1792,16 @@ end)
 -- the extra layer (Suerte label) and radar instance 1 follow the retail graph layers exactly: shown
 -- only when the retail radar is (Atributos page), hidden on every other page, page change, player change and close
 function EVT_R9.Visible(on)
-  if funcLuaMenuCommand(262659071, EVT_R9.EXTRA) then
-    funcLuaMenuCommand(711242136, EVT_R9.EXTRA, 0, on == true)
+  if funcLuaMenuCommand(@crc:CMND_IS_EXIST_LAYER@, EVT_R9.EXTRA) then
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, EVT_R9.EXTRA, 0, on == true)
   end
   if on ~= true or not EVT_R9.mx then
-    funcLuaMenuCommand(711242136, EVT_R9.RADAR, 1, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, EVT_R9.RADAR, 1, false)
   end
 end
 
 function EVT_R9.RadarShown()
-  return funcLuaMenuCommand(1262717583 --[[IS_LAYER_VISIBLE]], EVT_R9.RADAR, 0) == true
+  return funcLuaMenuCommand(@crc:CMND_IS_LAYER_VISIBLE@ --[[IS_LAYER_VISIBLE]], EVT_R9.RADAR, 0) == true
 end
 
 -- the guide hint of the parent menu (team dock / formation): a loader UI flag, set while L3 can toggle

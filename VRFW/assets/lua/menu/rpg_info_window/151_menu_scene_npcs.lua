@@ -14,8 +14,8 @@ do
   local UPDATING = 4179060571 --[[(kind) -> the objects of that kind are updating]]
   local LOAD = 2983896291 --[[the field's load step after an NPC update (NPCUpdate)]]
   local LOADING = 3451717529 --[[-> true while that load step is busy]]
-  local REPORT = 4117226845 --[[CMND_VRFW_MENU_SCENE_NPCS (step, info)]]
-  local STATE = 2588710643 --[[CMND_VRFW_MENU_SCENE_STATE () -> …, 6th: 1 = the scene's map is up]]
+  local REPORT = VRFW_Cmd.VRFW_MENU_SCENE_NPCS --[[CMND_VRFW_MENU_SCENE_NPCS (step, info)]]
+  local STATE = VRFW_Cmd.VRFW_MENU_SCENE_STATE --[[CMND_VRFW_MENU_SCENE_STATE () -> …, 6th: 1 = the scene's map is up]]
   local co = nil
   local function call(...)
     local r = table.pack(pcall(funcLuaCommand, ...))
@@ -43,12 +43,11 @@ do
     function PostStep(...)
       local r = table.pack(post(...))
       if co == nil then
-        local ok, set = pcall(funcLuaCommand, 2947612279, KEY)
-        if ok and set == true then
+        if VRFW_Param.Has(KEY) then
           -- only on the scene's own map, once the framework saw it up (this menu also lives before the jump)
           local r = table.pack(pcall(funcLuaCommand, STATE))
           if r[1] and r[7] == 1 then
-            pcall(funcLuaCommand, 3363400568, KEY)
+            VRFW_Param.Clear(KEY)
             co = coroutine.create(run)
           end
         end
@@ -56,7 +55,7 @@ do
       if co ~= nil and coroutine.status(co) ~= "dead" then
         local ok, err = coroutine.resume(co)
         if not ok then
-          pcall(funcLuaCommand, 3661580131, "menu_scene", "rpg_info_window", "NPC update error", tostring(err))
+          pcall(funcLuaCommand, VRFW_Cmd.EVT_LOG, "menu_scene", "rpg_info_window", "NPC update error", tostring(err))
           call(REPORT, "ready", "error " .. tostring(err))
         end
       end

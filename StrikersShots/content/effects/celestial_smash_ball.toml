@@ -1,0 +1,37 @@
+# «Descenso estelar» (Celestial Smash, whs01430; fire shot, cut-in ev60_01430): while the ball flies to the goal it
+# wears the cut-in's last shot (c0300, held at frame 425): the galaxy cannon (its space, wave, side-band and colour-line
+# cards, drawn four times turned about the flight so it reads as a cannon with depth from every side, see-through so
+# the planets drifting inside its head show) widening out of a fixed black hole at the kick point (its black ring and
+# wave, white rim, line aura and sky, purple and pink glows, round from every side) to the ball inside its head; x0.35
+# (the cannon ~2.5 m across at its widest, the hole ~0.8 m). The galaxy backdrops, the additive walls, the fake
+# particles and the launch-only shock rings and centre lines stay out.
+# Objects: ev6143cs00 (the cannon on the ball) and ev6143cf00 (the black hole), effect/event/ev60/<object>/, built by
+# research/scripts/celestial_smash_ball_fx.py from the cut-in's effect object ev60014300.
+# docs/game/media/celestial-smash-ball-fx.md.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"); the distance clock lays the cannon from the
+# hole at the kick point to the ball; the hole is a ground effect fixed at the kick point.
+# Flight: content\techniques\celestial_smash_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "celestial_smash"
+from = "ega0075c"
+object = "effect/event/ev60/ev6143cs00/ev6143cs00.objbin"
+
+[[effect]]
+name = "celestial_smash_source"
+from = "ega0021"
+object = "effect/event/ev60/ev6143cf00/ev6143cf00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "celestial_smash"
+when = { techniques = "whs01430" }
+aura = "celestial_smash"
+like = "ega0075c"
+# the cannon comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "celestial_smash_source" }

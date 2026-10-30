@@ -35,17 +35,10 @@ B.STATS = { "kick", "control", "technique", "pressure", "physical", "intelligenc
 local MODIFIER_KEYS = { when = true, count = true, on = true, chance = true, per_stack = true }
 B.MODIFIER_KEYS = MODIFIER_KEYS
 
-function B.text_keys(name)
-  return "InaRogue.rogue_block_" .. name .. "_label", "InaRogue.rogue_block_" .. name .. "_desc"
-end
-
 -- ---------------------------------------------------------------------------------------- shared parsers
 
-local function list_of(v)
-  if v == nil then return {} end
-  if type(v) == "table" then return v end
-  return { v }
-end
+require "VRFW/lib/basics"
+local function list_of(v) return VRFW.value.list(v, {}) end
 
 local function whole(v, lo)
   return type(v) == "number" and v == math.floor(v) and v >= (lo or 0)

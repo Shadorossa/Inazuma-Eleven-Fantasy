@@ -1,19 +1,16 @@
 # Skill slots v2 menus (research/scripts/ss2_build.py build_lua_menu / build_lua_pick / build_lua_blue;
-# docs/game/skill-slots.md): the new evt_skill_slot_menu (a copy of the retail equip_menu_select decompile + the EVT
-# blocks), the pick block of ability_list_menu (EVT_MX_COMPAT data: aura_skill_config of the retail assets, without the
+# docs/game/skill-slots.md): the new evt_skill_slot_menu (a copy of the retail equip_menu_select decompile in
+# evt_skill_slot_menu.lua + the EVT feature blocks in blocks/, filled in by the include placeholders), the pick block of ability_list_menu (EVT_MX_COMPAT data: aura_skill_config of the retail assets, without the
 # Inazuma Fantasy's wmm_evt rows) and the six-sense hand-back of ability_list_menu_on_bluebg. The dock part is ss2_dock; the move
 # list tabs are the VR-Framework's skill tab registry. Layouts / setting / registry stay in ss2_build.py.
 # Mod Character Reforged since 2026-10-14 (owner: the new skill table = 6 moves + the aura slot + the mix slot is the
 # aura mods' base, behind the option row character_reforged.skill_set_view; docs/refactor/aura-mods-split.md «Skill
 # table»). The screen's registry row, objects, layouts, art and texts are research/mods/CharacterReforged
-# (content/menus/skill_table.toml, assets/, text/rows/skill_table.toml). Inazuma Fantasy rebuilds this graft into its
-# own merged scripts (its blocks extend the same chunks: Hiper card, plate pages, miximax, PE, master seal...), so its
-# evt_skill_slot_menu replaces this mod's when both are active (IF loads after it) and the picker blocks below carry a
-# copy guard (EVT_SS2_PICK_GEN / EVT_SS2_BLUE_GEN: only the last copy in a VM acts). The Hiper card component
+# (content/menus/skill_table.toml, assets/, text/rows/skill_table.toml). The picker blocks below carry a copy guard
+# (EVT_SS2_PICK_GEN / EVT_SS2_BLUE_GEN: only the last copy in a VM acts). The Hiper card component
 # (@HIPER_CARD@) is still the file of IF's graft folder plate_hiper_plate (shared with IF's plate).
 name = "ss2_menus"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)
 order = 100
 module = "lua_bridge"
 requires = []
@@ -27,8 +24,29 @@ path = "common/script/lua/menu/evt_skill_slot_menu.lua.bin"
   [[files.ops]]
   type = "new_file"
   src = "evt_skill_slot_menu.lua"
-  crc = "none"
-  include = { "@HIPER_CARD@" = "../plate_hiper_plate/evt_hiper_card.lua" }
+  # the screen's feature blocks (one file each under blocks/, in this order), then the Hiper card, which one of
+  # them includes: the placeholders are filled in the order listed
+  [files.ops.include]
+  "@BLOCK_SKILL_SLOTS@" = "blocks/skill_slots.lua"
+  "@BLOCK_PLAYER_SET_ROLE@" = "blocks/player_set_role.lua"
+  "@BLOCK_BOARD_ENTRY_POINTS@" = "blocks/board_entry_points.lua"
+  "@BLOCK_CUSTOM_PASSIVE_PICKER@" = "blocks/custom_passive_picker.lua"
+  "@BLOCK_HIPER_MIXIMAX@" = "blocks/hiper_miximax.lua"
+  "@BLOCK_MIXIMAX_SCENE@" = "blocks/miximax_scene.lua"
+  "@BLOCK_MODE_CHANGE@" = "blocks/mode_change.lua"
+  "@BLOCK_RESET_DELETE@" = "blocks/reset_delete.lua"
+  "@BLOCK_COMPACT_DETAIL@" = "blocks/compact_detail.lua"
+  "@BLOCK_TWO_HIPER_SLOTS@" = "blocks/two_hiper_slots.lua"
+  "@BLOCK_MIXIMAX_SCENE_INPUT_GUARD@" = "blocks/miximax_scene_input_guard.lua"
+  "@BLOCK_ROW_FOCUS_RESYNC@" = "blocks/row_focus_resync.lua"
+  "@BLOCK_MOVE_PLATE_ROWS@" = "blocks/move_plate_rows.lua"
+  "@BLOCK_REFORGED_PROJECTION@" = "blocks/reforged_projection.lua"
+  "@BLOCK_BOARD_ONLY_MOVE_GUIDE@" = "blocks/board_only_move_guide.lua"
+  "@BLOCK_REFORGED_SLOT_RULES@" = "blocks/reforged_slot_rules.lua"
+  "@BLOCK_UNLIMITED_COPIES@" = "blocks/unlimited_copies.lua"
+  "@BLOCK_FANTASY_SLOT_FALLBACKS@" = "blocks/fantasy_slot_fallbacks.lua"
+  "@BLOCK_HIPER_ROW_RESET_DELETE@" = "blocks/hiper_row_reset_delete.lua"
+  "@HIPER_CARD@" = "../plate_hiper_plate/evt_hiper_card.lua"
 
 [[files]]
 stem = "ability_list_menu"
@@ -36,7 +54,6 @@ stem = "ability_list_menu"
   [[files.ops]]
   type = "append_block"
   src = "ss2_pick_1.lua"
-  crc = "none"
 
 [[files]]
 stem = "ability_list_menu_on_bluebg"

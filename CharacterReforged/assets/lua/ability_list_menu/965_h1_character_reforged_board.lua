@@ -14,8 +14,6 @@ do
   local Picker = CharacterReforged_PickerCreate
   Picker.KEY_BASE = 19616700                         -- evt_ss_mx_base: the shown player (skill table)
   Picker.KEY_RESULT = 3854106930                     -- evt_ss_pick_result: the picked item
-  Picker.PARAM_HAS = 2947612279
-  Picker.PARAM_GET = 3522198769
   Picker.INAZUMA_FANTASY_ITEMS = 464382964           -- CMND_EVT_MX_ITEMS: answered only by Inazuma Fantasy
   Picker.SKILL_TABLE = 1041963128                    -- evt_skill_slot_menu (hidden under the bank)
   Picker.base, Picker.done = 0, true
@@ -44,8 +42,8 @@ do
         if ok and type(answer) == "number" then
           return                                     -- Inazuma Fantasy's own flow
         end
-        if funcLuaCommand(Picker.PARAM_HAS, Picker.KEY_BASE) == true then
-          local h = funcLuaCommand(Picker.PARAM_GET, Picker.KEY_BASE)
+        if VRFW_Param.Has(Picker.KEY_BASE) then
+          local h = VRFW_Param.Get(Picker.KEY_BASE)
           Picker.base = type(h) == "number" and h or 0
           Picker.done = Picker.base == 0
         end
@@ -59,11 +57,11 @@ do
       local r = table.pack(previous(...))
       if not Picker.done then
         pcall(function()
-          if funcLuaCommand(Picker.PARAM_HAS, Picker.KEY_RESULT) ~= true then
+          if not VRFW_Param.Has(Picker.KEY_RESULT) then
             return
           end
           local card = Picker.Card()
-          local item = card ~= nil and card.U32(funcLuaCommand(Picker.PARAM_GET, Picker.KEY_RESULT)) or 0
+          local item = card ~= nil and card.U32(VRFW_Param.Get(Picker.KEY_RESULT)) or 0
           Picker.done = true                         -- one commit per picker
           if card ~= nil and card.IsCreate(item) then
             card.OpenBankEarly(Picker.base, item, Picker.SKILL_TABLE)

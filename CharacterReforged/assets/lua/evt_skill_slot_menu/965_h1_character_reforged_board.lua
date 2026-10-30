@@ -48,14 +48,10 @@ do
   -- the bank's pick: retail temp int 2524660062 (OnInit sets 0, OnDecideFocus sets the card's handle then CloseMenu)
   -- the partner's moves (1.7.22): the bank picker reads the base and the row (bank_create_moves_hooks.lua: Aceptar on a
   -- card -> his special moves on the plate -> the system's confirmation) and writes the picked moves back
-  Create.PARAM_DELETE = 3363400568                     -- parameter store: delete (key)
-  Create.PARAM_SET = 3860611758                        -- parameter store: set (key, 0, value, 1)
   Create.KEY_BASE = 2918576166                         -- character_reforged_create_base: the base (the bank reads and clears it)
   Create.KEY_EARLY = 1743709088                       -- character_reforged_create_bank_early: the picker already opened the bank
   Create.KEY_ROW = 416963278                           -- character_reforged_create_row: the system's row
   Create.KEY_MOVES = {892911027, 2888952841}           -- character_reforged_create_move1 / _move2: the picked moves (0 = none)
-  Create.PARAM_HAS = 2947612279                     -- parameter store: has (key)
-  Create.PARAM_GET = 3522198769                     -- parameter store: get (key)
   Create.TEMP_GET = 3185911119
   Create.TEMP_SET = 2565779025
   Create.BANK_RESULT = 2524660062
@@ -103,7 +99,7 @@ do
 
   -- before the aura / mix row's picker opens: a free copy of every system's «create» item owned
   function Create.BeforePicker()
-    funcLuaCommand(Create.PARAM_DELETE, Create.KEY_EARLY)   -- a flag left by an earlier picker is never this one's
+    VRFW_Param.Clear(Create.KEY_EARLY)   -- a flag left by an earlier picker is never this one's
     Create.Withhold(Create.Player())                 -- rows this player may not be the base of: not listed
     if Create.InazumaFantasyFlow() then
       return
@@ -138,12 +134,12 @@ do
   -- before the bank opens: the base and the row for its move step (a system without `moves` leaves the bank retail)
   function Create.BankKeys(hdl, row)
     for _, key in ipairs(Create.KEY_MOVES) do
-      funcLuaCommand(Create.PARAM_DELETE, key)
+      VRFW_Param.Clear(key)
     end
-    funcLuaCommand(Create.PARAM_DELETE, Create.KEY_BASE)
-    funcLuaCommand(Create.PARAM_SET, Create.KEY_BASE, 0, hdl, 1)
-    funcLuaCommand(Create.PARAM_DELETE, Create.KEY_ROW)
-    funcLuaCommand(Create.PARAM_SET, Create.KEY_ROW, 0, row, 1)
+    VRFW_Param.Clear(Create.KEY_BASE)
+    VRFW_Param.Set(Create.KEY_BASE, hdl)
+    VRFW_Param.Clear(Create.KEY_ROW)
+    VRFW_Param.Set(Create.KEY_ROW, row)
   end
 
   -- after the bank closed: the picked moves (0 = none); every key of this flow cleared
@@ -151,14 +147,14 @@ do
     local moves = {}
     for i, key in ipairs(Create.KEY_MOVES) do
       local move = 0
-      if funcLuaCommand(Create.PARAM_HAS, key) == true then
-        move = funcLuaCommand(Create.PARAM_GET, key)
+      if VRFW_Param.Has(key) then
+        move = VRFW_Param.Get(key)
       end
       moves[i] = type(move) == "number" and move or 0
-      funcLuaCommand(Create.PARAM_DELETE, key)
+      VRFW_Param.Clear(key)
     end
-    funcLuaCommand(Create.PARAM_DELETE, Create.KEY_BASE)
-    funcLuaCommand(Create.PARAM_DELETE, Create.KEY_ROW)
+    VRFW_Param.Clear(Create.KEY_BASE)
+    VRFW_Param.Clear(Create.KEY_ROW)
     return moves[1], moves[2]
   end
 
@@ -188,8 +184,8 @@ do
   function Create.BankPick(row)
     -- the picker opened the bank itself (CharacterReforged.CreateCard.OpenBankEarly, the screen already hidden): only
     -- wait for it
-    local early = funcLuaCommand(Create.PARAM_HAS, Create.KEY_EARLY) == true
-    funcLuaCommand(Create.PARAM_DELETE, Create.KEY_EARLY)
+    local early = VRFW_Param.Has(Create.KEY_EARLY)
+    VRFW_Param.Clear(Create.KEY_EARLY)
     -- the screen hidden and suspended under the bank: closing the picker resumed it, so it is suspended again here
     funcLuaMenuCommand(Create.MENU_HIDE, 1, Create.SCREEN)
     funcLuaMenuCommand(Create.MENU_SUSPEND, Create.SCREEN)

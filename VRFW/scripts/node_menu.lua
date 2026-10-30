@@ -10,15 +10,12 @@ NodeMenu = NodeMenu or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("node_menu:", ...) end
-local function warn(...) VRFW.warn("node_menu:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("node_menu")
 
 local BY_PIECE = nil     -- pieceId -> { handler, node, key }
 
-local function crc(s)
-  local f = VRFW.crc32 or (VRFW.ui and VRFW.ui.crc32)
-  return f(s) % 4294967296
-end
+local crc = VRFW.crc32
 
 local function load_menus()
   if BY_PIECE ~= nil then return BY_PIECE end

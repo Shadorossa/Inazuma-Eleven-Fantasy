@@ -23,7 +23,7 @@ do
   local vrfw_vsf_dock_formation = SetTeamDockFormation
   function SetTeamDockFormation(a1, a2, a3, a4, ...)
     local r = table.pack(vrfw_vsf_dock_formation(a1, a2, a3, a4, ...))
-    local set = funcLuaCommand(3713813716 --[[CMND_GET_VS_USE_TEAM_SET]])
+    local set = funcLuaCommand(@crc:CMND_GET_VS_USE_TEAM_SET@)
     if type(set) == "number" then
       local used = {}
       for i = 0, 28 do

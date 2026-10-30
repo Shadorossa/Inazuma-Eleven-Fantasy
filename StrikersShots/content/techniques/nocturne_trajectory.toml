@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Escena nocturna (Nocturne, whs02310, cut-in ev60_02310).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move nocturne): in the last cut (c0300) the wolf carries the
+# event ball level 12.94 m up to event frame 1420, then dives with it to 4.70 m at the cut's end (1500), while its
+# funnel and bat swarm stay level. Flight (owner's rule 2026-10-24: every aura shot a straight level line): one
+# straight level line from the kick point to the goal, the ball centre at 2.5 m the whole way, so the wolf's head and
+# the funnel's lower rim stay clear of the grass. unblockable = false: the game's block rules (this mod changes no block
+# rule). Heights are the ball centre over the pitch (m); the height is held. Inazuma Fantasy's override key
+# whs02310_or is a move of that mod (not editable here); the aura (content\effects\nocturne_ball.toml) covers it.
+
+# Escena nocturna (whs02310).
+[[edit]]
+target = "whs02310"
+trajectory = { points = [[0.0, 2.5]], straight = true, unblockable = false }

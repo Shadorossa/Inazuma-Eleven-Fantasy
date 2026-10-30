@@ -318,7 +318,7 @@ end
 -- ---------------------------------------------------------------------------------------- points and avatars
 
 local function acat() return Av.catalogue(cfg().avatars) end
-local function prof() return Av.with_profile(acat(), U.slot()) end
+local function prof() return Av.with_profile(U.slot()) end
 
 local function earn(n, why)
   if n == 0 then return 0 end

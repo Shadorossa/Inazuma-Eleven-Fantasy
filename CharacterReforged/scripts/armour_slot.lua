@@ -17,10 +17,8 @@ CharacterReforged = CharacterReforged or {}
 
 local RULES = nil
 
-local function hex(v)
-  v = (tonumber(v) or 0) % 4294967296
-  return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
-end
+local Id = require "VRFW/lib/ids"
+local hex = Id.hex
 
 -- the merged [CharacterReforged.SkillBoard] of the active mods (read once, at the first board decide)
 local function rules()

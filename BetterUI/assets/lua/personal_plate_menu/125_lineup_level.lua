@@ -15,9 +15,9 @@ if BetterUI.LineupLevel == nil then
     NODES = {2976428572 --[[_num_status_lv01]], 1469422130 --[[_pos_exp01]]},
     DIGITS = 3434305008,                 -- num_status_lv01, the level digits' number setting
     C = {
-      PARAM_EXISTS = 2947612279, MODE_IS = 624411898 --[[CMND_VRFW_MODE_IS]],
-      LAYER_COUNT = 1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]],
-      MESH = 3405944500 --[[CMND_SET_MESH_VISIBLE]], NODE = 2158717427, PRIM = 1233047821,
+      MODE_IS = VRFW_Cmd.VRFW_MODE_IS,
+      LAYER_COUNT = VRFW_Cmd.GET_CREATE_LAYER_NUM, IS_OPEN = VRFW_Cmd.IS_OPEN_LAYER,
+      MESH = VRFW_Cmd.SET_MESH_VISIBLE, NODE = 2158717427, PRIM = 1233047821,
     },
     ASK_EVERY = 10,                      -- frames between two looks at the parameter
     frames = nil,
@@ -35,8 +35,7 @@ if BetterUI.LineupLevel == nil then
 
   -- the lineup screen shows this page
   function L.Lineup()
-    local ok, has = pcall(funcLuaCommand, L.C.PARAM_EXISTS, L.FLAG)
-    if not (ok and has == true) then
+    if not VRFW_Param.Has(L.FLAG) then
       return false
     end
     local okm, inside = pcall(funcLuaCommand, L.C.MODE_IS, L.CONTEXT)

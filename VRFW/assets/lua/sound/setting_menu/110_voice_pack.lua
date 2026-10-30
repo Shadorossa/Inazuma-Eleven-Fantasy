@@ -19,9 +19,9 @@ AE_VP_NONE_ID = 581565135              -- crc32("audio_engine.voice_pack_none"):
 AE_VP_OFF_ID = 2052939705              -- crc32("audio_engine.voice_pack_off"): the loader does not answer
 AE_VP_COUNT = 1                        -- 1 + installed voice-pack languages (refreshed by get)
 -- {framework name, ModLoader name} of each command (crc32 of the names)
-AE_VP_GET = {1076213018 --[[CMND_VRFW_SOUND_VOICE_GET]], 2325395018 --[[CMND_EVT_VOICE_GET]]}
-AE_VP_NAME = {3365390355 --[[CMND_VRFW_SOUND_VOICE_NAME]], 2738235108 --[[CMND_EVT_VOICE_NAME]]}
-AE_VP_SET = {1527430838 --[[CMND_VRFW_SOUND_VOICE_SET]], 2444606950 --[[CMND_EVT_VOICE_SET]]}
+AE_VP_GET = {VRFW_Cmd.VRFW_SOUND_VOICE_GET, VRFW_Cmd.EVT_VOICE_GET}
+AE_VP_NAME = {VRFW_Cmd.VRFW_SOUND_VOICE_NAME, VRFW_Cmd.EVT_VOICE_NAME}
+AE_VP_SET = {VRFW_Cmd.VRFW_SOUND_VOICE_SET, VRFW_Cmd.EVT_VOICE_SET}
 AE_VP_SRC = nil                        -- 1 = the framework answers, 2 = the ModLoader (decided by the first get)
 function AE_VP_Call(cmd, ...)          -- a command; nil when it is not there
   local r = table.pack(pcall(funcLuaCommand, cmd, ...))
@@ -37,7 +37,7 @@ function AE_VP_Cmd(pair, ...)          -- the framework's command, else the ModL
   return AE_VP_Call(pair[1], ...)
 end
 function AE_VP_Text(id, fallback)      -- a menu_text row in the game's language, else the English fallback
-  local ok, s = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], id)
+  local ok, s = pcall(funcLuaCommand, VRFW_Cmd.TEXT_GET, id)
   if ok and type(s) == "string" and s ~= "" then
     return s
   end

@@ -1,16 +1,17 @@
 # Utilities: the title of the player plate's career page «TRAYECTORIA» (feature career; the Lua research/grafts/
 # util_career_page swaps it into the six-sense title mesh: UTIL_CS.SP_TITLE). 1200 x 128 like the retail titles, one
 # per language (default = ja / en / zh). Moved from Inazuma Fantasy (evt_gtxt_career01 / texture evt_cs_title) on
-# 2026-10-08: the same pictures (the mod's own lettering).
+# 2026-10-08: the same pictures (the mod's own lettering). In the mod's own localised atlas util_career_title (never
+# the game's soccer11_05; the plate menus load it: content\menus\102_team\career.toml).
 schema = "VRFW.image/1"
 
 [[texture]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"
+atlas = "#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"
 name = "util_cs_title"
 size = [1200, 128]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"
+atlas = "#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"
 name = "util_gtxt_career01"
 texture = "util_cs_title"
 x = 0
@@ -19,7 +20,7 @@ png = "career_title/default/util_gtxt_career01.png"
 lang = ["", "en", "zh_hans", "zh_hant"]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"
+atlas = "#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"
 name = "util_gtxt_career01"
 texture = "util_cs_title"
 x = 0
@@ -28,7 +29,7 @@ png = "career_title/es/util_gtxt_career01.png"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"
+atlas = "#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"
 name = "util_gtxt_career01"
 texture = "util_cs_title"
 x = 0
@@ -37,7 +38,7 @@ png = "career_title/fr/util_gtxt_career01.png"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"
+atlas = "#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"
 name = "util_gtxt_career01"
 texture = "util_cs_title"
 x = 0
@@ -46,7 +47,7 @@ png = "career_title/de/util_gtxt_career01.png"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"
+atlas = "#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"
 name = "util_gtxt_career01"
 texture = "util_cs_title"
 x = 0
@@ -55,7 +56,7 @@ png = "career_title/it/util_gtxt_career01.png"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"
+atlas = "#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"
 name = "util_gtxt_career01"
 texture = "util_cs_title"
 x = 0

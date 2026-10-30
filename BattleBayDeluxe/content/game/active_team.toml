@@ -67,7 +67,7 @@ fields = { uniform = { at = 0x1C, type = "u32" }, emblem = { at = 0x20, type = "
 name = "TeamLookBuild"
 kind = "function"
 pattern = "48 89 5C 24 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 E9 48 81 EC A0 00 00 00 45 33 ED 33 C0 4C 89 29 0F 57 C0 4C 89 69 08 4C 8B F1"
-rva = 0xE9B760
+rva = 0xEA5060
 steal = 14
 args = ["ptr", "ptr", "ptr", "u32", "ptr", "u8"]
 ret = "ptr"

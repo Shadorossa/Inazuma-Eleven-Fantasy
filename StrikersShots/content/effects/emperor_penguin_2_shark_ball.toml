@@ -1,0 +1,29 @@
+# «Pingüino emperador n.º 2 + Tiburón» (Emperor Penguin No. 2 feat. Shark, whs03330 and whs03330_or, same cut-in;
+# forest shot of three players, cut-in ev60_03330): while the ball flies to the goal it keeps the look of the cut-in's
+# last shot (c0600, held at frame 476): the ball in the jaws of the shark, swimming, its glows and the shark's eye
+# lights, and the five penguins following behind it in the cut-in's formation (brought nearer), each swaying gently and
+# trailing its own white water spray straight back along the flight (crossed so it reads from the touchline and from
+# behind). The shark, the penguins and the sprays come out of the kick point, never stretched, the sprays soft-faded all
+# round. x0.7 of the cut-in size; instead of the plain forest special-shot aura (ega0075d).
+# The object is ev6333ps00 (effect/event/ev60/ev6333ps00/), built by research/scripts/emperor_penguin_2_shark_ball_fx.py
+# from the cut-in's effect object ev60033300 and the waza models ev60_03100 (shark) and ev60_03330 (penguins).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\emperor_penguin_2_shark_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "emperor_penguin_2_shark"
+from = "ega0075d"
+object = "effect/event/ev60/ev6333ps00/ev6333ps00.objbin"
+
+[[shot_aura]]
+name = "emperor_penguin_2_shark"
+when = { techniques = ["whs03330", "whs03330_or"] }
+aura = "emperor_penguin_2_shark"
+like = "ega0075d"
+# the shark, the penguins and their sprays come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's reveal_grow; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

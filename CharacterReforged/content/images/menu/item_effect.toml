@@ -1,0 +1,310 @@
+# Character Reforged: the item card «Efecto» page's sprites (graft plate_pages, host table item_card.effect) in the
+# card's own atlas evt_eq_fx (loaded by the icon layer's object evt_eq_fx, content/menus/item_card.toml): copies of
+# retail icons (icon_common, icon_list_tab, team16_03, icon_common2), their grey copies, flat chips, gauge bars and
+# a separator. No game atlas gains or loses a sprite.
+schema = "VRFW.image/1"
+
+# the atlas is new (the game has none): this texture creates it; the sprites below are packed into it by the image type
+[[texture]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx"
+size = [2048, 192]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_bar_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_bar_off.png"
+texture = "evt_eq_fx"
+x = 1656
+y = 128
+size = [40, 6]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_bar_on"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_bar_on.png"
+texture = "evt_eq_fx"
+x = 1704
+y = 128
+size = [40, 6]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_bar_white"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_bar_white.png"
+texture = "evt_eq_fx"
+x = 1752
+y = 128
+size = [40, 6]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_bond"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_bond.png"
+texture = "evt_eq_fx"
+x = 0
+y = 0
+size = [120, 120]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_check"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_check.png"
+texture = "evt_eq_fx"
+x = 368
+y = 128
+size = [44, 44]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_chip_blue"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_chip_blue.png"
+texture = "evt_eq_fx"
+x = 420
+y = 128
+size = [240, 36]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_chip_green"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_chip_green.png"
+texture = "evt_eq_fx"
+x = 668
+y = 128
+size = [240, 36]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_chip_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_chip_off.png"
+texture = "evt_eq_fx"
+x = 916
+y = 128
+size = [240, 36]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_el01"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_el01.png"
+texture = "evt_eq_fx"
+x = 1584
+y = 0
+size = [64, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_el01_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_el01_off.png"
+texture = "evt_eq_fx"
+x = 1656
+y = 0
+size = [64, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_el02"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_el02.png"
+texture = "evt_eq_fx"
+x = 1728
+y = 0
+size = [64, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_el02_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_el02_off.png"
+texture = "evt_eq_fx"
+x = 1800
+y = 0
+size = [64, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_el03"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_el03.png"
+texture = "evt_eq_fx"
+x = 1872
+y = 0
+size = [64, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_el03_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_el03_off.png"
+texture = "evt_eq_fx"
+x = 1944
+y = 0
+size = [64, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_el04"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_el04.png"
+texture = "evt_eq_fx"
+x = 0
+y = 128
+size = [64, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_el04_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_el04_off.png"
+texture = "evt_eq_fx"
+x = 72
+y = 128
+size = [64, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_emblem"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_emblem.png"
+texture = "evt_eq_fx"
+x = 128
+y = 0
+size = [144, 96]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_equip"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_equip.png"
+texture = "evt_eq_fx"
+x = 280
+y = 0
+size = [144, 96]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_pos01_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_pos01_off.png"
+texture = "evt_eq_fx"
+x = 1104
+y = 0
+size = [112, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_pos02_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_pos02_off.png"
+texture = "evt_eq_fx"
+x = 1224
+y = 0
+size = [112, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_pos03_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_pos03_off.png"
+texture = "evt_eq_fx"
+x = 1344
+y = 0
+size = [112, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_pos04_off"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_pos04_off.png"
+texture = "evt_eq_fx"
+x = 1464
+y = 0
+size = [112, 64]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_sep"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_sep.png"
+texture = "evt_eq_fx"
+x = 1548
+y = 128
+size = [4, 32]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_stat01"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_stat01.png"
+texture = "evt_eq_fx"
+x = 432
+y = 0
+size = [88, 88]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_stat02"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_stat02.png"
+texture = "evt_eq_fx"
+x = 528
+y = 0
+size = [88, 88]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_stat03"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_stat03.png"
+texture = "evt_eq_fx"
+x = 624
+y = 0
+size = [88, 88]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_stat04"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_stat04.png"
+texture = "evt_eq_fx"
+x = 720
+y = 0
+size = [88, 88]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_stat05"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_stat05.png"
+texture = "evt_eq_fx"
+x = 816
+y = 0
+size = [88, 88]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_stat06"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_stat06.png"
+texture = "evt_eq_fx"
+x = 912
+y = 0
+size = [88, 88]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_stat07"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_stat07.png"
+texture = "evt_eq_fx"
+x = 1008
+y = 0
+size = [88, 88]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_delta_up"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_delta_up.png"
+texture = "evt_eq_fx"
+x = 1608
+y = 128
+size = [40, 16]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_delta_down"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_delta_down.png"
+texture = "evt_eq_fx"
+x = 1560
+y = 128
+size = [40, 16]
+
+# the GK badge like the other positions (the game's has no plate of its own): the DF plate in the GK colour
+# (research/scripts/item_card_gk_badge.py, also its grey copy evt_eq_fx_pos04_off)
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_fx_pos04_on"
+png = "102_team/team05/evt_eq_fx/evt_eq_fx_pos04_on.png"
+texture = "evt_eq_fx"
+x = 1800
+y = 128
+size = [112, 64]

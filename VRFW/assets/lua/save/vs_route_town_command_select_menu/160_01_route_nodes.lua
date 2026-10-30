@@ -248,9 +248,9 @@ end
 VRFW_RN = nil
 VRFW_RN_DIFFS = {1, 2, 3, 4, 10, 11}
 VRFW_RN_CMD = {NODE_COUNT = {1208701503, 3004181703}, NODE_GET = {3986876567, 1705651873}, ROAD_COUNT = {2601399945, 1612007537}, ROAD_GET = {2870703344, 588493510}}
-VRFW_RN_CMD_CLEAR = 4034518619     -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
-VRFW_RN_CMD_LOCK = 3394595467      -- CMND_GET_CHRONICLE_LOCK_STATUS (slot, difficulty)
-VRFW_RN_CMD_SET_LOCK = 1778321182  -- CMND_SET_CHRONICLE_LOCK_STATUS (slot, locked, difficulty)
+VRFW_RN_CMD_CLEAR = 4034518619     -- (slot, difficulty)
+VRFW_RN_CMD_LOCK = 3394595467      -- (slot, difficulty)
+VRFW_RN_CMD_SET_LOCK = 1778321182  -- (slot, locked, difficulty)
 VRFW_RN_CMD_PIECE_IDX = 1064555639 -- pieceId -> ok, piece index
 
 -- loader.log lines "LUAPRINT … VRFW_RN …" (PRINT exists only under the lua_patch loader)
@@ -334,12 +334,15 @@ function VRFW_RN_Load()
       end
     end
   end
-  VRFW_RN_Log("load", "nodes", #VRFW_RN.nodes, "roads", #VRFW_RN.roads)
-  VRFW_RN_WrapChara()
+  -- one summary line per load (the per-node dump was 59 lines per open of the route town)
+  local linked, gated = 0, 0
   for i = 1, #VRFW_RN.nodes do
     local nd = VRFW_RN.nodes[i]
-    VRFW_RN_Log("node", i - 1, "piece", nd.piece, "idx", nd.idx, "slot", nd.slot, "linked", tostring(nd.linked), "gates", #nd.gates, "scale", nd.pieceScale)
+    if nd.linked then linked = linked + 1 end
+    if #nd.gates > 0 then gated = gated + 1 end
   end
+  VRFW_RN_Log("load", "nodes", #VRFW_RN.nodes, "roads", #VRFW_RN.roads, "linked", linked, "with gates", gated)
+  VRFW_RN_WrapChara()
   return VRFW_RN
 end
 
@@ -363,7 +366,7 @@ function VRFW_RN_PieceScale(layer, inst, idx)
     return
   end
   VRFW_RN_PIECE_SCALES[inst] = s
-  pcall(funcLuaMenuCommand, 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], layer, s, s, 1, inst)
+  pcall(funcLuaMenuCommand, 3778714801, layer, s, s, 1, inst)
   VRFW_RN_Log("piece scale", "inst", inst, "piece", idx, "scale", s)
 end
 
@@ -433,8 +436,8 @@ end
 -- save state stay). The switch lives for the game session (CMND_VRFW_BOARD_HIDE); a mod's key or button calls
 -- VRFW_RN_SetHide. VRFW_RN_GROUPS = {pieces = {[pieceId] = true}, n}: read once per board VM.
 VRFW_RN_GROUPS = nil
-VRFW_RN_CMD_GROUP_PIECES = 3067101002   -- CMND_VRFW_BOARD_GROUPS () -> { pieceId, … } of the hideable groups
-VRFW_RN_CMD_HIDE = 2817173096           -- CMND_VRFW_BOARD_HIDE () -> on; ("set", 0 | 1) -> on
+VRFW_RN_CMD_GROUP_PIECES = 3067101002   -- () -> { pieceId, … } of the hideable groups
+VRFW_RN_CMD_HIDE = 2817173096           -- () -> on; ("set", 0 | 1) -> on
 
 function VRFW_RN_Groups()
   if VRFW_RN_GROUPS ~= nil then
@@ -505,7 +508,7 @@ end
 function VRFW_RN_LockedText(slot, s)
   local node = VRFW_RN_BySlot(slot)
   if node ~= nil and node.lockedGuide ~= 0 and not VRFW_RN_Shown(node) then
-    local ok, t = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], node.lockedGuide)
+    local ok, t = pcall(funcLuaCommand, 4074371074, node.lockedGuide)
     if ok and type(t) == "string" and t ~= "" then
       return t
     end
@@ -759,7 +762,7 @@ end
 
 -- The roads' instances on the board (the layer's created count; nil = the layer is not there).
 function VRFW_RN_RoadPool()
-  local ok, n = pcall(funcLuaMenuCommand, 1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], VRFW_RN_ROAD_LAYER)
+  local ok, n = pcall(funcLuaMenuCommand, 1175615627, VRFW_RN_ROAD_LAYER)
   if ok and type(n) == "number" and n > 0 then
     return n
   end
@@ -769,15 +772,15 @@ end
 -- Instance `i` (0-based) shows road `road` (nil / not shown: hidden; the quad's own sprite is the retail "new" badge).
 function VRFW_RN_RoadSet(i, road, shown)
   if road == nil or not shown then
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], VRFW_RN_ROAD_LAYER, i, false)
+    pcall(funcLuaMenuCommand, 711242136, VRFW_RN_ROAD_LAYER, i, false)
     VRFW_RN_ROAD_SHOWN[i] = false
     return
   end
   local q = VRFW_RN_ROAD_QUAD
   pcall(funcLuaMenuCommand, 558735651, VRFW_RN_ROAD_LAYER, VRFW_RN_ROAD_SHEET, CALC_CRC(road.sprite), VRFW_RN_ROAD_NODE, 0, i)
-  pcall(funcLuaMenuCommand, 1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], VRFW_RN_ROAD_LAYER, road.x, road.y, 0, i)
-  pcall(funcLuaMenuCommand, 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], VRFW_RN_ROAD_LAYER, road.w / q, road.h / q, 1, i)
-  pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], VRFW_RN_ROAD_LAYER, i, true)
+  pcall(funcLuaMenuCommand, 1389957207, VRFW_RN_ROAD_LAYER, road.x, road.y, 0, i)
+  pcall(funcLuaMenuCommand, 3778714801, VRFW_RN_ROAD_LAYER, road.w / q, road.h / q, 1, i)
+  pcall(funcLuaMenuCommand, 711242136, VRFW_RN_ROAD_LAYER, i, true)
   if VRFW_RN_ROAD_SHOWN[i] ~= true then
     VRFW_RN_Log("road", i, "node", road.node, road.sprite, "at", road.x, road.y, "size", road.w, road.h)
   end
@@ -1328,7 +1331,7 @@ VRFW_RBC.GEOMETRY = {FIRST_ROW_MID_Y = 442, ROW_STEP = 70, ROW_HALF_HEIGHT = 30,
 function VRFW_RBC_ListLayer(layer, kind, rows)
   local p = VRFW_RBC.panel
   p.layer, p.kind, p.rows, p.extra, p.bands, p.reserved = layer, kind, rows, 0, {}, {}
-  local ok, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], layer, 0)
+  local ok, x, y = pcall(funcLuaMenuCommand, 2834507455, layer, 0)
   p.x = ok and type(x) == "number" and x or nil
   p.y = ok and type(y) == "number" and y or nil
 end
@@ -1428,7 +1431,7 @@ function VRFW_RBC_PanelShift()
   if p.layer == nil or p.x == nil or p.y == nil then
     return 0, 0
   end
-  local ok, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], p.layer, 0)
+  local ok, x, y = pcall(funcLuaMenuCommand, 2834507455, p.layer, 0)
   if not ok or type(x) ~= "number" or type(y) ~= "number" then
     return 0, 0
   end

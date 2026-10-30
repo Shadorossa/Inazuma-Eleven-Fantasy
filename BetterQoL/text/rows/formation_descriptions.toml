@@ -1,0 +1,30 @@
+# Descriptions of formations the game left in Japanese in every language whose text is a real description (the
+# placeholders, only the formation's name, are generated into formation_names.toml by
+# research/scripts/utilities_formation_names.py, which stops when a real one is missing here). Translated from the
+# game's Japanese text in the wording of the offered formations' descriptions. Format: docs/game/engine/text-engine.md §2.
+schema = "VRFW.text/2"
+table = "item_text"
+
+[[row]]
+id = 0x6B085B0E  # formation 0x2CD9760B (F-Raimon) description
+fallback = false
+es = "Una formación básica, equilibrada en ataque y defensa.\nNo destaca en nada, pero tampoco tiene rarezas\ny es fácil de manejar."
+en = "A basic formation balanced in both offence and defence.\nIt has no standout strengths, but no quirks either,\nand is easy to handle."
+fr = "Une formation de base équilibrée en attaque comme en défense.\nElle n'a pas de point fort particulier, mais aucune bizarrerie\nnon plus, et elle est facile à prendre en main."
+de = "Eine grundlegende Aufstellung, ausgewogen in Angriff und\nVerteidigung. Sie hat keine besonderen Stärken, aber auch\nkeine Eigenheiten und ist leicht zu handhaben."
+it = "Una formazione di base, equilibrata sia in attacco che in difesa.\nNon eccelle in nulla di particolare, ma non ha stranezze\ned è facile da gestire."
+pt = "Formação básica, equilibrada no ataque e na defesa.\nNão se destaca em nada, mas também não tem\npeculiaridades e é fácil de usar."
+zh_hans = "攻守平衡的基础阵型。\n虽无突出特点，但中规中矩，容易上手。"
+zh_hant = "攻守平衡的基本陣型。\n雖無突出特點，但中規中矩，容易上手。"
+
+[[row]]
+id = 0x85063A22  # formation 0xC2D71727 (F-Básico) description
+fallback = false
+es = "Una formación con las posiciones colocadas\nde forma clara y sencilla. La utilizan\nmuchos equipos."
+en = "A formation with clearly laid-out positions.\nUsed by many teams."
+fr = "Une formation aux positions clairement disposées.\nAdoptée par de nombreuses équipes."
+de = "Eine Aufstellung mit übersichtlich angeordneten\nPositionen. Wird von vielen Mannschaften genutzt."
+it = "Una formazione con le posizioni disposte in modo chiaro.\nViene adottata da molte squadre."
+pt = "Formação com posições dispostas de forma clara.\nÉ adotada por muitos times."
+zh_hans = "位置分布清晰易懂的阵型。\n被众多球队采用。"
+zh_hant = "位置配置清楚易懂的陣型。\n許多隊伍都採用此陣型。"

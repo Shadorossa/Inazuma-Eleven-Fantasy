@@ -35,17 +35,16 @@ if BetterUI.VsBasicData == nil then
     NAME_KEY_CRCS = {preview = 1307210685, basic = 3674954174},
     PILL = {LAYER = 209828247, TEXT = 1704438437, SIZE = 4156564586, SCALE_GROUP = 2736921100},
     C = {
-      PARAM_HAS = 2947612279, PARAM_SET = 3860611758, PARAM_CLEAR = 3363400568,
-      TEXT_ID = 3096244543,             -- CMND_VRFW_TEXT_ID
-      TEXT_GET = 4074371074,            -- CMND_TEXT_GET
+      TEXT_ID = VRFW_Cmd.VRFW_TEXT_ID,             -- CMND_VRFW_TEXT_ID
+      TEXT_GET = VRFW_Cmd.TEXT_GET,            -- CMND_TEXT_GET
       FULL_NAMES = 1332416299,          -- the game's name setting: true = full names
-      CHARA_INFO = 4060384944,          -- CMND_GET_CHARA_INFO (param, 0 = full name / 10 = short name)
+      CHARA_INFO = VRFW_Cmd.GET_CHARA_INFO,          -- CMND_GET_CHARA_INFO (param, 0 = full name / 10 = short name)
       TEAM_INFO = 2151743654,           -- (team, 8) -> ok, member count
-      OPEN = 629267548, IS_OPEN = 2640875187, LAYER_COUNT = 1175615627, VISIBLE = 711242136,
-      POS = 1389957207, SCALE = 3778714801,
-      TEXT = 1083631230, TEXT_VISIBLE = 1505208242, TEXT_STYLE = 2333948100,
-      MESH_VISIBLE = 3405944500, IS_MESH_VISIBLE = 2277921386, NODE_VISIBLE = 2158717427,
-      GROUP_INDEX = 112302847, GROUP_RESET = 541357333, GROUP_RATE = 1595998683,
+      OPEN = VRFW_Cmd.OPEN_LAYER, IS_OPEN = VRFW_Cmd.IS_OPEN_LAYER, LAYER_COUNT = VRFW_Cmd.GET_CREATE_LAYER_NUM, VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,
+      POS = VRFW_Cmd.SET_LAYER_LOCAL_POS, SCALE = VRFW_Cmd.SET_LAYER_LOCAL_SCALE,
+      TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING, TEXT_VISIBLE = VRFW_Cmd.SET_MENU_TEXT_VISIBLE, TEXT_STYLE = 2333948100,
+      MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE, IS_MESH_VISIBLE = VRFW_Cmd.IS_MESH_VISIBLE, NODE_VISIBLE = 2158717427,
+      GROUP_INDEX = VRFW_Cmd.GET_GROUP_INDEX, GROUP_RESET = 541357333, GROUP_RATE = 1595998683,
     },
   }
   BetterUI.VsBasicData = V
@@ -68,14 +67,14 @@ if BetterUI.VsBasicData == nil then
 
   -- ---- the view ----------------------------------------------------------------------------------------------------
   function V.IsBasic()
-    return Game(V.C.PARAM_HAS, V.VIEW_PARAM) == true
+    return VRFW_Param.Has(V.VIEW_PARAM)
   end
 
   -- the parameter store keeps an existing key: it is cleared before it is set
   function V.SetBasic(on)
-    Game(V.C.PARAM_CLEAR, V.VIEW_PARAM)
+    VRFW_Param.Clear(V.VIEW_PARAM)
     if on then
-      Game(V.C.PARAM_SET, V.VIEW_PARAM, 0, 1, 1)
+      VRFW_Param.Set(V.VIEW_PARAM, 1)
     end
   end
 

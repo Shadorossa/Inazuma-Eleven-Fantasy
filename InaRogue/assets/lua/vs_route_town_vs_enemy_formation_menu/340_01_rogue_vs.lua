@@ -71,19 +71,18 @@ do
     SLOT = 2087918688,         -- () -> rogueSlot, active, ...
     RUN_INFO = 3112916915,    -- () -> exists, phase, ...
     MATCH = 3860906442,      -- (node) -> ok, game, diff, stadium, kind, level, rival, emblem
-    P_HAS = 2947612279, P_GET = 3522198769, P_SET = 3860611758, P_CLEAR = 3363400568,
     LOG = 3661580131,                         -- CMND_EVT_LOG
     TEXT_GET = 4074371074,                    -- CMND_TEXT_GET
     on = false, node = 0, game = 0, diff = 1, kind = 0, level = 0, rival = "", emblem = 0, phase = 0, team = 0,
-    -- texts: menu_text rows of the 9 languages (research/scripts/rogue_play_text_build.py); the literal is the fallback
+    -- texts: InaRogue text\rows\menu_text.toml / rogue_bosses.toml (9 languages)
     T = {
-      TITLE = {1406715737, "INAROGUE · Fase {1} · {2}"},
-      K5 = {4027119318, "Pachanga 5 contra 5"},
-      K11 = {2297451940, "Partido 11 contra 11"},
-      KBOSS = {3795316700, "JEFE de la fase"},
-      KELITE = {2654474453, "ÉLITE"},
-      KEPIC = {3305167255, "JEFE ÉPICO"},          -- §33 boss tiers (text/rows/rogue_bosses.toml)
-      KGATE = {1692537202, "JEFE DE PUERTA"},
+      TITLE = {1406715737},
+      K5 = {4027119318},
+      K11 = {2297451940},
+      KBOSS = {3795316700},
+      KELITE = {2654474453},
+      KEPIC = {3305167255},          -- §33 boss tiers (text/rows/rogue_bosses.toml)
+      KGATE = {1692537202},
     },
     -- the class plate over the VS banner (retail icon_class.g4tx of the game's language): INAZUMA for a pachanga /
     -- match, ZONA LETAL for the phase boss, RANGO DIVINO for an élite (instead of «BATALLA HEROICA»)
@@ -107,8 +106,8 @@ do
 
   function EVT_RV.tx(t, ...)
     local s = evt_rv_call(EVT_RV.TEXT_GET, t[1])
-    if type(s) ~= "string" or s == "" then
-      s = t[2]
+    if type(s) ~= "string" then
+      s = ""
     end
     local a = table.pack(...)
     return (s:gsub("{(%d)}", function(k)
@@ -121,10 +120,10 @@ do
   function EVT_RV.check()
     EVT_RV.on = false
     local rs, act = evt_rv_call(EVT_RV.SLOT)
-    if type(rs) ~= "number" or rs ~= act or evt_rv_call(EVT_RV.P_HAS, EVT_RV.KEY) ~= true then
+    if type(rs) ~= "number" or rs ~= act or not VRFW_Param.Has(EVT_RV.KEY) then
       return false
     end
-    local node = (evt_rv_call(EVT_RV.P_GET, EVT_RV.KEY) or 0) - 1
+    local node = (VRFW_Param.Get(EVT_RV.KEY) or 0) - 1
     local ok, game, diff, _, kind, level, rival, emblem = evt_rv_call(EVT_RV.MATCH, node)
     if ok ~= true or type(game) ~= "number" or game == 0 then
       EVT_RV.log("node", node, "has no match: retail screen")
@@ -191,15 +190,15 @@ do
           end
         end
       end
-      local count = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], a5)
+      local count = funcLuaMenuCommand(1175615627, a5)
       if type(count) ~= "number" or count < 19 then
         count = 19
       end
       for i = 0, count - 1 do
         if not used[i] then
           for _, L in ipairs({a5, a6}) do
-            if type(L) == "number" and funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER?]], L, i) == true then
-              funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, false)
+            if type(L) == "number" and funcLuaMenuCommand(262659071, L, i) == true then
+              funcLuaMenuCommand(711242136, L, i, false)
             end
           end
         end

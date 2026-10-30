@@ -16,11 +16,8 @@ local function hex8(v)
   return string.format("%04X%04X", math.floor(v / 65536), v % 65536)
 end
 
-local function int(v)
-  v = tonumber(v)
-  if not v then return 0 end
-  return v >= 0 and math.floor(v) or math.ceil(v)
-end
+require "VRFW/lib/basics"
+local function int(v) return VRFW.value.int(v, 0) end
 
 local function same(a, b)
   for i = 1, 8 do

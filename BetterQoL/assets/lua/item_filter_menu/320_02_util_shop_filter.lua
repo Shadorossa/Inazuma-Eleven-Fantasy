@@ -26,7 +26,7 @@ do
   function OnInit(...)
     UTIL_SF_FROM_SHOP = false
     UTIL_SF_SHOWN = -1
-    if funcLuaCommand(2947612279, 2640949932) and funcLuaCommand(3522198769, 2640949932) == 3170360552 --[[shop_menu]] then
+    if VRFW_Param.Has(2640949932) and VRFW_Param.Get(2640949932) == 3170360552 --[[shop_menu]] then
       UTIL_SF_FROM_SHOP = true
     end
     return init(...)
@@ -37,15 +37,15 @@ do
       return count(...)
     end
     local flat = CreateSendFilterParamArray(GetFilterParamArray())
-    local ok, shown, total = pcall(funcLuaCommand, 2721607605 --[[CMND_BETTERQOL_SHOP_FILTER_COUNT]], GetInventoryType(), table.unpack(flat))
+    local ok, shown, total = pcall(funcLuaCommand, 2721607605, GetInventoryType(), table.unpack(flat))
     if not ok or type(shown) ~= "number" or type(total) ~= "number" then
       UTIL_SF_SHOWN = -1
       return count(...)
     end
     UTIL_SF_SHOWN = shown
-    local idx = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], 758265787 --[[win07_01_item_filter_list]], 0, 2872982514)
+    local idx = funcLuaMenuCommand(1927054058, 758265787 --[[win07_01_item_filter_list]], 0, 2872982514)
     funcLuaMenuCommand(3609943765, 758265787 --[[win07_01_item_filter_list]], 0, idx, shown)
-    idx = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], 758265787 --[[win07_01_item_filter_list]], 0, 119370028)
+    idx = funcLuaMenuCommand(1927054058, 758265787 --[[win07_01_item_filter_list]], 0, 119370028)
     funcLuaMenuCommand(3609943765, 758265787 --[[win07_01_item_filter_list]], 0, idx, total)
   end
   local after = OnAfterReceiveFilterParam

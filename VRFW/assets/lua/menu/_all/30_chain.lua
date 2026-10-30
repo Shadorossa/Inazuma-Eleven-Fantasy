@@ -31,16 +31,16 @@ if VRFW_Chain == nil then
   local CH = {
     -- the team type's commands (VRFW name, legacy part name)
     CMD = {
-      COUNT = {1022542520, 3844893564},     -- CMND_VRFW_TEAM_CHAIN_COUNT
-      GET = {495525936, 2209145981},        -- CMND_VRFW_TEAM_CHAIN_GET (i, lang) -> key, mod, host, pachanga, title, ...
-      BOARD = {3783110045, 950207577},      -- CMND_VRFW_TEAM_CHAIN_BOARD (i, lang) -> cols, rows, pages, tiles, start, matches, title
-      PAGE = {1498965366, 1370193311},      -- CMND_VRFW_TEAM_CHAIN_PAGE (i, p, lang) -> title
-      TILE = {1004370514, 858677947},       -- CMND_VRFW_TEAM_CHAIN_TILE (i, t, lang) -> id, kind, page, col, row, links, game, team, level, difficulty, title, rival, emblem, reward, requires, requires names, S reward, rank rewards, their names, A reward
-      OF_PIECE = {735011795, 2747770341},   -- CMND_VRFW_TEAM_CHAIN_OF_PIECE (pieceId) -> chain i, node slot
+      COUNT = {VRFW_Cmd.VRFW_TEAM_CHAIN_COUNT, 3844893564},     -- CMND_VRFW_TEAM_CHAIN_COUNT
+      GET = {VRFW_Cmd.VRFW_TEAM_CHAIN_GET, 2209145981},        -- CMND_VRFW_TEAM_CHAIN_GET (i, lang) -> key, mod, host, pachanga, title, ...
+      BOARD = {VRFW_Cmd.VRFW_TEAM_CHAIN_BOARD, 950207577},      -- CMND_VRFW_TEAM_CHAIN_BOARD (i, lang) -> cols, rows, pages, tiles, start, matches, title
+      PAGE = {VRFW_Cmd.VRFW_TEAM_CHAIN_PAGE, 1370193311},      -- CMND_VRFW_TEAM_CHAIN_PAGE (i, p, lang) -> title
+      TILE = {VRFW_Cmd.VRFW_TEAM_CHAIN_TILE, 858677947},       -- CMND_VRFW_TEAM_CHAIN_TILE (i, t, lang) -> id, kind, page, col, row, links, game, team, level, difficulty, title, rival, emblem, reward, requires, requires names, S reward, rank rewards, their names, A reward
+      OF_PIECE = {VRFW_Cmd.VRFW_TEAM_CHAIN_OF_PIECE, 2747770341},   -- CMND_VRFW_TEAM_CHAIN_OF_PIECE (pieceId) -> chain i, node slot
     },
-    SAVE_GET = 2187277743,   -- CMND_VRFW_SAVE_GET (owner, key, default)
-    SAVE_SET = 2574269955,   -- CMND_VRFW_SAVE_SET (owner, key, value, commit)
-    LOG = 3661580131,        -- CMND_EVT_LOG
+    SAVE_GET = VRFW_Cmd.VRFW_SAVE_GET,   -- CMND_VRFW_SAVE_GET (owner, key, default)
+    SAVE_SET = VRFW_Cmd.VRFW_SAVE_SET,   -- CMND_VRFW_SAVE_SET (owner, key, value, commit)
+    LOG = VRFW_Cmd.EVT_LOG,        -- CMND_EVT_LOG
     OWNER = "vr_framework",
     PENDING = "chain.pending",
     MENU = 2748171433,       -- crc32("vrfw_chain_board_menu"): the chain board screen
@@ -49,8 +49,8 @@ if VRFW_Chain == nil then
     -- a chain HUB ([[VRFW.RouteNode]] Kind = "chain_hub"): the screen opens on the list of its chains
     P_HUB = 659670413,       -- crc32("vrfw_chain_hub"): parameter, the hub node's save slot
     P_PICK_CHAIN = 3161495482, -- crc32("vrfw_chain_pick_chain"): parameter out, the picked tile's chain index + 1
-    NODE = {COUNT = {1208701503, 3004181703}, GET = {3986876567, 1705651873}},   -- CMND_VRFW_TEAM_ROUTE_NODE_*
-    DEBUG_SWITCH = 622813551, -- CMND_VRFW_DEBUG_SWITCH (name) -> true while the framework's config [debug] <name> is on
+    NODE = {COUNT = {VRFW_Cmd.VRFW_TEAM_ROUTE_NODE_COUNT, 3004181703}, GET = {VRFW_Cmd.VRFW_TEAM_ROUTE_NODE_GET, 1705651873}},   -- CMND_VRFW_TEAM_ROUTE_NODE_*
+    DEBUG_SWITCH = VRFW_Cmd.VRFW_DEBUG_SWITCH, -- CMND_VRFW_DEBUG_SWITCH (name) -> true while the framework's config [debug] <name> is on
     boards = {},             -- chain index -> board table (per VM)
     debug_all = nil,         -- [debug] all_chains, read once per VM (CH.DebugAll)
   }
@@ -515,8 +515,8 @@ if VRFW_Chain == nil then
   -- owner "vr_framework" = their tile ids, ";"-separated (kept with the game's own save: the screen asks for the
   -- game's autosave right after a payout, so the items and the mark are saved together).
   CH.ITEM_FITS = 765340069     -- (item, n) -> the bag has room
-  CH.ITEM_ADD = 1897915498     -- CMND_ADD_ITEM_ONLY (item, n): no window (the screen shows the retail one)
-  CH.AUTO_SAVE = 3673719958    -- CMND_SYSTEM_AUTO_SAVE
+  CH.ITEM_ADD = VRFW_Cmd.ADD_ITEM_ONLY     -- (item, n): no window (the screen shows the retail one)
+  CH.AUTO_SAVE = VRFW_Cmd.SYSTEM_AUTO_SAVE
 
   -- a chest's declared rewards: {{kind = "item", id, count} / {kind = "player", id = card}} (tier: nil / false = the
   -- base reward, "a" = a double chest's rank-A reward, "s" or true = its rank-S reward)
@@ -605,10 +605,7 @@ if VRFW_Chain == nil then
     return out
   end
 
-  local function hex(v)
-    v = math.floor(tonumber(v) or 0) % 4294967296
-    return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
-  end
+  local function hex(v) return VRFW_Id.hex(v) end
 
   -- give opened chest t's rewards once. Returns the rewards given (the list of CH.Rewards; empty = none declared or
   -- already paid), or nil + why ("closed", "full": the bag has no room for every item, nothing given, retried later).

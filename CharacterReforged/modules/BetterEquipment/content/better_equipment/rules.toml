@@ -1,0 +1,107 @@
+schema = "BetterEquipment.rules/1"
+# Better Equipment › the rules every item follows (docs/game/mods/better-equipment-proposal.md §2). No tiers: every item
+# has the same budget. research/scripts/better_equipment.py builds the profiles from them (content\items\profiles.toml);
+# scripts\better_equipment.lua reads [affinity] and [scale] in matches.
+
+[scale]
+# S = the largest single equipment bonus after the earlier mods' edits (VRFW.item.equipment_scale: 40 retail, 70 with
+# Inazuma Fantasy); every number below is a fraction of S
+cap = 1.0                       # no final single bonus above cap × S (affinity and sets included)
+
+[budget]
+raises = 1.0                    # the two raises add up to raises × S
+lower = 0.143                   # the lowered stat: S / 7
+
+[splits]                        # the primary raise's share of the raises
+balanced = 0.50
+soft = 0.54
+mild = 0.57
+concentrated = 0.59
+leaning = 0.62
+strong = 0.65
+extreme = 0.68
+# the order items of one slot and raised pair take them (natural, then inverted; balanced once)
+variant_order = ["concentrated", "extreme", "soft", "leaning", "strong", "mild", "balanced"]
+
+# the stat a pair lowers: first choice, then the second; the other stats follow in stat order
+[[pair_penalty]]
+pair = ["kick", "control"]
+lower = ["pressure", "intelligence"]
+[[pair_penalty]]
+pair = ["kick", "technique"]
+lower = ["physical", "pressure"]
+[[pair_penalty]]
+pair = ["kick", "pressure"]
+lower = ["agility", "technique"]
+[[pair_penalty]]
+pair = ["kick", "physical"]
+lower = ["agility", "technique"]
+[[pair_penalty]]
+pair = ["kick", "agility"]
+lower = ["physical", "pressure"]
+[[pair_penalty]]
+pair = ["kick", "intelligence"]
+lower = ["agility", "technique"]
+[[pair_penalty]]
+pair = ["control", "technique"]
+lower = ["pressure", "physical"]
+[[pair_penalty]]
+pair = ["control", "pressure"]
+lower = ["kick", "technique"]
+[[pair_penalty]]
+pair = ["control", "physical"]
+lower = ["agility", "kick"]
+[[pair_penalty]]
+pair = ["control", "agility"]
+lower = ["physical", "pressure"]
+[[pair_penalty]]
+pair = ["control", "intelligence"]
+lower = ["kick", "physical"]
+[[pair_penalty]]
+pair = ["technique", "pressure"]
+lower = ["kick", "agility"]
+[[pair_penalty]]
+pair = ["technique", "physical"]
+lower = ["agility", "kick"]
+[[pair_penalty]]
+pair = ["technique", "agility"]
+lower = ["physical", "pressure"]
+[[pair_penalty]]
+pair = ["technique", "intelligence"]
+lower = ["kick", "physical"]
+[[pair_penalty]]
+pair = ["pressure", "physical"]
+lower = ["agility", "technique"]
+[[pair_penalty]]
+pair = ["pressure", "agility"]
+lower = ["control", "technique"]
+[[pair_penalty]]
+pair = ["pressure", "intelligence"]
+lower = ["kick", "control"]
+[[pair_penalty]]
+pair = ["physical", "agility"]
+lower = ["technique", "kick"]
+[[pair_penalty]]
+pair = ["physical", "intelligence"]
+lower = ["agility", "control"]
+[[pair_penalty]]
+pair = ["agility", "intelligence"]
+lower = ["physical", "kick"]
+
+[affinity]
+# the wearer's card main position matches the item's → its raises × (1 + one); its card element too → × (1 + both)
+one = 0.15
+both = 0.25
+# an item's position: the one of its primary raise (items.toml `position` overrides, e.g. keeper gloves)
+position_by_stat = { kick = "FW", technique = "FW", control = "MF", agility = "MF", pressure = "DF", physical = "DF", intelligence = "GK" }
+
+[passives]
+family_mod = "HissatsuReforged"   # the mod whose [[VRFW.TechniqueFamily]] the items' families name
+
+[card]
+# the item card's text icons (gaiji tags of the game's font atlases) for the elements: retail wind / forest / fire /
+# mountain (gaiji_cmd_type01..04); void = BetterQoL's neutral element icon (gaiji_cmd_type00), no icon without it
+# the image files where a mod may declare an element's icon ([[VRFW.ElementIcon]]: BetterQoL's neutral icon for void);
+# the item card shows that icon when the mod is active, the game's element name otherwise
+element_icon_files = ["content/images/menu/200_icon/15_icon_common/icon_common.toml"]
+element_icon = { wind = "[$gaiji_cmd_type01]", forest = "[$gaiji_cmd_type02]", fire = "[$gaiji_cmd_type03]", mountain = "[$gaiji_cmd_type04]", void = "[$gaiji_cmd_type00]" }

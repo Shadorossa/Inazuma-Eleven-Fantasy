@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Caja de sorpresas (Magician's Box, whs01810, cut-in ev60_01810): one straight level
+# line at 2.0 m from the kick point into the goal point, whatever the shot's length (the ball's height at the aura's
+# frame, c0500 420; the streak sheets reach 1.6 m below the ball, so they stay clear of the grass). In the cut-in's last
+# shot the event ball comes down from 3.5 m to 1.1 m. unblockable = false: the game's block rules (this mod changes no
+# block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Caja de sorpresas (whs01810).
+[[edit]]
+target = "whs01810"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

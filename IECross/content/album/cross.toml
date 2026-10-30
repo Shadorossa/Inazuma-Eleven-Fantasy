@@ -1,0 +1,8 @@
+schema = "BetterQoL.album/1"
+# BetterQoL's «Álbum de jugadores»: the «Inazuma Eleven Cross» series as a group of its «Juego» bar (its logo: the
+# series type 10's tab icon, icon_list_tab_series10 of this mod's images). Its players are the members of the Cross
+# belong team (chara_base team_1..3), as in the bank's Cross tab (content/card_filters/cross.toml). Read only when
+# BetterQoL is enabled.
+[[series]]
+series = 0x2451B973             # crc32("evt_chara_series_cross"), chara_series_config type 10
+team = 0x1E5DC7AA               # crc32("evt_belong_team_cross")

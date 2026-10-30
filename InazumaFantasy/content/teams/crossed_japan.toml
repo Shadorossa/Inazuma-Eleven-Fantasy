@@ -1,0 +1,54 @@
+schema = "VRFW.team/2"
+# «Crossed Japan»: an Inazuma Japan squad with Byron Love, Xavier Foster, Caleb Stonewall, Archer Hawkins and other
+# callups of every era, ported from the earlier Inazuma Fantasy (research/mods/_aside/InazumaFantasy,
+# teams\19_iecross\01_crossed_japan.toml). Same key, so the team id stays crc32("evt_ct_ft_crossed_japan").
+# Every member is a game card (each character's canonical card), so the team needs no other mod.
+# Formation 4-5-1 Equilibrio (the 4-2-3-1 shape retail Zeus plays): slot 0 GK, 1-2 centre-backs, 3-4 full-backs,
+# 5 central attacking mid, 6-7 holding mids, 8-9 wide attacking mids, 10 striker; 11-15 bench, 19 coach.
+# The match level and class come from the list that shows the team (its free-match section), not from this row.
+
+[[team]]
+name = "ct_ft_crossed_japan"
+key = "evt_ct_ft_crossed_japan"
+level = 1
+formation = 0xBA9D367C                    # 4-5-1 Equilibrio (4-2-3-1)
+kit = 0xC68FF352                          # Inazuma Japan (u030101)
+emblem = 0xB11D47C8                       # em030015 Inazuma Japan
+roster = "exact"
+member = [
+  { card = 0x3055CF22, slot = 0, number = 1, captain = true, rarity_step = 1 },   # Mark Evans (c01000010) · GK
+  { card = 0x0263ADA0, slot = 1, number = 3, rarity_step = 1 },                   # Jack Wallside (c01000030) · DF
+  { card = 0x8968E5CD, slot = 2, number = 4, rarity_step = 1 },                   # Hurley Kane (c02024040) · DF
+  { card = 0x1B789CE1, slot = 3, number = 2, rarity_step = 1 },                   # Nathan Swift (c01000020) · DF
+  { card = 0xCB47F718, slot = 4, number = 5, rarity_step = 1 },                   # Archer Hawkins (c03030020) · DF
+  { card = 0x9E23A289, slot = 5, number = 8, rarity_step = 1 },                   # Byron Love (c01001900) · MF
+  { card = 0x840661DF, slot = 6, number = 6, rarity_step = 1 },                   # Caleb Stonewall (c03030050) · MF
+  { card = 0x2B08403A, slot = 7, number = 14, rarity_step = 1 },                  # Jude Sharp (c01000300) · MF
+  { card = 0x9D1D509E, slot = 8, number = 11, rarity_step = 1 },                  # Xavier Foster (c03030040) · FW
+  { card = 0xB3F47A7E, slot = 9, number = 18, rarity_step = 1 },                  # Xavier Schiller (c07100020)
+  { card = 0x288C9454, slot = 10, number = 10, rarity_step = 1 },                 # Axel Blaze (c01000100) · FW
+  { card = 0x67DB7889, slot = 11, number = 12, rarity_step = 1 },                 # Darren LaChance (c02023810) · GK
+  { card = 0xBA4C2C21, slot = 12, number = 9, rarity_step = 1 },                  # Shawn Froste (c02023380)
+  { card = 0xB630035D, slot = 13, number = 13, rarity_step = 1 },                 # Dave Quagmire (c03030070) · MF
+  { card = 0xAF2B321C, slot = 14, number = 15, rarity_step = 1 },                 # Jordan Greenway (c03030060)
+  { card = 0x142580C8, slot = 15, number = 16, rarity_step = 1 },                 # Heath Moore (c07030010)
+  { card = 0x82B218FB, slot = 19, number = 0 },                                   # Percival Travis (c03039500) · coach
+]
+  [team.text.en]
+  name = "Crossed Japan"
+  [team.text.es]
+  name = "Crossed Japan"
+  [team.text.fr]
+  name = "Crossed Japan"
+  [team.text.de]
+  name = "Crossed Japan"
+  [team.text.it]
+  name = "Crossed Japan"
+  [team.text.pt]
+  name = "Crossed Japan"
+  [team.text.ja]
+  name = "Crossed Japan"
+  [team.text.zh_hans]
+  name = "Crossed Japan"
+  [team.text.zh_hant]
+  name = "Crossed Japan"

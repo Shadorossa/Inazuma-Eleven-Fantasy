@@ -1,5 +1,5 @@
 # VR-Framework contact maps: the new screen
-# vrfw_contact_map_menu (src vrfw_contact_map_menu.lua), the IE-style "contacts" / scout map of a [[VRFW.ContactSet]]
+# vrfw_contact_map_menu (src vrfw_contact_map_menu.lua + the parts cm_*.lua appended to it in order: one chunk), the IE-style "contacts" / scout map of a [[VRFW.ContactSet]]
 # a mod declares (content\contact_maps\*.toml; served by scripts\contact_map.lua). Declared in the framework's
 # menus\contact_map.toml (layers, objects; art: the chain board's atlas + each map's own background), built with
 # `menu_assemble.py build --mod vr_framework` and packed by framework_pack.py as assets\lua\screens\
@@ -20,5 +20,36 @@ path = "common/script/lua/menu/vrfw_contact_map_menu.lua.bin"
   [[files.ops]]
   type = "new_file"
   src = "vrfw_contact_map_menu.lua"
-  crc = "none"
   vars = { "@MENU_FILE@" = "vrfw_contact_map_menu" }
+
+  [[files.ops]]
+  type = "append_block"
+  src = "cm_drawing.lua"
+  marker = "contact_map drawing"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "cm_team_pages.lua"
+  marker = "contact_map team pages"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "cm_views.lua"
+  marker = "contact_map views"
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "cm_navigation.lua"
+  marker = "contact_map navigation"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "cm_actions.lua"
+  marker = "contact_map actions"
+  crc = "none"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "cm_callbacks.lua"
+  marker = "contact_map callbacks"

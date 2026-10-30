@@ -1,0 +1,87 @@
+# The VR-Framework's pick cards screen vrfw_pick_cards_menu (docs/framework/pick-cards.md): a «pick 1 of N» reward
+# screen over the menu that opens it: the menu under it dimmed, the cards side by side (3 in view, more scroll), each a
+# player (portrait), an item (icon) or plain text with its name, lines, a wrapped description and a badge, and an
+# optional «skip». What it shows is a mod's (PickCards.Set in its script, CMND_VRFW_PICK_CARDS); the screen is
+# mechanism only. Opened with VRFW_PickCards.Show (assets\lua\menu\_all\83_pick_cards.lua).
+# Base savedata_management_menu (the off-screen input anchor and the button guides, as the pose row screen); the retail
+# background and header are switched off by the script. Pictures: the framework's plain shapes (vrfw_plain, tinted)
+# unless a mod declares art for the screen "pick_cards" (content\screen_art\*.toml). The script: graft pick_cards.
+schema = "VRFW.menu/2"
+
+# ---- objects ----------------------------------------------------------------------------------------------------------
+# the dim, the cards' frames, faces, badges and the skip pill (tinted plain shapes, or a mod's declared art); every
+# instance gets its own draw priority from the script
+[[object]]
+name = "vrfw_pc_plate"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 1001 } }]
+
+# the players' portraits: a copy of the retail list character card, shown as its portrait only (VRFW_FaceIcon.Card)
+[[object]]
+name = "vrfw_pc_face"
+from = "team00_01_chara_card_for_list"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+priority = 1004
+
+# ---- the screen -------------------------------------------------------------------------------------------------------
+[[screen]]
+name = "vrfw_pick_cards_menu"
+like = "language_option_menu"
+# input priority 240 as the pose row screen: above the menu it opens over, under the question / message windows
+set = { priority = 240 }
+base = "savedata_management_menu"
+script = "assets/lua/screens/vrfw_pick_cards_menu.lua"
+
+[screen.rows]
+layer = [
+    { layer = "save01_01_list_attach_base", object = "vrfw_pr_rows" },
+    { layer = "save01_02_list_item", count = 1 },
+    { layer = "mainmenu90_00_background" },
+    { layer = "vrfw_pc_plate", object = "vrfw_pc_plate", count = 48, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_pc_face", object = "vrfw_pc_face", count = 3 },
+    { layer = "vrfw_pc_text", object = "save01_02_list_item", count = 64, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "mainmenu90_01_header" },
+    { layer = "mainmenu90_05_content_guide_line01" },
+    { layer = "cmn05_01_cursor" },
+    { layer = "mainmenu01_10_return_arrow_button_guide" },
+    { layer = "mainmenu01_06_base_button_guide" },
+    { layer = "mainmenu01_07_button_guide" },
+]
+# arrows move (CMD_FUNCTION vrfw_pc_left / _right / _up / _down), Accept picks, Back / right click skip
+cmd = [
+    { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_ENTER", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = 0x51B9FFB9, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = 0x4535494E, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = 0xB1F7A661, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = 0x372188EA, flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+]
+res = [
+    "#/menu/220_img/vrfw_plain/vrfw_plain.g4tx",
+    "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx",
+    "#/menu/100_mainmenu/mainmenu90/mainmenu90_01/<LG>/mainmenu90_01.g4tx",
+]
+group_base = [
+    { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu90_01_header", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "cmn05_01_cursor", flags = [0, 0, 1, 0, 1, 0] },
+    { layer = "save01_01_list_attach_base", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "save01_02_list_item", flags = [1, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu90_05_content_guide_line01", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_10_return_arrow_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_06_base_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "mainmenu01_07_button_guide", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "vrfw_pc_plate", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_pc_face", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_pc_text", flags = [0, 0, 0, 0, 1, 0] },
+]
+group = [
+    { group = "common", slice = [0, 3] },
+    { group = "vrfw_pick_cards_menu", flags = [1], slice = [3, 12] },
+]
+focus_group = [
+    { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },
+]
+shift_base = []
+shift = []

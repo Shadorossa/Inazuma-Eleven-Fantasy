@@ -6,7 +6,7 @@ local UTIL_NE_prev_GetElementIconTextureName = GetElementIconTextureName
 function GetElementIconTextureName(a1, ...)
   local r = UTIL_NE_prev_GetElementIconTextureName(a1, ...)
   if r == 0 and a1 ~= nil and a1 ~= 0 then
-    local ok, el = funcLuaCommand(4060384944 --[[CMND_GET_CHARA_INFO]], a1, 13)
+    local ok, el = funcLuaCommand(4060384944, a1, 13)
     if ok and (el == 0 or el == 5) then
       return 3196645112
     end

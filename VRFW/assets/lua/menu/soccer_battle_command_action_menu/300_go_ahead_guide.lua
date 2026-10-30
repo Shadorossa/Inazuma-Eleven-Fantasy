@@ -8,8 +8,8 @@
 -- stays hidden under the mod's word. Wraps the include's globals; no engine call at load time.
 do
   local C = {
-    FLAG_GET = 3832352740,    -- CMND_VRFW_RULE_FLAG_GET(key) -> value (0 = not set)
-    LOG = 3661580131,         -- CMND_EVT_LOG
+    FLAG_GET = VRFW_Cmd.VRFW_RULE_FLAG_GET,    -- CMND_VRFW_RULE_FLAG_GET(key) -> value (0 = not set)
+    LOG = VRFW_Cmd.EVT_LOG,         -- CMND_EVT_LOG
   }
   local FLAG = "VRFW.hud.go_ahead_guide"
   local FLAG_GRAY = "VRFW.hud.go_ahead_guide.gray"

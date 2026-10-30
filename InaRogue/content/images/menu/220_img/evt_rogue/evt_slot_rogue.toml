@@ -1,0 +1,384 @@
+# InaRogue: the INAROGUE card art on the VR-Framework's save slot screen (#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx,
+# a NEW atlas). The card's provider (graft inarogue_slot, inarogue_slot_card.lua) names these sprites. Every picture is
+# made at the first start (and after a game update) from the player's own game files by the image type's recipes
+# (docs/framework/types/image.md §2.1).
+# Look: the framework's card body (VRFW evt_slot_base.toml) in the INAROGUE violet, the route-map icon as the crest and
+# on the title band, the title screen's tournament-route picture as the banner, one game icon per row.
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_rogue"
+size = [1332, 624]
+
+# ---- sprites (the card binds them by crc32 of the name) ------------------------------------------------------------
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_card_rogue_on"
+texture = "evt_slot_rogue"
+x = 0
+y = 0
+size = [424, 624]
+recipe = "card_on"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_card_rogue_off"
+texture = "evt_slot_rogue"
+x = 428
+y = 0
+size = [424, 624]
+recipe = "card_off"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_band_rogue_on"
+texture = "evt_slot_rogue"
+x = 856
+y = 0
+size = [312, 84]
+recipe = "band_on"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_band_rogue_off"
+texture = "evt_slot_rogue"
+x = 856
+y = 88
+size = [312, 84]
+recipe = "band_off"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_strip_rogue"
+texture = "evt_slot_rogue"
+x = 856
+y = 176
+size = [424, 64]
+recipe = "strip"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_icon_rogue_s"
+texture = "evt_slot_rogue"
+x = 856
+y = 244
+size = [100, 68]
+recipe = "band_icon_on"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_icon_rogue_s_off"
+texture = "evt_slot_rogue"
+x = 960
+y = 244
+size = [100, 68]
+recipe = "band_icon_off"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_ri_run"
+texture = "evt_slot_rogue"
+x = 856
+y = 316
+size = [92, 60]
+recipe = "row_run"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_ri_runs"
+texture = "evt_slot_rogue"
+x = 952
+y = 316
+size = [92, 60]
+recipe = "row_runs"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_ri_frags"
+texture = "evt_slot_rogue"
+x = 1048
+y = 316
+size = [92, 60]
+recipe = "row_frags"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_ri_time_r"
+texture = "evt_slot_rogue"
+x = 1144
+y = 316
+size = [92, 60]
+recipe = "row_time"
+
+[[sprite]]
+atlas = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx"
+name = "evt_slot_ri_saved_r"
+texture = "evt_slot_rogue"
+x = 1240
+y = 316
+size = [92, 60]
+recipe = "row_saved"
+
+# ---- game sources (the player's game files) -------------------------------------------------------------------------
+# card bodies: the save info plate, focused (a whole texture) and unfocused (a sprite)
+[[recipe]]
+name = "base_on"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+texture = "save_info_base01"
+
+[[recipe]]
+name = "base_off"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+sprite = "save_info_base02"
+
+# the route map of the main menu: the INAROGUE mark (crest, title band, «En curso» row)
+[[recipe]]
+name = "route_map"
+game = "dx11/menu/100_mainmenu/mainmenu90/mainmenu90_02_2/mainmenu90_02_2.g4tx"
+sprite = "icon_menu07_on"
+ops = [{ op = "alpha_crop" }, { op = "alpha_normalize" }]
+
+# the title screen's tournament-route picture (slanted 392 x 160): its straight middle, 301 x 45, to 424 x 64
+[[recipe]]
+name = "strip"
+game = "dx11/menu/50_title/title00/title00_07/title00_07.g4tx"
+sprite = "btn_base08_on"
+ops = [{ op = "crop", box = [44, 58, 345, 103] }, { op = "resize", size = [424, 64] }, { op = "hue", turns = 0.08 }]
+
+# ---- card body (as the framework's): one 168 px period of the hexagon body tiled from y 4, the grey row bands, the
+# bottom bar, a thin top line, rounded lower corners; then the INAROGUE violet (0.14 turns of hue) ------------------
+[[recipe]]
+name = "tile_on"
+from = "base_on"
+ops = [{ op = "crop", box = [20, 112, 444, 280] }]
+
+[[recipe]]
+name = "grey_on"
+from = "base_on"
+ops = [{ op = "crop", box = [20, 418, 346, 470] }, { op = "tile", size = [424, 52], at = [0, 0] }, { op = "resize", size = [424, 46] }]
+
+[[recipe]]
+name = "bar_on"
+from = "base_on"
+ops = [{ op = "crop", box = [20, 588, 868, 606] }, { op = "resize", size = [424, 16] }]
+
+[[recipe]]
+name = "top_on"
+from = "base_on"
+ops = [{ op = "crop", box = [20, 100, 868, 106] }, { op = "resize", size = [424, 4] }]
+
+[[recipe]]
+name = "body_on"
+from = "tile_on"
+ops = [
+    { op = "tile", size = [424, 624], at = [0, 4] },
+    { op = "paste", image = "grey_on", at = [0, 313] },
+    { op = "paste", image = "grey_on", at = [0, 405] },
+    { op = "paste", image = "grey_on", at = [0, 497] },
+    { op = "paste", image = "bar_on", at = [0, 608] },
+    { op = "paste", image = "top_on", at = [0, 0] },
+    { op = "round_corners", radius = 12, square_top = 21 },
+    { op = "hue", turns = 0.14 },
+]
+
+[[recipe]]
+name = "tile_off"
+from = "base_off"
+ops = [{ op = "crop", box = [20, 112, 444, 280] }]
+
+[[recipe]]
+name = "grey_off"
+from = "base_off"
+ops = [{ op = "crop", box = [20, 418, 346, 470] }, { op = "tile", size = [424, 52], at = [0, 0] }, { op = "resize", size = [424, 46] }]
+
+[[recipe]]
+name = "bar_off"
+from = "base_off"
+ops = [{ op = "crop", box = [20, 588, 868, 606] }, { op = "resize", size = [424, 16] }]
+
+[[recipe]]
+name = "top_off"
+from = "base_off"
+ops = [{ op = "crop", box = [20, 100, 868, 106] }, { op = "resize", size = [424, 4] }]
+
+[[recipe]]
+name = "body_off"
+from = "tile_off"
+ops = [
+    { op = "tile", size = [424, 624], at = [0, 4] },
+    { op = "paste", image = "grey_off", at = [0, 313] },
+    { op = "paste", image = "grey_off", at = [0, 405] },
+    { op = "paste", image = "grey_off", at = [0, 497] },
+    { op = "paste", image = "bar_off", at = [0, 608] },
+    { op = "paste", image = "top_off", at = [0, 0] },
+    { op = "round_corners", radius = 12, square_top = 21 },
+    { op = "fade", factor = 0.92 },
+    { op = "hue", turns = 0.14 },
+]
+
+# the crest: the route map in violet, centred at (212, 150) like the framework's emblem
+[[recipe]]
+name = "crest_map"
+from = "route_map"
+ops = [{ op = "fit", box = [104, 74] }, { op = "fill", rgb = [110, 60, 190] }]
+
+[[recipe]]
+name = "card_on"
+from = "body_on"
+ops = [{ op = "paste", image = "crest_map", centre = [212.0, 150.0] }]
+
+[[recipe]]
+name = "card_off"
+from = "body_off"
+ops = [{ op = "paste", image = "crest_map", centre = [212.0, 150.0] }]
+
+# ---- title band: the slot list's band in violet (focused) / as the game's (unfocused), the route map as its icon ---
+[[recipe]]
+name = "band_on"
+game = "dx11/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "list_base_s01_on"
+ops = [{ op = "hue", turns = 0.14 }]
+
+[[recipe]]
+name = "band_off"
+game = "dx11/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "list_base_s01_off"
+
+[[recipe]]
+name = "band_map_on"
+from = "route_map"
+ops = [{ op = "fit", box = [96, 64] }, { op = "fill", rgb = [255, 255, 255] }]
+
+[[recipe]]
+name = "band_map_off"
+from = "band_map_on"
+ops = [{ op = "fill", rgb = [74, 82, 96] }]
+
+[[recipe]]
+name = "band_icon_on"
+canvas = [100, 68]
+ops = [{ op = "paste", image = "band_map_on", centre = [50.0, 34.0] }]
+
+[[recipe]]
+name = "band_icon_off"
+canvas = [100, 68]
+ops = [{ op = "paste", image = "band_map_off", centre = [50.0, 34.0] }]
+
+# ---- row plates (as the framework's): the save screen's Historia plate without its glyph, recoloured, a white game
+# glyph (44 x 40 box) with a soft navy shadow ------------------------------------------------------------------------
+[[recipe]]
+name = "plate"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+sprite = "save_mode_base01"
+ops = [{ op = "blend_columns", x0 = 10, x1 = 58 }]
+
+# En curso: the route map
+[[recipe]]
+name = "glyph_run"
+from = "route_map"
+ops = [{ op = "fill", rgb = [255, 255, 255] }, { op = "fit", box = [44, 40] }]
+
+# Jugadas / ganadas: the trophy with laurels
+[[recipe]]
+name = "glyph_runs"
+game = "dx11/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_vroad01"
+ops = [{ op = "alpha_crop" }, { op = "alpha_normalize" }, { op = "fill", rgb = [255, 255, 255] }, { op = "fit", box = [44, 40] }]
+
+# Fragmentos: the token gem
+[[recipe]]
+name = "glyph_frags"
+game = "dx11/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+sprite = "icon_list_tab_token01"
+ops = [{ op = "alpha_crop" }, { op = "alpha_normalize" }, { op = "fill", rgb = [255, 255, 255] }, { op = "fit", box = [44, 40] }]
+
+# Tiempo total: the stopwatch (as the other cards)
+[[recipe]]
+name = "glyph_time"
+game = "dx11/menu/51_save/save01/save01_04/es/save01_04.g4tx"
+sprite = "save_base_icon01_on"
+ops = [{ op = "alpha_crop" }, { op = "alpha_normalize" }, { op = "fill", rgb = [255, 255, 255] }, { op = "fit", box = [44, 40] }]
+
+# Guardado: the save book (as the other cards)
+[[recipe]]
+name = "glyph_saved"
+game = "dx11/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "save_icon_list_s01_on"
+ops = [{ op = "alpha_crop" }, { op = "alpha_normalize" }, { op = "fill", rgb = [255, 255, 255] }, { op = "fit", box = [44, 40] }]
+
+[[recipe]]
+name = "shadow_run"
+from = "glyph_run"
+ops = [{ op = "fill", rgb = [0, 20, 60] }, { op = "alpha_scale", mul = 1, div = 3 }]
+
+[[recipe]]
+name = "shadow_runs"
+from = "glyph_runs"
+ops = [{ op = "fill", rgb = [0, 20, 60] }, { op = "alpha_scale", mul = 1, div = 3 }]
+
+[[recipe]]
+name = "shadow_frags"
+from = "glyph_frags"
+ops = [{ op = "fill", rgb = [0, 20, 60] }, { op = "alpha_scale", mul = 1, div = 3 }]
+
+[[recipe]]
+name = "shadow_time"
+from = "glyph_time"
+ops = [{ op = "fill", rgb = [0, 20, 60] }, { op = "alpha_scale", mul = 1, div = 3 }]
+
+[[recipe]]
+name = "shadow_saved"
+from = "glyph_saved"
+ops = [{ op = "fill", rgb = [0, 20, 60] }, { op = "alpha_scale", mul = 1, div = 3 }]
+
+# En curso: violet
+[[recipe]]
+name = "row_run"
+from = "plate"
+ops = [
+    { op = "hue", turns = 0.2 },
+    { op = "paste", image = "shadow_run", centre = [34.0, 32.0] },
+    { op = "paste", image = "glyph_run", centre = [32.0, 30.0] },
+]
+
+# Jugadas / ganadas: amber
+[[recipe]]
+name = "row_runs"
+from = "plate"
+ops = [
+    { op = "hue", turns = 0.52 },
+    { op = "paste", image = "shadow_runs", centre = [34.0, 32.0] },
+    { op = "paste", image = "glyph_runs", centre = [32.0, 30.0] },
+]
+
+# Fragmentos: magenta
+[[recipe]]
+name = "row_frags"
+from = "plate"
+ops = [
+    { op = "hue", turns = 0.3 },
+    { op = "paste", image = "shadow_frags", centre = [34.0, 32.0] },
+    { op = "paste", image = "glyph_frags", centre = [32.0, 30.0] },
+]
+
+# Tiempo total: blue (as the other cards)
+[[recipe]]
+name = "row_time"
+from = "plate"
+ops = [
+    { op = "hue", turns = 0.06 },
+    { op = "paste", image = "shadow_time", centre = [34.0, 32.0] },
+    { op = "paste", image = "glyph_time", centre = [32.0, 30.0] },
+]
+
+# Guardado: slate (as the other cards)
+[[recipe]]
+name = "row_saved"
+from = "plate"
+ops = [
+    { op = "hue", turns = 0.09 },
+    { op = "saturate", factor = 0.45 },
+    { op = "paste", image = "shadow_saved", centre = [34.0, 32.0] },
+    { op = "paste", image = "glyph_saved", centre = [32.0, 30.0] },
+]

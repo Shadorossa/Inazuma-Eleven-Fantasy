@@ -24,14 +24,6 @@ local function Pct(n, total)
   end
   return (string.format("%.1f", n * 100 / total):gsub("%.", ","))
 end
---@section WinPrim
-local function WinPrim(name, value, visible)
-  local prim = funcLuaMenuCommand(C.PRIM_INDEX, L_WIN, 0, name)
-  if prim ~= nil then
-    funcLuaMenuCommand(C.PRIM_VALUE, L_WIN, 0, prim, value)
-  end
-  funcLuaMenuCommand(C.PRIM_VISIBLE, L_WIN, 0, name, visible)
-end
 --@section Hide
 local function Hide(layer, idx)
   funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, false)
@@ -85,8 +77,7 @@ local function ItemGet(id)
 end
 --@section Close
 local function Close(result)
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_SET, KEY_RESULT, 0, result, 1)
+  VRFW_Param.Replace(KEY_RESULT, result)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
   funcLuaCommand(C.CLOSE_MENU, MENU)
 end
@@ -136,22 +127,6 @@ local function EVT_U32(id)
     id = id + 4294967296
   end
   return id
-end
---@section EvtLog
--- the loader's log command (evt_loader\loader.log) and a pcall'd logger for new code
-local CMND_EVT_LOG = 3661580131
-local function EvtLog(...)
-  pcall(funcLuaCommand, CMND_EVT_LOG, ...)
-end
---@section TextGet
--- a menu_text row in the game's language (nil when the command fails or the row is empty)
-local CMND_TEXT_GET = 4074371074
-local function TextGet(id)
-  local ok, s = pcall(funcLuaCommand, CMND_TEXT_GET, id)
-  if ok and type(s) == "string" and s ~= "" then
-    return s
-  end
-  return nil
 end
 --@section EVT_Wrap
 -- EVT_Wrap(name, fn): the global function `name` becomes function(...) return fn(prev, ...) end, prev being its value

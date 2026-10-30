@@ -49,6 +49,38 @@
   "forbid": [],
   "ambiguous": []
  },
+ "equip_aura_skill_menu": {
+  "script": "equip_aura_skill_menu",
+  "require": [
+   "IsEnableList"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "general_window": {
+  "script": "general_window_6.00.32.00",
+  "require": [
+   "getInfoWinLayer"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "item_filter_menu": {
+  "script": "item_filter_menu_7.00.09.00",
+  "require": [
+   "SetupFilterGroupInfoArray"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
+ "kizuna_menu": {
+  "script": "kizuna_menu_7.02.32.00",
+  "require": [
+   "ChangePasteItemListCategory"
+  ],
+  "forbid": [],
+  "ambiguous": []
+ },
  "notification_log": {
   "script": "notification_log_3.00.07.00",
   "require": [

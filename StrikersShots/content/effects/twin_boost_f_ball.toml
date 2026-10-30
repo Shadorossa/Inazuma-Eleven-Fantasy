@@ -1,0 +1,27 @@
+# «Twin Boost F» («Remate combinado F», whs00770 and whs00770_or, same cut-in; fire shot of two players, cut-in
+# ev60_00770): while the ball flies to the goal it wears the cut-in's last cut (c0500, held at frame 428, the last frame
+# the cut-in shows the ball): the purple-and-fire comet round the ball (the fire waves and the fire ball turning as in
+# the cut-in), the round red and yellow glows (facing the camera from every side), and the purple streaks and dark
+# waves trailing behind it, which come out of the kick point as the ball flies (never stretched, a soft start at the
+# kick point), x1. The speed-line backdrop, the kick's dark rings and the fire chunks are left out; the look is the
+# same for the whole flight.
+# The object is ev6077tb00 (effect/event/ev60/ev6077tb00/), built by research/scripts/twin_boost_f_ball_fx.py from
+# ev60007700.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\twin_boost_f_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "twin_boost_f"
+from = "ega0075c"
+object = "effect/event/ev60/ev6077tb00/ev6077tb00.objbin"
+
+[[shot_aura]]
+name = "twin_boost_f"
+when = { techniques = ["whs00770", "whs00770_or"] }
+aura = "twin_boost_f"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

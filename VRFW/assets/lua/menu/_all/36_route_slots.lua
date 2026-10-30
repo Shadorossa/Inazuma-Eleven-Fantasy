@@ -22,15 +22,15 @@ if VRFW_RouteSlots == nil then
   local M = {
     BASE = 300,               -- the game's status arrays (m_globalChronicle*StatusFlag): statusFlagIndex 0-299
     PIECE = 126049514,        -- piece info (pieceIndex, field): field 6 = statusFlagIndex
-    CLEAR_GET = 4034518619,   -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
-    CLEAR_SET = 1891570685,   -- CMND_SET_CHRONICLE_CLEAR_STATUS (slot, on, difficulty)
-    LOCK_GET = 3394595467,    -- CMND_GET_CHRONICLE_LOCK_STATUS (slot, difficulty)
-    LOCK_SET = 1778321182,    -- CMND_SET_CHRONICLE_LOCK_STATUS (slot, locked, difficulty)
+    CLEAR_GET = VRFW_Cmd.GET_CHRONICLE_CLEAR_STATUS,   -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
+    CLEAR_SET = VRFW_Cmd.SET_CHRONICLE_CLEAR_STATUS,   -- CMND_SET_CHRONICLE_CLEAR_STATUS (slot, on, difficulty)
+    LOCK_GET = VRFW_Cmd.GET_CHRONICLE_LOCK_STATUS,    -- CMND_GET_CHRONICLE_LOCK_STATUS (slot, difficulty)
+    LOCK_SET = VRFW_Cmd.SET_CHRONICLE_LOCK_STATUS,    -- CMND_SET_CHRONICLE_LOCK_STATUS (slot, locked, difficulty)
     PIECE_IDX = 1064555639,   -- pieceId -> ok, piece index
-    NODE_COUNT = {1208701503, 3004181703},   -- CMND_VRFW_TEAM_ROUTE_NODE_COUNT (legacy part name second)
-    NODE_GET = {3986876567, 1705651873},     -- CMND_VRFW_TEAM_ROUTE_NODE_GET (i) -> pieceId, slot, ...
-    SAVE_GET = 2187277743,    -- CMND_VRFW_SAVE_GET (owner, key, default)
-    SAVE_SET = 2574269955,    -- CMND_VRFW_SAVE_SET (owner, key, value, commit)
+    NODE_COUNT = {VRFW_Cmd.VRFW_TEAM_ROUTE_NODE_COUNT, 3004181703},   -- CMND_VRFW_TEAM_ROUTE_NODE_COUNT (legacy part name second)
+    NODE_GET = {VRFW_Cmd.VRFW_TEAM_ROUTE_NODE_GET, 1705651873},     -- CMND_VRFW_TEAM_ROUTE_NODE_GET (i) -> pieceId, slot, ...
+    SAVE_GET = VRFW_Cmd.VRFW_SAVE_GET,    -- CMND_VRFW_SAVE_GET (owner, key, default)
+    SAVE_SET = VRFW_Cmd.VRFW_SAVE_SET,    -- CMND_VRFW_SAVE_SET (owner, key, value, commit)
     OWNER = "vr_framework",
     -- the retail bit of each difficulty (bit n = difficulty {1, 2, 3, 4, 10, 11}[n]): 2^(n-1)
     BIT = {[1] = 1, [2] = 2, [3] = 4, [4] = 8, [10] = 16, [11] = 32},
@@ -72,10 +72,12 @@ if VRFW_RouteSlots == nil then
         local ok, okI, idx = pcall(real, M.PIECE_IDX, piece)
         if ok and okI and type(idx) == "number" then
           M.byIdx[idx] = slot
-          log("extended slot", slot, "piece", piece, "idx", idx)
         end
       end
     end
+    local count = 0
+    for _ in pairs(M.byIdx) do count = count + 1 end
+    log("extended slots", count, "of", n, "nodes")
     return M.byIdx
   end
 
@@ -125,50 +127,48 @@ if VRFW_RouteSlots == nil then
   end
 
   function M.Get(kind, slot, d)
-    return get(M.real or funcLuaCommand, kind, slot, d)
+    return get(funcLuaCommand, kind, slot, d)
   end
 
   function M.Set(kind, slot, on, d)
-    set(M.real or funcLuaCommand, kind, slot, on, d)
+    set(funcLuaCommand, kind, slot, on, d)
   end
 
-  -- the VM's funcLuaCommand with the extended slots (once per VM; only from a callback)
+  -- the VM's funcLuaCommand with the extended slots (once per VM; only from a callback). The other commands it
+  -- sends (node list, save service) are not hooked here, so they go through the global.
   function M.Install()
     if M.installed then
       return false
     end
-    local real = funcLuaCommand
-    if type(real) ~= "function" then
+    if type(funcLuaCommand) ~= "function" then
       return false
     end
-    M.real = real
     -- the argument count is passed on unchanged (a C command may check it)
-    local function wrapped(...)
+    local function handler(nxt, ...)
       local cmd, a, b, c = ...
       if cmd == M.PIECE and b == 6 and type(a) == "number" then
-        local slot = load(real)[a]
+        local slot = load(funcLuaCommand)[a]
         if slot ~= nil then
           return true, slot
         end
       elseif type(a) == "number" and a >= M.BASE then
         if cmd == M.CLEAR_GET then
-          return get(real, "clear", a, b)
+          return get(funcLuaCommand, "clear", a, b)
         elseif cmd == M.LOCK_GET then
-          return get(real, "lock", a, b)
+          return get(funcLuaCommand, "lock", a, b)
         elseif cmd == M.CLEAR_SET then
-          set(real, "clear", a, b, c)
+          set(funcLuaCommand, "clear", a, b, c)
           return
         elseif cmd == M.LOCK_SET then
-          set(real, "lock", a, b, c)
+          set(funcLuaCommand, "lock", a, b, c)
           return
         end
       end
-      return real(...)
+      return nxt(...)
     end
-    M.wrapper = wrapped
-    funcLuaCommand = wrapped
-    M.installed = true
-    return true
+    M.installed = VRFW_Host.HookCommand({ M.PIECE, M.CLEAR_GET, M.LOCK_GET, M.CLEAR_SET, M.LOCK_SET }, handler,
+      "VRFW.route_slots")
+    return M.installed
   end
 
   -- watch the board script of this VM: the wrapper goes in at its OnInit (chaining)

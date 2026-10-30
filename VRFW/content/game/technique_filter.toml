@@ -1,0 +1,83 @@
+schema = "VRFW.game/2"
+
+# Technique filter values (run time scripts\technique_filter.lua): the tension tab of the move filter window lists one
+# row per tension cost found in the technique table after mods, then one row per technique family
+# ([[VRFW.TechniqueFamily]] of any mod) when families are declared. Nothing is written while the table's values are the
+# game's own rows and no family is declared (`apply = "script"`).
+# 1. Store: the game keeps at most six ticked row indexes (filter block +4..+9); the stub keeps them as a 64-bit mask
+#    in the same bytes (+4..+0xB, the last two the block's padding) and the count at 1.
+# 2. Match: the game tests a technique's tension byte (record +0x31) against six fixed values; the stub maps the byte to
+#    its row through a 256-byte table the script appends and tests that row's bit, then the family rows (below).
+# 3. Rows: the window builds as many tension rows as the loop count immediate.
+
+# ------------------------------------------------------------------------------------------------ the ticked rows
+
+# Stub: row index (entry value) <= 63 sets its bit; the first one of a call clears the mask.
+[[VRFW.Patch]]
+name = "TechniqueFilter.Store"
+game = "Technique.FilterTensionStore"
+kind = "stub"
+apply = "script"
+code = "48 8B 14 24 48 C1 EA 20 83 FA 3F 77 18 83 39 00 75 08 48 C7 41 04 00 00 00 00 48 0F AB 51 04 C7 01 01 00 00 00"
+
+# ------------------------------------------------------------------------------------------------ the match test
+
+# Stub: tension byte -> row (appended table, 0xFF = no row), then the family rows. Data appended by the script after
+# the code: the 256-byte table, the family row mask (u64: the bits of the family rows, 0 = no family rows) and the
+# address of the callback TechniqueFilter.FamilyPass (u64).
+# * tension: the row's bit set = match; a technique whose row is not ticked still goes on when no tension row is ticked
+#   and a family row is (a filter by family only);
+# * families: no family row ticked, or all of them = no family test; else the callback answers (skill id, block).
+# Registers the game keeps across the call (rdx loop index, r8 count, r9 jump table base) are saved; rsp is 16-aligned
+# in the function's body.
+[[VRFW.Patch]]
+name = "TechniqueFilter.Match"
+game = "Technique.FilterTensionMatch"
+kind = "stub"
+apply = "script"
+code = "44 0F B6 5F 31 4C 8D 15 70 00 00 00 47 0F B6 1C 1A 48 8B 05 64 01 00 00 49 8B 4C 24 04 41 83 FB 3F 77 06 4C 0F A3 D9 72 10 49 89 C2 49 F7 D2 4C 85 D1 75 41 48 85 C1 74 3C 49 89 CA 49 21 C2 74 2A 49 39 C2 74 25 52 41 50 41 51 41 52 48 83 EC 20 8B 0F 4C 89 E2 FF 15 28 01 00 00 48 83 C4 20 41 5A 41 59 41 58 5A 84 C0 74 0A B8 01 00 00 00 E9 ?? ?? ?? ?? 31 C0 E9 ?? ?? ?? ??"
+tail = false
+refs = [{ at = 113, to = 0x75 }, { at = 120, to = 0x6C }]
+needs = ["TechniqueFilter.Store"]
+
+# bool FamilyPass(u32 skill id, const u8* filter block): the technique belongs to a ticked family row (the script's
+# handler in scripts\technique_filter.lua); called by the match stub only while some family rows are ticked and some
+# are not. Scripts busy or no answer: 1 (the row passes).
+[[VRFW.Hook]]
+name = "TechniqueFilter.FamilyPass"
+kind = "callback"
+args = ["u32", "ptr"]
+ret = "u8"
+fallback = 1
+wait_ms = 50
+
+# ------------------------------------------------------------------------------------------------ the row count
+
+# u8 loop count of the tension rows, written by the script once both stubs are in
+[[VRFW.Patch]]
+name = "TechniqueFilter.Rows"
+game = "Technique.FilterTensionRows"
+needs = ["TechniqueFilter.Match"]
+
+# ------------------------------------------------------------------------------------------------ commands
+
+# (list item type) -> n, value 1, ..., value n: the values of the rows the window lists for that tab (0 = the game's own rows)
+[[VRFW.Command]]
+name = "CMND_VRFW_TECHNIQUE_FILTER_VALUES"
+handler = "TechniqueFilter.CmdValues"
+
+# (save id, n, value 1, ..., value n) -> true: the tension values ticked in that saved filter (n < 0 = forget it)
+[[VRFW.Command]]
+name = "CMND_VRFW_TECHNIQUE_FILTER_KEEP"
+handler = "TechniqueFilter.CmdKeep"
+
+# (save id) -> n, value 1, ..., value n: the tension values kept for that saved filter (-1 = none kept)
+[[VRFW.Command]]
+name = "CMND_VRFW_TECHNIQUE_FILTER_KEPT"
+handler = "TechniqueFilter.CmdKept"
+
+# -> first row, n, text 1, name 1, ..., text n, name n: the family rows of the tension tab (row index of the first, then
+# each family's text key and its id's last part; 0 = no family rows)
+[[VRFW.Command]]
+name = "CMND_VRFW_TECHNIQUE_FILTER_FAMILIES"
+handler = "TechniqueFilter.CmdFamilies"

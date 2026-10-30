@@ -10,7 +10,7 @@
 VRFW_BBP_ONLINE = {
   RETAIL = 3292142377,
   SLOT = 2572859650,
-  LOG = 3661580131 --[[CMND_EVT_LOG]],
+  LOG = 3661580131,
   GRID = 106197494 --[[vs01_43_enjoy_team_select_emblem_icon]],
   LOCK = 892105257 --[[mainmenu90_30_lock_icon]],
 }
@@ -19,7 +19,7 @@ function VRFW_BBP_OnlineRetail(why)
   local O = VRFW_BBP_ONLINE
   local ok, rows = pcall(funcLuaCommand, O.RETAIL)
   -- the slots already created get their emblems again (the rest are set up by the game from the rebuilt records)
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], O.GRID) or 0
+  local n = funcLuaMenuCommand(1175615627, O.GRID) or 0
   -- rows 0 = the framework found the team select offline (this script also runs for the offline grid): nothing to do
   if ok and type(rows) == "number" and rows > 0 and SetupEmblemIcon ~= nil then
     for i = 0, n - 1 do
@@ -29,13 +29,13 @@ function VRFW_BBP_OnlineRetail(why)
       end
       -- the rows of the "win it to unlock it" rule are open online: no padlock
       if type(lock) == "number" and lock >= 0 and unlocked == true then
-        pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], O.LOCK, lock, false)
+        pcall(funcLuaMenuCommand, 711242136, O.LOCK, lock, false)
       elseif type(lock) == "number" and lock >= 0 then
         -- a locked slot's padlock gets the closed look: an instance the rebuild moved here may still have the gold
         -- "press to unlock" one (_lock_icon01_off / _on, anime Active stopped, type lock)
-        pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], O.LOCK, 868450029 --[[_lock_icon01_off]], true, lock)
-        pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], O.LOCK, 3251826719 --[[_lock_icon01_on]], false, lock)
-        pcall(funcLuaMenuCommand, 3781155141 --[[CMND_PLAY_ANIME_TYPE]], O.LOCK, lock, 1286797620 --[[Active]], 2, 2274335502 --[[lock]])
+        pcall(funcLuaMenuCommand, 3405944500, O.LOCK, 868450029 --[[_lock_icon01_off]], true, lock)
+        pcall(funcLuaMenuCommand, 3405944500, O.LOCK, 3251826719 --[[_lock_icon01_on]], false, lock)
+        pcall(funcLuaMenuCommand, 3781155141, O.LOCK, lock, 1286797620 --[[Active]], 2, 2274335502 --[[lock]])
       end
     end
   end

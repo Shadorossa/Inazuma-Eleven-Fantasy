@@ -28,7 +28,8 @@ local Modules = { on = function(_) return true end }   -- a module mod runs only
 
 local MODULE = "goalkeeper_barrier"
 
-local function info(...) VRFW.log("goalkeeper_barrier:", ...) end
+require "VRFW/lib/basics"
+local info = VRFW.logger("goalkeeper_barrier")
 
 local function number_setting(t, k, default, low, high)
   local v = tonumber(t and t[k])
@@ -55,20 +56,12 @@ local SETTINGS = {
 Barrier.settings = SETTINGS
 
 local TENSION_TABLE = "GoalkeeperBarrier.KeeperTension"
--- game layout (docs/game/mechanics/match-stamina.md §6 / §10): actors, units, members, the team gauge block
-local ACTOR_COUNT, ACTOR_STRIDE = 0x3A, 0x570
-local MATCH_TEAMS, TEAM_STRIDE, TEAM_TENSION, MATCH_USER_TEAM = 0x60, 0x1130, 0x1058, 0x2C29
-local MEMBER_POSITION = 0x71
+-- game layout (docs/game/mechanics/match-stamina.md §6 / §10): the actor table through the framework (VRFW/lib/actors);
+-- units, members and the match info block as structs of content\game\goalkeeper_barrier.toml
+local Actors = require "VRFW/lib/actors"
 local MOVE_SLOTS = 6
 
 local band = bit32.band
-
-local function read(kind, at)
-  if not at or at < 0x10000 then return nil end
-  local ok, v = pcall(VRFW.mem.read, kind, at)
-  if ok then return v end
-  return nil
-end
 
 local function game_global(name)
   local ok, p = pcall(VRFW.game[name])
@@ -78,6 +71,16 @@ end
 
 local function hex(v) return string.format("0x%08X", v or 0) end
 
+-- one field of a [[VRFW.Struct]] of content\game\goalkeeper_barrier.toml at `at`; nil when not readable
+local function struct_field(struct, at, name)
+  if not at or at < 0x10000 then return nil end
+  local ok, s = pcall(VRFW.mem.struct, struct, at)
+  if not ok then return nil end
+  local ok_value, v = pcall(function() return s[name] end)
+  if ok_value then return v end
+  return nil
+end
+
 local function unit_of(actor)
   local ok, u = pcall(VRFW.call, "Match.ActorUnit", actor)
   if ok and type(u) == "number" and u >= 0x10000 then return VRFW.mem.read_struct("FootballUnit", u) end
@@ -85,11 +88,9 @@ local function unit_of(actor)
 end
 
 local function actor_of(handle)
-  local base = game_global("Match.SoccerActors.ViaSkillUsed")
-  if not base or not handle or handle == 0 then return nil end
-  local actor = base + band(handle, 0xFF) * ACTOR_STRIDE
-  local a = VRFW.mem.read_struct("FootballActor", actor)
-  if a and a.handle == handle then return actor, a end
+  if not handle or handle == 0 then return nil end
+  local a = Actors.of(handle)
+  if a then return a.address, a end
   return nil
 end
 
@@ -142,16 +143,14 @@ end
 local function scan_keepers(now)
   if now - State.scan_ms < SETTINGS.rescan_ms then return end
   State.scan_ms = now
-  local base = game_global("Match.SoccerActors.ViaSkillUsed")
-  if not base then return end
+  if not Actors.base() then return end
   local found = {}
-  for i = 0, ACTOR_COUNT - 1 do
-    local actor = base + i * ACTOR_STRIDE
+  for _, entry in ipairs(Actors.list()) do
+    local actor = entry.address
     local a = VRFW.mem.read_struct("FootballActor", actor)
-    if a and a.handle ~= 0 and band(a.handle, 0xFF) == i and a.team <= 1 then
+    if a and a.handle ~= 0 and band(a.handle, 0xFF) == entry.index and a.team <= 1 then
       local u = unit_of(actor)
-      local member = u and u.member
-      local position = (member and member >= 0x10000) and read("u8", member + MEMBER_POSITION) or nil
+      local position = struct_field("FootballMember", u and u.member, "position")
       if position == SETTINGS.keeper_position then
         local f = found[a.team]
         -- prefer the one in play (a bench keeper may share the position)
@@ -204,7 +203,7 @@ local function publish_tension(match)
     if h and State.discount[team] then
       local actor = actor_of(h)
       local u = actor and unit_of(actor)
-      local t = read("i32", match + MATCH_TEAMS + team * TEAM_STRIDE + TEAM_TENSION)
+      local t = struct_field("FootballMatchInfo", match, "tension" .. team)
       if u and t then
         local units = t >= 0 and math.floor(t / 10000) or -math.floor(-t / 10000)
         for i = 0, MOVE_SLOTS - 1 do
@@ -326,7 +325,7 @@ end)
 -- bar_rate (optional): that keeper bar's fill 0..1 as the scoreboard draws it; it is the barrier's source.
 function Barrier.Get(side, bar_rate)
   if not Modules.on(MODULE) or State.scene == 0 or not State.match then return false end
-  local user = read("u8", State.match + MATCH_USER_TEAM) or 0
+  local user = struct_field("FootballMatchInfo", State.match, "user_team") or 0
   if user > 1 then user = 0 end
   side = tonumber(side) or -1
   local team = side

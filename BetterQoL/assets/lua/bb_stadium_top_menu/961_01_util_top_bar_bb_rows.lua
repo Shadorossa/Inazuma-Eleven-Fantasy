@@ -10,7 +10,7 @@ BetterQoL.TopBar.BbRows.STEP = "bb_row."                         -- the step nam
 BetterQoL.TopBar.BbRows.LISTS = {716364754 --[[mainmenu90_11_list_item_middle]], 530619243 --[[mainmenu90_12_list_item_small]]}
 
 function BetterQoL.TopBar.BbRows.Log(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "utilities bb_rows", ...)
+  pcall(funcLuaCommand, 3661580131, "utilities bb_rows", ...)
 end
 
 -- the hub's rows as its own table lists them: (list layer, index, menuObjectName)
@@ -34,7 +34,7 @@ function BetterQoL.TopBar.BbRows.Wanted()
     return nil
   end
   for _, r in ipairs(BetterQoL.TopBar.BbRows.Rows()) do
-    local id = r.id < 0 and r.id + 4294967296 or r.id   -- the unsigned crc, as the TOML writes it
+    local id = VRFW_Id.u32(r.id)   -- the unsigned crc, as the TOML writes it
     if VRFW_TopBarStep(BetterQoL.TopBar.BbRows.STEP .. string.format("%.0f", id)) then
       return r.id
     end
@@ -74,10 +74,10 @@ function BetterQoL.TopBar.BbRows.Step()
     B.row = nil
     return
   end
-  if B.frames < 20 or funcLuaMenuCommand(102308320 --[[CMND_IS_CTRL_FOCUS_ACTIVE?]], target.layer) ~= true then
+  if B.frames < 20 or funcLuaMenuCommand(102308320, target.layer) ~= true then
     return
   end
-  if funcLuaCommand(2259183189) == true or funcLuaCommand(1215256347 --[[CMND_BRIGHT_IS_FADE]]) == true
+  if funcLuaCommand(2259183189) == true or funcLuaCommand(1215256347) == true
     or funcLuaCommand(316436678) == true then
     return
   end
@@ -85,7 +85,7 @@ function BetterQoL.TopBar.BbRows.Step()
   local n = GetNumUsedButtons(target.layer) or 0
   BetterQoL.TopBar.BbRows.Log("open row", target.idx, "of", target.layer, "id", target.id)
   funcLuaMenuCommand(1778826357, target.layer, target.idx, true)
-  funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], target.layer, 3313461902 --[[cursor]], target.idx, n)
+  funcLuaMenuCommand(381797568, target.layer, 3313461902 --[[cursor]], target.idx, n)
   pcall(SelectListItem, target.layer)
   funcLuaCommand(1917805374, 3848881948 --[[sy0000]])
   B.deciding = target.id

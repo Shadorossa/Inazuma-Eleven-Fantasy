@@ -59,7 +59,7 @@ do
   end
 
   function UTIL_PCD.P(key)
-    funcLuaCommand(3363400568, key)
+    VRFW_Param.Clear(key)
   end
 
   -- 2026-10-13 (owner, install89: the formation field - pitch cards, bench, coach card, formation name - drawn over
@@ -123,9 +123,9 @@ do
     end
     UTIL_PCD.P(UTIL_PCD.KEY_DONE)
     UTIL_PCD.P(UTIL_PCD.KEY_PARENT)
-    funcLuaCommand(3860611758, UTIL_PCD.KEY_PARENT, 0, g_parentMenuId or 0, 1)
+    VRFW_Param.Set(UTIL_PCD.KEY_PARENT, g_parentMenuId or 0)
     UTIL_PCD.P(UTIL_PCD.KEY_REQ)
-    funcLuaCommand(3860611758, UTIL_PCD.KEY_REQ, 0, h, 1)
+    VRFW_Param.Set(UTIL_PCD.KEY_REQ, h)
     -- no team-dock input while the plate runs the session (restored below / by the retail path after the branch).
     -- 2026-10-13 (owner: «en las pasivas configurables el jugador se ve alejado»): the dock's layer group
     -- team_dock_formation_menu (935586083) is NOT suspended any more. Its name is also the menu model camera's
@@ -143,11 +143,11 @@ do
     while true do
       coroutine.yield()
       UTIL_PCD.HideField()
-      if funcLuaCommand(2947612279, UTIL_PCD.KEY_DONE) then
+      if VRFW_Param.Has(UTIL_PCD.KEY_DONE) then
         UTIL_PCD.P(UTIL_PCD.KEY_DONE)
         break
       end
-      if funcLuaCommand(2947612279, UTIL_PCD.KEY_REQ) then
+      if VRFW_Param.Has(UTIL_PCD.KEY_REQ) then
         wait = wait + 1
         if wait > UTIL_PCD.WAIT_TAKE then
           UTIL_PCD.P(UTIL_PCD.KEY_REQ)

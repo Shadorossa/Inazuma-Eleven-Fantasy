@@ -100,6 +100,8 @@ local function read()
 end
 
 local LEVELS = {}   -- [card] = talent level of the run in progress (none = 1)
+local RUN = {}      -- [card] = passive id of a talent the run gave him (content/rogue/talent_pool.toml; a player with a
+                    -- talent of this file never gets one)
 
 -- the passive of a talent at a level
 local function passive_at(t, level)
@@ -127,6 +129,12 @@ function M.fill(levels)
     if t.always then open[#open + 1] = { { slot, card }, 1 } end
     n_cards = n_cards + 1
   end
+  for card, passive in pairs(RUN) do
+    if map[card] == nil then
+      signature[#signature + 1] = { { slot, card }, passive }
+      open[#open + 1] = { { slot, card }, 1 }
+    end
+  end
   local okw, e = pcall(function()
     VRFW.native.table_replace(T_SIGNATURE, nil, signature)
     VRFW.native.table_replace(T_OPEN, nil, open)
@@ -151,9 +159,17 @@ function M.of_card(card)
   return passive_at(t, level), t.always, t.name, level
 end
 
--- the card has a talent
+-- the card has a talent of this file
 function M.has(card)
   return BY_CARD ~= nil and BY_CARD[(tonumber(card) or 0) % U.TWO32] ~= nil
 end
+
+-- the talents the run in progress gave: [card] = passive id (the next fill publishes them)
+function M.set_run(map)
+  RUN = type(map) == "table" and map or {}
+end
+
+-- a passive key / id of a talent as the slot's id
+function M.passive_id(v) return id_of(v) end
 
 return M

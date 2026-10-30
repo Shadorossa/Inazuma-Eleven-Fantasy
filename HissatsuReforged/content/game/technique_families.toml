@@ -1,0 +1,8 @@
+schema = "VRFW.game/2"
+
+# Hissatsu Reforged › the technique families for the menus (scripts\technique_families.lua): the families a move belongs
+# to, with every move of each. Read by Hissatsu Effects' move card (graft skill_card: one page per family).
+
+[[VRFW.Command]]
+name = "CMND_HISSATSUREFORGED_MOVE_FAMILIES"   # (move) -> { count, [i] = { key, text, icon, count, moves } }
+handler = "HissatsuReforged.Families.OfMove"

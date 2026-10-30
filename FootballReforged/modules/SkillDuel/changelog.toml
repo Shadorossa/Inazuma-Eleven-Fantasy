@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# Skill Duel: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-29): created (a module of Football Reforged).
+lang = "es"
+name = "Duelo de habilidad"
+
+[en]
+name = "Skill Duel"
+
+[fr]
+name = "Duel d'adresse"
+
+[de]
+name = "Geschicklichkeitsduell"
+
+[it]
+name = "Duello di abilità"
+
+[pt]
+name = "Duelo de habilidade"
+
+[ja]
+name = "テクニック勝負"
+
+[zh_hans]
+name = "技巧对决"
+
+[zh_hant]
+name = "技巧對決"
+
+[[release]]
+icon = "general"
+notes = [
+    "Los duelos se ganan leyendo el lado, no con stats.",
+    "Si el atacante choca con el defensa, gana el defensa.",
+    "Si pasa más allá de la mano, gana el atacante.",
+    "Las stats solo cambian un poco el alcance del defensa.",
+    "Módulo de Football Reforged.",
+]
+
+[release.en]
+notes = [
+    "Duels are won by reading the side, not by stats.",
+    "Run into the defender and the defender wins.",
+    "Go past his hand and the attacker wins.",
+    "Stats only change the defender's reach a little.",
+    "A module of Football Reforged.",
+]
+
+[release.fr]
+notes = [
+    "On gagne un duel en lisant le côté, pas aux stats.",
+    "L'attaquant percute le défenseur : le défenseur gagne.",
+    "Au-delà de la main, l'attaquant gagne.",
+    "Les stats changent à peine la portée du défenseur.",
+    "Un module de Football Reforged.",
+]
+
+[release.de]
+notes = [
+    "Duelle gewinnt man durch die Seite, nicht mit Werten.",
+    "Läuft der Angreifer in ihn, gewinnt der Verteidiger.",
+    "An der Hand vorbei gewinnt der Angreifer.",
+    "Werte ändern die Reichweite nur ein wenig.",
+    "Ein Modul von Football Reforged.",
+]
+
+[release.it]
+notes = [
+    "I duelli si vincono leggendo il lato, non con le stat.",
+    "Se l'attaccante urta il difensore, vince il difensore.",
+    "Oltre la mano vince l'attaccante.",
+    "Le stat cambiano di poco la portata del difensore.",
+    "Un modulo di Football Reforged.",
+]
+
+[release.pt]
+notes = [
+    "Os duelos ganham-se lendo o lado, não com stats.",
+    "Se o atacante chocar com o defesa, ganha o defesa.",
+    "Além da mão, ganha o atacante.",
+    "As stats só mudam um pouco o alcance do defesa.",
+    "Um módulo de Football Reforged.",
+]
+
+[release.ja]
+notes = [
+    "勝負はステータスでなくサイドの読み。",
+    "ディフェンダーにぶつかれば守備側の勝ち。",
+    "手の先を抜ければ攻撃側の勝ち。",
+    "ステータスはリーチを少し変えるだけ。",
+    "Football Reforgedのモジュール。",
+]
+
+[release.zh_hans]
+notes = [
+    "对决靠读方向取胜，不靠数值。",
+    "进攻方撞上防守方，防守方获胜。",
+    "越过手的范围，进攻方获胜。",
+    "数值只稍微改变防守范围。",
+    "Football Reforged的模块。",
+]
+
+[release.zh_hant]
+notes = [
+    "對決靠讀方向取勝，不靠數值。",
+    "進攻方撞上防守方，防守方獲勝。",
+    "越過手的範圍，進攻方獲勝。",
+    "數值只稍微改變防守範圍。",
+    "Football Reforged的模組。",
+]

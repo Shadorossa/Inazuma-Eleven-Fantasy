@@ -4,19 +4,18 @@
 -- the bottom left (centre x 130, y 224; its lowest icon reaches y ~134). Engine calls only from OnOpenLayer /
 -- OnSetupLayer / SetupZoneExecChara.
 
-EVT_HL_ZONE_EXEC_ON = true
 EVT_HL_ZONE_EXEC_DY = -100        -- layout units (+ = up): bar at y 23..83
 EVT_HL_ZONE_EXEC_DX = 0
 
 local HLZ_LAYER = 2456741170 --[[soccer08_18_zone_exec_chara]]
-local HLZ_CMND_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]]
+local HLZ_CMND_POS = @crc:CMND_SET_LAYER_LOCAL_POS@
 
 local function HLZ_Pack(...)
   return {n = select("#", ...), ...}
 end
 
 local function HLZ_Apply()
-  if EVT_HL_ZONE_EXEC_ON and type(funcLuaMenuCommand) == "function" then
+  if type(funcLuaMenuCommand) == "function" then
     pcall(funcLuaMenuCommand, HLZ_CMND_POS, HLZ_LAYER, EVT_HL_ZONE_EXEC_DX, EVT_HL_ZONE_EXEC_DY, 0, 0)
   end
 end
@@ -54,11 +53,10 @@ if type(hlz_prevLimit) == "function" then
     if EVT_HL_TIMELINE_ON and type(rate) == "number" and rate == rate and type(funcLuaCommand) == "function" then
       if not hlz_logged then
         hlz_logged = true
-        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT hud_layout timeline", "zone rate", rate)
+        pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT hud_layout timeline", "zone rate", rate)
       end
-      pcall(funcLuaCommand, 3363400568 --[[parameter store: delete]], HLZ_TL_KEY)
-      pcall(funcLuaCommand, 3860611758 --[[parameter store: set]], HLZ_TL_KEY, 0,
-        math.floor(math.max(0, math.min(1, rate)) * 1000 + 0.5))
+      VRFW_Param.Clear(HLZ_TL_KEY)
+      VRFW_Param.Set(HLZ_TL_KEY, math.floor(math.max(0, math.min(1, rate)) * 1000 + 0.5), "plain")
     end
     return table.unpack(r, 1, r.n)
   end)

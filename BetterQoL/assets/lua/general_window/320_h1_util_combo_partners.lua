@@ -93,12 +93,11 @@ do
   end
 
   function UTIL_CPW.Take(key)
-    local okh, has = pcall(funcLuaCommand, 2947612279 --[[parameter has]], key)
-    if not okh or has ~= true then
+    if not VRFW_Param.Has(key) then
       return nil
     end
-    local v = tonumber(funcLuaCommand(3522198769 --[[parameter get]], key))
-    funcLuaCommand(3363400568 --[[parameter clear]], key)
+    local v = tonumber(VRFW_Param.Get(key))
+    VRFW_Param.Clear(key)
     return v
   end
 
@@ -110,10 +109,7 @@ do
       local h = UTIL_CPW.Take(UTIL_CPW.KEY_H[i]) or 0
       UTIL_CPW.Take(UTIL_CPW.KEY_I[i])
       if m ~= nil and i <= m then
-        if h < 0 then
-          h = h + 4294967296
-        end
-        out[#out + 1] = {hdl = h}
+        out[#out + 1] = {hdl = VRFW_Id.u32(h)}
       end
     end
     if m == nil or #out == 0 then

@@ -27,7 +27,8 @@ local RULES = nil
 local PLACE = {}        -- name -> fn
 local FAILED = {}       -- name -> true once its error was logged
 
-local function info(...) VRFW.log("skill set:", ...) end
+require "VRFW/lib/basics"
+local info = VRFW.logger("skill set")
 
 local function set_of(list)
   local s = {}
@@ -169,6 +170,14 @@ function CharacterReforged.PlaceRulesCmd()
 end
 
 VRFW.on("game_reset", function() RULES, PRULES = nil, nil end)
+-- the save's loading screen: the merged rules and the unobtainable set (every mod's content/techniques read once)
+-- built before the skill table's first CMND_CHARACTERREFORGED_CAN_PLACE, never inside a menu command
+VRFW.on("slot_load", function()
+  pcall(CR.SkillSetRules)
+  pcall(CR.PlaceRuleList)
+  pcall(Unobtainable.set)
+  return nil
+end)
 
 -- CMND_CHARACTERREFORGED_CAN_PLACE(charaHdl, slot, move) -> ok, reason
 function CharacterReforged.CanPlaceCmd(hdl, slot, move)

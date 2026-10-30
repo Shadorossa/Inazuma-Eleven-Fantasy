@@ -1,0 +1,20 @@
+# The career's button on the title's mode row: a VRFW title row entry (docs/framework/title-row.md) in VRFW's group
+# «Modos de juego» (`group = "game_modes"`): it shows in the group's sub-row, ordered by `order` among the group's
+# members. A opens the hub evt_career_menu (content\menus\career_menu.toml) as a child of the title; the title takes
+# input back when it closes.
+schema = "VRFW.menu/2"
+
+[[entry]]
+host = "title_menu_2.upper"
+id = "career"
+text = "CareerMode.Title"
+icon = "title00_07:icon_btn03"
+order = 650
+group = "game_modes"
+action = { open_menu = "evt_career_menu" }
+
+[entry.title]
+plate = ["btn_base03_on", "btn_base03_off"]
+flavor = "CareerMode.TitleFlavor"
+players = 1
+item = "career_mode"

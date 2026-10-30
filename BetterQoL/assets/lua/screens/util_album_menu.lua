@@ -1,17 +1,20 @@
 -- util_album_menu (plain Lua 5.2 source): BetterQoL's «Álbum de jugadores» page (docs/game/ui/album.md).
 -- Declared in content\menus\album.toml ([[screen]], served as common/script/lua/menu/util_album_menu.lua.bin).
 -- Opened from «Caseta del club» (play_guide_top_menu, assets\lua\play_guide_top_menu\155_album.lua) the way that menu
--- opens its «Archivo de escenas»: the Caseta keeps its background, its header (title «Álbum de jugadores»), its button
--- guide and its return arrow; this page draws the LEFT half over them:
+-- opens its «Archivo de escenas»: the Caseta keeps its header (title «Álbum de jugadores»), its button guide and its
+-- return arrow (its background is hidden while this page is up: this page has its own, util_alb_backdrop, drawn before
+-- the 3D pass); this page draws the LEFT half over them:
 --   * the type row: Y at the left end, «Nombre» / «Juego» right of it;
 --   * the group row: LB / RB at the ends, the groups between them (the game's series tab icons, or letter ranges);
 --   * the band: type › group, «Tienes X / Y»; two columns of 10 rows (down the first, then the second), each row the
 --     game's check box (ticked = the club has the player), his kit miniface and his name; «Página N/M» under them;
 -- and opens the game's player plate (personal_plate_menu) on the RIGHT half in its players-universe mode (a card id,
--- a level and a rarity, as the game's pack list chara_pack_probability_list_menu does): the club's best copy of the
--- selected player, else his card at level 1 with the «No lo tienes» badge under it. The plate keeps its own menu
+-- a level and a rarity, as the game's pack list chara_pack_probability_list_menu does): the selected player as his
+-- base card at the level cap in effect (scripts/album.lua), the «No lo tienes» badge under it when the club does not
+-- have him. The plate keeps its own menu
 -- inactive in that mode; this page turns its pages (L2 / R2). Its 3D model: Character Reforged's plate model on its
--- capture layer while this page exists (assets/lua/personal_plate_menu/135_album_pages.lua).
+-- normal menu-camera layer, drawn over this page's background-pass backdrop as the transfer office's model over
+-- shop01_00_background; it follows the plate's player (built per selection, swapped in place, released with the plate).
 -- Keys (cmd rows of the off-screen anchor row -> OnFunction / OnBack): up / down move, left / right the other column
 -- of the same row (from the right column a right goes to the next page's left column, from the left column a left to
 -- the previous page's right column; the pages wrap), Y the type, LB / RB the group, L2 / R2 the plate's pages,
@@ -32,11 +35,11 @@ local C = {
   LAYER_NUM = 1175615627, OPEN_LAYER = 629267548, VISIBLE = 711242136, POS = 1389957207, SCALE = 3778714801,
   SPRITE = 558735651, ALPHA = 4231609516, MESH_VISIBLE = 3405944500, NODE_VISIBLE = 2158717427,
   TEXT_VISIBLE = 2735666188, SET_TEXT = 1083631230, LOAD_TEX = 839427544, TEX_LOADING = 1506186496,
-  FACE = 552280324, RESET_FACE = 4176779611, LOADING = 1277042906, CHECK_INPUT = 4265778440,
+  RESET_FACE = 4176779611, CHECK_INPUT = 4265778440,
   TEXT_STYLE = 2333948100, CTRL = 3518307824, LIST_NUM = 3252599449, FOCUS_SET = 3466097042,
   ATTACH_TRACE = 1774843228, CHARA_INFO = 4060384944,
   GET_PRIO = 1018283794 --[[CMND_GET_DRAW_PRIORITY]], SET_PRIO = 1491630496 --[[CMND_SET_DRAW_PRIORITY]],
-  PARAM_EXISTS = 2947612279, PARAM_DELETE = 3363400568, PARAM_SET = 3860611758,
+  EMBLEM = 3190452549 --[[(layer, instance, mesh, texture slot, item_emblem id, 0)]],
   OPEN_MENU = 433545986, CLOSE_MENU = 320421347, IS_MENU = 2231168902, IS_OPEN_MENU = 3693934564,
 }
 local MENU_CTRL = 1332654303
@@ -45,9 +48,15 @@ local WHEEL_UP, WHEEL_DOWN = 1942756954 --[[CMD_EVT_WHEEL_UP]], 1623431741 --[[C
 -- engine's «moved» flag, the mouse's left button
 local POINTER = { POS = 558229292, MOVED = 3272825600, LEFT = 218912913 --[[CMD_EVT_MOUSE_LEFT]] }
 -- the page's layers (content\menus\album.toml)
-local L = { PLATE = 4160871141, ICON = 699561794, FACE = 1228023294, TEXT = 2007890270 }
+local L = { PLATE = 4160871141, ICON = 699561794, FACE = 1228023294, TEXT = 2007890270, CREST = 1300171250 }
 local L_ANCHOR = 3455690937        -- save01_02_list_item: the input anchor (1 instance, off screen)
 local L_LINE = 3078308064          -- mainmenu90_05_content_guide_line01
+-- the page's background (util_alb_backdrop, drawn before the 3D pass): shown only while the player plate (and its 3D
+-- model) is up, in the same step as the Caseta's background is hidden (Cover); hidden again on close in the same step
+-- as the Caseta's comes back, so the transition shows the Caseta's own background
+local L_BACKDROP = 4045471075
+local CASETA = { MENU = 1281873114 --[[play_guide_top_menu]], CROSS_CALL = 830228314 --[[(menu, global function, ...)]],
+  BACKGROUND = "BetterQoL_AlbumCasetaBackground" }
 local LINE_TEXT = 378156699        -- _text_guide01
 local ANCHOR = {
   TEXTS = { 931545948 --[[_text_list01_on]], 3705682548 --[[_text_list01_off]] },
@@ -61,17 +70,7 @@ local FN = {
 }
 local QUAD = 1909474081            -- icon_new01: the cmn01_10 quad's sprite slot
 local Q = 36                       -- the cmn01_10 quad side
-local TXT = { NODE = 378327766 --[[_text_cmd_back01]], MESHES = {298211823, 2853207670}, BOX_LEFT = -384, BOX_MID_Y = 144 }
-local CARD = {
-  MESH = 2828003679 --[[_icon_chr_dmy_l01]], TEX = 21929195 --[[icon_chr_dmy_l01]], NAME = 170976702 --[[_text_chr01]],
-  RH = 156, OX = 59, OY = 11,
-  HIDE = {"_icon_chr_base_l01", "_icon_chr_gradation_l01", "_seasonal_frame_l01", "_avatar_frame_l01",
-    "_icon_chr_focus_l01", "_icon_chr_position_dmy_l01", "_icon_base_l01", "_icon_chr_type_dmy_l01", "_icon_lock01",
-    "_icon_captain01", "_icon_ai_role_dmy01", "_gtxt_lv_l01", "_icon_card01", "_icon_chr_def01_l",
-    "_icon_chr_grayout01", "_basara_avatar_l01", "_num_chr_dmy_l01", "_num_chr_dmy_l02", "_gauge_exp_base_l01",
-    "_gauge_exp_l01", "_icon_synergy_l01", "_icon_synergy_l02", "_leader_base01", "_gtxt_leader01"},
-  HIDE_NODES = {"_pos_base02", "_pos_leader01", "_pos_ai_role01", "_num_chr_l01", "_num_chr_l02", "_pos_gauge_exp_l01"},
-}
+local TXT = { NODE = 378327766 --[[_text_cmd_back01]], MESHES = {298211823, 2853207670}, BOX_LEFT = -384, BOX_W = 384, BOX_MID_Y = 144 }
 -- the player plate the page opens (personal_plate_menu, players-universe mode: personal_plate_menu OnInit)
 local PLATE = {
   MENU = 1427722143 --[[personal_plate_menu]], PAGE = 878737202 --[[team11_01_personal_plate]],
@@ -79,19 +78,27 @@ local PLATE = {
   FLAG = 2398708549 --[[BetterQoL.album_plate: set while this page shows the plate (assets\lua\personal_plate_menu\135_album_pages.lua)]],
   SET = 1101551215 --[[(param, level, rarity, false): the plate's player]],
   PAGE_PREV = 567813453, PAGE_NEXT = 2019940505, PAGE_UPDATE = 3297841487,
-  RARITY_DEFAULT = 4, RARITY_MAX = 7, WAIT = 180,
+  FIRST_PAGE = 4021990517 --[[BetterQoL.album_plate_page: 1 on the plate's first page, 0 elsewhere (135_album_pages.lua)]],
+  RARITY_DEFAULT = 4, WAIT = 180,
+  -- VRFW.plate_card: the card the plate shows, so the plate's 3D model wears that card's own team kit (the
+  -- VR-Framework's VRFW_PlateMember.Kit: CMND_VRFW_CONTACT_KIT, as the transfer office's contact map); cleared on close
+  CARD = 2716223290,
+  -- VRFW.plate_card_team: the team that dresses that card (a mod category's own team, BetterQoL.Album.Page); cleared
+  -- when the row has none and on close
+  CARD_TEAM = 1860450077,
 }
 local SY_MOVE, SY_PAGE, SY_ERROR = 2500047763, 2629173176 --[[sy0009]], 2086672038
 local GLYPH = 0.5
 local STYLE = {
   section = "fs2_26_w_lc_2d2_001_nr", tab = "fs_28_b_lc_2d0_001", name = "fs_28_b_lc_2d0_001",
+  bar = "fs_28_w_cc_2d2_001",          -- white, centred: the group labels on the tab bar
   head = "fs2_26_w_lc_2d2_001_nr",   -- on the page's background: outlined white (the page counter, the empty list)
 }
 -- the page (screen px at 1080p, y down): the left half under the Caseta's header (0-145), above its content guide
 -- line (913); the plate's half from plate_x; the «No lo tienes» badge under the plate
 local P = { x = 60, width = 900, type_y = 168, type_h = 44, tabs_y = 206, tab_h = 58, tab_gap = 4, key_w = 46,
   band_y = 274, band_h = 40, top = 320, cols = 2, rows = 10, row_h = 50, row_gap = 4, col_gap = 14, box = 32,
-  mark = 44, face = 50, page_y = 878, badge_x = 1880, badge_y = 912, badge_h = 44 }
+  mark = 44, face = 50, box_x = 30, band_text_x = 36, band_right = 70, band_count_w = 260, crest = 34, page_y = 878, badge_x = 1880, badge_y = 912, badge_h = 44 }
 P.col_w = math.floor((P.width - P.col_gap) / 2)
 local PER_PAGE = P.cols * P.rows
 local ART, SPRITE = "#/menu/220_img/util_club_stats/util_club_stats.g4tx", "util_club_stats_"
@@ -101,13 +108,24 @@ local RETAIL = {
   cursor = { tex = "#/menu/20_cmn/cmn05/cmn05_01/cmn05_01.g4tx", sprite = "cur01", w = 128, h = 152 },
   check = { tex = "#/menu/102_team/team16/team16_03/team16_03.g4tx", box = "icon_check_box01", mark = "icon_list_check01" },
   tabs = { tex = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx", w = 144, h = 96 },
+  -- the game's list tab bar (free-match rival list): the strip with its dark end caps and its blue part, the bright
+  -- block under the focused tab. The strip comes in two retail widths (narrow caps = a wider blue part for more tabs);
+  -- per variant: the blue part's top-left / top-right corner x at band_t (sprite px, 1036 x 76); every blue edge
+  -- slants left going down by `slant` px per sprite row, as the caps' edges do
+  strip = { tex = "#/menu/20_cmn/cmn06/cmn06_01/cmn06_01.g4tx", w = 1036, h = 76, band_t = 14, band_b = 62,
+            slant = 8 / 42, tab_aspect = 1.5,
+            variants = { { sprite = "list_tab_base01", left = 162, right = 882 },
+                         { sprite = "list_tab_base01_02", left = 122, right = 922 } } },
+  -- the focus block's visible parallelogram in its sprite (92 x 52): at mid height it spans mid_l .. mid_r
+  focus = { tex = "#/menu/20_cmn/cmn06/cmn06_20/cmn06_20.g4tx", sprite = "icon_base01", w = 92, h = 52,
+            mid_l = 5, mid_r = 85 },
 }
-local KIND_NAME, KIND_GAME = 1, 2
+local KIND_NAME, KIND_GAME, KIND_TEAM = 1, 2, 3
 local WAIT_FRAMES = 300            -- frames a change keeps redrawing while textures / minifaces still load
 
 -- state of this opening
 local S = { ready = false, ok = false, kind = KIND_GAME, group = 1, page = 1, pages = 1, sel = 1, data = nil,
-  rows = {}, total = 0, owned = 0, sent = {}, used = {}, shown = {}, texts = {}, loaded = {}, faces = {}, cap = {},
+  rows = {}, total = 0, owned = 0, sent = {}, used = {}, shown = {}, texts = {}, loaded = {}, cap = {},
   opened = {}, dirty = true, frame = 0, plate = nil, line = nil, zones = {}, ptr = {} }
 
 -- ---- helpers (this menu has its own VM) ------------------------------------------------------------------------------
@@ -299,31 +317,35 @@ local function Fit(s, px, size)
   return (table.concat(out):gsub("[%s%p]+$", "")) .. "…"
 end
 
-local function Opt(f, ...)
-  if type(f) == "function" then pcall(f, ...) end
-end
-
--- the retail list character card, portrait only (face + kit, as the game composes it), centred at (cx, cy)
-local function Face(key, cx, cy, size)
+-- the retail list character card, portrait only (face + kit, as the game composes it), centred at (cx, cy): the
+-- VR-Framework's shared miniface (VRFW_FaceIcon.Card); nothing shown while it loads (the page redraws meanwhile).
+-- `kit`: the face command's arguments for the row's kit (RowKit); nil = the character's own kit, resolved natively
+local function Face(key, cx, cy, size, kit)
+  if VRFW_FaceIcon == nil then return end
   local i = Slot(L.FACE)
   if i == nil then return end
-  local s = size / CARD.RH
   Show(L.FACE, i)
-  Set(L.FACE, i, "sc", C.SCALE, L.FACE, s, s, 1, i)
-  Set(L.FACE, i, "pos", C.POS, L.FACE, cx - CARD.OX * s, -cy - CARD.OY * s, 0, i)
-  if S.faces[i] ~= key then
-    for _, m in ipairs(CARD.HIDE) do M(C.MESH_VISIBLE, L.FACE, Crc(m), false, i) end
-    for _, m in ipairs(CARD.HIDE_NODES) do M(C.NODE_VISIBLE, L.FACE, Crc(m), false, i) end
-    M(C.TEXT_VISIBLE, L.FACE, CARD.NAME, false, i)
-    M(C.RESET_FACE, L.FACE, i, CARD.TEX)
-    Opt(SetDisableForceCharaInvalidUseTarget)
-    M(C.FACE, L.FACE, i, false, CARD.MESH, CARD.TEX, 0, 0, key, 0, false, true)
-    Opt(SetEnableForceCharaInvalidUseTarget)
-    S.faces[i] = key
+  if VRFW_FaceIcon.Card(L.FACE, i, key, cx, cy, size, kit or { use_args = true }) == "loading" then S.waiting = true end
+end
+
+-- the kit of a row's miniface: a row with a dressing team (a mod category's own team, the one that dresses the
+-- plate's 3D model through VRFW.plate_card_team) wears that team's uniform as CMND_VRFW_CONTACT_KIT(card, team)
+-- gives it (the keeper shirt for a keeper), so the miniface and the model show the same kit; asked once per card and
+-- team. nil = no dressing team or no kit in the data: the character's own kit, as before
+local KEEPER_SHIRT = 2           -- CMND_VRFW_CONTACT_KIT flags: the keeper shirt
+local function RowKit(r)
+  if (r.dress_team or 0) == 0 or (r.param or 0) == 0 or VRFW_Cmd == nil then return nil end
+  local id = r.param .. ":" .. r.dress_team
+  local kit = S.kits[id]
+  if kit == nil then
+    kit = false
+    local ok, t = pcall(funcLuaCommand, VRFW_Cmd.VRFW_CONTACT_KIT, r.param, r.dress_team)
+    if ok and type(t) == "table" and type(t.uniform) == "number" and t.uniform ~= 0 then
+      kit = { kit = t.uniform, keeper = bit32.band(tonumber(t.flags) or 0, KEEPER_SHIRT) ~= 0, use_args = true }
+    end
+    S.kits[id] = kit
   end
-  local loading = M(C.LOADING, L.FACE, i) == true
-  if loading then S.waiting = true end
-  M(C.MESH_VISIBLE, L.FACE, CARD.MESH, not loading, i)
+  return kit or nil
 end
 
 local function BeginFrame() S.used, S.waiting, S.zones = {}, false, {} end
@@ -340,7 +362,8 @@ local function EndFrame()
     if layer and i and i >= (S.used[layer] or 0) then
       Set(layer, i, "vis", C.VISIBLE, layer, i, false)
       S.shown[k] = nil
-      if layer == L.FACE then S.faces[i] = nil end
+      if layer == L.FACE and VRFW_FaceIcon ~= nil then VRFW_FaceIcon.Forget(L.FACE, i) end
+      if layer == L.CREST then S.crests[i] = nil end
     end
   end
 end
@@ -348,12 +371,12 @@ end
 -- ---- the player plate (the right half) -----------------------------------------------------------------------------
 
 local function ParamSet(k, v)
-  if funcLuaCommand(C.PARAM_EXISTS, k) == true then funcLuaCommand(C.PARAM_DELETE, k) end
-  funcLuaCommand(C.PARAM_SET, k, 0, v, 1)
+  if VRFW_Param.Has(k) then VRFW_Param.Clear(k) end
+  VRFW_Param.Set(k, v)
 end
 
 local function ParamClear(k)
-  if funcLuaCommand(C.PARAM_EXISTS, k) == true then funcLuaCommand(C.PARAM_DELETE, k) end
+  if VRFW_Param.Has(k) then VRFW_Param.Clear(k) end
 end
 
 local function PlateExists() return M(C.IS_MENU, PLATE.MENU) == true end
@@ -363,14 +386,21 @@ local function PlateUp()
   return ok and up == true
 end
 
--- the plate's player of a row: the club's copy (param, level, rarity) or the card at level 1
+-- the plate's player of a row: the card, level and rarity the album shows (BetterQoL.Album.Page: the base card at the
+-- level cap in effect)
+-- the plate card's dressing team (VRFW.plate_card_team), set before the plate builds the model
+local function DressTeam(r)
+  if r.dress_team ~= nil and r.dress_team ~= 0 then
+    ParamSet(PLATE.CARD_TEAM, r.dress_team)
+  else
+    ParamClear(PLATE.CARD_TEAM)
+  end
+end
+
 local function Who(r)
   local rar = r.rarity
-  if not r.owned or rar == nil or rar <= 0 then
-    local ok, has, v = pcall(funcLuaCommand, C.CHARA_INFO, r.param, 8)
-    rar = (ok and has == true and type(v) == "number" and v >= 0 and v <= PLATE.RARITY_MAX) and v or PLATE.RARITY_DEFAULT
-  end
-  return r.param, r.owned and math.max(1, r.level) or 1, rar
+  if rar == nil or rar < 0 then rar = PLATE.RARITY_DEFAULT end
+  return r.param, math.max(1, r.level), rar
 end
 
 local function PlateOpen(r)
@@ -379,6 +409,9 @@ local function PlateOpen(r)
   ParamSet(PLATE.P_LEVEL, level)
   ParamSet(PLATE.P_RARITY, rar)
   ParamSet(PLATE.FLAG, 1)
+  ParamSet(PLATE.CARD, param)
+  DressTeam(r)
+  ParamClear(PLATE.FIRST_PAGE)
   pcall(funcLuaCommand, C.OPEN_MENU, PLATE.MENU)
   S.plate = { state = "opening", at = S.frame, seen = false, param = param, pending = nil }
   Log("plate open asked: param", param, "level", level, "rarity", rar)
@@ -399,9 +432,21 @@ local function PlateShow()
   end
   P_.pending = nil
   local param, level, rar = Who(r)
-  if P_.param == param and P_.level == level then return end
+  if P_.param == param and P_.level == level and P_.rarity == rar then return end
+  ParamSet(PLATE.CARD, param)            -- before the plate's refresh builds the next model
+  DressTeam(r)
   M(PLATE.SET, param, level, rar, false)
-  P_.param, P_.level = param, level
+  P_.param, P_.level, P_.rarity = param, level, rar
+end
+
+-- the page's background-pass backdrop on / the Caseta's normal-pass background off (on = true), or the reverse; one
+-- step each way (the plate is up / the page closes)
+local function Cover(on)
+  if S.cover == on then return end
+  S.cover = on
+  M(C.VISIBLE, L_BACKDROP, 0, on)
+  pcall(funcLuaCommand, CASETA.CROSS_CALL, CASETA.MENU, CASETA.BACKGROUND, not on)
+  Log("backdrop", on and "shown, caseta background hidden" or "hidden, caseta background shown")
 end
 
 local function PlateStep()
@@ -418,11 +463,26 @@ local function PlateStep()
       ParamClear(PLATE.P_LEVEL)
       ParamClear(PLATE.P_RARITY)
       Log("plate up")
+      Cover(true)
       if P_.pending ~= nil then PlateShow() end
     end
   elseif P_.seen or S.frame - P_.at > PLATE.WAIT then
     Log("the plate did not open")
     P_.state = "failed"
+  end
+end
+
+-- whether the plate shows its first page (the «No lo tienes» badge shows only there): the plate's own page step
+-- writes it (135_album_pages.lua); unset = the first page
+local function FirstPageStep()
+  local first = true
+  if VRFW_Param.Has(PLATE.FIRST_PAGE) then
+    local v = VRFW_Param.Get(PLATE.FIRST_PAGE)
+    first = not (tonumber(v) == 0)
+  end
+  if first ~= S.first_page then
+    S.first_page = first
+    S.dirty = true
   end
 end
 
@@ -439,12 +499,10 @@ end
 
 local function Groups() return S.data and S.data.groups and S.data.groups[S.kind] or {} end
 
--- the content guide line: the selected player's team and game
+-- the content guide line: the page's fixed description
 local function LineText()
   if not S.ok then return Tx("NoSave") end
-  local r = S.rows[S.sel]
-  if r == nil then return "" end
-  return Fill(Tx("Line"), r.team ~= "" and r.team or "-", r.game)
+  return Tx("Line")
 end
 
 local function SetLine()
@@ -466,7 +524,7 @@ local function LoadPage()
   for k, e in ipairs(type(t.rows) == "table" and t.rows or {}) do
     S.rows[k] = { base = tonumber(e[1]) or 0, param = tonumber(e[2]) or 0, name = tostring(e[3] or ""),
       team = tostring(e[4] or ""), game = tostring(e[5] or ""), owned = e[6] == true, level = tonumber(e[7]) or 1,
-      rarity = tonumber(e[8]) or 0 }
+      rarity = tonumber(e[8]) or 0, dress_team = tonumber(e[9]) or 0 }
   end
   S.sel = math.max(1, math.min(#S.rows, S.sel))
   S.dirty = true
@@ -476,7 +534,7 @@ end
 
 local function Load()
   local okl, lang = pcall(funcLuaCommand, C.LANG)
-  local ok, t = pcall(funcLuaCommand, CMD.OPEN, okl and lang or 1, TxRaw("NameGroups"), Tx("OtherGroup"))
+  local ok, t = pcall(funcLuaCommand, CMD.OPEN, okl and lang or 1, TxRaw("NameGroups"), Tx("OtherGroup"), Tx("Specials"))
   S.ok = ok and type(t) == "table" and type(t.groups) == "table"
   S.data = S.ok and t or nil
   if not S.ok then
@@ -496,7 +554,7 @@ local function DrawTypes()
   Text(Tx("KeysType"):match("^(<[^>]+>)") or "", P.x, y, "head")
   Zone(P.x, y - h / 2, P.key_w, h, "type_key", 1)
   local x0, x1 = P.x + P.key_w + 6, P.x + P.width
-  local names = { Tx("TypeName"), Tx("TypeSeries") }
+  local names = { Tx("TypeName"), Tx("TypeSeries"), Tx("TypeTeam") }
   local w = (x1 - x0 - 4) / #names
   for k, s in ipairs(names) do
     local x = x0 + (k - 1) * (w + 4)
@@ -508,6 +566,105 @@ local function DrawTypes()
 end
 
 -- the group row: LB left, RB right, the groups between them (series tab icons, else their labels)
+-- the game groups on the game's tab bar: one strip, each series logo flat on it (its dimmed sprite), the focused one
+-- white on the bright block
+-- a team crest (layer util_alb_crest: the game's emblem list row team06_02, as the Battle Bay bracket's crests): its
+-- plates, check and texts hidden, its emblem quad (68 px, centre CX from the row's origin) centred at (cx, cy)
+local CREST = { MESH = 3281704751 --[[_icon_emblem_dmy01]], TEX = 255812047 --[[icon_emblem_dmy01]], PX = 68, CX = 78,
+  HIDE = { "_list_base_xs01_off", "_list_base_xs01_on", "_list_base_xs01_ok", "_list_base_xs01_ol", "_icon_check01" },
+  TEXTS = { 931545948 --[[_text_list01_on]], 3705682548 --[[_text_list01_off]] }, ASK_FRAMES = 30 }
+local function Crest(id, cx, cy, px)
+  local i = Slot(L.CREST)
+  if i == nil then return end
+  local s = px / CREST.PX
+  Show(L.CREST, i)
+  Set(L.CREST, i, "sc", C.SCALE, L.CREST, s, s, 1, i)
+  Set(L.CREST, i, "pos", C.POS, L.CREST, cx - CREST.CX * s, -cy, 0, i)
+  local c = S.crests[i]
+  if c == nil or c.id ~= id then
+    if c ~= nil then M(C.RESET_FACE, L.CREST, i, CREST.TEX) end
+    c = { id = id, at = S.frame }
+    S.crests[i] = c
+  end
+  -- asked again for a few frames: an instance opened this frame is built later
+  if S.frame - c.at <= CREST.ASK_FRAMES then
+    for _, m in ipairs(CREST.HIDE) do M(C.MESH_VISIBLE, L.CREST, Crc(m), false, i) end
+    for _, t in ipairs(CREST.TEXTS) do M(C.TEXT_VISIBLE, L.CREST, t, false, i) end
+    M(C.EMBLEM, L.CREST, i, CREST.MESH, CREST.TEX, id, 0)
+    S.waiting = true
+  end
+end
+
+-- the group bar, every type on the game's list tab bar (free-match rival list): one strip with its dark end caps, the
+-- groups as segments of its blue part (a series logo, else the label, dimmed), the focused one on the bright block
+-- (white logo / label). «Equipo»: one segment, the focused team's crest, name and place among the teams
+local function DrawStripBar(gl, y, h)
+  local R, F = RETAIL.strip, RETAIL.focus
+  local x0, w = P.x + P.key_w, P.width - 2 * P.key_w
+  local sx, sy = w / R.w, h / R.h
+  local by, bh = y + R.band_t * sy, (R.band_b - R.band_t) * sy
+  local segs = {}
+  if S.kind == KIND_TEAM then
+    local g = gl[S.group]
+    if g then
+      segs[1] = { k = S.group, emblem = tonumber(g[5]) or 0, left = true,
+                  label = tostring(g[6] or g[1] or "") }
+    end
+  else
+    for k, g in ipairs(gl) do
+      local icon = S.kind == KIND_GAME and type(g[7]) == "string" and g[7] ~= "" and g[7] or nil
+      segs[k] = { k = k, ty = S.kind == KIND_GAME and tonumber(g[4]) or nil, icon = icon, label = tostring(g[1] or "") }
+    end
+  end
+  -- the strip variant whose blue part holds every tab at the natural tab width (tab_aspect x band height); the widest
+  -- one when none does. Its blue edges are measured at the band's mid height, where the segments' edges are placed
+  local variant = R.variants[#R.variants]
+  for _, v in ipairs(R.variants) do
+    if (v.right - v.left) * sx >= #segs * R.tab_aspect * bh then variant = v break end
+  end
+  Quad(L.PLATE, R.tex, variant.sprite, x0, y, w, h)
+  local mid = ((R.band_t + R.band_b) / 2 - R.band_t) * R.slant
+  local il, ir = x0 + (variant.left - mid) * sx, x0 + (variant.right - mid) * sx
+  local tw = (ir - il) / math.max(1, #segs)
+  for n, sg in ipairs(segs) do
+    local x = il + (n - 1) * tw
+    Zone(x, y, tw, h, "group", sg.k)
+    local on = sg.k == S.group
+    if on and not sg.left then
+      -- the block's visible parallelogram spans exactly this segment at mid height, so its slanted edges meet the
+      -- neighbours' and the strip's slanted ends
+      local qw = tw * F.w / (F.mid_r - F.mid_l)
+      Quad(L.ICON, F.tex, F.sprite, x - F.mid_l * qw / F.w, by, qw, bh)
+    end
+    local drawn = false
+    -- the group's own tab icon (the «Especiales» group), else its series type's
+    local sprite = sg.icon or (sg.ty and sg.ty >= 1 and sg.ty <= 99 and string.format("icon_list_tab_series%02d", sg.ty))
+    if sprite then
+      local iw = math.min(tw, bh * RETAIL.tabs.w / RETAIL.tabs.h)
+      drawn = Quad(L.ICON, RETAIL.tabs.tex, sprite .. (on and "" or "_off"),
+        x + (tw - iw) / 2, by, iw, bh, on and 1 or 0) ~= nil
+    end
+    if not drawn then
+      -- the label centred on its segment (a centred style on the text box's centre); a crest at the segment's left,
+      -- the label centred on the rest
+      local lx, lw = x, tw
+      if sg.emblem and sg.emblem ~= 0 then
+        local cs = bh - 4
+        Crest(sg.emblem, x + 8 + cs / 2, by + bh / 2, cs)
+        lx, lw = x + cs + 16, tw - cs - 16
+      end
+      local sc = 0.9
+      if sg.left then
+        -- «Equipo»: crest and label straight on the strip, the label left-aligned after the crest
+        Text(Fit(sg.label, lw - 12, 26), lx, by + bh / 2 + 1, "section")
+      else
+        -- a centred style centres on the text box (BOX_LEFT .. BOX_LEFT + BOX_W): its centre on the segment's centre
+        Text(Fit(sg.label, lw - 12, 28 * sc), lx + lw / 2 - TXT.BOX_W / 2 * sc, by + bh / 2 + 1, "bar", sc)
+      end
+    end
+  end
+end
+
 local function DrawGroups()
   local gl = Groups()
   local y, h = P.tabs_y, P.tab_h
@@ -516,26 +673,7 @@ local function DrawGroups()
   TextR(Tx("KeysGroup"):match("(<[^>]+>)$") or "", P.x + P.width, mid, "head", 26)
   Zone(P.x, y, P.key_w, h, "group_key", -1)
   Zone(P.x + P.width - P.key_w, y, P.key_w, h, "group_key", 1)
-  local n = math.max(1, #gl)
-  local tw = (P.width - 2 * P.key_w - (n - 1) * P.tab_gap) / n
-  local x = P.x + P.key_w
-  for k, g in ipairs(gl) do
-    Plate(L.PLATE, "off", x, y, tw, h)
-    if k == S.group then Plate(L.ICON, "focus", x, y, tw, h) end
-    Zone(x, y, tw, h, "group", k)
-    local ty = S.kind == KIND_GAME and tonumber(g[4]) or 0
-    local drawn = false
-    if ty and ty >= 1 and ty <= 99 then
-      local ih = h - 6
-      local iw = math.min(tw - 4, ih * RETAIL.tabs.w / RETAIL.tabs.h)
-      drawn = Quad(L.ICON, RETAIL.tabs.tex, string.format("icon_list_tab_series%02d%s", ty, k == S.group and "" or "_off"),
-        x + (tw - iw) / 2, y + 3, iw, ih) ~= nil
-    end
-    if not drawn then
-      TextC(Fit(tostring(g[1] or ""), tw - 8, 26), x + tw / 2, mid + 1, BLUE_STYLE, 26, 0.95)
-    end
-    x = x + tw + P.tab_gap
-  end
+  DrawStripBar(gl, y, h)
 end
 
 -- the band of «Estadísticas del club» (its atlas: cap, stretched middle, cap)
@@ -550,11 +688,18 @@ local function DrawBand()
   local y = P.band_y
   Band(P.x, y, P.width, P.band_h)
   local g = Groups()[S.group]
-  local kind = S.kind == KIND_NAME and Tx("TypeName") or Tx("TypeSeries")
+  local mid = y + P.band_h / 2
   local have = Fill(Tx("Owned"), S.owned, S.total)
-  TextR(have, P.x + P.width - 30, y + P.band_h / 2 + 1, "section", 26)
-  local room = P.width - 90 - Units(have) * 26 * GLYPH
-  Text(Fit(kind .. "  ›  " .. tostring(g and g[1] or ""), room, 26), P.x + 36, y + P.band_h / 2 + 1, "section")
+  TextR(have, P.x + P.width - P.band_right, mid + 1, "section", 26)
+  local tx = P.x + P.band_text_x
+  local emblem = S.kind == KIND_TEAM and g and tonumber(g[5]) or 0
+  if emblem and emblem ~= 0 then
+    Crest(emblem, tx + P.crest / 2, mid, P.crest)
+    tx = tx + P.crest + 8
+  end
+  -- the counter keeps its own room (band_count_w, or its width when wider); the name is cut before it
+  local room = P.x + P.width - P.band_right - math.max(P.band_count_w, Units(have) * 26 * GLYPH + 30) - tx
+  Text(Fit(tostring(g and g[1] or ""), room, 26), tx, mid + 1, "section")
 end
 
 local function DrawRow(r, k)
@@ -569,12 +714,12 @@ local function DrawRow(r, k)
     Cursor(rx + 6, ry + P.row_h / 2, 38)
   end
   local cy = ry + P.row_h / 2
-  local bx = rx + 16
+  local bx = rx + P.box_x
   local K = RETAIL.check
   Quad(L.ICON, K.tex, K.box, bx, cy - P.box / 2, P.box, P.box)
   if r.owned then Quad(L.ICON, K.tex, K.mark, bx - 4, cy - P.mark / 2 - 4, P.mark, P.mark, 1) end
   local fx = bx + P.box + 12
-  if r.base ~= 0 then Face(r.base, fx + P.face / 2, cy, P.face) end
+  if r.base ~= 0 then Face(r.base, fx + P.face / 2, cy, P.face, RowKit(r)) end
   local nx = fx + P.face + 10
   Text(Fit(r.name ~= "" and r.name or "-", rx + rw - 40 - nx, 26), nx, cy + 1, "name", 0.95)
 end
@@ -598,7 +743,7 @@ local function Draw()
     Zone(P.x + P.width / 2 - half - 4, P.page_y - 22, key, 44, "page", -1)
     Zone(P.x + P.width / 2 + half - key + 4, P.page_y - 22, key, 44, "page", 1)
     local r = S.rows[S.sel]
-    if r ~= nil and not r.owned then
+    if r ~= nil and not r.owned and S.first_page ~= false then
       local s = Tx("NotOwned")
       local w = Units(s) * 28 * GLYPH + 2 * BAND_CAP + 20
       Band(P.badge_x - w, P.badge_y, w, P.badge_h)
@@ -787,8 +932,9 @@ function OnInit()
   S.ready, S.ok, S.frame, S.dirty, S.plate, S.line, S.task = false, false, 0, true, nil, nil, nil
   S.kind, S.group, S.page, S.sel, S.rows, S.zones = KIND_GAME, 1, 1, 1, {}, {}
   S.ptr = { down = true }          -- a button held from the Caseta's Accept is no click
-  S.sent, S.used, S.shown, S.faces, S.opened, S.cap, S.texts = {}, {}, {}, {}, {}, {}, {}
-  S.prio = {}
+  S.sent, S.used, S.shown, S.opened, S.cap, S.texts = {}, {}, {}, {}, {}, {}
+  if VRFW_FaceIcon ~= nil then VRFW_FaceIcon.Forget(L.FACE) end
+  S.prio, S.crests, S.first_page, S.kits = {}, {}, true, {}
   Load()
 end
 
@@ -797,6 +943,9 @@ function OnSetupLayer(a1, a2)
     -- the input anchor: nothing of it shows
     for _, node in ipairs(ANCHOR.TEXTS) do M(C.SET_TEXT, a1, node, "", a2) end
     M(C.ATTACH_TRACE, a1, a2, ANCHOR.CURSOR, false)
+  elseif a1 == L_BACKDROP then
+    M(C.VISIBLE, a1, a2, false)          -- until the plate is up (Cover)
+    S.cover = false
   elseif a1 == L_LINE then
     S.line = nil
     SetLine()
@@ -845,7 +994,11 @@ end
 
 -- B / Esc / right click: the engine closes the page; the plate is asked to close (the opener waits for it)
 function OnBack(a1)
+  Cover(false)
   if PlateExists() then pcall(funcLuaCommand, C.CLOSE_MENU, PLATE.MENU) end
+  pcall(ParamClear, PLATE.FIRST_PAGE)
+  pcall(ParamClear, PLATE.CARD)
+  pcall(ParamClear, PLATE.CARD_TEAM)
   Log("page closed")
 end
 
@@ -853,6 +1006,7 @@ function Step()
   S.frame = S.frame + 1
   if not S.ready then return end
   PlateStep()
+  FirstPageStep()
   if S.task ~= nil then
     TaskStep()
     return

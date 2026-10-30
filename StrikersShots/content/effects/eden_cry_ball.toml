@@ -1,0 +1,24 @@
+# «Grito del Edén» (Scream of Eden, whs02640; forest shot, cut-in ev60_02640): while the ball flies to the goal it wears
+# the cut-in's last shot (c0500, held at frame 480 from the aura's first frame): the white-cyan core with its pink-white
+# swirl, the dark ring and its spiky violet crown round the ball, camera-facing as in the cut-in (the same look from
+# every side), their texture scrolls running on (the swirl and the crown keep turning; whole periods over the loop), x1.
+# The backdrop wings, the camera's dark speed lines, the white flash, the shock waves and the earlier gathering
+# phase stay out.
+# The object is ev6264ed00 (effect/event/ev60/ev6264ed00/), built by research/scripts/eden_cry_ball_fx.py from
+# ev60026400 (docs/game/media/eden-cry-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\eden_cry_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "eden_cry"
+from = "ega0075d"
+object = "effect/event/ev60/ev6264ed00/ev6264ed00.objbin"
+
+[[shot_aura]]
+name = "eden_cry"
+when = { techniques = ["whs02640"] }
+aura = "eden_cry"
+like = "ega0075d"

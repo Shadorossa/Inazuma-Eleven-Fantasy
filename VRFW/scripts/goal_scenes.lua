@@ -2,9 +2,7 @@
 -- From a goal (or a keeper beaten by a shot) to the next kick-off, every event the game plays is run to its end in the frame it is seen: sounds stopped, timeline seeked to the end.
 -- Declarations: content\game\goal_scenes.toml. Every other match: nothing.
 
-local GOAL = 13                    -- soccer state Goal
-local RESTART = 10                 -- soccer state Restart (the kick-off): the skip ends there
-local LIVE = { [9] = true, [14] = true, [15] = true, [16] = true }   -- InPlay, FocusBtl, Scramble, Zone
+local Live = require "VRFW/lib/match_live"   -- soccer states: goal, restart (the kick-off: the skip ends there), live
 local ARM_MS = 20000               -- the skip ends this long after the goal at the latest
 local NO_GOAL_MS = 6000            -- armed by a beaten keeper, still in live play this long after: no goal
 
@@ -114,16 +112,17 @@ VRFW.on("tick", function(ev)
     disarm("time out")
     return nil
   end
+  local states = Live.states()
   local st = ev.match and ev.match.soccer_state
-  if st == GOAL then
+  if st == states.goal then
     seen_goal_state = true
-  elseif st == RESTART and seen_goal_state then
+  elseif st == states.restart and seen_goal_state then
     disarm("kick-off")
     return nil
-  elseif LIVE[st] and seen_goal_state then
+  elseif Live.is_live(ev.match) and seen_goal_state then
     disarm("play")
     return nil
-  elseif LIVE[st] and VRFW.now() - armed_at > NO_GOAL_MS then
+  elseif Live.is_live(ev.match) and VRFW.now() - armed_at > NO_GOAL_MS then
     -- the keeper was beaten but no goal came (the post, a clearance on the line): play goes on with its scenes
     disarm("no goal")
     return nil

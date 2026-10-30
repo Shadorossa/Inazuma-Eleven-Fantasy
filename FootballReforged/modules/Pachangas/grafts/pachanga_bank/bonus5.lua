@@ -16,15 +16,15 @@
         end
       end
       if n == 0 then
-        funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
-        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga bonus", tag, "dock", dock, "empty 5v5 team: refused")
+        funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2086672038 --[[sy0003]])
+        pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT pachanga bonus", tag, "dock", dock, "empty 5v5 team: refused")
         return false
       end
       local okc, ok = pcall(funcLuaCommand, SWAP, dock, 1)
-      pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga bonus", tag, "dock", dock, "5v5 members", n,
+      pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT pachanga bonus", tag, "dock", dock, "5v5 members", n,
         "swap", tostring(okc and ok))
       if not (okc and ok) then
-        funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+        funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2086672038 --[[sy0003]])
         return false
       end
       local swapped = true
@@ -38,7 +38,7 @@
       if type(wf) == "function" then
         waitFalse = function(...)
           local r = table.pack(wf(...))
-          if swapped and not funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], PARAM_MENU) then
+          if swapped and not funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, PARAM_MENU) then
             back()
           end
           return table.unpack(r, 1, r.n)

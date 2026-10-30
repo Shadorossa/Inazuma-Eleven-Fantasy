@@ -1,0 +1,103 @@
+schema = "VRFW.changelog/1"
+# Better Equipment: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language.
+# Do not touch it on a version bump; rewrite it only when what the mod offers changes.
+lang = "es"
+name = "Better Equipment"
+
+[en]
+name = "Better Equipment"
+
+[fr]
+name = "Better Equipment"
+
+[de]
+name = "Better Equipment"
+
+[it]
+name = "Better Equipment"
+
+[pt]
+name = "Better Equipment"
+
+[ja]
+name = "Better Equipment"
+
+[zh_hans]
+name = "Better Equipment"
+
+[zh_hant]
+name = "Better Equipment"
+
+[[release]]
+icon = "general"
+notes = [
+    "Todo el equipamiento vale lo mismo: cambia la forma.",
+    "Afinidad: +15 % por posición o elemento, +25 % con ambos.",
+    "67 conjuntos (2 a 4 piezas); cada objeto está en alguno.",
+    "Objetos temáticos: pasiva propia (familia, elemento…).",
+]
+
+[release.en]
+notes = [
+    "Every equipment item is worth the same: its shape differs.",
+    "Affinity: +15 % by position or element, +25 % with both.",
+    "67 sets (2 to 4 pieces); every item belongs to one.",
+    "Themed items: a passive of their own (family, element…).",
+]
+
+[release.fr]
+notes = [
+    "Tout l'équipement vaut pareil : seule la forme change.",
+    "Affinité : +15 % poste ou élément, +25 % les deux.",
+    "67 ensembles (2 à 4 pièces) ; chaque objet en a un.",
+    "Objets thématiques : passif propre (famille, élément…).",
+]
+
+[release.de]
+notes = [
+    "Alle Ausrüstung ist gleich viel wert: nur Form zählt.",
+    "Affinität: +15 % Position oder Element, +25 % beides.",
+    "67 Sets (2-4 Teile); jeder Gegenstand gehört zu einem.",
+    "Themengegenstände: eigenes Passiv (Familie, Element…).",
+]
+
+[release.it]
+notes = [
+    "Tutto l'equipaggiamento vale lo stesso: cambia la forma.",
+    "Affinità: +15 % ruolo o elemento, +25 % entrambi.",
+    "67 set (da 2 a 4 pezzi); ogni oggetto ne fa parte.",
+    "Oggetti a tema: passiva propria (famiglia, elemento…).",
+]
+
+[release.pt]
+notes = [
+    "Todo o equipamento vale o mesmo: muda a forma.",
+    "Afinidade: +15 % posição ou elemento, +25 % ambos.",
+    "67 conjuntos (2 a 4 peças); cada item está em algum.",
+    "Itens temáticos: passiva própria (família, elemento…).",
+]
+
+[release.ja]
+notes = [
+    "装備の価値はすべて同じ。違うのは形だけ。",
+    "相性：ポジションか属性で+15%、両方で+25%。",
+    "67セット（2〜4個）。どの装備もどれかに属する。",
+    "テーマ装備は専用パッシブ付き（系統、属性など）。",
+]
+
+[release.zh_hans]
+notes = [
+    "所有装备价值相同，区别只在形态。",
+    "契合：位置或属性相符+15%，两者都符合+25%。",
+    "67套套装（2至4件），每件装备都属于其中一套。",
+    "主题装备拥有专属被动（系别、属性等）。",
+]
+
+[release.zh_hant]
+notes = [
+    "所有裝備價值相同，差別只在形態。",
+    "契合：位置或屬性相符+15%，兩者都符合+25%。",
+    "67套套裝（2至4件），每件裝備都屬於其中一套。",
+    "主題裝備擁有專屬被動（系別、屬性等）。",
+]

@@ -5,10 +5,12 @@
 
 MenuIcons = MenuIcons or {}
 
-local function warn(...) VRFW.warn("menu_icons:", ...) end
+require "VRFW/lib/basics"
+local _, warn = VRFW.logger("menu_icons")
 
-local function u32(v) return (tonumber(v) or 0) % 4294967296 end
-local function crc(s) return u32(VRFW.ui.crc32(s)) end
+local Id = require "lib/ids"
+local u32 = Id.u32
+local crc = VRFW.crc32
 
 local SERIES = { sheet = nil, sprite = nil, by_series = {} }   -- by_series: [series number] = { sheet, sprite } (names resolved on use)
 local BY_NAME = {}                                              -- series name / alias -> { sheet, sprite }

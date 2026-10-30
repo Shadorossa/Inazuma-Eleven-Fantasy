@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Katana Kick («Chut ancestral», whs01500), cut-in ev60_01500.
+#
+# Owner 2026-10-08: the ball rolls on the pitch from the kick into the net (research/scripts/katana_kick_ball_fx.py
+# FLIGHT_H: keep the two equal). Flight: straight and level at 0.11 m (the ball's radius) into the goal.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); points count from the kick; one point = a level flight; straight = true: one straight line from the kick
+# to the goal at that height.
+
+# Katana Kick (whs01500).
+[[edit]]
+target = "whs01500"
+trajectory = { points = [[0.0, 0.11]], straight = true, unblockable = false }

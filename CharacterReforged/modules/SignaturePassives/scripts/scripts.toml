@@ -1,0 +1,7 @@
+# Settings of Signature Passives' scripts. Every top-level scripts\*.lua is an entry point.
+schema = "VRFW.script/1"
+
+# own_passives.lua reads every mod's passive blocks and passives (thousands of entries) to build the own passive slot.
+[settings]
+budget = 5000000
+memory_kb = 65536

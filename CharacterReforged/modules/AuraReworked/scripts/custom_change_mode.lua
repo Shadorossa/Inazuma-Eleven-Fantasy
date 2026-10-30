@@ -39,8 +39,8 @@ local M = AuraReworked.Changed.Mc
 -- the part's switch (Mods options › Custom Change Mode, applied after a restart): off = nothing of this part runs
 if VRFW.option("all_changed") == 0 then return M end
 local u32, hex = C.u32, C.hex
-local function info(...) VRFW.log("aura_reworked change:", ...) end
-local function warn(...) VRFW.warn("aura_reworked change:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("aura_reworked change")
 
 -- status codes of ADD (the screen shows a message per code)
 local S = { OK = 0, MODULE_OFF = 1, NO_BASE = 3, NO_PARTNER = 4, SAME_CHARA = 5, FULL = 6, WRITE = 7, DUPLICATE = 8 }

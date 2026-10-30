@@ -1,0 +1,96 @@
+schema = "VRFW.passive/1"
+# Signature Passives › the shared rules of the signature passives (docs/game/mods/signature-passives/): the archetype
+# tags the Trait blocks read (their words: text\keys.toml tag_<name>) and the caps on the summed percents of the
+# passives (the docs' balance: 25 % per parameter of one player, 8 % for the open team-wide ones). The tags of each
+# character are in content\special_passives\signature_<part>.toml.
+
+[[VRFW.Tag]]
+name = "striker"
+text = "tag_striker"
+
+[[VRFW.Tag]]
+name = "cannon"
+text = "tag_cannon"
+
+[[VRFW.Tag]]
+name = "speedster"
+text = "tag_speedster"
+
+[[VRFW.Tag]]
+name = "acrobat"
+text = "tag_acrobat"
+
+[[VRFW.Tag]]
+name = "brain"
+text = "tag_brain"
+
+[[VRFW.Tag]]
+name = "captain"
+text = "tag_captain"
+
+[[VRFW.Tag]]
+name = "wall"
+text = "tag_wall"
+
+[[VRFW.Tag]]
+name = "beast"
+text = "tag_beast"
+
+[[VRFW.Tag]]
+name = "trickster"
+text = "tag_trickster"
+
+[[VRFW.Tag]]
+name = "mystic"
+text = "tag_mystic"
+
+[[VRFW.Tag]]
+name = "divine"
+text = "tag_divine"
+
+[[VRFW.Tag]]
+name = "noble"
+text = "tag_noble"
+
+[[VRFW.Tag]]
+name = "rebel"
+text = "tag_rebel"
+
+[[VRFW.Tag]]
+name = "veteran"
+text = "tag_veteran"
+
+[[VRFW.Tag]]
+name = "rookie"
+text = "tag_rookie"
+
+[[VRFW.Tag]]
+name = "cosmic"
+text = "tag_cosmic"
+
+[[VRFW.Tag]]
+name = "dancer"
+text = "tag_dancer"
+
+[[VRFW.Tag]]
+name = "martial"
+text = "tag_martial"
+
+[[VRFW.Tag]]
+name = "astral"
+text = "tag_astral"
+
+[[VRFW.Tag]]
+name = "guardian"
+text = "tag_guardian"
+
+# every signature passive: the sum of their percents on one answer (a move's power, a stat, a rate) of one player
+# stays within ±25 %
+[[VRFW.PassiveCap]]
+name = "signature_total"
+max_percent = 25
+
+# the open team-wide ones (no tag, group or saga): their own sub-cap of ±8 %
+[[VRFW.PassiveCap]]
+name = "signature_open"
+max_percent = 8

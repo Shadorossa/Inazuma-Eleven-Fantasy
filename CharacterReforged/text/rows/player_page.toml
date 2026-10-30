@@ -1,8 +1,9 @@
 # Character Reforged › the player page's texts (menu_text rows by id, 9 languages), moved from Inazuma Fantasy's
 # text\rows\menu_text.toml on 2026-10-14 with the page (docs/refactor/aura-mods-split.md «Player page»): the Hiper page's
 # empty banner, the PEG / SP plate words of the Hiper card (the match HUD's tag words per language; shown only while the
-# mod Aura Points answers CMND_EVT_PEG_INFO) and the Pasivas sub-page names (graft plate_pages G.PsubLabel). Format:
-# docs/framework/types/text.md.
+# mod Aura Points answers CMND_EVT_PEG_INFO), the Pasivas sub-page names (graft plate_pages G.PSUB_KEYS) and the aura
+# type names after a Hiper move's name (graft plate_hiper_plate EVT_PH_TYPE_TEXT; armour, bond and awakening use the
+# game's own rows). Format: docs/framework/types/text.md.
 schema = "VRFW.text/2"
 table = "menu_text"
 
@@ -82,3 +83,63 @@ pt = "Arquétipo"
 ja = "アーキタイプ"
 zh_hans = "原型"
 zh_hant = "原型"
+
+[[row]]
+id = "evt_ph_aura_type_keshin"
+es = "Espíritu guerrero"
+en = "Keshin"
+fr = "Keshin"
+de = "Keshin"
+it = "Keshin"
+pt = "Keshin"
+ja = "化身"
+zh_hans = "化身"
+zh_hant = "化身"
+
+[[row]]
+id = "evt_ph_aura_type_miximax"
+es = "Miximax"
+en = "Mixi Max"
+fr = "Mixi Max"
+de = "Mixi Max"
+it = "Mixi Max"
+pt = "Mixi Max"
+ja = "ミキシマックス"
+zh_hans = "混合最大化"
+zh_hant = "混合最大化"
+
+[[row]]
+id = "evt_ph_aura_type_totem"
+es = "Tótem"
+en = "Totem"
+fr = "Totem"
+de = "Totem"
+it = "Totem"
+pt = "Totem"
+ja = "ソウル"
+zh_hans = "魂兽"
+zh_hant = "魂獸"
+
+[[row]]
+id = "evt_ph_aura_type_awakening_power"
+es = "Poder de despertar"
+en = "Awakening Power"
+fr = "Pouvoir d'éveil"
+de = "Erweckungskraft"
+it = "Potere del risveglio"
+pt = "Poder do despertar"
+ja = "覚醒パワー"
+zh_hans = "觉醒之力"
+zh_hant = "覺醒之力"
+
+[[row]]
+id = "evt_ph_aura_type_mode_change"
+es = "Cambio de modo"
+en = "Mode Change"
+fr = "Changement de mode"
+de = "Moduswechsel"
+it = "Cambio di modalità"
+pt = "Mudança de Modo"
+ja = "モードチェンジ"
+zh_hans = "模式转换"
+zh_hant = "模式變化"

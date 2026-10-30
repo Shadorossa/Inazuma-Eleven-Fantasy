@@ -25,3 +25,58 @@ member = [
   { slot = 9, patch = true, card = 0xB8117ABA, uid = 0xB8117ABA, loadout = 0 },   # Mike (from tm_cro_go2_0100)
   { slot = 10, patch = true, card = 0xA9D2D8A8, uid = 0xA9D2D8A8, loadout = 0 },   # Gamma (from tm_cro_legend_GO2_02)
 ]
+
+[[team]]
+name = "fm_plathos_base"
+based_on = "tm_cro_original_0300"
+name_text = 0x3AE0A2DC
+
+[[edit]]
+target = "chronicle_deluxe.fm_plathos_base"
+member = [
+  { slot = 0, patch = true, card = 0xDA0DE081, uid = 0xDA0DE081, loadout = 0 },   # Ash Barnes (from bb_27_team_puratosu)
+  { slot = 1, patch = true, card = 0x5D95FC4E, uid = 0x5D95FC4E, loadout = 0 },   # Hector Thareos (from bb_27_team_puratosu)
+  { slot = 2, patch = true, card = 0xE83B8203, uid = 0xE83B8203, loadout = 0 },   # Miles Euclid (from bb_27_team_puratosu)
+  { slot = 3, patch = true, card = 0xC316D1C0, uid = 0xC316D1C0, loadout = 0 },   # Saros Algebra (from bb_27_team_puratosu)
+  { slot = 4, patch = true, card = 0xF120B342, uid = 0xF120B342, loadout = 0 },   # Rhea Loriandrin (from bb_27_team_puratosu)
+  { slot = 5, patch = true, card = 0x8D952D30, uid = 0x8D952D30, loadout = 0 },   # Eon McKeane (from bb_27_team_puratosu)
+  { slot = 6, patch = true, card = 0xA6B87EF3, uid = 0xA6B87EF3, loadout = 0 },   # Eosram Reeves (from bb_27_team_puratosu)
+  { slot = 7, patch = true, card = 0x8C574707, uid = 0x8C574707, loadout = 0 },   # Torin Sandels (from bb_27_team_puratosu)
+  { slot = 8, patch = true, card = 0x948E1C71, uid = 0x948E1C71, loadout = 0 },   # Dariusius Henletos (from bb_27_team_puratosu)
+  { slot = 9, patch = true, card = 0x2AA62CA1, uid = 0x2AA62CA1, loadout = 0 },   # Victorio Cryptix (from bb_27_team_puratosu)
+  { slot = 10, patch = true, card = 0xBE612585, uid = 0xBE612585, loadout = 0 },   # Orpheus Clayridge (from bb_27_team_puratosu)
+  { slot = 11, patch = true, card = 0xBFA34FB2, uid = 0xBFA34FB2, loadout = 0 },   # Nikolaos Menandros (from bb_27_team_puratosu)
+  { slot = 12, patch = true, card = 0xF0E2D975, uid = 0xF0E2D975, loadout = 0 },   # Pharos Radris (from bb_27_team_puratosu)
+  { slot = 13, patch = true, card = 0xE9F9E834, uid = 0xE9F9E834, loadout = 0 },   # Gilia Dandrel (from bb_27_team_puratosu)
+  { slot = 14, patch = true, card = 0xC2D4BBF7, uid = 0xC2D4BBF7, loadout = 0 },   # Hugo Severian (from bb_27_team_puratosu)
+  { slot = 15, patch = true, card = 0x448ECD0F, uid = 0x448ECD0F, loadout = 0 },   # Niana Cooke (from bb_27_team_puratosu)
+  { slot = 16, patch = true, card = 0x8A9C85EC, uid = 0x8A9C85EC, loadout = 0 },   # Muriela Stone (from bb_27_team_puratosu)
+]
+
+[[team]]
+name = "fm_destructores_base"
+based_on = "tm_cro_original_0400"
+name_text = 0x5E822B27
+
+[[edit]]
+target = "chronicle_deluxe.fm_destructores_base"
+member = [
+  { slot = 0, patch = true, card = 0xB680C992, uid = 0xB680C992, loadout = 0 },   # Garruk Vynce (from bb_28_team_destroyers)
+  { slot = 1, patch = true, card = 0xCA3557E0, uid = 0xCA3557E0, loadout = 0 },   # Xyron Madric (from bb_28_team_destroyers)
+  { slot = 2, patch = true, card = 0x032EB7DF, uid = 0x032EB7DF, loadout = 0 },   # Arden Drax (from bb_28_team_destroyers)
+  { slot = 3, patch = true, card = 0x1A35869E, uid = 0x1A35869E, loadout = 0 },   # Simen Thorne (from bb_28_team_destroyers)
+  { slot = 4, patch = true, card = 0x9DAD9A51, uid = 0x9DAD9A51, loadout = 0 },   # Grenadier Deton (from bb_28_team_destroyers)
+  { slot = 5, patch = true, card = 0xAF9BF8D3, uid = 0xAF9BF8D3, loadout = 0 },   # Prisca Grav (from bb_28_team_destroyers)
+  { slot = 6, patch = true, card = 0x84B6AB10, uid = 0x84B6AB10, loadout = 0 },   # Denowar Krell (from bb_28_team_destroyers)
+  { slot = 7, patch = true, card = 0xD32E66A1, uid = 0xD32E66A1, loadout = 0 },   # Declan Jaxor (from bb_28_team_destroyers)
+  { slot = 8, patch = true, card = 0xE0DA6E14, uid = 0xE0DA6E14, loadout = 0 },   # Vector Vernam (from bb_28_team_destroyers)
+  { slot = 9, patch = true, card = 0xF9C15F55, uid = 0xF9C15F55, loadout = 0 },   # Nebula Raime (from bb_28_team_destroyers)
+  { slot = 10, patch = true, card = 0xCBF73DD7, uid = 0xCBF73DD7, loadout = 0 },   # Keines Elvain (from bb_28_team_destroyers)
+  { slot = 11, patch = true, card = 0xAE5992E4, uid = 0xAE5992E4, loadout = 0 },   # Crysis Murdok (from bb_28_team_destroyers)
+  { slot = 12, patch = true, card = 0xB742A3A5, uid = 0xB742A3A5, loadout = 0 },   # Menox Kessler (from bb_28_team_destroyers)
+  { slot = 13, patch = true, card = 0xE1180423, uid = 0xE1180423, loadout = 0 },   # Rourik Bhatt (from bb_28_team_destroyers)
+  { slot = 14, patch = true, card = 0xF8033562, uid = 0xF8033562, loadout = 0 },   # Machina Dex (from bb_28_team_destroyers)
+  { slot = 15, patch = true, card = 0x8574C127, uid = 0x8574C127, loadout = 0 },   # Zyphar Doar (from bb_28_team_destroyers)
+  { slot = 16, patch = true, card = 0xCD3CFF3C, uid = 0xCD3CFF3C, loadout = 0 },   # Wolter Kruzsk (from bb_28_team_destroyers)
+  { slot = 19, patch = true, card = 0xD427CE7D, uid = 0xD427CE7D, loadout = 0 },   # Boulder Vargan (from bb_28_team_destroyers)
+]

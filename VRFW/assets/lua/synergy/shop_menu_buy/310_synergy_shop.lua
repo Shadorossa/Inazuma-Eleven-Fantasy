@@ -7,19 +7,19 @@
 -- screen's row look (VRFW_Synergy.ApplyPanel, lua\synergy\_all\30_synergy_rows.lua). The game's arguments are never
 -- changed: the second draw comes after the game's own. The effects page (page 1) and any other item: the rows' extra
 -- pieces hidden.
--- Switch: config.toml [synergy] shop_conditions (CMND_VRFW_SYNERGY_SHOP_CONDITIONS, asked once per shop); false = the
+-- Switch: config.toml [shop] synergy_conditions (CMND_VRFW_SYNERGY_SHOP_CONDITIONS, asked once per shop); false = the
 -- game's panel. No engine call at load time.
 if VRFW_Host ~= nil then
   local STEM = "shop_menu_buy"
   local DETAIL = 1492214428              -- team16_05_synergy_item_detail_shop
-  local UPDATE = 1397017099              -- CMND_UPDATE_SYNERGY_DETAIL (layer, instance, item, team, page, b, b)
+  local UPDATE = VRFW_Cmd.UPDATE_SYNERGY_DETAIL              -- (layer, instance, item, team, page, b, b)
   local NO_TEAM = 255
-  local ITEM_PARAM = 1883585771          -- CMND_GET_ITEM_PARAM (item, 2) -> its category (230 = a synergy)
+  local ITEM_PARAM = VRFW_Cmd.GET_ITEM_PARAM          -- (item, 2) -> its category (230 = a synergy)
   local SYNERGY_CATEGORY = 230
   local PAGE_FUNCTION = 3757123912       -- OnFunction argument of the members / effects page switch
-  local SWITCH = 3854968532              -- CMND_VRFW_SYNERGY_SHOP_CONDITIONS
-  local LAYER_NUM = 1175615627           -- CMND_GET_CREATE_LAYER_NUM (layer) -> instances
-  local MESH_VISIBLE = 3405944500        -- CMND_SET_MESH_VISIBLE (layer, mesh, visible, instance)
+  local SWITCH = VRFW_Cmd.VRFW_SYNERGY_SHOP_CONDITIONS
+  local LAYER_NUM = VRFW_Cmd.GET_CREATE_LAYER_NUM           -- (layer) -> instances
+  local MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE        -- (layer, mesh, visible, instance)
   local on = nil                         -- the switch, asked at the first draw of a shop
 
   local function L()
@@ -61,16 +61,18 @@ if VRFW_Host ~= nil then
       hide_extras()
       return
     end
+    -- every row's check box empty first; then a declared synergy's look, which may hide rows (the 2 x 2 grid of a
+    -- 4-slot synergy hides the game's 3 rows: their check boxes shown after it stood out under the grid's cells)
     local S = VRFW_Synergy
-    if S ~= nil and S.ApplyPanel ~= nil then
-      S.detail = DETAIL
-      pcall(S.ApplyPanel, item)
-    end
     local row = S ~= nil and S.ROW or 4041512772 --[[team16_03_synergy_chara_condition_list]]
     local okn, n = pcall(funcLuaMenuCommand, LAYER_NUM, row)
     for inst = 0, (okn and type(n) == "number" and n or 0) - 1 do
       pcall(funcLuaMenuCommand, MESH_VISIBLE, row, S and S.CHECK_BOX or 4051829508 --[[_icon_check_box01]], true, inst)
       pcall(funcLuaMenuCommand, MESH_VISIBLE, row, S and S.CHECK or 2309656400 --[[_icon_check01]], false, inst)
+    end
+    if S ~= nil and S.ApplyPanel ~= nil then
+      S.detail = DETAIL
+      pcall(S.ApplyPanel, item)
     end
   end
 

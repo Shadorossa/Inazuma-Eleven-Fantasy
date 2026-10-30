@@ -11,7 +11,7 @@ function EVT_PT_PlateKind(kind, dock)
   if type(OnInitFormationCommon) ~= "function" or type(dock) ~= "number" then
     return false
   end
-  local ok, got, fid = pcall(funcLuaCommand, 1033065575 --[[CMND_GET_TEAM_SET_INFO]], dock, kind == 1 and 1 or 0, 4)
+  local ok, got, fid = pcall(funcLuaCommand, 1033065575, dock, kind == 1 and 1 or 0, 4)
   local f = (ok and got) and fid or nil
   local r
   if kind == 1 then
@@ -23,7 +23,7 @@ function EVT_PT_PlateKind(kind, dock)
       pcall(funcLuaCommand, 4290613003, UpdateFormationReducedDrawingIconPos, 5, 11, 40, 94)
     end
   end
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga plate", "team kind", kind, "dock", dock,
+  pcall(funcLuaCommand, 3661580131, "EVT pachanga plate", "team kind", kind, "dock", dock,
     tostring(r[1]), tostring(r[2]))
   return r[1]
 end

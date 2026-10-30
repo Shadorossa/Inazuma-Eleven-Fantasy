@@ -29,8 +29,10 @@ local DECL_PATHS = { "content/team_planner", "team_planner" }
 local KEY_MOUNTED = "utilities.team_banks.mounted"
 local OWNED_TTL_MS = 2000
 
-local function info(...) VRFW.log("team_planner:", ...) end
-local function warn(...) VRFW.warn("team_planner:", ...) end
+require "VRFW/lib/basics"
+require "VRFW/lib/save_doc"
+local GameText = require "VRFW/lib/game_text"
+local info, warn = VRFW.logger("team_planner")
 
 local int, u32 = C.int, C.u32
 
@@ -216,75 +218,28 @@ end
 
 -- ---------------------------------------------------------------------------------------- the store
 
+-- the plans of a slot: read again after a load, copy, delete, new game or reset of that slot (the slot events);
+-- staged with the game's save of the slot (written at once without the slot service)
+local DOC = VRFW.save.doc(C.BLOB, {
+  decode = C.decode_doc,
+  encode = C.encode_doc,
+  default = C.new_file,
+  pretty = true,
+  stage = true,
+  log = "team_planner",
+  loaded = function(f, slot, state)
+    if state ~= "bad" then info("slot " .. slot .. ": " .. C.count(f) .. " planned slot(s)") end
+  end,
+})
+
 local store = nil
-local event_seen = nil
 
 local function current_slot()
   local ok, s = pcall(VRFW.slots.active)
   return ok and s or 0
 end
 
-local function check_events()
-  local ok, seq = pcall(VRFW.slots.event_seq)
-  if not ok or type(seq) ~= "number" then
-    return
-  end
-  if event_seen == nil then
-    event_seen = seq
-    return
-  end
-  if seq == event_seen then
-    return
-  end
-  local from = math.max(event_seen + 1, seq - 63)
-  for n = from, seq do
-    local kind, a, b = VRFW.slots.event(n)
-    if store and kind then
-      local slot = nil
-      if kind == "switched" or kind == "deleted" or kind == "new_game" or kind == "reset" then
-        slot = a
-      end
-      if kind == "copied" then
-        slot = b
-      end
-      if slot == store.slot then
-        info("slot " .. tostring(slot) .. ": plans read again (" .. kind .. ")")
-        store = nil
-      end
-    end
-  end
-  event_seen = seq
-end
-
-local function load_store(slot)
-  local text, err = VRFW.save.blob(C.BLOB, slot)
-  if err then
-    local kept = VRFW.save.blob_aside(C.BLOB, slot)
-    VRFW.error("team_planner: " .. tostring(err) .. "; " .. tostring(kept) .. "; starting empty")
-    return C.new_file(slot)
-  end
-  local doc = nil
-  if type(text) == "string" and text ~= "" then
-    local okj, j, jerr = pcall(VRFW.json.decode, text)
-    if not okj or j == nil then
-      local kept = VRFW.save.blob_aside(C.BLOB, slot)
-      VRFW.error("team_planner: slot " .. slot .. " " .. C.BLOB .. ": " .. tostring(okj and jerr or j) .. "; " .. tostring(kept) .. "; starting empty")
-      return C.new_file(slot)
-    end
-    doc = j
-  end
-  local f, why = C.decode_doc(doc, slot)
-  if not f then
-    local kept = VRFW.save.blob_aside(C.BLOB, slot)
-    VRFW.error("team_planner: slot " .. slot .. " " .. C.BLOB .. ": " .. tostring(why) .. "; " .. tostring(kept) .. "; starting empty")
-    return C.new_file(slot)
-  end
-  info("slot " .. slot .. ": " .. C.count(f) .. " planned slot(s)")
-  return f
-end
-
 local function ensure_store()
-  check_events()
   local slot = current_slot()
   if not slot or slot == 0 then
     return nil
@@ -293,9 +248,7 @@ local function ensure_store()
   if okr and reserved then
     return nil
   end
-  if not store or store.slot ~= slot then
-    store = load_store(slot)
-  end
+  store = DOC:get(slot)
   return store
 end
 
@@ -303,13 +256,7 @@ local function commit(why)
   if not store or not store.dirty then
     return
   end
-  local text = VRFW.json.encode(C.encode_doc(store), true)
-  local ok, where
-  if VRFW.slots.ready() then
-    ok, where = VRFW.save.blob_stage(C.BLOB, text, store.slot)
-  else
-    ok, where = VRFW.save.blob_write(C.BLOB, text, store.slot)
-  end
+  local ok, where = DOC:write(store, store.slot)
   if ok then
     store.dirty = false
   else
@@ -331,32 +278,9 @@ end
 
 local pick = nil  -- { page = index into page_list(), row = team row of the open grid, lang, texts, names }
 
-local function lang_of(code)
-  local c = int(code)
-  if c and c >= 0 and type(VRFW.files.game_languages) == "function" then
-    local ok, t = pcall(VRFW.files.game_languages)
-    local l = ok and type(t) == "table" and t[c + 1] or nil
-    if type(l) == "string" then
-      return l
-    end
-  end
-  return "en"
-end
-
-local function text_rows(lang, tbl)
-  local ok, rows = pcall(VRFW.files.text_rows, T.text_key(lang, tbl))
-  if ok and type(rows) == "table" then
-    return rows
-  end
-  if lang ~= "en" then
-    return text_rows("en", tbl)
-  end
-  return nil
-end
-
-local function text_of(rows, id)
-  local r = rows and rows[id]
-  local s = r and r[0]
+-- a text of a whole game text table (VRFW.game_text) by id, furigana reduced; nil when it has none
+local function text_of(texts, id)
+  local s = texts and texts[id]
   if type(s) == "string" and s ~= "" then
     return T.strip_furigana(s)
   end
@@ -461,11 +385,11 @@ function BetterQoL.TeamPlanner.PickOpen(code)
   if #pl == 0 then
     return 0
   end
-  local lang = lang_of(code)
+  local lang = GameText.language(code)
   local keep = pick and pick.page or 1
   pick = { page = math.min(keep, #pl), row = nil, lang = lang,
-           team_rows = text_rows(lang, T.TEAM), series_rows = text_rows(lang, T.SERIES_TEXT),
-           names = text_rows(lang, T.CHARA) }
+           team_rows = GameText.texts(T.TEAM, lang), series_rows = GameText.texts(T.SERIES_TEXT, lang),
+           names = GameText.texts(T.CHARA, lang) }
   owned_cache = nil
   info(string.format("picker opened (%s): %d series page(s)", lang, #pl))
   return #pl, pick.page

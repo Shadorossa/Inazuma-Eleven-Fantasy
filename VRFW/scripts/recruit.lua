@@ -9,11 +9,8 @@
 
 Recruit = Recruit or {}
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v ~= v then return 0 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
 
 local PARAM = nil   -- card -> { element, position }
 local GAME_STADIUM = nil   -- match row id -> its stadium's map crc

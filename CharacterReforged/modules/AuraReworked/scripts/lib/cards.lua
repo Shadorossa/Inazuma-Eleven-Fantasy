@@ -5,19 +5,11 @@
 
 local M = {}
 
-function M.u32(v)
-  if type(v) == "boolean" then return v and 1 or 0 end
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+M.u32 = Id.u32
 
 -- an id / handle as hex text: never "%X" on a value >= 2^31 (the scripts' Lua 5.2 formats it through a 32-bit long)
-function M.hex(v)
-  v = M.u32(v)
-  local hi, lo = math.floor(v / 65536), v % 65536
-  return string.format("0x%04X%04X", hi, lo)
-end
+M.hex = Id.hex
 
 -- the save record of a character handle (nil = none)
 function M.record(hdl)

@@ -37,16 +37,6 @@ default = 1
 parent = "aura_reworked.souls_rework"
 order = 152
 
-# the rival team's totems level up and roll the reel too (config.toml [souls.levels] cpu)
-[[option]]
-id = "souls_rival_levels"
-type = "toggle"
-label = "souls_rival_levels"
-help = "souls_rival_levels_help"
-default = 1
-parent = "aura_reworked.souls_rework"
-order = 153
-
 # ---------------------------------------------------------------- Custom Change Mode
 
 [[option]]

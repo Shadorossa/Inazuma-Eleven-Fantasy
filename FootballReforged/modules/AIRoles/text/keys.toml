@@ -1,0 +1,95 @@
+# Texts of AI Roles, a module of Football Reforged (docs/framework/types/text.md): the name and description of its
+# card on Football Reforged's page in Mods, and each role's name (the chooser row of «Ajustes de la IA») and one-line
+# description.
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "AI roles"
+mod_description = "Give your players a role that changes how they move without the ball, in Manual and Commander play. In the team commands › «AI settings», pick a player and choose his role among the ones of his position (the game's four roles stay too). The same role can go to several players. Forwards: Poacher, False nine, Inside forward."
+ai_roles_poacher = "Poacher"
+ai_roles_poacher_help = "Stays up front on the last defender's line, never offside, and never drops back to defend."
+ai_roles_false_nine = "False nine"
+ai_roles_false_nine_help = "Drops into midfield to offer himself for the ball while the team builds up."
+ai_roles_inside_forward = "Inside forward"
+ai_roles_inside_forward_help = "Stays wide on his wing, then cuts inside into the box in the final third."
+
+[es.new]
+mod_name = "Roles de la IA"
+mod_description = "Da a tus jugadores un rol que cambia cómo se mueven sin balón, en juego manual y en modo Comandante. En los comandos del equipo › «Ajustes de la IA», elige un jugador y su rol entre los de su posición (los cuatro roles del juego siguen ahí). Un mismo rol puede ir a varios jugadores. Delanteros: Cazagoles, Falso 9, Extremo interior."
+ai_roles_poacher = "Cazagoles"
+ai_roles_poacher_help = "Se queda arriba en la línea del último defensor, sin caer en fuera de juego, y nunca baja a defender."
+ai_roles_false_nine = "Falso 9"
+ai_roles_false_nine_help = "Baja al centro del campo para ofrecerse y pedir el balón mientras el equipo sube."
+ai_roles_inside_forward = "Extremo interior"
+ai_roles_inside_forward_help = "Abierto en su banda y, en el último tercio, se mete hacia dentro al área."
+
+[fr.new]
+mod_name = "Rôles de l'IA"
+mod_description = "Donne à tes joueurs un rôle qui change leur placement sans ballon, en jeu manuel comme en mode Commandant. Dans les commandes d'équipe › «Réglages de l'IA», choisis un joueur et son rôle parmi ceux de son poste (les quatre rôles du jeu restent là). Un même rôle peut aller à plusieurs joueurs. Attaquants : Renard des surfaces, Faux 9, Ailier inversé."
+ai_roles_poacher = "Renard des surfaces"
+ai_roles_poacher_help = "Reste devant, sur la ligne du dernier défenseur, sans être hors-jeu, et ne redescend jamais défendre."
+ai_roles_false_nine = "Faux 9"
+ai_roles_false_nine_help = "Décroche au milieu pour se proposer et demander le ballon pendant la relance."
+ai_roles_inside_forward = "Ailier inversé"
+ai_roles_inside_forward_help = "Reste large sur son aile puis repique dans la surface dans le dernier tiers."
+
+[de.new]
+mod_name = "KI-Rollen"
+mod_description = "Gib deinen Spielern eine Rolle, die ändert, wie sie sich ohne Ball bewegen, im manuellen Spiel und im Kommandantenmodus. In den Teambefehlen › «KI-Einstellungen» wählst du einen Spieler und seine Rolle unter denen seiner Position (die vier Rollen des Spiels bleiben). Dieselbe Rolle kann an mehrere Spieler gehen. Stürmer: Knipser, Falsche Neun, Inverser Flügelstürmer."
+ai_roles_poacher = "Knipser"
+ai_roles_poacher_help = "Bleibt vorne auf der Linie des letzten Verteidigers, nie im Abseits, und geht nie zum Verteidigen zurück."
+ai_roles_false_nine = "Falsche Neun"
+ai_roles_false_nine_help = "Lässt sich ins Mittelfeld fallen, um sich im Spielaufbau für den Ball anzubieten."
+ai_roles_inside_forward = "Inverser Flügelstürmer"
+ai_roles_inside_forward_help = "Bleibt breit auf seinem Flügel und zieht im letzten Drittel nach innen in den Strafraum."
+
+[it.new]
+mod_name = "Ruoli dell'IA"
+mod_description = "Dai ai tuoi giocatori un ruolo che cambia come si muovono senza palla, nel gioco manuale e in modalità Comandante. Nei comandi della squadra › «Impostazioni IA», scegli un giocatore e il suo ruolo tra quelli del suo ruolo in campo (i quattro ruoli del gioco restano). Lo stesso ruolo può andare a più giocatori. Attaccanti: Rapace d'area, Falso nove, Ala a piede invertito."
+ai_roles_poacher = "Rapace d'area"
+ai_roles_poacher_help = "Resta avanti sulla linea dell'ultimo difensore, mai in fuorigioco, e non torna mai a difendere."
+ai_roles_false_nine = "Falso nove"
+ai_roles_false_nine_help = "Arretra a centrocampo per offrirsi e chiedere palla mentre la squadra costruisce."
+ai_roles_inside_forward = "Ala a piede invertito"
+ai_roles_inside_forward_help = "Resta larga sulla fascia, poi taglia dentro verso l'area nell'ultimo terzo."
+
+[pt.new]
+mod_name = "Papéis da IA"
+mod_description = "Dá aos teus jogadores um papel que muda como se movem sem bola, no jogo manual e no modo Comandante. Nos comandos da equipa › «Ajustes da IA», escolhe um jogador e o seu papel entre os da sua posição (os quatro papéis do jogo continuam lá). O mesmo papel pode ir para vários jogadores. Avançados: Matador, Falso 9, Extremo invertido."
+ai_roles_poacher = "Matador"
+ai_roles_poacher_help = "Fica na frente, na linha do último defesa, sem ficar em fora de jogo, e nunca recua para defender."
+ai_roles_false_nine = "Falso 9"
+ai_roles_false_nine_help = "Recua para o meio-campo para se oferecer e pedir a bola enquanto a equipa constrói."
+ai_roles_inside_forward = "Extremo invertido"
+ai_roles_inside_forward_help = "Fica aberto na sua ala e, no último terço, corta para dentro da área."
+
+[ja.new]
+mod_name = "AIの役割"
+mod_description = "選手にボールを持っていない時の動き方を変える役割を与える。マニュアルでもコマンダーモードでも有効。チームコマンド › 「AI設定」で選手を選び、そのポジションの役割から選ぶ（ゲームの4つの役割も残る）。同じ役割を複数の選手に与えられる。FW：点取り屋、偽9番、インサイドフォワード。"
+ai_roles_poacher = "点取り屋"
+ai_roles_poacher_help = "最終ラインの高さで前線に残り、オフサイドにならず、守備には戻らない。"
+ai_roles_false_nine = "偽9番"
+ai_roles_false_nine_help = "ビルドアップ中に中盤まで下がり、ボールを受けに顔を出す。"
+ai_roles_inside_forward = "インサイドフォワード"
+ai_roles_inside_forward_help = "サイドで幅を取り、敵陣の深い位置では内側へ切り込んでエリアに入る。"
+
+[zh_hans.new]
+mod_name = "AI角色"
+mod_description = "给你的球员一个角色，改变他们无球时的跑位，手动操作和指挥官模式都有效。在球队指令 › 「AI设置」中选择球员，再从他位置的角色中挑选（游戏原有的四个角色仍然保留）。同一个角色可以给多名球员。前锋：禁区杀手、伪九号、内锋。"
+ai_roles_poacher = "禁区杀手"
+ai_roles_poacher_help = "留在前场，与最后一名后卫平齐，不越位，也从不回防。"
+ai_roles_false_nine = "伪九号"
+ai_roles_false_nine_help = "球队组织进攻时回撤到中场接应，主动要球。"
+ai_roles_inside_forward = "内锋"
+ai_roles_inside_forward_help = "先在边路拉开，到了前场三分之一处内切进入禁区。"
+
+[zh_hant.new]
+mod_name = "AI角色"
+mod_description = "給你的球員一個角色，改變他們無球時的跑位，手動操作和指揮官模式都有效。在球隊指令 › 「AI設定」中選擇球員，再從他位置的角色中挑選（遊戲原有的四個角色仍然保留）。同一個角色可以給多名球員。前鋒：禁區殺手、偽九號、內鋒。"
+ai_roles_poacher = "禁區殺手"
+ai_roles_poacher_help = "留在前場，與最後一名後衛平齊，不越位，也從不回防。"
+ai_roles_false_nine = "偽九號"
+ai_roles_false_nine_help = "球隊組織進攻時回撤到中場接應，主動要球。"
+ai_roles_inside_forward = "內鋒"
+ai_roles_inside_forward_help = "先在邊路拉開，到了前場三分之一處內切進入禁區。"

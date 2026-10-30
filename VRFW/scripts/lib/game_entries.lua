@@ -10,13 +10,11 @@
 
 local M = {}
 
-local function warn(...) VRFW.warn("game_entries:", ...) end
+require "VRFW/lib/basics"
+local _, warn = VRFW.logger("game_entries")
 
-local function u32(v)
-  v = tonumber(v)
-  if not v or v ~= v then return nil end
-  return math.floor(v) % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+local function u32(v) return Id.u32_or(v, nil) end
 
 -- ---------------------------------------------------------------------------------------------- the profile
 

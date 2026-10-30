@@ -1,0 +1,16 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Remate asalto (Assault Shot, whs00890, cut-in ev60_00890) (docs/framework/types/technique.md
+# `trajectory`): one level line at 2.0 m from the kick point into the goal point (horizontal, never rising or falling),
+# whatever the shot's length; the cut-in's dive from ~20 m is not kept. The lowest of the seven balls flies 1 m under
+# the ball, its fire wraps clear of the pitch (research/scripts/doom_rain_ball_fx.py FLIGHT_HEIGHT).
+# straight = true: one straight line from the kick to the goal at that height.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m): points from the kick, goal_points counted back from the goal point; the first / last height is held.
+# hide_ball: the real match ball is not drawn while the shot flies (it flies inside the front ball of the rain,
+# effects\assault_shot_ball.toml); drawn again when the shot is over (goal, save, block, out).
+
+# Remate asalto (whs00890).
+[[edit]]
+target = "whs00890"
+trajectory = { points = [[0.0, 2.0]], goal_points = [[0.0, 2.0]], straight = true, unblockable = false }
+hide_ball = true

@@ -15,7 +15,6 @@
 --     it does not matter whether the engine passes the restart layer's scale on to the attached layer.
 -- 2026-10-16 (Nacho: centre «Formación» on «Reanudar»): the plate is centred horizontally on «Reanudar»'s plate, not
 --   left-aligned (its width follows its text, read with CMND_GET_LAYER_WIDTH).
-EVT_KO_ON = true
 EVT_KO_SCALE = 0.72        -- size (retail 1.0)
 EVT_KO_SQUARE = false      -- (the plate picture is repainted at build; true = the old run-time cmd_base01 swap)
 EVT_KO_HIDE_GLOW = true    -- hide _restart_btn_base_add01 / 02 (the additive glow / blink)
@@ -79,7 +78,7 @@ end
 -- row up. Measured, then corrected by the residual (an off estimate of the layer's local unit only slows the
 -- convergence; scale first, then position)
 local function EVT_PP_Place()
-  if not EVT_KO_ON or evt_pp_idx == nil or evt_ko_idx == nil or evt_ko_closing
+  if evt_pp_idx == nil or evt_ko_idx == nil or evt_ko_closing
       or rawget(_ENV, "EVT_UI_PRESET") == "off" then
     return
   end
@@ -123,7 +122,7 @@ local function EVT_PP_Place()
 end
 
 local function EVT_KO_Setup(idx)
-  if not EVT_KO_ON or rawget(_ENV, "EVT_UI_PRESET") == "off" then
+  if rawget(_ENV, "EVT_UI_PRESET") == "off" then
     return
   end
   evt_ko_idx = idx
@@ -161,7 +160,7 @@ local evt_ko_prevStep = rawget(_ENV, "Step")
 if type(evt_ko_prevStep) == "function" then
   rawset(_ENV, "Step", function(...)
     local r = evt_ko_prevStep(...)
-    if EVT_KO_ON and evt_ko_idx ~= nil and rawget(_ENV, "EVT_UI_PRESET") ~= "off" then
+    if evt_ko_idx ~= nil and rawget(_ENV, "EVT_UI_PRESET") ~= "off" then
       EVT_KO_Look(evt_ko_idx)
       EVT_PP_Place()
     end

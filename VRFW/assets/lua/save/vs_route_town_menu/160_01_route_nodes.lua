@@ -165,9 +165,9 @@ end
 VRFW_RN = nil
 VRFW_RN_DIFFS = {1, 2, 3, 4, 10, 11}
 VRFW_RN_CMD = {NODE_COUNT = {1208701503, 3004181703}, NODE_GET = {3986876567, 1705651873}, ROAD_COUNT = {2601399945, 1612007537}, ROAD_GET = {2870703344, 588493510}}
-VRFW_RN_CMD_CLEAR = 4034518619     -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
-VRFW_RN_CMD_LOCK = 3394595467      -- CMND_GET_CHRONICLE_LOCK_STATUS (slot, difficulty)
-VRFW_RN_CMD_SET_LOCK = 1778321182  -- CMND_SET_CHRONICLE_LOCK_STATUS (slot, locked, difficulty)
+VRFW_RN_CMD_CLEAR = 4034518619     -- (slot, difficulty)
+VRFW_RN_CMD_LOCK = 3394595467      -- (slot, difficulty)
+VRFW_RN_CMD_SET_LOCK = 1778321182  -- (slot, locked, difficulty)
 VRFW_RN_CMD_PIECE_IDX = 1064555639 -- pieceId -> ok, piece index
 
 -- loader.log lines "LUAPRINT … VRFW_RN …" (PRINT exists only under the lua_patch loader)
@@ -251,12 +251,15 @@ function VRFW_RN_Load()
       end
     end
   end
-  VRFW_RN_Log("load", "nodes", #VRFW_RN.nodes, "roads", #VRFW_RN.roads)
-  VRFW_RN_WrapChara()
+  -- one summary line per load (the per-node dump was 59 lines per open of the route town)
+  local linked, gated = 0, 0
   for i = 1, #VRFW_RN.nodes do
     local nd = VRFW_RN.nodes[i]
-    VRFW_RN_Log("node", i - 1, "piece", nd.piece, "idx", nd.idx, "slot", nd.slot, "linked", tostring(nd.linked), "gates", #nd.gates, "scale", nd.pieceScale)
+    if nd.linked then linked = linked + 1 end
+    if #nd.gates > 0 then gated = gated + 1 end
   end
+  VRFW_RN_Log("load", "nodes", #VRFW_RN.nodes, "roads", #VRFW_RN.roads, "linked", linked, "with gates", gated)
+  VRFW_RN_WrapChara()
   return VRFW_RN
 end
 
@@ -280,7 +283,7 @@ function VRFW_RN_PieceScale(layer, inst, idx)
     return
   end
   VRFW_RN_PIECE_SCALES[inst] = s
-  pcall(funcLuaMenuCommand, 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], layer, s, s, 1, inst)
+  pcall(funcLuaMenuCommand, 3778714801, layer, s, s, 1, inst)
   VRFW_RN_Log("piece scale", "inst", inst, "piece", idx, "scale", s)
 end
 
@@ -350,8 +353,8 @@ end
 -- save state stay). The switch lives for the game session (CMND_VRFW_BOARD_HIDE); a mod's key or button calls
 -- VRFW_RN_SetHide. VRFW_RN_GROUPS = {pieces = {[pieceId] = true}, n}: read once per board VM.
 VRFW_RN_GROUPS = nil
-VRFW_RN_CMD_GROUP_PIECES = 3067101002   -- CMND_VRFW_BOARD_GROUPS () -> { pieceId, … } of the hideable groups
-VRFW_RN_CMD_HIDE = 2817173096           -- CMND_VRFW_BOARD_HIDE () -> on; ("set", 0 | 1) -> on
+VRFW_RN_CMD_GROUP_PIECES = 3067101002   -- () -> { pieceId, … } of the hideable groups
+VRFW_RN_CMD_HIDE = 2817173096           -- () -> on; ("set", 0 | 1) -> on
 
 function VRFW_RN_Groups()
   if VRFW_RN_GROUPS ~= nil then
@@ -422,7 +425,7 @@ end
 function VRFW_RN_LockedText(slot, s)
   local node = VRFW_RN_BySlot(slot)
   if node ~= nil and node.lockedGuide ~= 0 and not VRFW_RN_Shown(node) then
-    local ok, t = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], node.lockedGuide)
+    local ok, t = pcall(funcLuaCommand, 4074371074, node.lockedGuide)
     if ok and type(t) == "string" and t ~= "" then
       return t
     end
@@ -676,7 +679,7 @@ end
 
 -- The roads' instances on the board (the layer's created count; nil = the layer is not there).
 function VRFW_RN_RoadPool()
-  local ok, n = pcall(funcLuaMenuCommand, 1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], VRFW_RN_ROAD_LAYER)
+  local ok, n = pcall(funcLuaMenuCommand, 1175615627, VRFW_RN_ROAD_LAYER)
   if ok and type(n) == "number" and n > 0 then
     return n
   end
@@ -686,15 +689,15 @@ end
 -- Instance `i` (0-based) shows road `road` (nil / not shown: hidden; the quad's own sprite is the retail "new" badge).
 function VRFW_RN_RoadSet(i, road, shown)
   if road == nil or not shown then
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], VRFW_RN_ROAD_LAYER, i, false)
+    pcall(funcLuaMenuCommand, 711242136, VRFW_RN_ROAD_LAYER, i, false)
     VRFW_RN_ROAD_SHOWN[i] = false
     return
   end
   local q = VRFW_RN_ROAD_QUAD
   pcall(funcLuaMenuCommand, 558735651, VRFW_RN_ROAD_LAYER, VRFW_RN_ROAD_SHEET, CALC_CRC(road.sprite), VRFW_RN_ROAD_NODE, 0, i)
-  pcall(funcLuaMenuCommand, 1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], VRFW_RN_ROAD_LAYER, road.x, road.y, 0, i)
-  pcall(funcLuaMenuCommand, 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], VRFW_RN_ROAD_LAYER, road.w / q, road.h / q, 1, i)
-  pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], VRFW_RN_ROAD_LAYER, i, true)
+  pcall(funcLuaMenuCommand, 1389957207, VRFW_RN_ROAD_LAYER, road.x, road.y, 0, i)
+  pcall(funcLuaMenuCommand, 3778714801, VRFW_RN_ROAD_LAYER, road.w / q, road.h / q, 1, i)
+  pcall(funcLuaMenuCommand, 711242136, VRFW_RN_ROAD_LAYER, i, true)
   if VRFW_RN_ROAD_SHOWN[i] ~= true then
     VRFW_RN_Log("road", i, "node", road.node, road.sprite, "at", road.x, road.y, "size", road.w, road.h)
   end
@@ -1245,13 +1248,12 @@ end
 -- "<slot>=<Id>;..." (mods' own ranks). Legacy saves: a mod's string under
 -- another owner, key chr_ranks, is read once per slot and merged (the better rank of the
 -- two per piece) the first time the framework's string is read, then written as the framework's.
-VRFW_RB_RANK_ON = true -- kill switch: false = no piece rank recorded or drawn (a chain node keeps its chain's rank)
 VRFW_RB_RANK_SLOTS = 300 -- the board's save status arrays (statusFlagIndex 0-299)
 VRFW_RB_RANK_cache = nil
 
 function VRFW_RB_Ranks()
   if VRFW_RB_RANK_cache == nil then
-    local ok, s = pcall(funcLuaCommand, 2187277743 --[[CMND_VRFW_SAVE_GET]], "vr_framework", "rb_ranks", "")
+    local ok, s = pcall(funcLuaCommand, 2187277743, "vr_framework", "rb_ranks", "")
     if not ok or type(s) ~= "string" then
       s = ""
     end
@@ -1267,7 +1269,7 @@ function VRFW_RB_Ranks()
       local m = table.concat(merged)
       if m ~= s then
         s = m
-        pcall(funcLuaCommand, 2574269955 --[[CMND_VRFW_SAVE_SET]], "vr_framework", "rb_ranks", s, 1)
+        pcall(funcLuaCommand, 2574269955, "vr_framework", "rb_ranks", s, 1)
         if PRINT ~= nil then
           pcall(PRINT, "VRFW_RB ranks: merged Inazuma Fantasy's chr_ranks into rb_ranks")
         end
@@ -1282,7 +1284,7 @@ VRFW_RB_LEGACY = {["1"] = "B", ["2"] = "A", ["3"] = "S"}
 VRFW_RB_DIGIT = {B = "1", A = "2", S = "3"}
 
 local function vrfw_rb_id_map()
-  local ok, s = pcall(funcLuaCommand, 2187277743 --[[CMND_VRFW_SAVE_GET]], "vr_framework", "rb_rank_ids", "")
+  local ok, s = pcall(funcLuaCommand, 2187277743, "vr_framework", "rb_rank_ids", "")
   local m = {}
   if ok and type(s) == "string" then
     for k, id in string.gmatch(s, "(%d+)=([^;]+)") do
@@ -1334,20 +1336,20 @@ function VRFW_RB_RankSet(sfi, rank)
       parts[#parts + 1] = k .. "=" .. v
     end
     table.sort(parts)
-    pcall(funcLuaCommand, 2574269955 --[[CMND_VRFW_SAVE_SET]], "vr_framework", "rb_rank_ids", table.concat(parts, ";"), 1)
+    pcall(funcLuaCommand, 2574269955, "vr_framework", "rb_rank_ids", table.concat(parts, ";"), 1)
   end
   if ext then
     return true
   end
   s = string.sub(s, 1, sfi) .. c .. string.sub(s, sfi + 2)
   VRFW_RB_RANK_cache = s
-  pcall(funcLuaCommand, 2574269955 --[[CMND_VRFW_SAVE_SET]], "vr_framework", "rb_ranks", s, 1)
+  pcall(funcLuaCommand, 2574269955, "vr_framework", "rb_ranks", s, 1)
   return true
 end
 
 -- a won board match (state 10): the piece's rank by the declared ranks, its best (highest Order) kept
 function VRFW_RB_Won(piece, slot)
-  if not VRFW_RB_RANK_ON or slot == nil then
+  if slot == nil then
     return
   end
   VRFW_RB_RANK_cache = nil -- another save slot may have been loaded since
@@ -1386,7 +1388,7 @@ function VRFW_RB_Rank(slot)
   if VRFW_RCH_RankOf ~= nil then
     r = VRFW_RCH_RankOf(slot)
   end
-  if r == nil and VRFW_RB_RANK_ON then
+  if r == nil then
     r = VRFW_RB_RankGet(slot)
   end
   return r
@@ -1406,7 +1408,6 @@ end
 -- picture = the rank's PieceBadge (defaults\match_rank.toml: a sprite a mod adds to the dots' atlas vsroute01_06b,
 -- e.g. a mod's chronicle_deluxe_rank_{s,a,b}; the framework declares no rank and ships no badge).
 -- Without a rank, or a rank without a PieceBadge, nothing changes.
-VRFW_RB_BADGE_ON = true -- kill switch: false = no badge
 VRFW_RB_BADGE_POS = {x = 40, y = -6} -- badge centre, piece coordinates (crest: 128 px centred at (0, 38))
 VRFW_RB_BADGE_TEX = 2855820778 --[[crc32("#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx")]]
 VRFW_RB_BADGE_TEXREF = 516486421 --[[clear_icon08: the picture of both Legendaria dots]]
@@ -1417,7 +1418,7 @@ VRFW_RB_BADGE_DOT = {
 }
 
 function VRFW_RB_Badge(a1, a2, a3)
-  if not VRFW_RB_BADGE_ON or a3 == nil or a3 == -1 then
+  if a3 == nil or a3 == -1 then
     return
   end
   local okE, evType = GetTownMapResourceEvent(a3, 1, true)
@@ -1443,9 +1444,9 @@ function VRFW_RB_Badge(a1, a2, a3)
   funcLuaMenuCommand(1856671416 --[[node translation]], a1, a2, dot.pos, VRFW_RB_BADGE_POS.x, VRFW_RB_BADGE_POS.y, 0)
   funcLuaMenuCommand(2158717427, a1, dot.pos, true, a2)
   for i = 1, #dot.hide do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], a1, dot.hide[i], false, a2)
+    funcLuaMenuCommand(3405944500, a1, dot.hide[i], false, a2)
   end
-  funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], a1, a2)
+  funcLuaMenuCommand(629267548, a1, a2)
 end
 
 -- The retail invite check at the end of PreStep (CheckAndReserveGeneralWindowForInviteNotJoined, include

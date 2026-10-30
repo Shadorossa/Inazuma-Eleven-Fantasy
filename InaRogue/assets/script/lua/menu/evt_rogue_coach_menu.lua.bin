@@ -13,13 +13,14 @@
 INCLUDE("LUA_PROG_BASE")
 INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc) + general window inc
 
+-- texts: InaRogue text\rows\rogue_screens.toml (read with Text); GUIDE / GUIDE_TAG are the same in every language
 local TXT = {
-  TITLE = "Elige entrenador",
+  TITLE = {3709542452 --[[InaRogue.coach.title]]},
   GUIDE = "%s",
   GUIDE_TAG = "%s   ·   %s",
-  LOCKED = "%s   ·   Bloqueado: %s",
-  LOCKED_MSG = "%s está bloqueado.\n%s.",
-  ERROR = "No se pudo elegir el entrenador (código %d).\nMira evt_loader\\loader.log.",
+  LOCKED = {300984748 --[[InaRogue.coach.locked]]},
+  LOCKED_MSG = {2331592520 --[[InaRogue.coach.locked_msg]]},
+  ERROR = {2884690990 --[[InaRogue.coach.error]]},
 }
 
 local MENU = 3869270721           -- crc32("evt_rogue_coach_menu")
@@ -60,7 +61,6 @@ local C = {
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
   SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
   FADE = 609722083, FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568,
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
   TEXT_VISIBLE = 1505208242,
   PRIM_COLOR = 855211291,     -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b)
@@ -119,6 +119,19 @@ end
 local function Hide(layer, idx)
   funcLuaMenuCommand(C.LAYER_VISIBLE, layer, idx, false)
   funcLuaMenuCommand(C.POS, layer, -4000, 4000, 0, idx)
+end
+
+-- a text row in the game's language with {1}.. filled ("" when missing)
+local function Text(key, ...)
+  local s = Call(4074371074, key[1])
+  if type(s) ~= "string" then
+    return ""
+  end
+  local a = table.pack(...)
+  return (s:gsub("{(%d)}", function(k)
+    local v = a[tonumber(k)]
+    return v == nil and "" or tostring(v)
+  end))
 end
 
 -- pointer (mouse / free cursor): hover = the keys' selection, click = pick
@@ -365,7 +378,7 @@ local function UpdateGuideLine()
   local s = ""
   if a ~= nil then
     if not a.open then
-      s = string.format(TXT.LOCKED, a.name, a.hint)
+      s = Text(TXT.LOCKED, a.name, a.hint)
     elseif a.tagline ~= "" then
       s = string.format(TXT.GUIDE_TAG, a.name, a.tagline)
     else
@@ -377,7 +390,7 @@ local function UpdateGuideLine()
 end
 
 local function UpdateTitle()
-  funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], TXT.TITLE, 0)
+  funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], Text(TXT.TITLE), 0)
   funcLuaMenuCommand(C.SPRITE, L_HEADER, 3139293835 --[[#/menu/220_img/evt_rogue/evt_rogue_mode.g4tx]], 2610480106 --[[evt_rogue_mode_plate: INAROGUE's phoenix plate]], MODE_ICON_NODE, 0, 0)
 end
 
@@ -422,8 +435,7 @@ local function Message(text)
 end
 
 local function Close(result)
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_SET, KEY_RESULT, 0, result, 1)
+  VRFW_Param.Replace(KEY_RESULT, result)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
   funcLuaCommand(C.CLOSE_MENU, MENU)
 end
@@ -435,14 +447,14 @@ local function Decide()
   end
   if not a.open then
     funcLuaCommand(C.SE, SE_NG)
-    Message(string.format(TXT.LOCKED_MSG, a.name, a.hint))
+    Message(Text(TXT.LOCKED_MSG, a.name, a.hint))
     return
   end
   local code = Int(Call(RL.PICK, a.i))
   Log("pick", a.id, "code", code)
   if code ~= 0 then
     funcLuaCommand(C.SE, SE_NG)
-    Message(string.format(TXT.ERROR, code))
+    Message(Text(TXT.ERROR, code))
     return
   end
   funcLuaCommand(C.SE, SE_DECIDE)
@@ -522,7 +534,7 @@ end
 
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------
 function OnInit()
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_UI)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_MAP)
   ready = false

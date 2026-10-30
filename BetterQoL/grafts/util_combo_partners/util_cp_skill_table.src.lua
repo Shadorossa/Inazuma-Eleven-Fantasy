@@ -282,18 +282,7 @@ do
     for _, t in ipairs(F.ROW_TEXTS) do
       pcall(funcLuaMenuCommand, 2735666188 --[[text visible]], L, t, false, i)
     end
-    pcall(funcLuaMenuCommand, R.RESET_FACE, L, i, R.FACE_SLOT)
-    local face = false
-    if e.chara ~= nil and e.chara ~= 0 then
-      pcall(SetDisableForceCharaInvalidUseTarget)
-      local ok, drawn = pcall(funcLuaMenuCommand, 552280324, L, i, false, R.FACE, R.FACE_SLOT, 0, 0, e.chara)
-      pcall(SetEnableForceCharaInvalidUseTarget)
-      face = ok and drawn ~= false
-    end
-    if not face then
-      pcall(funcLuaMenuCommand, 558735651, L, UTIL_CP.ICON_TEX, UTIL_CP.UNKNOWN_SPR, R.FACE_SLOT, 0, i)
-    end
-    pcall(funcLuaMenuCommand, 3405944500, L, R.FACE, true, i)
+    local face = UTIL_CP.Face(L, i, e.chara, R.FACE, R.FACE_SLOT)
     UTIL_CP.Place(L, i, F.PLATE_MESH, F.PLATE_FRAME)
     pcall(funcLuaMenuCommand, 558735651, L, F.PLATE_TEXTURE, F.PLATE_SPRITE, F.PLATE_SLOT, 0, i)
     pcall(funcLuaMenuCommand, 3405944500, L, F.PLATE_MESH, true, i)
@@ -496,6 +485,7 @@ do
   UTIL_CP.WrapSkillTableGlobal("Step", function(previous)
     return function(...)
       local r = table.pack(previous(...))
+      pcall(UTIL_CP.FacesSettle)
       local F = UTIL_CP.CARD_FACES
       if F.want ~= nil or F.shown then
         local ok, err = pcall(UTIL_CP.CardFacesStep)

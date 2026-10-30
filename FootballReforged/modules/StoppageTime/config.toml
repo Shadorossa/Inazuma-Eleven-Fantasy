@@ -1,0 +1,61 @@
+# Stoppage Time: its settings (read by scripts\stoppage_time.lua at the start; restart the game after a change).
+# docs/game/mods/stoppage-time.md
+
+[stoppage_time]
+# THE PERIODS that get added time: 1 and 2 the regular halves, 3 and 4 the extra-time halves (a one-period match is
+# half 1). The shootout and a period without a clock never get any.
+halves = [1, 2, 3, 4]
+# THE ADDED TIME of a half = the seconds of its events (below) in whole minutes: "nearest" (2:29 -> 2, 2:30 -> 3) or
+# "up" (any second more is one more minute); then at least min_minutes and at most max_minutes.
+rounding = "nearest"
+min_minutes = 1
+max_minutes = 5
+# NOT IN these game modes (keys of the VR-Framework's game_modes.toml: story = the story mode's scripted matches and
+# their own clocks) nor while one of these game state keys is set (match.challenge.active = a Football Reforged
+# challenge with its own clock; match.training = a training match).
+blocked_modes = ["story"]
+blocked_states = ["match.challenge.active", "match.training"]
+# true: one loader.log line per half (its events and its added time) and per play-on.
+log = true
+
+# GAME SECONDS each event of the half adds (the seconds of the scoreboard's clock). An event counts while the half's
+# regular time runs (from its kick-off to the «+N» telop).
+[stoppage_time.seconds]
+# a foul whistled (any card or none)
+foul = 15
+# a special move's cut-in of one of technique_groups (each cut-in stops play)
+technique = 5
+# a shot that reaches the keeper (his scene, a keeper move or a basic catch)
+keeper_scene = 5
+# a goal (its celebration and the kick-off)
+goal = 30
+# a player who comes on (the game's substitution scene, once per player)
+substitution = 20
+
+[stoppage_time.technique]
+# the cut-in groups that count as a technique (content\defaults\match_events.toml of the VR-Framework: shot,
+# dribble, defense, keeper, scene, other); keeper scenes are counted apart (seconds.keeper_scene)
+groups = ["shot", "dribble", "defense"]
+
+[play_on]
+# PLAY-ON: when the added time runs out while the team with the ball attacks in its attacking zone, the half goes on
+# until the play ends, at most max_seconds more. false: the half ends with the clock.
+enabled = true
+# the most it goes on, in "real" seconds (what you see; at the game's normal speed 1 real s = 14.1 s of the clock) or
+# in "game" seconds (the scoreboard's clock).
+max_seconds = 30
+max_seconds_unit = "real"
+# THE ATTACKING ZONE: from this part of the pitch on, measured from the attacking team's own goal (0) to the goal it
+# attacks (1). 0.5 = the rival half; 0.75 = the last quarter, in front of the rival's area.
+attack_zone_from = 0.5
+# THE PLAY ENDS (and the half with it) when the rival team wins the ball, a goal or a foul is given, or the game
+# enters one of these states (12 GoalNet, 17 OutOfPlay: the ball went out or the referee stopped play).
+end_states = [12, 17]
+
+[telop]
+# the «+N» telop when the regular time ends (the retail AI-camera telop with the text key telop_added_time).
+enabled = true
+hold_seconds = 3.0
+# moved from the retail telop's own place by these layout units (x right, y up); 0, 0 = the retail place
+offset_x = 0
+offset_y = 0

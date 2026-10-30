@@ -19,26 +19,21 @@ if VRFW_MenuMusic == nil then
   }
   VRFW_MenuMusic = M
 
-  -- the VM's funcLuaCommand with the swap (idempotent: the wrapper marks itself)
-  function M.Install()
-    local real = funcLuaCommand
-    if type(real) ~= "function" or real == M.wrapper then
-      return false
-    end
-    -- the arguments go on as the caller gave them (a C command counts them: no extra nil for a call without one)
-    local function wrapped(...)
-      local cmd, a = ...
-      if cmd == M.EXEC and type(a) == "number" then
-        local ok, v = pcall(real, M.ASK, a)
-        if ok and type(v) == "number" and v ~= 0 then
-          return real(cmd, v, select(3, ...))
-        end
+  -- the arguments go on as the caller gave them (a C command counts them: no extra nil for a call without one)
+  local function swap(nxt, ...)
+    local cmd, a = ...
+    if type(a) == "number" then
+      local ok, v = pcall(funcLuaCommand, M.ASK, a)
+      if ok and type(v) == "number" and v ~= 0 then
+        return nxt(cmd, v, select(3, ...))
       end
-      return real(...)
     end
-    M.wrapper = wrapped
-    funcLuaCommand = wrapped
-    return true
+    return nxt(...)
+  end
+
+  -- the VM's funcLuaCommand with the swap (idempotent: one handler per VM)
+  function M.Install()
+    return VRFW_Host.HookCommand(M.EXEC, swap, "VRFW.menu_music")
   end
 
   -- watch the menu script of this VM: the swap goes in at its OnInit (the engine's first callback)

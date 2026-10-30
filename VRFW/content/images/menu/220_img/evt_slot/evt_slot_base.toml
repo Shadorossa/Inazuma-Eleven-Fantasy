@@ -1,7 +1,7 @@
 # VR-Framework: the save slot screen's card atlas (#/menu/220_img/evt_slot/evt_slot_base.g4tx, a NEW atlas;
 # docs/framework/save-slots.md «Card art»). Its pixels are made at every first start (and after a game update) from
 # the PLAYER'S own game files by the image type's recipes (image_engine::recipe): the release ships this recipe and
-# the framework's own drawings (evt_slot_base\*.png: disc, plus, generic emblem), never Level-5 pixels.
+# the framework's own drawings (evt_slot_base\*.png: plus, generic emblem), never Level-5 pixels.
 # Same art as the 2.0 pack-time generator research/scripts/slot_card_art.py (build_sprites / atlas_layout): v4.2
 # bodies 424x624 from the retail save_info_base01 / 02 (save01_04), padlock from mainmenu90_30, row plates from
 # save_mode_base01 + retail glyphs. A recipe that cannot be made is an ERROR in the log; its card stays blank.
@@ -123,10 +123,6 @@ ops = [{ op = "alpha_crop" }, { op = "resize_width", width = 48 }]
 
 # ---- own drawings (shipped) --------------------------------------------------------------------------------------
 [[recipe]]
-name = "disc"
-png = "evt_slot_base/disc.png"
-
-[[recipe]]
 name = "plus"
 png = "evt_slot_base/plus.png"
 
@@ -199,17 +195,15 @@ ops = [
     { op = "fade", factor = 0.92 },
 ]
 
-# ---- the six cards (slot_card_art.decorate_body): disc centred at (212, 150); locked = + padlock at (272, 204);
-# empty = dashed circle + plus instead of the disc -----------------------------------------------------------------
+# ---- the six cards: plain body (the emblem goes on it directly, centre (212, 150)); locked = + padlock at (272, 204);
+# empty = dashed circle + plus ---------------------------------------------------------------------------
 [[recipe]]
 name = "card_on"
 from = "body_on"
-ops = [{ op = "paste", image = "disc", centre = [212.0, 150.0] }]
 
 [[recipe]]
 name = "card_off"
 from = "body_off"
-ops = [{ op = "paste", image = "disc", centre = [212.0, 150.0] }]
 
 [[recipe]]
 name = "card_locked_on"

@@ -16,7 +16,7 @@ local T = ChronicleDeluxe.List
 T.CMD = {
   NODE_TRANSLATION = 1856671416,  -- (layer, instance, node, x, y, z)
   NODE_SCALE = 2885415772,        -- (layer, instance, node, width, height)
-  MESH_VISIBLE = 3405944500,      -- CMND_SET_MESH_VISIBLE (layer, mesh, visible, instance)
+  MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@,      -- CMND_SET_MESH_VISIBLE (layer, mesh, visible, instance)
   LOCATOR_VISIBLE = 2158717427,   -- (layer, locator, visible[, instance])
   FOCUSED_PIECE = 3963237677,     -- (2): the piece index of the focused row (the retail OnChangeFocus query)
 }

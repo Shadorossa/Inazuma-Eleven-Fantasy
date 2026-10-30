@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Caliburn (Caliburn, whs01890, cut-in ev60_01890) (docs/framework/types/technique.md
+# `trajectory`): one level line at 1.8 m from the kick point into the goal point (owner 2026-10-24: horizontal,
+# never rising or falling; never the game's own curved / arched path), whatever the shot's length. The lowest
+# lightning loop stays ~0.9 m over the pitch.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m): points from the kick, goal_points counted back from the goal point; the first / last height is held.
+
+# Caliburn (whs01890).
+[[edit]]
+target = "whs01890"
+trajectory = { points = [[0.0, 1.8]], goal_points = [[0.0, 1.8]], unblockable = false }

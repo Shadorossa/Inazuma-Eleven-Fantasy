@@ -1,0 +1,43 @@
+id = "StoppageTime"
+# name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
+name = "Stoppage Time"
+version = "1.2.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Added time at the end of every half, as in football: fouls, special moves, keeper scenes, goals and substitutions of the half add seconds, rounded to whole minutes (1 to 5). When the half's regular time ends a «+N» telop shows and the clock keeps running into the added time. When it runs out while a team attacks in the rival half, the play goes on (up to 30 s) until the ball goes out, the rival wins it back, a goal or a foul. Every weight, limit and the attacking zone are in config.toml."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-30"
+# This mod's own names (Lua StoppageTime.X, command CMND_STOPPAGETIME_TELOP, layer stoppage_time_telop); never VRFW.
+prefix = "StoppageTime"
+folder = "StoppageTime"
+# Created on 2026-10-28 (owner request: added time from what happened in the half and play-on while attacking;
+# docs/game/mods/stoppage-time.md). Standard mod layout (docs/framework/mod-layout.md):
+#   config.toml                       [stoppage_time] the seconds of each event, the halves, the limits, the modes and
+#                                     states it skips; [play_on] the attacking zone, the limit, what ends the play;
+#                                     [telop] how long the «+N» telop shows and its offset
+#   scripts\stoppage_time.lua         the run time: counts the half's events, sets the added time when the regular
+#                                     time ends, decides the play-on and ends the half when the play ends
+#   content\game\telop.toml           the command CMND_STOPPAGETIME_TELOP the match HUD asks for the telop
+#   content\menus\stoppage_time_telop.toml   the telop layer on the match HUD (the retail AI-camera telop)
+#   assets\lua\_all\stoppage_time_telop.lua  the match HUD side: opens the layer with the telop's text, closes it
+#   text\keys.toml                    the card's name / description and the telop's text, 9 languages
+# The framework provides the mechanisms (VRFW period service: the trigger time_up, VRFW.match.period / set_added /
+# end_period; the match triggers foul, goal, possession, cutin_start, keeper_scene, state_enter and the game event
+# match:substitution); this module only declares the rules.
+requires = ["VRFW>=2.260.0", "FootballReforged>=1.12.0"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = ["command"]
+
+[exports]
+functions = []
+keys = []
+tables = []
+
+# A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
+# screen; switching Football Reforged off switches it off too. On by default.
+[module]
+of = "FootballReforged"
+order = 130

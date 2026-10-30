@@ -1,0 +1,14 @@
+schema = "VRFW.game/2"
+
+# Equipment of a player for the game's Lua (docs/framework/types/item.md §15). Run time: scripts\equipment.lua over the
+# native read VRFW.item.equipped and the item type's [[VRFW.EquipmentSet]].
+
+# (charaHdl) -> boots, bracelet, pendant, special item ids (0 = empty); nothing when not one of the user's players
+[[VRFW.Command]]
+name = "CMND_VRFW_EQUIPPED_ITEMS"
+handler = "Equipment.Items"
+
+# (charaHdl, "<mod>.<Name>") -> equip slots holding a member of the set; -1 = unknown set or not the user's player
+[[VRFW.Command]]
+name = "CMND_VRFW_EQUIPMENT_SET_PIECES"
+handler = "Equipment.SetPieces"

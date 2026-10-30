@@ -115,3 +115,8 @@ add_layer = { name = "evt_bbd_roster_blank", object = "team00_01_p1_chara_card_b
 [[patch]]
 menu = "enjoy_team_select_menu"
 add_layer = { name = "evt_bbd_roster_card", object = "team00_01_chara_card_for_formation_evt", count = 20, after = "evt_bbd_roster_blank", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_roster_blank" }] }
+
+# 1.39.0: the text on the Campaña grid's Draft tile («DRAFT», graft bbd_campaign.lua BBCR_DRAFT_TagUpdate)
+[[patch]]
+menu = "enjoy_team_select_menu"
+add_layer = { name = "evt_bb_draft_tag", object = "evt_bbd_pk_txt", count = 1, align = [1, 8], scale = 0.20000000298023224, after = "evt_bbd_pk_txt", groups = [{ group = "enjoy_team_select_menu_campaign", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_pk_txt" }, { group = "enjoy_team_select_menu_offline", flags = [0, 0, 0, 0, 1, 0], after = "evt_bbd_pk_txt" }] }

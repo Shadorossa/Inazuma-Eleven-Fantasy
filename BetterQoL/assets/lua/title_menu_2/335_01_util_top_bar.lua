@@ -19,15 +19,15 @@ BetterQoL.TopBar.ALIVE = 3600          -- frames after OnEnter: the title is sti
 BetterQoL.TopBar.Title = {pending = nil, frames = 0, fired = 0, force = nil, row_ok = false, unready = false}
 
 function BetterQoL.TopBar.Log(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "utilities top_bar title", ...)
+  pcall(funcLuaCommand, 3661580131, "utilities top_bar title", ...)
 end
 
 function BetterQoL.TopBar.Take(k)
-  if not funcLuaCommand(2947612279, k) then
+  if not VRFW_Param.Has(k) then
     return nil
   end
-  local v = funcLuaCommand(3522198769, k)
-  funcLuaCommand(3363400568, k)
+  local v = VRFW_Param.Get(k)
+  VRFW_Param.Clear(k)
   return v
 end
 
@@ -38,7 +38,7 @@ function BetterQoL.TopBar.GiveUp(why)
   T.pending, T.fired, T.force = nil, 0, nil
   funcLuaCommand(609722083, 0, 0.3)
   if fired then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], 24113234 --[[cmn05_01_coursor]], 0, true)
+    funcLuaMenuCommand(711242136, 24113234 --[[cmn05_01_coursor]], 0, true)
     funcLuaMenuCommand(1558704558, 3874253475 --[[title_menu_2]], true)
   end
 end
@@ -68,7 +68,7 @@ function BetterQoL.TopBar.Step()
     end
     T.row_ok = true
   end
-  if funcLuaCommand(2947612279, BetterQoL.TopBar.READY_KEY) ~= true then
+  if not VRFW_Param.Has(BetterQoL.TopBar.READY_KEY) then
     if T.frames < BetterQoL.TopBar.READY_MAX then
       return
     end
@@ -96,11 +96,11 @@ do
   function OnInit(...)
     local T = BetterQoL.TopBar.Title
     local go = BetterQoL.TopBar.Take(BetterQoL.TopBar.GO_KEY)
-    if type(go) == "number" and go < 0 then
-      go = go + 4294967296 -- a title id above 2^31 may come back signed from the param store
+    if type(go) == "number" then
+      go = VRFW_Id.u32(go) -- a title id above 2^31 may come back signed from the param store
     end
-    if funcLuaCommand(2947612279, BetterQoL.TopBar.READY_KEY) then
-      funcLuaCommand(3363400568, BetterQoL.TopBar.READY_KEY) -- this title's title_main sets it again
+    if VRFW_Param.Has(BetterQoL.TopBar.READY_KEY) then
+      VRFW_Param.Clear(BetterQoL.TopBar.READY_KEY) -- this title's title_main sets it again
     end
     if type(go) == "number" and go ~= 0 then
       T.pending, T.frames, T.fired, T.force, T.row_ok, T.unready = go, 0, 0, nil, false, false

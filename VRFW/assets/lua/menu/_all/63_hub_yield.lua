@@ -15,7 +15,7 @@
 -- them answers 0 instances and is skipped. Callers: vrfw_contact_map_menu (graft contact_map).
 if VRFW_HubYield == nil then
   local Y = {
-    LAYER_NUM = 1175615627, VISIBLE = 711242136, IS_VISIBLE = 1262717583, LOG = 3661580131,
+    LAYER_NUM = VRFW_Cmd.GET_CREATE_LAYER_NUM, VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE, IS_VISIBLE = VRFW_Cmd.IS_LAYER_VISIBLE, LOG = VRFW_Cmd.EVT_LOG,
     LAYERS = {
       575058101,    -- mainmenu90_01_header (title, mode icon, currency counters)
       1138543975,   -- mainmenu01_06_base_button_guide (the prompt row)

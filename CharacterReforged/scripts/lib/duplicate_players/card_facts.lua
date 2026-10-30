@@ -1,7 +1,8 @@
 -- Character Reforged › duplicate players: what the pass knows besides the save, read from the tables the game loads
 -- and the declaring mods' files (no lists in code).
 --
---   cards     chara_param (served): card -> { character = chara_base (col 1), element (col 2), special_rarity (col 41) }
+--   cards     chara_param (served): card -> { character = chara_base (col 1), element (col 2), special_rarity (col 41) };
+--             a character's base card = his first normal card (col 41 = 0) in chara_param order
 --   hidden    the cards a rule releases (release_cards_hidden_in: that mod's [[hide]] / [[remove]] mode = "hide" rows).
 --             A hidden card's chara_param row may be deleted, so its element is its character's (the first normal
 --             card of that chara_base in chara_param)
@@ -9,8 +10,6 @@
 --             the generic hyper powers and the test_* rows are not auras a team entry keeps)
 
 local CardFacts = {}
-
-local band = bit32.band
 
 local CHARA_PARAM = "data/common/gamedata/character/chara_param_*.cfg.bin"
 local AURA_CONFIG = "data/common/gamedata/skill/aura_skill_config_*.cfg.bin"
@@ -22,10 +21,8 @@ local AURA_TYPE_GENERIC_POWER = 5
 local TEST_AURA_PREFIX = "test_"
 local FIRST_ELEMENT, LAST_ELEMENT = 1, 4
 
-local function u32(v)
-  if type(v) ~= "number" then return 0 end
-  return band(v, 0xFFFFFFFF)
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 local function whole(v)
   if type(v) ~= "number" then return 0 end
@@ -49,18 +46,25 @@ local function read_cards()
   return cards
 end
 
--- the element of each character's first normal card (chara_param order)
-local function first_normal_elements(cards)
+-- each character's base card: his first normal card (col 41 = 0) in chara_param order
+local function first_normal_cards(cards)
   local by_order = {}
   for card, facts in pairs(cards) do by_order[#by_order + 1] = { facts.order, card, facts } end
   table.sort(by_order, function(a, b) return a[1] < b[1] end)
-  local elements = {}
+  local base = {}
   for _, entry in ipairs(by_order) do
     local facts = entry[3]
-    if facts.special_rarity == 0 and facts.character ~= 0 and elements[facts.character] == nil then
-      elements[facts.character] = facts.element
+    if facts.special_rarity == 0 and facts.character ~= 0 and base[facts.character] == nil then
+      base[facts.character] = entry[2]
     end
   end
+  return base
+end
+
+-- the element of each character's base card
+local function first_normal_elements(cards)
+  local elements = {}
+  for character, card in pairs(first_normal_cards(cards)) do elements[character] = cards[card].element end
   return elements
 end
 
@@ -135,6 +139,12 @@ end
 function CardFacts:character_of(card)
   local facts = self.cards[card]
   return facts and facts.character or 0
+end
+
+-- the base card of a character (his first normal card), nil when he has none
+function CardFacts:base_card_of(character)
+  if self.base_cards == nil then self.base_cards = first_normal_cards(self.cards) end
+  return self.base_cards[character]
 end
 
 function CardFacts:is_hidden(card)

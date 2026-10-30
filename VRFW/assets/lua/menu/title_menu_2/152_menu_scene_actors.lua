@@ -12,10 +12,10 @@
 do
   local A = {
     ID = "vrfw.menu_scene.actors",
-    STATE = 2588710643,          -- CMND_VRFW_MENU_SCENE_STATE () -> state, key
-    ACTORS = 3936847707,         -- CMND_VRFW_MENU_SCENE_ACTORS (key) -> "" | { sig, n, people, [i] = actor }
-    LOG = 3661580131,            -- CMND_EVT_LOG
-    CREATE = 1100875379,         -- CMND_CREATE_SCN_CHARA (id, 1, x, y, z, rx, ry, rz, 9, true, false, 0, false, 0, 6) -> handle
+    STATE = VRFW_Cmd.VRFW_MENU_SCENE_STATE,          -- CMND_VRFW_MENU_SCENE_STATE () -> state, key
+    ACTORS = VRFW_Cmd.VRFW_MENU_SCENE_ACTORS,         -- CMND_VRFW_MENU_SCENE_ACTORS (key) -> "" | { sig, n, people, [i] = actor }
+    LOG = VRFW_Cmd.EVT_LOG,            -- CMND_EVT_LOG
+    CREATE = VRFW_Cmd.CREATE_SCN_CHARA,         -- CMND_CREATE_SCN_CHARA (id, 1, x, y, z, rx, ry, rz, 9, true, false, 0, false, 0, 6) -> handle
     KIT_CREATE = 3201418067,     -- the menus' character model create (menu_chara_model_comp ChangeCharaModel): the
                                  -- CMND_CREATE_SCN_CHARA arguments, the name's identity (14), ..., the uniform (18)
     LOOK_ID = 347353059,         -- (id, false) -> the values the party event gives CMND_CREATE_SCN_CHARA (its first)
@@ -25,21 +25,21 @@ do
     MOTION = 3429940381,         -- (handle, clip, next clip, blend, flag, int, start): handler 0xC89990; its 7th
                                  -- argument (default -1) goes into the play request beside the blend: tried as the
                                  -- start time, so a pose starts past its first face keys (the open mouth on reveal)
-    FACE_HOLD = 719584893,       -- CMND_VRFW_SCN_CHARA_FACE_HOLD (handle, on): the body clip's face channel off / on
-    EDGE = 2124849688,           -- CMND_VRFW_SCN_CHARA_EDGE (handle, on, r, g, b, a, pixel) -> text | nil, why
+    FACE_HOLD = VRFW_Cmd.VRFW_SCN_CHARA_FACE_HOLD,       -- CMND_VRFW_SCN_CHARA_FACE_HOLD (handle, on): the body clip's face channel off / on
+    EDGE = VRFW_Cmd.VRFW_SCN_CHARA_EDGE,           -- CMND_VRFW_SCN_CHARA_EDGE (handle, on, r, g, b, a, pixel) -> text | nil, why
     EDGE_PIXEL = 4.0,            -- the selected actor's edge width (pixels)
     UNIFORM_KINDS = { field = 0, keeper = 10 }, -- an actor's uniform_kind -> argument 20 of the kit create
     POSE_START = 0.5,            -- seconds into the pose clip the loop starts (the 7th argument; -1 = the game's)
     DELETE = 2054212170,         -- (handle)
-    MOTION_PACK = 3566349311,    -- CMND_VRFW_SCN_CHARA_MOTION_PACK (handle, motion set): the set's NPC pack
-    FACIAL = 556344657,          -- CMND_VRFW_SCN_CHARA_FACIAL_DEFAULT (handle): the facial component's default face
+    MOTION_PACK = VRFW_Cmd.VRFW_SCN_CHARA_MOTION_PACK,    -- CMND_VRFW_SCN_CHARA_MOTION_PACK (handle, motion set): the set's NPC pack
+    FACIAL = VRFW_Cmd.VRFW_SCN_CHARA_FACIAL_DEFAULT,          -- CMND_VRFW_SCN_CHARA_FACIAL_DEFAULT (handle): the facial component's default face
                                  -- again (CMND_SET_MOTION_FACIAL(chara, 0) by handle)
-    FACE_PROBE = 1557528115,     -- CMND_VRFW_SCN_CHARA_FACE_PROBE (handle, why): a read-only probe of the face, logged
+    FACE_PROBE = VRFW_Cmd.VRFW_SCN_CHARA_FACE_PROBE,     -- CMND_VRFW_SCN_CHARA_FACE_PROBE (handle, why): a read-only probe of the face, logged
     PROBE_DELAY = 90,            -- frames after a shot change (or the reveal) before the face probe (the camera settled)
     PROBE_MAX = 6,               -- face probes per title opening
-    HANDLES = 3587749369,        -- CMND_VRFW_MENU_SCENE_ACTOR_HANDLES (key, text | nil) -> text: the live actors kept by
+    HANDLES = VRFW_Cmd.VRFW_MENU_SCENE_ACTOR_HANDLES,        -- CMND_VRFW_MENU_SCENE_ACTOR_HANDLES (key, text | nil) -> text: the live actors kept by
                                  -- the framework («handle=id|…») for a title that opens again over the same run
-    IS_PLAYING = 1198973151,     -- CMND_GET_IS_PLAY_MOTION (object, clip) -> playing
+    IS_PLAYING = VRFW_Cmd.GET_IS_PLAY_MOTION,     -- CMND_GET_IS_PLAY_MOTION (object, clip) -> playing
     OBJECT_OF = 117654406,       -- (scene character handle) -> ok, object: the handle CMND_GET_IS_PLAY_MOTION takes (the
                                  -- retail reads it this way: prog_common, soccer_summon_menu)
     BUILD_FRAMES = 600,          -- an actor not built after these frames is made again
@@ -72,7 +72,7 @@ do
       pcall(funcLuaCommand, A.LOG, "menu_scene", "title_menu_2", "actors", ...)
     end
   end
-  local function Hex(v) return string.format("0x%08X", (tonumber(v) or 0) % 4294967296) end
+  local function Hex(v) return VRFW_Id.hex(v) end
 
   -- the live actors to the framework (one owner across title openings)
   local function Keep()

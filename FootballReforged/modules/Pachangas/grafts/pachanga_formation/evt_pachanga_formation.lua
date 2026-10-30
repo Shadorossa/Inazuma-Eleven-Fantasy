@@ -22,7 +22,6 @@ do
     KEY11 = EVT_PF_KEY11,            -- set by the dock in Partido: evt_pf11_menu / evt_pf11_group
     UPVAL = @crc:CMND_EVT_PACHANGA_UPVAL@,
     SELECT = 2438617231,             -- param «formation picker mode» (the FORMACIÓN box), peeked before OnInit
-    EXISTS = 2947612279, GET = 3522198769, DEL = 3363400568,
     -- no synergies in Pachanga (as in the dock): hidden, no focus, decide / enter refused. The «T»
     -- (soccer11_17_tactics_check_button) is not hidden any more: supertácticas are back in Pachanga (2026-09-30).
     NO5 = {[3966159602] = true,      -- soccer11_40_synergy_attachment_button_pillar (castle)
@@ -32,9 +31,36 @@ do
   EVT_PF = PF
   function PF.hide()
     for L in pairs(PF.NO5) do
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, 0, false)
-      pcall(funcLuaMenuCommand, 3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], L, false)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, L, 0, false)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_ENABLE_CTRL_FOCUS@, L, false)
     end
+  end
+  -- the retail refreshes show the synergy buttons again (CMND_UPDATE_SYNERGY_BUTTON and the INCLUDE's own layer /
+  -- focus calls): while this VM is in 5v5 mode those calls leave them hidden
+  function PF.guard()
+    if type(VRFW_Host) ~= "table" or type(VRFW_Host.HookCommand) ~= "function" then
+      return
+    end
+    local menu = {menu = true}
+    VRFW_Host.HookCommand(@crc:CMND_SET_LAYER_VISIBLE@, function(nxt, id, layer, index, visible, ...)
+      if PF.on and PF.NO5[layer] and visible then
+        return nxt(id, layer, index, false, ...)
+      end
+      return nxt(id, layer, index, visible, ...)
+    end, "Pachangas.formation_layer_visible", menu)
+    VRFW_Host.HookCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, function(nxt, id, layer, enabled, ...)
+      if PF.on and PF.NO5[layer] and enabled then
+        return nxt(id, layer, false, ...)
+      end
+      return nxt(id, layer, enabled, ...)
+    end, "Pachangas.formation_layer_focus", menu)
+    VRFW_Host.HookCommand({@crc:CMND_UPDATE_SYNERGY_BUTTON@, 3964547760}, function(nxt, id, layer, ...)
+      local r = table.pack(nxt(id, layer, ...))
+      if PF.on and PF.NO5[layer] then
+        PF.hide()
+      end
+      return table.unpack(r, 1, r.n)
+    end, "Pachangas.formation_synergy_button", menu)
   end
   local function wrapcb(name, make)
     local f = rawget(_ENV, name)
@@ -64,31 +90,16 @@ do
       if PF.on then
         pcall(funcLuaMenuCommand, 3252599449, PF.LIST, PF.COUNT)
         pcall(funcLuaMenuCommand, 3252599449, PF.ITEM, PF.COUNT, PF.COUNT)
-        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga formation", "picker rows", PF.COUNT)
+        pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT pachanga formation", "picker rows", PF.COUNT)
       end
       return table.unpack(r, 1, r.n)
     end
   end)
-  -- retail code shows the synergy / «T» buttons again when it refreshes them: keep them hidden every few frames
-  PF.tick = 0
-  for _, cb in ipairs({"PostStep", "Step"}) do
-    wrapcb(cb, function(orig)
-      return function(...)
-        if PF.on then
-          PF.tick = PF.tick + 1
-          if PF.tick % 8 == 0 then
-            PF.hide()
-          end
-        end
-        return orig(...)
-      end
-    end)
-  end
   for _, cb in ipairs({"OnDecideFocus", "OnEnter"}) do
     wrapcb(cb, function(orig)
       return function(a1, ...)
         if PF.on and PF.NO5[a1] then
-          pcall(funcLuaCommand, 1917805374, 2086672038 --[[sy0003]])
+          pcall(funcLuaCommand, @crc:CMND_SND_PLAY_SE@, 2086672038 --[[sy0003]])
           return
         end
         return orig(a1, ...)
@@ -110,29 +121,30 @@ do
       PF.on, PF.dock = false, nil
       PF.opens = PF.opens + 1
       pcall(function()
-        if funcLuaCommand(PF.EXISTS, PF.KEY) then
-          dock = funcLuaCommand(PF.GET, PF.KEY)
-          funcLuaCommand(PF.DEL, PF.KEY)
+        if VRFW_Param.Has(PF.KEY) then
+          dock = VRFW_Param.Get(PF.KEY)
+          VRFW_Param.Clear(PF.KEY)
         end
-        if type(PF.KEY11) == "number" and funcLuaCommand(PF.EXISTS, PF.KEY11) then
-          dock11 = funcLuaCommand(PF.GET, PF.KEY11)
-          funcLuaCommand(PF.DEL, PF.KEY11)
+        if type(PF.KEY11) == "number" and VRFW_Param.Has(PF.KEY11) then
+          dock11 = VRFW_Param.Get(PF.KEY11)
+          VRFW_Param.Clear(PF.KEY11)
         end
-        sel = funcLuaCommand(PF.EXISTS, PF.SELECT) == true
+        sel = VRFW_Param.Has(PF.SELECT)
       end)
       local r = table.pack(init(...))
-      if type(dock) == "number" and funcLuaCommand(3004482920 --[[CMND_GET_PLAY_GAME_MODE?]]) ~= 2
+      if type(dock) == "number" and funcLuaCommand(@crc:CMND_GET_PLAY_GAME_MODE@) ~= 2
           and type(OnInitFormationCommon) == "function" then
-        local ok, got, fid = pcall(funcLuaCommand, 1033065575 --[[CMND_GET_TEAM_SET_INFO]], dock, 1, 4)
+        local ok, got, fid = pcall(funcLuaCommand, @crc:CMND_GET_TEAM_SET_INFO@, dock, 1, 4)
         local e = select(2, pcall(OnInitFormationCommon, (ok and got) and fid or nil, nil, dock,
           (EVT_PF_SELECT and sel) or nil, nil, true, true))
-        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga formation", "5v5 list", "dock", dock,
+        pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT pachanga formation", "5v5 list", "dock", dock,
           "formation", tostring(fid), "select", tostring(sel), tostring(e))
         PF.on, PF.dock = true, dock
+        PF.guard()
         PF.hide()
       elseif type(dock11) == "number" and PF.opens > 1 and type(OnInitFormationCommon) == "function" then
         -- this VM was opened before (state kept): back to the 11v11 INCLUDE state whatever the last visit was
-        local ok, got, fid = pcall(funcLuaCommand, 1033065575 --[[CMND_GET_TEAM_SET_INFO]], dock11, 0, 4)
+        local ok, got, fid = pcall(funcLuaCommand, @crc:CMND_GET_TEAM_SET_INFO@, dock11, 0, 4)
         local u = -1
         if type(UpdateFormationReducedDrawingIconPos) == "function" then
           local okU, n = pcall(funcLuaCommand, PF.UPVAL, UpdateFormationReducedDrawingIconPos, 5, 11, 40, 94)
@@ -143,7 +155,7 @@ do
         end
         local e = select(2, pcall(OnInitFormationCommon, (ok and got) and fid or nil, nil, dock11,
           (EVT_PF_SELECT and sel) or nil, nil, true, false))
-        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga formation", "11v11 state", "dock", dock11,
+        pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT pachanga formation", "11v11 state", "dock", dock11,
           "formation", tostring(fid), "upvalues", tostring(u), "open", PF.opens, tostring(e))
       end
       return table.unpack(r, 1, r.n)

@@ -9,9 +9,9 @@ do
   VRFW_ItemXform.CAN = @crc:CMND_VRFW_ITEM_XFORM_CAN@
   VRFW_ItemXform.LOG = @crc:CMND_EVT_LOG@
   VRFW_ItemXform.ITEM_OF_INV = 1730783731       -- (invHdl, 0) -> item id (retail CheckEnableEquip)
-  VRFW_ItemXform.ITEM_NAME = 1883585771         -- (itemId, 0) -> item name (retail UpdateItemEquipLine)
-  VRFW_ItemXform.TEXT_GET = 4074371074          -- (textId) -> text
-  VRFW_ItemXform.SE = 1917805374
+  VRFW_ItemXform.ITEM_NAME = @crc:CMND_GET_ITEM_PARAM@         -- (itemId, 0) -> item name (retail UpdateItemEquipLine)
+  VRFW_ItemXform.TEXT_GET = @crc:CMND_TEXT_GET@          -- (textId) -> text
+  VRFW_ItemXform.SE = @crc:CMND_SND_PLAY_SE@
   VRFW_ItemXform.SE_NG = 2086672038             -- sy0003
   VRFW_ItemXform.DECIDE = 4067673008            -- OnFunction "equip"
   VRFW_ItemXform.hdl = 0

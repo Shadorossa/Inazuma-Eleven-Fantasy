@@ -15,6 +15,26 @@ chain = ["ROOT_MATCH"]
 name = "legendary_duel"
 game = "Duel.Manager"
 
+# ------------------------------------------------------------------------------------------------ structs
+
+# The match info block (legendary_match_info): the user's team.
+[[VRFW.Struct]]
+name = "LegendaryMatchInfo"
+size = 0x2C2A
+fields = { user_team = { at = 0x2C29, type = "u8" } }
+
+# The focus battle manager (legendary_duel): the duel's result kind (6 = a power charge / power block).
+[[VRFW.Struct]]
+name = "LegendaryDuel"
+size = 0xB09
+fields = { result_kind = { at = 0xB08, type = "u8" } }
+
+# The foul request GetFoulRate reads (its first argument): the offender's handle.
+[[VRFW.Struct]]
+name = "LegendaryFoulRequest"
+size = 0x8
+fields = { kind = { at = 0x0, type = "u8" }, offender = { at = 0x4, type = "u32" } }
+
 # ------------------------------------------------------------------------------------------------ the foul chance
 
 # f32 GetFoulRate(const FoulRequest* req) 0x1665B90: the chance that a contact is a foul. req +0 the kind (1 = a duel),
@@ -28,7 +48,7 @@ game = "Duel.Manager"
 name = "LegendaryMatch.FoulRate"
 kind = "function"
 pattern = "48 8B C4 48 81 EC F8 00 00 00 48 8B 15 ?? ?? ?? ?? 44 0F 29 5C 24 70 44 0F 29 ?? 24 ?? 45 0F 57 ?? 48 89 58 10 8B 59 04"
-rva = 0x1665B90
+rva = 0x169A310
 steal = 17
 relocs = [{ at = 13, next = 17 }]
 args = ["ptr"]

@@ -12,15 +12,14 @@ local VIEW_NEW_LIST, NEW_LIST_MAX = 0x2054, 10
 local MAX_TAB_ROWS = 0x140
 local NO_TAB = 0xFFFFFFFF -- never a slot type (slot types 9 / 10, the lot tabs, are never filtered)
 
-local function u32(v)
-  return bit32.band(v or 0, 0xFFFFFFFF)
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 local function arg_u32(v)
   if type(v) ~= "number" then
     return 0
   end
-  return u32(v >= 0 and math.floor(v) or math.ceil(v))
+  return u32(v)
 end
 
 -- inventory type of the item filter window -> engine test (nil = no filter for that type)
@@ -88,6 +87,39 @@ local function skill_block(params)
   return b, 0x38
 end
 
+-- the same block filled by the game's own code (ItemFilterBlockFill), so a framework patch of the rows (the
+-- technique filter's tension rows) applies; nil when the call is not available
+local MAX_PARAMS = 128
+local function game_skill_block(params)
+  if #params > MAX_PARAMS then
+    return nil
+  end
+  local bp, pp = VRFW.mem.buffer("fill_block", 0x38), VRFW.mem.buffer("fill_params", 12 * MAX_PARAMS)
+  for i = 0, 0x37 do
+    VRFW.mem.write("u8", bp + i, (i >= 0x34) and 1 or 0)
+  end
+  for i, p in ipairs(params) do
+    local at = pp + 12 * (i - 1)
+    VRFW.mem.write("u32", at, arg_u32(p[1]) % 256)
+    VRFW.mem.write("u32", at + 4, arg_u32(p[2]))
+    VRFW.mem.write("u32", at + 8, arg_u32(p[3]))
+  end
+  local ok, err = pcall(VRFW.call, "ItemFilterBlockFill", bp, pp, #params)
+  if not ok then
+    VRFW.warn("game filter fill failed (" .. tostring(err) .. "): the shop's own block is used")
+    return nil
+  end
+  local bytes = VRFW.mem.read_array("u8", bp, 0x38)
+  if type(bytes) ~= "table" then
+    return nil
+  end
+  local b = {}
+  for i = 0, 0x37 do
+    b[i] = bytes[i + 1]
+  end
+  return b, 0x38
+end
+
 local function filter_of(inv, params)
   local pred = pred_of_inv(inv)
   if not pred then
@@ -97,7 +129,10 @@ local function filter_of(inv, params)
   if pred.series then
     block, n = series_stat_block(params)
   else
-    block, n = skill_block(params)
+    block, n = game_skill_block(params)
+    if not block then
+      block, n = skill_block(params)
+    end
   end
   pred.block, pred.n = block, n
   return pred

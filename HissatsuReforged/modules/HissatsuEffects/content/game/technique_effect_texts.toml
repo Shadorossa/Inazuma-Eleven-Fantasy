@@ -1,0 +1,8 @@
+schema = "VRFW.game/2"
+
+# Hissatsu Effects › the move card's rule sentences (scripts\technique_effect_texts.lua): the texts of the behaviour
+# rules that name a move (`text` of every active mod's [[rule]]). Read by the graft skill_card (page 2).
+
+[[VRFW.Command]]
+name = "CMND_HISSATSUEFFECTS_MOVE_RULE_TEXTS"   # (move) -> { count, [i] = sentence }
+handler = "HissatsuEffects.RuleTexts.OfMove"

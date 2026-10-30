@@ -1,0 +1,12 @@
+schema = "VRFW.sprite_redirect/1"
+# Inazuma Fantasy: the game and the Lua ask the game's tab atlas for the section icon by name; it lives in the mod's own
+# atlas (content\images\menu\200_icon\16_icon_list_tab\icon_list_tab.toml), so the game atlas gets no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "inazuma_fantasy_icon_list_tab"
+atlas = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx"
+own_atlas = "#/menu/200_icon/inazuma_fantasy_own/inazuma_fantasy_icon_list_tab.g4tx"
+sprites = [
+    "icon_list_tab_series11",
+    "icon_list_tab_series11_off",
+]

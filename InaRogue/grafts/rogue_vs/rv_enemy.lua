@@ -43,15 +43,15 @@ do
           end
         end
       end
-      local count = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], a5)
+      local count = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, a5)
       if type(count) ~= "number" or count < 19 then
         count = 19
       end
       for i = 0, count - 1 do
         if not used[i] then
           for _, L in ipairs({a5, a6}) do
-            if type(L) == "number" and funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER?]], L, i) == true then
-              funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, false)
+            if type(L) == "number" and funcLuaMenuCommand(@crc:CMND_IS_EXIST_LAYER@, L, i) == true then
+              funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, L, i, false)
             end
           end
         end

@@ -72,6 +72,10 @@ local evt_fold = {
 -- EVT_HIPER_SLOT_TAG: the tag after the plate's name («  · Aura»); off: the name alone (owner 2026-10-15)
 EVT_HIPER_SLOT_TAG = false
 local evt_sel = {tags = nil}
+-- the page arrows (EVT_PageArrows): pages = the plates have a second page (nil = not drawn yet); key = what each
+-- instance of layer evt_plate_page_arrows shows now (nil = unknown, after a set-up); aspect = width / height of the
+-- retail arrow sprite (72 x 136)
+local evt_pa = {pages = nil, key = {}, aspect = 72 / 136}
 local function EVT_SelTag(slot)
   if not EVT_HIPER_SLOT_TAG then
     return ""
@@ -79,7 +83,7 @@ local function EVT_SelTag(slot)
   if evt_sel.tags == nil then
     evt_sel.tags = {}
     for k, id in pairs({[0] = 2257771510 --[[evt_hs_tag_aura]], [1] = 1104879536 --[[evt_hs_tag_mix]]}) do
-      local ok, t = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], id)
+      local ok, t = pcall(funcLuaCommand, 4074371074, id)
       evt_sel.tags[k] = (ok and type(t) == "string" and t ~= "") and t or nil
     end
   end
@@ -104,11 +108,12 @@ function EVT_HiperInit()
   evt_ho_want = false
   evt_fold.progress, evt_fold.input_shift, evt_fold.width = 0, 0, nil
   evt_fold.band, evt_fold.shift = {}, {}
+  evt_pa.pages, evt_pa.key = nil, {}
 end
 
 function EVT_HiperSetupLayer(a1, a2)
   if a1 == EVT_HL then
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_HL, a2, false)
+    pcall(funcLuaMenuCommand, 711242136, EVT_HL, a2, false)
     if EVT_last[a2 + 1] ~= nil then
       EVT_last[a2 + 1].st = -1
       EVT_last[a2 + 1].shown = false
@@ -120,7 +125,10 @@ function EVT_HiperSetupLayer(a1, a2)
     end
   elseif a1 == 1154761048 --[[evt_hiper_chr_icon: the plate portrait, shown by EVT_PlateFace]]
     or a1 == 3071105076 --[[evt_hiper_input: the input column, shown by EVT_InputDraw]] then
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+    pcall(funcLuaMenuCommand, 711242136, a1, a2, false)
+  elseif a1 == 1713173579 --[[evt_plate_page_arrows: the page arrows, shown by EVT_PageArrows]] then
+    pcall(funcLuaMenuCommand, 711242136, a1, a2, false)
+    evt_pa.key[a2 + 1] = nil
   elseif a1 == EVT_BASE then
     EVT_pos = -1
   end
@@ -129,7 +137,7 @@ end
 local function EVT_SetPos(pos)
   for p = 1, #EVT_ATC do
     for i = 1, #EVT_ATC[p] do
-      pcall(funcLuaMenuCommand, 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], EVT_BASE, 0, EVT_ATC[p][i], pos == p - 1)
+      pcall(funcLuaMenuCommand, 1774843228, EVT_BASE, 0, EVT_ATC[p][i], pos == p - 1)
     end
   end
 end
@@ -143,17 +151,17 @@ local function EVT_Info(skill, what)
 end
 
 local EVT_CMD_MXP = 3173975339 --[[CMND_CHARACTERREFORGED_FUSION_PARTNER (was CMND_EVT_MX_BUFF_PARTNER, the same answer)]]
-local EVT_CMD_LOG = 3661580131 --[[CMND_EVT_LOG]]
-local EVT_CMD_APPEARANCE = 3148141229 --[[CMND_EVT_APPEARANCE]]
+local EVT_CMD_LOG = 3661580131
+local EVT_CMD_APPEARANCE = 3148141229
 local EVT_SUB_MESH = 559600405 --[[_icon_sp_sub_dmy01]]
 local EVT_SUB_TEX = 3992937973 --[[icon_sp_sub_dmy01]]
 -- The widget's placeholder meshes at the plate's right end, white boxes when left visible: the sub-type slot
 -- _icon_sp_sub_dmy01 (x +107..+141; kept when it holds a miximax partner's face) and the power number's box
 -- _num_at_cmd_dmy01 / _gtxt_cmd_at01 (the plates show no power).
 local function EVT_HideDummies(L, inst, face)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, EVT_SUB_MESH, false, inst)   -- face: own layer
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 365666709 --[[_num_at_cmd_dmy01]], false, inst)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 563708378 --[[_gtxt_cmd_at01]], false, inst)
+  funcLuaMenuCommand(3405944500, L, EVT_SUB_MESH, false, inst)   -- face: own layer
+  funcLuaMenuCommand(3405944500, L, 365666709 --[[_num_at_cmd_dmy01]], false, inst)
+  funcLuaMenuCommand(3405944500, L, 563708378 --[[_gtxt_cmd_at01]], false, inst)
 end
 -- The card's portrait at the band's right end, inside the band (2026-10-06, Nacho: as the player page's Hiper card).
 -- Round 1 used the retail aura-row face object (soccer08_10_p5): "drawn true" in loader.log but nothing on screen.
@@ -189,7 +197,7 @@ local EVT_POS_BASE = 1517329426 --[[_pos_base01]]
 local evt_face = {{fix = 1, dy = 0}, {fix = 1, dy = 0}}
 
 function EVT_PlateFaceHide(inst)
-  pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_CHR, inst, false)
+  pcall(funcLuaMenuCommand, 711242136, EVT_CHR, inst, false)
   if evt_face ~= nil and evt_face[inst + 1] ~= nil then
     evt_face[inst + 1].key, evt_face[inst + 1].ok = nil, false
   end
@@ -197,16 +205,16 @@ end
 
 -- place / clean instance `inst` of the card layer (engine calls: from EVT_HiperStep only)
 local function EVT_PlateFacePlace(inst)
-  pcall(funcLuaMenuCommand, 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], EVT_HL, inst, EVT_CHR_ATC, true)
+  pcall(funcLuaMenuCommand, 1774843228, EVT_HL, inst, EVT_CHR_ATC, true)
   local fc = evt_face[inst + 1]
   local k = EVT_HIPER_FACE_H / EVT_CHR_BAND_H * (EVT_HIPER_PLATE_SCALE or 1) * fc.fix
-  funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_CHR, k, k, 1, inst)
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_CHR, EVT_HIPER_FACE_DX - EVT_CHR_BAND_R * k,
+  funcLuaMenuCommand(3778714801, EVT_CHR, k, k, 1, inst)
+  funcLuaMenuCommand(1389957207, EVT_CHR, EVT_HIPER_FACE_DX - EVT_CHR_BAND_R * k,
     EVT_HIPER_FACE_DY - EVT_CHR_BAND_TOP * k + fc.dy, 0, inst)
   for i = 1, #EVT_CHR_HIDE do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_CHR, EVT_CHR_HIDE[i], false, inst)
+    funcLuaMenuCommand(3405944500, EVT_CHR, EVT_CHR_HIDE[i], false, inst)
   end
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], EVT_CHR, EVT_CHR_TEXT, "", inst)
+  funcLuaMenuCommand(1083631230, EVT_CHR, EVT_CHR_TEXT, "", inst)
   funcLuaMenuCommand(2735666188 --[[CMND_SET_MENU_TEXT_VISIBLE]], EVT_CHR, EVT_CHR_TEXT, false, inst)
 end
 
@@ -215,7 +223,7 @@ end
 function EVT_FaceFit(inst)
   local fc = evt_face[inst + 1]
   local function g(L, node)
-    local ok, x, y = pcall(funcLuaMenuCommand, 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]], L, inst, node)
+    local ok, x, y = pcall(funcLuaMenuCommand, 499270986, L, inst, node)
     if ok and type(x) == "number" and type(y) == "number" then
       return x, y
     end
@@ -303,7 +311,7 @@ function EVT_PlateFace(L, inst, hdl, retry, pover, skill)
   local okp, shown = pcall(EVT_HC.Portrait, EVT_CHR, own or 0, fusion, mc, "hiper_plates", inst)
   local ok = okp and shown ~= nil and shown ~= 0
   fc.key, fc.ok = key, ok
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_CHR, inst, ok)
+  funcLuaMenuCommand(711242136, EVT_CHR, inst, ok)
   if not retry or evt_chr_logs < 12 then
     evt_chr_logs = evt_chr_logs + 1
     local what = "own"
@@ -333,12 +341,12 @@ function EVT_AuraName(skill, name, auraType)
   local s = ""
   local _, chara = funcLuaCommand(EVT_SKILL_INFO, skill, 17)
   if type(chara) == "number" and chara ~= 0 then
-    local _, n = funcLuaCommand(4060384944 --[[CMND_GET_CHARA_INFO]], chara, mixi and 10 or 0)
+    local _, n = funcLuaCommand(4060384944, chara, mixi and 10 or 0)
     if type(n) == "string" then
       s = n
     end
   end
-  local conv = funcLuaCommand(820766113 --[[CMND_TEXT_CONVERT?]], name, 0, 2508554842, s)
+  local conv = funcLuaCommand(820766113, name, 0, 2508554842, s)
   if type(conv) == "string" then
     return conv
   end
@@ -379,27 +387,27 @@ local function EVT_FoldWidth()
 end
 
 function EVT_InputHide(inst)
-  pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_IN, inst, false)
+  pcall(funcLuaMenuCommand, 711242136, EVT_IN, inst, false)
 end
 
 -- the column of plate `inst`: attach entry on, scale / shift, the two texts, shown (engine calls: EVT_HiperStep only)
 function EVT_InputDraw(inst, top, bottom)
-  pcall(funcLuaMenuCommand, 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], EVT_HL, inst, EVT_IN_ATC, true)
+  pcall(funcLuaMenuCommand, 1774843228, EVT_HL, inst, EVT_IN_ATC, true)
   local k = EVT_INPUT_K * (EVT_HIPER_PLATE_SCALE or 1)
-  funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_IN, k, k, 1, inst)
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_IN, EVT_INPUT_DX + evt_fold.input_shift, EVT_INPUT_DY, 0, inst)
-  local r1 = funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], EVT_IN, EVT_IN_TOP, top, inst)
+  funcLuaMenuCommand(3778714801, EVT_IN, k, k, 1, inst)
+  funcLuaMenuCommand(1389957207, EVT_IN, EVT_INPUT_DX + evt_fold.input_shift, EVT_INPUT_DY, 0, inst)
+  local r1 = funcLuaMenuCommand(1083631230, EVT_IN, EVT_IN_TOP, top, inst)
   local r2 = funcLuaMenuCommand(1083631230, EVT_IN, EVT_IN_BOTTOM, bottom, inst)
   funcLuaMenuCommand(2735666188 --[[CMND_SET_MENU_TEXT_VISIBLE]], EVT_IN, EVT_IN_TOP, top ~= "", inst)
   funcLuaMenuCommand(2735666188, EVT_IN, EVT_IN_BOTTOM, bottom ~= "", inst)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_IN, inst, top ~= "" or bottom ~= "")
+  funcLuaMenuCommand(711242136, EVT_IN, inst, top ~= "" or bottom ~= "")
   return r1, r2
 end
 
 function EVT_HiperDraw(inst, st, hdl, skill, ring, appear, glyph, armour, suffix, pover)
   local L = EVT_HL
   if st == 0 or skill == 0 then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, inst, false)
+    funcLuaMenuCommand(711242136, L, inst, false)
     EVT_PlateFaceHide(inst)
     EVT_InputHide(inst)
     return
@@ -411,7 +419,7 @@ function EVT_HiperDraw(inst, st, hdl, skill, ring, appear, glyph, armour, suffix
   local isAura = auraType ~= nil and auraType ~= 255
   local category = isAura and 8 or (EVT_Info(skill, 9) or 1)
   local armed = isAura and IsAuraSkillKeshinArmed(auraType) or false
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, inst, true)
+  funcLuaMenuCommand(711242136, L, inst, true)
   -- plate, name (same calls as a move row of SetupSkillCmdInfo)
   local tex = GetSkillElementBaseTextureName(inst, hdl, skill, element, category)
   if tex ~= 0 then
@@ -422,7 +430,7 @@ function EVT_HiperDraw(inst, st, hdl, skill, ring, appear, glyph, armour, suffix
   -- widget's placeholder: a white chevron / square)
   evt_fold.icon[inst + 1] = pcall(SetupCommandActionSkillInfoCategoryIcon, L, inst, skill)
   if not evt_fold.icon[inst + 1] then
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 2164615260 --[[_icon_sp_area_dmy01]], false, inst)
+    funcLuaMenuCommand(3405944500, L, 2164615260 --[[_icon_sp_area_dmy01]], false, inst)
   end
   -- the button icons left of the name (game glyph tags; the text renderer follows the active device). 2026-09-30
   -- (Nacho): every plate shows its input, the miximax / soul aura plates («Miximax Trans») too: their name goes
@@ -443,7 +451,7 @@ function EVT_HiperDraw(inst, st, hdl, skill, ring, appear, glyph, armour, suffix
       name = name .. suffix
     end
     if type(name) == "string" then
-      funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], L, 1123081621 --[[_text_cmd_sp01]], name, inst)
+      funcLuaMenuCommand(1083631230, L, 1123081621 --[[_text_cmd_sp01]], name, inst)
     end
   end
   -- 2026-10-06 (Nacho): the input as a column at the plate's left end, «RB» over «A» (RB+A plate) / «X» (RB+X
@@ -478,11 +486,11 @@ function EVT_HiperDraw(inst, st, hdl, skill, ring, appear, glyph, armour, suffix
   face = okf and face == true
   EVT_HideDummies(L, inst, face)
   for i = 1, #EVT_CUBES do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, EVT_CUBES[i], false, inst)
+    funcLuaMenuCommand(3405944500, L, EVT_CUBES[i], false, inst)
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 1621112166 --[[_cmd_pw_cube01]], false, inst)
+  funcLuaMenuCommand(3405944500, L, 1621112166 --[[_cmd_pw_cube01]], false, inst)
   evt_fold.logo[inst + 1] = armed or armour == true
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 1206374040 --[[_gtxt_cmd_armed01]], evt_fold.logo[inst + 1], inst)
+  funcLuaMenuCommand(3405944500, L, 1206374040 --[[_gtxt_cmd_armed01]], evt_fold.logo[inst + 1], inst)
   funcLuaMenuCommand(2158717427, L, 4081284803 --[[_pos_at01]], false, inst)
   funcLuaMenuCommand(1233047821, L, inst, 2467766246, false)
   funcLuaMenuCommand(1233047821, L, inst, 875648615, false)
@@ -493,24 +501,24 @@ function EVT_HiperDraw(inst, st, hdl, skill, ring, appear, glyph, armour, suffix
     gray = armed and 1729705092 --[[cmd_base_sp_grayout03]] or 270402578 --[[cmd_base_sp_grayout02]]
     ringTex = armed and 3183539200 --[[sp_ring02_03]] or 3402089622 --[[sp_ring02_02]]
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 3742978053 --[[_cmd_base_sp_grayout01]], not usable, inst)
+  funcLuaMenuCommand(3405944500, L, 3742978053 --[[_cmd_base_sp_grayout01]], not usable, inst)
   funcLuaMenuCommand(558735651, L, 2804251149 --[[soccer08_10.g4tx]], gray, 2300007848 --[[cmd_base_sp_grayout01]], 0, inst)
   -- RB held: the selection ring + the "Active" pulse ("press the button now")
   funcLuaMenuCommand(558735651, L, 2804251149 --[[soccer08_10.g4tx]], ringTex, 97673312 --[[sp_ring02]], 0, inst)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, 1213120893 --[[_sp_ring02]], ring, inst)
+  funcLuaMenuCommand(3405944500, L, 1213120893 --[[_sp_ring02]], ring, inst)
   local dark = usable and 0 or 0.5
   local col = usable and 1 or 0.5
   funcLuaMenuCommand(2484004035, L, inst, 1123081621 --[[_text_cmd_sp01]], dark)
   funcLuaMenuCommand(2771105252, L, inst, 1123081621 --[[_text_cmd_sp01]], col, col, col)
-  funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], L, inst, 1633223871, usable and 2 or 0)
-  funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], L, inst, 846750395, 2)
+  funcLuaMenuCommand(3781155141, L, inst, 1633223871, usable and 2 or 0)
+  funcLuaMenuCommand(3781155141, L, inst, 846750395, 2)
   if ring and usable then
-    funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], L, inst, 1286797620 --[[Active]], 0, 4054903817)
+    funcLuaMenuCommand(3781155141, L, inst, 1286797620 --[[Active]], 0, 4054903817)
   else
     funcLuaMenuCommand(1380315136, L, inst, 1286797620 --[[Active]], 2, 4054903817)
   end
   if appear then
-    funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], L, inst, 71445658 --[[Open]], 0, 2181236453)
+    funcLuaMenuCommand(3781155141, L, inst, 71445658 --[[Open]], 0, 2181236453)
   end
   EVT_HideDummies(L, inst, face)
   return face
@@ -555,7 +563,7 @@ local EVT_CD_ROWS, EVT_CD_OPAQUE = 12, 7
 local function EVT_CdLog(...)
   if evt_cd.logs < 8 then
     evt_cd.logs = evt_cd.logs + 1
-    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "hiper_btn", "cooldown bar", ...)
+    pcall(funcLuaCommand, 3661580131, "hiper_btn", "cooldown bar", ...)
   end
 end
 
@@ -565,7 +573,7 @@ local function EVT_CdTexReady()
   elseif evt_cd.tex == -1 then
     return false
   elseif evt_cd.tex == 0 then
-    local ok = pcall(funcLuaMenuCommand, 839427544 --[[CMND_LOAD_MENU_RES_TEXTURE]], EVT_CD_TEX_PATH)
+    local ok = pcall(funcLuaMenuCommand, 839427544, EVT_CD_TEX_PATH)
     evt_cd.tex, evt_cd.t = ok and 1 or -1, 0
     if not ok then
       EVT_CdLog("texture load FAILED (no bar)")
@@ -589,7 +597,7 @@ end
 
 local function EVT_CdShow(on)
   if evt_cd.shown ~= on then
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_HL, EVT_CD_MESH, on, evt_cd.inst)
+    funcLuaMenuCommand(3405944500, EVT_HL, EVT_CD_MESH, on, evt_cd.inst)
     evt_cd.shown = on
   end
 end
@@ -669,7 +677,7 @@ local function EVT_Update(inst, st, hdl, skill, ring, glyph, armour, suffix, pov
     evt_ho_slide[inst + 1] = EVT_tick   -- the plate comes in from the right screen edge (EVT_HiperOpenPlace)
   end
   if not ok then
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_HL, inst, false)
+    pcall(funcLuaMenuCommand, 711242136, EVT_HL, inst, false)
     EVT_PlateFaceHide(inst)
     EVT_InputHide(inst)
   end
@@ -722,7 +730,7 @@ if type(evt_mc_prevVis) == "function" then
   rawset(_ENV, "UpdateVisibleAttachButtonGuide", function(a1, a2, ...)
     local r = evt_mc_prevVis(a1, a2, ...)
     if a1 == EVT_REL_GUIDE and EVT_MC_NO_RELEASE then
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+      pcall(funcLuaMenuCommand, 711242136, a1, a2, false)
     end
     return r
   end)
@@ -731,7 +739,7 @@ end
 -- the cross (_pos_gaiji01) from the right screen edge in layout units, as hud_layout measures it: relative to the
 -- layer root soccer08_07_output, scale from _cmd01_01 (128 layout units right of the cross)
 local function EVT_HO_CrossX()
-  local gp = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]]
+  local gp = 499270986
   local ok1, gx = pcall(funcLuaMenuCommand, gp, EVT_BASE, 0, 708999887 --[[_pos_gaiji01]])
   local ok2, ox = pcall(funcLuaMenuCommand, gp, EVT_BASE, 0, 2812881813 --[[soccer08_07_output]])
   local ok3, cx = pcall(funcLuaMenuCommand, gp, EVT_BASE, 0, 1816929598 --[[_cmd01_01]])
@@ -763,7 +771,7 @@ local EVT_GO_AHEAD_ROOT = 2966568918 --[[soccer08_17_output]]
 
 -- the «¡Subid!» centre x from the right screen edge (layout units), nil = unknown
 local function EVT_HO_GoAheadX(cross)
-  local gp = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]]
+  local gp = 499270986
   local ok1, gx = pcall(funcLuaMenuCommand, gp, EVT_BASE, 0, 708999887 --[[_pos_gaiji01]])
   local ok2, cx = pcall(funcLuaMenuCommand, gp, EVT_BASE, 0, 1816929598 --[[_cmd01_01]])
   local ok3, sx = pcall(funcLuaMenuCommand, gp, EVT_GO_AHEAD, 0, EVT_GO_AHEAD_ROOT)
@@ -841,6 +849,9 @@ function EVT_HiperOpenPlace()
       total = 2 * folded + EVT_HIPER_PAIR_GAP
     end
     right = go_ahead + total / 2
+  elseif want and evt_pa.pages then
+    -- the right page arrow (EVT_PageArrows) between the right plate and the screen edge
+    right = right - (EVT_PAGE_ARROW_GAP + EVT_PAGE_ARROW_H * evt_pa.aspect) * unit - EVT_PAGE_ARROW_EDGE
   end
   for inst = 0, 1 do
     local dx, dy = 0, 0
@@ -858,8 +869,8 @@ function EVT_HiperOpenPlace()
     dy = dy + (EVT_HIPER_RAISE_Y or 0)
     local key = dx .. "," .. dy .. "," .. scale
     if evt_ho_set[inst + 1] ~= key then
-      funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], EVT_HL, scale, scale, 1, inst)
-      funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_HL, dx, dy, 0, inst)
+      funcLuaMenuCommand(3778714801, EVT_HL, scale, scale, 1, inst)
+      funcLuaMenuCommand(1389957207, EVT_HL, dx, dy, 0, inst)
       evt_ho_set[inst + 1] = key
     end
   end
@@ -907,15 +918,80 @@ local function EVT_FoldApply()
           icon_x = math.floor((evt_fold.visible_right + EVT_HIPER_COLLAPSED_INPUT_X) / 2 + 12 - evt_fold.icon_size / 2 + 0.5)
         end
         funcLuaMenuCommand(2575768773 --[[node translation]], EVT_HL, inst, 2164615260 --[[_icon_sp_area_dmy01]], 0, icon_x)
-        funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_HL, 2164615260 --[[_icon_sp_area_dmy01]],
+        funcLuaMenuCommand(3405944500, EVT_HL, 2164615260 --[[_icon_sp_area_dmy01]],
           (full or folded_icon) and evt_fold.icon[inst + 1] == true, inst)
-        funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], EVT_HL, 1206374040 --[[_gtxt_cmd_armed01]],
+        funcLuaMenuCommand(3405944500, EVT_HL, 1206374040 --[[_gtxt_cmd_armed01]],
           band_left <= evt_fold.logo_left - 12 and evt_fold.logo[inst + 1] == true, inst)
         evt_fold.band[inst + 1] = width
       end
       if evt_fold.shift[inst + 1] ~= shift then
-        funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], EVT_IN, EVT_INPUT_DX + shift, EVT_INPUT_DY, 0, inst)
+        funcLuaMenuCommand(1389957207, EVT_IN, EVT_INPUT_DX + shift, EVT_INPUT_DY, 0, inst)
         evt_fold.shift[inst + 1] = shift
+      end
+    end
+  end
+end
+
+-- The page arrows (owner 2026-10-27): while the plates have a second page (the selected-slot controls with both slots
+-- filled: RB + D-pad switches aura <-> mix), the retail move selector's chevrons (atlas soccer08_07: cmd_arrow01_l /
+-- cmd_arrow01_r) stand at the outer ends of the plates, as the selector shows them beside its move pages. Layer
+-- evt_plate_page_arrows (Character Reforged content\menus\hiper_plates.toml: a copy of the selector layout with its two
+-- arrow joints at the root; everything else, under _pos_base01, hidden here), 2 instances hung on the plates' band
+-- corner _atc_chr01_r (attach row evt_plate_page_arrows01). Plates on one row: the left plate (instance 1) carries
+-- the left arrow, the right plate (instance 0) the right one; a plate alone carries both. Commands only on change.
+EVT_PAGE_ARROWS = true
+EVT_PAGE_ARROW_H = 80                -- arrow height (plate layer units; the painted band is 52 high)
+EVT_PAGE_ARROW_GAP = 8               -- gap between a band end and its arrow (plate layer units)
+EVT_PAGE_ARROW_EDGE = 6              -- right arrow to the screen edge while the plates sit flush right (layout units)
+EVT_PAGE_ARROW_DY = 8                -- arrows lowered onto the card's visual centre (plate layer units)
+local EVT_PA = {
+  layer = 1713173579 --[[evt_plate_page_arrows]], attach = 1713169121 --[[evt_plate_page_arrows01]],
+  hide = 1517329426 --[[_pos_base01]],
+  joint = {2946906320 --[[_pos_arrow01_l]], 1437140403 --[[_pos_arrow01_r]]},
+  mesh = {1811606789 --[[_arrow01_l]], 2448805990 --[[_arrow01_r]]},
+}
+
+local function EVT_PageArrows(pages)
+  -- only while the plates are expanded (move list open: evt_ho_open, set by UpdateAnimeMoveOffsetCmdBase)
+  pages = pages == true and evt_ho_open and EVT_PAGE_ARROWS == true
+  if pages ~= evt_pa.pages then
+    evt_pa.pages = pages
+    pcall(funcLuaCommand, EVT_CMD_LOG, "hiper_btn", "page arrows", pages and "on (second page)" or "off")
+  end
+  local shown0 = EVT_last[1] ~= nil and EVT_last[1].shown == true
+  local shown1 = EVT_last[2] ~= nil and EVT_last[2].shown == true
+  -- side by side on one row: the placements of EVT_HiperOpenPlace that put instance 1 left of instance 0
+  local paired = shown0 and shown1 and ((evt_ho_want and EVT_HIPER_OPEN_Y[1] == EVT_HIPER_OPEN_Y[2])
+    or (not evt_ho_want and EVT_HIPER_ONE_ROW and EVT_pos == 1))
+  local s = EVT_HIPER_PLATE_SCALE or 1
+  local h = EVT_PAGE_ARROW_H
+  local w = h * evt_pa.aspect
+  local left_end, right_end = EVT_BandEnds(evt_fold.width or evt_fold.full_width)
+  -- arrow top-left corners from the band's top-right corner (the attach locator), in the arrow layer's units
+  -- (the plate's 0.72 is inherited, its layer scale is not): centred on the band (y 0, its top EVT_PLATE_BAND)
+  local y = math.floor((h / 2 - EVT_PLATE_BAND - EVT_PAGE_ARROW_DY) * s + 0.5)
+  local xs = {
+    math.floor((left_end - EVT_PAGE_ARROW_GAP - w - evt_fold.visible_right) * s + 0.5),
+    math.floor((right_end + EVT_PAGE_ARROW_GAP - evt_fold.visible_right) * s + 0.5),
+  }
+  for inst = 0, 1 do
+    local shown = (inst == 0 and shown0) or (inst == 1 and shown1)
+    local on = {pages and shown and (inst == 1 or not paired), pages and shown and (inst == 0 or not paired)}
+    local key = tostring(on[1]) .. "," .. tostring(on[2]) .. "," .. xs[1] .. "," .. xs[2] .. "," .. y .. "," .. h .. "," .. s
+    if evt_pa.key[inst + 1] ~= key then
+      evt_pa.key[inst + 1] = key
+      if on[1] or on[2] then
+        funcLuaMenuCommand(1774843228, EVT_HL, inst, EVT_PA.attach, true)
+        funcLuaMenuCommand(2158717427 --[[node visible]], EVT_PA.layer, EVT_PA.hide, false, inst)
+        for side = 1, 2 do
+          funcLuaMenuCommand(2885415772 --[[node size]], EVT_PA.layer, inst, EVT_PA.mesh[side], w * s, h * s)
+          funcLuaMenuCommand(2575768773 --[[node translation]], EVT_PA.layer, inst, EVT_PA.joint[side], 0, xs[side])
+          funcLuaMenuCommand(2575768773 --[[node translation]], EVT_PA.layer, inst, EVT_PA.joint[side], 1, y)
+          funcLuaMenuCommand(3405944500, EVT_PA.layer, EVT_PA.mesh[side], on[side], inst)
+        end
+        funcLuaMenuCommand(711242136, EVT_PA.layer, inst, true)
+      else
+        funcLuaMenuCommand(711242136, EVT_PA.layer, inst, false)
       end
     end
   end
@@ -936,7 +1012,7 @@ function EVT_HiperStep()
   local glyph = EVT_Str(r[8])
   local st2, skill2, glyph2 = EVT_Num(r[9]), EVT_Num(r[10]), EVT_Str(r[11])
   if EVT_HIPER_HIDE_IN_TACTICS then
-    local okt, tac = pcall(funcLuaCommand, 1350751656 --[[CMND_IS_SPECIAL_TACTICS_CMD_MODE]])
+    local okt, tac = pcall(funcLuaCommand, 1350751656)
     if okt and tac == true then
       st, st2 = 0, 0   -- both plates "nothing to show": hidden now, drawn again (Open) when the menu closes
     end
@@ -949,7 +1025,7 @@ function EVT_HiperStep()
   -- value 20 (r[22]): the controlled player is in his «modo cambio» form and its release button is refused: no release guide
   local noRel = r[22] == true
   if noRel then
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_REL_GUIDE, 0, false)
+    pcall(funcLuaMenuCommand, 711242136, EVT_REL_GUIDE, 0, false)
   end
   EVT_MC_NO_RELEASE = noRel
   -- «modo cambio» (docs/game/mechanics/mode-change.md §5.4; loader values 11-17: state, actor, carrier, (unused),
@@ -1033,6 +1109,12 @@ function EVT_HiperStep()
     pcall(funcLuaCommand, EVT_CMD_LOG, "hiper_btn", "collapse error", tostring(errf))
     EVT_HIPER_COLLAPSE = false
   end
+  local oka, erra = pcall(EVT_PageArrows, selOn and selBoth)
+  if not oka then
+    pcall(funcLuaCommand, EVT_CMD_LOG, "hiper_btn", "page arrows error", tostring(erra))
+    EVT_PAGE_ARROWS = false
+    evt_pa.key = {}
+  end
   pcall(EVT_HiperOpenPlace)
 end
 -- ===== EVT hiper_btn END =====
@@ -1046,7 +1128,7 @@ end
 -- layers (which layer holds the band / portrait / gauge); what a card shows and how is decided by EVT_HC.
 -- No main-chunk locals (both menus are near the 200-local limit): everything lives in the global EVT_HC.
 EVT_HC = EVT_HC or {}
-EVT_HC.SKILL_INFO = 2580586398       -- CMND_GET_SOCCER_SKILL_INFO (skill, 13 aura type | 16 change skill | 11 cost)
+EVT_HC.SKILL_INFO = 2580586398       -- (skill, 13 aura type | 16 change skill | 11 cost)
 EVT_HC.MC_TYPE = 6                   -- aura type «Modo cambio»
 EVT_HC.TEAM02 = 3964676290           -- #/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx
 EVT_HC.SP_RGB = {0.32, 0.72, 1.0}
@@ -1054,7 +1136,7 @@ EVT_HC.TENS_RGB = {0.99, 0.51, 0.0}   -- round 12: the retail TENSIÓN orange (n
 EVT_HC.PEG_RGB = {0.72, 0.42, 1.0}   -- the PEG gauge / label / number tint (the match HUD's PEG purple)
 
 function EVT_HC.Log(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "hiper_card", ...)
+  pcall(funcLuaCommand, 3661580131, "hiper_card", ...)
 end
 
 function EVT_HC.AuraType(skill)
@@ -1170,7 +1252,7 @@ function EVT_HC.McGet(chara, skill)
   local m = {chara = pchara or 0}
   local okk, face = pcall(funcLuaCommand, 347353059, pparam)
   m.face = (okk and type(face) == "number" and face ~= 0) and face or m.chara
-  local okn, a, b = pcall(funcLuaCommand, 4060384944 --[[CMND_GET_CHARA_INFO]], m.chara, 10)
+  local okn, a, b = pcall(funcLuaCommand, 4060384944, m.chara, 10)
   m.name = (okn and type(b) == "string" and b) or (okn and type(a) == "string" and a) or nil
   return m
 end
@@ -1185,15 +1267,6 @@ function EVT_HC.Title(name, fusion, mc)
     return (name or "Modo cambio") .. ": " .. mc.name
   end
   return name
-end
-
--- the whole card name: the title, plus the pool of a PEG / SP spirit (not for a fusion / mode change)
-function EVT_HC.CardName(skill, name, fusion, mc)
-  local t = EVT_HC.Title(name, fusion, mc)
-  if fusion == nil and mc == nil then
-    t = EVT_HC.PoolName(t, EVT_HC.PegInfo(skill))
-  end
-  return t
 end
 
 -- ---- portrait: a partner drawn as retail draws a miximax partner (UpdateMixiMaxDetailInfo) -----------------------
@@ -1213,7 +1286,7 @@ function EVT_HC.Partner(A, face, ctx, inst)
     return false
   end
   funcLuaMenuCommand(3405944500, A, EVT_HC.CHR_MESH, true, inst)
-  pcall(funcLuaCommand, 3148141229 --[[CMND_EVT_APPEARANCE]], ctx or "plate_page", face)
+  pcall(funcLuaCommand, 3148141229, ctx or "plate_page", face)
   local has = funcLuaMenuCommand(2208175668 --[[has a miximax face icon]], face)
   if has then
     funcLuaMenuCommand(346643487 --[[SwapLayerFaceIconTex]], A, inst, EVT_HC.CHR_MESH, EVT_HC.CHR_SLOT, face, 0, 12, true,
@@ -1329,7 +1402,7 @@ function EVT_HC.PegLook(L, inst, on, kind)
   -- Keep the obsolete label transparent even if a parent show restores mesh visibility.
   pcall(funcLuaMenuCommand, 2219773080, L, inst, CALC_CRC("_gtxt_tension01"), on and 0 or 1)
   pcall(funcLuaMenuCommand, 2219773080, L, inst, CALC_CRC("_tension_off01"), on and 0 or 1)
-  pcall(funcLuaMenuCommand, 855211291 --[[CMND_SET_PRIM_COLOR]], L, inst, 3424269865 --[[number prim]], c[1], c[2], c[3])
+  pcall(funcLuaMenuCommand, 855211291, L, inst, 3424269865 --[[number prim]], c[1], c[2], c[3])
   -- 2026-10-07 (Nacho: «80T» with a white patch behind the last digit and the «T»): the number field's 24 x 24
   -- placeholder _num_tension_dmy01 (under the last digit) came back when the caller showed _pos_tension01 (a shown
   -- locator shows all its meshes); off here, after every show

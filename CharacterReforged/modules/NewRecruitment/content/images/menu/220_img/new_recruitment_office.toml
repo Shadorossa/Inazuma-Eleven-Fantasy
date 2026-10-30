@@ -132,3 +132,24 @@ x = 104
 y = 200
 size = [96, 96]
 png = "new_recruitment_office/new_recruitment_office_player_plate.png"
+
+# the requirement card (contact map, the office): a not-met plate (the game's list_base_xs01_off multiplied by
+# (0.30, 0.42, 0.78): a quad's colour does not tint it in game) and the header's met / all counter (a parallelogram with
+# the plates' slant)
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx"
+name = "new_recruitment_office_plate_unmet"
+texture = "new_recruitment_office"
+x = 0
+y = 356
+size = [392, 72]
+png = "new_recruitment_office/new_recruitment_office_plate_unmet.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx"
+name = "new_recruitment_office_counter"
+texture = "new_recruitment_office"
+x = 0
+y = 300
+size = [176, 52]
+png = "new_recruitment_office/new_recruitment_office_counter.png"

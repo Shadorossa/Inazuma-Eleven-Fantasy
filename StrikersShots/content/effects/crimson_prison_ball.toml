@@ -1,0 +1,26 @@
+# «Crimson Prison» («Prisión escarlata», whs02380; mountain shot, cut-in ev60_02380): while the ball flies to the goal
+# it wears the cut-in's last shot (c0500, the ball diving out of its chains, held at frame 434): the red crystal cage
+# with the ball at its front tip, both shells turning, the ball's lights and sparks, the cage's lightning, the soft red
+# glows round the ball (facing the camera from every side) and the cage's red flame spikes flaring behind it, which come
+# out of the kick point as the ball flies (never stretched, a soft start at the kick point), x1. The burst, the chains
+# and their broken links, the red sky and the keshin are left out; the look is the same for the whole flight.
+# The object is ev6238cp00 (effect/event/ev60/ev6238cp00/), built by research/scripts/crimson_prison_ball_fx.py from
+# ev60023800.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"; skillEffectBitFlag 0). The move has no
+# _or / _mm / _cro variant. Flight: content\techniques\crimson_prison_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "crimson_prison"
+from = "ega0075a"
+object = "effect/event/ev60/ev6238cp00/ev6238cp00.objbin"
+
+[[shot_aura]]
+name = "crimson_prison"
+when = { techniques = ["whs02380"] }
+aura = "crimson_prison"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

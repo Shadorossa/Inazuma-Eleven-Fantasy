@@ -15,7 +15,7 @@ doc = "one totem: its SP route per level and its 6 reel slots"
 aura = { type = "string", required = true, ref = "aura", doc = "the totem's aura key (wss000050) or a mod aura <mod>.<name>" }
 galaxy = { type = "string", default = "", doc = "the Galaxy soul it follows (the wiki key: Lion, Ookami…); for reference only" }
 name = { type = "string", default = "", ref = "text_key", doc = "text key of its name on the reel (<mod>.<key>); empty = the aura key" }
-sp = { type = "ints", required = true, min = 1, max = 9999, doc = "SP at each level, level 1 first (with Aura Points: the SP bar's max at that level); its length is the totem's top level" }
+sp = { type = "ints", required = true, min = 1, max = 9999, doc = "SP at each level, level 1 first (with Spirit & Stamina Points: the SP bar's max at that level); its length is the totem's top level" }
 roulette = { type = "strings", required = true, ref = "skill_slot", doc = "the 6 reel slots in order: \"<skill>:<level>\" (shoot_up:2) or \"<skill>\" for a skill without levels (miss)" }
 lp_scale = { type = "number", default = 1.0, min = 0, max = 10, doc = "this totem's level points × this" }
 
@@ -24,11 +24,12 @@ doc = "one skill family of the reel: what it does (`effect`) and its values per 
 name = { type = "name", required = true, doc = "the family's name (a-z 0-9 _), used by the totems' slots" }
 text = { type = "string", required = true, ref = "text_key", doc = "text key of its reel label (<mod>.<key>); {level} = the skill level" }
 icon = { type = "string", default = "", doc = "its card icon on the skill carousel: a sprite name of the game's team-buff icons (icon_teambuff15); empty = no icon" }
-effect = { type = "string", required = true, values = ["move_power", "point_cost", "shot_vs_keeper", "keeper_vs_shot", "level_points", "team_stamina", "team_tension", "team_stamina_tension", "move_speed", "untouchable", "knockdown", "none"], doc = "the mechanism: see [effects]" }
-move_kinds = { type = "strings", default = [], values = ["shoot", "dribble", "block", "catch"], doc = "move_power: the kinds of his moves it powers (see [move_kinds])" }
+effect = { type = "string", required = true, values = ["passive", "level_points", "team_stamina", "team_tension", "team_stamina_tension", "untouchable", "knockdown", "none"], doc = "the mechanism: see [effects]" }
+passive = { type = "string", default = "", ref = "special_passive", doc = "passive: the passive the player carries (<mod id>.<name> with the mod's internal id, as the passive engine names it: aura_reworked.reel_shoot_up; a passive of the framework's passive engine (VRFW.passive/1) with grant = true; its value_by_level is read at the skill level)" }
 values = { type = "numbers", default = [], min = -100, max = 1000, doc = "per skill level (level 1 first): the effect's percent (see [effects])" }
 units = { type = "ints", default = [], min = 0, max = 100, doc = "team_tension / team_stamina_tension: tension units per skill level" }
 seconds = { type = "numbers", default = [], min = 0, max = 600, doc = "per skill level: how long it lasts; empty = while the totem is out (instant effects ignore it)" }
+levels = { type = "int", default = 0, min = 0, max = 9, doc = "how many skill levels it has when no per-level list says it (effect passive: its passive's value_by_level); 0 = the longest of values / units / seconds" }
 fallback = { type = "string", default = "", doc = "team_stamina: the family used when no stamina resource exists (team_tension)" }
 galaxy = { type = "string", default = "", doc = "the Galaxy skill it follows (wiki id prefix: ShootUp); for reference only" }
 
@@ -36,22 +37,11 @@ galaxy = { type = "string", default = "", doc = "the Galaxy skill it follows (wi
 
 # What each `effect` does with a skill level's `values` (v) / `units` (u) / `seconds` (s); read by the editor's help.
 [effects]
-move_power = "power of his moves of `move_kinds` × (1 + v / 100)"
-point_cost = "his totem's SP costs × (1 − v / 100) with Aura Points (its rule flag cost_pct.<hdl>), else his tension costs"
-shot_vs_keeper = "his shots against the keeper × (1 + v / 100) in the keeper duel"
-keeper_vs_shot = "as keeper, the shots against him × (1 + v / 100) (v negative = weaker shots)"
+passive = "he carries `passive` (the framework's passive engine) at the skill level, for s seconds or while the totem is out"
 level_points = "his totem's level points × (1 + v / 100)"
 team_stamina = "at once: his team's stamina + v % of each player's max (no stamina resource: `fallback`)"
 team_tension = "at once: his team's tension + u units"
 team_stamina_tension = "at once: both, v % stamina and u tension units"
-move_speed = "his run speed × (1 + v / 100) for s seconds"
 untouchable = "no block battle starts against him while he holds the ball, for s seconds"
 knockdown = "the nearest opponent's run speed × (1 + v / 100) for s seconds"
 none = "nothing (a miss)"
-
-# the move kinds of move_power: skill table `category` (1 shoot, 2 dribble, 3 block, 4 keeper)
-[move_kinds]
-shoot = { category = 1 }
-dribble = { category = 2 }
-block = { category = 3 }
-catch = { category = 4 }

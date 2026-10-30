@@ -17,7 +17,7 @@ if rawget(_ENV, "EVT_MxSceneModelBegin") == nil then
 
   function EVT_MxSceneModelBegin()
     local Model = AllMiximaxed_SceneModel
-    pcall(funcLuaCommand, 3363400568 --[[parameter delete]], Model.READY)
+    VRFW_Param.Clear(Model.READY)
     pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], Model.LAYER, 0, false)
     Model.watch = 0
     return true
@@ -46,7 +46,7 @@ if rawget(_ENV, "EVT_MxSceneModelBegin") == nil then
       Model.watch = Model.watch + 1
       local ok, ready = pcall(funcLuaMenuCommand, Model.LOADED, Model.LAYER, 0, 0)
       if (ok and ready == true and Model.watch > 3) or Model.watch > 600 then
-        pcall(funcLuaCommand, 3860611758 --[[parameter set]], Model.READY, 0, (ok and ready == true) and 1 or 2, 1)
+        VRFW_Param.Set(Model.READY, (ok and ready == true) and 1 or 2)
         Model.watch = 0
       end
     end

@@ -1,0 +1,36 @@
+id = "SkillDuel"
+# name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
+name = "Skill Duel"
+version = "1.1.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Focus duels are won by reading the side, not by the stats. If the attacker runs into the defender (his body, arm or hand), the defender wins. Go past the hand and the attacker wins. The stats only change the defender's reach a little: the weakest defender still reaches about 2.5 m, the strongest about 2.9 m. Both teams, the CPU too. Special move against special move keeps its power duel. Every value is in config.toml."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-30"
+# This mod's own names (Lua SkillDuel.X); never VRFW.
+prefix = "SkillDuel"
+folder = "SkillDuel"
+# Created on 2026-10-29 (owner request: «No quiero que pase que aciertas el lado y el jugador rival, aunque choque con
+# el tuyo, te supere»; docs/game/mods/skill-duel.md). Standard mod layout (docs/framework/mod-layout.md):
+#   config.toml               [skill_duel] the reach band, the stat weight, the contact slip chance, the log
+#   scripts\skill_duel.lua    sets the VR-Framework's focus line rule (VRFW.duel.line_rule) at the first match
+#   text\keys.toml            the card's name / description, 9 languages
+# The framework provides the mechanism (match_engine focus_line: Duel.LineParams post-hook + Duel.Duel wrapper,
+# docs/framework/focus-line.md); this module only declares the values.
+requires = ["VRFW>=2.196.0", "FootballReforged>=1.13.0"]
+conflicts = []
+loader_modules = ["lua_bridge"]
+loader_min = "1.7.0"
+permissions = []
+
+[exports]
+functions = []
+keys = []
+tables = []
+
+# A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
+# screen; switching Football Reforged off switches it off too. On by default.
+[module]
+of = "FootballReforged"
+order = 140

@@ -1,9 +1,11 @@
 # InaRogue: a rogue item icon (rogue_item_placeholder), a new texture of icon_item10 (the `tk` sheet). Written by
 # research/scripts/rogue_item_icon.py from own art; named by content/rogue/items.toml (`icon` / [defaults] icon).
+# In the mod's own atlas inarogue_item_icons (never the game's icon_item10): the game asks icon_item10 for it by
+# the item key; content\sprite_redirects\rogue_item_placeholder.toml serves it from here.
 schema = "VRFW.image/1"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item10.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/inarogue_item_icons.g4tx"
 name = "tk_rg000002"
 png = "rogue_item_placeholder/tk_rg000002.png"
 mips = 1

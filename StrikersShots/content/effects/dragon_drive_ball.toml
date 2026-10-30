@@ -1,0 +1,28 @@
+# «Rizo de dragón» (Dragon Drive, whs01990; wind chain shot, cut-in ev60_01990): the cut-in's yellow dragon is the
+# shot, one dragon as in the cut-in (c0010 frame 62): the ball on the glowing orb of its head (jaw, brows, flame waves),
+# its body and the flame spikes of its back laid straight ~12 m back behind it like a comet of flame (drawn three
+# times turned about the flight: a round serpent from behind, its layers dimmed so the head stands out), x1.1
+# (the head ~2.4 m), head forward and upright along the flight; the body coming out of the kick point with a soft end as
+# the ball flies, the tail fading out; its own materials and texture flow; the head nods and the body sways gently in a
+# seamless loop. The backdrop, speed lines, particles, the coiling dragon of c0020 and the c0030 light fan stay out.
+# Object ev6199db00 (effect/event/ev60/ev6199db00/), built by research/scripts/dragon_drive_ball_fx.py from the
+# cut-in's effect object ev60019900. docs/game/media/dragon-drive-ball-fx.md.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"; a chain shot, the rule fires on the move as
+# any link). Flight: content\techniques\dragon_drive_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dragon_drive"
+from = "ega0075b"
+object = "effect/event/ev60/ev6199db00/ev6199db00.objbin"
+
+[[shot_aura]]
+name = "dragon_drive"
+when = { techniques = "whs01990" }
+aura = "dragon_drive"
+like = "ega0075b"
+# the body comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

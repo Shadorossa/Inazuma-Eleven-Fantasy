@@ -1,0 +1,26 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Embate de lobo (Wolf Strike, whs02700) and of the moves with the same cut-in,
+# Embate de lobo plateado (Silver Wolf Strike, whs02701) and Embate de Dragnova (Dragnova Strike, whs02702), cut-in
+# ev60_02700.
+#
+# Measured: in the last cut (c0300) the ball runs along the pitch 1.21 m up in its vortex, ploughing the groove
+# (330-348), then is lobbed (13.7 m up, down to the pitch 41.5 m on). Flight (owner 2026-10-21: the ground run; owner's
+# rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point to the goal, the
+# ball centre at 1.21 m the whole way (under the bar), the groove on the pitch under it.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Embate de lobo (whs02700).
+[[edit]]
+target = "whs02700"
+trajectory = { points = [[0.0, 1.21]], straight = true, unblockable = false }
+
+# Embate de lobo plateado (whs02701).
+[[edit]]
+target = "whs02701"
+trajectory = { points = [[0.0, 1.21]], straight = true, unblockable = false }
+
+# Embate de Dragnova (whs02702).
+[[edit]]
+target = "whs02702"
+trajectory = { points = [[0.0, 1.21]], straight = true, unblockable = false }

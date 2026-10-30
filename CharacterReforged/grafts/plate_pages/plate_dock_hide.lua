@@ -28,7 +28,7 @@ do
   D.MAX_INST = 32
 
   local function Menu(m)
-    local ok, v = pcall(funcLuaCommand, 264888438, m)              -- CMND_IS_EXIST_MENU
+    local ok, v = pcall(funcLuaCommand, @crc:CMND_IS_EXIST_MENU@, m)              -- CMND_IS_EXIST_MENU
     return ok and v == true
   end
 
@@ -55,14 +55,14 @@ do
   end
 
   local function Log(...)
-    pcall(funcLuaCommand, 3661580131, ...)
+    pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, ...)
   end
 
   function D.Restore(why)
     local n = 0
     for key, rec in pairs(D.hid) do
-      if L(262659071, rec[1]) == true and L(2640875187, rec[1], rec[2]) == true then
-        L(711242136, rec[1], rec[2], true)
+      if L(@crc:CMND_IS_EXIST_LAYER@, rec[1]) == true and L(@crc:CMND_IS_OPEN_LAYER@, rec[1], rec[2]) == true then
+        L(@crc:CMND_SET_LAYER_VISIBLE@, rec[1], rec[2], true)
       end
       D.hid[key] = nil
       n = n + 1
@@ -83,13 +83,13 @@ do
     D.on = true
     local n = 0
     for _, l in ipairs(D.LAYERS) do
-      if L(262659071, l) == true then                                -- CMND_IS_EXIST_LAYER
+      if L(@crc:CMND_IS_EXIST_LAYER@, l) == true then                                -- CMND_IS_EXIST_LAYER
         for i = 0, D.MAX_INST - 1 do
-          if L(2640875187, l, i) ~= true then                        -- IS_OPEN: the instances end here
+          if L(@crc:CMND_IS_OPEN_LAYER@, l, i) ~= true then                        -- IS_OPEN: the instances end here
             break
           end
-          if L(1262717583, l, i) == true then                        -- IS_VISIBLE: hide it and remember it
-            L(711242136, l, i, false)
+          if L(@crc:CMND_IS_LAYER_VISIBLE@, l, i) == true then                        -- IS_VISIBLE: hide it and remember it
+            L(@crc:CMND_SET_LAYER_VISIBLE@, l, i, false)
             D.hid[l * 64 + i] = {l, i}
             n = n + 1
           end

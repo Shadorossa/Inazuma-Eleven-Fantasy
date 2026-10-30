@@ -11,10 +11,10 @@
 if VRFW_MatchRank == nil then
   local R = {
     OWNER = "vr_framework",
-    SAVE_GET = 2187277743,       -- CMND_VRFW_SAVE_GET (owner, key, default)
-    LOG = 3661580131,            -- CMND_EVT_LOG
-    COUNT = 869174933,           -- CMND_VRFW_TEAM_MATCH_RANK_COUNT
-    GET = 2876553236,            -- CMND_VRFW_TEAM_MATCH_RANK_GET
+    SAVE_GET = VRFW_Cmd.VRFW_SAVE_GET,       -- CMND_VRFW_SAVE_GET (owner, key, default)
+    LOG = VRFW_Cmd.EVT_LOG,            -- CMND_EVT_LOG
+    COUNT = VRFW_Cmd.VRFW_TEAM_MATCH_RANK_COUNT,           -- CMND_VRFW_TEAM_MATCH_RANK_COUNT
+    GET = VRFW_Cmd.VRFW_TEAM_MATCH_RANK_GET,            -- CMND_VRFW_TEAM_MATCH_RANK_GET
     LEGACY = {[1] = "B", [2] = "A", [3] = "S"},
     list = nil,                  -- best first: {id, order, won, gf, mc, gd, badge, atlas, piece, text}
     by = nil,

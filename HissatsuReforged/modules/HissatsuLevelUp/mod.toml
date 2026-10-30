@@ -6,13 +6,13 @@ key_id = "HissatsuLevelUp"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Hissatsu Level Up"
-version = "1.11.0"
+version = "1.18.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Special moves level up the classic way: each player's move grows with the times he uses it in matches (a curve you can change in config.toml), with a «levels up» banner when it does. The last level needs the Ultimate Evolution Manual (Inazuma Eleven GO Galaxy's notebook, sold in the general shop); the Special Move Upgrade Book (+1 level, also in the general shop) is an item of its own. A player can no longer carry the same special move twice, whatever board you use. From G5 on, some moves play the cut-in of their evolution. Works with the VR-Framework alone."
+description = "Special moves level up the classic way: each player's move grows with the times he uses it in matches (a curve you can change in config.toml), with a «levels up» banner when it does. The last level needs the Ultimate Evolution Manual (Inazuma Eleven GO Galaxy's notebook, sold in the general shop); a game item becomes the Technique Upgrade (+1 level). A player can no longer carry the same special move twice, whatever board you use. From G5 on, some moves play the cut-in of their evolution. Works with the VR-Framework alone."
 priority = 0
 tags = ["Techniques", "Gameplay"]
-updated = "2026-10-23"
+updated = "2026-10-30"
 # 1.10.0 (owner 2026-10-23): an embedded module of Hissatsu Reforged (research/mods/HissatsuReforged/modules/
 # HissatsuLevelUp/); its id, key id, prefix, save blob, item ids and texts unchanged
 # This mod's own names (TOML keys [HissatsuLevelUp.X], Lua HissatsuLevelUp.X, commands CMND_HISSATSULEVELUP_*, text ids
@@ -28,8 +28,9 @@ folder = "HissatsuLevelUp"
 #                                     evolution's cut-in (VRFW.cutin.by_grade; Mano celestial -> EV, Parada celestial
 #                                     -> TURBO; docs/game/mechanics/skill-rank-usage.md §7.16)
 #   content\game\hissatsu_level_up.toml   the engine entries (hooks, functions, globals), the commands, the save import
-#   content\items\rank_items.toml     the Libro de mejora de supertécnica (own item since 1.0.4; the retail
-#                                     abl_000001 «Nueva posibilidad» is retail again) + the Cuaderno de evolución
+#   content\items\rank_items.toml     the retail abl_000001 «Nuevas posibilidades» renamed «Mejora de supertécnica», THE
+#                                     +1 item since 1.12.0 (the old own book abl_ub000001 is given by nothing; a save's
+#                                     stock becomes abl_000001, graft sr_popup) + the Cuaderno de evolución
 #                                     definitiva (Galaxy's 究極進化の書); content\shops\ their shop rows; their icons in
 #                                     content\images\ (the book's: a recipe of the retail icon; the manual's PNG in
 #                                     assets\images\)
@@ -47,7 +48,7 @@ folder = "HissatsuLevelUp"
 # Hissatsu owns its rules in both views (the retail board: Board.CanEquip hook; Character Reforged's «Fantasy» skill
 # table, when that mod is on: the data it reads, content/skill_set/hissatsu_level_up.toml, and the row action its
 # host calls; the [[host]] is declared here too so the entry stays valid while Character Reforged is off).
-requires = ["VRFW>=2.95.0", "HissatsuReforged>=1.0.0"]
+requires = ["VRFW>=2.252.0", "HissatsuReforged>=1.0.0"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

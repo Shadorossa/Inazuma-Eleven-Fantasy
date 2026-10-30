@@ -1,8 +1,9 @@
 # InaRogue: the INAROGUE «Tienda» screen evt_rogue_shop_menu (written by hand;
 # docs/game/modes/inarogue-avatars.md §2.3). The route map's frame (base savedata_management_menu: background, header,
 # guide line (hidden), cursor, button guides, the off-screen input anchor), the route map's quad objects
-# (screen_objects.toml) as pools and two retail layers of shop_menu for the top row (07/10: cmn06_01_list_tab_attach,
-# the tab bar with its L1 / R1 glyphs; shop01_04d_token_item_5dig, the currency pill). The pool COUNTS are written by
+# (screen_objects.toml) as pools and three retail layers of shop_menu for the top row (07/10: cmn06_01_list_tab_attach,
+# the tab bar with its L1 / R1 glyphs; cmn06_20_list_tab_item x9 (the retail count), one tab per shop of
+# content/rogue/shop_tabs.toml attached to the bar; shop01_04d_token_item_5dig, the currency pill). The pool COUNTS are written by
 # research/scripts/rogue_shop_build.py from its GEOM (one page of the adaptive hex grid), by draw priority:
 # evt_rogue_map_plat (455, hexagons), evt_rogue_map_emb (457, shadows), evt_rogue_map_tag (458, 8 per hex: prices /
 # locks / «EN USO» / team counter + the team crest), evt_rogue_map_hint (459, cursor ring, page arrows / dots),
@@ -30,7 +31,7 @@ layer = [
     { layer = "evt_rogue_map_hint", object = "evt_rogue_map_hint", count = 27, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "evt_rogue_map_runner", object = "evt_rogue_map_runner", count = 53, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "cmn06_01_list_tab_attach", from = "shop_menu", count = 3 },
-    { layer = "cmn06_20_list_tab_item", from = "shop_menu" },
+    { layer = "cmn06_20_list_tab_item", from = "shop_menu", count = 9 },
     { layer = "shop01_04d_token_item_5dig", from = "shop_menu" },
     { layer = "mainmenu90_01_header" },
     { layer = "mainmenu90_05_content_guide_line01" },

@@ -7,8 +7,6 @@
 
 local Unobtainable = {}
 
-local band = bit32.band
-
 local AURA_CONFIG = "data/common/gamedata/skill/aura_skill_config_*.cfg.bin"
 -- aura_skill_config columns (1-based: the 0-based column + 1): command id, aura type
 local COLUMN_AURA_ID, COLUMN_AURA_TYPE = 1, 11
@@ -17,10 +15,8 @@ local SET = nil        -- [move id] = true
 local COUNT = 0
 local RULES = 0
 
-local function u32(v)
-  if type(v) ~= "number" then return 0 end
-  return band(v, 0xFFFFFFFF)
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 -- a move reference of a rule: a number, "0x…", a decimal string or a game key (its CRC-32)
 local function move_id(ref)

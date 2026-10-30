@@ -28,7 +28,7 @@ function BetterQoL.TopBarOnBoard()
     return false
   end
   for _, m in ipairs(TB.BOARD_MENUS) do
-    local ok, r = pcall(funcLuaMenuCommand, 2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], CRC32(m))
+    local ok, r = pcall(funcLuaMenuCommand, VRFW_Cmd.IS_EXIST_MENU_OBJECT, CRC32(m))
     if ok and r == true then
       return true
     end
@@ -56,28 +56,28 @@ TB.HINT = {
 
 function VRFW_TopBarHint(menu, x, y, on)
   local H = TB.HINT
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], H.LAYER)
+  local n = funcLuaMenuCommand(VRFW_Cmd.GET_CREATE_LAYER_NUM, H.LAYER)
   if type(n) ~= "number" or n <= 0 then
     return
   end
   if not on then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], H.LAYER, 0, false)
-    funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], H.LAYER, -4000, 4000, 0, 0)
+    funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, H.LAYER, 0, false)
+    funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_LOCAL_POS, H.LAYER, -4000, 4000, 0, 0)
     H.shown[menu or 0] = false
     return
   end
-  local s = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], H.TEXT)
+  local s = funcLuaCommand(VRFW_Cmd.TEXT_GET, H.TEXT)
   if type(s) ~= "string" or s == "" then
     s = H.FALLBACK
   end
   for _, m in ipairs(H.MESHES) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], H.LAYER, m, false, 0)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, H.LAYER, m, false, 0)
   end
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING]], H.LAYER, H.NODE, s, 0)
-  funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], H.LAYER, H.SCALE, H.SCALE, 1, 0)
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], H.LAYER,
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, H.LAYER, H.NODE, s, 0)
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_LOCAL_SCALE, H.LAYER, H.SCALE, H.SCALE, 1, 0)
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_LOCAL_POS, H.LAYER,
     x - H.HALF - H.BOX_LEFT * H.SCALE, -y - H.BOX_MID_Y * H.SCALE, 0, 0)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], H.LAYER, 0, true)
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, H.LAYER, 0, true)
   H.shown[menu or 0] = true
 end
 
@@ -98,7 +98,7 @@ TB.DROP = {
 -- (no shrink then). Utilities' own (Utilities 1.14.11: a VRFW_ global here was a reserved-name WARN).
 function Utilities_TopBarDropLabelWidth(menu, text)
   local D = TB.DROP
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], D.LAYER)
+  local n = funcLuaMenuCommand(VRFW_Cmd.GET_CREATE_LAYER_NUM, D.LAYER)
   if type(n) ~= "number" or n < 1 or type(text) ~= "string" then return nil end
   local ok, w = pcall(funcLuaMenuCommand, D.TEXT_SIZE, D.LAYER, 0, D.NODE, text)
   if ok and type(w) == "number" and w > 0 then return w * D.SCALE end
@@ -108,29 +108,29 @@ end
 -- maxw (VRFW 2.2.41): the room the framework gives the label (px); a wider text is drawn smaller to fit it
 function VRFW_TopBarDropLabel(menu, i, text, x, y, on, sel, maxw)
   local D = TB.DROP
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], D.LAYER)
+  local n = funcLuaMenuCommand(VRFW_Cmd.GET_CREATE_LAYER_NUM, D.LAYER)
   if type(n) ~= "number" or i < 1 or i > n then
     return
   end
   local idx = i - 1
   if not on or type(text) ~= "string" then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], D.LAYER, idx, false)
-    funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], D.LAYER, -4000, 4000, 0, idx)
+    funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, D.LAYER, idx, false)
+    funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_LOCAL_POS, D.LAYER, -4000, 4000, 0, idx)
     return
   end
   for _, m in ipairs(D.MESHES) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], D.LAYER, m, false, idx)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, D.LAYER, m, false, idx)
   end
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING]], D.LAYER, D.NODE, text, idx)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, D.LAYER, D.NODE, text, idx)
   local s = D.SCALE
   if type(maxw) == "number" and maxw > 0 then
     local w = Utilities_TopBarDropLabelWidth(menu, text)
     if w ~= nil and w > maxw then s = D.SCALE * maxw / w end
   end
-  funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]], D.LAYER, s, s, 1, idx)
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], D.LAYER,
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_LOCAL_SCALE, D.LAYER, s, s, 1, idx)
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_LOCAL_POS, D.LAYER,
     x - D.BOX_LEFT * s, -y - D.BOX_MID_Y * s, 0, idx)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], D.LAYER, idx, true)
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, D.LAYER, idx, true)
 end
 
 -- The rank plate never shares the bar with the team panel (Nacho 2026-10-08): in the hubs whose header has both (Modo
@@ -146,9 +146,9 @@ function VRFW_TopBarRankHide(menu)
   for _, layer in ipairs(TB.RANK_HIDE_WITH) do
     -- open AND visible: soccer_top_menu keeps the panel open and only shows it (CMND_SET_LAYER_VISIBLE) while a team
     -- screen is over the hub (SetSoccerTopCommonHeaderTeamDocLayerVisible)
-    local ok, r = pcall(funcLuaCommand, 3693934564 --[[CMND_IS_OPEN_MENU_OBJECT]], menu, layer)
+    local ok, r = pcall(funcLuaCommand, VRFW_Cmd.IS_OPEN_MENU_OBJECT, menu, layer)
     if ok and r ~= nil and r ~= false and r ~= 0 then
-      local okv, v = pcall(funcLuaMenuCommand, 1262717583 --[[CMND_IS_LAYER_VISIBLE]], layer, 0)
+      local okv, v = pcall(funcLuaMenuCommand, VRFW_Cmd.IS_LAYER_VISIBLE, layer, 0)
       if okv and v == true then
         return true
       end

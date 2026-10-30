@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Lanza letal (Doom Spear, whs01400, cut-in ev60_01400).
+#
+# Measured: in the last cut (c0300) the ball inside the drill (twistball_pos, no event ball in that cut) glides, then
+# is driven down a ~30 deg line from 18.8 m to 2.4 m over 28.9 m, where the cut-in ends (340). Flight (owner's rule
+# 2026-10-24: every aura shot a straight level line): one straight level line from the kick point to the goal, the
+# ball centre at 3.0 m the whole way, so the red fog halo (~2.3 m round the axis) and the arrowhead's
+# barbs (~1.4 m) stay clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Lanza letal (whs01400).
+[[edit]]
+target = "whs01400"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

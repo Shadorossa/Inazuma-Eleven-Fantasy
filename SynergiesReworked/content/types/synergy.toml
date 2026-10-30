@@ -27,6 +27,13 @@ role = { type = "string", values = ["manager", "coach"], doc = "a staff card: th
 gender = { type = "string", values = ["male", "female"], doc = "chara_base gender" }
 charas = { type = "ids", ref = "character", doc = "characters always in the pool (chara_base keys)" }
 exclude = { type = "ids", ref = "character", doc = "characters never in the pool" }
+captains_of = { type = "ids", ref = "team", doc = "belong team ids: the captains of the game's teams (team_config captain column) named like those belong teams join the pool" }
+captains_of_teams = { type = "strings", doc = "game team keys (team_config): the captains of those teams join the pool" }
+rosters = { type = "strings", doc = "game team keys (team_config): every member of those teams joins the pool (the squad a team really plays with, when its players' belong teams are other clubs)" }
+captain_overrides = { type = "records", doc = "a game team's captain replaced by the declared character (the data's captain is wrong or not wanted)", fields = { team = { type = "string", required = true, doc = "game team key (team_config)" }, captain = { type = "string", ref = "character", required = true, doc = "the captain" } } }
+crests = { type = "records", doc = "exactly these crests in an empty row: a belong team's emblem of an era, or a game team's own emblem", fields = { team = { type = "string", ref = "team", doc = "belong team" }, era = { type = "string", values = ["ie", "go", "ares", "vr"], doc = "which era's emblem" }, game_team = { type = "string", doc = "game team key (team_config): its emblem" } } }
+crest_eras = { type = "bool", default = false, doc = "a team pool's empty row shows the crests of every era of its teams (a pool of one era's series shows that era's crest)" }
+show_candidates = { type = "bool", default = false, doc = "an empty row of this pool draws its players as minifaces (first 8 persons), without team crests (pools of at most 8 persons do it anyway)" }
 hint = { type = "string", ref = "text_key", doc = "text key of an empty slot of this pool; {team} = the name of the pool's first team" }
 
 [entry.Synergy]
@@ -39,6 +46,8 @@ slots = { type = "strings", ref = "pool", doc = "one pool per slot (replaces poo
 rule = { type = "string", default = "min", values = ["min", "exact"], doc = "min: at least count players; exact: exactly count (slots need min)" }
 distinct = { type = "string", default = "person", values = ["person", "character"], doc = "person: two versions of one person count once" }
 skip_nexus_team = { type = "bool", default = false, doc = "with slots and a nexus: the slots whose pool names a belong team of the nexus are not in play" }
+nexus_pool = { type = "string", ref = "pool", doc = "the nexus = the members of this pool (instead of the `nexus` character list)" }
+need = { type = "int", min = 1, doc = "with slots: how many of the slots must be filled (each by a different person of a different pool); default all" }
 slot_members = { type = "bool", default = false, doc = "with slots: each slot row shows its team's crest and players (every slot pool needs teams)" }
 hint = { type = "string", ref = "text_key", doc = "text key of an empty slot (when its pool has no hint)" }
 placeholder = { type = "string", ref = "character", doc = "the character an empty slot's row is drawn with (default: a pool character not in the team)" }

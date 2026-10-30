@@ -27,7 +27,6 @@ stem = "soccer_battle_setting_flow_formation_menu"
   type = "insert_before"
   point = "soccer_battle_setting_flow_formation_menu.OnInit.PrematchLineups"
   src = "prematch_lineup_1.lua"
-  crc = "none"
 
   [[files.ops]]
   type = "insert_before"
@@ -193,4 +192,3 @@ stem = "soccer_formation_menu"
   type = "append_block"
   src = "prematch_formation_1.lua"
   marker = "prematch"
-  crc = "none"

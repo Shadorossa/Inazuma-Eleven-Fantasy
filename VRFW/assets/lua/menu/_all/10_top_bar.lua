@@ -115,39 +115,38 @@ if VRFW_TopBar == nil then
   local MESH_QUAD = 312193881         -- its mesh (CMND_SET_PRIM_COLOR)
   local Q = 36                        -- cmn01_10 quad size
   local C = {
-    LOG = 3661580131, LAYER_NUM = 1175615627, DRAW_PRIO = 1491630496 --[[CMND_SET_DRAW_PRIORITY (layer, idx, prio, children)]], IS_OPEN = 3693934564, EXISTS = 2231168902,
-    VISIBLE = 711242136, SCALE = 3778714801, POS = 1389957207, SPRITE = 558735651, PRIM_COLOR = 855211291,
-    LOAD_TEX = 839427544, TEX_LOADING = 1506186496,
-    CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303, ANALOG_CTRL = 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]],
+    LOG = VRFW_Cmd.EVT_LOG, LAYER_NUM = VRFW_Cmd.GET_CREATE_LAYER_NUM, DRAW_PRIO = VRFW_Cmd.SET_DRAW_PRIORITY --[[CMND_SET_DRAW_PRIORITY (layer, idx, prio, children)]], IS_OPEN = VRFW_Cmd.IS_OPEN_MENU_OBJECT, EXISTS = VRFW_Cmd.IS_EXIST_MENU_OBJECT,
+    VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE, SCALE = VRFW_Cmd.SET_LAYER_LOCAL_SCALE, POS = VRFW_Cmd.SET_LAYER_LOCAL_POS, SPRITE = 558735651, PRIM_COLOR = VRFW_Cmd.SET_PRIM_COLOR,
+    LOAD_TEX = VRFW_Cmd.LOAD_MENU_RES_TEXTURE, TEX_LOADING = 1506186496,
+    CHECK_INPUT = VRFW_Cmd.CHECK_INPUT_CMD, MENU_CTRL = 1332654303, ANALOG_CTRL = 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]],
     KEY = 423089863 --[[CMD_EVT_TOPBAR_ON]],
     OPEN = 4165572102 --[[CMD_VRFW_TOPBAR_OPEN: the bar's open button, a mod's rebindable input action, e.g. L3 / N]],
-    INPUT_ACTION = 1641760594 --[[CMND_VRFW_INPUT_ACTION (command or action id) -> the action's declaration]],
+    INPUT_ACTION = VRFW_Cmd.VRFW_INPUT_ACTION --[[CMND_VRFW_INPUT_ACTION (command or action id) -> the action's declaration]],
     CLICK = 218912913 --[[CMD_EVT_MOUSE_LEFT]], MOVED = 3272825600, POINTER = 558229292, GPOS = 4002164178,
     ENTER_CLICK = 1651523701 --[[CMD_ENTER_CLICK: mouse, Enter, A]], ENTER = 1981080283 --[[CMD_ENTER: Enter, A]],
     CANCEL = 3602695835 --[[CMD_CANCEL: Esc, B]],
     UP = 1197218715, DOWN = 3259546669, LEFT = 2765147006, RIGHT = 2075023265,
     FOCUS_SET = 1778826357 --[[(layer, idx, on): the control focus on / off an element (retail ChangeFocusToNextLayer)]],
-    SE = 1917805374, SE_GO = 766561556 --[[sy0080]], SE_NO = 2086672038 --[[sy0003]], SE_MOVE = 3848881948,
+    SE = VRFW_Cmd.SND_PLAY_SE, SE_GO = 766561556 --[[sy0080]], SE_NO = 2086672038 --[[sy0003]], SE_MOVE = 3848881948,
     SE_BACK = 202039849 --[[sy0006]],
-    MENU_ACTIVE = 1558704558, MSG_BUSY = 898725220, IS_FADE = 1215256347, SAVE_WORKING = 1979970074,
-    P_HAS = 2947612279, P_GET = 3522198769, P_SET = 3860611758, P_CLEAR = 3363400568,
-    SESSION = 856580414 --[[CMND_VRFW_SESSION_STATE]], SLOT_ACTIVE = 4245285902 --[[CMND_VRFW_SLOT_ACTIVE]],
-    SLOT_RESERVED = 1380583127 --[[CMND_VRFW_SLOT_RESERVED]],
-    TB_HOST = {2687686747 --[[CMND_VRFW_MENU_TOPBAR_HOST]], 2687686747 --[[CMND_VRFW_MENU_TOPBAR_HOST]]},
-    TB_TITLE = {797068213 --[[CMND_VRFW_MENU_TOPBAR_TITLE]], 797068213 --[[CMND_VRFW_MENU_TOPBAR_TITLE]]},
-    AUTO_SAVE = 3673719958, FADE = 609722083, FADE_DONE = 2259183189, BUSY = 2736534827,
-    GAME_RESET = 3897105282,
-    BGM_STOP = 1382940092 --[[CMND_BGM_STOP]], TITLE_MODE = 3718253404 --[[the title's mode value (OnEnter)]],
-    TB_DIRECT = 2048294502 --[[CMND_VRFW_MENU_TOPBAR_DIRECT]],
-    CARRY = 2310157611 --[[CMND_VRFW_SLOT_CARRY]],
+    MENU_ACTIVE = 1558704558, MSG_BUSY = 898725220, IS_FADE = VRFW_Cmd.BRIGHT_IS_FADE, SAVE_WORKING = 1979970074,
+    SESSION = VRFW_Cmd.VRFW_SESSION_STATE, SLOT_ACTIVE = VRFW_Cmd.VRFW_SLOT_ACTIVE,
+    SLOT_RESERVED = VRFW_Cmd.VRFW_SLOT_RESERVED,
+    TB_HOST = {VRFW_Cmd.VRFW_MENU_TOPBAR_HOST, VRFW_Cmd.VRFW_MENU_TOPBAR_HOST},
+    TB_TITLE = {VRFW_Cmd.VRFW_MENU_TOPBAR_TITLE, VRFW_Cmd.VRFW_MENU_TOPBAR_TITLE},
+    AUTO_SAVE = VRFW_Cmd.SYSTEM_AUTO_SAVE, FADE = 609722083, FADE_DONE = 2259183189, BUSY = 2736534827,
+    GAME_RESET = VRFW_Cmd.GAME_RESET,
+    BGM_STOP = VRFW_Cmd.BGM_STOP, TITLE_MODE = 3718253404 --[[the title's mode value (OnEnter)]],
+    TB_DIRECT = VRFW_Cmd.VRFW_MENU_TOPBAR_DIRECT,
+    CARRY = VRFW_Cmd.VRFW_SLOT_CARRY,
   }
   C.NAV = {C.UP, C.DOWN, C.LEFT, C.RIGHT}
   -- the focus look of a menu element (input guard): control focus queries, the Focus animation, the cursor locator
-  C.CTRL_FOCUS_ACTIVE = 102308320 --[[CMND_IS_CTRL_FOCUS_ACTIVE (layer)]]
+  C.CTRL_FOCUS_ACTIVE = VRFW_Cmd.IS_CTRL_FOCUS_ACTIVE --[[CMND_IS_CTRL_FOCUS_ACTIVE (layer)]]
   C.FOCUS_INDEX = 2603265800 --[[(layer) -> the focused instance]]
-  C.LAYER_EXISTS = 262659071 --[[CMND_IS_EXIST_LAYER (layer)]]
-  C.PLAY_ANIME = 3781155141 --[[CMND_PLAY_ANIME_TYPE (layer, idx, type, state, set)]]
-  C.ATTACH_TRACE = 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, locator, on)]]
+  C.LAYER_EXISTS = VRFW_Cmd.IS_EXIST_LAYER --[[CMND_IS_EXIST_LAYER (layer)]]
+  C.PLAY_ANIME = VRFW_Cmd.PLAY_ANIME_TYPE --[[CMND_PLAY_ANIME_TYPE (layer, idx, type, state, set)]]
+  C.ATTACH_TRACE = VRFW_Cmd.SET_LAYER_ATTACH_LOCATOR_TRACE --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, locator, on)]]
   C.ANIME_FOCUS, C.ANIME_SET_BUTTON = 2734777837 --[[Focus]], 973515837 --[[button]]
   C.LOCATOR_CURSOR = 3313461902 --[[cursor]]
   -- The game pad / keyboard read straight from the devices (CMND_VRFW_INPUT_PAD / _KEY) for the bar's own commands, in `standalone` hosts only (the open button did not enter the
@@ -159,7 +158,7 @@ if VRFW_TopBar == nil then
   -- the retail MENU_CTRL commands: pad masks of vr_sigs::input (D-pad 0x10 / 0x20 / 0x40 / 0x80, B 0x2000, A 0x4000),
   -- Windows virtual keys (the arrows, Enter, Esc). When no mod declares the open action (CMD_VRFW_TOPBAR_OPEN) the
   -- devices are read for the open button on every host (LS / N): the bar's fallback.
-  C.PAD, C.VKEY = 2864033604 --[[CMND_VRFW_INPUT_PAD]], 3182184968 --[[CMND_VRFW_INPUT_KEY]]
+  C.PAD, C.VKEY = VRFW_Cmd.VRFW_INPUT_PAD, VRFW_Cmd.VRFW_INPUT_KEY
   C.DEV = {
     [C.OPEN] = {pad = 0x2, vk = {0x4E}}, [C.UP] = {pad = 0x10, vk = {0x26}}, [C.RIGHT] = {pad = 0x20, vk = {0x27}},
     [C.DOWN] = {pad = 0x40, vk = {0x28}}, [C.LEFT] = {pad = 0x80, vk = {0x25}},
@@ -197,8 +196,8 @@ if VRFW_TopBar == nil then
 
   local function P(k, v)
     if k == nil then return end                       -- a hand-off param no mod declared
-    if funcLuaCommand(C.P_HAS, k) then funcLuaCommand(C.P_CLEAR, k) end
-    if v ~= nil then funcLuaCommand(C.P_SET, k, 0, v, 1) end
+    if VRFW_Param.Has(k) then VRFW_Param.Clear(k) end
+    if v ~= nil then VRFW_Param.Set(k, v) end
   end
 
   -- clear these params (nil = not declared: skipped; a plain loop, ipairs would stop at the first nil)
@@ -207,10 +206,7 @@ if VRFW_TopBar == nil then
   end
 
   local function Take(k)
-    if not funcLuaCommand(C.P_HAS, k) then return nil end
-    local v = funcLuaCommand(C.P_GET, k)
-    funcLuaCommand(C.P_CLEAR, k)
-    return v
+    return VRFW_Param.Take(k)
   end
 
   -- the menu this VM runs, from the script stem the loader gives the patch files ("soccer_top_menu_1.03.98.00")
@@ -335,15 +331,15 @@ if VRFW_TopBar == nil then
   local function ReadEntry(i)
     local key, text, icon, kind, value, _owner, _vid, menus, steps, group, aspect,
       _ord, _pon, _poff, _fl, _pl, _it, _lk, _lt, _gt, dmenu, dvs, dmode, direct =
-      funcLuaCommand(2768609349 --[[CMND_VRFW_MENU_ENTRY]], "top_bar", i)
+      funcLuaCommand(VRFW_Cmd.VRFW_MENU_ENTRY, "top_bar", i)
     if key == nil then return nil end
     -- an entry whose id names a mode switched off ([modes] of a mod's config, CMND_EVT_MODE_ENABLED) is left out
     local id = tostring(key):match("([^%.]+)$")
-    local okm, known, mode_on = pcall(funcLuaCommand, 3614458471 --[[CMND_EVT_MODE_ENABLED]], id)
+    local okm, known, mode_on = pcall(funcLuaCommand, VRFW_Cmd.EVT_MODE_ENABLED, id)
     if okm and known == true and mode_on == false then return nil end
     -- a shortcut into a mode the framework blocks (online guard) is left out
     if kind == "title" then
-      local okb, blocked = pcall(funcLuaCommand, 857303319 --[[CMND_VRFW_BLOCKED]], value)
+      local okb, blocked = pcall(funcLuaCommand, VRFW_Cmd.VRFW_BLOCKED, value)
       if okb and blocked == true then return nil end
     end
     local e = {key = key, kind = kind, value = value, menus = {}, steps = tostring(steps or ""),
@@ -360,7 +356,7 @@ if VRFW_TopBar == nil then
     for m in tostring(menus or ""):gmatch("[^,%s]+") do e.menus[#e.menus + 1] = Crc(m) end
     -- the label a dropdown row shows: the entry's text in the game's language (CMND_VRFW_TEXT_GET of its text key)
     if text ~= nil and text ~= "" then
-      local okt, t = pcall(funcLuaCommand, 459261927 --[[CMND_VRFW_TEXT_GET]], text)
+      local okt, t = pcall(funcLuaCommand, VRFW_Cmd.VRFW_TEXT_GET, text)
       e.label = (okt and type(t) == "string" and t ~= "") and t or nil
     end
     return e
@@ -371,7 +367,7 @@ if VRFW_TopBar == nil then
   -- group with no row left or in a host without the dropdown layers, a row whose group no mod declares.
   local function LoadEntries()
     local out = {}
-    local ok, n = pcall(funcLuaCommand, 1063911870 --[[CMND_VRFW_MENU_ENTRY_COUNT]], "top_bar")
+    local ok, n = pcall(funcLuaCommand, VRFW_Cmd.VRFW_MENU_ENTRY_COUNT, "top_bar")
     if not ok or type(n) ~= "number" then return out end
     local bar, rows, groups = {}, {}, {}
     for i = 1, n do
@@ -668,7 +664,7 @@ if VRFW_TopBar == nil then
     if funcLuaCommand(C.MSG_BUSY) == true then return "message window" end
     if funcLuaCommand(C.IS_FADE) == true then return "fade" end
     if funcLuaCommand(C.SAVE_WORKING) == true then return "saving" end
-    if funcLuaCommand(C.P_HAS, K.BUSY) == true then return "a shortcut is in flight" end
+    if VRFW_Param.Has(K.BUSY) then return "a shortcut is in flight" end
     -- an overlay session (checked first: its mount answers its storage slot as active too) is left only through a
     -- `session` host's own leave; outside a session, a reserved slot's game (a mod's mode) in memory is refused
     local _, swapped = SessionOpen()
@@ -846,7 +842,7 @@ if VRFW_TopBar == nil then
     -- (a mod's scene played over the menus): the row would stay drawn over the scene
     -- (the hub's header is only hidden there, it stays open). Any VM sets the param (VRFW_TopBarHide below) for as
     -- long as it wants the bar away.
-    if open and funcLuaCommand(C.P_HAS, K.HIDE) == true then open = false end
+    if open and VRFW_Param.Has(K.HIDE) then open = false end
     if open and TB.host.gate ~= nil then
       local gf = HostFn(TB.host.gate)
       local okg, g = false, nil
@@ -904,7 +900,7 @@ if VRFW_TopBar == nil then
       TB.rank_hide = hide
       if hide then
         -- the plate's own visibility (the menu may hide it itself), given back when the hide ends
-        local okv, v = pcall(funcLuaMenuCommand, 1262717583 --[[CMND_IS_LAYER_VISIBLE]], RK.plate, 0)
+        local okv, v = pcall(funcLuaMenuCommand, VRFW_Cmd.IS_LAYER_VISIBLE, RK.plate, 0)
         TB.rank_was = not okv or v ~= false
       elseif RK.plate and TB.rank_was ~= false then
         pcall(funcLuaMenuCommand, C.VISIBLE, RK.plate, 0, true)
@@ -1262,7 +1258,7 @@ if VRFW_TopBar == nil then
     elseif E[C.UP] and TB.host.dpad ~= false and TB.flayer ~= nil and TB.release == nil and not TB.mouse
         and TB.co == nil then
       -- only from a focus this VM knows and that still has the control focus (a child menu on top: not ours)
-      local okf, act = pcall(funcLuaMenuCommand, 102308320 --[[CMND_IS_CTRL_FOCUS_ACTIVE]], TB.flayer)
+      local okf, act = pcall(funcLuaMenuCommand, VRFW_Cmd.IS_CTRL_FOCUS_ACTIVE, TB.flayer)
       if okf and act == true then
         local _, y = FocusPos(TB.flayer, TB.fidx)
         TB.up = {t = 0, fev = TB.fev, layer = TB.flayer, idx = TB.fidx, y = y}
@@ -1404,7 +1400,7 @@ if VRFW_TopBar == nil then
       return
     end
     TB.frame = TB.frame + 1
-    if TB.frame % 10 ~= 0 or funcLuaCommand(C.P_HAS, K.DEFER) ~= true then
+    if TB.frame % 10 ~= 0 or not VRFW_Param.Has(K.DEFER) then
       TB.defer_t = 0
       return
     end
@@ -1535,14 +1531,14 @@ if VRFW_TopBar == nil then
   function GD.Beat(on)
     if on then
       GD.beat_n = (GD.beat_n % 1000000) + 1
-      funcLuaCommand(C.P_SET, K.NAV, 0, GD.beat_n, 1)
-    elseif funcLuaCommand(C.P_HAS, K.NAV) == true then
-      funcLuaCommand(C.P_CLEAR, K.NAV)
+      VRFW_Param.Set(K.NAV, GD.beat_n)
+    elseif VRFW_Param.Has(K.NAV) then
+      VRFW_Param.Clear(K.NAV)
     end
   end
   local function NavAlive()
-    if funcLuaCommand(C.P_HAS, K.NAV) ~= true then GD.last, GD.still = nil, 0 return false end
-    local v = funcLuaCommand(C.P_GET, K.NAV)
+    if not VRFW_Param.Has(K.NAV) then GD.last, GD.still = nil, 0 return false end
+    local v = VRFW_Param.Get(K.NAV)
     if v ~= GD.last then GD.last, GD.still = v, 0 else GD.still = GD.still + 1 end
     return GD.still < GUARD_TTL
   end
@@ -1676,8 +1672,8 @@ if VRFW_TopBar == nil then
     if type(funcLuaMenuCommand) ~= "function" or TB.name == nil or type(CRC32) ~= "function" then return end
     LoadRules()
     -- a straight reset landed: the first menu of the new scene says so with the carry's outcome
-    if funcLuaCommand(C.P_HAS, K.DIRECT) == true then
-      funcLuaCommand(C.P_CLEAR, K.DIRECT)
+    if VRFW_Param.Has(K.DIRECT) then
+      VRFW_Param.Clear(K.DIRECT)
       local okc, last = pcall(funcLuaCommand, C.CARRY, 2)
       if tostring(TB.name):find("^title") then
         Log("direct: the title runs after all (carry:", tostring(okc and last or "?"), ")")
@@ -1687,9 +1683,9 @@ if VRFW_TopBar == nil then
     end
     if TB.name == TITLE then
       TB.on = true
-      if funcLuaCommand(C.P_HAS, K.HIDE) == true then funcLuaCommand(C.P_CLEAR, K.HIDE) end   -- stale after a reset
+      if VRFW_Param.Has(K.HIDE) then VRFW_Param.Clear(K.HIDE) end   -- stale after a reset
       WrapStep(DeferPoll)
-      if funcLuaCommand(C.P_HAS, K.DEFER) == true then Log("title: a deferred target is waiting") end
+      if VRFW_Param.Has(K.DEFER) then Log("title: a deferred target is waiting") end
       return
     end
     local n = funcLuaMenuCommand(C.LAYER_NUM, L_ICON)
@@ -1705,8 +1701,8 @@ if VRFW_TopBar == nil then
     ResolveMenu()
     local nb = funcLuaMenuCommand(C.LAYER_NUM, L_BACK)
     TB.has_back, TB.back_on = type(nb) == "number" and nb > 0, false
-    if funcLuaCommand(C.P_HAS, K.BUSY) == true then funcLuaCommand(C.P_CLEAR, K.BUSY) end -- stale after a reset
-    if funcLuaCommand(C.P_HAS, K.NAV) == true then funcLuaCommand(C.P_CLEAR, K.NAV) end   -- no focus at a hub's start
+    if VRFW_Param.Has(K.BUSY) then VRFW_Param.Clear(K.BUSY) end -- stale after a reset
+    if VRFW_Param.Has(K.NAV) then VRFW_Param.Clear(K.NAV) end   -- no focus at a hub's start
     local nd, np = funcLuaMenuCommand(C.LAYER_NUM, L_DICON), funcLuaMenuCommand(C.LAYER_NUM, L_DPLATE)
     TB.has_drop = type(nd) == "number" and nd > 0 and type(np) == "number" and np > 0
     TB.dsel, TB.dshut, TB.drop_drawn = nil, false, TB.has_drop   -- drawn = hide its quads at the first Draw
@@ -1817,32 +1813,28 @@ end
 -- from the entry list (CMND_VRFW_MENU_ENTRY, 9th value): the handler knows only its own step name, never an entry key.
 -- Engine calls only when called (nothing at chunk load).
 if VRFW_TopBarStep == nil then
-  local P_HAS, P_GET, P_SET, P_CLEAR = 2947612279, 3522198769, 3860611758, 3363400568
   local TARGET, STEP = 837786837 --[[evt_top_bar_target]], 3366268333 --[[evt_top_bar_step]]
-  local function U32(v)
-    if type(v) == "number" and v < 0 then return v + 4294967296 end
-    return v
-  end
+  local function U32(v) return VRFW_Id.u32_or(v, v) end
   local function Get(k)
-    if funcLuaCommand(P_HAS, k) ~= true then return nil end
-    return U32(funcLuaCommand(P_GET, k))
+    if not VRFW_Param.Has(k) then return nil end
+    return U32(VRFW_Param.Get(k))
   end
   local function Clear(k)
-    if funcLuaCommand(P_HAS, k) == true then funcLuaCommand(P_CLEAR, k) end
+    if VRFW_Param.Has(k) then VRFW_Param.Clear(k) end
   end
   local function Log(...)
     local p = {}
     for i = 1, select("#", ...) do p[#p + 1] = tostring((select(i, ...))) end
-    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT top_bar step " .. table.concat(p, " "))
+    pcall(funcLuaCommand, VRFW_Cmd.EVT_LOG, "EVT top_bar step " .. table.concat(p, " "))
   end
   function VRFW_TopBarStep(step)
     if type(CRC32) ~= "function" then return false end
     local target = Get(TARGET)
     if target == nil then return false end
-    local ok, n = pcall(funcLuaCommand, 1063911870 --[[CMND_VRFW_MENU_ENTRY_COUNT]], "top_bar")
+    local ok, n = pcall(funcLuaCommand, VRFW_Cmd.VRFW_MENU_ENTRY_COUNT, "top_bar")
     if not ok or type(n) ~= "number" then return false end
     for i = 1, n do
-      local key, _t, _i, _k, _v, _o, _c, _m, steps = funcLuaCommand(2768609349 --[[CMND_VRFW_MENU_ENTRY]], "top_bar", i)
+      local key, _t, _i, _k, _v, _o, _c, _m, steps = funcLuaCommand(VRFW_Cmd.VRFW_MENU_ENTRY, "top_bar", i)
       if key ~= nil and U32(CRC32(key)) == target then
         local list = {}
         for s in tostring(steps or ""):gmatch("[^,%s]+") do list[#list + 1] = s end
@@ -1853,7 +1845,7 @@ if VRFW_TopBarStep == nil then
           Clear(STEP)
         else
           Clear(STEP)
-          funcLuaCommand(P_SET, STEP, 0, done + 1, 1)
+          VRFW_Param.Set(STEP, done + 1)
         end
         Log(key, "takes", step, done + 1, "of", #list)
         return true
@@ -1870,11 +1862,11 @@ end
 -- called (nothing at chunk load).
 if VRFW_TopBarHide == nil then
   function VRFW_TopBarHide(on)
-    local P_HAS, P_SET, P_CLEAR, HIDE = 2947612279, 3860611758, 3363400568, 1455983968 --[[vrfw_top_bar_hidden]]
+    local HIDE = 1455983968 --[[vrfw_top_bar_hidden]]
     if on then
-      funcLuaCommand(P_SET, HIDE, 0, 1, 1)
-    elseif funcLuaCommand(P_HAS, HIDE) == true then
-      funcLuaCommand(P_CLEAR, HIDE)
+      VRFW_Param.Set(HIDE, 1)
+    elseif VRFW_Param.Has(HIDE) then
+      VRFW_Param.Clear(HIDE)
     end
     return true
   end

@@ -37,12 +37,28 @@ local FORMAT = 2
 -- Utilities 1.0.1 - 1.2.x: the global blob of «Solo Ares y Orión» and the removed row of the Ares / Orion team names
 local LEGACY_BLOB, LEGACY_TEAM_OPTION = "original_names.json", "ares_orion_team_names"
 local TEAMS_FILE = "content/original_names/teams.toml"
--- the game settings' character-name byte and text-language byte; the settings menu rows (docs/app/mod-options.md §7)
-local SET_ROMAJI, SET_TEXT_LANG = 0x7D, 0x7C
+-- the game settings' character-name byte and text-language byte ([struct.GameSettings]) and the settings menu's rows
+-- ([struct.SettingsMenu], [struct.SettingsMenuRow]; docs/app/mod-options.md §7): offsets from the game profile
+local LAYOUT_NAMES = {
+  character_names = "GameSettings.CharacterNames", text_language = "GameSettings.TextLanguage",
+  draft_rows = "SettingsMenu.DraftRows", applied_rows = "SettingsMenu.AppliedRows",
+  row_size = "SettingsMenuRow", row_label = "SettingsMenuRow.Label", row_type = "SettingsMenuRow.Type",
+  row_list = "SettingsMenuRow.List", row_count = "SettingsMenuRow.Count", row_index = "SettingsMenuRow.Index",
+  row_base = "SettingsMenuRow.Base",
+}
+local L, LAYOUT_MISSING = {}, nil
+for key, name in pairs(LAYOUT_NAMES) do
+  local ok, v = pcall(VRFW.game.field, name)
+  if ok and type(v) == "number" then
+    L[key] = v
+  elseif LAYOUT_MISSING == nil then
+    LAYOUT_MISSING = name
+  end
+end
+-- the draft rows run up to the applied rows
+local DRAFT_ROW_COUNT = LAYOUT_MISSING == nil and math.floor((L.applied_rows - L.draft_rows) / L.row_size) or 0
 local ROW_TYPE, ROW_VALUES = 63, 3
 local IDX_DUB, IDX_CUSTOM, IDX_ORIGINAL = 0, 1, 2
-local ROW_TYPE_OFF, ROW_LIST, ROW_INDEX, ROW_BASE = 0x08, 0x10, 0x1C, 0x20
-local MENU_DRAFT_ROWS, MENU_ROW_SIZE, MENU_ROWS = 0x1E0, 0x28, 4 * 91
 -- builds of other languages done per CMND_BETTERQOL_NAMES_ROW call (each reads two text tables); CMND_BETTERQOL_NAMES_RELOAD
 -- builds none of them (it closes the settings: a hitch there was 65-95 ms), only the language the settings ask for
 local PUMP_ROW = 1
@@ -87,15 +103,10 @@ local function opt_forget()
   opt_cache, saved_cache = nil, nil
 end
 
-local function info(...) VRFW.log("original_names:", ...) end
-local function warn(...) VRFW.warn("original_names:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("original_names")
 
-local function int(v)
-  if type(v) ~= "number" then
-    return nil
-  end
-  return v >= 0 and math.floor(v) or math.ceil(v)
-end
+local function int(v) return VRFW.value.int(v, nil) end
 
 local function rd(ty, addr)
   local ok, v = pcall(VRFW.mem.read, ty, addr)
@@ -157,7 +168,7 @@ end
 -- the game's «Originales» byte (false when the settings are not there yet)
 local function romaji()
   local s = settings()
-  local b = s and rd("u8", s + SET_ROMAJI)
+  local b = s and L.character_names and rd("u8", s + L.character_names)
   return type(b) == "number" and b ~= 0
 end
 
@@ -561,7 +572,7 @@ local function lang_of(code)
     return cur_lang
   end
   local s = settings()
-  l = s and of(rd("u8", s + SET_TEXT_LANG))
+  l = s and L.text_language and of(rd("u8", s + L.text_language))
   if l then
     return l
   end
@@ -612,9 +623,9 @@ local function draft_row()
   if not menu or menu < 0x10000 or not list or list == 0 then
     return nil
   end
-  for i = 0, MENU_ROWS - 1 do
-    local r = menu + MENU_DRAFT_ROWS + i * MENU_ROW_SIZE
-    if rd("u32", r + ROW_TYPE_OFF) == ROW_TYPE and rd("ptr", r + ROW_LIST) == list then
+  for i = 0, DRAFT_ROW_COUNT - 1 do
+    local r = menu + L.draft_rows + i * L.row_size
+    if rd("u32", r + L.row_type) == ROW_TYPE and rd("ptr", r + L.row_list) == list then
       return r
     end
   end
@@ -789,7 +800,7 @@ function BetterQoL.OriginalNames.PickClose()
   local row = draft_row()
   local cur = row_index(romaji(), s.custom)
   if row then
-    local idx, base = rd("i32", row + ROW_INDEX), rd("i32", row + ROW_BASE)
+    local idx, base = rd("i32", row + L.row_index), rd("i32", row + L.row_base)
     if type(idx) == "number" and type(base) == "number" then
       cur = math.max(idx + base, 0)
     end
@@ -802,12 +813,12 @@ function BetterQoL.OriginalNames.PickClose()
     warn("picker: the settings row was not found: choose «Por equipos» with ←/→")
     return true, -1, 0, false
   end
-  local base = rd("i32", row + ROW_BASE) or 0
-  if not pcall(VRFW.mem.write, "i32", row + ROW_INDEX, new - base) then
+  local base = rd("i32", row + L.row_base) or 0
+  if not pcall(VRFW.mem.write, "i32", row + L.row_index, new - base) then
     warn("picker: the settings row was not written: choose «Por equipos» with ←/→")
     return true, -1, 0, false
   end
-  local list = rd("ptr", row + ROW_LIST)
+  local list = rd("ptr", row + L.row_list)
   local text = (type(list) == "number" and list >= 0x10000) and rd("u32", list + 4 * new) or 0
   info(string.format("«Nombres de los personajes» (draft): %s -> %s", VALUE_NAMES[cur] or tostring(cur), VALUE_NAMES[new]))
   return true, new, text or 0, new + 1 == ROW_VALUES
@@ -938,9 +949,6 @@ end
 -- stored as the retail «Doblaje» (the game's byte and save only ever hold 0 / 1: the save works without the mod) and
 -- names.custom records it.
 
-local ROW_TYPE = 63
-local ROW_LABEL_OFF, ROW_TYPE_OFF, ROW_LIST, ROW_COUNT, ROW_INDEX, ROW_BASE = 0x00, 0x08, 0x10, 0x18, 0x1C, 0x20
-local MENU_DRAFT_ROWS, MENU_APPLIED_ROWS, MENU_ROW_SIZE = 0x1E0, 0x3AC0, 0x28
 local ROW_VALUE_KEY = "utilities.names_by_team"
 
 local function wr(ty, addr, v)
@@ -952,7 +960,7 @@ local function saved_custom()
 end
 
 local function is_draft_row(menu, row)
-  return row >= menu + MENU_DRAFT_ROWS and row < menu + MENU_APPLIED_ROWS and (row - menu - MENU_DRAFT_ROWS) % MENU_ROW_SIZE == 0
+  return row >= menu + L.draft_rows and row < menu + L.applied_rows and (row - menu - L.draft_rows) % L.row_size == 0
 end
 
 -- our value list for a row whose retail list is at `list` (2 values), built once in a buffer of the mod
@@ -974,8 +982,10 @@ local function our_list(list)
   return p
 end
 
-ROW.row_on = (VRFW.is_on("SettingRowRead") and VRFW.is_on("SettingRowWrite")) and 1 or 0
-if ROW.row_on == 1 then
+ROW.row_on = (LAYOUT_MISSING == nil and VRFW.is_on("SettingRowRead") and VRFW.is_on("SettingRowWrite")) and 1 or 0
+if LAYOUT_MISSING ~= nil then
+  warn("settings row not extended (the game profile has no " .. LAYOUT_MISSING .. "): «Nombres de los personajes» keeps its two values, no picker")
+elseif ROW.row_on == 1 then
   info("«Nombres de los personajes» row: Doblaje / Por equipos / Originales (saved: " .. (saved_custom() and "Por equipos" or "the game's") .. ")")
 else
   warn("settings row not extended (hooks SettingRowRead / SettingRowWrite off): «Nombres de los personajes» keeps its two values, no picker")
@@ -984,10 +994,10 @@ end
 -- after the engine read the row: our three values, and the index of the current state
 VRFW.on("hook:SettingRowRead:post", function(ev)
   local menu, row = ev.args[1], ev.args[2]
-  if ROW.row_on ~= 1 or row < 0x10000 or rd("u32", row + ROW_TYPE_OFF) ~= ROW_TYPE then
+  if ROW.row_on ~= 1 or row < 0x10000 or rd("u32", row + L.row_type) ~= ROW_TYPE then
     return nil
   end
-  local list, count = rd("ptr", row + ROW_LIST), rd("u16", row + ROW_COUNT)
+  local list, count = rd("ptr", row + L.row_list), rd("u16", row + L.row_count)
   if not list or not count then
     return nil
   end
@@ -999,15 +1009,15 @@ VRFW.on("hook:SettingRowRead:post", function(ev)
     if not p then
       return nil
     end
-    wr("ptr", row + ROW_LIST, p)
-    wr("u16", row + ROW_COUNT, 3)
+    wr("ptr", row + L.row_list, p)
+    wr("u16", row + L.row_count, 3)
   end
-  ROW.row_label = rd("u32", row + ROW_LABEL_OFF) or ROW.row_label
+  ROW.row_label = rd("u32", row + L.row_label) or ROW.row_label
   if is_draft_row(menu, row) then
     ROW.menu = menu
   end
-  local base = rd("i32", row + ROW_BASE) or 0
-  wr("i32", row + ROW_INDEX, row_index(romaji(), saved_custom()) - base)
+  local base = rd("i32", row + L.row_base) or 0
+  wr("i32", row + L.row_index, row_index(romaji(), saved_custom()) - base)
   return nil
 end)
 
@@ -1017,17 +1027,17 @@ local pending_write
 VRFW.on("hook:SettingRowWrite", function(ev)
   pending_write = nil
   local row = ev.args[2]
-  if row < 0x10000 or ROW.list == 0 or rd("u32", row + ROW_TYPE_OFF) ~= ROW_TYPE then
+  if row < 0x10000 or ROW.list == 0 or rd("u32", row + L.row_type) ~= ROW_TYPE then
     return nil
   end
-  local i, base = rd("i32", row + ROW_INDEX), rd("i32", row + ROW_BASE)
+  local i, base = rd("i32", row + L.row_index), rd("i32", row + L.row_base)
   if not i or not base then
     return nil
   end
   local was = saved_custom()
   local chosen = math.max(i + base, 0)
   local retail = (chosen == IDX_ORIGINAL) and 1 or 0
-  wr("i32", row + ROW_INDEX, retail - base)
+  wr("i32", row + L.row_index, retail - base)
   pending_write = { row = row, i = i, before = row_index(romaji(), was), chosen = chosen, was = was, ours = chosen == IDX_CUSTOM, retail = retail }
   return nil
 end)
@@ -1038,7 +1048,7 @@ VRFW.on("hook:SettingRowWrite:post", function(ev)
   if not w then
     return nil
   end
-  wr("i32", w.row + ROW_INDEX, w.i)
+  wr("i32", w.row + L.row_index, w.i)
   if w.before ~= w.chosen then
     info(string.format("«Nombres de los personajes»: %s -> %s (the game stores «%s»)", VALUE_NAMES[w.before] or "?", VALUE_NAMES[w.chosen] or "?", w.retail == 1 and "Originales" or "Doblaje"))
   end

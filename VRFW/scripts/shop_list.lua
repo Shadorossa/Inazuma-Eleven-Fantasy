@@ -7,8 +7,8 @@
 
 local band = bit32.band
 
-local function info(...) VRFW.log("shop_list:", ...) end
-local function warn(...) VRFW.warn("shop_list:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("shop_list")
 
 -- shop list view fields (v7.1.2 and v7.2.1)
 local DIRTY = 0x1B0          -- u8: rows changed, set by a tab change / list command

@@ -1,0 +1,70 @@
+schema = "VRFW.text/2"
+# Hissatsu Reforged › the «Crítico» archetype (docs/game/mods/hissatsu-critical.md): the game's team build 0, «Brecha»,
+# renamed. Its gameplay is the critical hit of special moves (scripts/critical.lua, config.toml [critical]). Fixed ids:
+# the retail menu_text rows of build 0 (name, name with its icon, the team build names, the explanation).
+table = "menu_text"
+
+[[row]]
+id = 0x1EA47A48  # build 0 name (retail «Brecha»)
+kind = "text"
+es = "Crítico"
+en = "Critical"
+fr = "Critique"
+de = "Kritisch"
+it = "Critico"
+pt = "Crítico"
+ja = "クリティカル"
+zh_hans = "暴击"
+zh_hant = "暴擊"
+
+[[row]]
+id = 0xEC23081A  # build 0 name with its icon
+kind = "text"
+es = "[$gaiji_icon_build01] Crítico"
+en = "[$gaiji_icon_build01] Critical"
+fr = "[$gaiji_icon_build01] Critique"
+de = "[$gaiji_icon_build01] Kritisch"
+it = "[$gaiji_icon_build01] Critico"
+pt = "[$gaiji_icon_build01] Crítico"
+ja = "[$gaiji_icon_build01] クリティカル"
+zh_hans = "[$gaiji_icon_build01] 暴击"
+zh_hant = "[$gaiji_icon_build01] 暴擊"
+
+[[row]]
+id = 0xFA4F1DE9  # build 0 team build name
+kind = "text"
+es = "Crítico"
+en = "Critical Team Build"
+fr = "Build Critique"
+de = "Kritisch-Stil"
+it = "Costruzione squadra: Critico"
+pt = "Montagem: Crítico"
+ja = "クリティカルビルド"
+zh_hans = "暴击流派"
+zh_hant = "暴擊隊伍流派"
+
+[[row]]
+id = 0x6C711089  # build 0 team build name (second)
+kind = "text"
+es = "Crítico"
+en = "Critical Team Build"
+fr = "Build Critique"
+de = "Kritisch-Stil"
+it = "Critico"
+pt = "Montagem: Crítico"
+ja = "クリティカルビルド"
+zh_hans = "暴击流派"
+zh_hant = "暴擊隊伍流派"
+
+[[row]]
+id = 0xFD5E579E  # build 0 explanation
+kind = "text"
+es = "Aumenta la probabilidad de crítico de las\\nsupertécnicas del equipo. ¡Un crítico\\nmultiplica el poder de la técnica!"
+en = "Raises the critical chance of the team's\\nspecial moves. A critical hit multiplies\\nthe move's power!"
+fr = "Augmente les chances de coup critique des\\ntechniques de l'équipe. Un coup critique\\nmultiplie la puissance de la technique !"
+de = "Erhöht die kritische Trefferchance der\\nSpezialtechniken des Teams. Ein kritischer\\nTreffer vervielfacht ihre Stärke!"
+it = "Aumenta la probabilità di colpo critico delle\\ntecniche della squadra. Un colpo critico\\nmoltiplica la potenza della tecnica!"
+pt = "Aumenta a probabilidade de crítico das\\ntécnicas do time. Um crítico multiplica\\no poder da técnica!"
+ja = "チームのひっさつ技のクリティカル率がＵＰ。\\nクリティカルが出れば技の威力が大きく上がる！"
+zh_hans = "本队必杀技的暴击率上升。\\n一旦暴击，技能威力将大幅提升！"
+zh_hant = "隊伍必殺技的暴擊率提升。\\n一旦暴擊，技能威力將大幅提升！"

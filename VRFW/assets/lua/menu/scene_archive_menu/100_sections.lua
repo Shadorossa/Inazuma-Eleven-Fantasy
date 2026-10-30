@@ -14,12 +14,12 @@
 -- Without the framework DLL every command fails and the retail script runs as is. No engine call at load time.
 
 local SA = {
-  TABS = 3191468502,         -- CMND_VRFW_SCENE_ARCHIVE_TABS () -> tabs the engine has
-  SECTION = 1135094873,      -- CMND_VRFW_SCENE_ARCHIVE_SECTION (i) -> category, text id, icon
-  LOG = 3661580131,          -- CMND_EVT_LOG
+  TABS = VRFW_Cmd.VRFW_SCENE_ARCHIVE_TABS,         -- CMND_VRFW_SCENE_ARCHIVE_TABS () -> tabs the engine has
+  SECTION = VRFW_Cmd.VRFW_SCENE_ARCHIVE_SECTION,      -- CMND_VRFW_SCENE_ARCHIVE_SECTION (i) -> category, text id, icon
+  LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
   ROW_GET = 4199163761,      -- scene archive row field getter (row index, field)
-  MOVIE_INFO = 10117594,     -- CMND_GET_MOVIE_INFO (movie id)
-  LANG_CODE = 477234096,     -- CMND_GET_LANGUAGE_CODE: nie.exe language table index
+  MOVIE_INFO = VRFW_Cmd.GET_MOVIE_INFO,     -- CMND_GET_MOVIE_INFO (movie id)
+  LANG_CODE = VRFW_Cmd.GET_LANGUAGE_CODE,     -- CMND_GET_LANGUAGE_CODE: nie.exe language table index
   LIST_LAYER = 1887158505,   -- the list layer (attaches one tab button per tab)
   RETAIL = 3,
   LG = {[0] = "ja", [1] = "en", [2] = "fr", [3] = "es", [4] = "pt", [6] = "de", [7] = "it", [16] = "zh_hant",

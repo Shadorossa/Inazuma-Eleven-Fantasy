@@ -1,0 +1,28 @@
+# «Disparo valiente» (Brave Shot, whs01240; mountain shot, long shot, cut-in ev60_01240): while the ball flies to the
+# goal it wears the cut-in's last shot (c0500, held at frame 390 from the aura's first frame): the beam of light with
+# the ball in its white-hot head and its blue-white fan opening behind it (crossed copies turned about the flight make
+# it a cone of light from every view, its sides soft), its texture flow running on, x0.15 (~9 m long). The beam comes
+# out of the kick point as the ball flies (distance clock, never stretched); every layer fades out over the last half
+# of its length, narrowing, to fully transparent (no end line).
+# The cut-in's last shot hides the ball: the ball is the beam's head joint (pos).
+# The object is ev6124bs00 (effect/event/ev60/ev6124bs00/), built by research/scripts/brave_shot_ball_fx.py from
+# ev60012400.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain long-shot aura's row (like = "ega0085a"; skillEffectBitFlag 4 = long shot); the
+# distance clock (anchor = "kick", drift 0.75 m a frame) reveals the beam from the kick point.
+# Flight: content\techniques\brave_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "brave_shot"
+from = "ega0085a"
+object = "effect/event/ev60/ev6124bs00/ev6124bs00.objbin"
+
+[[shot_aura]]
+name = "brave_shot"
+when = { techniques = ["whs01240"] }
+aura = "brave_shot"
+like = "ega0085a"
+anchor = "kick"
+drift = 0.75

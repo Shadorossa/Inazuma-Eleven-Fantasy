@@ -7,7 +7,10 @@
 -- Mods only DECLARE their pages; the framework owns the order, the Q/E step, the index -> type map and the dots' data:
 --   VRFW_PlayerPages.Add({Name = "<mod>.<Page>", Index = <n>, Type = <t>,
 --                         First = true | Last = true | After = "<name>" | Before = "<name>",
---                         Enabled = function() return <bool> end})        -- optional, asked at run time
+--                         Enabled = function() return <bool> end,         -- optional, asked at run time
+--                         Foreign = false})  -- the page shows the player's own club data or edits the player: left
+--                                            -- out (no step, no dot) while the team editor shows a foreign team
+--                                            -- (VRFW_TeamEditor.Foreign())
 --   VRFW_PlayerPages.ShowWhen("<page name>", function() return <bool> end) -- an extra condition on any page, retail
 --                                                                           -- pages included, asked at run time
 -- Names of the retail pages: vrfw.Moves (0), vrfw.Equipment (1), vrfw.TeamPassives (2), vrfw.SixthSense (3).
@@ -19,10 +22,10 @@
 -- No engine call at load time.
 if VRFW_PlayerPages == nil then
   local P = {
-    LOG = 3661580131,            -- CMND_EVT_LOG
-    SND = 1917805374,            -- CMND_SND_PLAY_SE (the retail page step sound)
+    LOG = VRFW_Cmd.EVT_LOG,            -- CMND_EVT_LOG
+    SND = VRFW_Cmd.SND_PLAY_SE,            -- CMND_SND_PLAY_SE (the retail page step sound)
     SE_STEP = 2629173176,        -- sy0009
-    ANIME = 3781155141,          -- CMND_PLAY_ANIME_TYPE
+    ANIME = VRFW_Cmd.PLAY_ANIME_TYPE,          -- CMND_PLAY_ANIME_TYPE
     L_STATUS = 730911947,        -- soccer11_05_formation_status_base
     ANIM_NEXT = 3183130249,      -- the retail page-step animations of the status base
     ANIM_PREV = 1203080170,
@@ -32,8 +35,8 @@ if VRFW_PlayerPages == nil then
     RETAIL = {
       {Name = "vrfw.Moves", Index = 0, Type = 1},
       {Name = "vrfw.Equipment", Index = 1, Type = 0},
-      {Name = "vrfw.TeamPassives", Index = 2, Type = 2},
-      {Name = "vrfw.SixthSense", Index = 3, Type = 3},
+      {Name = "vrfw.TeamPassives", Index = 2, Type = 2, Foreign = false},
+      {Name = "vrfw.SixthSense", Index = 3, Type = 3, Foreign = false},
     },
     decls = {},                  -- name -> declaration
     conditions = {},             -- page name -> {function, ...}: the ShowWhen conditions of that page
@@ -140,8 +143,22 @@ if VRFW_PlayerPages == nil then
     return out
   end
 
-  -- a ShowWhen condition of the page says no: the page is left out of the order (no step, no dot slot)
+  -- the team editor shows a team that is not one of the player's (lua\_all\81_team_editor.lua)
+  function P.ForeignTeam()
+    local editor = VRFW_TeamEditor
+    if type(editor) ~= "table" or type(editor.Foreign) ~= "function" then
+      return false
+    end
+    local ok, v = pcall(editor.Foreign)
+    return ok and v ~= nil
+  end
+
+  -- a ShowWhen condition of the page says no, or a Foreign = false page while a foreign team is shown: the page is
+  -- left out of the order (no step, no dot slot)
   function P.Removed(d)
+    if d.Foreign == false and P.ForeignTeam() then
+      return true
+    end
     for _, fn in ipairs(P.conditions[d.Name] or {}) do
       local ok, v = pcall(fn)
       if ok and v == false then

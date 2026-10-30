@@ -8,6 +8,10 @@ schema = "VRFW.game/2"
 [[VRFW.State]]
 key = "vrfw.passive.slots_off"
 
+# 1 while a declared no-passive mode runs ([[VRFW.NoPassives]]), else 0: the one test for «no passives here»
+[[VRFW.State]]
+key = "vrfw.passive.all_off"
+
 # The two signature slot entries called through their hooked entry points: the answer every subscriber agreed on
 [[VRFW.Function]]
 name = "VRFW.SignatureSlotIdLive"

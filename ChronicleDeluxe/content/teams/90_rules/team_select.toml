@@ -8,7 +8,8 @@ default_lang = "en"
 
 # «¡El equipo definitivo!» against Criaturas de la Noche (fbtl_cro05_220_010): the Crónica's fixed line-up
 # pltm_cro_ie5_20 (Sol in slot 6) is Equipo Llamarada; this copy with Bai Long in slot 6 is Equipo Trueno. Bai Long's
-# card, row id, move loadout and number are the ones retail gives him in pltm_cro_ie5_19_1 (slot 6).
+# card, row id and number are the ones retail gives him in pltm_cro_ie5_19_1 (slot 6); he plays his base form: his own moves written
+# whole, because retail's loadout of that row carries his Mix-Max (Zhuge Liang) and would show him miximaxed.
 [[team]]
 name = "chrono_storm_night_creatures_bai_long"
 key = "chronicle_deluxe_pltm_cro_ie5_20_bai_long"
@@ -17,7 +18,7 @@ based_on = "pltm_cro_ie5_20"
 [[edit]]
 target = "chrono_storm_night_creatures_bai_long"
 member = [
-  { slot = 6, patch = true, card = "0x07DB0ECC", uid = "0xA68C190B", loadout = "0xA703B189", number = 19 },   # Bai Long (c05028140)
+  { slot = 6, patch = true, level_offset = 1, card = "0x07DB0ECC", uid = "0xA68C190B", number = 19, moves = [0x1C097E46, 0x3297683F, 0x89D614F5, 0x0E4E083A], levels = [48, 72, 94, 114] },   # Bai Long (c05028140), base form: his own moves, no Mix-Max
 ]
 
 [[VRFW.TeamSelect]]

@@ -1,0 +1,49 @@
+schema = "InaRogue.ascension/1"
+# InaRogue › Ascension («Exigencia», docs/game/mods/inarogue-loop-v2.md §4.3, §5.6): optional harder runs. Level n+1
+# opens after a won run at level n (global store rogue_meta.json). A run at level n plays every modifier of levels 1..n.
+# Read by scripts/lib/rogue/ascension.lua; texts InaRogue.run_ascension_<n> (text/rows/rogue_run.toml).
+#
+# [[level]]  level = its number (1, 2, … in order)
+#   [level.modifiers]  rival_levels / boss_levels (levels added), elite_weight (added to the Élite content weight),
+#                      coins_mult / price_mult (multiplied), recruit_offers (added), start_coins (added),
+#                      no_shop / no_recruit / no_items (true = that part is off)
+
+[[level]]
+level = 1
+modifiers = { rival_levels = 2 }
+
+[[level]]
+level = 2
+modifiers = { elite_weight = 8 }
+
+[[level]]
+level = 3
+modifiers = { coins_mult = 0.85 }
+
+[[level]]
+level = 4
+modifiers = { price_mult = 1.2 }
+
+[[level]]
+level = 5
+modifiers = { boss_levels = 3 }
+
+[[level]]
+level = 6
+modifiers = { recruit_offers = -1 }
+
+[[level]]
+level = 7
+modifiers = { start_coins = -10 }
+
+[[level]]
+level = 8
+modifiers = { rival_levels = 3 }
+
+[[level]]
+level = 9
+modifiers = { coins_mult = 0.85 }
+
+[[level]]
+level = 10
+modifiers = { boss_levels = 5 }

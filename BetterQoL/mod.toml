@@ -2,11 +2,68 @@ id = "BetterQoL"
 former_ids = ["utilities", "Utilities"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
 name = "BetterQoL"
-version = "1.37.0"
+version = "1.88.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Quality-of-life tools for any save. Team Dock pages: the Team Dock gets pages of 11 squads (10 pages by default, set in config.toml); R3 / N opens the squad list, L2 / R2 (Q / E) turn the pages. Passive configurator: choose which passives each player has (3 slots by default, up to 5 in config.toml; coaches and managers choose from their role's passives); other mods can add their own passives to the list. The player's archetype follows his two archetype passives (two of one archetype = that one; two different archetypes = a double archetype, shown next to each other in Character Reforged's player header). Match camera options. Home / Away kit: in the kit picker, Y shows the away version of any kit and A saves it. Void element icon: players without an element and Void moves show the purple ensō wherever the game draws element icons. Visual style: the look of the 3D image (Original, IE3, Chrono Stone, Soft or Thick outline) in Mod options, applied at once without restarting. Unlocked formations: the 11-a-side formations the game has but never offers (the series' F- formations) can be chosen in the formation picker. Role medal without matches: any player can get the coach or manager medal without the game's 10 / 30 matches (the numbers are set in config.toml [role_medal], 0 by default). Shop filter: in the shop tabs of equipment, kits, emblems, moves and auras, Tab opens the game's item filter window (series, stat, element...) and filters the tab's goods. Move level badges (Spanish): the level badges and grade icons of special moves as stars instead of +1 / +2 / +3, a row of Mod options. Player career stats: a CAREER page on the player plate with each player's signing date, matches, wins / draws / losses, goals, assists, MVP awards, shots, saves and more, counted from every match. Club stats: a «Club stats» row in the Clubroom opens a page of its own (like the Scene archive) with the club totals (matches, wins / draws / losses, win %, goals for and against, clean sheets, biggest win, longest runs) and every player of the save who has played a match, with his matches, goals, assists, MVP awards, win % and signing date; Select changes the sort. Chronicle route map: hold R2 (E) to move the map cursor twice as fast (x2, set in config.toml); the map's button guide shows «R2 Cursor speed». Original names by team: in Settings › Game settings, «Character names» gets «By team»; A on the row opens a picker with one tab per series (IE1 … Victory Road and mods' series) where you tick the teams or whole series whose players show their original names. Bank commands: choosing a player in the Team Dock's Bank opens a command list with Skill board, Equipment and Passive settings for that player, Quick retire (retires him and saves) and the game's equipment rows. Team planner: in a Team Dock squad, A on an empty slot offers «Add from the bank» or «Plan team»: any character of the game or the mods shows as a semi-transparent ghost card in that slot until you get him, then his card takes the slot by itself; a squad with ghosts cannot be the active one. No Hero / Diamond limits: a squad can field any number of Hero and Diamond cards (the game allows 2 Heroes and 1 Diamond). Top bar shortcuts: icons on the right of the menus' top bar go straight to the game's modes (Competition, Battle Bay with a dropdown of Campaign, 1v1 and Online, Chronicle, My Team, Market); mouse or R3 (on the Chronicle route map the bar shows only in its pause menu); other mods add their own icons. Auto Commander Mode: an option row starts Battle Bay matches in Commander Mode, and free matches and Heroic battles against beaten rivals. Technique preview: on the special move card of the «Supertécnicas» list, RS (P on the keyboard; rebindable in the game's controls screen) plays the move's cut-in full screen with a player of your active squad at the move's position (shoot: a forward, dribble: a midfielder, block: a defender, catch: the keeper; one who learns it first), then the list is back as it was. No auto-run in focus battles: LB / RB no longer run your player to a side by themselves (the game's focus auto-run is switched off). Longer team names: the Team Dock's name takes up to 24 characters (the game: 12; set in config.toml), a long name drawn a little smaller to fit the header. Player album: a «Player album» row in the Clubroom lists every player of the game and the mods by name or by game (Y the type, LB / RB the group, L2 / R2 the player page), ticks the ones your club has and shows the selected player's page on the right. In the walk-in and entrance scenes, «(X) Kick-off» beside «Skip»: hold X to go straight to the kick-off."
 
+# 1.80.0 (owner 2026-10-30): «Álbum de jugadores»: the miniface of a row with a dressing team (a mod category's own
+# team, e.g. the IECross cards) wears that team's kit, as the plate's 3D model (CMND_VRFW_CONTACT_KIT(card, team)).
+# 1.78.0 (owner 2026-10-30): formation descriptions the game left as a Japanese placeholder (F- / B- formations) get a
+# real description in the 9 languages, built from each layout (research/scripts/formation_descriptions.py); F-Raimon and
+# F-Basic translated from the game's Japanese text (text/rows/formation_descriptions.toml).
+# 1.66.2 (owner 2026-10-29): team planner: «Planificar equipo» shows its season list: the picker's layers
+# (util_tp_card / _tab / _emblem / _label) are in the dock Formación's own group team_dock_formation_menu.
+# 1.66.1 (owner 2026-10-29): «Álbum de jugadores»: a mod category's card wears the kit of its mod's first team listing
+# it (content/teams; VRFW.plate_card_team, e.g. Cross Gazelle in Chaos Circus); content/album [[hide_rarities]] keeps the
+# cards of the rarities a mod's option hides out of the rows, «Especiales» and counts (No More Rarities' Ídolo /
+# Diamante), rebuilt when the value in force changes.
+# 1.66.0: «Álbum de jugadores» and the club stats page draw their minifaces with the VR-Framework's VRFW_FaceIcon
+# 1.65.1 (owner 2026-10-29): «Álbum de jugadores»: a mod-declared category (content/album [[series]]: `cards` card-set
+# rules and / or `team`) lists each of its characters as his own row and card (own model, outfit and stats), never folded
+# into the character he copies; `exclusive` (default true) keeps him out of the source series (the Cross tab showed
+# the retail Axel, Byron, Celia… instead of their Cross cards).
+# 1.65.0 (owner 2026-10-29): «Álbum de jugadores»: the page's backdrop and the Caseta's hidden background follow the player
+# plate (swapped together when the plate is up, back together when the page closes), no grey band in the transitions.
+# 1.64.0 (owner 2026-10-29): «Modo comandante automático» plays at normal speed (the game's «Modo Comandante veloz»
+# x2 no longer applies in its matches); new row «Velocidad del Modo Comandante automático» x1 / x1.5 / x2 / x3 / x4
+# (the game's own Commander speed-up, its factor from the row; config.toml [auto_commander] speed_min / speed_max).
+# 1.63.0 (owner 2026-10-29): «Álbum de jugadores» 3D model in the card's own team kit: the page names the card with
+# VRFW.plate_card, the VR-Framework's VRFW_PlateMember.Kit gives his team's kit (CMND_VRFW_CONTACT_KIT).
+# 1.62.0 (owner 2026-10-29): «Álbum de jugadores» 3D model the transfer office's way: the plate model on its normal
+# layer over the page's own background-pass backdrop (util_alb_backdrop), the Caseta's background hidden meanwhile;
+# the album no longer joins the plate model's capture menus.
+# 1.58.0 (owner 2026-10-28): «Álbum de jugadores»: a mode-only rarity (scope) no longer names cards of its value
+# (Idols read «¿Y si…?»); content/album/*.toml exclude_cards keeps a mod's cards out of the album.
+# 1.57.0 (owner 2026-10-28): «Álbum de jugadores» declared series: a player is a member when any of his folded bases is in
+# the declared team (the Cross characters are folded into their original player's row); one log line per series.
+# 1.56.0 (owner 2026-10-28): «Álbum de jugadores» «Especiales»: each card named «player · rarity» (the rarity files' labels).
+# 1.55.0 (owner 2026-10-28): kit / emblem order moved to the inventory («Objetos» kits and emblems tabs): by saga, then
+# the saga's team order; the team kit / emblem pickers keep the game's order again.
+# 1.53.0 (owner 2026-10-28): «Álbum de jugadores» bar labels centred on their segments (text box 384 px wide); «Equipo» bar
+# shows only the crest and the team's name.
+# 1.51.0 (owner 2026-10-28): kit and emblem pickers: the owned kits / emblems grouped by team (game team order), each
+# team by series (default order only; content/game/kit_emblem_order.toml, scripts/kit_emblem_order.lua).
+# 1.50.0 (owner 2026-10-28): «Álbum de jugadores» «Juego»: series declared by other mods (content/album/*.toml
+# [[series]] series / team; IECross's Cross) and a last «Especiales» group (cards above display_rarity, own rarity).
+# 1.49.0 (owner 2026-10-28): «Álbum de jugadores» 3D model: the album joins the plate model's capture menus also when
+# that script loads after 135_album_pages.lua (metatable on EVT_PPM), so the model is drawn on its capture layer.
+# 1.48.0 (owner 2026-10-28): «Álbum de jugadores» band: the «Tienes» counter keeps its own room, the group name cut before it.
+# 1.47.0 (owner 2026-10-28): «Álbum de jugadores» «Equipo» bar: crest and «team (n/total)» left-aligned on the strip.
+# 1.46.0 (owner 2026-10-28): «Álbum de jugadores» group bar labels white and centred on their segments.
+# 1.45.0 (owner 2026-10-28): «Álbum de jugadores» every group bar on the game's list tab bar (Nombre letters, Equipo one
+# segment with crest); crests on the game's emblem list row (util_alb_crest, team06_02); Equipo groups per team and
+# series («team · game» when names repeat).
+# 1.42.0 (owner 2026-10-28): «Álbum de jugadores» third type «Equipo»: one group per team (series' team order, from
+# the game's team rows), LB / RB the team, its name on one group tab; the band shows only the group (the team's crest
+# on «Equipo», layer util_alb_crest), «Tienes» inside its right end; «No lo tienes» only on the plate's first page.
+# 1.41.0 (owner 2026-10-28): «Álbum de jugadores» content guide line: a fixed description of the page (text key
+# BetterQoL.Album.Line), no longer the selected player's team and game.
+# 1.40.0 (owner 2026-10-28): «Álbum de jugadores» game groups on the game's list tab bar (cmn06_01 strip, cmn06_20
+# focus block, dimmed / white series logos), as the free-match rival list.
+# 1.38.0 (owner 2026-10-28): «Álbum de jugadores» shows every player as his base card at rarity 4 (Legendary) and the
+# level cap in effect (config.toml [album]; a mod's raised [VRFW.Level] cap), never the club's copy; the rows' check
+# box and miniface moved inside the row plate (P.box_x); the button guide keeps only Esc and the page keys.
 # 1.36.0 (owner 2026-10-23): «Álbum de jugadores»: the tick drawn one priority above its check box (both on
 # util_alb_icon, one priority: no fixed order; CMND_SET_DRAW_PRIORITY per instance).
 # 1.35.0 (owner 2026-10-23): every «Caseta del club» row has its place: «Ayuda» after «Álbum de jugadores», no longer
@@ -41,7 +98,7 @@ description = "Quality-of-life tools for any save. Team Dock pages: the Team Doc
 # without BetterUI (the plate is the retail «Saltar» guide object, as BetterUI draws it when it is on).
 priority = 0
 tags = ["Gameplay", "Interface"]
-updated = "2026-10-23"
+updated = "2026-10-30"
 # its texts (text\rows\, 9 languages), menu rows (menus\) and options come from the VR-Framework's engines; `requires`
 # also makes it load after the framework. The match camera is data (cameras\side.toml, schema
 # vr_framework.match_camera/1) on the framework's match camera service (VR-Framework 2.0.0, docs/framework/camera.md). Released on its own (Nexus Mods) next to VR-Framework 2.0.0.
@@ -66,7 +123,7 @@ updated = "2026-10-23"
 # (assets/lua/play_guide_top_menu/150_club_stats.lua, layers content/menus/club_stats.toml, texts
 # text/rows/club_stats.toml): club totals (new key `club` of career.json, counted from the first match after the
 # update) and the career store's players (CMND_BETTERQOL_CLUB_STATS / _ROW in scripts/career.lua); docs/game/ui/club-stats.md
-requires = ["VRFW>=2.139.0", "text_engine>=1.1.0", "menu_engine>=1.0.0"]
+requires = ["VRFW>=2.301.0", "text_engine>=1.1.0", "menu_engine>=1.0.0"]
 conflicts = []
 # the standalone mod away_kit 1.0 (2026-10-07) is a feature of Utilities now: an installed away_kit is replaced by it
 # (same Lua commands, same mask bit, same kit ids in the save)

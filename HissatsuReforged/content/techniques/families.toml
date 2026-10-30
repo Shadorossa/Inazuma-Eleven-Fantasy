@@ -1,0 +1,2194 @@
+schema = "VRFW.technique/3"
+# Hissatsu Reforged › the technique families (docs/game/mods/technique-families-v2-proposal.md, approved 2026-10-28):
+# declared once here ([[VRFW.TechniqueFamily]], ids HissatsuReforged.<Name>) and given to the retail moves with
+# `families` on an [[edit]] (an edit with only `families` changes no table cell). Each family is one concept: a line
+# and its relatives, a team's power set, a summoned being or a shared motif. Variants (Ensueño, numbered versions)
+# and the _or / _mm / _cro copies carry their base move's families. A move in two families counts once for any one
+# bonus source (the highest matching bonus applies). Mods that add moves give them `families` on their own
+# [[technique]] rows; a later mod may change a move's list with [[edit]].
+# Each family's `name` is its full id (HissatsuReforged.<Name>): the declaring mod's internal id is hissatsu_reforged,
+# so a bare <Name> would become hissatsu_reforged.<Name> and match none of the moves' HissatsuReforged.<Name>.
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.FireTornado"
+text = "HissatsuReforged.family_fire_tornado"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.GodHand"
+text = "HissatsuReforged.family_god_hand"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.InazumaPower"
+text = "HissatsuReforged.family_inazuma_power"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.NorthernIce"
+text = "HissatsuReforged.family_northern_ice"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.DivinePower"
+text = "HissatsuReforged.family_divine_power"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.AliusPower"
+text = "HissatsuReforged.family_alius_power"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.MajinGiant"
+text = "HissatsuReforged.family_majin_giant"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Penguin"
+text = "HissatsuReforged.family_penguin"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Dragon"
+text = "HissatsuReforged.family_dragon"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Triangle"
+text = "HissatsuReforged.family_triangle"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.LegendaryWeapons"
+text = "HissatsuReforged.family_legendary_weapons"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.LegendaryBirds"
+text = "HissatsuReforged.family_legendary_birds"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Phoenix"
+text = "HissatsuReforged.family_phoenix"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Pegasus"
+text = "HissatsuReforged.family_pegasus"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Beasts"
+text = "HissatsuReforged.family_beasts"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.SeaBeasts"
+text = "HissatsuReforged.family_sea_beasts"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Diamond"
+text = "HissatsuReforged.family_diamond"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.EventHorizon"
+text = "HissatsuReforged.family_event_horizon"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Illusions"
+text = "HissatsuReforged.family_illusions"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Speed"
+text = "HissatsuReforged.family_speed"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Earthshaker"
+text = "HissatsuReforged.family_earthshaker"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.GreatWalls"
+text = "HissatsuReforged.family_great_walls"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Fortresses"
+text = "HissatsuReforged.family_fortresses"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Whirlwinds"
+text = "HissatsuReforged.family_whirlwinds"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.MusicDance"
+text = "HissatsuReforged.family_music_dance"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.NinjaArts"
+text = "HissatsuReforged.family_ninja_arts"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Traps"
+text = "HissatsuReforged.family_traps"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.WildFlora"
+text = "HissatsuReforged.family_wild_flora"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Machines"
+text = "HissatsuReforged.family_machines"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.DigitalMind"
+text = "HissatsuReforged.family_digital_mind"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.MagicTricks"
+text = "HissatsuReforged.family_magic_tricks"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Circus"
+text = "HissatsuReforged.family_circus"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Occult"
+text = "HissatsuReforged.family_occult"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Shields"
+text = "HissatsuReforged.family_shields"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Stampede"
+text = "HissatsuReforged.family_stampede"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Reptiles"
+text = "HissatsuReforged.family_reptiles"
+
+[[VRFW.TechniqueFamily]]
+name = "HissatsuReforged.Punches"
+text = "HissatsuReforged.family_punches"
+
+[[edit]]
+target = "whd00010"  # El muro
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd00011"  # Ensueño: El muro
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd00040"  # Sismo
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whd00060"  # Telaraña
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whd00070"  # Ciclón
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "whd00080"  # Bola falsa
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "whd00090"  # Ataque sombrío
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whd00100"  # Pisotón de sumo
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whd00110"  # Embestida
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whd00140"  # Escáner defensa
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "whd00150"  # Manos fantasmagóricas
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whd00160"  # Doppelgänger
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "whd00170"  # Corro de la patata
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whd00170_or"  # Corro de la patata
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whd00190"  # Pisotón de justicia
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "whd00200"  # Megaterremoto
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whd00220"  # Sorpresa
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whd00250"  # Defensa múltiple
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "whd00260"  # Voltereta circense
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "whd00280"  # Torre inexpugnable
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whd00290"  # Flash de fotones
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whd00300"  # Gravitación
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whd00330"  # Bombazo
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "whd00350"  # Presa
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd00350_or"  # Presa
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd00360"  # Superpisotón de sumo
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whd00370"  # Robo planetario
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whd00390"  # Ciclón doble
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "whd00390_or"  # Ciclón doble
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "whd00400"  # Emboscada defensiva
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whd00410"  # Baile de llamas
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whd00430"  # Escudo corporal
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whd00450"  # Gran sabio
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd00460"  # Aplanadora
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whd00490"  # Bloqueo ballena
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whd00500"  # Campo torbellino
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "whd00510"  # Tren loco
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whd00520"  # Rompehielos
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whd00530"  # Torre perfecta
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whd00550"  # Ángel de nieve
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whd00560"  # Escudo bárbaro
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whd00570"  # Gran seísmo
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whd00620"  # Muro de hierro
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd00670"  # Jaula de piedra
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whd00680"  # La montaña
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whd00720"  # La niebla
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whd00730"  # Red de caza
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whd00730_mm"  # Red de caza
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whd00740"  # A todo vapor
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "whd00760"  # Coleccionista de cartas
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "whd00800"  # Orca peligrosa
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whd00850"  # Carga de elefantes
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whd00860"  # Espectro oscuro
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whd00890"  # La gran muralla
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd00900"  # Niebla mística
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whd00900_mm"  # Niebla mística
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whd00910"  # Muralla de Atlantis
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd00920"  # Lanza tornado
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whd00930"  # Golpe titánico
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whd00980"  # Robo fantástico
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whd00990"  # Caída prehistórica
+families = ["HissatsuReforged.Reptiles"]
+
+[[edit]]
+target = "whd00990_mm"  # Caída prehistórica
+families = ["HissatsuReforged.Reptiles"]
+
+[[edit]]
+target = "whd01010"  # Ilusión deslumbrante
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "whd01010_mm"  # Ilusión deslumbrante
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "whd01020"  # Jungla profunda
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whd01060"  # Grumo pegapasta
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whd01070"  # Barreno de fuego
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whd01070_mm"  # Barreno de fuego
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whd01080"  # Fortaleza nocturna
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whd01090"  # Fiesta floral
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whd01100"  # Muralla de las montañas
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd01110"  # Acrobacia robótica
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whd01160"  # Escudo caparazón
+families = ["HissatsuReforged.Reptiles"]
+
+[[edit]]
+target = "whd01200"  # Danza de plumas
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whd01210"  # Espinas insidiosas
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whd01220"  # Ecuación defensiva
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "whd01260"  # Remolino polvoriento
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "whd01270"  # Clave de sol
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whd01280"  # Siega central
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whd01300"  # Tuneladora
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whd01330"  # Presa de zarcillo
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whd01340"  # Robo sigiloso
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whd01380"  # Bloqueo telequinético
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "whd01390"  # Lógica ganadora
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "whd01400"  # Espejismo de zorro
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whd01401"  # Espejismo de Flami
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whd01420"  # Garra de tejón
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whd01421"  # Garra de Kúlupe
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whd01422"  # Garra de Giorom
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whd01430"  # Cornada de búfalo
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whd01431"  # Cornada de Gandoran
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whd01432"  # Cornada de Dandor
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whd01440"  # Zambullida de Dolfinus
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whd01470"  # Jaula gravitatoria
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whd01510"  # Frankendefensa
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whd01530"  # Muro colectivo
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd01530_or"  # Muro colectivo
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whd01540"  # Nudo atrapaosos
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whd01560"  # Búnker
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whd01590"  # León devorador
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whd10010"  # Tortuga danzarina
+families = ["HissatsuReforged.Reptiles"]
+
+[[edit]]
+target = "whd10030"  # Fórmula matemática
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "whd10050"  # Fortaleza desesperada
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whd10060"  # El fuerte
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whd10080"  # Maremoto umibozu
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whd10090"  # Pisotón vigoroso
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whd10100"  # Toro a la fuga
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whd10120"  # Niebla sombría
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whd10130"  # Robo teatral
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whk00010"  # Mano celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00011"  # Ensueño: Mano celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00020"  # Escudo de fuerza
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk00030"  # Despeje de fuego
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk00050"  # Espiral de distorsión
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whk00060"  # Puño vengativo
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk00090"  # Despeje a presión
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk00100"  # Atajo tornado
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "whk00120"  # Escudo de fuerza total
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk00130"  # Despeje de leñador
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk00140"  # Torbellino
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "whk00150"  # Despeje cohete
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whk00170"  # Muralla gigante
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whk00200"  # Muralla tsunami
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whk00210"  # Despeje explosivo
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk00220"  # Mano mágica
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00230"  # Muralla infinita
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whk00240"  # Manos infinitas
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00300"  # Colmillo de pantera
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whk00310"  # Destrozataladros
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whk00320"  # Parada múltiple
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "whk00350"  # Puños voladores
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whk00360"  # Tormenta de pétalos
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whk00380"  # Trimano celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00380_or"  # Trimano celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00390"  # Agujero negro
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whk00400"  # Muralla de escudos
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk00410"  # Agujero de gusano
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whk00420"  # Muro dimensional
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whk00430"  # Constelación estelar
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whk00440"  # Superpuño invencible
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00470"  # Mano mágica
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00480"  # Mano celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00490"  # Mano celestial EV
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00500"  # Mano ultradimensional
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00510"  # Puño de furia
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00520"  # Mano espiritual
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00530"  # Mano celestial X
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00540"  # Mano diabólica
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00550"  # Parada celestial
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00555"  # Parada celestial TURBO
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00570"  # Golpes de luz
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk00580"  # Rechace de fuego
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk00600"  # Araña gigante
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whk00610"  # Espada defensora
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whk00620"  # Guardia del coliseo
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whk00660"  # Malla letal
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whk00670"  # Baraja fugaz
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "whk00690"  # Mano omega
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00700"  # Malla eléctrica
+families = ["HissatsuReforged.Traps"]
+
+[[edit]]
+target = "whk00790"  # Barrera de cristal
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk00800"  # Presa de sombras
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whk00810"  # Parada en pirueta
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "whk00820"  # Ultrasonidos
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whk00830"  # Despeje de fuerza
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk00850"  # Mano celestial V
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk00870"  # Mordisco de serpiente
+families = ["HissatsuReforged.Reptiles"]
+
+[[edit]]
+target = "whk00900"  # Centro de gravedad
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whk00910"  # Mano mágica
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00920"  # Escudo guardián
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk00950"  # Despeje demoníaco
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00960"  # Dados de la suerte
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "whk00970"  # Cúpula carmesí
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk00980"  # Mano grandiosa
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk00990"  # Aplastamiento
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whk01010"  # Agujero blanco
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whk01050"  # Rayo de puño
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whk01070"  # Parada en plancha
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk01090"  # Bimano celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk01100"  # Romance de los tres reinos
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whk01100_mm"  # Romance de los tres reinos
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whk01120"  # Mano de pingüinos
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whk01160"  # Defensa de muñecos
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whk01200"  # Colmillo de cocodrilo
+families = ["HissatsuReforged.Reptiles"]
+
+[[edit]]
+target = "whk01220"  # Parada de codo
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk01230"  # Puño de arena
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk01260"  # Trampa vegetal
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whk01270"  # Despeje virtual
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "whk01300"  # Portón del castillo
+families = ["HissatsuReforged.Fortresses"]
+
+[[edit]]
+target = "whk01310"  # Sacrificio
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whk01320"  # Despegue espacial
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whk01330"  # Mate del dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whk01340"  # Pisotón de mamut
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whk01341"  # Pisotón de Magnatas
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whk01342"  # Pisotón de Dolmega
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whk01350"  # Eco de Delfinus
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whk01351"  # Eco de Dalfonus
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whk01400"  # Mano oceánica
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk01420"  # Contragolpe férreo
+families = ["HissatsuReforged.Punches"]
+
+[[edit]]
+target = "whk01450"  # Craterclismo
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "whk01460"  # Escudo lunar
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk01470"  # Brazo extensible
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "whk01480"  # Colmillo salvaje
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whk01490"  # Megamanos mágicas
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk01510"  # Anillo de Artemisa
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk01520"  # Parada de Asura
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk01520_or"  # Parada de Asura
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk01540"  # Halo solar
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk01550"  # Despeje diamantino
+families = ["HissatsuReforged.Diamond"]
+
+[[edit]]
+target = "whk01560"  # Mano de diamante
+families = ["HissatsuReforged.Diamond"]
+
+[[edit]]
+target = "whk01580"  # Escudo tricerátops
+families = ["HissatsuReforged.Reptiles"]
+
+[[edit]]
+target = "whk01590"  # Muro de fuego
+families = ["HissatsuReforged.GreatWalls"]
+
+[[edit]]
+target = "whk01600"  # Escudo sombrío
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk01620"  # Ola mágica
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk01630"  # Paradón satelital
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "whk01660"  # Ultramanos mágicas
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whk01670"  # Sonata del olvido
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whk01680"  # Mano celestial de la amistad
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk01690"  # Abanicos dragontinos
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whk01700"  # Brazo de diamante
+families = ["HissatsuReforged.Diamond"]
+
+[[edit]]
+target = "whk01710"  # Mano celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk01720"  # Supermano celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whk10010"  # Gracia glacial
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whk10011"  # Gracia glacial
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whk10020"  # Extramundo
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "whk10040"  # Duna gravitacional
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whk10050"  # Pincelada silenciosa
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whk10060"  # Escudo real
+families = ["HissatsuReforged.Shields"]
+
+[[edit]]
+target = "whk10070"  # Mano celestial del tigre
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "who00010"  # Regate múltiple
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "who00020"  # Entrada huracán
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00030"  # Torbellino dragón
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "who00040"  # Espejismo de balón
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "who00050"  # Acelerón
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00090"  # Equilibrismo
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "who00100"  # Maldición
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "who00110"  # Superarmadillo
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who00120"  # Niebla venenosa
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "who00130"  # Escáner ataque
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "who00140"  # Confusión
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "who00160"  # Imagen residual
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "who00170"  # Regate topo
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "who00180"  # Remolino cortante
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "who00190"  # Giro de mono
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who00200"  # Hora celestial
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "who00220"  # Entrada tormentosa
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00230"  # Salto lunar
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "who00240"  # Truco de magia
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "who00250"  # Regate espejismo
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "who00260"  # Descodificación
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "who00270"  # Avance flamígero
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00290"  # Regate aurora
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "who00330"  # Prima donna
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "who00340"  # Armadillo circense
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "who00340_or"  # Armadillo circense
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "who00360"  # Esprint triple
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00360_or"  # Esprint triple
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00390"  # Sorteo de balón
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "who00400"  # Tornado venenoso
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "who00410"  # Teleportación
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00430"  # Cruz del Sur
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "who00490"  # Patada canguro
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who00520"  # Vuelo de Ícaro
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "who00530"  # Danza del viento
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "who00540"  # Descarte
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "who00620"  # Inmersión
+families = ["HissatsuReforged.Machines"]
+
+[[edit]]
+target = "who00670"  # Piroquinesis
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "who00680"  # Remolino acuático
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "who00710"  # Mirada al futuro
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "who00720"  # Arrancada
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00730"  # Visto y no visto
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "who00750"  # Círculo de hielo
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "who00820"  # Regate supersónico
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00830"  # Trance melódico
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "who00840"  # Dragón ascendente
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "who00850"  # Himno de Atenea
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "who00870"  # Guardia acrobática
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "who00880"  # Carga hipersónica
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who00890"  # Lazos de oscuridad
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "who00920"  # Rayo celeste
+families = ["HissatsuReforged.Pegasus"]
+
+[[edit]]
+target = "who00930"  # Ritmo agresivo
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "who00950"  # Túnel tornado
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "who00950_mm"  # Túnel tornado
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "who00970"  # Rematerialización
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "who00980"  # Ojo del huracán
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "who01040"  # Formateo de disco
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "who01060"  # Brisa encabritada
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who01080"  # Hoz de remolino
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "who01090"  # La tempestad
+families = ["HissatsuReforged.Whirlwinds"]
+
+[[edit]]
+target = "who01140"  # Aro-Alehop
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "who01190"  # Siega baja
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "who01210"  # Excavación
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "who01250"  # Bloqueo holográfico
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "who01280"  # Espada de Atlas
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "who01290"  # Arco psíquico
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "who01310"  # Acorde difuso
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "who01320"  # Remolino de hojas
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "who01330"  # Galope de caballo
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who01331"  # Galope de Univolt
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who01341"  # Fulgor de Fenikias
+families = ["HissatsuReforged.Phoenix"]
+
+[[edit]]
+target = "who01350"  # Placaje de oso pardo
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "who01351"  # Placaje de oso lunar
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "who01352"  # Placaje de grifo
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "who01360"  # Salto de antílope
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who01361"  # Salto de antílope oscuro
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who01362"  # Salto de Pamerio
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who01370"  # Horadador de Dohma
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "who01371"  # Horadador de Zooma
+families = ["HissatsuReforged.Earthshaker"]
+
+[[edit]]
+target = "who01390"  # Carga de pegaso
+families = ["HissatsuReforged.Pegasus"]
+
+[[edit]]
+target = "who01391"  # Carga de pegaso rojo
+families = ["HissatsuReforged.Pegasus"]
+
+[[edit]]
+target = "who01400"  # Entrada relampagueante
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who01460"  # Embestida bufalina
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "who10040"  # Carrera afanosa
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "who10110"  # Visión de matriz
+families = ["HissatsuReforged.DigitalMind"]
+
+[[edit]]
+target = "who10120"  # Contragolpe de halcón
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "who10140"  # Aro hula hoop
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "who10150"  # Regate fantasmal
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "who10170"  # Ritmo eléctrico
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whs00010"  # Trampolín relámpago
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00020"  # Remate combinado
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00030"  # Tornado de fuego
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs00050"  # Superrelámpago
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00060"  # Remate dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00061"  # Ensueño: Remate dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00080"  # Triángulo letal
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs00100"  # Remate halcón
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "whs00120"  # Remate serpiente
+families = ["HissatsuReforged.Reptiles"]
+
+[[edit]]
+target = "whs00230"  # Psicorremate
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "whs00240"  # Ataque cóndor
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "whs00260"  # Triángulo Z
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs00320"  # Tornado inverso
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs00340"  # Sabiduría divina
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "whs00340_mm"  # Sabiduría divina
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "whs00350"  # Tornado dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00350_or"  # Tornado dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00370"  # Pájaro de fuego
+families = ["HissatsuReforged.InazumaPower", "HissatsuReforged.Phoenix"]
+
+[[edit]]
+target = "whs00380"  # Ruptura relámpago
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00380_mm"  # Ruptura relámpago
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00400"  # Pingüino emperador n.º 2
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs00410"  # Fénix
+families = ["HissatsuReforged.LegendaryBirds", "HissatsuReforged.Phoenix"]
+
+[[edit]]
+target = "whs00420"  # Tiro dracoroniano
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00430"  # Tornado oscuro
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs00440"  # Ventisca eterna
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs00450"  # Tormenta de fuego
+families = ["HissatsuReforged.FireTornado", "HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whs00470"  # Triángulo letal 2
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs00480"  # La Tierra
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00500"  # Astrorremate
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00510"  # Cañón de meteoritos
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00580"  # Cañón dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00600"  # Aullido de lobo
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs00600_mm"  # Aullido de lobo
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs00610"  # Pingüino emperador n.º1
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs00620"  # Lecho de rosas
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whs00650"  # Lanza de Odín
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whs00670"  # Dragón terrestre
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00680"  # Tripegaso
+families = ["HissatsuReforged.Pegasus"]
+
+[[edit]]
+target = "whs00690"  # Supertrampolín relámpago
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00690_or"  # Supertrampolín relámpago
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00700"  # Rayo de Ganímedes
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00720"  # Remate del águila
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "whs00720_or"  # Remate del águila
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "whs00740"  # Disparo cósmico
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00750"  # Remate de Gaia
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00770"  # Remate combinado F
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00770_or"  # Remate combinado F
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00780"  # Tornado doble
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs00780_or"  # Tornado doble
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs00790"  # Llamarada atómica
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00790_mm"  # Llamarada atómica
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00810"  # Supernova
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00820"  # Pingüino espacial
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs00830"  # Remate guiverno
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00840"  # Ventisca guiverno
+families = ["HissatsuReforged.NorthernIce", "HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00840_or"  # Ventisca guiverno
+families = ["HissatsuReforged.NorthernIce", "HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs00850"  # Ventisca de fuego
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs00850_or"  # Ventisca de fuego
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs00860"  # Fénix oscuro
+families = ["HissatsuReforged.LegendaryBirds", "HissatsuReforged.Phoenix"]
+
+[[edit]]
+target = "whs00860_or"  # Fénix oscuro
+families = ["HissatsuReforged.LegendaryBirds", "HissatsuReforged.Phoenix"]
+
+[[edit]]
+target = "whs00870"  # Remate triple
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs00900"  # Disparo sagrado
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "whs00910"  # Cabezazo megatón
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whs00930"  # Balón iceberg
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs00940"  # Ventisca de fuego
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs00940_or"  # Ventisca de fuego
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs00960"  # Remate del tigre
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs00970"  # Excalibur
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whs01010"  # Bestia del trueno
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs01020"  # Tormenta del tigre
+families = ["HissatsuReforged.FireTornado", "HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs01020_or"  # Tormenta del tigre
+families = ["HissatsuReforged.FireTornado", "HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs01030"  # Megadragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs01050"  # Pingüino emperador n.º 3
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs01050_mm"  # Pingüino emperador n.º 3
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs01050_or"  # Pingüino emperador n.º 3
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs01060"  # Gran lobo
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs01070"  # Espada de Odín
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whs01080"  # Remate celestial
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "whs01090"  # Golpe de samba
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whs01100"  # La aurora
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs01110"  # Big Bang
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs01130"  # Megalodón
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whs01180"  # Torbellino de fuego
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs01180_mm"  # Torbellino de fuego
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs01190"  # Tiro espejismo
+families = ["HissatsuReforged.Illusions"]
+
+[[edit]]
+target = "whs01200"  # Remate Pegaso
+families = ["HissatsuReforged.Pegasus"]
+
+[[edit]]
+target = "whs01250"  # Remate caótico
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "whs01250_or"  # Remate caótico
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "whs01260"  # Puerta astral
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs01300"  # Full goleador
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "whs01310"  # Pingüino emperador X
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs01340"  # Cañón celestial
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whs01350"  # Carga negativa
+families = ["HissatsuReforged.EventHorizon"]
+
+[[edit]]
+target = "whs01430"  # Descenso estelar
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs01440"  # Triángulo múltiple
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs01450"  # Pingüino múltiple
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs01460"  # Tiro vendaval
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "whs01480"  # Pingüino emperador 7
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs01550"  # Triángulo ZZ
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs01570"  # Pentagrama
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whs01570_mm"  # Pentagrama
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whs01610"  # Tiro sónico
+families = ["HissatsuReforged.Speed"]
+
+[[edit]]
+target = "whs01630"  # Lluvia de azufre
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs01630_or"  # Lluvia de azufre
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs01640"  # Peces voladores
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whs01750"  # Coletazo de dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs01760"  # Tornado de fuego DD
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs01760_or"  # Tornado de fuego DD
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs01770"  # Tormenta de fuego
+families = ["HissatsuReforged.FireTornado", "HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whs01790"  # Movimientos armónicos
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whs01800"  # Alas de halcón
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "whs01820"  # Golpe justiciero
+families = ["HissatsuReforged.Pegasus"]
+
+[[edit]]
+target = "whs01880"  # Hacha del Azote negro
+families = ["HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whs01890"  # Caliburn
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whs01990"  # Rizo de dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs02010"  # Triángulo letal final
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs02010_or"  # Triángulo letal final
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs02070"  # Cabezazo gigatón
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whs02070_mm"  # Cabezazo gigatón
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whs02150"  # Polen devastador
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whs02160"  # Tornado de fuego DT
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs02160_or"  # Tornado de fuego DT
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs02170"  # Tornado de fuego DT
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs02220"  # Katana crisantemo
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whs02220_mm"  # Katana crisantemo
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whs02270"  # Corte Big Bang
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs02290"  # Aullido de licántropo
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs02300"  # Mordisco de vampiro
+families = ["HissatsuReforged.Occult"]
+
+[[edit]]
+target = "whs02360"  # Vuelo de fénix
+families = ["HissatsuReforged.LegendaryBirds", "HissatsuReforged.Phoenix"]
+
+[[edit]]
+target = "whs02500"  # Tiro elefantino
+families = ["HissatsuReforged.Stampede"]
+
+[[edit]]
+target = "whs02550"  # Habichuelas mágicas
+families = ["HissatsuReforged.WildFlora"]
+
+[[edit]]
+target = "whs02580"  # Amplificador mágico
+families = ["HissatsuReforged.MagicTricks"]
+
+[[edit]]
+target = "whs02650"  # La Tierra: Infinito
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs02700"  # Embate de lobo
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs02701"  # Embate de lobo plateado
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs02702"  # Embate de Dragnova
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs02710"  # Rugido de león
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs02711"  # Rugido de Doruga
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs02712"  # Rugido de Goliger
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs02750"  # Tornado de fuego A
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs02760"  # Ave goleadora
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "whs02790"  # Sapo ninja
+families = ["HissatsuReforged.NinjaArts"]
+
+[[edit]]
+target = "whs02800"  # Ofensiva danzarina
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whs02870"  # Chilena de pingüino
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs02875"  # Chilena de pingüino
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs02880"  # Pingüino perfecto
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs02900"  # Omnisabiduría divina
+families = ["HissatsuReforged.DivinePower"]
+
+[[edit]]
+target = "whs02920"  # Remate cazaosos
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs02930"  # Frente frío
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs02930_or"  # Frente frío
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs02950"  # Ventisca triple
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs02950_or"  # Ventisca triple
+families = ["HissatsuReforged.NorthernIce"]
+
+[[edit]]
+target = "whs02980"  # Combo cósmico
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs02980_or"  # Combo cósmico
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs02980_or_02"  # Combo cósmico
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs02990"  # Ímpetu de dragón
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs03000"  # Rayo de diamantes
+families = ["HissatsuReforged.Diamond"]
+
+[[edit]]
+target = "whs03005"  # Rayo de diamantes curvo
+families = ["HissatsuReforged.Diamond"]
+
+[[edit]]
+target = "whs03100"  # Tiburón abisal
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whs03110"  # Cabezazo supermegatón
+families = ["HissatsuReforged.GodHand"]
+
+[[edit]]
+target = "whs03140"  # Hoja diamantina
+families = ["HissatsuReforged.Diamond"]
+
+[[edit]]
+target = "whs03150"  # Águila bicéfala
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "whs03170"  # Samba letal
+families = ["HissatsuReforged.MusicDance"]
+
+[[edit]]
+target = "whs03180"  # Triángulo letal triturador
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs03180_or"  # Triángulo letal triturador
+families = ["HissatsuReforged.Triangle"]
+
+[[edit]]
+target = "whs03190"  # Pájaro ardiente
+families = ["HissatsuReforged.LegendaryBirds", "HissatsuReforged.Phoenix"]
+
+[[edit]]
+target = "whs03250"  # Pingüinos de luz y sombra
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs03260"  # Tiro circense
+families = ["HissatsuReforged.Circus"]
+
+[[edit]]
+target = "whs03270"  # Último recurso
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs03275"  # Último recurso
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs03280"  # Último recurso: Sigma
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs03280_cro"  # Último recurso: Sigma
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs03290"  # Último recurso: Dragón
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs03290_cro"  # Último recurso: Dragón
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs03330"  # Pingüino emperador n.º 2 + Tiburón
+families = ["HissatsuReforged.Penguin", "HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whs03330_or"  # Pingüino emperador n.º 2 + Tiburón
+families = ["HissatsuReforged.Penguin", "HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whs03340"  # Águila implacable
+families = ["HissatsuReforged.LegendaryBirds"]
+
+[[edit]]
+target = "whs03360"  # Lanza gélida
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whs03360_or"  # Lanza gélida
+families = ["HissatsuReforged.LegendaryWeapons"]
+
+[[edit]]
+target = "whs03380"  # Ruptura relámpago CG
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs03410"  # Cañón de meteoritos A
+families = ["HissatsuReforged.AliusPower"]
+
+[[edit]]
+target = "whs10100"  # Desfile de pingüinos
+families = ["HissatsuReforged.Penguin"]
+
+[[edit]]
+target = "whs10110"  # Tornado de fuego meteoro
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs10120"  # Remate Bahamut
+families = ["HissatsuReforged.Dragon"]
+
+[[edit]]
+target = "whs10150"  # Marlín volador
+families = ["HissatsuReforged.SeaBeasts"]
+
+[[edit]]
+target = "whs10160"  # Tornado de fuego meteoro V
+families = ["HissatsuReforged.FireTornado"]
+
+[[edit]]
+target = "whs10170"  # Aullido de lobo argénteo
+families = ["HissatsuReforged.Beasts"]
+
+[[edit]]
+target = "whs10180"  # Ruptura relámpago
+families = ["HissatsuReforged.InazumaPower"]
+
+[[edit]]
+target = "whs10190"  # Tormenta de fuego
+families = ["HissatsuReforged.FireTornado", "HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whs10190_or"  # Tormenta de fuego
+families = ["HissatsuReforged.FireTornado", "HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whs10195"  # Tormenta de fuego
+families = ["HissatsuReforged.FireTornado", "HissatsuReforged.MajinGiant"]
+
+[[edit]]
+target = "whs10195_or"  # Tormenta de fuego
+families = ["HissatsuReforged.FireTornado", "HissatsuReforged.MajinGiant"]

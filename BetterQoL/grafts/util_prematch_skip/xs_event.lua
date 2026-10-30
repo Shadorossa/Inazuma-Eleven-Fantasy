@@ -30,8 +30,8 @@ local UTIL_XS_TEXT_BTN = 950238781        -- _text_btn01
 local UTIL_XS_GLYPH = 1097287577          -- menu_text "<CMD_FUNC4>" (X / its keyboard key, as <CMD_FUNC3> is Y here)
 local UTIL_XS_LABEL = "utilities.prematch_skip"
 local UTIL_XS_LABEL_CRC = 1667839001      -- crc32("utilities.prematch_skip")
-local UTIL_XS_HOLD_CMD = 2866165771       -- CMND_BETTERQOL_XSKIP_HOLD
-local UTIL_XS_INPUT = 4265778440          -- CMND_CHECK_INPUT_CMD
+local UTIL_XS_HOLD_CMD = @crc:CMND_BETTERQOL_XSKIP_HOLD@
+local UTIL_XS_INPUT = @crc:CMND_CHECK_INPUT_CMD@
 local UTIL_XS_KEY = 2293079475              -- CMD_UTIL_XSKIP_HOLD
 local UTIL_XS_CTRLS = {2917185202 --[[EVENT_CTRL_VISUAL]], 3237690481 --[[EVENT_CTRL_TALK]]}
 local UTIL_XS_SHOW_S = 3                  -- s the guide stays after the last input (retail n = 3)
@@ -75,10 +75,10 @@ local function UtilXsBar(r)
 end
 
 local function UtilXsOpen()               -- as the retail OpenButtonGuideUI does it for the Y guide
-  if not funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], UTIL_XS_GUIDE, 0) then
-    funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], UTIL_XS_GUIDE, 0)
-  elseif funcLuaMenuCommand(1914009721 --[[CMND_IS_END_ANIME?]], UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]], 1, 0) then
-    funcLuaMenuCommand(1748788158 --[[CMND_PLAY_ANIME]], UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]])
+  if not funcLuaMenuCommand(@crc:CMND_IS_OPEN_LAYER@, UTIL_XS_GUIDE, 0) then
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER@, UTIL_XS_GUIDE, 0)
+  elseif funcLuaMenuCommand(@crc:CMND_IS_END_ANIME@, UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]], 1, 0) then
+    funcLuaMenuCommand(@crc:CMND_PLAY_ANIME@, UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]])
   end
   util_xs.open = true
   util_xs.showT = UTIL_XS_SHOW_S
@@ -87,7 +87,7 @@ end
 local function UtilXsClose()
   if util_xs.open then
     util_xs.open = false
-    pcall(funcLuaMenuCommand, 652384334 --[[CMND_END_ANIME]], UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]])
+    pcall(funcLuaMenuCommand, @crc:CMND_END_ANIME@, UTIL_XS_GUIDE, UtilXsOpenAnim(), 753088835 --[[Default]])
   end
 end
 
@@ -96,7 +96,7 @@ local function UtilXsReady()              -- the X guide belongs on screen now
 end
 
 local function UtilXsSkip(src)            -- the retail skip of RunCoroutineSkipButton
-  local ok, r = pcall(funcLuaMenuCommand, 2872569508 --[[CMND_EVENT_SKIP]])
+  local ok, r = pcall(funcLuaMenuCommand, @crc:CMND_EVENT_SKIP@)
   if ok and r then
     pcall(funcLuaCommand, 155728325)
   end
@@ -109,11 +109,11 @@ local function UtilXsSkip(src)            -- the retail skip of RunCoroutineSkip
 end
 
 local function UtilXsText()
-  local ok, id = pcall(funcLuaCommand, 3096244543 --[[CMND_VRFW_TEXT_ID]], UTIL_XS_LABEL)
+  local ok, id = pcall(funcLuaCommand, @crc:CMND_VRFW_TEXT_ID@, UTIL_XS_LABEL)
   if not (ok and type(id) == "number" and id ~= 0) then
     id = UTIL_XS_LABEL_CRC
   end
-  local s = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], id)
+  local s = funcLuaCommand(@crc:CMND_TEXT_GET@, id)
   return type(s) == "string" and s or ""
 end
 
@@ -261,9 +261,9 @@ end
 local util_xs_prev_setup = OnSetupLayer
 function OnSetupLayer(a1, a2)
   if a1 == UTIL_XS_GUIDE then             -- the retail setup of the Y guide, with the X glyph and the Utilities label
-    local glyph = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], UTIL_XS_GLYPH, 0)
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, UTIL_XS_TEXT_GUIDE, UtilXsText(), a2)
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, UTIL_XS_TEXT_BTN, type(glyph) == "string" and glyph or "<CMD_FUNC4>", a2)
+    local glyph = funcLuaCommand(@crc:CMND_TEXT_GET@, UTIL_XS_GLYPH, 0)
+    funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, a1, UTIL_XS_TEXT_GUIDE, UtilXsText(), a2)
+    funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, a1, UTIL_XS_TEXT_BTN, type(glyph) == "string" and glyph or "<CMD_FUNC4>", a2)
     funcLuaMenuCommand(541357333, a1, UTIL_XS_BAR, 0, a2)
     funcLuaMenuCommand(1595998683, a1, UTIL_XS_BAR, 0, 0, a2)
     return

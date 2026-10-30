@@ -24,8 +24,6 @@ do
   Board.SLOT_NAME = 1901464137                       -- menu_text «Pasiva propia» (Signature Passives' text row)
   Board.SET_TEXT = 1083631230                        -- CMND_SET_MENU_TEXT_STRING (layer, node, text, idx)
   Board.LAYER_VISIBLE = 711242136                    -- CMND_SET_LAYER_VISIBLE (layer, idx, visible)
-  Board.PARAM_HAS = 2947612279                       -- parameter store: has (key)
-  Board.PARAM_GET = 3522198769                       -- parameter store: get (key)
   Board.PARAM_CHARA = 4161869490                     -- the player the team dock passes (OnInit reads and clears it)
   Board.SOUND = 1917805374                           -- play a system sound
   Board.SOUND_CANNOT = 2086672038                    -- sy0003, the retail «cannot»
@@ -91,8 +89,8 @@ do
     return function(...)
       Board.chara = nil
       pcall(function()
-        if funcLuaCommand(Board.PARAM_HAS, Board.PARAM_CHARA) == true then
-          Board.chara = funcLuaCommand(Board.PARAM_GET, Board.PARAM_CHARA)
+        if VRFW_Param.Has(Board.PARAM_CHARA) then
+          Board.chara = VRFW_Param.Get(Board.PARAM_CHARA)
         end
       end)
       return previous(...)

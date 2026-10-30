@@ -5,7 +5,7 @@
 -- remembered; when the cut-in is over the remembered instances that are still open are shown again. Wrapper of
 -- PostStep only; engine calls only from it.
 VRFW_FocusHudCutin = {
-  COMMAND = 2349059054 --[[CMND_VRFW_FOCUS_HOLD]],
+  COMMAND = 2349059054,
   LAYERS = {
     3070268158 --[[soccer08_23_focus_count_down]],
     2665077583 --[[soccer08_57_command_select_guide]],
@@ -25,10 +25,10 @@ VRFW_FocusHudCutin = {
     1551114178 --[[soccer08_35l_focus_auto_button_left]],
     2636706917 --[[soccer08_35r_focus_auto_button_right]],
   },
-  CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]],
-  CMND_IS_VISIBLE = 1262717583 --[[CMND_IS_LAYER_VISIBLE]],
-  CMND_SET_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]],
-  CMND_INSTANCE_COUNT = 1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]],
+  CMND_IS_OPEN = 2640875187,
+  CMND_IS_VISIBLE = 1262717583,
+  CMND_SET_VISIBLE = 711242136,
+  CMND_INSTANCE_COUNT = 1175615627,
   MAX_INSTANCES = 4,
   hidden = {},
   hiding = false,

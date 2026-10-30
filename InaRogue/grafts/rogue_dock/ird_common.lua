@@ -11,38 +11,38 @@
     RUN_INFO = @crc:CMND_EVT_RL_RUN_INFO@,      -- () -> exists, ...
     RESUME = @crc:CMND_EVT_RL_RUN_RESUME@,      -- () -> stage, node, kind, event, coin, game, diff, stadium, level, rival
     SET_SLOT = @crc:CMND_EVT_RL_RUN_SET_SLOT@,  -- (slot, uid, hdl) -> code
-    LOG = 3661580131,                     -- CMND_EVT_LOG
-    GET_VS = 3713813716,                  -- CMND_GET_VS_USE_TEAM_SET
+    LOG = @crc:CMND_EVT_LOG@,                     -- CMND_EVT_LOG
+    GET_VS = @crc:CMND_GET_VS_USE_TEAM_SET@,                  -- CMND_GET_VS_USE_TEAM_SET
     CHECK = 1730898405,                   -- retail place check (hdl, set, pos, fromSet, team) -> ok, code (read-only)
     MOVE = 193693077,                     -- retail place / move (toSet, pos, fromSet, hdl, team): links 11v11 and 5v5
     POS_IDX = 1721292418,                 -- (set, team, posNo) -> ok, member index
     IDX_HDL = 1720957768,                 -- (set, team, index, 0) -> ok, handle (index 19 = coach)
     CHARA = 1131797651,                   -- (hdl, 4) -> chara_param id
-    TEXT = 1083631230,                    -- CMND_SET_MENU_TEXT_STRING (layer, node, text, idx)
-    SE = 1917805374, SE_NG = 2086672038,  -- sy0003
-    GET_BYTE = 2769028935, SET_BYTE = 187123515,
+    TEXT = @crc:CMND_SET_MENU_TEXT_STRING@,                    -- CMND_SET_MENU_TEXT_STRING (layer, node, text, idx)
+    SE = @crc:CMND_SND_PLAY_SE@, SE_NG = 2086672038,  -- sy0003
+    GET_BYTE = @crc:CMND_GET_GLOBAL_BYTE_FLAG@, SET_BYTE = @crc:CMND_SET_GLOBAL_BYTE_FLAG@,
     F_DOCK = @crc:EVT_IR_LAYER@,          -- byte 606: why INAROGUE opened the dock (1-4); +10 once the dock is open
     on = false, run = false, set = 0, frames = 0, text = "", spent = 0, budget = 0, foreign = 0, logs = 0, map = nil,
     why = 0,                              -- the request INAROGUE opened the dock with (1 start, 2 run, 3 before a match,
                                           -- 4 the team outside a run, 5 «Empezar partido» of the VS preview, §28)
-    -- texts: menu_text rows of the 9 languages (research/scripts/rogue_play_text_build.py); the literal is the fallback
+    -- texts: InaRogue text\rows\menu_text.toml (9 languages)
     T = {
-      MATCH11 = {@crc:evt_ird_match11@, "INAROGUE · Partido 11 contra 11 · Titulares {1}/11 · Equipo {2}/16"},
-      MATCH5 = {@crc:evt_ird_match5@, "INAROGUE · Pachanga 5 contra 5 (el mismo equipo) · Titulares {1}/5 · Equipo {2}/16"},
-      POINTS = {@crc:evt_ird_points@, "Puntos {1}/{2}"},
-      OVER = {@crc:evt_ird_over@, "Puntos {1}/{2} (te pasas)"},
-      FOREIGN = {@crc:evt_ird_foreign@, "quita a quien no es de INAROGUE"},
-      BACK_MAP = {@crc:evt_ird_back_map@, "Atrás: continuar"},
-      BACK_PLAY = {@crc:evt_ird_back_play@, "Atrás: jugar el partido"},
-      NEXT = {@crc:evt_ird_next@, "Rival: {1} (Nv. {2})"},
+      MATCH11 = {@crc:evt_ird_match11@},
+      MATCH5 = {@crc:evt_ird_match5@},
+      POINTS = {@crc:evt_ird_points@},
+      OVER = {@crc:evt_ird_over@},
+      FOREIGN = {@crc:evt_ird_foreign@},
+      BACK_MAP = {@crc:evt_ird_back_map@},
+      BACK_PLAY = {@crc:evt_ird_back_play@},
+      NEXT = {@crc:evt_ird_next@},
     },
   }
 
-  -- a menu_text row in the game's language (fallback: the Spanish literal); {1}.. = values
+  -- a menu_text row in the game's language ("" when missing); {1}.. = values
   function IRD.tx(t, ...)
-    local ok, s = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], t[1])
-    if not ok or type(s) ~= "string" or s == "" then
-      s = t[2]
+    local ok, s = pcall(funcLuaCommand, @crc:CMND_TEXT_GET@, t[1])
+    if not ok or type(s) ~= "string" then
+      s = ""
     end
     local a = table.pack(...)
     return (s:gsub("{(%d)}", function(k)
@@ -267,30 +267,26 @@
     return n
   end
 
-  -- Each team keeps a formation of its own kind (2026-10-06): the 11v11 team (0) never a 5v5 formation (the retail 5v5
-  -- ids, formation_config rows 82-89 / 91, as match_engine FORM5_IDS) or none, the 5v5 team (1) only one of the 5
-  -- pachanga formations. A save left with the 11v11 team on «Formación en Y» (the Partido formation screen kept the
-  -- Pachanga list) gets 4-4-2 Diamante back (retail, always owned); a 5v5 team without a 5v5 formation gets the
-  -- story's one. -> number of teams fixed
-  IRD.FORM5_ALL = {[756751420] = true, [3021098374] = true, [3272965392] = true, [1567746227] = true,
-                   [712431653] = true, [3011479967] = true, [3296246025] = true, [1422369944] = true,
-                   [665097345] = true}
-  IRD.FORM5 = {[1567746227] = true, [712431653] = true, [3011479967] = true, [3296246025] = true, [1422369944] = true}
+  -- Each team keeps a formation of its own kind (2026-10-06): the 11v11 team (0) never a 5v5 formation (a formation of
+  -- formation_config with 5 players, VRFW_Formation) or none, the 5v5 team (1) only a 5v5 formation. A save left with
+  -- the 11v11 team on «Formación en Y» (the Partido formation screen kept the Pachanga list) gets 4-4-2 Diamante back
+  -- (retail, always owned); a 5v5 team without a 5v5 formation gets the story's one. No answer from the framework
+  -- (nil) changes nothing. -> number of teams fixed
   IRD.FORM11_DEFAULT, IRD.FORM5_DEFAULT = 2484170522, 712431653   -- 4-4-2 Diamante / Formación en Y
-  IRD.GET_INFO, IRD.SET_INFO = 1033065575, 1506470613            -- CMND_GET / SET_TEAM_SET_INFO (set, team, field, ...)
+  IRD.GET_INFO, IRD.SET_INFO = @crc:CMND_GET_TEAM_SET_INFO@, @crc:CMND_SET_TEAM_SET_INFO@            -- CMND_GET / SET_TEAM_SET_INFO (set, team, field, ...)
   function IRD.fix_forms()
     if not IRD.on or type(IRD.set) ~= "number" or IRD.set < 2 or IRD.set > 12 then
       return 0
     end
     local n = 0
     local ok, got, f = pcall(funcLuaCommand, IRD.GET_INFO, IRD.set, 0, 4)
-    if ok and got == true and (type(f) ~= "number" or f == 0 or IRD.FORM5_ALL[f]) then
+    if ok and got == true and (type(f) ~= "number" or f == 0 or VRFW_Formation.IsFiveASide(f)) then
       pcall(funcLuaCommand, IRD.SET_INFO, IRD.set, 0, 3, IRD.FORM11_DEFAULT)
       IRD.log("11v11 team had formation", tostring(f), "-> 4-4-2 Diamante")
       n = n + 1
     end
     ok, got, f = pcall(funcLuaCommand, IRD.GET_INFO, IRD.set, 1, 4)
-    if ok and got == true and not IRD.FORM5[f] then
+    if ok and got == true and VRFW_Formation.IsFiveASide(f) == false then
       pcall(funcLuaCommand, IRD.SET_INFO, IRD.set, 1, 3, IRD.FORM5_DEFAULT)
       IRD.log("5v5 team had formation", tostring(f), "-> Formacion en Y")
       n = n + 1

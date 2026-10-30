@@ -18,27 +18,27 @@
 -- No engine call at load time.
 if VRFW_CardFilter == nil then
   local CF = {
-    CMD_ENTER = 3161407831,   -- CMND_VRFW_CARD_FILTER_ENTER(stem) -> on, value, dx, dy, function, prev, next
-    CMD_NEXT = 469318363,     -- CMND_VRFW_CARD_FILTER_NEXT(dir) -> value
-    CMD_LABEL = 196661713,    -- CMND_VRFW_CARD_FILTER_LABEL(i) -> name, kind, series id, tier
-    CMD_ALIVE = 354737002,    -- CMND_VRFW_CARD_FILTER_ALIVE() -> rebuild?
-    CMD_LEAVE = 2662269417,   -- CMND_VRFW_CARD_FILTER_LEAVE(stem) -> bank screens still open
-    CMD_GET = 4052920195,     -- CMND_VRFW_CARD_FILTER_GET() -> value chosen
+    CMD_ENTER = VRFW_Cmd.VRFW_CARD_FILTER_ENTER,   -- CMND_VRFW_CARD_FILTER_ENTER(stem) -> on, value, dx, dy, function, prev, next
+    CMD_NEXT = VRFW_Cmd.VRFW_CARD_FILTER_NEXT,     -- CMND_VRFW_CARD_FILTER_NEXT(dir) -> value
+    CMD_LABEL = VRFW_Cmd.VRFW_CARD_FILTER_LABEL,    -- CMND_VRFW_CARD_FILTER_LABEL(i) -> name, kind, series id, tier
+    CMD_ALIVE = VRFW_Cmd.VRFW_CARD_FILTER_ALIVE,    -- CMND_VRFW_CARD_FILTER_ALIVE() -> rebuild?
+    CMD_LEAVE = VRFW_Cmd.VRFW_CARD_FILTER_LEAVE,   -- CMND_VRFW_CARD_FILTER_LEAVE(stem) -> bank screens still open
+    CMD_GET = VRFW_Cmd.VRFW_CARD_FILTER_GET,     -- CMND_VRFW_CARD_FILTER_GET() -> value chosen
     TX_ALL = 3288464882,      -- text row vrfw_card_filter_all («Todas»)
     TX_HEADER = 2923353700,   -- text row vrfw_card_filter_header («<L2> ‹ %s › <R2>»)
     TX_TIER = 2410722143,     -- text row vrfw_card_filter_tier («%d★ %s»)
-    TEXT_GET = 4074371074,    -- CMND_TEXT_GET
-    SERIES_INFO = 964991930,  -- CMND_GET_CHARA_SERIES_INFO(1, id) -> ok, name
+    TEXT_GET = VRFW_Cmd.TEXT_GET,    -- CMND_TEXT_GET
+    SERIES_INFO = VRFW_Cmd.GET_CHARA_SERIES_INFO,  -- CMND_GET_CHARA_SERIES_INFO(1, id) -> ok, name
     LAYER = 1199683335,       -- team14_02_filter_guide (instance 1 = the header)
     NODE = 3538663351,        -- _text_filter01
     IDX = 1,
-    SET_TEXT = 1083631230,
-    TEXT_PLATE = 1172899594,
-    VISIBLE = 711242136,
-    OPEN = 629267548,
-    IS_OPEN = 2640875187,
-    GET_POS = 2834507455,     -- CMND_GET_LAYER_LOCAL_POS(layer, idx) -> x, y
-    SET_POS = 1389957207,     -- CMND_SET_LAYER_LOCAL_POS(layer, x, y, z, idx)
+    SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,
+    TEXT_PLATE = VRFW_Cmd.UPDATE_TEXT_PLATE,
+    VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,
+    OPEN = VRFW_Cmd.OPEN_LAYER,
+    IS_OPEN = VRFW_Cmd.IS_OPEN_LAYER,
+    GET_POS = VRFW_Cmd.GET_LAYER_LOCAL_POS,     -- CMND_GET_LAYER_LOCAL_POS(layer, idx) -> x, y
+    SET_POS = VRFW_Cmd.SET_LAYER_LOCAL_POS,     -- CMND_SET_LAYER_LOCAL_POS(layer, x, y, z, idx)
     SE_MOVE = 2500047763,     -- sy0005
     S = {},                   -- per stem: {on, value, dx, dy, fn, prev, next, idle, plate, shown}
   }
@@ -225,7 +225,7 @@ if VRFW_CardFilter == nil then
       local v = call(funcLuaCommand, CF.CMD_NEXT, a2 == S.next and 1 or -1)
       if type(v) == "number" and v ~= S.value then
         S.value = v
-        call(funcLuaCommand, 1917805374, CF.SE_MOVE)
+        call(funcLuaCommand, VRFW_Cmd.SND_PLAY_SE, CF.SE_MOVE)
         CF.Rebuild(stem)
       end
     end })

@@ -13,7 +13,7 @@ if VRFW_Host ~= nil then
     HIDE = 1663200964,            -- menu_text BetterQoL.BoardHideGuide «Ocultar»
     SHOW = 3439609244,            -- menu_text BetterQoL.BoardShowGuide «Mostrar»
     GUIDE = 1138543975,           -- mainmenu01_06_base_button_guide
-    SE = 1917805374, SE_OK = 3848881948,
+    SE = VRFW_Cmd.SND_PLAY_SE, SE_OK = 3848881948,
   }
   BetterQoL.BoardHide = H
 

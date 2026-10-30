@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Fiebre de luna llena (Full Moon Fever, whs02400, cut-in ev60_02400).
+#
+# Measured: in the last cut (c0400) the event ball is held up at 35.2 m, then kicked and dives in a straight 30 deg line
+# to 5.6 m, 51.3 m on. Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line
+# from the kick point to the goal, the ball centre at 2.0 m the whole way, so the moon (radius ~1.2 m with its glow at
+# x1) stays clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Fiebre de luna llena (whs02400).
+[[edit]]
+target = "whs02400"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

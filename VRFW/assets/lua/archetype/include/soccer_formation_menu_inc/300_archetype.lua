@@ -40,7 +40,7 @@ local function match_info(side)
 end
 
 local function text(id)
-  local ok, s = pcall(funcLuaCommand, 4074371074, id) -- CMND_TEXT_GET
+  local ok, s = pcall(funcLuaCommand, VRFW_Cmd.TEXT_GET, id) -- CMND_TEXT_GET
   if ok and type(s) == "string" then return s end
   return nil
 end
@@ -64,9 +64,9 @@ wrap("UpdateTeamBuildTypeInfo", function(orig)
       local l9, l10 = a3 or L_ICON, a4 or L_BALLOON
       if x.large ~= 0 then pcall(funcLuaMenuCommand, 558735651, l9, ICON_COMMON, x.large, ICON_DMY, 0, 0) end
       local name = text(x.name)
-      if name then pcall(funcLuaMenuCommand, 1083631230, l9, TEXT_BUILD, name, 0) end
+      if name then pcall(funcLuaMenuCommand, VRFW_Cmd.SET_MENU_TEXT_STRING, l9, TEXT_BUILD, name, 0) end
       local desc = text(x.desc)
-      if desc then pcall(funcLuaMenuCommand, 1083631230, l10, TEXT_FLAVOR, desc, 0) end
+      if desc then pcall(funcLuaMenuCommand, VRFW_Cmd.SET_MENU_TEXT_STRING, l10, TEXT_FLAVOR, desc, 0) end
     end
     return r
   end
@@ -102,7 +102,7 @@ end)
 wrap("UpdateTeamParameterButtonGuideByTeamDockNo", function(orig)
   return function(a1, a2, a3, a4, ...)
     local r = orig(a1, a2, a3, a4, ...)
-    local ok, vis = pcall(funcLuaMenuCommand, 2277921386, a1, MESH_DMY, a2) -- CMND_IS_MESH_VISIBLE
+    local ok, vis = pcall(funcLuaMenuCommand, VRFW_Cmd.IS_MESH_VISIBLE, a1, MESH_DMY, a2) -- CMND_IS_MESH_VISIBLE
     if ok and vis == true then
       local x = team_info(a3, a4)
       if x and x.large ~= 0 then pcall(funcLuaMenuCommand, 558735651, a1, ICON_COMMON_LG, x.large, ICON_DMY, 0, a2) end

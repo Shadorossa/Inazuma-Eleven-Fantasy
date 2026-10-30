@@ -34,7 +34,7 @@ local function EVT_CmdrLog(msg)
     return
   end
   EVT_CMDR_LOG_N = EVT_CMDR_LOG_N + 1
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT_CMDR " .. msg)
+  pcall(funcLuaCommand, 3661580131, "EVT_CMDR " .. msg)
 end
 
 local function EVT_CmdrFirst(src, extra)
@@ -119,9 +119,9 @@ function EVT_CmdrApply(src)
   -- no coach mode in this match: the guide stays hidden, none of the coach-mode queries run (the framework refuses
   -- the button itself)
   if EVT_CmdrRuledOut() then
-    local ok, o = pcall(funcLuaMenuCommand, 2640875187 --[[CMND_IS_OPEN_LAYER]], EVT_CMDR_LAYER)
+    local ok, o = pcall(funcLuaMenuCommand, 2640875187, EVT_CMDR_LAYER)
     if ok and o == true then
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_CMDR_LAYER, 1, false)
+      pcall(funcLuaMenuCommand, 711242136, EVT_CMDR_LAYER, 1, false)
     end
     if EVT_CMDR_KEY ~= "ruled_out" then
       EVT_CMDR_KEY = "ruled_out"
@@ -132,10 +132,10 @@ function EVT_CmdrApply(src)
   local q = EVT_CmdrQuery()
   local open = nil
   if q.locked then
-    local ok, o = pcall(funcLuaMenuCommand, 2640875187 --[[CMND_IS_OPEN_LAYER]], EVT_CMDR_LAYER)
+    local ok, o = pcall(funcLuaMenuCommand, 2640875187, EVT_CMDR_LAYER)
     open = ok and o
     if open == true then
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_CMDR_LAYER, 1, false)
+      pcall(funcLuaMenuCommand, 711242136, EVT_CMDR_LAYER, 1, false)
     end
   end
   local key = tostring(q.game) .. "/" .. tostring(q.diff) .. "/" .. tostring(q.locked) .. "/" .. tostring(q.coach) .. "/" .. tostring(open)

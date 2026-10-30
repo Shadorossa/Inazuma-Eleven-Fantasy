@@ -8,7 +8,6 @@
 # scripts\player_sets.lua (CMND_CHARACTERREFORGED_PLAYER_SET_*).
 name = "pset_preview"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)
 order = 320
 module = "lua_bridge"
 requires = ["ss2_menus", "ss2_pc_rows"]

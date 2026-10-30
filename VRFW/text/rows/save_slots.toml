@@ -111,15 +111,15 @@ zh_hant = "確定：新遊戲 · X：複製到此處"
 # locked card hint line
 [[row]]
 id = "evt_slot_hint_locked"
-es = "Solo lectura · X: duplicar para jugar"
-en = "Read-only · X: duplicate to play"
-fr = "Lecture seule · X : dupliquer pour jouer"
-de = "Schreibgeschützt · X: zum Spielen duplizieren"
-it = "Sola lettura · X: duplica per giocare"
-pt = "Somente leitura · X: duplicar para jogar"
-ja = "読み取り専用・X：複製してプレイ"
-zh_hans = "只读 · X：复制后游玩"
-zh_hant = "唯讀 · X：複製後遊玩"
+es = "Bloqueado"
+en = "Locked"
+fr = "Verrouillé"
+de = "Gesperrt"
+it = "Bloccato"
+pt = "Bloqueado"
+ja = "ロック中"
+zh_hans = "已锁定"
+zh_hant = "已鎖定"
 
 # card title when the save names no team
 [[row]]
@@ -134,18 +134,18 @@ ja = "チームなし"
 zh_hans = "无队伍"
 zh_hant = "無隊伍"
 
-# card level line: %d = highest level, %d = average level
+# card level line: %d = the team level (the rounded-up average level of the saved team, as the game counts it)
 [[row]]
 id = "evt_slot_level_line"
-es = "Nv. máx. %d · media %d"
-en = "Max Lv. %d · avg. %d"
-fr = "Niv. max %d · moy. %d"
-de = "Max. Lv. %d · Ø %d"
-it = "Liv. max %d · media %d"
-pt = "Nv. máx. %d · média %d"
-ja = "最高Lv.%d・平均%d"
-zh_hans = "最高Lv.%d · 平均%d"
-zh_hant = "最高Lv.%d · 平均%d"
+es = "Nv. %d"
+en = "Lv. %d"
+fr = "Niv. %d"
+de = "Lv. %d"
+it = "Liv. %d"
+pt = "Nv. %d"
+ja = "Lv.%d"
+zh_hans = "Lv.%d"
+zh_hant = "Lv.%d"
 
 # card row label 1
 [[row]]

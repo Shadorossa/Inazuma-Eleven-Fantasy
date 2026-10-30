@@ -27,6 +27,12 @@ chain = ["ROOT_PARTY"]
 key = "inarogue.active"
 formula = "lookup_or(InaRogue.Slot, 0, slot)"
 
+# 1 while the INAROGUE save is loaded and config.toml [drops] retail = false (the native table InaRogue.NoRetailDrops,
+# filled by scripts\inarogue.lua): the mode inarogue.no_retail_drops of content\game_modes\inarogue.toml
+[[VRFW.State]]
+key = "inarogue.no_retail_drops"
+formula = "lookup_or(InaRogue.NoRetailDrops, 0, slot)"
+
 # Utilities' away_kit kit-less extension point: the one kit INAROGUE may write on a team that has no kit yet, the
 # retail «Equipación estándar» uni_u119101 (0x9EDB7BFC), only while the INAROGUE save is loaded (docs/game/modes/
 # inarogue.md §21; was the plugin's if_boot answer)
@@ -44,6 +50,17 @@ name = "InaRogue.Coach"
 order = 20
 when = { value = ["slot"], in_table = "InaRogue.Slot" }
 stat = "let(k, f32(lookup_or(InaRogue.CoachMult, lookup(InaRogue.CoachMult, 0, i), args[2], i)), clamp(args[4] + round(f32(args[4] * f32(k - 1))) + round(f32(lookup_or(InaRogue.CoachAdd, lookup_or(InaRogue.CoachAdd, 0, 0, i), args[2], i))), 1, 9999))"
+
+# The endless rivals (docs/game/mods/inarogue-loop-v2.md «M11»): past the final boss the rival roster rows of a match
+# (the match copies built for rows without a character: npc) get every stat × the native table InaRogue.RivalScale
+# (key 0; scripts\lib\rogue\svc_run.lua, config.toml [rogue.run] endless_scaling), on top of their level. Absent = x1.
+[[VRFW.MatchStat]]
+name = "InaRogue.RivalScale"
+order = 21
+owned = false
+npc = true
+when = { value = ["slot"], in_table = "InaRogue.Slot" }
+stat = "let(k, f32(lookup_or(InaRogue.RivalScale, 1, 0)), clamp(round(f32(args[4] * k)), 1, 9999))"
 
 # void SetTrophyTier(const u32* trophyId, u32 tier, bool notify) 0xE89BE0: the retail «logros» setter (the banner, the
 # trophy count, the Steam achievement). A pre handler skips it while the INAROGUE save is the loaded game
@@ -283,6 +300,11 @@ name = "CMND_INAROGUE_RL_RUN_RESULT"
 aliases = ["CMND_EVT_RL_RUN_RESULT"]
 handler = "InaRogue.Mode.RunResult"
 
+# CMND_INAROGUE_RL_RUN_RECORDED () -> result, gf, ga recorded at the end of the reserved match (0 = none)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_RECORDED"
+handler = "InaRogue.Mode.RunRecorded"
+
 # CMND_EVT_RL_RUN_CLEAR -> code, isBoss
 [[VRFW.Command]]
 name = "CMND_INAROGUE_RL_RUN_CLEAR"
@@ -331,11 +353,42 @@ name = "CMND_INAROGUE_RL_RUN_LAUNCH"
 aliases = ["CMND_EVT_RL_RUN_LAUNCH"]
 handler = "InaRogue.Mode.RunLaunch"
 
+# v2 runs (docs/game/mods/inarogue-loop-v2.md): the end of a won run (op 0 state / 1 endless / 2 the end) and the
+# summary text of the last run that ended
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_OUTRO"
+handler = "InaRogue.Mode.RunOutro"
+
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_SUMMARY"
+handler = "InaRogue.Mode.RunSummary"
+
+# «Espíritus» (op 0 the pick cards of the players who can lower their cost / 1 spend on card i / 2 a player's numbers)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_SPIRITS"
+handler = "InaRogue.Mode.Spirits"
+
+# v2 runs: the start options of a new run (Ascension, challenges, the weekly run; lib/rogue/ascension.lua)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_OPTIONS"
+handler = "InaRogue.Mode.RunOptions"
+
+# v2 runs: the offer of the board (op 0 state / 1 question / 2 take / 3 close / 4 open at the current node)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_RUN_OFFER"
+handler = "InaRogue.Mode.RunOffer"
+
 # CMND_EVT_RL_RUN_LOOT (node, salt) -> kind, id, tier, name, owned, total
 [[VRFW.Command]]
 name = "CMND_INAROGUE_RL_RUN_LOOT"
 aliases = ["CMND_EVT_RL_RUN_LOOT"]
 handler = "InaRogue.Mode.RunLoot"
+
+# CMND_INAROGUE_RL_PROGRESS_DATA -> what an INAROGUE save gets on top of the finished story: the extra story flags,
+# the Chronicle unlock and the help pages seen (content\rogue\progress_unlock.toml, scripts\lib\rogue\progress.lua)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_PROGRESS_DATA"
+handler = "InaRogue.Mode.ProgressData"
 
 # CMND_EVT_RU_INFO -> enabled, count, unlockedCount, showLocked, shopCrc, slot, gameCrc, title
 [[VRFW.Command]]
@@ -426,6 +479,11 @@ handler = "InaRogue.Mode.Points"
 name = "CMND_INAROGUE_RL_POINTS_GIVEN"
 aliases = ["CMND_EVT_RL_POINTS_GIVEN"]
 handler = "InaRogue.Mode.PointsGiven"
+
+# (-1) -> count; (i, 0-based) -> ok, id, text id, retail tab icon type: the «Tienda» tabs (content/rogue/shop_tabs.toml)
+[[VRFW.Command]]
+name = "CMND_INAROGUE_RL_SHOP_TAB"
+handler = "InaRogue.Mode.ShopTab"
 
 # CMND_EVT_RL_FORM_OWNED (formId) -> locked, owned, rarity, ownedCount, total
 [[VRFW.Command]]

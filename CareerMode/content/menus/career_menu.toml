@@ -1,0 +1,142 @@
+# The career hub, evt_career_menu: the mode's own screen, opened by its title row button (title_row.toml) as a child of
+# the title, as the retail «Guardar» opens savedata_management_menu. The «Guardar» screen's background and header, one
+# retail list row kept off screen as the input anchor (every key of the screen comes to it: cmd rows -> OnFunction /
+# OnBack), and the screen's drawing pools: quads of cmn01_10_new_icon showing retail sprites (window bases, list
+# plates, the cursor), the retail team row of the emblem list (team06_02: plate, crest, name) and the retail
+# back-button text for the texts. Script: assets/lua/screens/evt_career_menu.lua.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "career_panel"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 1001 } },
+]
+
+[[object]]
+name = "career_plate"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 1002 } },
+]
+
+[[object]]
+name = "career_icon"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 1003 } },
+]
+
+# a club: the emblem list's row (plate, crest, name); no hit zone, no attach to the emblem list's locators
+[[object]]
+name = "career_team"
+from = "team06_02_emblem_list_item"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+priority = 1004
+
+# a player's miniface: a copy of the retail list character card, shown as its portrait only (VRFW_FaceIcon.Card)
+[[object]]
+name = "career_face"
+from = "team00_01_chara_card_for_list"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+priority = 1004
+
+[[object]]
+name = "career_text"
+from = "cmn03_01_cmd_back"
+remove_block = ["MenuCollisionSetting", "MenuAnchorComponent"]
+set = [
+    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 1005 } },
+]
+
+# the confirmation window over everything else
+[[object]]
+name = "career_dialog"
+from = "cmn01_10_new_icon"
+set = [
+    { param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 1006 } },
+]
+
+[[object]]
+name = "career_dialog_text"
+from = "cmn03_01_cmd_back"
+remove_block = ["MenuCollisionSetting", "MenuAnchorComponent"]
+set = [
+    { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 1007 } },
+]
+
+# Counts (the script's pools follow the layers' real instance counts): panels 16, plates 60 (rows, bars, tab, form
+# chips), icons 40 (stars, arrows, tab icons, cursor), clubs 30 (a league of 20 + the tab's others), faces 24 (a squad of
+# 18, the best players), texts 300 (a 20-club table: name + 9 values a row), dialog 4 + 8.
+[[screen]]
+name = "evt_career_menu"
+like = "language_option_menu"
+base = "savedata_management_menu"
+script = "assets/lua/screens/evt_career_menu.lua"
+
+[screen.rows]
+layer = [
+    { layer = "mainmenu90_00_background" },
+    { layer = "mainmenu90_01_header" },
+    { layer = "save01_02_list_item", count = 1 },
+    { layer = "career_panel", object = "career_panel", count = 16, scale = 0.01 },
+    { layer = "career_plate", object = "career_plate", count = 60, scale = 0.01 },
+    { layer = "career_icon", object = "career_icon", count = 40, scale = 0.01 },
+    { layer = "career_team", object = "career_team", count = 30, scale = 0.01 },
+    { layer = "career_face", object = "career_face", count = 24 },
+    { layer = "career_text", object = "career_text", count = 300, scale = 0.01 },
+    { layer = "career_dialog", object = "career_dialog", count = 4, scale = 0.01 },
+    { layer = "career_dialog_text", object = "career_dialog_text", count = 8, scale = 0.01 },
+]
+# the anchor takes every key: A accepts, B / Esc / right click go back (the screen closes from its first page), the
+# arrows move (the club, the league of the table, the calendar's page), L1 / R1 change the league on the club pick and
+# the tab on the hub, Y draws the leagues again on the club pick
+cmd = [
+    { layer = "save01_02_list_item", input = "CMD_BACK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_MOUSE_RIGHT_CLICK", command = "CMD_BACK", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_ENTER", command = "CMD_FUNCTION", arg = "career_accept", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_UP", command = "CMD_FUNCTION", arg = "career_up", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_DOWN", command = "CMD_FUNCTION", arg = "career_down", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = "career_left", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_RIGHT", command = "CMD_FUNCTION", arg = "career_right", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCL1", command = "CMD_FUNCTION", arg = "career_prev", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNCR1", command = "CMD_FUNCTION", arg = "career_next", flag = 1 },
+    { layer = "save01_02_list_item", input = "CMD_FUNC3", command = "CMD_FUNCTION", arg = "career_redraw", flag = 1 },
+]
+res = [
+    "#/menu/10_win/win05/win05_43/win05_43.g4tx",
+    "#/menu/102_team/team00/team00_21b/team00_21b.g4tx",
+    "#/menu/20_cmn/cmn06/cmn06_01/cmn06_01.g4tx",
+    "#/menu/51_save/save01/save01_02/save01_02.g4tx",
+    "#/menu/20_cmn/cmn05/cmn05_01/cmn05_01.g4tx",
+    "#/menu/102_team/team06/team06_02/team06_02.g4tx",
+    "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx",
+    "#/menu/00_soccer/soccer11/soccer11_14/soccer11_14.g4tx",
+    "#/menu/10_win/win05/win05_28/win05_28.g4tx",
+    "#/menu/00_soccer/soccer00/soccer00_31/soccer00_31.g4tx",
+    "#/menu/20_cmn/cmn03/cmn03_02/cmn03_02.g4tx",
+    "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx",
+]
+group_base = [
+    { layer = "mainmenu90_00_background", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "mainmenu90_01_header", flags = [0, 1, 1, 0, 1, 0] },
+    { layer = "save01_02_list_item", flags = [1, 1, 0, 0, 1, 0] },
+    { layer = "career_panel", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "career_plate", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "career_icon", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "career_team", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "career_face", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "career_text", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "career_dialog", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "career_dialog_text", flags = [0, 1, 0, 0, 1, 0] },
+]
+group = [
+    { group = "common", slice = [0, 2] },
+    { group = "evt_career_menu", flags = [1], slice = [2, 9] },
+]
+focus_base = [[0x3A06AC3D, 0, 0]]
+focus_group = [
+    { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },
+]
+shift_base = []
+shift = []

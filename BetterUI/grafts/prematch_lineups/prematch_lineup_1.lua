@@ -27,10 +27,10 @@ function EVT_PmAutoReset()
   evtPmAnimT = 0
 end
 function EVT_PmAnimDone(layer)
-  local num = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], layer) or 1
+  local num = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, layer) or 1
   for i = 0, num - 1 do
-    if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], layer, i) and
-        not funcLuaMenuCommand(3133389476 --[[CMND_IS_END_ANIME_TYPE?]], layer, i, 71445658 --[[Open]], 0) then
+    if funcLuaMenuCommand(@crc:CMND_IS_OPEN_LAYER@, layer, i) and
+        not funcLuaMenuCommand(@crc:CMND_IS_END_ANIME_TYPE@, layer, i, 71445658 --[[Open]], 0) then
       return false
     end
   end
@@ -68,7 +68,7 @@ EVT_PMB = {
   ICON_FUNC3 = 3794706590,               -- menu_text "<CMD_FUNC3>" (key glyph, as <CMD_ENTER> in «Siguiente»)
   CMD_FUNC3 = 3421673595,
   FN = 4187903235,                       -- crc32("evt_pm_btn"): MENU_CMD_INFO CMD_FUNC3 -> CMD_FUNCTION (both buttons)
-  MENU_CTRL = 1332654303, CHECK_INPUT = 4265778440,  -- CMND_CHECK_INPUT_CMD (works without the cfg rows too)
+  MENU_CTRL = 1332654303, CHECK_INPUT = @crc:CMND_CHECK_INPUT_CMD@,  -- CMND_CHECK_INPUT_CMD (works without the cfg rows too)
   SUB_KEY = 438809976,                   -- parameter crc32("EVT_PM_SUB_MODE"): 1 edit own team, 2 rival read-only
   OPEN_WAIT = 8.0,                       -- s for the editor to appear before giving up
 }
@@ -80,11 +80,11 @@ function EVT_PmBtnOn()
   return EVT_PREMATCH_LINEUPS and EVT_PREMATCH_BUTTONS and not EVT_PmOnline()
 end
 function EVT_PmText(key, crc)            -- a Clean HUD text in the player's language (text engine id, else crc32)
-  local ok, id = pcall(funcLuaCommand, 3096244543 --[[CMND_VRFW_TEXT_ID]], key)
+  local ok, id = pcall(funcLuaCommand, @crc:CMND_VRFW_TEXT_ID@, key)
   if not (ok and type(id) == "number" and id ~= 0) then
     id = crc
   end
-  return funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], id)
+  return funcLuaCommand(@crc:CMND_TEXT_GET@, id)
 end
 function EVT_PmBtnPress(src)             -- OnFunction (cfg rows), OnEnter / click on the left button, or the key poll
   if EVT_PmBtnOn() and evtPmbGuide and not evtPmbReq then
@@ -96,30 +96,30 @@ function EVT_PmLeftSetup(a1, a2)         -- OnSetupLayer: same «offset» state 
   if a1 ~= EVT_PMB.LEFT then
     return false
   end
-  funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], a1, a2, 1493879504 --[[offset]], 0, 1819879843)
+  funcLuaMenuCommand(@crc:CMND_PLAY_ANIME_TYPE@, a1, a2, 1493879504 --[[offset]], 0, 1819879843)
   return true
 end
 function EVT_PmGuideOpen(isSelf)         -- opens the left button (name kept from rev 4a, where it was a guide entry)
   evtPmbGuide = true
   local label = isSelf and EVT_PmText(EVT_PMB.TEXT_EDIT, EVT_PMB.TEXT_EDIT_CRC)
     or EVT_PmText(EVT_PMB.TEXT_DATA, EVT_PMB.TEXT_DATA_CRC)
-  local glyph = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], EVT_PMB.ICON_FUNC3)
+  local glyph = funcLuaCommand(@crc:CMND_TEXT_GET@, EVT_PMB.ICON_FUNC3)
   if type(label) ~= "string" or label == "" then
     label = isSelf and "Editar" or "Datos"
   end
   if type(glyph) ~= "string" then
     glyph = "<CMD_FUNC3>"
   end
-  funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], EVT_PMB.LEFT)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], EVT_PMB.LEFT, EVT_PMB.TEXT_NODE, glyph .. " " .. label)
-  funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], EVT_PMB.NEXT, true)   -- Siguiente keeps the pad focus
+  funcLuaMenuCommand(@crc:CMND_OPEN_LAYER@, EVT_PMB.LEFT)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, EVT_PMB.LEFT, EVT_PMB.TEXT_NODE, glyph .. " " .. label)
+  funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, EVT_PMB.NEXT, true)   -- Siguiente keeps the pad focus
   EVT_PmLog("EVT prematch: lineup buttons", isSelf and "self: Editar + Siguiente" or "enemy: Datos + Siguiente")
 end
 function EVT_PmGuideClose()
   if evtPmbGuide then
     evtPmbGuide = false
-    funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], EVT_PMB.LEFT)
-    funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], EVT_PMB.LEFT, false)
+    funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER@, EVT_PMB.LEFT)
+    funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, EVT_PMB.LEFT, false)
   end
   evtPmbReq = false
 end
@@ -147,20 +147,20 @@ function EVT_PmReshow(isSelf)            -- true when this screen is shown again
   return again
 end
 function EVT_PmSubOpen(isSelf)           -- inside the screen coroutine: close this screen, run the editor, wait
-  funcLuaCommand(1917805374, 3848881948 --[[sy0000]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 3848881948 --[[sy0000]])
   EVT_PmGuideClose()
   SyncCloseFormationLayers(isSelf)
-  funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], EVT_PMB.NICK, 0)
-  funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], EVT_PMB.NEXT)
-  funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], EVT_PMB.NEXT, false)
+  funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER@, EVT_PMB.NICK, 0)
+  funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER@, EVT_PMB.NEXT)
+  funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, EVT_PMB.NEXT, false)
   coroutine.yield()
   WaitSyncCloseFormationLayers(isSelf)
   local mode = isSelf and 1 or 2
-  funcLuaCommand(3860611758 --[[PARAM_SET]], EVT_PMB.SUB_KEY, 0, mode)
-  funcLuaMenuCommand(992931526 --[[CMND_OPEN_FORMATION_MENU]])
+  VRFW_Param.Set(EVT_PMB.SUB_KEY, mode, "plain")
+  funcLuaMenuCommand(@crc:CMND_OPEN_FORMATION_MENU@)
   EVT_PmLog("EVT prematch: editor opened from the lineup", isSelf and "edit own team" or "rival data (read-only)")
   local t = 0
-  while not funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], EVT_PMB.FORM_MENU) do
+  while not funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, EVT_PMB.FORM_MENU) do
     t = t + (funcLuaCommand(1549797111) or 0)
     if t > EVT_PMB.OPEN_WAIT then
       EVT_PmLog("EVT prematch: editor did not open -> screen shown again")
@@ -168,10 +168,10 @@ function EVT_PmSubOpen(isSelf)           -- inside the screen coroutine: close t
     end
     coroutine.yield()
   end
-  while funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], EVT_PMB.FORM_MENU) do
+  while funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, EVT_PMB.FORM_MENU) do
     coroutine.yield()
   end
-  funcLuaCommand(3363400568 --[[PARAM_CLEAR]], EVT_PMB.SUB_KEY)
+  VRFW_Param.Clear(EVT_PMB.SUB_KEY)
   evtPmbWas = true
   EVT_PmLog("EVT prematch: editor closed -> lineup shown again", isSelf and "self" or "enemy")
 end
@@ -201,7 +201,7 @@ function EVT_PmCamTick()
   if evtPmCamT >= EVT_PM_CAM_SHOT_S then
     evtPmCamT = 0
     evtPmCamShot = evtPmCamShot % #EVT_PM_CAM_SHOTS + 1
-    funcLuaCommand(1953896148 --[[CMND_CHANGE_SOCCER_CAMERA_TYPE]], 21, 0, 0, 0, EVT_PM_CAM_SHOTS[evtPmCamShot])
+    funcLuaCommand(@crc:CMND_CHANGE_SOCCER_CAMERA_TYPE@, 21, 0, 0, 0, EVT_PM_CAM_SHOTS[evtPmCamShot])
   end
 end
 function EVT_PmCamStop()
@@ -209,7 +209,7 @@ function EVT_PmCamStop()
     return
   end
   evtPmCamOn = false
-  funcLuaCommand(1953896148 --[[CMND_CHANGE_SOCCER_CAMERA_TYPE]], 0, 0, 0, 0)
-  funcLuaCommand(2002145547 --[[CMND_CAMERA_RESET]], true)
+  funcLuaCommand(@crc:CMND_CHANGE_SOCCER_CAMERA_TYPE@, 0, 0, 0, 0)
+  funcLuaCommand(@crc:CMND_CAMERA_RESET@, true)
   EVT_PmLog("EVT prematch: lineup camera stop")
 end

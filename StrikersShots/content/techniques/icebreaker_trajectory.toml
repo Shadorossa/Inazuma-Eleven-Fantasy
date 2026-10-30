@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Lanza gélida (Icebreaker, whs03360 and whs03360_or, same cut-in ev60_03360;
+# whs03360_or covered by the base move's rule).
+#
+# In the cut-in's last shot (c0500) the ball is shot from 5.48 m down a straight line under its red spiral beam; the
+# aura is turned onto the match flight. Flight: straight and level at 2.0 m into the goal (the beam's root flare,
+# 2.5 m across, clears the grass). unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); points count from the kick; one point = a level flight;
+# straight = true: one straight line from the kick to the goal at that height.
+
+# Lanza gélida (whs03360).
+[[edit]]
+target = "whs03360"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

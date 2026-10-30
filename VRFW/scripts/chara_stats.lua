@@ -6,8 +6,8 @@ CharaStats = CharaStats or {}
 
 local E = require "lib/game_entries"
 
-local function info(...) VRFW.log("chara_stats:", ...) end
-local function warn(...) VRFW.warn("chara_stats:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("chara_stats")
 
 local ENTRIES = { "Chara.GetParamStatus", "Chara.GetSpecialtyType", "Technique.MatchSkillInstall" }
 local ORDER = {}         -- entry -> { "<mod>.<hook>" … } in run order

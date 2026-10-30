@@ -1,0 +1,96 @@
+schema = "VRFW.editor/1"
+# Aura Points: the ModManager editors of its per-aura points (docs/framework/modmanager-editor-schemas.md). ModManager
+# shows them on an aura's page, in «Coste y duración» beside the game's cost and duration (Section = "aura_costs"):
+# a keshin's PEG pool, a totem's SP bar. Edits go IN PLACE into the files below. Read only by ModManager: the game
+# does not read content\editor\.
+#
+# peg.toml / sp.toml are generated (research/scripts/peg_table_build.py, soul_table_build.py): a later run of those
+# scripts writes them again (bring a lasting change into research/scripts/peg_overrides.toml / the script's table).
+# The rules around the points (armour drain, Chrono Stone model, PE) are config.toml, edited in «Parámetros».
+
+[[Editor]]
+Id = "peg"
+Title = { es = "Puntos de espíritu (PEG)", en = "Fighting-spirit points (PEG)" }
+Help = { es = "La reserva de PEG del keshin: cada jugador tiene una por keshin para todo el partido. Invocar es gratis y sin límite de tiempo; su supertécnica cuesta PEG en vez de tensión; con 0 PEG el keshin se va y no vuelve en ese partido. Su armadura gasta de esta misma reserva.", en = "The keshin's PEG pool: each player has one per keshin for the whole match. Summoning is free and has no time limit; its special move costs PEG instead of tension; at 0 PEG the keshin leaves and does not come back that match. Its armour spends from this same pool." }
+Section = "aura_costs"
+Files = ["content/match_resources/peg.toml"]
+Table = "VRFW.MatchResource.pool"
+Key = "aura"
+Shape = "peg_pool"
+Kinds = ["keshin"]
+Fallback = "parent"
+
+[[Editor]]
+Id = "sp"
+Title = { es = "Puntos de alma (SP)", en = "Soul points (SP)" }
+Help = { es = "La barra de SP del tótem: cada jugador tiene una por tótem para todo el partido. Invocar es gratis y sin límite de tiempo; su supertécnica cuesta SP en vez de tensión; con 0 SP el tótem se va para ese partido.", en = "The totem's SP bar: each player has one per totem for the whole match. Summoning is free and has no time limit; its special move costs SP instead of tension; at 0 SP the totem leaves for that match." }
+Section = "aura_costs"
+Files = ["content/match_resources/sp.toml"]
+Table = "VRFW.MatchResource.pool"
+Key = "aura"
+Shape = "sp_pool"
+Kinds = ["soul"]
+Fallback = "parent"
+
+# ---------------------------------------------------------------------------------------------------- shapes
+
+[[Shape]]
+Id = "peg_pool"
+  [[Shape.Field]]
+  Key = "aura"
+  Type = "string"
+  Required = true
+  Label = { es = "Aura", en = "Aura" }
+  [[Shape.Field]]
+  Key = "max"
+  Type = "int"
+  Min = 1
+  Max = 9999
+  Label = { es = "Reserva máxima", en = "Max pool" }
+  Help = { es = "Los PEG con los que empieza el partido (su KP de Galaxy a nivel 6). Sin valor propio: el valor por defecto de la reserva.", en = "The PEG the match starts with (its Galaxy KP at level 6). Without its own value: the pool's default." }
+  [[Shape.Field]]
+  Key = "move_cost"
+  Type = "int"
+  Min = 0
+  Max = 9999
+  Label = { es = "Coste de su supertécnica", en = "Its move's cost" }
+  Help = { es = "Los PEG que cuesta la supertécnica propia del keshin (su coste de Galaxy), en vez de tensión.", en = "The PEG the keshin's own special move costs (its Galaxy cost), instead of tension." }
+  [[Shape.Field]]
+  Key = "values"
+  Type = "table"
+  Of = "peg_values"
+  Inline = true
+  Label = { es = "Valores", en = "Values" }
+
+[[Shape]]
+Id = "peg_values"
+  [[Shape.Field]]
+  Key = "atk"
+  Type = "int"
+  Min = 0
+  Max = 9999
+  Default = 80
+  Label = { es = "ATK de la armadura", en = "Armour ATK" }
+  Help = { es = "El ATK del keshin en Chrono Stone: la armadura gasta (reserva + ATK) × el factor de gasto de config.toml PEG por segundo. Sin valor propio: default_atk de config.toml.", en = "The keshin's Chrono Stone ATK: the armour spends (pool + ATK) × config.toml's drain factor PEG per second. Without its own value: config.toml's default_atk." }
+
+[[Shape]]
+Id = "sp_pool"
+  [[Shape.Field]]
+  Key = "aura"
+  Type = "string"
+  Required = true
+  Label = { es = "Aura", en = "Aura" }
+  [[Shape.Field]]
+  Key = "max"
+  Type = "int"
+  Min = 1
+  Max = 9999
+  Label = { es = "Barra máxima", en = "Max bar" }
+  Help = { es = "Los SP con los que empieza el partido (su SP de Galaxy a nivel máximo). Sin valor propio: el valor por defecto de la barra.", en = "The SP the match starts with (its Galaxy SP at max level). Without its own value: the bar's default." }
+  [[Shape.Field]]
+  Key = "move_cost"
+  Type = "int"
+  Min = 0
+  Max = 9999
+  Label = { es = "Coste de su supertécnica", en = "Its move's cost" }
+  Help = { es = "Los SP que cuesta la supertécnica del tótem (su coste de Galaxy), en vez de tensión.", en = "The SP the totem's special move costs (its Galaxy cost), instead of tension." }

@@ -1,0 +1,23 @@
+schema = "VRFW.game/2"
+
+# BetterQoL › kit and emblem order (feature kit_emblem_order, always on). In the inventory («Objetos», item_menu) the
+# kits tab and the emblems tab list their items by saga, then by that saga's team order. The team kit / emblem pickers
+# keep the game's order. Logic: scripts\kit_emblem_order.lua.
+#
+# How the game builds the inventory tab (nie.exe v7.2.1): the item_menu list view keeps its item list at view + 0x1E0
+# (u32 count at +0x8, at most 0x898; row pointers at +0x10, 8 bytes each; rows of 0x28 bytes from view + 0x46BC). Its
+# build 0x10A2FF0 picks the tab's inventory mask (view + 0x19F10 tab, + 0x19F18 layout: kits 0x20000, emblems
+# 0x40000), fills the list (0xD9AB00: the kit fill 0xD96600 and the emblem fill 0xD96240 write the item id at row +0x8
+# and match rows by it) and sorts it with ItemListSort(list, sortType = [view + 0x19F1C], 1, 0) 0xD9AE30, which swaps
+# the row pointers. The Lua only draws the row it is handed (UpdateItem), so the rows are re-ordered after the sort.
+
+# 0x10A2FF0: mov edx, [rbx + 19F1Ch]; xor r9d, r9d; mov r8b, 1; mov rcx, rdi (the list); call ItemListSort
+[[VRFW.Hook]]
+name = "BetterQoL.KitEmblemOrderInventory"
+kind = "call"
+pattern = "8B 93 1C 9F 01 00 45 33 C9 41 B0 01 48 8B CF E8 ?? ?? ?? ?? 48 8B 5C 24 70"
+offset = 15
+rva = 0x10A3128
+target_rva = 0xD9AE30
+args = ["ptr", "u32", "u8", "ptr"]
+wait_ms = 200

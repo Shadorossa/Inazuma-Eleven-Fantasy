@@ -13,6 +13,11 @@ local EVT_Child = function()
 -- clean_hud_team_ai = 1, team type in clean_hud_team_ai_type, both consumed at OnInit. Key absent or 0 -> the retail
 -- celebration screen (or BetterUI's shirt-number mode, graft clean_hud_shirt_number, which wraps the same globals:
 -- both pass through when off).
+-- Match roles (VR-Framework, docs/framework/match-role.md; e.g. Football Reforged's AI Roles): when mods declare roles
+-- for the player's position (CMND_VRFW_MATCH_ROLE_LIST(handle) not empty), Enter opens a one-column list instead of
+-- the retail chooser: «none», the 4 retail roles, then the position's roles. A retail pick is applied as before and
+-- clears the player's match role in this team set; a match role (CMND_VRFW_MATCH_ROLE_SET, any number of players may
+-- share one) clears his retail role, so the two never add up. The row shows the match role when he has one.
 -- Bytecode child: every retail function stays byte-identical; the retail globals are wrapped after the main chunk.
 local TEAM_AI_KEY = 3639925978             -- param store: 1 = open the celebration screen in AI-role mode
 local TEAM_AI_KEY_TYPE = 2232472304   -- param store: team type of the dock
@@ -25,9 +30,6 @@ local TEAM_PARAM = 3357163798
 local CURSOR_LAYER = 2296367164     -- cmn05_01_cursor
 local BLACK_BACKGROUND = 3801549073 -- cmn02_01_blackbg
 local SUB_WINDOW = 968210065        -- sub_window
-local CMND_PARAM_HAS = 2947612279
-local CMND_PARAM_GET = 3522198769
-local CMND_PARAM_DELETE = 3363400568
 local CMND_TEXT_GET = 4074371074
 local CMND_SET_MESH_VISIBLE = 3405944500
 local CMND_SET_LAYER_VISIBLE = 711242136
@@ -41,9 +43,18 @@ local CMND_TEAM_CHARA_INDEX = 2113285063
 local CMND_TEAM_MEMBER_INFO = 1720957768 -- (team, type, index, what): 0 handle
 local CMND_GET_AI_ROLE = 766740776
 local CMND_SET_AI_ROLE = 748531447
+local CMND_MATCH_ROLE_LIST = 3439025973  -- (handle) -> { { name, text, help }, … }
+local CMND_MATCH_ROLE_GET = 3334923656    -- (set, type, handle) -> name ("" none), text id
+local CMND_MATCH_ROLE_SET = 3723095588    -- (set, type, handle, name) -> ok
 local TEAM_SLOTS = 29               -- team member indices 0..28
+local LIST_TITLE = 3684289860       -- gtxt_ai_role01 «ESTABLECER ROL DE IA»: a title sprite of the one-column window (win05_13)
+local LIST_TYPE = 0                 -- the one-column sub window (win05_13, up to 9 rows)
+local LIST_SIZE = {[1] = 0, [2] = 5, [3] = 1, [4] = 2, [5] = 6, [6] = 3, [7] = 7, [8] = 8} -- size code by row count
+local LIST_POSITION_X, LIST_POSITION_Y = 960, -350   -- where the retail chooser opens (top centre)
+local LIST_FULL_HEIGHT, LIST_ROW_PITCH, LIST_FULL_ROWS = 804, 70, 9   -- the window's height at 9 rows, 70 px less per row
+local LIST_BOTTOM = 1000            -- the window ends above the button guides: a longer list opens higher
 
-BetterUI_TeamAI = {on = false, teamType = 0, team = nil, rows = {}, focused = nil, picked = nil}
+BetterUI_TeamAI = {on = false, teamType = 0, team = nil, rows = {}, focused = nil, picked = nil, listed = nil}
 local A = BetterUI_TeamAI
 
 local function Log(...)
@@ -54,20 +65,20 @@ end
 
 local function ReadMode()
   local mode = 0
-  if funcLuaCommand(CMND_PARAM_HAS, TEAM_AI_KEY) then
-    mode = funcLuaCommand(CMND_PARAM_GET, TEAM_AI_KEY) or 0
-    funcLuaCommand(CMND_PARAM_DELETE, TEAM_AI_KEY)
+  if VRFW_Param.Has(TEAM_AI_KEY) then
+    mode = VRFW_Param.Get(TEAM_AI_KEY) or 0
+    VRFW_Param.Clear(TEAM_AI_KEY)
   end
   A.teamType = 0
-  if funcLuaCommand(CMND_PARAM_HAS, TEAM_AI_KEY_TYPE) then
-    A.teamType = funcLuaCommand(CMND_PARAM_GET, TEAM_AI_KEY_TYPE) or 0
-    funcLuaCommand(CMND_PARAM_DELETE, TEAM_AI_KEY_TYPE)
+  if VRFW_Param.Has(TEAM_AI_KEY_TYPE) then
+    A.teamType = VRFW_Param.Get(TEAM_AI_KEY_TYPE) or 0
+    VRFW_Param.Clear(TEAM_AI_KEY_TYPE)
   end
   A.on = mode == 1
   A.rows = {}
   A.focused = nil
-  if funcLuaCommand(CMND_PARAM_HAS, TEAM_PARAM) then
-    A.team = funcLuaCommand(CMND_PARAM_GET, TEAM_PARAM)
+  if VRFW_Param.Has(TEAM_PARAM) then
+    A.team = VRFW_Param.Get(TEAM_PARAM)
   end
   if A.on then
     Log("AI-role mode team", A.team, "type", A.teamType)
@@ -101,11 +112,42 @@ local function RoleOf(index)
   return -1
 end
 
+-- the player's match role in this team set: name, text id (nil = none, or no VR-Framework answer)
+local function MatchRoleOf(handle)
+  if handle == nil or handle == 0 then
+    return nil
+  end
+  local ok, name, text = pcall(funcLuaCommand, CMND_MATCH_ROLE_GET, Team(), A.teamType, handle)
+  if ok and type(name) == "string" and name ~= "" then
+    return name, text
+  end
+  return nil
+end
+
+-- the match roles of the player's position: { { name, text }, … } (empty = none declared for it)
+local function MatchRolesFor(handle)
+  local ok, list = pcall(funcLuaCommand, CMND_MATCH_ROLE_LIST, handle)
+  if ok and type(list) == "table" then
+    return list
+  end
+  return {}
+end
+
+local function SetMatchRole(handle, name)
+  local ok, done = pcall(funcLuaCommand, CMND_MATCH_ROLE_SET, Team(), A.teamType, handle, name or "")
+  Log("match role", handle, name or "none", ok and done)
+end
+
 local function SetRowText(row, handle)
   local text = "-"
-  local role = RoleOf(TeamIndex(handle))
-  if role ~= nil then
-    text = funcLuaCommand(CMND_TEXT_GET, ROLE_TEXTS[role + 2]) or ""
+  local name, text_id = MatchRoleOf(handle)
+  if name ~= nil then
+    text = (type(text_id) == "number" and text_id ~= 0 and funcLuaCommand(CMND_TEXT_GET, text_id)) or name
+  else
+    local role = RoleOf(TeamIndex(handle))
+    if role ~= nil then
+      text = funcLuaCommand(CMND_TEXT_GET, ROLE_TEXTS[role + 2]) or ""
+    end
   end
   _SetPerformanceText(PLAYER_ROW, row, text, false)
 end
@@ -141,7 +183,70 @@ local function SetRole(index, role)
   Log("role set", index, role)
 end
 
--- the retail AI-role chooser for the focused player (as the retail per-player option opens it)
+-- the one-column list: «none», the retail roles, the match roles of the player's position
+local function OpenRoleList(handle, index, roles)
+  local rows = {}
+  for i = 1, #ROLE_TEXTS do
+    rows[#rows + 1] = {id = ROLE_TEXTS[i], retail = i - 2}
+  end
+  local current, focus = MatchRoleOf(handle), 0
+  for _, r in ipairs(roles) do
+    rows[#rows + 1] = {id = r.text ~= 0 and r.text or ROLE_TEXTS[1], name = r.name}
+    if current ~= nil and r.name == current then
+      focus = #rows - 1
+    end
+  end
+  if current == nil then
+    focus = (RoleOf(index) or -1) + 1
+  end
+  local ids, enabled, new = {}, {}, {}
+  for i, r in ipairs(rows) do
+    ids[i], enabled[i], new[i] = r.id, 1, 0
+  end
+  A.picked = nil
+  A.listed = rows
+  funcLuaMenuCommand(CMND_SET_MENU_INPUT, THIS_MENU, false)
+  funcLuaMenuCommand(CMND_SET_DRAW_PRIORITY, BLACK_BACKGROUND, 0, 750, true)
+  funcLuaMenuCommand(CMND_SET_LAYER_VISIBLE, CURSOR_LAYER, 0, false)
+  MENU_DEF.OpenSubWindow("BetterUI_TeamAI_OnListPicked", "", #rows, ids, LIST_SIZE[#rows] or 0, LIST_TITLE, enabled, focus, false, false, LIST_TYPE, 0, new)
+  waitTrue(function()
+    return funcLuaCommand(CMND_IS_OPEN_MENU_OBJECT, SUB_WINDOW, CURSOR_LAYER)
+  end)
+  local height = LIST_FULL_HEIGHT - LIST_ROW_PITCH * (LIST_FULL_ROWS - math.min(#rows, LIST_FULL_ROWS))
+  funcLuaCommand(CMND_SUB_WINDOW_POSITION, LIST_POSITION_X, -math.min(-LIST_POSITION_Y, LIST_BOTTOM - height))
+  waitFalse(function()
+    return funcLuaMenuCommand(CMND_IS_EXIST_MENU_OBJECT, SUB_WINDOW)
+  end)
+  funcLuaMenuCommand(CMND_SET_DRAW_PRIORITY, BLACK_BACKGROUND, 0, 740, true)
+  funcLuaMenuCommand(CMND_SET_LAYER_VISIBLE, CURSOR_LAYER, 0, true)
+  funcLuaMenuCommand(CMND_SET_MENU_INPUT, THIS_MENU, true)
+  local pick = type(A.picked) == "number" and rows[A.picked + 1] or nil
+  A.listed = nil
+  if pick ~= nil then
+    if pick.name ~= nil then
+      if RoleOf(index) ~= -1 then
+        funcLuaCommand(CMND_SET_AI_ROLE, Team(), A.teamType, index, -1)
+      end
+      SetMatchRole(handle, pick.name)
+    else
+      if current ~= nil then
+        SetMatchRole(handle, "")
+      end
+      SetRole(index, pick.retail)
+    end
+  end
+  RefreshRows()
+end
+
+function BetterUI_TeamAI_OnListPicked(pick)
+  if type(pick) == "number" and pick >= 0 and A.listed ~= nil and pick < #A.listed then
+    A.picked = pick
+    funcLuaCommand(CMND_CLOSE_MENU_OBJECT, SUB_WINDOW)
+  end
+end
+
+-- the retail AI-role chooser for the focused player (as the retail per-player option opens it); the match roles'
+-- list instead when mods declare roles for his position
 local function OpenRoleChooser()
   local handle = A.focused
   if handle == nil or handle == 0 then
@@ -150,6 +255,10 @@ local function OpenRoleChooser()
   local index = TeamIndex(handle)
   if index == nil then
     return
+  end
+  local roles = MatchRolesFor(handle)
+  if #roles > 0 then
+    return OpenRoleList(handle, index, roles)
   end
   local role = RoleOf(index) or -1
   A.picked = nil

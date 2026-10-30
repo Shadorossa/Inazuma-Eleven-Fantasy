@@ -1,0 +1,50 @@
+# Texts of Stoppage Time, a module of Football Reforged (docs/framework/types/text.md): the name and description of its
+# card on Football Reforged's page in Mods, and the telop shown when a half's regular time ends (telop_added_time:
+# {minutes} = the added minutes; scripts\stoppage_time.lua fills it in).
+schema = "VRFW.text_key/1"
+default_lang = "en"
+
+[en.new]
+mod_name = "Stoppage Time"
+mod_description = "Added time at the end of every half, as in football: the fouls, special moves, keeper scenes, goals and substitutions of the half add seconds, rounded to whole minutes (1 to 5). When the regular time ends a «+N» telop shows and the clock keeps running into the added time. If it runs out while a team attacks in the rival half, the play goes on (up to 30 s) until the ball goes out, the rival wins it back, a goal or a foul; then the half ends."
+telop_added_time = "Added time +{minutes}"
+
+[es.new]
+mod_name = "Tiempo añadido"
+mod_description = "Tiempo añadido al final de cada parte, como en el fútbol: las faltas, supertécnicas, paradas del portero, goles y cambios de la parte suman segundos, redondeados a minutos enteros (de 1 a 5). Al acabar el tiempo reglamentario sale un rótulo «+N» y el reloj sigue corriendo en el añadido. Si se agota mientras un equipo ataca en campo rival, la jugada sigue (hasta 30 s) hasta que el balón sale, el rival lo recupera, hay gol o falta; entonces acaba la parte."
+telop_added_time = "Tiempo añadido +{minutes}"
+
+[fr.new]
+mod_name = "Temps additionnel"
+mod_description = "Du temps additionnel à la fin de chaque mi-temps, comme au football : les fautes, techniques spéciales, arrêts du gardien, buts et remplacements de la mi-temps ajoutent des secondes, arrondies à la minute (de 1 à 5). À la fin du temps réglementaire un bandeau «+N» s'affiche et le chrono continue dans le temps additionnel. S'il s'écoule pendant qu'une équipe attaque dans le camp adverse, l'action continue (jusqu'à 30 s) jusqu'à ce que le ballon sorte, que l'adversaire le récupère, un but ou une faute ; puis la mi-temps se termine."
+telop_added_time = "Temps additionnel +{minutes}"
+
+[de.new]
+mod_name = "Nachspielzeit"
+mod_description = "Nachspielzeit am Ende jeder Halbzeit wie im Fußball: Fouls, Spezialtechniken, Torwartszenen, Tore und Wechsel der Halbzeit ergeben Sekunden, auf ganze Minuten gerundet (1 bis 5). Am Ende der regulären Spielzeit erscheint eine Einblendung «+N» und die Uhr läuft in der Nachspielzeit weiter. Läuft sie ab, während ein Team in der gegnerischen Hälfte angreift, geht der Spielzug weiter (bis zu 30 s), bis der Ball ins Aus geht, der Gegner ihn erobert, ein Tor oder ein Foul fällt; dann endet die Halbzeit."
+telop_added_time = "Nachspielzeit +{minutes}"
+
+[it.new]
+mod_name = "Recupero"
+mod_description = "Minuti di recupero alla fine di ogni tempo, come nel calcio: falli, tecniche speciali, interventi del portiere, gol e sostituzioni del tempo aggiungono secondi, arrotondati al minuto (da 1 a 5). Alla fine del tempo regolamentare compare la scritta «+N» e il cronometro continua nel recupero. Se scade mentre una squadra attacca nella metà campo avversaria, l'azione continua (fino a 30 s) finché la palla esce, l'avversario la recupera, c'è un gol o un fallo; poi il tempo finisce."
+telop_added_time = "Recupero +{minutes}"
+
+[pt.new]
+mod_name = "Tempo de compensação"
+mod_description = "Tempo de compensação no fim de cada parte, como no futebol: as faltas, supertécnicas, defesas do guarda-redes, golos e substituições da parte somam segundos, arredondados a minutos inteiros (de 1 a 5). No fim do tempo regulamentar aparece a legenda «+N» e o relógio continua a correr na compensação. Se acabar enquanto uma equipa ataca no meio-campo adversário, a jogada continua (até 30 s) até a bola sair, o adversário a recuperar, haver golo ou falta; então a parte termina."
+telop_added_time = "Compensação +{minutes}"
+
+[ja.new]
+mod_name = "アディショナルタイム"
+mod_description = "サッカーのように各ハーフの終わりにアディショナルタイム：そのハーフのファウル、必殺技、キーパーのシーン、ゴール、選手交代が秒数を加え、分単位に丸められる（1〜5分）。規定時間が終わると「+N」のテロップが出て、時計はアディショナルタイムに入って進み続ける。終了時に一方のチームが相手陣内で攻めていれば、ボールが出る、相手が奪う、ゴールかファウルまでプレーが続き（最大30秒）、そこでハーフが終わる。"
+telop_added_time = "アディショナルタイム +{minutes}"
+
+[zh_hans.new]
+mod_name = "补时"
+mod_description = "像足球一样，每个半场结束时有补时：该半场的犯规、必杀技、门将场景、进球和换人都会增加秒数，并取整为整分钟（1到5分钟）。常规时间结束时显示「+N」字幕，时钟继续走入补时。补时用完时若一方正在对方半场进攻，比赛继续（最多30秒），直到球出界、对方抢回球权、进球或犯规，然后半场结束。"
+telop_added_time = "补时 +{minutes}"
+
+[zh_hant.new]
+mod_name = "補時"
+mod_description = "像足球一樣，每個半場結束時有補時：該半場的犯規、必殺技、門將場景、進球和換人都會增加秒數，並取整為整分鐘（1到5分鐘）。常規時間結束時顯示「+N」字幕，時鐘繼續走入補時。補時用完時若一方正在對方半場進攻，比賽繼續（最多30秒），直到球出界、對方搶回球權、進球或犯規，然後半場結束。"
+telop_added_time = "補時 +{minutes}"

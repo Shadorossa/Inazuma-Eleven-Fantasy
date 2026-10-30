@@ -28,21 +28,21 @@ do
   end
 
   local function Log(...)
-    pcall(funcLuaCommand, 3661580131, ...)
+    pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, ...)
   end
 
   local function Want()
     if EVT_PPB_OFF == true then
       return false
     end
-    local ok, v = pcall(funcLuaCommand, 264888438 --[[CMND_IS_EXIST_MENU]], B.PLATE_MENU)
+    local ok, v = pcall(funcLuaCommand, @crc:CMND_IS_EXIST_MENU@, B.PLATE_MENU)
     if not (ok and v == true) then
       return false, "no plate menu"
     end
     -- 2026-10-06 (in game: the lineup gone with the stats view CLOSED - the bank keeps the plate menu alive): only
     -- while the plate's page is SHOWN (the retail bank's own test: CMND_IS_LAYER_VISIBLE with the menu as 4th
     -- argument, chara_bank_menu_for_search)
-    local okv, vis = pcall(funcLuaMenuCommand, 1262717583 --[[CMND_IS_LAYER_VISIBLE]], B.PAGE, 0, B.PLATE_MENU)
+    local okv, vis = pcall(funcLuaMenuCommand, @crc:CMND_IS_LAYER_VISIBLE@, B.PAGE, 0, B.PLATE_MENU)
     if not (okv and vis == true) then
       return false, "stats hidden"
     end
@@ -52,8 +52,8 @@ do
   function B.Restore(why)
     local n = 0
     for key, rec in pairs(B.hid) do
-      if L(262659071, rec[1]) == true and L(2640875187, rec[1], rec[2]) == true then
-        L(711242136, rec[1], rec[2], true)
+      if L(@crc:CMND_IS_EXIST_LAYER@, rec[1]) == true and L(@crc:CMND_IS_OPEN_LAYER@, rec[1], rec[2]) == true then
+        L(@crc:CMND_SET_LAYER_VISIBLE@, rec[1], rec[2], true)
         L(855005857, rec[1], rec[2], true)                     -- its mouse zone back (pointer, see B.Step)
       end
       B.hid[key] = nil
@@ -80,13 +80,13 @@ do
     B.on = true
     local n = 0
     for _, l in ipairs(B.LAYERS) do
-      if L(262659071, l) == true then                                -- CMND_IS_EXIST_LAYER
+      if L(@crc:CMND_IS_EXIST_LAYER@, l) == true then                                -- CMND_IS_EXIST_LAYER
         for i = 0, B.MAX_INST - 1 do
-          if L(2640875187, l, i) ~= true then                        -- IS_OPEN: the instances end here
+          if L(@crc:CMND_IS_OPEN_LAYER@, l, i) ~= true then                        -- IS_OPEN: the instances end here
             break
           end
-          if L(1262717583, l, i) == true then                        -- IS_VISIBLE: hide it and remember it
-            L(711242136, l, i, false)
+          if L(@crc:CMND_IS_LAYER_VISIBLE@, l, i) == true then                        -- IS_VISIBLE: hide it and remember it
+            L(@crc:CMND_SET_LAYER_VISIBLE@, l, i, false)
             -- 2026-10-06 pointer (docs/game/ui/mouse-support.md §2): a hidden card keeps its mouse zone and
             -- would take the engine focus on hover (another player on the page): zone off while hidden
             L(855005857, l, i, false)
@@ -127,7 +127,7 @@ do
   B.leftOpen = false
 
   local function PageShown()
-    return L(1262717583, B.PAGE, 0, B.PLATE_MENU) == true        -- CMND_IS_LAYER_VISIBLE in personal_plate_menu
+    return L(@crc:CMND_IS_LAYER_VISIBLE@, B.PAGE, 0, B.PLATE_MENU) == true        -- CMND_IS_LAYER_VISIBLE in personal_plate_menu
   end
 
   function B.UiSync()
@@ -144,7 +144,7 @@ do
       end
     elseif B.formSusp then
       B.formSusp = false
-      local ok, ex = pcall(funcLuaCommand, 264888438, B.PLATE_MENU)   -- CMND_IS_EXIST_MENU
+      local ok, ex = pcall(funcLuaCommand, @crc:CMND_IS_EXIST_MENU@, B.PLATE_MENU)   -- CMND_IS_EXIST_MENU
       if B.open and ok and ex == true then
         L(1453710531, B.PLATE_MENU)                                -- resume (the retail OpenPersonalPlate command)
         if B.leftOpen then
@@ -184,7 +184,9 @@ do
       EVT_PPG_Wrap(fname, function(orig)
         return function(...)
           local r = table.pack(orig(...))
-          if next(B.hid) ~= nil then
+          -- OnCloseLayer runs for every layer of the bank (e.g. the command popup's explanation window on each
+          -- option focus): the lineup comes back only when the player page is no longer shown
+          if next(B.hid) ~= nil and (fname == "FinalizeMenu" or not Want()) then
             pcall(B.Restore, fname)
           end
           return table.unpack(r, 1, r.n)

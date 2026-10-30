@@ -41,18 +41,18 @@ ja = "今のセーブデータに次の調整を行います："
 zh_hans = "将对当前存档进行以下调整："
 zh_hant = "將對目前存檔進行以下調整："
 
-# Confirmation question: %s = the line above and the labels of the actions.
+# Confirmation question: %s = the line above and the labels of the actions; one line, drawn above the buttons.
 [[row]]
 id = "vrfw_save_tools_confirm"
-es = "%s\n\nAntes se hace una copia de seguridad y después vuelves al título.\n¿Aplicar?"
-en = "%s\n\nA backup is made first, then you return to the title screen.\nApply?"
-fr = "%s\n\nUne sauvegarde est faite d'abord, puis tu reviens à l'écran titre.\nAppliquer ?"
-de = "%s\n\nZuerst wird eine Sicherung erstellt, dann geht es zurück zum Titelbildschirm.\nAnwenden?"
-it = "%s\n\nPrima viene fatto un backup, poi torni alla schermata del titolo.\nApplicare?"
-pt = "%s\n\nPrimeiro é feita uma cópia de segurança e depois voltas ao ecrã de título.\nAplicar?"
-ja = "%s\n\n先にバックアップを作成し、その後タイトル画面に戻ります。\n実行しますか？"
-zh_hans = "%s\n\n会先备份，然后返回标题画面。\n要执行吗？"
-zh_hant = "%s\n\n會先備份，然後返回標題畫面。\n要執行嗎？"
+es = "%s\nSe hará una copia de seguridad y volverás al título. ¿Aplicar?"
+en = "%s\nA backup is made first, then you return to the title. Apply?"
+fr = "%s\nUne sauvegarde est faite, puis tu reviens au titre. Appliquer ?"
+de = "%s\nErst wird gesichert, dann geht es zum Titel. Anwenden?"
+it = "%s\nSi fa prima un backup, poi torni al titolo. Applicare?"
+pt = "%s\nFaz-se uma cópia de segurança e voltas ao título. Aplicar?"
+ja = "%s\n先にバックアップを作成し、タイトル画面に戻ります。実行しますか？"
+zh_hans = "%s\n会先备份，然后返回标题画面。要执行吗？"
+zh_hant = "%s\n會先備份，然後返回標題畫面。要執行嗎？"
 
 # Result text for an action without its own: %d = what it changed.
 [[row]]

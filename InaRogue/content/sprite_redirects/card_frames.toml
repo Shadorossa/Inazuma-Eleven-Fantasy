@@ -1,0 +1,108 @@
+schema = "VRFW.sprite_redirect/1"
+# InaRogue: the game and the Lua ask the game's card atlases for the INAROGUE tier frames and the «¿Y si…?» Vestigio
+# frames (by rarity frame / by name); they live in the mod's own atlases (content\images\menu\...), so the game
+# atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "inarogue_cards"
+atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+own_atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
+sprites = [
+    "evt_icon_chr_base01_l13_ns",
+    "evt_icon_chr_base01_l14_ns",
+    "evt_icon_chr_base01_l15_ns",
+    "evt_icon_chr_base01_s13_ns",
+    "evt_icon_chr_base01_s14_ns",
+    "evt_icon_chr_base01_s15_ns",
+    "evt_rg_base_l01",
+    "evt_rg_base_l02",
+    "evt_rg_base_l03",
+    "evt_rg_base_l04",
+    "evt_rg_base_l05",
+    "evt_rg_base_s01",
+    "evt_rg_base_s02",
+    "evt_rg_base_s03",
+    "evt_rg_base_s04",
+    "evt_rg_base_s05",
+    "evt_rg_color_l01",
+    "evt_rg_color_l02",
+    "evt_rg_color_l03",
+    "evt_rg_color_l04",
+    "evt_rg_color_l05",
+    "evt_rg_color_s01",
+    "evt_rg_color_s02",
+    "evt_rg_color_s03",
+    "evt_rg_color_s04",
+    "evt_rg_color_s05",
+    "evt_rg_frame_l01",
+    "evt_rg_frame_l02",
+    "evt_rg_frame_l03",
+    "evt_rg_frame_l04",
+    "evt_rg_frame_l05",
+    "evt_rg_frame_s01",
+    "evt_rg_frame_s02",
+    "evt_rg_frame_s03",
+    "evt_rg_frame_s04",
+    "evt_rg_frame_s05",
+    "icon_chr_base01_l13",
+    "icon_chr_base01_l14",
+    "icon_chr_base01_l15",
+    "icon_chr_base01_s13",
+    "icon_chr_base01_s14",
+    "icon_chr_base01_s15",
+    "icon_chr_color01_l13",
+    "icon_chr_color01_l14",
+    "icon_chr_color01_l15",
+    "icon_chr_color01_s13",
+    "icon_chr_color01_s14",
+    "icon_chr_color01_s15",
+]
+
+[[VRFW.SpriteRedirect]]
+name = "inarogue_big_cards"
+atlas = "#/menu/102_team/team00/team00_03/<LG>/team00_03.g4tx"
+own_atlas = "#/menu/102_team/inarogue/inarogue_big_cards.g4tx"
+sprites = [
+    "icon_chr_base01_l13",
+    "icon_chr_base01_l14",
+    "icon_chr_base01_l15",
+    "icon_chr_color01_l13",
+    "icon_chr_color01_l14",
+    "icon_chr_color01_l15",
+]
+
+[[VRFW.SpriteRedirect]]
+name = "inarogue_plates"
+atlas = "#/menu/102_team/team11/team11_01/team11_01.g4tx"
+own_atlas = "#/menu/102_team/inarogue/inarogue_plates.g4tx"
+sprites = [
+    "status_chr_plate01_13",
+    "status_chr_plate01_13_02",
+    "status_chr_plate01_14",
+    "status_chr_plate01_14_02",
+    "status_chr_plate01_15",
+    "status_chr_plate01_15_02",
+]
+
+[[VRFW.SpriteRedirect]]
+name = "inarogue_status_plates"
+atlas = "#/menu/00_soccer/soccer11/soccer11_04/<LG>/soccer11_04.g4tx"
+own_atlas = "#/menu/102_team/inarogue/inarogue_status_plates.g4tx"
+sprites = [
+    "status_chr_base01_s13",
+    "status_chr_base01_s14",
+    "status_chr_base01_s15",
+    "status_chr_plate01_13_02",
+    "status_chr_plate01_14_02",
+    "status_chr_plate01_15_02",
+]
+
+[[VRFW.SpriteRedirect]]
+name = "inarogue_rarity_titles"
+atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+own_atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
+sprites = [
+    "gtxt_rarity01_13",
+    "gtxt_rarity01_14",
+    "gtxt_rarity01_15",
+]

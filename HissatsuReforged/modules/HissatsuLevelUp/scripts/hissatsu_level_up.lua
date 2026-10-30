@@ -42,9 +42,9 @@
 --        board, -1 bad args, -2 not active. The caller (the skill views, graft move_rank_items) takes the item off
 --        the bag.
 --   CMND_HISSATSULEVELUP_CAN_PLACE(charaStHdl, boardSlot, itemId) -> ok, the other slot holding it (-1 = none)
---   CMND_HISSATSULEVELUP_RETAIL_STOCK(count) -> count -1: the active save slot still needs its line; count >= 0
---        (the save's abl_000001 stock, from the graft sr_popup): logs it once per slot. The retail «Nueva posibilidad»
---        is no longer the upgrade book (1.0.4: own item technique_upgrade_book); its stock is never converted.
+--   CMND_HISSATSULEVELUP_RETAIL_STOCK(count) -> count -1: true, old book id, raise_item id while the active save slot
+--        still needs its conversion; count >= 0 (the old book stock the graft sr_popup turned into raise_item): logged
+--        once per slot.
 --
 -- Rule (2026-10-11, owner): rank-up by use stops at the second-to-last grade ([ranks] last_grade_item_only, default
 -- true); only the last-grade item reaches the last grade. Grades already stored at the last grade are kept.
@@ -52,24 +52,19 @@
 -- written at once. Nothing calls the game at load: start() reads files only.
 
 local A = require "lib/auras"
+local Id = require "VRFW/lib/ids"
+local Actors = require "VRFW/lib/actors"
 
 HissatsuLevelUp = HissatsuLevelUp or {}
 HissatsuLevelUp.Cmd = HissatsuLevelUp.Cmd or {}
 local TH = HissatsuLevelUp
 
-local function info(...) VRFW.log("HissatsuLevelUp:", ...) end
-local function warn(...) VRFW.warn("HissatsuLevelUp:", ...) end
-local function err(...) VRFW.error("HissatsuLevelUp:", ...) end
+require "VRFW/lib/basics"
+require "VRFW/lib/save_doc"
+local info, warn, err = VRFW.logger("HissatsuLevelUp")
 local band, rshift = bit32.band, bit32.rshift
 
-local TWO32 = 4294967296
-local function u32(v)
-  if type(v) ~= "number" then return 0 end
-  local n = v >= 0 and math.floor(v) or math.ceil(v)
-  return n % TWO32
-end
-
-local function hex(v) return string.format("0x%08X", v or 0) end
+local u32, hex = Id.u32, Id.hex
 
 -- a value of this mod's merged config.toml (dotted path), `default` when missing or of another type
 local function cfg(path, default)
@@ -83,12 +78,15 @@ end
 local BLOB = "skill_uses.json"
 local FILE_VERSION = 1
 local MAX_GRADE = 5
-local ACTOR_STRIDE, ACTOR_MAX, ACTOR_HDL, ACTOR_TEAM = 0x570, 0x3A, 0x94, 0xD0
 local UNIT_STRIDE, UNIT_MAX, UNIT_HDL, UNIT_CHARA = 0x380, 0x60, 0x368, 0x370
 local UNIT_SKILLS, UNIT_SKILL_STRIDE, UNIT_SKILL_RANK, UNIT_SKILL_RECAST = 0x30, 0x1C, 0x15, 0x04
 local MATCH_USER_TEAM = 0x2C29
 local INFO_RECAST = 0x34
 local REC_SKILL_LIST, SKILL_ENTRY, SKILL_SLOTS = 0x50, 8, 6
+-- u32 words of a record read at once: handle + card (+0x00 .. +0x07); up to the end of the skill_list (2 words per entry)
+local REC_HEAD_WORDS = 2
+local REC_LIST_WORD = math.floor(REC_SKILL_LIST / 4)
+local REC_LIST_WORDS = REC_LIST_WORD + SKILL_SLOTS * 2
 local REC_PLACED, REC_NATIVE, BOARD_SLOTS = 0x94, 0xC8, 9
 local POPUP_TTL_MS, POPUP_MAX = 8000, 16
 local MATCH_GAP_MS = 30000
@@ -121,6 +119,14 @@ end
 
 local function wr(t, a, v)
   return (pcall(VRFW.mem.write, t, a, v))
+end
+
+-- `n` values of type `t` from `a` in one guarded read (a table 1..n), nil when not readable
+local function rd_array(t, a, n)
+  if not a or a < 0x10000 or n < 1 then return nil end
+  local ok, v = pcall(VRFW.mem.read_array, t, a, n)
+  if ok and type(v) == "table" then return v end
+  return nil
 end
 
 local function global(name)
@@ -331,7 +337,11 @@ local function boost(st, c, s, base, steps)
   return og, g
 end
 
-local function to_json(st)
+local DOC = VRFW.save.doc(BLOB, { version = FILE_VERSION, stage = true, log = "hissatsu level up",
+  default = function() return { version = FILE_VERSION, entries = {} } end })
+
+-- the store as its file's document: { version, slot, entries = { { card, skill, recruit grade source, grade }, … } }
+local function to_doc(st)
   local rows = {}
   for c, m in pairs(st.map) do
     for s, e in pairs(m) do rows[#rows + 1] = { c, s, e[1], e[2] } end
@@ -342,37 +352,21 @@ local function to_json(st)
     end
     return false
   end)
-  local p = {}
-  for i, r in ipairs(rows) do p[i] = string.format("[%.0f,%.0f,%.0f,%.0f]", r[1], r[2], r[3], r[4]) end
-  return string.format('{"version":%d,"slot":%d,"entries":[%s]}', FILE_VERSION, st.slot, table.concat(p, ","))
+  return { version = FILE_VERSION, slot = st.slot, entries = rows }
 end
 
 -- slot `slot`'s store: no blob = empty; an unreadable one is set aside (logged) and the store starts empty
 local function load_store(slot)
   local st = new_store(slot)
-  local text, why = VRFW.save.blob(BLOB, slot)
-  if text == nil and why ~= nil then
-    local where = VRFW.save.blob_aside(BLOB, slot)
-    err(string.format("slot %d: %s: %s; set aside to %s; starting empty", slot, BLOB, tostring(why), tostring(where)))
-    return st
-  end
-  if text ~= nil then
-    local j, jerr = VRFW.json.decode(text)
-    local bad = j == nil and tostring(jerr) or (type(j) ~= "table" and "not an object")
-      or (j.version ~= FILE_VERSION and ("unknown version " .. tostring(j.version))) or nil
-    if bad then
-      local where = VRFW.save.blob_aside(BLOB, slot)
-      err(string.format("slot %d: %s: %s; set aside to %s; starting empty", slot, BLOB, bad, tostring(where)))
-      return st
-    end
-    for _, e in ipairs(type(j.entries) == "table" and j.entries or {}) do
-      local c, s = u32(e[1]), u32(e[2])
-      if c ~= 0 and s ~= 0 then
-        local m = st.map[c]
-        if not m then m = {}; st.map[c] = m end
-        if not m[s] then st.n = st.n + 1 end
-        m[s] = { u32(e[3]), math.min(tonumber(e[4]) or 0, MAX_GRADE) }
-      end
+  local j, state = DOC:load(slot)
+  if state == "bad" then return st end
+  for _, e in ipairs(type(j.entries) == "table" and j.entries or {}) do
+    local c, s = u32(e[1]), u32(e[2])
+    if c ~= 0 and s ~= 0 then
+      local m = st.map[c]
+      if not m then m = {}; st.map[c] = m end
+      if not m[s] then st.n = st.n + 1 end
+      m[s] = { u32(e[3]), math.min(tonumber(e[4]) or 0, MAX_GRADE) }
     end
   end
   st.dirty = false
@@ -389,7 +383,7 @@ local function load_store(slot)
       end
     end
     if n > 0 then
-      local ok, where = VRFW.save.blob_write(BLOB, to_json(st), slot)
+      local ok, where = DOC:write(to_doc(st), slot, true)
       if ok then
         st.dirty = false
         info(string.format("slot %d: %d aura-skill entries removed (aura skills have no grade)", slot, n))
@@ -404,9 +398,8 @@ end
 local store = new_store(0)
 local parked = nil
 
+-- VRFW.slots.active is 1 while the slot service is not ready
 local function current_slot()
-  local okr, ready = pcall(VRFW.slots.ready)
-  if not (okr and ready) then return 1 end
   local ok, s = pcall(VRFW.slots.active)
   return ok and tonumber(s) or 1
 end
@@ -436,7 +429,7 @@ local function cur()
     parked = nil
     info(string.format("slot %d is back after the overlay session: its parked store is used again (%d entries)", slot, store.n))
     if store.dirty and commit_on_save() then
-      pcall(VRFW.save.blob_stage, BLOB, to_json(store), slot)
+      DOC:write(to_doc(store), slot)
     end
   else
     if store.dirty and from ~= 0 then warn(string.format("slot %d -> %d: dropping uses not saved by the game", from, slot)) end
@@ -449,13 +442,8 @@ end
 -- the store's changes: staged with the game's save of the slot, or written now (`now`, or no slot service)
 local function commit(st, why, now)
   if not st.dirty then return end
-  local text = to_json(st)
-  if not now and commit_on_save() then
-    local ok, e = VRFW.save.blob_stage(BLOB, text, st.slot)
-    if ok then return end
-    warn("stage failed (" .. tostring(e) .. "): written now")
-  end
-  local ok, where = VRFW.save.blob_write(BLOB, text, st.slot)
+  local ok, where, staged = DOC:write(to_doc(st), st.slot, now)
+  if staged then return end
   if ok then
     st.dirty = false
   else
@@ -683,13 +671,9 @@ local function on_used(ev)
   end
   used_hits = used_hits + 1
   local n = used_hits
-  local idx = band(hdl, 0xFF)
-  if hdl == 0 or idx >= ACTOR_MAX then return end
-  local actors = global("Match.SoccerActors.ViaSkillUsed")
-  if not actors then return end
-  local actor = actors + idx * ACTOR_STRIDE
-  if rd("u32", actor + ACTOR_HDL) ~= hdl then return end
-  local team = rd("u8", actor + ACTOR_TEAM)
+  local a = Actors.of(hdl)
+  if not a then return end
+  local actor, team = a.address, a.team
   local okc, unit = pcall(VRFW.call, "Match.ActorUnit", actor)
   unit = (okc and type(unit) == "number") and unit or 0
   local chara = unit >= 0x10000 and (rd("u32", unit + UNIT_CHARA) or 0) or 0
@@ -762,8 +746,8 @@ local function sweep_finish(slot, total)
   commit(st, "recruit grades sweep")
 end
 
-local function sweep()
-  local slot = current_slot()
+-- `slot`: the active slot (the store's slot of this call)
+local function sweep(slot)
   if sweep_list == nil then
     local now = now_ms()
     if swept_slot == slot and now - swept_at < SWEEP_EVERY_MS then return end
@@ -800,23 +784,32 @@ end
 local function on_build(ev)
   if not ON then return end
   local obj, list = ev.args[1] or 0, ev.args[2] or 0
-  local rec = rd("ptr", obj + 8)
-  local hdl = rec and rd("u32", rec)
+  -- the save load rebuilds every saved character's list in a row: bulk reads keep one build to a few calls
+  local head = rd_array("u32", rd("ptr", obj + 8), REC_HEAD_WORDS)
+  local hdl = head and u32(head[1])
   if not hdl or not is_chara_handle(hdl) then return end
-  local own = owner(hdl, false)
+  local own = is_saved_handle(hdl) and hdl or owner(hdl, false)
   if not own then return end
-  local entries, count = rd("ptr", list), rd("u64", list + 8)
-  if not entries or not count then return end
-  count = math.min(count, 16)
-  local r = record(own)
-  local param = r and u32(r.param) or 0
+  local list_words = rd_array("u64", list, 2)
+  if not list_words then return end
+  local entries, count = list_words[1], math.min(list_words[2], 16)
+  local words = count > 0 and rd_array("u32", entries, count * 2) or {}
+  if count > 0 and #words == 0 then return end
+  local param
+  if own == hdl then
+    param = u32(head[2])
+  else
+    local r = record(own)
+    param = r and u32(r.param) or 0
+  end
   local declared = grades_of(param)
   local st = cur()
   local changes, seeded = {}, false
   for i = 0, count - 1 do
     local e = entries + i * SKILL_ENTRY
-    local id, flag, dup = rd("u32", e), rd("u8", e + 6), rd("u8", e + 4)
-    if id and flag and dup and id ~= 0 and flag == 0 and not A.is_spirit_move(id) then
+    local id, tail = u32(words[i * 2 + 1]), words[i * 2 + 2]
+    local dup, flag = band(tail, 0xFF), band(rshift(tail, 16), 0xFF)
+    if id ~= 0 and flag == 0 and not A.is_spirit_move(id) then
       local dg = declared[id]
       if dg then
         local sg, su = seed(st, own, id, dg)
@@ -833,7 +826,7 @@ local function on_build(ev)
     end
   end
   if seeded then commit(st, "recruit grade") end
-  sweep()
+  sweep(st.slot)
   local kind = band(rshift(hdl, 12), 0xF)
   if not build_kinds[kind] then
     build_kinds[kind] = true
@@ -850,18 +843,25 @@ end
 -- rebuild (H2), CMND_SET_SKILL (the skill tables place moves with it: it writes rank 0) and the match install (H3).
 
 -- the saved skill_list ranks of character `hdl` set to the stored grades ([ranks] mode): changes as "(skill, old, new)"
-local function sync_saved_ranks(hdl)
+-- (`addr`: the record when the caller holds it, else it is looked up)
+local function sync_saved_ranks(hdl, addr)
   if not ON or not hdl or hdl == 0 or not is_chara_handle(hdl) then return {} end
-  local r = record(hdl)
-  if not r or not r.addr then return {} end
-  local own = owner(hdl, false) or hdl
+  if not addr then
+    local r = record(hdl)
+    addr = r and r.addr
+  end
+  -- the record's handle, card and skill_list in one read
+  local w = rd_array("u32", addr, REC_LIST_WORDS)
+  if not w or u32(w[1]) ~= hdl then return {} end
+  local own = is_saved_handle(hdl) and hdl or owner(hdl, false) or hdl
   local st = cur()
-  local declared = grades_of(u32(r.param))
+  local declared = grades_of(u32(w[2]))
   local changes, seeded = {}, false
   for i = 0, SKILL_SLOTS - 1 do
-    local e = r.addr + REC_SKILL_LIST + i * SKILL_ENTRY
-    local id, cur_r = rd("u32", e), rd("u8", e + 4)
-    if id and id ~= 0 and cur_r and A.type(id) == nil and not A.is_spirit_move(id) then
+    local e = addr + REC_SKILL_LIST + i * SKILL_ENTRY
+    local k = REC_LIST_WORD + i * 2 + 1
+    local id, cur_r = u32(w[k]), band(w[k + 1], 0xFF)
+    if id ~= 0 and A.type(id) == nil and not A.is_spirit_move(id) then
       if declared[id] and seed(st, own, id, declared[id]) then seeded = true end
       local _, g = get(st, own, id)
       local want = mode_rank(cur_r, g)
@@ -890,7 +890,7 @@ local function on_moves(ev)
   if obj < 0x10000 then return end
   local rec = rd("ptr", obj + 8)
   local hdl = rec and rd("u32", rec)
-  local changes = sync_saved_ranks(hdl)
+  local changes = sync_saved_ranks(hdl, hdl and is_saved_handle(hdl) and rec or nil)
   if #changes > 0 then
     info(string.format("list rebuilt for chara %s: saved ranks follow the stored grades [%s]", hex(hdl), table.concat(changes, ", ")))
   end
@@ -1155,21 +1155,21 @@ function HissatsuLevelUp.Cmd.Popup(skill)
   return true, g, ""
 end
 
--- The retail «Nueva posibilidad» (abl_000001) the save holds. Until 1.0.3 this mod renamed it into the upgrade book;
--- since 1.0.4 the book is its own item (technique_upgrade_book) and abl_000001 is the retail board item again, so its
--- stock is never converted: only logged, once per save slot. The graft sr_popup asks first (-1: does the slot still
--- need its line?), then passes CMND_GET_ITEM_NUM(abl_000001).
-local RETAIL_BOOK_KEY = "abl_000001"
+-- The old own upgrade book (abl_ub000001, 1.0.4 to 1.11.0) a save may still hold: since 1.12.0 the +1 item is
+-- raise_item (the retail abl_000001), so the graft sr_popup turns the book stock into raise_item once per save slot.
+-- It asks first with -1 (-> true, old book id, raise_item id while the slot still needs it), then reports the count.
+local OLD_BOOK_KEY = "abl_ub000001"
 local retail_stock_logged = {}   -- slot -> true
 
 function HissatsuLevelUp.Cmd.RetailStock(count)
   local slot = current_slot()
-  if retail_stock_logged[slot] then return false end
+  if retail_stock_logged[slot] or ITEM_RAISE == 0 then return false end
   count = tonumber(count)
-  if count == nil or count < 0 then return true end   -- the graft asks with -1
+  if count == nil or count < 0 then return true, u32(VRFW.ui.crc32(OLD_BOOK_KEY)), ITEM_RAISE end   -- the graft asks with -1
   retail_stock_logged[slot] = true
-  info(string.format("slot %d holds %d x %s («Nueva posibilidad», retail again since 1.0.4: not converted into upgrade books; the book is now %s)",
-    slot, math.floor(count), RETAIL_BOOK_KEY, hex(ITEM_RAISE)))
+  if count > 0 then
+    info(string.format("slot %d: %d x old upgrade book %s converted into %s", slot, math.floor(count), OLD_BOOK_KEY, hex(ITEM_RAISE)))
+  end
   return false
 end
 

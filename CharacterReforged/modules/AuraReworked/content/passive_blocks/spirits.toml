@@ -1,0 +1,737 @@
+# Aura Reworked › the spirit passives: the blocks of the warrior spirits' passives (block types: Signature Passives' content\types\
+# passive_block.toml). Each block is declared once and used by name by any number of passives
+# (content\special_passives\spirits.toml). Edited in ModManager «Pasivas» or by hand.
+schema = "VRFW.passive_block/1"
+
+[[VRFW.TechniquePower]]
+name = "power_dribble_12"
+kinds = ["dribble"]
+value = 12
+
+[[VRFW.TensionCost]]
+name = "tension_cost_m8_teammates"
+percent = -8
+target = "teammates"
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_6_team_fire"
+kinds = ["shoot"]
+value = 6
+target = "team"
+elements = ["fire"]
+
+[[VRFW.TechniquePower]]
+name = "power_chain_shoot_15"
+kinds = ["chain_shoot"]
+value = 15
+
+[[VRFW.Near]]
+name = "near_10m"
+metres = 10
+
+[[VRFW.MoveSpeed]]
+name = "speed_m8_opponents"
+percent = -8
+target = "opponents"
+
+[[VRFW.Stat]]
+name = "stat_kick_10"
+stats = ["kick"]
+mode = "percent"
+value = 10
+
+[[VRFW.TechniquePower]]
+name = "power_long_shoot_15"
+kinds = ["long_shoot"]
+value = 15
+
+[[VRFW.Score]]
+name = "score_trailing"
+states = ["trailing"]
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_12"
+kinds = ["shoot"]
+value = 12
+
+[[VRFW.Trigger]]
+name = "on_technique_result"
+on = "technique_result"
+by = "self"
+
+[[VRFW.MoveKind]]
+name = "kind_dribble"
+kinds = ["dribble"]
+
+[[VRFW.Outcome]]
+name = "outcome_succeeds"
+result = "succeeds"
+
+[[VRFW.Stack]]
+name = "stack_1_8s"
+max = 1
+duration_s = 8
+
+[[VRFW.TensionCost]]
+name = "tension_cost_m40"
+percent = -40
+
+[[VRFW.HasBall]]
+name = "has_ball"
+
+[[VRFW.MoveSpeed]]
+name = "speed_10"
+percent = 10
+
+[[VRFW.MoveSpeed]]
+name = "speed_2"
+percent = 2
+
+[[VRFW.SpiritsOut]]
+name = "out_chess_max3"
+max = 3
+family = "chess"
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_8"
+kinds = ["shoot"]
+value = 8
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_4"
+kinds = ["shoot"]
+value = 4
+
+[[VRFW.TechniquePower]]
+name = "power_all_5_team"
+kinds = []
+value = 5
+target = "team"
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_18"
+kinds = ["shoot"]
+value = 18
+
+[[VRFW.TensionCost]]
+name = "tension_cost_15"
+percent = 15
+
+[[VRFW.KeeperShotPower]]
+name = "keeper_shot_shooter_12"
+side = "shooter"
+percent = 12
+
+[[VRFW.Trigger]]
+name = "on_goal"
+on = "goal"
+by = "self"
+
+[[VRFW.TensionMax]]
+name = "tension_max_m20_opponent"
+units = -20
+team = "opponent"
+
+[[VRFW.Trigger]]
+name = "on_dash"
+on = "dash"
+by = "self"
+
+[[VRFW.Stack]]
+name = "stack_1_3s"
+max = 1
+duration_s = 3
+
+[[VRFW.Trigger]]
+name = "on_duel_won"
+on = "duel_won"
+by = "self"
+
+[[VRFW.Stack]]
+name = "stack_4_per_half"
+max = 4
+per_half = true
+
+[[VRFW.Stat]]
+name = "stat_pressure_10"
+stats = ["pressure"]
+mode = "percent"
+value = 10
+
+[[VRFW.TensionCost]]
+name = "tension_cost_m6_team_wind"
+percent = -6
+target = "team"
+elements = ["wind"]
+
+[[VRFW.Stat]]
+name = "stat_agility_m5_opponents"
+stats = ["agility"]
+mode = "percent"
+value = -5
+target = "opponents"
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_6_team_fw"
+kinds = ["shoot"]
+value = 6
+target = "team"
+positions = ["fw"]
+
+[[VRFW.Trigger]]
+name = "on_goal_opponent"
+on = "goal"
+by = "opponent"
+
+[[VRFW.PoolRestore]]
+name = "pool_plus_20"
+units = 20
+no_pool_seconds = 6
+
+[[VRFW.Trigger]]
+name = "on_block_won_team"
+on = "block_won"
+by = "team"
+
+[[VRFW.Tension]]
+name = "tension_2_actor"
+units = 2
+team = "actor"
+
+[[VRFW.RecastTime]]
+name = "recast_15_opponents"
+percent = 15
+target = "opponents"
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_6"
+kinds = ["shoot"]
+value = 6
+
+[[VRFW.SpiritsOut]]
+name = "out_plasma_shadow_max3"
+max = 3
+family = "plasma_shadow"
+
+[[VRFW.TensionCost]]
+name = "tension_cost_m20"
+percent = -20
+
+[[VRFW.TechniquePower]]
+name = "power_all_4"
+kinds = []
+value = 4
+
+[[VRFW.SpiritsOut]]
+name = "out_lovers_max1"
+max = 1
+family = "lovers"
+
+[[VRFW.TechniquePower]]
+name = "power_all_8"
+kinds = []
+value = 8
+
+[[VRFW.Clock]]
+name = "clock_last_third"
+# relative to the half's real length (2/3 to the end); needs the half-fraction form of the Clock block
+half_fraction_from = "2/3"
+half_fraction_to = "1"
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_15"
+kinds = ["shoot"]
+value = 15
+
+[[VRFW.Stack]]
+name = "stack_3"
+max = 3
+
+[[VRFW.RecastTime]]
+name = "recast_m25"
+percent = -25
+
+[[VRFW.Stat]]
+name = "stat_control_10"
+stats = ["control"]
+mode = "percent"
+value = 10
+
+[[VRFW.TensionCost]]
+name = "tension_cost_10_opponents"
+percent = 10
+target = "opponents"
+
+[[VRFW.Score]]
+name = "score_level"
+states = ["level"]
+
+[[VRFW.Trigger]]
+name = "on_goal_team"
+on = "goal"
+by = "team"
+
+[[VRFW.Stack]]
+name = "stack_3_per_half"
+max = 3
+per_half = true
+
+[[VRFW.TechniquePower]]
+name = "power_all_3_team"
+kinds = []
+value = 3
+target = "team"
+
+[[VRFW.TensionCost]]
+name = "tension_cost_m10"
+percent = -10
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_10"
+kinds = ["shoot"]
+value = 10
+
+[[VRFW.SpiritsOut]]
+name = "out_wkk00510_max1"
+max = 1
+auras = ["wkk00510"]
+
+[[VRFW.Trigger]]
+name = "on_duel_lost"
+on = "duel_lost"
+by = "self"
+
+[[VRFW.Chance]]
+name = "chance_30"
+percent = 30
+
+[[VRFW.Tension]]
+name = "tension_3_actor"
+units = 3
+team = "actor"
+
+[[VRFW.HasBall]]
+name = "without_ball"
+holds = false
+
+[[VRFW.TechniquePower]]
+name = "power_dribble_m6_opponents"
+kinds = ["dribble"]
+value = -6
+target = "opponents"
+
+[[VRFW.TechniquePower]]
+name = "power_dribble_m2_opponents"
+kinds = ["dribble"]
+value = -2
+target = "opponents"
+
+[[VRFW.Stack]]
+name = "stack_1_2s"
+max = 1
+duration_s = 2
+
+[[VRFW.MoveSpeed]]
+name = "speed_15"
+percent = 15
+
+[[VRFW.Stat]]
+name = "stat_physical_12"
+stats = ["physical"]
+mode = "percent"
+value = 12
+
+[[VRFW.TechniquePower]]
+name = "power_block_m5_opponents"
+kinds = ["block"]
+value = -5
+target = "opponents"
+
+[[VRFW.TechniquePower]]
+name = "power_all_5"
+kinds = []
+value = 5
+
+[[VRFW.TechniquePower]]
+name = "power_all_1"
+kinds = []
+value = 1
+
+[[VRFW.Near]]
+name = "near_8m"
+metres = 8
+
+[[VRFW.Stat]]
+name = "stat_pressure_m10_opponents"
+stats = ["pressure"]
+mode = "percent"
+value = -10
+target = "opponents"
+
+[[VRFW.Trigger]]
+name = "on_carried"
+on = "carried"
+by = "self"
+
+[[VRFW.Stack]]
+name = "stack_1_10s"
+max = 1
+duration_s = 10
+
+[[VRFW.MoveSpeed]]
+name = "speed_25"
+percent = 25
+
+[[VRFW.Stat]]
+name = "stat_technique_10"
+stats = ["technique"]
+mode = "percent"
+value = 10
+
+[[VRFW.Half]]
+name = "half_2_4"
+halves = [2, 4]
+
+[[VRFW.TechniquePower]]
+name = "power_dribble_6"
+kinds = ["dribble"]
+value = 6
+
+[[VRFW.TechniquePower]]
+name = "power_dribble_4"
+kinds = ["dribble"]
+value = 4
+
+[[VRFW.Stat]]
+name = "stat_control_8"
+stats = ["control"]
+mode = "percent"
+value = 8
+
+[[VRFW.SpiritsOut]]
+name = "out_four_symbols_max3"
+max = 3
+family = "four_symbols"
+
+[[VRFW.TechniquePower]]
+name = "power_all_2_team"
+kinds = []
+value = 2
+target = "team"
+
+[[VRFW.Stat]]
+name = "stat_agility_8"
+stats = ["agility"]
+mode = "percent"
+value = 8
+
+[[VRFW.TechniquePower]]
+name = "power_dribble_6_team_mf"
+kinds = ["dribble"]
+value = 6
+target = "team"
+positions = ["mf"]
+
+[[VRFW.MoveSpeed]]
+name = "speed_4_team"
+percent = 4
+target = "team"
+
+[[VRFW.Trigger]]
+name = "on_foul_opponent"
+on = "foul"
+by = "opponent"
+
+[[VRFW.TensionMax]]
+name = "tension_max_m5_actor"
+units = -5
+team = "actor"
+
+[[VRFW.TensionCost]]
+name = "tension_cost_m8_team_df"
+percent = -8
+target = "team"
+positions = ["df"]
+
+[[VRFW.TensionCost]]
+name = "tension_cost_m2_team_df"
+percent = -2
+target = "team"
+positions = ["df"]
+
+[[VRFW.Zone]]
+name = "own_half"
+z = [-80, 0]
+
+[[VRFW.TechniquePower]]
+name = "power_block_12"
+kinds = ["block"]
+value = 12
+
+[[VRFW.TechniquePower]]
+name = "power_block_2"
+kinds = ["block"]
+value = 2
+
+[[VRFW.TechniquePower]]
+name = "power_block_10"
+kinds = ["block"]
+value = 10
+
+[[VRFW.TechniquePower]]
+name = "power_catch_punch_8_team_gk"
+kinds = ["catch", "punch"]
+value = 8
+target = "team"
+positions = ["gk"]
+
+[[VRFW.TechniquePower]]
+name = "power_catch_punch_2_team_gk"
+kinds = ["catch", "punch"]
+value = 2
+target = "team"
+positions = ["gk"]
+
+[[VRFW.Stack]]
+name = "stack_4"
+max = 4
+
+[[VRFW.Reset]]
+name = "reset_block_won_self"
+on = "block_won"
+by = "self"
+
+[[VRFW.TechniquePower]]
+name = "power_block_5"
+kinds = ["block"]
+value = 5
+
+[[VRFW.Stat]]
+name = "stat_physical_6_team_df"
+stats = ["physical"]
+mode = "percent"
+value = 6
+target = "team"
+positions = ["df"]
+
+[[VRFW.MoveKind]]
+name = "kind_block"
+kinds = ["block"]
+
+[[VRFW.TensionCost]]
+name = "tension_cost_m25"
+percent = -25
+
+[[VRFW.Clock]]
+name = "clock_first_third"
+# relative to the half's real length (start to 1/3); needs the half-fraction form of the Clock block
+half_fraction_from = "0"
+half_fraction_to = "1/3"
+
+[[VRFW.TechniquePower]]
+name = "power_block_5_team"
+kinds = ["block"]
+value = 5
+target = "team"
+
+[[VRFW.Trigger]]
+name = "on_block_won"
+on = "block_won"
+by = "self"
+
+[[VRFW.Stack]]
+name = "stack_1_5s"
+max = 1
+duration_s = 5
+
+[[VRFW.TechniquePower]]
+name = "power_block_6"
+kinds = ["block"]
+value = 6
+
+[[VRFW.TechniquePower]]
+name = "power_block_4"
+kinds = ["block"]
+value = 4
+
+[[VRFW.TechniquePower]]
+name = "power_block_6_team_wind"
+kinds = ["block"]
+value = 6
+target = "team"
+elements = ["wind"]
+
+[[VRFW.Stat]]
+name = "stat_intelligence_m6_opponents"
+stats = ["intelligence"]
+mode = "percent"
+value = -6
+target = "opponents"
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_block_12"
+kinds = ["shoot_block"]
+value = 12
+
+[[VRFW.Stat]]
+name = "stat_control_m5_opponents"
+stats = ["control"]
+mode = "percent"
+value = -5
+target = "opponents"
+
+[[VRFW.Stat]]
+name = "stat_control_m1_opponents"
+stats = ["control"]
+mode = "percent"
+value = -1
+target = "opponents"
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_m6_opponents"
+kinds = ["shoot"]
+value = -6
+target = "opponents"
+
+[[VRFW.TechniquePower]]
+name = "power_catch_8"
+kinds = ["catch"]
+value = 8
+
+[[VRFW.TechniquePower]]
+name = "power_catch_4"
+kinds = ["catch"]
+value = 4
+
+[[VRFW.KeeperShotPower]]
+name = "keeper_shot_keeper_m8"
+side = "keeper"
+percent = -8
+
+[[VRFW.Trigger]]
+name = "on_keeper_save"
+on = "keeper_save"
+by = "self"
+
+[[VRFW.Chance]]
+name = "chance_33"
+percent = 33
+
+[[VRFW.Tension]]
+name = "tension_90_actor"
+units = 90
+team = "actor"
+
+[[VRFW.TechniquePower]]
+name = "power_catch_6"
+kinds = ["catch"]
+value = 6
+
+[[VRFW.TechniquePower]]
+name = "power_catch_3"
+kinds = ["catch"]
+value = 3
+
+[[VRFW.TechniquePower]]
+name = "power_punch_15"
+kinds = ["punch"]
+value = 15
+
+[[VRFW.Trigger]]
+name = "on_ball_stopped"
+on = "ball_stopped"
+by = "self"
+
+[[VRFW.TensionMax]]
+name = "tension_max_m15_opponent"
+units = -15
+team = "opponent"
+
+[[VRFW.Stat]]
+name = "stat_physical_4_team_df"
+stats = ["physical"]
+mode = "percent"
+value = 4
+target = "team"
+positions = ["df"]
+
+[[VRFW.TechniquePower]]
+name = "power_block_5_team_df"
+kinds = ["block"]
+value = 5
+target = "team"
+positions = ["df"]
+
+[[VRFW.Chance]]
+name = "chance_25"
+percent = 25
+
+[[VRFW.TechniquePower]]
+name = "power_catch_10"
+kinds = ["catch"]
+value = 10
+
+[[VRFW.PoolRestore]]
+name = "pool_plus_15"
+units = 15
+no_pool_seconds = 5
+
+[[VRFW.TechniquePower]]
+name = "power_catch_punch_12"
+kinds = ["catch", "punch"]
+value = 12
+
+[[VRFW.KeeperShotPower]]
+name = "keeper_shot_keeper_m25_chance20"
+side = "keeper"
+percent = -25
+chance = 20
+
+[[VRFW.Stat]]
+name = "stat_intelligence_6_team"
+stats = ["intelligence"]
+mode = "percent"
+value = 6
+target = "team"
+
+[[VRFW.TechniquePower]]
+name = "power_long_shoot_m10_opponents"
+kinds = ["long_shoot"]
+value = -10
+target = "opponents"
+
+[[VRFW.MoveSpeed]]
+name = "speed_6_team_df"
+percent = 6
+target = "team"
+positions = ["df"]
+
+[[VRFW.SummonTime]]
+name = "summon_time_15"
+seconds = 15
+
+[[VRFW.PoolCost]]
+name = "pool_cost_m25"
+percent = -25
+
+[[VRFW.Stat]]
+name = "stat_control_m8_opponents_fw"
+stats = ["control"]
+mode = "percent"
+value = -8
+target = "opponents"
+positions = ["fw"]
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_m5_opponents_fw"
+kinds = ["shoot"]
+value = -5
+target = "opponents"
+positions = ["fw"]
+
+[[VRFW.TechniquePower]]
+name = "power_shoot_m1_opponents_fw"
+kinds = ["shoot"]
+value = -1
+target = "opponents"
+positions = ["fw"]

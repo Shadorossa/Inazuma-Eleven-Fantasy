@@ -11,16 +11,16 @@ schema = "VRFW.text/2"
 table = "menu_text"
 
 [[row]]
-id = "evt_skc_guide_effect"  # button guide label on the description page
-es = "Efecto"
-en = "Effect"
-fr = "Effet"
-de = "Effekt"
-it = "Effetto"
-pt = "Efeito"
-ja = "効果"
-zh_hans = "效果"
-zh_hant = "效果"
+id = "evt_skc_guide_effect"  # button guide label of the effect page (the move's passive effect; the retail passive's name)
+es = "Habilidad pasiva"
+en = "Passive Skill"
+fr = "Compétence passive"
+de = "Passive Fähigkeit"
+it = "Abilità passiva"
+pt = "Habilidade passiva"
+ja = "パッシブスキル"
+zh_hans = "被动技能"
+zh_hant = "被動技能"
 
 [[row]]
 id = "evt_skc_guide_desc"  # button guide label on the effect page
@@ -278,3 +278,29 @@ pt = "Montanha"
 ja = "山"
 zh_hans = "山"
 zh_hant = "山"
+
+# the family page (Hissatsu Effects 1.6.0): a move in a technique family gets one page per family: the family's name
+# over every move of the family (2 columns, the right stick scrolls a long list)
+[[row]]
+id = "evt_skc_guide_family"  # button guide label when the next page is a family page
+es = "Familia"
+en = "Family"
+fr = "Famille"
+de = "Familie"
+it = "Famiglia"
+pt = "Família"
+ja = "系統"
+zh_hans = "系列"
+zh_hant = "系列"
+
+[[row]]
+id = "evt_skc_family_power"  # the power of a move in the family list: {power} = the number
+es = "AT {power}"
+en = "AT {power}"
+fr = "AT {power}"
+de = "AT {power}"
+it = "AT {power}"
+pt = "AT {power}"
+ja = "AT {power}"
+zh_hans = "AT {power}"
+zh_hant = "AT {power}"

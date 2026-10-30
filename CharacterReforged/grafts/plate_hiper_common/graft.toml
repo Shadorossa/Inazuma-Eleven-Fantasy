@@ -7,7 +7,6 @@
 # plate_hiper_plate (include @PH_COMMON@ at the top of its child).
 name = "plate_hiper_common"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF's merged dock scripts redefine what it wraps: IF's copy wraps them again
 order = 950
 module = "lua_bridge"
 requires = []
@@ -22,7 +21,6 @@ stem = "team_dock_formation_menu"
   type = "append_block"
   src = "evt_plate_hiper_common.lua"
   marker = "plate_hiper common"
-  crc = "none"
 
 [[files]]
 stem = "soccer_team_dock_menu"
@@ -31,7 +29,6 @@ stem = "soccer_team_dock_menu"
   type = "append_block"
   src = "evt_plate_hiper_common.lua"
   marker = "plate_hiper common"
-  crc = "none"
 
 [[files]]
 stem = "soccer_formation_menu"
@@ -40,4 +37,3 @@ stem = "soccer_formation_menu"
   type = "append_block"
   src = "evt_plate_hiper_common.lua"
   marker = "plate_hiper common"
-  crc = "none"

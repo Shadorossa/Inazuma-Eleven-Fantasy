@@ -48,7 +48,7 @@ function EVT_PmToEnemy()
     EVT_PmLog("EVT prematch: no opponent team handle -> retail close", okO, own, okE, enemy)
     return false
   end
-  local okF, form = funcLuaCommand(2649030357 --[[CMND_GET_SOCCER_FORMATION_INFO]], 0, enemy)
+  local okF, form = funcLuaCommand(@crc:CMND_GET_SOCCER_FORMATION_INFO@, 0, enemy)
   if not okF then
     form = 0
   end
@@ -67,7 +67,7 @@ function EVT_PmToEnemy()
   pcall(UpdateFormationNameCommon)
   pcall(UpdateSelectCharaInfo)
   pcall(UpdatePageInfo)
-  funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2500047763 --[[sy0005]])
   EVT_PmLog("EVT prematch: opponent lineup (read-only)", "team", enemy, "formation", form, "own", own, "own formation", evtPmOwnForm)
   return true
 end
@@ -90,10 +90,10 @@ end
 function EVT_PmCloseMenus()              -- the retail tail of CloseFormationMenu (pause path)
   CloseCommonTimer()
   SetupFormationMenuLimitTime(0)
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 3330353786 --[[team_build_explanation_menu]])
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 2197290544 --[[soccer_parameter_menu]])
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 2049316981 --[[soccer_formation_menu]])
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 1427722143 --[[personal_plate_menu]], true)
+  funcLuaCommand(@crc:CMND_CLOSE_MENU_OBJECT@, 3330353786 --[[team_build_explanation_menu]])
+  funcLuaCommand(@crc:CMND_CLOSE_MENU_OBJECT@, 2197290544 --[[soccer_parameter_menu]])
+  funcLuaCommand(@crc:CMND_CLOSE_MENU_OBJECT@, 2049316981 --[[soccer_formation_menu]])
+  funcLuaCommand(@crc:CMND_CLOSE_MENU_OBJECT@, 1427722143 --[[personal_plate_menu]], true)
 end
 function EVT_PmDataClose()               -- «Datos»: nothing is committed
   evtPmStage = 2
@@ -139,9 +139,9 @@ end)
 EVT_PmWrap("SetupFormationMenuCommon", function(orig)
   return function(...)
     local r = orig(...)
-    if funcLuaCommand(2947612279 --[[PARAM_HAS]], EVT_PM_SUB_KEY) then
-      evtPmSub = funcLuaCommand(3522198769 --[[PARAM_GET]], EVT_PM_SUB_KEY) or 0
-      funcLuaCommand(3363400568 --[[PARAM_CLEAR]], EVT_PM_SUB_KEY)
+    if VRFW_Param.Has(EVT_PM_SUB_KEY) then
+      evtPmSub = VRFW_Param.Get(EVT_PM_SUB_KEY) or 0
+      VRFW_Param.Clear(EVT_PM_SUB_KEY)
       if not EVT_PREMATCH_LINEUPS or EVT_PmOnline() or (evtPmSub ~= 1 and evtPmSub ~= 2) then
         evtPmSub = 0
       end
@@ -214,18 +214,18 @@ function EVT_PmCloseLabel()
   if evtPmSub ~= 2 then
     return
   end
-  local s = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], EVT_PM_CLOSE_TEXT)
+  local s = funcLuaCommand(@crc:CMND_TEXT_GET@, EVT_PM_CLOSE_TEXT)
   if type(s) ~= "string" or s == "" then
     return
   end
-  pcall(funcLuaMenuCommand, 1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 2785518701 --[[cmn03_05_cmn_button_formation_close]], 1317518280 --[[_text_cmd_on01]], s, 0)
-  pcall(funcLuaMenuCommand, 1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 2785518701 --[[cmn03_05_cmn_button_formation_close]], 2729666850 --[[_text_cmd_off01]], s, 0)
+  pcall(funcLuaMenuCommand, @crc:CMND_SET_MENU_TEXT_STRING@, 2785518701 --[[cmn03_05_cmn_button_formation_close]], 1317518280 --[[_text_cmd_on01]], s, 0)
+  pcall(funcLuaMenuCommand, @crc:CMND_SET_MENU_TEXT_STRING@, 2785518701 --[[cmn03_05_cmn_button_formation_close]], 2729666850 --[[_text_cmd_off01]], s, 0)
 end
 function EVT_PmReadOnlyLook()            -- once when the rival is drawn, and every frame for the param guide
   if not EVT_PmReadOnly() then
     return
   end
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], EVT_PM_TEAM_PARAM_GUIDE, 0, false, 2049316981 --[[soccer_formation_menu]])
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, EVT_PM_TEAM_PARAM_GUIDE, 0, false, 2049316981 --[[soccer_formation_menu]])
 end
 EVT_PmWrap("OnSetupCloseButtonLayer", function(orig)
   return function(...)
@@ -251,7 +251,7 @@ function EVT_PmBlockEnter(a1)
   if a1 == 2785518701 --[[cmn03_05_cmn_button_formation_close]] then
     return false
   end
-  funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2086672038 --[[sy0003]])
   return true
 end
 function EVT_PmBlockFunc(a1)

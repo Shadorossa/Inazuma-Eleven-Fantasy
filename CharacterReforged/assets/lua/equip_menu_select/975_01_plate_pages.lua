@@ -8,14 +8,173 @@
 -- evt_pp_num_host), the hosts' page layer
 -- retail. The hosts' fork plate_host_look.lua (2026-10-06..13) is merged back here: its host-only parts run where
 -- G.H.pages is false, everything else is the same code.
+-- The pieces of each page kind are in parts\*.lua, placed at their placeholder lines by graft.toml (include order).
 -- the host table and the common part in their own function: a host with a big main chunk (evt_skill_slot_menu: ~194
 -- top-level locals) keeps its registers (the assembler's decompile round trip)
 ;(function()
 -- host table of the shared player page (research/grafts/plate_pages): a screen with its own copy of the plate
 -- (equip_menu, evt_skill_slot_menu): the header row (slanted position band, archetype box), the white card and the
 -- bar chart from the same code; no pages (fixed type 9 = the chart), no description, no model of ours
+-- The item card's shared spec (graft plate_pages): what every screen's item card draws the same way, whatever card it
+-- sits on (the equipment screen, the inventory, the shop): Better Equipment's commands, the «Efecto» / «Conjunto»
+-- pages' sprites, chips and badges, the stat names and icons, the colours. A host's item_card table holds only its own
+-- card (layer, rect, pager, places) and overrides a part of the «Efecto» / set layout with effect_at / set_icons_at;
+-- plate_pages.lua fills the rest from here. Screen px, y down.
+EVT_PPG_ITEM_SPEC = {
+  page_command = 920058721,                -- CMND_BETTEREQUIPMENT_ITEM_PAGE (item) -> text, "" = none
+  set_command = 944758090,                 -- CMND_BETTEREQUIPMENT_ITEM_SET (item) -> {name, count, members, tiers, ...}
+  -- the set page's icons (layer evt_eq_set_icon, `instances` copies of the item card object): one group per equipment
+  -- slot (card px), the slot's icon (the list's sprites icon_equip01..04 of soccer11_08's atlas, green where one of the
+  -- set is worn), then the set's pieces of that slot. A piece's slot = its item
+  -- category (the retail equipment categories 30 / 40 / 50 / 60, include/menu/equip_menu_inc IsEquipCategory)
+  -- the «Efecto» page's position badge (affinity row): the game's position sprites of the item card's badges
+  -- (icon_common2 icon_param_position01..04 = FW MF DF GK), `size` px, `gap` around it; `space_px` / `char_px` = the
+  -- text widths used when the game gives no measure
+  badges = {
+    atlas = 2058213660,                    -- #/menu/200_icon/15_icon_common2/<LG>/icon_common2.g4tx
+    sprites = {FW = 30648122, MF = 2564486784, DF = 4024288790, GK = 1907970997},
+    size = {48, 27}, gap = 6, space_px = 9, char_px = 17,
+    dy = -5,                               -- the text line's centre is 5 px above the row centre
+  },
+  set_icons = {
+    -- one row of the set's slot groups (slot icon + its pieces, `gap` apart; `group_gap` between groups), `size` px
+    -- pieces, scaled down to fit the card less `margin` each side, centred in the body
+    instances = 52, size = 34, gap = 6, group_gap = 20, margin = 40, row_cy = 140,   -- under the title row (96)
+    page_instances = 44,                   -- the pages' icons; then 4 delta labels and 4 delta segments (row_mark)
+    slot_atlas = 1676671618,               -- #/menu/00_soccer/soccer11/soccer11_08/<LG>/soccer11_08.g4tx
+    slot_swap = 3592622327,                -- win_item_base01 (the icon instance's _win_item_base01 slot)
+    -- the slot icons where one of the set is worn: green copies of icon_equip01..04 in the card's own atlas evt_eq_fx
+    -- (content/images/menu/item_card.toml, made from the retail sprites)
+    worn_atlas = 2049028641,               -- #/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx
+    slot_worn_sprites = {2409770440, 154558310, 3261762755, 3748641915},
+    slot_size = {40, 44},                  -- as tall as the pieces' icons (one row centre)
+    slot_sprites = {2346103015, 316662109, 1708708299, 4223419496},   -- icon_equip01..04 (boots, bracelet, pendant, special)
+    slot_of_category = {[30] = 1, [40] = 2, [50] = 3, [60] = 4},
+  },
+  set_colours = {worn = "[CG]", missing = "[CWG]"},   -- worn pieces / reached tiers; pieces not owned / tiers not reached
+  -- the «Efecto» page (plate_pages G.ItemCardEffectItems): card px; rows centred at row1 / row2; sections from `left`
+  -- and `split`, chips up to `right`; texts in the name's white style (chips) or the bonus's ink style, scaled
+  effect = {
+    atlas = 2049028641,                    -- #/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx (this card's own atlas, never a game one)
+    row1 = 82, row2 = 134, left = 24, split = 478, right = 911,
+    section = 28, sep = {4, 28}, sep_gap = 8, gap = 6, icon = 22, check = 14, badge = {42, 24}, slot = {22, 24},
+    chip_h = 30, chip_pad = 10, tier_min = 60, tier_gap = 12, bar_h = 4, bar_gap = 5, bar_pad = 12, text_scale = 0.6,
+    plus = "+", off_tag = "[CWG]",
+    -- a card without a player (inventory, shop): the stat page's row (`stat_row` from the card body's top; groups
+    -- [icon] name value, `stat_gap` apart, texts at `stat_scale`, the row shrunk to fit) and the set page's title row
+    stat_row = 40, stat_gap = 34, stat_scale = 0.7, title_y = 30, title_scale = 0.62,
+    passive_w = 300, affinity_w = 270,     -- the chips' widths at least (B3v13)
+    -- the tier chips: taller, the reward (`tier_scale`) centred `reward_dy` above the row centre, the bars `bar_dy` below
+    tier_h = 36, tier_scale = 0.5, tier_scale_min = 0.36, reward_dy = -5, bar_dy = 9,
+    -- the game's «<stat> +<VALUE>» texts of stats 0..7 (include/menu/equip_menu_inc): a stat's own name in the chips
+    stat_texts = {3905596903, 1084668705, 1047492482, 2352972234, 2604963209, 614355554, 2718198818, 1241387599},
+    -- draw order inside the icon layer (CMND_SET_DRAW_PRIORITY per instance): chips under their icons, bars and texts
+    prio_under = 552, prio_over = 556,
+    styles = {
+      white = {node = 456522680, at = {-221, 15}, box_h = 50, char_px = 18, dy = 2},   -- _text_item01 (the name)
+      ink = {node = 3138144965, at = {-229, -59}, box_h = 50, char_px = 17},     -- _text_parameter01 (the bonus)
+    },
+    sprites = {
+      bond = "evt_eq_fx_bond", emblem = "evt_eq_fx_emblem", equip = "evt_eq_fx_equip", sep = "evt_eq_fx_sep",
+      check = "evt_eq_fx_check", chip_on = "evt_eq_fx_chip_green", chip_blue = "evt_eq_fx_chip_blue",
+      chip_off = "evt_eq_fx_chip_off", bar_on = "evt_eq_fx_bar_on", bar_off = "evt_eq_fx_bar_off",
+      bar_white = "evt_eq_fx_bar_white", element = "evt_eq_fx_el%02d", element_off = "evt_eq_fx_el%02d_off",
+      stat = "evt_eq_fx_stat%s", position = "icon_param2_position%02d", position_off = "evt_eq_fx_pos%02d_off",
+    },
+    -- the game's icon orders: elements (icon_cmd_type01..04), positions (icon_param2_position01..04 = FW MF DF GK),
+    -- stats (icon_btl02_parameter01..07, as the mock-ups)
+    elements = {wind = 1, forest = 2, fire = 3, mountain = 4},
+    -- the game's element names (common/text/<lang>/menu_text: the player's «Afinidad» names, and «Neutro» for the fifth)
+    element_texts = {wind = 450194284, forest = 1565306319, fire = 1660958301, mountain = 191660811, void = 3339176265},
+    positions = {FW = 1, MF = 2, DF = 3, GK = 4},
+    -- the game's GK badge is dark letters on a near-white plate (bare text on the white card): the card's own badge, the
+    -- DF plate in the GK colour (research/scripts/item_card_gk_badge.py)
+    position_own = {GK = "evt_eq_fx_pos04_on"},
+    stat_icons = {kick = "01", control = "02", technique = "03", pressure = "04", physical = "05",
+      intelligence = "06", agility = "07"},
+  },
+
+  bonus_gap = "   ",                       -- between two bonuses of the row
+  plus_colour = "[CG]",                    -- font colour tags of a raise / a lowering ([C] ends them)
+  minus_colour = "[CR]",
+  -- the stat keys of the equipment stat indices 0..6 (CMND_GET_EQUIP_PARAM order), for the stat icons
+  stat_by_index = {"kick", "control", "technique", "pressure", "physical", "agility", "intelligence"},
+}
 EVT_PPG_HOST = {name = "equip", plate = 607716004, status = 2917320188, graph = 32151736, radar = 2334590304, pages = false, fixed = 9,
-  menu = 606230082 --[[equip_menu: its close state shuts our added layers]]}
+  menu = 606230082 --[[equip_menu: its close state shuts our added layers]],
+  -- the stats panel at the layout's place (rows 740..875); its white card is the one panel of the item card and the
+  -- stats: from the item card's top to under the pager row (535..940)
+  card = {985, 535, 1920, 940}}
+-- The item detail card (team05_02_equip_info_easy, traced by the status base on _atc_equip01) as one card above the
+-- stats panel, as wide as it: the name at the start of the green band with the position chips after it, the E / stock
+-- chips at the band's end, the item icon on the right, the bonuses in one row under the band; pages turned with L2 / R2
+-- (Better Equipment's «Efecto» and «Conjunto»); the stats rows the item raises / lowers outlined green / red. Screen
+-- px, y down; nodes = {node, x, y[, w, h]} from the card's top-left (the node's top-left; w / h = its size).
+-- plate_pages.lua G.ItemCard applies it around every SetupEquipInfoWindow.
+EVT_PPG_HOST.item_card = {
+  layer = 3239909435,                      -- team05_02_equip_info_easy
+  root = {1222, 734},                      -- the layer's origin on screen (soccer11_05 _atc_equip01)
+  base = 1517329426,                       -- _pos_base01 (every node below hangs on it)
+  rect = {985, 535, 1920, 705},            -- the card's left, top, right, bottom (on the stats panel's top)
+  card_h = 170,                            -- one height on every page: the band and a two-row body (535..705)
+  -- the base (_pos_base01) at this card point: the name and bonus texts are drawn at their layout offsets from it
+  -- (name -221, 15 / bonus -229, -59, x right y up), never at their own node's place, so the name starts at x 64 in
+  -- the green band (after the item icon) and the bonus rows at x 56 under it
+  anchor = {285, 15},
+  body_mesh = 2511236049,                  -- _win_item01: off (its drop shadow); the body is layer evt_eq_card_body
+  -- the green band 46 px (2..48): the icon, the name, the position badges and the E / stock chips centred in it
+  nodes = {
+    {2511236049, 0, 0, 935, 214, body = true},          -- _win_item01 (hidden; kept at the card's rect)
+    {2885220123, -12, -2, 959, 50},                     -- _win_item_base01 (the green name band: 12 px past the panel
+                                                        -- on each side, its sprite's own transparent edge included, and
+                                                        -- 2 px over its top; bottom at 48 as before)
+    {303536660, 6, 4, 42, 42},                          -- _icon_item_dmy01 (in the band, left of the name)
+    {2334051246, 6, 4, 42, 42},                         -- _icon_item_dmy02
+    {2203859798, 555, 12, 48, 27},                      -- _icon_position_dmy01 (left of the E chip)
+    {441805548, 605, 12, 48, 27},                       -- _icon_position_dmy02 (right-aligned against the E chip)
+    {442049775, 659, 8, 0.85, 0.85},                    -- _pos_equip01 (E chip 148 x 40 scaled 0.85, band end)
+    {3426045766, 793, 8, 0.85, 0.85},                   -- _pos_have01 (stock chip, scaled 0.85)
+    {2336812131, 850, 60},                              -- _pos_chr01 (the face of a character's own item)
+    {3174025408, 300, 150},                             -- _pos_body_type_atc01 (kit items only)
+  },
+  -- once to loader.log («EVT_PPG item card node»): the drawn place of these nodes
+  dump = {{1517329426, "_pos_base01"}, {2511236049, "_win_item01"}, {456522680, "_text_item01"},
+    {1923430404, "_dmy_item01"}, {3138144965, "_text_parameter01"}, {1139770918, "_dmy_parameter01"},
+    {303536660, "_icon_item_dmy01"}},
+  -- pages after the bonuses (Better Equipment): «Efecto» and «Conjunto», each only when the item has it
+  -- the item picker's hovered item: the menu event its script (equip_menu_list) sends to this one (equip_menu_select)
+  picker_event = "CharacterReforged.ItemCardHover", picker_owner = "equip_menu_select", menu = 606230082 --[[equip_menu]],
+  text_x = 56,                             -- the bonus box's left edge in the card (anchor x - 229; its top anchor y + 59)
+  -- the card's one size (every item and page): `max_rows` text rows from `first_row` (centre) every `row_pitch`,
+  -- `bottom` px below the last one; from rect's top
+  paged = {first_row = 99, row_pitch = 54, bottom = 30, max_rows = 3},   -- 468 + 99 + 2 x 54 + 30 = 705
+  -- the pager under the stats panel, centred on the panel: the framework's page row (VRFW_Pager, layer evt_eq_dots)
+  pager = {at = {1452, 912}},              -- its centre (screen px): right under the Suerte row (875)
+  -- the stats panel's rows the focused item raises / lowers: an outline around the bar (the row's gauge copy's spare
+  -- quad given `sprite`, the bar's rect + `margin`) and the number's colour
+  row_mark = {
+    sprite = {raise = 3112608773 --[[evt_pp_row_raise]], lower = 259671231 --[[evt_pp_row_lower]]},
+    atlas = 2049028641,                    -- #/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx (the card's own atlas, loaded by the bars' object)
+    margin = 2,                            -- the border's width: the frame = the bar's rect (180 x 28) + 2 px each side
+    number_style = 2612831244,             -- the value prim of evt_pp_num_host
+    colour = {raise = {0.2, 0.75, 0.3}, lower = {0.9, 0.2, 0.2}},   -- unchanged rows: the number's own colour
+    -- Suerte: its number instance's comparison arrows (soccer11_06_p1 _arrow_l/r_u/d01..03) off, its label (the
+    -- extra layer's) given the labels' colour
+    -- the focused item's change on the bars: a segment on the bar's spare masked-fill quad (_beans_bar01, slot
+    -- beans_bar01), sprites in the card's own atlas; a small label over the number (screen px from the column's left /
+    -- the row's centre, colour tags)
+    -- icon instances first .. first + count - 1; band = the fill's visible rows of the bar (from its top, of its height:
+    -- the gauge fill sprite's rows 5..10 of 16)
+    delta = {first = 48, count = 4, band = {0.3125, 0.375}, raise = "evt_eq_fx_delta_up", lower = "evt_eq_fx_delta_down"},
+    label = {dx = 338, dy = -22, scale = 0.42, plus = "[CG]", minus = "[CR]"},
+    luck_number = 7,
+    luck_arrows = {1180371782, 3746716412, 2824170090, 1539293697, 3266745275, 3048317741, 2576032421, 8549151,
+      2005222281, 2221927394, 493271640, 1784777422},
+    -- the label colour group of the chart layers' CMenuChangeMaterialColor (parameter_name_gtxt) and the labels'
+    -- colour the retail graph gives it (include/soccer/soccer_common UpdateCharaParameterGraph*: 20, 75, 130)
+    label_group = 3659653428, label_colour = {0.0784313725490196, 0.29411764705882354, 0.5098039215686274},
+  },
+}
 -- 2026-10-06 (Nacho, shot 366): only the chart on the Plantilla page's card (no card = the layout's x 985..1920,
 -- y 705..955); the big retail page body is hidden by plate_pages.lua (host branch)
 -- 2026-10-06 (exit hang on these hosts): the block off here until the close is fixed (its menu patches are off too)
@@ -152,12 +311,12 @@ do
   local F = EVT_PPG_FANTASY_MOVES
   F.GET_SKILL = 903078840               -- (charaStHdl, list position 0..5) -> move (save skill_list)
   F.LEARNABLE = 3475351727              -- (charaStHdl) -> ok, {move per slot}, {unlock level per slot}
-  F.LEARN_LEVEL = 8867751               -- CMND_VRFW_CHARACTER_LEARN_LEVEL (charaStHdl, move) -> level needed, player's level
+  F.LEARN_LEVEL = 8867751               -- (charaStHdl, move) -> level needed, player's level
   F.SKILL_INFO = 2580586398             -- (move, 9) -> ok, category (8 = an aura)
   F.BOARD_INV = 632801955               -- (charaStHdl, board slot, kind 1 placed / 0 native) -> inventory handle
   F.INV_ITEM = 2662166687               -- (inventory handle, 0) -> move
   F.ROW_COUNT = 6
-  F.SKILL_SET = 640242939               -- CMND_VRFW_SKILL_SET (charaStHdl) -> answered, aura, mix, aura_from, mix_from, row1..6, technique1..6
+  F.SKILL_SET = 640242939               -- (charaStHdl) -> answered, aura, mix, aura_from, mix_from, row1..6, technique1..6
 
   local function U32(v)
     v = tonumber(v) or 0
@@ -419,15 +578,15 @@ do
   -- frame, guide label). Victory Road: untouched.
   F.AI_USE_GET = 232181607              -- (charaStHdl, list position) -> the AI may use the move (nil = no move there)
   F.AI_USE_SET = 139872667              -- (charaStHdl, list position, allowed): writes the save
-  F.SET_SKILL = 2394267160              -- CMND_SET_SKILL (charaStHdl, move, list position): swap, writes the save
+  F.SET_SKILL = 2394267160              -- (charaStHdl, move, list position): swap, writes the save
   F.LIST_POSITION_OF = 26437624         -- (charaStHdl, move) -> its list position (6 or more = not in the list)
   F.FOCUSED_INSTANCE = 2603265800       -- menu command (layer) -> focused instance
   F.AI_TOGGLE_FUNCTION = 2941571381     -- OnFunctionCommon id of the AI-use toggle
   F.PLAY_SOUND = 1917805374
   F.CANNOT_SOUND = 3791946501           -- sy0004
-  F.BOARD_PLACE = 3270716539            -- CMND_CHARACTERREFORGED_BOARD_PLACE (charaStHdl, inventory handle, board slot)
-  F.BOARD_CLEAR = 1398771376            -- CMND_CHARACTERREFORGED_BOARD_CLEAR (charaStHdl, board slot, keepOpen)
-  F.LOG = 3661580131                    -- CMND_EVT_LOG
+  F.BOARD_PLACE = 3270716539            -- (charaStHdl, inventory handle, board slot)
+  F.BOARD_CLEAR = 1398771376            -- (charaStHdl, board slot, keepOpen)
+  F.LOG = 3661580131
   F.BOARD_SLOTS = 9                     -- board slots 0-8 (0-5 = list positions, 8 = the aura slot)
 
   -- the move on board slot `slot` of card `hdl` and its inventory handle (placed item, else the native one)
@@ -704,6 +863,20 @@ EVT_PPG = EVT_PPG or {}
   G.BAR = 3392616488
   -- round 11: the host's own layer names (host_plate.lua / host_equip.lua): one block for every host of the page
   G.H = EVT_PPG_HOST or {plate = 1844915256, status = 730911947, graph = 1572892955, radar = 3868632847, pages = true}
+  -- a screen with only the item card (inventory, shop: G.H.item_only): only the item card's wrappers and the frame;
+  -- the player page's wrappers never touch that screen's own functions
+  local EVT_PPG_Wrap = EVT_PPG_Wrap
+  if G.H.item_only then
+    local wrap = EVT_PPG_Wrap
+    local only = {SetupItemPositionIcon = true, ClearItemPositionIcon = true, OnSetupLayer = true, OnOpenLayer = true,
+      OnBack = true, FuncOnBack = true, PostStep = true, [G.H.frame_hook or "Step"] = true}
+    EVT_PPG_Wrap = function(name, make)
+      if only[name] then
+        return wrap(name, make)
+      end
+      return false
+    end
+  end
   G.PLATE = G.H.plate                    -- the header plate (soccer11_04_formation_chara_status / soccer11_04_chara_status)
   G.STATUS = G.H.status                  -- the status base
   G.GRAPH = G.H.graph                    -- the radar base (the 8-axis copy: object redirected on every host)
@@ -718,7 +891,7 @@ EVT_PPG = EVT_PPG or {}
     G.EXTRA = 3359633385    -- Suerte's label layer (host copy)
     G.NUM = 3198046117         -- our 8 numbers (the retail param_num 732343773 stays, hidden)
     G.RETAIL_NUM = 732343773
-    G.CHART_AT = {1452, 746}              -- the chart's centre on the card (screen; our layers are unattached)
+    G.CHART_AT = G.H.chart_at or {1452, 746}  -- the chart's centre on the card (screen; our layers are unattached)
   end
   G.N_ATC_NUM = {996516956, 2725049830, 3580609904, 1259294931, 1007181893,
     2768318975, 3523608937, 3523608937}       -- group g's value locator (g 8 on the extra layer)
@@ -809,6 +982,8 @@ EVT_PPG = EVT_PPG or {}
   G.SK_TEXT = 3359986143                 -- _text_sp01
   G.FOCUS_ACTIVE, G.FOCUS_IDX = 102308320, 2603265800
   G.TX_BTL0613, G.SP_FRAME, G.SP_BAR = 1191797350, 538967808, 2342464423
+  -- Character Reforged's own atlas evt_cr_page (#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx): every evt_pp_* sprite the page swaps in
+  G.TX_OWN = 387834804
   G.M_ARROWS = {1811606789, 2448805990}   -- _arrow01_l / _r
   G.EQUIP_SCALE = 0.72                   -- round 9: 409 px wide (inside the white card)
   -- Hiper page L3: the aura slot / the mix slot (EVT_PH_MX_VIEW of plate_hiper; was the keshin a miximax gave)
@@ -823,22 +998,6 @@ EVT_PPG = EVT_PPG or {}
   -- label group -> row (the layout's GROUP_ROW) and group -> stat (plate_hiper EVT_R9.STAT)
   G.GROUP_ROW = {0, 1, 3, 5, 6, 4, 2, 7}
   G.STAT = {0, 2, 5, 6, 4, 3, 1, 8}
-  -- 2026-10-15: the position tags of a stat idx's row (G.STAT_FILL of its group: "fw", "mf", "df", "gk"; Suerte's
-  -- "all" = the four), for other screens that name the positions a stat serves (the training view's header)
-  function G.StatTags(stat)
-    local tags = {}
-    for g = 1, 8 do
-      if G.STAT[g] == stat then
-        for tag in string.gmatch(G.STAT_FILL[g], "[^_]+") do
-          if tag == "all" then
-            return {"gk", "df", "mf", "fw"}
-          end
-          tags[#tags + 1] = tag
-        end
-      end
-    end
-    return tags
-  end
   local C = {EXIST = 262659071, OPEN = 629267548, IS_OPEN = 2640875187, LOADING = 3057768039, VIS = 711242136,
     IS_VIS = 1262717583, POS = 1389957207, SCALE = 3778714801, MESH = 3405944500, TRACE = 1774843228,
     RATE_INIT = 541357333, RATE = 1595998683, SPRITE = 558735651, TEXT_VIS = 1505208242, NODE_VIS = 2158717427,
@@ -877,6 +1036,35 @@ EVT_PPG = EVT_PPG or {}
     return Cmd(C.EXIST, l) == true
   end
 
+  -- a per-frame / event piece called by name: a missing function or an error is written to loader.log once per name
+  -- («EVT_PPG call <name> ...»); a piece of the item card (name ItemCard*) that fails is not called again this session
+  G.tryLogged, G.tryOff = G.tryLogged or {}, G.tryOff or {}
+  function G.Try(name, ...)
+    if G.tryOff[name] then
+      return nil
+    end
+    local f = G[name]
+    if type(f) ~= "function" then
+      if not G.tryLogged[name] then
+        G.tryLogged[name] = true
+        pcall(funcLuaCommand, C.LOG, "EVT_PPG call " .. name .. ": no such function")
+      end
+      return nil
+    end
+    local ok, a, b = pcall(f, ...)
+    if not ok then
+      if not G.tryLogged[name] then
+        G.tryLogged[name] = true
+        pcall(funcLuaCommand, C.LOG, "EVT_PPG call " .. name .. " failed: " .. tostring(a))
+      end
+      if string.sub(name, 1, 8) == "ItemCard" then
+        G.tryOff[name] = true
+      end
+      return nil
+    end
+    return a, b
+  end
+
   -- a layer this block opens: true once loaded
   local function Ready(l, k)
     if G.hostShut then
@@ -890,6 +1078,7 @@ EVT_PPG = EVT_PPG or {}
     return Cmd(C.LOADING, l) ~= true
   end
 
+-- Player page block (plate_pages.lua): the header band copy and the slanted band
   -- ---- the band copy -------------------------------------------------------------------------------------------
   local function BandSetup()
     Cmd(C.MESH, G.BAND, G.M_PAGE, false, 0)  -- round 5: no page body
@@ -1034,6 +1223,7 @@ EVT_PPG = EVT_PPG or {}
     end
   end
 
+-- Player page block (plate_pages.lua): the page dots, the view mode and the header tag
   -- ---- 8 dots ---------------------------------------------------------------------------------------------------
   -- G.SlotPages() = {[dot slot] = page index} of the shown pages and G.Slot(type) = the slot of a page type, from the
   -- VR-Framework's player page registry (VRFW_PlayerPages, docs/framework/player-pages.md): slot = the page's place in
@@ -1178,16 +1368,17 @@ EVT_PPG = EVT_PPG or {}
       G.ready[G.TAG * 16] = true
       G.tagSt = {}
       Cmd(C.TRACE, G.PAGE, 0, G.TAG, true)
-      VRFW_UI.HeaderRow.ArchBoxSetup(G.TAG, {sprite = G.SP_SLANTBOX})
+      VRFW_UI.HeaderRow.ArchBoxSetup(G.TAG, {sprite = G.SP_SLANTBOX, atlas = G.TX_OWN})
     end
     -- 2026-10-12 / 13 (owner): the slanted box is the archetype glyph's backdrop: shown exactly while the header's
     -- glyph is shown at home (the shared header row's rule, VRFW_UI.HeaderRow.ArchBoxShown: the glyph visibility the
     -- fills last set, whoever drew it; a staff role glyph moved into the position slot leaves no box). Round 10: a dual
     -- archetype (passive_config draws the second glyph on _icon_lock_status01) gets the wide box.
-    VRFW_UI.HeaderRow.ArchBox(G.TAG, G.PLATE, 0, G.hdl, G.tagSt or {}, {sprite = G.SP_SLANTBOX,
+    VRFW_UI.HeaderRow.ArchBox(G.TAG, G.PLATE, 0, G.hdl, G.tagSt or {}, {sprite = G.SP_SLANTBOX, atlas = G.TX_OWN,
       sprite_dual = G.SP_SLANTBOX2, dual_cmd = type(UTIL_PCI) == "table" and UTIL_PCI.CMD_INFO or nil})
   end
 
+-- Player page block (plate_pages.lua): the SUPERTÉCNICAS page and its navigation
   -- ---- SUPERTÉCNICAS: 2 | 2 | 2, icons only, the focused move's plate under the groups ----------------------------
   -- round 9 (Nacho): two columns of slot groups, every move plate visible (name, AT / DF, icons), compact:
   --   1 | move A      2 | move C
@@ -1511,6 +1702,7 @@ EVT_PPG = EVT_PPG or {}
     end
   end
 
+-- Player page block (plate_pages.lua): the Pasivas page, its sub-pages and the custom-passive panel
   -- ---- Pasivas (round 9): a row of 5 icon tiles (layout: icons at x 1172..1732, y 880); each strip collapsed to its
   -- icon on its own plate (orange special / blue, passive_config's tint) squashed into a slanted tile; R3 = cursor
   -- mode (left / right, R3 or B leaves): the focused passive opens as its whole strip ABOVE the row (y 770)
@@ -1564,7 +1756,7 @@ EVT_PPG = EVT_PPG or {}
         Cmd(C.MESH, G.PT, m, false, i)
       end
       G.ptHl[i] = false
-      Cmd(C.SPRITE, G.PT, G.TX_BTL0613, G.PT_SPRITE[i], G.SP_FRAME, 0, i)
+      Cmd(C.SPRITE, G.PT, G.TX_OWN, G.PT_SPRITE[i], G.SP_FRAME, 0, i)
       local sx, sy = G.PT_W / 476, G.PT_H / 44
       local x, y = 1172 + 140 * i - G.PT_W / 2, 880 - G.PT_H / 2
       Cmd(C.SCALE, G.PT, sx, sy, 1, i)
@@ -1572,7 +1764,7 @@ EVT_PPG = EVT_PPG or {}
     end
     if G.ptHl[i] ~= (hl == true) then
       G.ptHl[i] = hl == true
-      Cmd(C.SPRITE, G.PT, G.TX_BTL0613, hl and G.PT_SPRITE_HL[i] or G.PT_SPRITE[i], G.SP_FRAME, 0, i)
+      Cmd(C.SPRITE, G.PT, G.TX_OWN, hl and G.PT_SPRITE_HL[i] or G.PT_SPRITE[i], G.SP_FRAME, 0, i)
     end
     Cmd(C.VIS, G.PT, i, true)
   end
@@ -1591,7 +1783,6 @@ EVT_PPG = EVT_PPG or {}
                                                      -- width x scale): three strips are wide so each text fits one line
   G.PSUB_X = 1452                                    -- strip centre (screen x)
   G.PSUB_KEYS = {[0] = 256111697, 2017772743}
-  G.PSUB_TXT = {[0] = "Generales", "Arquetipo"}
   G.SP_TILE_EMPTY = 1216426148
   G.EMPTY_BOX = {600, 66}                            -- the empty special's box (screen px)
   G.psub = G.psub or 0
@@ -1632,7 +1823,7 @@ EVT_PPG = EVT_PPG or {}
       local ok, yes, key = pcall(funcLuaCommand, G.CMD_SPECIAL, G.hdl)
       if ok and yes == true and type(key) == "string" and key ~= "" then
         local id = "evt_pp_" .. string.gsub(key, "^inazuma_fantasy%.", "")
-        local okm, tm = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], CALC_CRC(id))
+        local okm, tm = pcall(funcLuaCommand, 4074371074, CALC_CRC(id))
         if okm and type(tm) == "string" and tm ~= "" then
           text = tm
         else
@@ -1659,7 +1850,7 @@ EVT_PPG = EVT_PPG or {}
         for _, m in ipairs({G.N_TOP, G.N_SIDE, 2043683848}) do
           Cmd(C.MESH, l, m, false, 0)
         end
-        Cmd(C.SPRITE, l, G.TX_BTL0613, G.SP_PTRULE, G.SP_FRAME, 0, 0)
+        Cmd(C.SPRITE, l, G.TX_OWN, G.SP_PTRULE, G.SP_FRAME, 0, 0)
       end
       local r, dy = G.PTRULE_R, G.PTitleDy()
       local sx, sy = (r[3] - r[1]) / 476, (r[4] - r[2]) / 44
@@ -1675,7 +1866,7 @@ EVT_PPG = EVT_PPG or {}
       Cmd(C.TRACE, G.PAGE, 0, T, true)
       Cmd(C.SCALE, T, G.PTITLE_K, G.PTITLE_K, 1, 0)
       Cmd(C.MESH, T, 3516146179 --[[_area_base01: the pill]], false, 0)
-      pcall(funcLuaMenuCommand, 855211291 --[[CMND_SET_PRIM_COLOR]], T, 0, 1899787537 --[[_text_area01]],
+      pcall(funcLuaMenuCommand, 855211291, T, 0, 1899787537 --[[_text_area01]],
         G.PTITLE_RGB[1], G.PTITLE_RGB[2], G.PTITLE_RGB[3])
     end
     Cmd(C.POS, T, G.PTITLE_X + G.PTITLE_BOX / 2, -(G.PSUB_Y[1][1] + G.PTitleDy() - G.PTITLE_DY), 0, 0)
@@ -1687,14 +1878,6 @@ EVT_PPG = EVT_PPG or {}
       Cmd(2735666188 --[[text visible]], T, 1899787537, true, 0)
     end
     Cmd(C.VIS, T, 0, true)
-  end
-
-  function G.PsubLabel()
-    local okt, t = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], G.PSUB_KEYS[G.psub])
-    if not okt or type(t) ~= "string" or t == "" then
-      t = G.PSUB_TXT[G.psub]
-    end
-    return string.format("<CMD_FUNC6> %s  %d/%d", t, G.psub + 1, G.PSUB_N)
   end
 
   -- the empty special passive's box (tile layer instance 0, light orange), centred where its strip would be
@@ -1720,7 +1903,7 @@ EVT_PPG = EVT_PPG or {}
       for _, m in ipairs({G.N_TOP, G.N_SIDE, 2043683848}) do
         Cmd(C.MESH, G.PT, m, false, 0)
       end
-      Cmd(C.SPRITE, G.PT, G.TX_BTL0613, G.SP_TILE_EMPTY, G.SP_FRAME, 0, 0)
+      Cmd(C.SPRITE, G.PT, G.TX_OWN, G.SP_TILE_EMPTY, G.SP_FRAME, 0, 0)
       local w, h = G.EMPTY_BOX[1], G.EMPTY_BOX[2]
       local sx, sy = w / 476, h / 44
       local x, y = G.PSUB_X - w / 2, G.PSUB_Y[1][1] - h / 2
@@ -1750,10 +1933,28 @@ EVT_PPG = EVT_PPG or {}
     end
   end
 
+  -- no player focused (empty slot, G.Empty): the 5 passive rows, the special's title and rule hidden with the rest of
+  -- the page; the layout and the sub-page are kept, so the rows come back on the same sub-page when a player is focused
+  function G.PassiveRowsHide()
+    local L = G.PR
+    if Exists(L) then
+      for i = 0, 4 do
+        if Cmd(C.IS_OPEN, L, i) == true then
+          Cmd(C.VIS, L, i, false)
+        end
+      end
+    end
+    G.EmptyBox(false)
+    pcall(G.PTitle, false)
+  end
+
   function G.PassiveRows()
     local L = G.PR
     if not Exists(L) then
       return
+    end
+    if G.emptyHidden then
+      return                               -- no player focused: hidden by G.Empty until one is
     end
     local mine = On() and G.ptype == 2 and not G.InOffice()
     if not mine then
@@ -1901,11 +2102,11 @@ EVT_PPG = EVT_PPG or {}
       for _, m in ipairs({G.N_TOP, G.N_SIDE, 2043683848}) do
         Cmd(C.MESH, l, m, false, 0)
       end
-      Cmd(C.SPRITE, l, G.TX_BTL0613, sp, G.SP_FRAME, 0, 0)
+      Cmd(C.SPRITE, l, G.TX_OWN, sp, G.SP_FRAME, 0, 0)
       local sx, sy = (r[3] - r[1]) / 476, (r[4] - r[2]) / 44
       Cmd(C.SCALE, l, sx, sy, 1, 0)
       Cmd(C.POS, l, r[1] - 94 * sx, -r[2] + 816 * sy, 0, 0)
-      pcall(funcLuaMenuCommand, 1491630496 --[[CMND_SET_DRAW_PRIORITY]], l, 0, prio, true)
+      pcall(funcLuaMenuCommand, 1491630496, l, 0, prio, true)
     end
     Cmd(C.VIS, l, 0, true)
   end
@@ -1966,6 +2167,7 @@ EVT_PPG = EVT_PPG or {}
     G.noSpecial = ok and (has ~= true or type(pid) ~= "number" or pid == 0)
   end
 
+-- Player page block (plate_pages.lua): the TRAYECTORIA page's rows
   -- ---- Trayectoria (round 13, Nacho): 2 rows, each on a slanted band (gauge copies evt_pp_csband 0 / 1 attached to
   -- the page, the header / archetype box slant):
   --   row 1 = FICHADO | ORIGEN | PARTIDOS          row 2 = V-E-D · % | GOLES | GOLES/PART.
@@ -2001,7 +2203,7 @@ EVT_PPG = EVT_PPG or {}
       for _, m in ipairs({G.N_TOP, G.N_SIDE, 2043683848}) do
         Cmd(C.MESH, l, m, false, i)
       end
-      Cmd(C.SPRITE, l, G.TX_BTL0613, G.SP_CSB, G.SP_FRAME, 0, i)
+      Cmd(C.SPRITE, l, G.TX_OWN, G.SP_CSB, G.SP_FRAME, 0, i)
       local r = G.CS_BAND[i]
       local sx, sy = (r[3] - r[1]) / 476, (r[4] - r[2]) / 44
       Cmd(C.SCALE, l, sx, sy, 1, i)
@@ -2093,6 +2295,7 @@ EVT_PPG = EVT_PPG or {}
     local _ = a
   end
 
+-- Player page block (plate_pages.lua): the stat chart and numbers on the hosts without pages
   -- round 11b: the dock lineup behind a bank's plate is hidden by the dock menus themselves (plate_dock_hide.lua);
   -- round 11's menu command 1558704558 here was MENU_ACTIVE (input), not visibility, and broke the dock
 
@@ -2170,6 +2373,7 @@ EVT_PPG = EVT_PPG or {}
     end
   end
 
+-- Player page block (plate_pages.lua): the empty slot, the Equipamiento page and the Hiper page's L3
   -- ---- no player focused (empty slot): nothing of the page, back when a player is focused ---------------------
   function G.Empty()
     if not On() then
@@ -2197,6 +2401,9 @@ EVT_PPG = EVT_PPG or {}
       end
       for i = 0, 4 do
         G.Tile(i, false)
+      end
+      if type(G.PassiveRowsHide) == "function" then
+        pcall(G.PassiveRowsHide)
       end
       if type(EVT_PH_Hide) == "function" then
         pcall(EVT_PH_Hide)
@@ -2289,6 +2496,7 @@ EVT_PPG = EVT_PPG or {}
     pcall(EVT_PH_Show, chara)
   end
 
+-- Player page block (plate_pages.lua): the ATRIBUTOS stat rows (gauges)
   -- ---- the stat rows ------------------------------------------------------------------------------------------
   -- 2026-10-12 (owner): ATRIBUTOS = TWO COLUMNS x 4 ROWS, each row  NAME | gauge | VALUE | position pills (the 8 vertical
   -- 3D bars and the line chart retired). The gauge is the retail per-player training gauge (team13_16_beans_gauge, the
@@ -2340,8 +2548,37 @@ EVT_PPG = EVT_PPG or {}
   -- 2026-10-13: the miximax gain of group g's stat while the Miximax view is on (G.gains: CMND_EVT_MX_GAINS order,
   -- stat i at i + 1), else 0
   G.SP_GAIN = 3779107829
+  -- row k's outline (a host's G.rowFrame[g] = "raise" / "lower": the focused equipment item raises / lowers that stat,
+  -- host table item_card.row_mark): the gain quad (unused there) drawn as a frame around the whole row
+  function G.RowMark(k)
+    local R = type(G.H.item_card) == "table" and G.H.item_card.row_mark or nil
+    if R == nil or G.rowFrame == nil then
+      return nil, R
+    end
+    for g = 1, 8 do
+      if G.GROUP_ROW[g] == k and G.rowFrame[g] ~= nil then
+        return G.rowFrame[g], R
+      end
+    end
+    return nil, R
+  end
+  -- the gain quad's sprite and its atlas: the row outline (the host's own atlas, R.atlas) or the gain fill (btl06_13)
+  function G.GainSprite(k)
+    local mark, R = G.RowMark(k)
+    if mark ~= nil then
+      return R.sprite[mark], R.atlas or G.TX_OWN
+    end
+    return G.SP_GAIN, G.TX_OWN
+  end
+  -- a stats panel that shows an equipment item's change (a host with an item card and its rows: Equipamiento and its
+  -- picker) draws each bar in its one colour: no Miximax gain past the fill (EVT_R9.mx may still be on from the player
+  -- page), so the item's delta segment is the only other colour on the bar
   function G.Gain(g)
     local t = G.gains
+    local IC = G.H.item_card
+    if type(IC) == "table" and IC.rows ~= false then
+      return 0
+    end
     return t ~= nil and (tonumber(t[G.STAT[g] + 1]) or 0) or 0
   end
 
@@ -2382,6 +2619,16 @@ EVT_PPG = EVT_PPG or {}
     Cmd(C.NODE_POS, G.BAR, k, GG.GAIN_QUAD, 1, 0)
     Cmd(C.NODE_SCALE, G.BAR, k, GG.GAIN_QUAD, math.max(gain_w, GG.MIN_W), GG.TRACK_H * sy)
     Cmd(C.MESH, G.BAR, GG.GAIN_QUAD, r2 > r and gain_w >= GG.MIN_W, k)
+    local mark, R = G.RowMark(k)
+    if mark ~= nil then
+      -- the bar's own rect (the track: the layer's origin, G.GAUGE W x H, y up) grown by the border's width on every
+      -- side: a border that touches the bar
+      local m, Q = R.margin or 0, G.GAUGE
+      Cmd(C.NODE_POS, G.BAR, k, GG.GAIN_QUAD, 0, -m)
+      Cmd(C.NODE_POS, G.BAR, k, GG.GAIN_QUAD, 1, m)
+      Cmd(C.NODE_SCALE, G.BAR, k, GG.GAIN_QUAD, Q.W + 2 * m, Q.H + 2 * m)
+      Cmd(C.MESH, G.BAR, GG.GAIN_QUAD, true, k)
+    end
     local fill_w = GG.FILL_W * r
     Cmd(C.NODE_POS, G.BAR, k, GG.FILL_QUAD, 0, GG.FILL_X)
     Cmd(C.NODE_POS, G.BAR, k, GG.FILL_QUAD, 1, GG.TRACK_Y)
@@ -2396,6 +2643,9 @@ EVT_PPG = EVT_PPG or {}
     local up = G.vals ~= nil and G.ptype == EVT_PPG_STATS_TYPE and Cmd(C.IS_VIS, G.GRAPH, 0) == true
     if not up then
       BarsVisible(false)
+      if G.DeltaSegment ~= nil then
+        pcall(G.DeltaSegment, nil)
+      end
       return
     end
     local all = true
@@ -2415,6 +2665,7 @@ EVT_PPG = EVT_PPG or {}
     scale = math.max(100, math.ceil(scale * 1.15 / 50) * 50)
     local GG, Q = G.GG, G.GAUGE
     local sx, sy = Q.W / GG.TRACK_W, Q.H / GG.TRACK_H
+    local segs = nil
     for g = 1, 8 do
       local k = G.GROUP_ROW[g]
       if not G.ready[G.BAR * 16 + k] then
@@ -2427,8 +2678,9 @@ EVT_PPG = EVT_PPG or {}
           Cmd(GG.PRIM_VIS, G.BAR, k, p, false)
         end
         Cmd(C.SPRITE, G.BAR, GG.TX_GAUGE, GG.SP_TRACK, GG.SLOT_TRACK_QUAD, 0, k)
-        Cmd(C.SPRITE, G.BAR, G.TX_BTL0613, CALC_CRC("evt_pp_gfill_" .. G.STAT_FILL[g]), GG.SLOT_FILL_QUAD, 0, k)
-        Cmd(C.SPRITE, G.BAR, G.TX_BTL0613, G.SP_GAIN, GG.SLOT_GAIN_QUAD, 0, k)
+        Cmd(C.SPRITE, G.BAR, G.TX_OWN, CALC_CRC("evt_pp_gfill_" .. G.STAT_FILL[g]), GG.SLOT_FILL_QUAD, 0, k)
+        local gs, ga = G.GainSprite(k)
+        Cmd(C.SPRITE, G.BAR, ga, gs, GG.SLOT_GAIN_QUAD, 0, k)
         Cmd(C.SCALE, G.BAR, 1, 1, 1, k)
         -- the bar node scaled to the row's track size, the track's top-left on the layer's origin
         Cmd(C.NODE_POS, G.BAR, k, GG.NODE, 0, -GG.TRACK_X * sx)
@@ -2446,6 +2698,21 @@ EVT_PPG = EVT_PPG or {}
       local r2 = math.max(0, math.min(1, (v + gain) / top))
       G.BarQuads(k, r, r2, sx, sy)
       Cmd(C.VIS, G.BAR, k, true)
+      -- a host's delta segment (G.rowDelta[g], the focused equipment item's change): the part of the fill a raise adds
+      -- or the part after it a lowering removes, as a screen rect over the bar (the fill's visible band)
+      local d = G.rowDelta ~= nil and G.rowDelta[g] or nil
+      if d ~= nil and d ~= 0 and G.DeltaSegment ~= nil then
+        local rd = d / top
+        local lo, hi = rd > 0 and math.max(0, r - rd) or r, rd > 0 and r or math.min(1, r - rd)
+        -- the bars hang on the chart's base, placed at G.CHART_AT: the fill's left edge on screen
+        local fx = G.CHART_AT[1] + G.ROW_X0[col] + Q.X + (GG.FILL_X - GG.TRACK_X) * sx
+        local ty = G.CHART_AT[2] - (G.ROW_Y[row] + Q.H / 2)
+        segs = segs or {}
+        segs[#segs + 1] = {fx + GG.FILL_W * sx * lo, ty, GG.FILL_W * sx * (hi - lo), Q.H, rd > 0}
+      end
+    end
+    if G.DeltaSegment ~= nil then
+      pcall(G.DeltaSegment, segs)
     end
   end
 
@@ -2483,6 +2750,7 @@ EVT_PPG = EVT_PPG or {}
     return v
   end
 
+-- Player page block (plate_pages.lua): the page decoration, the form hints and the form badge row
   -- ---- page content -------------------------------------------------------------------------------------------
   local function HidePoly()
     if not Exists(G.RADAR) then
@@ -2560,7 +2828,7 @@ EVT_PPG = EVT_PPG or {}
   end
   function G.ViewHint()
     if G.viewHint == nil then
-      local ok, t = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], G.VIEW_TEXT)
+      local ok, t = pcall(funcLuaCommand, 4074371074, G.VIEW_TEXT)
       if ok and type(t) == "string" and t ~= "" then
         G.viewHint = G.FormGlyph() .. " " .. t
       else
@@ -2909,7 +3177,7 @@ EVT_PPG = EVT_PPG or {}
       end
     end
     local sx, sy = s / 476, s / 44
-    Cmd(C.SPRITE, L, G.TX_BTL0613, sprite, G.SP_FRAME, 0, i)
+    Cmd(C.SPRITE, L, G.TX_OWN, sprite, G.SP_FRAME, 0, i)
     Cmd(C.SCALE, L, sx, sy, 1, i)
     Cmd(C.POS, L, left - 94 * sx, -top + 816 * sy, 0, i)
   end
@@ -2988,6 +3256,7 @@ EVT_PPG = EVT_PPG or {}
     Cmd(C.VIS, T, 0, true)
   end
 
+-- Player page block (plate_pages.lua): the gauge copies' placement bookkeeping
   -- ---- the gauge copies never drawn raw (2026-10-14, owner: a whole «ENERGÍA» gauge with its empty bar across
   -- Plantilla / Formación, Inazuma Fantasy off) -------------------------------------------------------------------
   -- Every btl06_13 stamina gauge copy of the page (evt_pp_tag, _ptile, _ptrule, _sxbar, _sxplate, _csband, _fbadge)
@@ -3033,6 +3302,7 @@ EVT_PPG = EVT_PPG or {}
     Cmd(C.VIS, layer, instance, false)
   end
 
+-- Player page block (plate_pages.lua): the mouse / free cursor zones
   -- ---- pointer (mouse / VR free cursor; docs/game/ui/mouse-support.md §5, EVT_PointerNew) ----------------------
   -- Our own drawn controls of the page get Lua zones (screen px, y down; the same numbers the layout / this block
   -- place them with): the 8 page dots (slot s: x 1321 + 28 (s - 1) .. + 32, the dots row y 915) and the Q / E glyphs
@@ -3228,7 +3498,7 @@ EVT_PPG = EVT_PPG or {}
     end
     for pass = 1, 2 do
       for _, m in ipairs(pass == 1 and G.BANKS or G.PARENTS) do
-        if Lc(264888438 --[[CMND_IS_EXIST_MENU]], m) == true then
+        if Lc(264888438, m) == true then
           Lc(830228314, m, "EVT_PPG_PointerPage", target, dir, pass == 1)
           Lc(C.LOG, "EVT_PPG pointer page", string.format("%08X", m), tostring(target), dir)
           return
@@ -3468,7 +3738,7 @@ EVT_PPG = EVT_PPG or {}
       return "off"
     end
     for _, m in ipairs(G.IDLE_MENUS) do
-      local ok, v = pcall(funcLuaCommand, 264888438 --[[CMND_IS_EXIST_MENU]], m)
+      local ok, v = pcall(funcLuaCommand, 264888438, m)
       if ok and v == true then
         return string.format("menu %08X", m)
       end
@@ -3494,7 +3764,7 @@ EVT_PPG = EVT_PPG or {}
     for _, l in ipairs(G.HOST_LAYERS) do
       if Exists(l) then
         local open = false
-        for k = 0, 15 do
+        for k = 0, 63 do
           if Cmd(C.IS_OPEN, l, k) == true then
             Cmd(C.VIS, l, k, false)
             open = true
@@ -3541,7 +3811,7 @@ EVT_PPG = EVT_PPG or {}
       if not G.H.pages then
         local okC, closing = pcall(G.HostClosing)
         if okC and closing then
-          pcall(G.HostShut, "closing")          -- never Ready() / reopen anything while the host menu closes
+          G.Try("HostShut", "closing")          -- never Ready() / reopen anything while the host menu closes
           return table.unpack(r, 1, r.n)
         elseif G.hostShut then
           G.hostShut = false                    -- the close did not happen (a back swallowed): drawn again
@@ -3556,15 +3826,23 @@ EVT_PPG = EVT_PPG or {}
           -- card and the band vanish): a dialog (general_window) only pauses this block, our layers stay drawn under
           -- its dimmer; another screen on top (picker, bank, board) still hides them
           if why and why ~= string.format("menu %08X", 449578137 --[[general_window]]) then
-            pcall(G.HostHide)
+            G.Try("HostHide")
           end
         end
         if why then
           return table.unpack(r, 1, r.n)
         end
       end
+      if G.H.item_only then
+        -- a screen with only the item card (inventory, shop): its layout when its layer opened, and Y
+        if G.itemCardPending then
+          G.Try("ItemCardPending")
+        end
+        G.Try("ItemCardInput")
+        return table.unpack(r, 1, r.n)
+      end
       if G.H.pages then
-        pcall(G.Empty)
+        G.Try("Empty")
         -- round 14b (Nacho: the hexagon / circuit art showed on Trayectoria): the six-sense page decoration
         -- _sixth_base01 off on every page (only that retail page used it, and it is ours now)
         if On() and Exists(G.STATUS) and Cmd(C.IS_OPEN, G.STATUS, 0) == true then
@@ -3580,10 +3858,10 @@ EVT_PPG = EVT_PPG or {}
           Cmd(C.MESH, G.STATUS, 2682382918, false, 0)
         end
       end
-      pcall(G.Band)
-      pcall(G.Slant)
-      pcall(G.Tag)
-      pcall(G.HideUnplacedGaugeCopies)
+      G.Try("Band")
+      G.Try("Slant")
+      G.Try("Tag")
+      G.Try("HideUnplacedGaugeCopies")
       if On() and Exists(G.BUILD_GUIDE) and Cmd(C.IS_OPEN, G.BUILD_GUIDE, 0) == true then
         Cmd(C.VIS, G.BUILD_GUIDE, 0, false)        -- «Configuración habitual» (Tab ⇆ ?): retired
       end
@@ -3591,28 +3869,32 @@ EVT_PPG = EVT_PPG or {}
         if G.ptype ~= nil and G.H.pages then
           pcall(Decor, G.ptype)
         end
-        pcall(G.Bars)
+        G.Try("Bars")
         if G.H.pages then
-          pcall(G.Dots)
-          pcall(G.MxStep)
-          pcall(G.HiperFormStep)
-          pcall(G.Equip)
-          pcall(G.HiperL3)
-          pcall(G.Moves)
-          pcall(G.MovesNav)
-          pcall(G.Hint)
-          pcall(G.FormBadge)
-          pcall(G.Passives)
-          pcall(G.PassiveRows)
-          pcall(G.Career)
-          pcall(G.Sixth)
+          G.Try("Dots")
+          G.Try("MxStep")
+          G.Try("HiperFormStep")
+          G.Try("Equip")
+          G.Try("HiperL3")
+          G.Try("Moves")
+          G.Try("MovesNav")
+          G.Try("Hint")
+          G.Try("FormBadge")
+          G.Try("Passives")
+          G.Try("PassiveRows")
+          G.Try("Career")
+          G.Try("Sixth")
           local okP, errP = pcall(G.Pointer)
           if not okP and not G.ptrErr then
             G.ptrErr = true
             pcall(funcLuaCommand, C.LOG, "EVT_PPG pointer error", tostring(errP))
           end
         else
-          pcall(G.HostNumbers)       -- a host without pages: Suerte's number (the description stays hidden below)
+          G.Try("HostNumbers")       -- a host without pages: Suerte's number (the description stays hidden below)
+          if G.itemCardPending then
+            G.Try("ItemCardPending") -- the item card's layout when its layer opened after the last fill
+          end
+          G.Try("ItemCardInput")     -- L2 / R2 on a paged item card
         end
         if not G.KeepRadar() then
           pcall(HidePoly)
@@ -3660,9 +3942,1354 @@ EVT_PPG = EVT_PPG or {}
         pcall(G.Moves)
       end
       pcall(G.ForgetGaugeCopy, a1, a2)
+      if G.ItemCardLayer ~= nil and a1 == G.ItemCardLayer then
+        G.itemCardPending = true             -- laid out by the next frame (the layer is open by then)
+      end
       return table.unpack(r, 1, r.n)
     end
   end)
+
+  -- ---- a host's item detail card (host table item_card: Equipamiento) --------------------------------------------
+  -- The retail card team05_02_equip_info_easy laid out around every SetupEquipInfoWindow: its nodes moved / sized
+  -- from the host table, its body given the stats panel's sprite. Its bonus lines are signed («-10», never «+-10»),
+  -- coloured (raise / lowering) and joined in one row. Pages turned with L2 / R2 («L2 · · R2» row at the card's
+  -- bottom): the bonuses, then Better Equipment's «Efecto» page (CMND_BETTEREQUIPMENT_ITEM_PAGE: passive, set,
+  -- affinity) and «Conjunto» page (CMND_BETTEREQUIPMENT_ITEM_SET: the set's pieces worn / owned / missing and its
+  -- tiers), each only when the item has it. The stats panel's rows the focused item raises / lowers get a green / red
+  -- outline and number. Nothing changes while the block is off.
+  local IC = not G.H.pages and type(G.H.item_card) == "table" and G.H.item_card or nil
+  if IC ~= nil then
+-- Player page block (plate_pages.lua): the item detail card: spec, bonus text and pages
+    -- the shared spec (item_card_spec.lua) under the host's own values; effect_at / set_icons_at override a part
+    for k, v in pairs(type(EVT_PPG_ITEM_SPEC) == "table" and EVT_PPG_ITEM_SPEC or {}) do
+      if IC[k] == nil then
+        IC[k] = v
+      end
+    end
+    for _, part in ipairs({{"effect", "effect_at"}, {"set_icons", "set_icons_at"}}) do
+      local over = IC[part[2]]
+      if type(over) == "table" and type(IC[part[1]]) == "table" then
+        local t = {}
+        for k, v in pairs(IC[part[1]]) do
+          t[k] = v
+        end
+        for k, v in pairs(over) do
+          t[k] = v
+        end
+        IC[part[1]] = t
+      end
+    end
+    IC.layers_set = {}
+    for _, l in ipairs(IC.layers or {IC.layer}) do
+      IC.layers_set[l] = true
+    end
+    G.ItemCardLayer = IC.layer
+    local HostHide = G.HostHide
+    G.HostHide = function(...)
+      if HostHide ~= nil then
+        HostHide(...)
+      end
+      for _, l in ipairs({G.EQ_BODY, G.EQ_ICON, G.EQ_DOTS, G.EQ_YPAGE}) do
+        if l ~= nil and Exists(l) then
+          for k = 0, 63 do
+            if Cmd(C.IS_OPEN, l, k) == true then
+              Cmd(C.VIS, l, k, false)
+            end
+          end
+        end
+      end
+    end
+
+    -- this screen's pcall of a missing function (a per-frame «attempt to call a nil value» in loader.log): skipped,
+    -- written once to loader.log with the call's place (EVT_DEBUG.traceback)
+    if EVT_PPG_PCALL == nil then
+      local raw = pcall
+      EVT_PPG_PCALL = raw
+      pcall = function(f, ...)
+        if f == nil then
+          if not EVT_PPG_NIL_LOGGED then
+            EVT_PPG_NIL_LOGGED = true
+            local dbg = rawget(_ENV, "EVT_DEBUG")
+            local where = (type(dbg) == "table" and type(dbg.traceback) == "function") and dbg.traceback("", 2) or "?"
+            raw(funcLuaCommand, C.LOG, "EVT_PPG pcall of a nil function skipped", tostring(where))
+          end
+          return false, "attempt to call a nil value"
+        end
+        return raw(f, ...)
+      end
+    end
+    function G.ItemCardOn()
+      return On() and EVT_PPG_HOST_OFF ~= true and IC.on ~= false
+    end
+
+    local function Fill(template, args)
+      return (string.gsub(tostring(template), "{(%w+)}", function(k)
+        local v = args[k]
+        return v ~= nil and tostring(v) or ""
+      end))
+    end
+
+    -- «Físico +-10» -> «Físico [CR]-10[C]», «Técnica +41» -> «Técnica [CG]+41[C]»
+    function G.SignedBonus(s)
+      local head, minus, num, tail = string.match(s, "^(.-)%+(%-?)(%d+)(.*)$")
+      if head == nil then
+        return (string.gsub(s, "%+%-", "-"))
+      end
+      if minus == "-" then
+        return head .. IC.minus_colour .. "-" .. num .. "[C]" .. tail
+      end
+      return head .. IC.plus_colour .. "+" .. num .. "[C]" .. tail
+    end
+
+    -- ---- pages: G.icPages = {body text, ...} (1 = the bonuses), G.icPage = the shown one ---------------------------
+    G.icPage, G.icPages, G.icBonus = 1, {}, ""
+    function G.ItemCardPaged()
+      return type(IC.paged) == "table" and #G.icPages > 1
+    end
+    -- the card's rect: one row (the bonuses) or, paged, as many rows as its longest page + the pager row
+    -- one size and place for every item and page (never sized to its content): `max_rows` text rows from the top of
+    -- IC.rect (under the player bar; the stats panel right under it, host table chart_at / card)
+    function G.ItemCardRect()
+      local P = IC.paged
+      if IC.card_h ~= nil then
+        return {IC.rect[1], IC.rect[4] - IC.card_h, IC.rect[3], IC.rect[4]}, P.max_rows
+      end
+      local h = P.first_row + (P.max_rows - 1) * P.row_pitch + P.bottom
+      return {IC.rect[1], IC.rect[2], IC.rect[3], IC.rect[2] + h}, P.max_rows
+    end
+
+    local function Command(id, ...)
+      if id == nil then
+        return nil
+      end
+      local ok, r = pcall(funcLuaCommand, id, ...)
+      return ok and r or nil
+    end
+
+    -- the «Conjunto» page: the title (the set's slots covered / its slots), blank rows where G.ItemCardPageIcons draws
+    -- the set's pieces (a 2 x 2 grid of equipment slots: the slot's icon, green where one of the set is worn there, then
+    -- the pieces' icons, worn ones framed, the others dimmed), the bonus tiers (reached green, the others grey).
+    -- G.icSet = {rows = {[slot] = {{id, worn}, ...}}, worn = {[slot] = true}} for the icons.
+    function G.ItemCardSetPage(item)
+      local set = Command(IC.set_command, item, (not IC.no_player and type(G.hdl) == "number") and G.hdl or 0)   -- several sets: the one it counts for
+      if type(set) ~= "table" or type(set.members) ~= "table" then
+        return nil
+      end
+      local worn = {}
+      if not IC.no_player and type(G.hdl) == "number" and type(GetCharaEquipmentIds) == "function" then
+        local ok, ids = pcall(GetCharaEquipmentIds, G.hdl)
+        for _, id in ipairs(ok and type(ids) == "table" and ids or {}) do
+          worn[id] = true
+        end
+      end
+      if type(G.icWornSwap) == "table" then          -- a preview: the hovered item in the slot's item's place
+        if G.icWornSwap.from ~= nil then
+          worn[G.icWornSwap.from] = nil
+        end
+        worn[G.icWornSwap.to] = true
+      end
+      local S = IC.set_icons
+      local rows, wornSlot, nworn, nslots = {}, {}, 0, 0
+      local count = tonumber(set.count) or #set.members
+      for k = 1, count do
+        local id = set.members[k]
+        if id ~= nil then
+          local slot = S.slot_of_category[tonumber(Command(1883585771 --[[the item's category]], id, 2)) or 0]
+          if slot ~= nil then
+            if rows[slot] == nil then
+              rows[slot] = {}
+              nslots = nslots + 1
+            end
+            table.insert(rows[slot], {id, worn[id] == true})
+            if worn[id] and not wornSlot[slot] then
+              wornSlot[slot] = true
+              nworn = nworn + 1
+            end
+          end
+        end
+      end
+      -- progress by pieces = the set's slots covered (one item per slot), as Better Equipment counts the bonus tiers
+      G.icSet = {rows = rows, worn = wornSlot, nworn = nworn, nslots = nslots}
+      -- the pieces that count for this set (a piece counts for one set only), then its other sets on the same row
+      local template = IC.no_player and set.title_any or set.title
+      local title = Fill(template or set.title, {set = set.name, worn = tonumber(set.worn) or nworn, count = nslots})
+      if type(set.also) == "string" and set.also ~= "" then
+        title = title .. "  " .. set.also
+      end
+      G.icSetTitle = title
+      return G.ItemCardCentred(title)
+    end
+
+-- Player page block (plate_pages.lua): the item detail card's own layers, page icons and pager
+    -- ---- the card's own layers: its body (a copy of the stats panel's body, no drop shadow) and the set icons ------
+    G.EQ_BODY, G.EQ_ICON = 1089248720, 2163711315
+    table.insert(G.HOST_LAYERS, G.EQ_BODY)
+    table.insert(G.HOST_LAYERS, G.EQ_ICON)
+    G.icReady = {}
+
+    -- the body: the band object's page mesh only, given the stats panel's sprite, placed at the card's rect (the band
+    -- layout's formula: node (x0 - 1435, 560 - y0)); false = not open yet
+    function G.ItemCardBody(rect, show)
+      local B = G.EQ_BODY
+      if not Exists(B) then
+        return true
+      end
+      if not show then
+        if Cmd(C.IS_OPEN, B, 0) == true then
+          Cmd(C.VIS, B, 0, false)
+        end
+        return true
+      end
+      if not Ready(B, 0) then
+        G.icReady[B] = nil
+        return false
+      end
+      if not G.icReady[B] then
+        G.icReady[B] = true
+        for _, m in ipairs({G.M_PORTRAIT, G.M_BAND, G.M_FLAVOR, G.M_PARAM[1], G.M_PARAM[2]}) do
+          Cmd(C.MESH, B, m, false, 0)
+        end
+        Cmd(C.TEXT_VIS, B, G.N_EXPLAIN, false, 0)
+        Cmd(C.SPRITE, B, G.TX_T1101, G.SP_BAND, G.SP_BODY, 0, 0)
+      end
+      -- the layer where the stats panel's body layer (G.BAND, the same object) is, so the band layout's node formula
+      -- places it the same way (CMND layer global position; written once to loader.log)
+      if Exists(G.BAND) and Cmd(C.IS_OPEN, G.BAND, 0) == true then
+        local ok, x, y, z = pcall(funcLuaMenuCommand, 4002164178 --[[a layer instance's global position]], G.BAND, 0)
+        if ok and type(x) == "number" and type(y) == "number" then
+          Cmd(C.POS, B, x, y, tonumber(z) or 0, 0)
+        end
+        if not G.icBodyLogged then
+          G.icBodyLogged = true
+          pcall(funcLuaCommand, C.LOG, "EVT_PPG item card body at", tostring(ok and x), tostring(ok and y))
+        end
+      end
+      Cmd(C.NODE_POS, B, 0, G.M_PAGE, 0, rect[1] - 1435)
+      Cmd(C.NODE_POS, B, 0, G.M_PAGE, 1, 560 - rect[2])
+      Cmd(C.NODE_SCALE, B, 0, G.M_PAGE, rect[3] - rect[1], rect[4] - rect[2])
+      Cmd(C.MESH, B, G.M_PAGE, true, 0)
+      Cmd(C.VIS, B, 0, true)
+      return true
+    end
+
+    -- the page icons (layer evt_eq_set_icon: copies of the item card object, one icon each, no list cursor locator):
+    -- instance k shows a sprite on _win_item_base01 (a slot icon: the list's grey sprite, or its green copy where one
+    -- of the set is worn; a position badge) or an item icon on _icon_item_dmy01; placed at screen (x, y) top-left
+    G.EQ_ICON_MESHES = {2511236049, 2885220123, 303536660, 2334051246,
+      2203859798, 441805548, 1202991162, 1139638886,
+      1087832946, 1228576956, 2037408502, 132349475, 2634282032,
+      2787359195}
+    G.EQ_ICON_TEXTS = {456522680, 3138144965}
+    G.EQ_ICON_PRIMS = {3974820126, 3334923667}           -- the card's E / stock numbers
+    local M_SLOT, M_ITEM = 2885220123, 303536660
+
+    local function IconSlot(k, x, y, kind, value, worn, scale)
+      scale = scale or 1
+      local L, S = G.EQ_ICON, IC.set_icons
+      if not Ready(L, k) then
+        G.icReady[L * 16 + k] = nil
+        return false
+      end
+      if not G.icReady[L * 16 + k] then
+        G.icReady[L * 16 + k] = true
+        for _, m in ipairs(G.EQ_ICON_MESHES) do
+          Cmd(C.MESH, L, m, false, k)
+        end
+        for _, t in ipairs(G.EQ_ICON_TEXTS) do
+          Cmd(C.TEXT_VIS, L, t, false, k)
+        end
+        for _, p in ipairs(G.EQ_ICON_PRIMS) do
+          Cmd(C.PRIM_VIS, L, k, p, false)
+        end
+        Cmd(C.NODE_POS, L, k, IC.base, 0, 0)
+        Cmd(C.NODE_POS, L, k, IC.base, 1, 0)
+      end
+      Cmd(C.MESH, L, M_SLOT, false, k)
+      Cmd(C.MESH, L, M_ITEM, false, k)
+      for _, t in ipairs(G.EQ_ICON_TEXTS) do
+        Cmd(C.TEXT_VIS, L, t, false, k)
+      end
+      local E = IC.effect
+      local under, over = E.prio_under, E.prio_over
+      if G.icPrioBase ~= nil then
+        under, over = G.icPrioBase + 2, G.icPrioBase + 4
+      end
+      Cmd(1491630496, L, k, (type(value) == "table" and value.under) and under or over, true)
+      if kind == "text" then
+        -- value = {text, style ("white" = the name's text node, "ink" = the bonus's), scale}; (x, y) = its left edge and
+        -- vertical centre: the texts draw at their layout offsets from the base (top-left: name -221, 15 / bonus
+        -- -229, -59, y up; box 50 tall), scaled with the instance
+        local st = E.styles[value.style] or E.styles.white
+        local sc = value.scale or 1
+        Cmd(C.SCALE, L, sc, sc, 1, k)
+        local top = y - st.box_h * sc / 2 + (st.dy or 0) * sc
+        Cmd(C.POS, L, x - st.at[1] * sc, -top - st.at[2] * sc, 0, k)
+        Cmd(C.SET_TEXT, L, st.node, value.text, k)
+        Cmd(C.TEXT_VIS, L, st.node, true, k)
+        Cmd(C.VIS, L, k, true)
+        return true
+      end
+      Cmd(C.SCALE, L, 1, 1, 1, k)
+      Cmd(C.POS, L, x, -y, 0, k)
+      if kind == "sprite" then
+        -- value = {atlas, sprite, w, h}
+        Cmd(C.SPRITE, L, value[1], value[2], S.slot_swap, 0, k)
+        Cmd(C.NODE_POS, L, k, M_SLOT, 0, 0)
+        Cmd(C.NODE_POS, L, k, M_SLOT, 1, 0)
+        Cmd(C.NODE_SCALE, L, k, M_SLOT, value[3], value[4])
+        Cmd(C.MESH, L, M_SLOT, true, k)
+        Cmd(C.VIS, L, k, true)
+        return true
+      end
+      if kind == "badge" or kind == "slot" then
+        local atlas, sprite, w, h
+        if kind == "badge" then
+          local B = IC.badges
+          atlas, sprite, w, h = B.atlas, value, B.size[1], B.size[2]
+        elseif worn then
+          atlas, sprite, w, h = S.worn_atlas, S.slot_worn_sprites[value], S.slot_size[1] * scale, S.slot_size[2] * scale
+        else
+          atlas, sprite, w, h = S.slot_atlas, S.slot_sprites[value], S.slot_size[1] * scale, S.slot_size[2] * scale
+        end
+        Cmd(C.SPRITE, L, atlas, sprite, S.slot_swap, 0, k)
+        Cmd(C.NODE_POS, L, k, M_SLOT, 0, 0)
+        Cmd(C.NODE_POS, L, k, M_SLOT, 1, 0)
+        Cmd(C.NODE_SCALE, L, k, M_SLOT, w, h)
+        Cmd(C.MESH, L, M_SLOT, true, k)
+      else
+        local n = S.size * scale
+        funcLuaMenuCommand(3508889864 --[[the item icon]], L, k, M_ITEM, 1875672568 --[[icon_item_dmy01]], value)
+        Cmd(C.NODE_POS, L, k, M_ITEM, 0, 0)
+        Cmd(C.NODE_POS, L, k, M_ITEM, 1, 0)
+        Cmd(C.NODE_SCALE, L, k, M_ITEM, n, n)
+        Cmd(C.MESH, L, M_ITEM, true, k)
+      end
+      Cmd(C.VIS, L, k, true)
+      return true
+    end
+
+    -- the shown page's icons (the set grid with its slot icons, the affinity badge), else none; false = an instance is still opening (the
+    -- frame tries again)
+    -- the pager: the framework's page row (VRFW_Pager: L2 / R2 glyphs and the page dots, the technique card's) on the
+    -- layer evt_eq_dots, centred at IC.pager.at (screen px); its instances may open again while the host is not closing
+    G.EQ_DOTS = 1178179835
+    table.insert(G.HOST_LAYERS, G.EQ_DOTS)
+    G.EQ_YPAGE = 1639631458          -- the «Y <next page>» pill (a pager of style ycycle only)
+    if IC.pager ~= nil and IC.pager.style == "ycycle" then
+      table.insert(G.HOST_LAYERS, G.EQ_YPAGE)
+    end
+    -- on a screen without a player the card's added layers open with the screen (their group rows): each instance is
+    -- hidden while the screen sets it up, before its first frame, as the game hides its own detail layers; the
+    -- pieces show the instances they use
+    if G.H.item_only then
+      EVT_PPG_Wrap("OnSetupLayer", function(orig)
+        return function(a1, a2, ...)
+          local r = Pack(orig(a1, a2, ...))
+          if a1 == G.EQ_ICON or a1 == G.EQ_DOTS or a1 == G.EQ_YPAGE then
+            Cmd(C.VIS, a1, a2 or 0, false)
+          end
+          return table.unpack(r, 1, r.n)
+        end
+      end)
+    end
+    function G.ItemCardPager(n)
+      if G.icPager == nil and type(VRFW_Pager) == "table" and type(VRFW_Pager.New) == "function" then
+        G.icPager = VRFW_Pager.New({layer = G.EQ_DOTS, name = "item card", style = IC.pager.style, guide = G.EQ_YPAGE,
+          prio = G.icPrioBase ~= nil and G.icPrioBase + 6 or nil, reopen = function()
+            return not G.hostShut
+          end})
+      end
+      local R = G.icPager
+      if R == nil then
+        return true
+      end
+      if n == nil or n < 2 then
+        R:Hide()
+        return true
+      end
+      local nextPage = G.icPage % n + 1
+      return R:Show(n, G.icPage, IC.pager.at[1], -IC.pager.at[2], G.icPageNames ~= nil and G.icPageNames[nextPage] or nil)
+    end
+
+    function G.ItemCardPageIcons()
+      local L, S = G.EQ_ICON, IC.set_icons
+      if not Exists(L) then
+        return true
+      end
+      local used, done = 0, true
+      local shown = G.ItemCardOn() and #G.icPages > 0 and Exists(IC.layer) and Cmd(C.IS_VIS, IC.layer, 0) == true
+      local on = shown and G.icSetPage ~= nil and G.icPage == G.icSetPage and type(G.icSet) == "table"
+      if shown and IC.text_on_icons then
+        local okT, items = pcall(G.ItemCardTextItems, G.ItemCardRect())
+        for _, it in ipairs(okT and items or {}) do
+          if used < (S.page_instances or S.instances) then
+            done = IconSlot(used, it.x, it.y, it.kind, it.value) and done
+            used = used + 1
+          end
+        end
+      end
+      if shown and G.icEffect ~= nil and G.icEffectPage ~= nil and G.icPage == G.icEffectPage then
+        local okI, items = pcall(G.ItemCardEffectItems, G.ItemCardRect())
+        for _, it in ipairs(okI and items or {}) do
+          if used < (S.page_instances or S.instances) then
+            done = IconSlot(used, it.x, it.y, it.kind, it.value) and done
+            used = used + 1
+          end
+        end
+      end
+      if on then
+        -- the groups of the slots the set has, left to right: [slot icon] pieces; `gap` inside a group, `group_gap`
+        -- between groups; the whole row scaled down (never up) to the card's width less `margin` on each side and
+        -- centred in the card's width and in the body between the title row and the pager row
+        local rect = G.ItemCardRect()
+        local groups, width = {}, 0
+        for slot = 1, #S.slot_sprites do
+          local pieces = G.icSet.rows[slot]
+          if pieces ~= nil and #pieces > 0 then
+            groups[#groups + 1] = {slot = slot, pieces = pieces}
+            width = width + S.slot_size[1] + #pieces * (S.gap + S.size)
+          end
+        end
+        width = width + math.max(0, #groups - 1) * S.group_gap
+        local room = (rect[3] - rect[1]) - 2 * S.margin
+        local f = width > 0 and math.min(1, room / width) or 1
+        local x = rect[1] + ((rect[3] - rect[1]) - width * f) / 2
+        local P = IC.paged
+        local cy = rect[2] + (S.row_cy or ((P.first_row + (P.first_row + (P.max_rows - 1) * P.row_pitch)) / 2))
+        local top = cy - S.size * f / 2
+        for _, grp in ipairs(groups) do
+          if used < (S.page_instances or S.instances) then
+            done = IconSlot(used, x, top, "slot", grp.slot, G.icSet.worn[grp.slot] == true, f) and done
+            used = used + 1
+          end
+          x = x + S.slot_size[1] * f
+          for _, it in ipairs(grp.pieces) do
+            x = x + S.gap * f
+            if used < (S.page_instances or S.instances) then
+              done = IconSlot(used, x, top, "item", it[1], it[2], f) and done
+              used = used + 1
+            end
+            x = x + S.size * f
+          end
+          x = x + S.group_gap * f
+        end
+      end
+      for k = used, (S.page_instances or S.instances) - 1 do
+        if Cmd(C.IS_OPEN, L, k) == true then
+          Cmd(C.VIS, L, k, false)
+        end
+      end
+      if not G.ItemCardPager(shown and #G.icPages or nil) then
+        done = false
+      end
+      if not done then
+        G.itemCardPending = true
+      end
+      return done
+    end
+
+    -- the width in px of `text` in the card's bonus box (CMND_GET_MENU_TEXT_RECT_SIZE), nil = no answer
+    local function TextWidth(text)
+      local ok, w = pcall(funcLuaMenuCommand, 3549540977, IC.layer, 0,
+        3138144965 --[[_text_parameter01]], text)
+      w = ok and tonumber(w) or nil
+      return (w ~= nil and w > 0) and w or nil
+    end
+
+-- Player page block (plate_pages.lua): the item detail card's «Efecto» page
+    -- the «Efecto» page from Better Equipment's answer: its rows, then the affinity row «<label>  [badge]  [element]
+    -- <value>» (the badge = the position's sprite, drawn by G.ItemCardPageIcons in the room left by spaces after the
+    -- label). A text answer (older Better Equipment) is used as it is.
+    -- ---- the «Efecto» page (host table item_card.effect): two rows of icons, chips and short texts ---------------------
+    -- Row 1: [bond icon] | chip «Supertécnica [element] +N %» (the item's passive)   [emblem icon] | [position badge]
+    -- [✓] + [element] [✓]   chip «[raised stats] x one % / both %» (blue; green when both match the wearer).
+    -- Row 2: [boot icon] | the set's slot icons (green where worn) «a/b»   the tier chips to the right edge, each its
+    -- reward over N bars (filled by the pieces worn; green when reached). Every value from Better Equipment's answer
+    -- (CMND_BETTEREQUIPMENT_ITEM_PAGE with the shown player) and the set page's data; sprites from the card's own atlas
+    -- evt_eq_fx (copies of retail icons, loaded by the icon layer's object).
+    local function EffWidth(text, style)
+      local E = IC.effect
+      local st = E.styles[style] or E.styles.white
+      local ok, w = pcall(funcLuaMenuCommand, 3549540977, IC.layer, 0, st.node, text)
+      w = ok and tonumber(w) or nil
+      if w == nil or w <= 0 then
+        w = #text * st.char_px
+      end
+      return w
+    end
+
+    local function Spr(name)
+      return {IC.effect.atlas, CALC_CRC(name)}
+    end
+
+    -- a chip's content: {text = s} or {sprite = name} pieces of one effect (a passive or a tier reward)
+    local function EffPieces(part, on)
+      local E = IC.effect
+      local p = {}
+      if part.stat ~= nil then
+        local n = E.stat_icons[part.stat]
+        if n ~= nil then
+          p[#p + 1] = {sprite = string.format(E.sprites.stat, n)}
+        end
+        local name = G.ItemCardStatName(part.stat_index) or part.stat_name or part.stat
+        p[#p + 1] = {text = tostring(name)}
+        p[#p + 1] = {text = tostring(part.value)}
+        return p
+      end
+      if part.label ~= nil and (part.element ~= nil or part.family ~= nil) then
+        p[#p + 1] = {text = tostring(part.label)}
+        local el = part.element ~= nil and E.elements[part.element] or nil
+        local ext = type(part.element_icon) == "table" and part.element_icon or nil
+        if el ~= nil then
+          p[#p + 1] = {sprite = string.format(on and E.sprites.element or E.sprites.element_off, el)}
+        elseif ext ~= nil then
+          p[#p + 1] = {atlas = ext.atlas, sprite_id = ext.sprite}
+        elseif part.family ~= nil then
+          p[#p + 1] = {text = tostring(part.family)}
+        elseif part.element ~= nil then
+          p[#p + 1] = {text = tostring(G.ItemCardElementName(part.element) or part.element_name or part.element)}
+        end
+        p[#p + 1] = {text = tostring(part.value)}
+        return p
+      end
+      p[#p + 1] = {text = tostring(part.text or "")}
+      return p
+    end
+
+    -- the game's own name of stat si (0..6): its equipment bonus text «<stat> +<VALUE>» (include/menu/equip_menu_inc,
+    -- the texts the stats' bonus lines use) without the value; nil = no answer
+    G.statNames = G.statNames or {}
+    function G.ItemCardStatName(si)
+      si = tonumber(si)
+      local id = si ~= nil and IC.effect.stat_texts[si + 1] or nil
+      if id == nil then
+        return nil
+      end
+      if G.statNames[si] == nil then
+        local ok, t = pcall(funcLuaCommand, 4074371074 --[[the text of a text id]], id)
+        local name = ok and type(t) == "string" and string.match(t, "^(.-)%s*%+") or nil
+        G.statNames[si] = (name ~= nil and name ~= "") and name or false
+      end
+      return G.statNames[si] or nil
+    end
+
+    -- the game's own name of an element (host table effect.element_texts: menu_text ids), nil = none
+    G.elementNames = G.elementNames or {}
+    function G.ItemCardElementName(element)
+      local id = element ~= nil and IC.effect.element_texts[element] or nil
+      if id == nil then
+        return nil
+      end
+      if G.elementNames[element] == nil then
+        local ok, t = pcall(funcLuaCommand, 4074371074 --[[the text of a text id]], id)
+        G.elementNames[element] = (ok and type(t) == "string" and t ~= "") and t or false
+      end
+      return G.elementNames[element] or nil
+    end
+
+    local function PiecesWidth(pieces, style, sc)
+      local E = IC.effect
+      sc = sc or E.text_scale
+      local w = 0
+      for i, pc in ipairs(pieces) do
+        if i > 1 then
+          w = w + E.gap
+        end
+        if pc.sprite ~= nil or pc.sprite_id ~= nil then
+          w = w + E.icon
+        else
+          w = w + EffWidth(pc.text, style) * sc
+        end
+      end
+      return w
+    end
+
+    -- the pieces drawn from x at centre y (text colour tag `tag`)
+    local function DrawPieces(out, pieces, x, y, tag, style, sc)
+      local E = IC.effect
+      sc = sc or E.text_scale
+      for i, pc in ipairs(pieces) do
+        if i > 1 then
+          x = x + E.gap
+        end
+        if pc.sprite ~= nil or pc.sprite_id ~= nil then
+          local sp = pc.sprite_id ~= nil and {pc.atlas, pc.sprite_id} or Spr(pc.sprite)
+          out[#out + 1] = {kind = "sprite", x = x, y = y - E.icon / 2, value = {sp[1], sp[2], E.icon, E.icon}}
+          x = x + E.icon
+        else
+          local t = pc.tag or tag
+          out[#out + 1] = {kind = "text", x = x, y = y, value = {text = t .. pc.text .. (t ~= "" and "[C]" or ""),
+            style = style, scale = sc}}
+          x = x + EffWidth(pc.text, style) * sc
+        end
+      end
+      return x
+    end
+
+    local function Section(out, x, y, sprite)
+      local E = IC.effect
+      local sp = Spr(sprite)
+      out[#out + 1] = {kind = "sprite", x = x, y = y - E.section / 2, value = {sp[1], sp[2], E.section, E.section}}
+      x = x + E.section + E.sep_gap
+      local sv = Spr(E.sprites.sep)
+      out[#out + 1] = {kind = "sprite", x = x, y = y - E.sep[2] / 2, value = {sv[1], sv[2], E.sep[1], E.sep[2]}}
+      return x + E.sep[1] + E.sep_gap
+    end
+
+    local function Chip(out, x, y, w, sprite, h)
+      local E = IC.effect
+      local sp = Spr(sprite)
+      h = h or E.chip_h
+      out[#out + 1] = {kind = "sprite", x = x, y = y - h / 2, value = {sp[1], sp[2], w, h, under = true}}
+    end
+
+    function G.ItemCardEffectItems(rect)
+      local E, F = IC.effect, G.icEffect
+      local out = {}
+      local x0, y0 = rect[1], rect[2]
+      local r1, r2 = y0 + E.row1, y0 + E.row2
+      local check = Spr(E.sprites.check)
+      -- row 1, left: the passive
+      local x = Section(out, x0 + E.left, r1, E.sprites.bond)
+      if type(F.passive) == "table" then
+        local pieces = EffPieces(F.passive, true)
+        local pw = PiecesWidth(pieces, "white")
+        local w = math.max(pw + 2 * E.chip_pad, E.passive_w)
+        Chip(out, x, r1, w, E.sprites.chip_on)
+        DrawPieces(out, pieces, x + (w - pw) / 2, r1, "", "white")
+      end
+      -- row 1, right: the affinity
+      local A = F.affinity
+      if type(A) == "table" then
+        x = Section(out, x0 + E.split, r1, E.sprites.emblem)
+        local pos = A.position ~= nil and E.positions[A.position] or nil
+        if pos ~= nil then
+          -- a position whose game badge has no plate of its own (GK: dark letters on white) uses the card's own badge
+          local own = type(E.position_own) == "table" and E.position_own[A.position] or nil
+          local sp = (A.pos_ok or IC.no_player)
+            and (own ~= nil and Spr(own) or {IC.badges.atlas, CALC_CRC(string.format(E.sprites.position, pos))})
+            or Spr(string.format(E.sprites.position_off, pos))
+          out[#out + 1] = {kind = "sprite", x = x, y = r1 - E.badge[2] / 2, value = {sp[1], sp[2], E.badge[1], E.badge[2]}}
+          if A.pos_ok then
+            out[#out + 1] = {kind = "sprite", x = x + E.badge[1] - E.check / 2, y = r1 - E.badge[2] / 2 - E.check / 2,
+              value = {check[1], check[2], E.check, E.check}}
+          end
+          x = x + E.badge[1] + E.gap
+        end
+        local el = A.element ~= nil and E.elements[A.element] or nil
+        local ext = type(A.element_icon) == "table" and A.element_icon or nil
+        if el == nil and ext == nil and A.element ~= nil then
+          if pos ~= nil then
+            x = DrawPieces(out, {{text = E.plus}}, x, r1, "", "ink") + E.gap
+          end
+          x = DrawPieces(out, {{text = G.ItemCardElementName(A.element) or A.element}}, x, r1, "", "ink") + E.gap
+        end
+        if el ~= nil or ext ~= nil then
+          if pos ~= nil then
+            x = DrawPieces(out, {{text = E.plus}}, x, r1, "", "ink") + E.gap
+          end
+          local sp = el ~= nil and Spr(string.format((A.el_ok or IC.no_player) and E.sprites.element or E.sprites.element_off, el))
+            or {ext.atlas, ext.sprite}
+          out[#out + 1] = {kind = "sprite", x = x, y = r1 - E.icon / 2, value = {sp[1], sp[2], E.icon, E.icon}}
+          if A.el_ok then
+            out[#out + 1] = {kind = "sprite", x = x + E.icon - E.check / 2, y = r1 - E.icon / 2 - E.check / 2,
+              value = {check[1], check[2], E.check, E.check}}
+          end
+          x = x + E.icon + E.gap
+        end
+        local pieces = {}
+        for _, st in ipairs(type(A.stats) == "table" and A.stats or {}) do
+          local n = E.stat_icons[st]
+          if n ~= nil then
+            pieces[#pieces + 1] = {sprite = string.format(E.sprites.stat, n)}
+          end
+        end
+        pieces[#pieces + 1] = {text = tostring(A.text or "")}
+        local rate = A.rate or ((A.pos_ok and A.el_ok) and "both" or (A.pos_ok and "one" or "none"))
+        if IC.no_player then
+          rate = "one"                         -- the requirement and both rates: the neutral (blue) chip
+        end
+        local chip = rate == "both" and E.sprites.chip_on or (rate == "one" and E.sprites.chip_blue or E.sprites.chip_off)
+        local pw = PiecesWidth(pieces, "white")
+        local w = math.max(pw + 2 * E.chip_pad, E.affinity_w)
+        local cx = math.max(x + E.gap, x0 + E.right - w)
+        Chip(out, cx, r1, w, chip)
+        DrawPieces(out, pieces, cx + (w - pw) / 2, r1, rate == "none" and E.off_tag or "", "white")
+      end
+      -- row 2: the set
+      local S = G.icSet
+      if type(F.tiers) == "table" and #F.tiers > 0 and type(S) == "table" then
+        x = Section(out, x0 + E.left, r2, E.sprites.equip)
+        local SI = IC.set_icons
+        for slot = 1, #SI.slot_sprites do
+          if S.rows[slot] ~= nil then
+            local worn = S.worn[slot] == true
+            local sp = worn and {SI.worn_atlas, SI.slot_worn_sprites[slot]} or {SI.slot_atlas, SI.slot_sprites[slot]}
+            out[#out + 1] = {kind = "sprite", x = x, y = r2 - E.slot[2] / 2, value = {sp[1], sp[2], E.slot[1], E.slot[2]}}
+            x = x + E.slot[1] + E.gap
+          end
+        end
+        if not IC.no_player then
+          x = DrawPieces(out, {{text = string.format("%d/%d", S.nworn or 0, S.nslots or 0)}}, x, r2, "", "ink")
+        end
+        x = x + E.tier_gap
+        -- the tier chips to the right edge, the room split by their natural widths
+        local nat, total = {}, 0
+        for i, t in ipairs(F.tiers) do
+          local on = not IC.no_player and (S.nworn or 0) >= (tonumber(t.pieces) or 99)
+          local pieces = EffPieces(t.reward or {}, on)
+          local w = math.max(PiecesWidth(pieces, "white", E.tier_scale), E.tier_min) + 2 * E.chip_pad
+          nat[i] = {pieces = pieces, w = w, on = on, need = tonumber(t.pieces) or 2}
+          total = total + w
+        end
+        local room = (x0 + E.right) - x - (#nat - 1) * E.tier_gap
+        for _, t in ipairs(nat) do
+          local w = total > 0 and math.max(t.w, room * t.w / total) or t.w
+          Chip(out, x, r2, w, t.on and E.sprites.chip_on or (IC.no_player and E.sprites.chip_blue or E.sprites.chip_off),
+            E.tier_h)
+          -- the reward centred, its text shrunk to fit the chip (down to tier_scale_min)
+          local sc = E.tier_scale
+          local pw = PiecesWidth(t.pieces, "white", sc)
+          if pw > w - 2 * E.chip_pad then
+            sc = math.max(E.tier_scale_min, sc * (w - 2 * E.chip_pad) / pw)
+            pw = PiecesWidth(t.pieces, "white", sc)
+          end
+          DrawPieces(out, t.pieces, x + (w - pw) / 2, r2 + E.reward_dy, (t.on or IC.no_player) and "" or E.off_tag, "white", sc)
+          local bx0, bx1 = x + E.bar_pad, x + w - E.bar_pad
+          local bw = (bx1 - bx0 - E.bar_gap * (t.need - 1)) / t.need
+          for i = 1, t.need do
+            local name = i <= (S.nworn or 0) and (t.on and E.sprites.bar_white or E.sprites.bar_on) or E.sprites.bar_off
+            local sp = Spr(name)
+            out[#out + 1] = {kind = "sprite", x = bx0 + (i - 1) * (bw + E.bar_gap), y = r2 + E.bar_dy,
+              value = {sp[1], sp[2], bw, E.bar_h}}
+          end
+          x = x + w + E.tier_gap
+        end
+      end
+      return out
+    end
+
+    -- a row centred on the card: spaces before it for half of the room it leaves in the text box (its width measured)
+    function G.ItemCardCentred(text)
+      local B = IC.badges
+      local w = TextWidth(text)
+      local sw = TextWidth(string.rep(".", 10))
+      local dot = TextWidth(string.rep(".", 10) .. string.rep(" ", 10))
+      sw = (sw ~= nil and dot ~= nil and dot > sw) and (dot - sw) / 10 or B.space_px
+      if w == nil then
+        return text
+      end
+      local pad = ((IC.rect[3] - IC.rect[1]) / 2 - IC.text_x) - w / 2
+      return string.rep(" ", math.max(0, math.floor(pad / sw + 0.5))) .. text
+    end
+
+    -- the stat page (a card without a player): the item's every stat change, [icon] game name +N (green) / -N (red)
+    function G.ItemCardStatParts(item)
+      local E, parts = IC.effect, {}
+      for si = 0, 7 do
+        local ok, has, v = pcall(funcLuaCommand, 2207870782, item, si)
+        v = ok and has ~= false and tonumber(v) or 0
+        local name = v ~= 0 and G.ItemCardStatName(si) or nil
+        if name ~= nil then
+          local key = IC.stat_by_index ~= nil and IC.stat_by_index[si + 1] or nil
+          local icon = key ~= nil and E.stat_icons[key] or nil
+          parts[#parts + 1] = {icon = icon ~= nil and string.format(E.sprites.stat, icon) or nil, name = name, value = v}
+        end
+      end
+      return parts
+    end
+
+    -- the shown page's texts drawn on the icon layer: the stat row (centred, shrunk to the body's width) or the set's
+    -- title row (centred)
+    function G.ItemCardTextItems(rect)
+      local E, out = IC.effect, {}
+      local width = rect[3] - rect[1] - 2 * (IC.set_icons.margin or 0)
+      if G.icStatPage ~= nil and G.icPage == G.icStatPage then
+        local sc, groups = E.stat_scale, {}
+        for _, p in ipairs(G.icStats or {}) do
+          local pieces = {}
+          if p.icon ~= nil then
+            pieces[#pieces + 1] = {sprite = p.icon}
+          end
+          pieces[#pieces + 1] = {text = p.name}
+          pieces[#pieces + 1] = {text = (p.value > 0 and "+" or "-") .. tostring(math.abs(p.value)),
+            tag = p.value > 0 and IC.plus_colour or IC.minus_colour}
+          groups[#groups + 1] = pieces
+        end
+        local function Total(scale)
+          local t = 0
+          for _, g in ipairs(groups) do
+            t = t + PiecesWidth(g, "ink", scale)
+          end
+          return t + math.max(0, #groups - 1) * E.stat_gap
+        end
+        local total = Total(sc)
+        if total > width and total > 0 then
+          sc = sc * width / total
+          total = Total(sc)
+        end
+        local x = rect[1] + ((rect[3] - rect[1]) - total) / 2
+        for _, g in ipairs(groups) do
+          DrawPieces(out, g, x, rect[2] + E.stat_row, "", "ink", sc)
+          x = x + PiecesWidth(g, "ink", sc) + E.stat_gap
+        end
+      elseif G.icSetPage ~= nil and G.icPage == G.icSetPage and type(G.icSetTitle) == "string" then
+        local sc = E.title_scale
+        local w = EffWidth(G.icSetTitle, "ink") * sc
+        if w > width and w > 0 then
+          sc = sc * width / w
+          w = width
+        end
+        DrawPieces(out, {{text = G.icSetTitle}}, rect[1] + ((rect[3] - rect[1]) - w) / 2, rect[2] + E.title_y, "",
+          "ink", sc)
+      end
+      return out
+    end
+
+    function G.ItemCardEffectPage(effect)
+      if type(effect) == "string" then
+        return effect
+      end
+      if type(effect) ~= "table" then
+        return nil
+      end
+      local lines = {}
+      for _, l in ipairs(type(effect.lines) == "table" and effect.lines or {}) do
+        lines[#lines + 1] = tostring(l)
+      end
+      local a = effect.affinity
+      if type(a) == "table" then
+        local B = IC.badges
+        local label = tostring(a.label or "")
+        local row = label
+        local sprite = a.position ~= nil and B.sprites[a.position] or nil
+        if sprite ~= nil then
+          local lw = label ~= "" and TextWidth(label) or 0
+          local dots = TextWidth(string.rep(".", 10))
+          local both = TextWidth(string.rep(".", 10) .. string.rep(" ", 10))
+          local sw = (dots ~= nil and both ~= nil and both > dots) and (both - dots) / 10 or B.space_px
+          local spaces = math.ceil((B.size[1] + 2 * B.gap) / sw)
+          row = label .. string.rep(" ", spaces)
+          -- the badge in the middle of the spaces' room: the same gap before and after it
+          local start = lw or #label * B.char_px
+          G.icAffinity = {row = #lines + 1, sprite = sprite, x = start + (spaces * sw - B.size[1]) / 2}
+        end
+        if a.element ~= nil then
+          row = row .. tostring(a.element) .. " "
+        end
+        lines[#lines + 1] = row .. tostring(a.text or "")
+      end
+      return table.concat(lines, "\n")
+    end
+
+    function G.ItemCardPages(item)
+      G.icPages, G.icSetPage, G.icStatPage, G.icPageNames, G.icSetTitle = {}, nil, nil, {}, nil
+      if item == nil or item == 0 or not G.ItemCardOn() then
+        return
+      end
+      G.icAffinity, G.icEffectPage, G.icEffect, G.icSet = nil, nil, nil, nil
+      local hdl = (not IC.no_player and type(G.hdl) == "number") and G.hdl or 0
+      local ok, set = pcall(G.ItemCardSetPage, item)      -- first: the «Efecto» page uses the set's slots too
+      local effect = Command(IC.page_command, item, hdl)
+      local names = type(effect) == "table" and type(effect.page_names) == "table" and effect.page_names or {}
+      if IC.stat_page then
+        G.icStats = G.ItemCardStatParts(item)
+        if #G.icStats > 0 then
+          G.icPages[#G.icPages + 1] = ""
+          G.icStatPage = #G.icPages
+          G.icPageNames[#G.icPages] = names.stats
+        end
+      end
+      if type(effect) == "table" and (type(effect.passive) == "table" or type(effect.affinity) == "table"
+          or (type(effect.tiers) == "table" and #effect.tiers > 0)) then
+        G.icEffect = effect
+        G.icPages[#G.icPages + 1] = ""                    -- drawn by G.ItemCardEffectItems, no text
+        G.icEffectPage = #G.icPages
+        G.icPageNames[#G.icPages] = names.effect
+      else
+        local body = G.ItemCardEffectPage(effect)
+        if body ~= nil and body ~= "" then
+          G.icPages[#G.icPages + 1] = body
+          G.icEffectPage = #G.icPages
+        end
+      end
+      if ok and type(set) == "string" and set ~= "" then
+        G.icPages[#G.icPages + 1] = IC.text_on_icons and "" or set
+        G.icSetPage = #G.icPages
+        G.icPageNames[#G.icPages] = names.set
+      end
+      if #G.icPages == 0 and IC.bonus_page_fallback ~= false and not IC.text_on_icons then
+        G.icPages[1] = G.icBonus                          -- an item with neither page: its bonus row, as the game shows it
+      end
+      if G.icPage > #G.icPages then
+        G.icPage = 1
+      end
+    end
+
+    function G.ItemCard()
+      local L, i = IC.layer, 0
+      if not Exists(L) or Cmd(C.IS_OPEN, L, i) ~= true then
+        G.itemCardPending = true
+        return
+      end
+      G.itemCardPending = false
+      if IC.relayout == false then
+        return
+      end
+      local rect = G.ItemCardRect()
+      local h = rect[4] - rect[2]
+      -- the base sits at the card's `anchor`: the name / bonus texts keep their layout offsets from it (their own node
+      -- moves are not drawn), every other node is placed from the card's top-left
+      local ax, ay = IC.anchor[1], IC.anchor[2]
+      local x0, y0 = rect[1], rect[2]
+      Cmd(C.NODE_POS, L, i, IC.base, 0, x0 + ax - IC.root[1])
+      Cmd(C.NODE_POS, L, i, IC.base, 1, IC.root[2] - (y0 + ay))
+      for _, n in ipairs(IC.nodes) do
+        local x, y, w, hh = n[2], n[3], n[4], n[5]
+        if n.body then
+          hh = h
+        end
+        Cmd(C.NODE_POS, L, i, n[1], 0, x - ax)
+        Cmd(C.NODE_POS, L, i, n[1], 1, ay - y)
+        if w ~= nil then
+          Cmd(C.NODE_SCALE, L, i, n[1], w, hh)
+        end
+      end
+      -- the retail body mesh off (its drop shadow); the white body is the stats panel's own (the host's card rect runs
+      -- up under the item card: one panel), else a body layer of our own (IC.body_bottom)
+      Cmd(C.MESH, L, IC.body_mesh, false, i)
+      if IC.body_bottom == nil then
+        G.Try("ItemCardBody", nil, false)
+      else
+        local body = {rect[1], rect[2], rect[3], math.max(rect[4], IC.body_bottom)}
+        if not G.ItemCardBody(body, true) then
+          G.itemCardPending = true
+        end
+      end
+      if not G.icDumped then
+        G.icDumped = true
+        G.Try("ItemCardDump")
+      end
+    end
+
+    -- once: where the card's nodes are drawn (CMND_GET_MESH_GLOBAL_POSITION), to loader.log
+    function G.ItemCardDump()
+      for _, n in ipairs(IC.dump or {}) do
+        local ok, x, y = pcall(funcLuaMenuCommand, 499270986, IC.layer, 0, n[1])
+        pcall(funcLuaCommand, C.LOG, "EVT_PPG item card node", n[2], tostring(ok and x), tostring(ok and y))
+      end
+    end
+
+-- Player page block (plate_pages.lua): the stats panel's rows the focused item raises / lowers
+    -- ---- the stats panel's rows the focused item raises / lowers: outline + number colour (CMND_GET_EQUIP_PARAM) ----
+    -- an item's stat si for the shown player: its change and its affinity bonus (Better Equipment's page answer)
+    G.icAffinityOf = {}
+    local function ItemStat(it, si, effect)
+      if it == nil or it == 0 then
+        return 0
+      end
+      local ok, has, v = pcall(funcLuaCommand, 2207870782, it, si)
+      v = ok and has ~= false and tonumber(v) or 0
+      local eff = effect
+      if eff == nil then
+        local key = tostring(it) .. "/" .. tostring(G.hdl)
+        eff = G.icAffinityOf[key]
+        if eff == nil then
+          eff = Command(IC.page_command, it, type(G.hdl) == "number" and G.hdl or 0) or false
+          G.icAffinityOf[key] = eff
+        end
+      end
+      local A = type(eff) == "table" and eff.affinity or nil
+      local extra = (type(A) == "table" and type(A.bonus) == "table") and tonumber(A.bonus[si + 1]) or 0
+      return v + extra
+    end
+
+    -- the stats panel's rows: the change of wearing `item` instead of `base` (nil = the item's own change; the
+    -- equipment screen), affinity included; the bar's segment, the label and the outline show the same value
+    function G.ItemCardRows(item, base)
+      local frame, delta, label = nil, nil, nil
+      if item ~= nil and item ~= 0 and G.ItemCardOn() and IC.rows ~= false then
+        for si = 0, 7 do
+          local d = ItemStat(item, si, G.icEffect) - ItemStat(base, si)
+          if d ~= 0 then
+            for g = 1, 8 do
+              if G.STAT[g] == si then
+                frame = frame or {}
+                frame[g] = d > 0 and "raise" or "lower"
+                label = label or {}
+                label[g] = d
+                delta = delta or {}
+                delta[g] = d
+              end
+            end
+          end
+        end
+      end
+      G.rowFrame, G.rowDelta = frame, delta
+      G.Try("ItemCardDeltaLabels", label)
+      local R = IC.row_mark
+      G.numBase = G.numBase or {}
+      for g = 1, 8 do
+        local now = frame ~= nil and frame[g] or nil
+        local k = G.GROUP_ROW[g]
+        if Exists(G.BAR) and Cmd(C.IS_OPEN, G.BAR, k) == true and G.ready[G.BAR * 16 + k] then
+          local gs, ga = G.GainSprite(k)
+          Cmd(C.SPRITE, G.BAR, ga, gs, G.GG.SLOT_GAIN_QUAD, 0, k)
+        end
+        if Exists(G.NUM) and Cmd(C.IS_OPEN, G.NUM, g - 1) == true then
+          -- the number's own colour (CMND get prim colour, as the retail SetPrimitiveGrayout reads it), read once
+          -- while it is untinted; every row without a change gets it back on each focus
+          if G.numBase[g] == nil then
+            local ok, r, gg, b = pcall(funcLuaMenuCommand, 3648327470 --[[get prim colour]], G.NUM, g - 1, R.number_style)
+            if ok and type(r) == "number" and type(gg) == "number" and type(b) == "number" then
+              G.numBase[g] = {r, gg, b}
+            end
+          end
+          local c = now ~= nil and R.colour[now] or G.numBase[g]
+          if c ~= nil then
+            pcall(funcLuaMenuCommand, 855211291, G.NUM, g - 1, R.number_style, c[1], c[2], c[3])
+          end
+        end
+      end
+      G.Try("ItemCardLuckRow")
+    end
+
+    -- the delta segments (G.Bars hands their screen rects {x, y, w, h, raise} every frame): drawn on the icon layer's
+    -- instances after the labels only when they change; the fill's visible band of the bar (IC.row_mark.delta.band)
+    function G.DeltaSegment(segs)
+      local R, S = IC.row_mark, IC.set_icons
+      local parts = {}
+      for _, sg in ipairs(segs or {}) do
+        parts[#parts + 1] = string.format("%.0f %.0f %.0f %s", sg[1], sg[2], sg[3], tostring(sg[5]))
+      end
+      local key = table.concat(parts, "|")
+      if key == G.segKey then
+        return
+      end
+      local L = G.EQ_ICON
+      if not Exists(L) then
+        return
+      end
+      local B = R.delta.band
+      local k, done = R.delta.first, true
+      for _, sg in ipairs(segs or {}) do
+        if sg[3] >= 1 and k < S.instances then
+          local sp = {IC.effect.atlas, CALC_CRC(sg[5] and R.delta.raise or R.delta.lower), sg[3], sg[4] * B[2]}
+          done = IconSlot(k, sg[1], sg[2] + sg[4] * B[1], "sprite", sp) and done
+          k = k + 1
+        end
+      end
+      for i = k, R.delta.first + R.delta.count - 1 do
+        if Cmd(C.IS_OPEN, L, i) == true then
+          Cmd(C.VIS, L, i, false)
+        end
+      end
+      G.segKey = done and key or nil
+    end
+
+    -- the delta labels over the changed numbers («+41» green, «-10» red; the item's change and, on a raise, its affinity
+    -- bonus for the shown player): the icon layer's last instances, as small texts
+    function G.ItemCardDeltaLabels(label)
+      local L, S, R = G.EQ_ICON, IC.set_icons, IC.row_mark
+      if not Exists(L) then
+        return
+      end
+      local k = S.page_instances or S.instances
+      local last = (IC.row_mark.delta.first or S.instances) - 1
+      for g = 1, 8 do
+        local v = label ~= nil and label[g] or nil
+        if v ~= nil and k <= last then
+          local row = G.GROUP_ROW[g]
+          local col, r = math.floor(row / 4), row % 4
+          -- the bars' origin (the chart base at G.CHART_AT), as the delta segments
+          local x = G.CHART_AT[1] + G.ROW_X0[col] + R.label.dx
+          local y = G.CHART_AT[2] - G.ROW_Y[r] + R.label.dy
+          local text = (v > 0 and (R.label.plus .. "+") or (R.label.minus .. "-")) .. tostring(math.abs(v)) .. "[C]"
+          IconSlot(k, x, y, "text", {text = text, style = "white", scale = R.label.scale})
+          k = k + 1
+        end
+      end
+      for i = k, last do
+        if Cmd(C.IS_OPEN, L, i) == true then
+          Cmd(C.VIS, L, i, false)
+        end
+      end
+    end
+
+    -- Suerte (no equipment changes it): its number copy's comparison arrows off (the retail graph only sets them for
+    -- the 7 stats, so they showed as crossed arrows) and its label given the labels' colour the way the retail graph
+    -- does (its layer's label colour group; nothing set it on this screen, so it kept the white of its sprite)
+    function G.ItemCardLuckRow()
+      local R = IC.row_mark
+      if Exists(G.NUM) and Cmd(C.IS_OPEN, G.NUM, R.luck_number) == true then
+        for _, m in ipairs(R.luck_arrows) do
+          Cmd(C.MESH, G.NUM, m, false, R.luck_number)
+        end
+      end
+      if Exists(G.EXTRA) and Cmd(C.IS_OPEN, G.EXTRA, 0) == true then
+        local c = R.label_colour
+        pcall(funcLuaMenuCommand, 801406373 --[[material colour of a group]], G.EXTRA, 0, R.label_group, c[1], c[2], c[3])
+      end
+    end
+
+-- Player page block (plate_pages.lua): the item detail card's text box, page input, show / hide and host wrappers
+    -- the text box of a paged card: the shown page's rows
+    function G.ItemCardText()
+      if #G.icPages == 0 or not Exists(IC.layer) or Cmd(C.IS_OPEN, IC.layer, 0) ~= true then
+        return
+      end
+      if IC.text_on_icons then
+        Cmd(C.TEXT_VIS, IC.layer, 3138144965 --[[_text_parameter01]], false, 0)
+        G.Try("ItemCardPageIcons")
+        return
+      end
+      local body = G.icPages[G.icPage] or G.icBonus
+      Cmd(C.SET_TEXT, IC.layer, 3138144965 --[[_text_parameter01]], body, 0)
+      -- the text node only on a page that writes in it (the game's bonus lines never show under the Efecto page)
+      Cmd(C.TEXT_VIS, IC.layer, 3138144965 --[[_text_parameter01]], body ~= "", 0)
+      G.Try("ItemCardPageIcons")
+    end
+
+    G.IC_CTRLS = {1332654303 --[[MENU_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]]}
+    local function Pressed(k)
+      for _, ctrl in ipairs(G.IC_CTRLS) do
+        local ok, hit = pcall(funcLuaCommand, 4265778440, ctrl, k)
+        if ok and hit == true then
+          return true
+        end
+      end
+      return false
+    end
+
+    -- the frame's input read while a paged card shows: CMD_FUNCL2 back, CMD_FUNCR2 forward (both wrap)
+    function G.ItemCardInput()
+      if not G.ItemCardPaged() or not G.ItemCardOn() or not Exists(IC.layer)
+          or Cmd(C.IS_OPEN, IC.layer, 0) ~= true or Cmd(C.IS_VIS, IC.layer, 0) ~= true then
+        return
+      end
+      local dir
+      if IC.pager ~= nil and IC.pager.style == "ycycle" then
+        dir = Pressed(3421673595 --[[CMD_FUNC3]]) and 1 or 0
+      else
+        dir = (Pressed(1970176280 --[[CMD_FUNCL2]]) and -1) or (Pressed(2704260807 --[[CMD_FUNCR2]]) and 1) or 0
+      end
+      if dir == 0 then
+        return
+      end
+      G.icPage = (G.icPage - 1 + dir) % #G.icPages + 1
+      pcall(funcLuaCommand, 1917805374, 1228648509)      -- the retail page switch sound (sy0027)
+      G.ItemCard()
+      G.ItemCardText()
+    end
+
+    -- the layer's texts and item icons are drawn where their nodes are when the retail fill sets them, so a layout
+    -- found pending (layer opened after the fill) fills the card again over the moved nodes
+    function G.ItemCardPending()
+      if G.itemCardPending and G.ItemCardOn() then
+        G.ItemCard()
+        G.ItemCardPageIcons()
+        if not G.itemCardPending and not IC.no_player and G.itemCardLast ~= nil
+            and type(SetupEquipInfoWindow) == "function" then
+          pcall(SetupEquipInfoWindow, G.itemCardLast)
+        end
+      end
+    end
+
+    if not IC.no_player then
+      EVT_PPG_Wrap("GetEquipParamTextOneLine", function(orig)
+        return function(item, idx, ...)
+          local ok, s = orig(item, idx, ...)
+          if ok == true and type(s) == "string" then
+            local okS, signed = pcall(G.SignedBonus, s)
+            if okS and type(signed) == "string" then
+              s = signed
+            end
+          end
+          return ok, s
+        end
+      end)
+      EVT_PPG_Wrap("GetEquipParamText", function(orig)
+        return function(item, ...)
+          if not G.ItemCardOn() or type(GetEquipParamTextOneLine) ~= "function" then
+            return orig(item, ...)
+          end
+          local parts = {}
+          for k = 0, 7 do
+            local ok, s = GetEquipParamTextOneLine(item, k)
+            if ok == true and type(s) == "string" and s ~= "" then
+              parts[#parts + 1] = s
+            end
+          end
+          G.icBonus = table.concat(parts, IC.bonus_gap)
+          return G.icBonus
+        end
+      end)
+      EVT_PPG_Wrap("SetVisibleEquipInfoWindow", function(orig)
+        return function(on, ...)
+          G.Try("ItemCardSubscribe")
+          local r = Pack(orig(on, ...))
+          if on ~= true then
+            G.ItemCardHide()                    -- nothing focused: the rows' own look, no card
+          end
+          return table.unpack(r, 1, r.n)
+        end
+      end)
+    end
+
+    -- the card of `item` after the game filled the card layer (name, icon, chips): its pages, layout, texts and the
+    -- stats panel's rows, compared with `base` (nil = the equipment screen: the item's own change; the picker: the
+    -- slot's item, the set worn as if `item` replaced it). Every screen's card goes through here.
+    function G.ItemCardShow(item, base)
+      if item ~= G.icShown then
+        G.icPage = 1                          -- another item: its first page
+      end
+      G.icShown = item
+      G.icWornSwap = base ~= nil and {from = base ~= 0 and base or nil, to = item} or nil
+      if IC.prio_above_card and Exists(IC.layer) then
+        local okP, p = pcall(funcLuaMenuCommand, 1018283794, IC.layer, 0)
+        G.icPrioBase = okP and tonumber(p) or G.icPrioBase
+      end
+      if G.ItemCardOn() then
+        G.Try("ItemCardPages", item)          -- after the fill: G.icBonus is the item's bonus row
+        G.Try("ItemCard")
+        G.Try("ItemCardText")
+      end
+      if IC.rows ~= false then
+        G.Try("ItemCardRows", item, base)
+      end
+    end
+
+    -- the card hidden (nothing focused / hovered): rows, body, page icons and pager
+    function G.ItemCardHide()
+      G.icPages, G.icShown, G.icWornSwap = {}, nil, nil
+      if IC.text_on_icons and Exists(IC.layer) and Cmd(C.IS_OPEN, IC.layer, 0) == true then
+        Cmd(C.TEXT_VIS, IC.layer, 3138144965 --[[_text_parameter01]], true, 0)   -- another item: the game's own line
+      end
+      if IC.rows ~= false then
+        G.Try("ItemCardRows", nil)
+      end
+      G.Try("ItemCardBody", nil, false)
+      G.Try("ItemCardPageIcons")
+    end
+
+    if not IC.no_player then
+      -- the item picker (equip_menu_list, its own script: graft plate_pages item_card_list.lua) sends the hovered item
+      -- as the menu event IC.picker_event (VRFW_MenuEvent): the hovered item's card compared with the slot's item (the one
+      -- this screen shows), 0 = nothing hovered, -1 = the picker gone (the slot's own item again). Subscribed once this
+      -- script runs (its first card call or OnInit); the subscription ends with this menu.
+      function G.ItemCardSubscribe()
+        if G.icSubscribed or type(VRFW_MenuEvent) ~= "table" then
+          return
+        end
+        G.icSubscribed = VRFW_MenuEvent.On(IC.picker_event, IC.menu, IC.picker_owner, function(item)
+          item = tonumber(item)
+          if item == nil then
+            return
+          end
+          if item < 0 then
+            EVT_PPG_ItemCardPreviewEnd()
+          else
+            EVT_PPG_ItemCardPreview(item)
+          end
+        end)
+      end
+      EVT_PPG_Wrap("OnInit", function(orig)
+        return function(...)
+          local r = Pack(orig(...))
+          G.Try("ItemCardSubscribe")
+          return table.unpack(r, 1, r.n)
+        end
+      end)
+
+      function EVT_PPG_ItemCardPreview(item)
+        if item == nil or item == 0 then
+          G.ItemCardHide()
+          return true
+        end
+        G.Try("ItemCard")
+        G.ItemCardShow(item, G.itemCardLast or 0)
+        local parts = {}
+        for g = 1, 8 do
+          local d = G.rowDelta ~= nil and G.rowDelta[g] or nil
+          if d ~= nil then
+            parts[#parts + 1] = string.format("%s%+d", tostring(G.STAT[g]), d)
+          end
+        end
+        pcall(funcLuaCommand, C.LOG, "picker hover", tostring(item), "vs", tostring(G.itemCardLast), "delta",
+          table.concat(parts, " "))
+        return true
+      end
+      function EVT_PPG_ItemCardPreviewEnd()
+        if G.itemCardLast ~= nil and G.itemCardLast ~= 0 then
+          G.Try("ItemCard")
+          G.ItemCardShow(G.itemCardLast, nil)
+        else
+          G.ItemCardHide()
+        end
+        return true
+      end
+
+      EVT_PPG_Wrap("SetupEquipInfoWindow", function(orig)
+        return function(item, ...)
+          G.Try("ItemCardSubscribe")
+          G.itemCardLast = item
+          if G.ItemCardOn() then
+            G.Try("ItemCard")                   -- nodes first: the fill draws the texts / icons where the nodes are
+          end
+          local r = Pack(orig(item, ...))
+          G.ItemCardShow(item, nil)
+          return table.unpack(r, 1, r.n)
+        end
+      end)
+    else
+      -- a screen without a player (inventory, shop): the game marks an equipment item's card with its position icons
+      -- (SetupItemPositionIcon, include/menu/equip_menu_inc) right after filling it, and clears them for any other
+      -- item: the card's pages follow those two calls; the card layer's visibility (CMND_SET_LAYER_VISIBLE on it)
+      -- takes ours along
+      function G.ItemCardWatch()
+        if G.icWatched or type(funcLuaMenuCommand) ~= "function" then
+          return
+        end
+        G.icWatched = true
+        local raw = funcLuaMenuCommand
+        -- every call goes on with exactly the arguments it got (raw(...)): a call padded with nils reaches the engine
+        -- with more arguments and multi-arity commands read the padding as a real one (a one-argument call such as
+        -- the shop's FinalizeMenu command arrived with two)
+        funcLuaMenuCommand = function(...)
+          local cmd, layer = ...
+          if cmd == C.VIS and IC.layers_set[layer] then
+            local r = Pack(raw(...))
+            if layer == IC.layer and G.icShown ~= nil then
+              G.Try("ItemCardPageIcons")
+            end
+            return table.unpack(r, 1, r.n)
+          end
+          return raw(...)
+        end
+      end
+      EVT_PPG_Wrap("SetupItemPositionIcon", function(orig)
+        return function(layer, k, item, ...)
+          local r = Pack(orig(layer, k, item, ...))
+          if IC.layers_set[layer] and type(item) == "number" and item ~= 0 then
+            G.Try("ItemCardWatch")
+            IC.layer = layer
+            G.ItemCardLayer = layer
+            G.ItemCardShow(item, nil)
+          end
+          return table.unpack(r, 1, r.n)
+        end
+      end)
+      EVT_PPG_Wrap("ClearItemPositionIcon", function(orig)
+        return function(layer, ...)
+          local r = Pack(orig(layer, ...))
+          if IC.layers_set[layer] and layer == IC.layer and G.icShown ~= nil then
+            G.ItemCardHide()
+          end
+          return table.unpack(r, 1, r.n)
+        end
+      end)
+    end
+  end
 
   -- SUPERTÉCNICAS: the confirmation mode's key steps follow the 3-row page (G.NavOnChange)
   if G.H.pages then

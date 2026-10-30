@@ -1,0 +1,60 @@
+# «Pingüino emperador» n.º 1 / 2 / 3 (Emperor Penguin No. 1 / 2 / 3, forest; whs00610, whs00400 + _or, whs01050 + _or /
+# _mm): while the ball flies to the goal after the cut-in it keeps the look of its cut-in's last shot instead of the
+# plain forest special-shot aura (ega0075d):
+#   n.º 1 (ev60_00610, c0900 held at frame 581): the ball inside its red and black fire burst with its red glows and
+#       blinking bite flashes, the five penguins in the cut-in's ring round it, each swaying gently, each with its own
+#       white streak running straight back along the flight; x0.8 (object ev6061ep00);
+#   n.º 2 (ev60_00400, c0080 held at frame 628): the ball inside its orange fire ball, the five penguins in their ring
+#       round it, each swaying gently, each with its white streak running straight back out of its tail; x0.7
+#       (object ev6040ep00);
+#   n.º 3 (ev60_01050, c0050 held at frame 503, the ball caught up with the penguins): the ball inside its purple aura
+#       with its purple, blue and white streaks behind it, four purple penguins round it, each swaying gently, each with
+#       its white trail running straight back out of its tail (the fifth, 2.5 m over the shot, left out); x0.8
+#       (object ev6105ep00).
+# The streaks come out of the kick point (never stretched, their tails fading by distance). The objects are built by
+# research/scripts/emperor_penguin_ball_fx.py from ev60006100 / ev60004000 / ev60010500 and the cut-ins' penguin models.
+# Each trigger copies the forest special-shot aura row (like): CB_SkillShootBallAura turns +Z along the ball's velocity
+# every frame (aura-balon-tiro.md §2b). Flights: content\techniques\emperor_penguin_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "emperor_penguin_1"
+from = "ega0075d"
+object = "effect/event/ev60/ev6061ep00/ev6061ep00.objbin"
+
+[[effect]]
+name = "emperor_penguin_2"
+from = "ega0075d"
+object = "effect/event/ev60/ev6040ep00/ev6040ep00.objbin"
+
+[[effect]]
+name = "emperor_penguin_3"
+from = "ega0075d"
+object = "effect/event/ev60/ev6105ep00/ev6105ep00.objbin"
+
+[[shot_aura]]
+name = "emperor_penguin_1"
+when = { techniques = ["whs00610"] }
+aura = "emperor_penguin_1"
+like = "ega0075d"
+# the streaks come out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "emperor_penguin_2"
+when = { techniques = ["whs00400", "whs00400_or"] }
+aura = "emperor_penguin_2"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "emperor_penguin_3"
+when = { techniques = ["whs01050", "whs01050_or", "whs01050_mm"] }
+aura = "emperor_penguin_3"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

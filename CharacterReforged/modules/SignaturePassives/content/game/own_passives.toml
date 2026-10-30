@@ -23,11 +23,11 @@ steal = 17
 args = ["ptr", "u32"]
 ret = "ptr"
 
-# first: in a mode without player passives (Utilities' game_state key BetterQoL.passives_off, a mod's [[off_mode]]) the
-# slot is empty for every player
+# first: in a mode without player passives (the framework's game_state key vrfw.passive.all_off) the slot is empty for
+# every player
 [[VRFW.Hook.answer]]
 value = "0"
-when = { state = "BetterQoL.passives_off", equals = 1 }
+when = { state = "vrfw.passive.all_off", equals = 1 }
 write = "[args[1]]:u32"
 
 # the own passive of the player's card (key: chara_param id)
@@ -58,7 +58,7 @@ ret = "u8"
 # first: in a mode without player passives the piece counts as closed
 [[VRFW.Hook.answer]]
 value = "0"
-when = { state = "BetterQoL.passives_off", equals = 1 }
+when = { state = "vrfw.passive.all_off", equals = 1 }
 
 [[VRFW.Hook.answer]]
 table = "SignaturePassives.AlwaysOpen"

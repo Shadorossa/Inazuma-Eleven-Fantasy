@@ -24,7 +24,7 @@ do
   if VRFW_PlayerPages ~= nil then
     -- not in the Battle Bay (its team select / menus and its matches: the framework mode `battle_bay`, entered by
     -- Utilities' menu hook); the registry skips a page that says no, so Q / E and the dots leave it out
-    VRFW_PlayerPages.Add({Name = "BetterQoL.Career", Index = S.PAGE, Type = S.TYPE, Last = true,
+    VRFW_PlayerPages.Add({Name = "BetterQoL.Career", Index = S.PAGE, Type = S.TYPE, Last = true, Foreign = false,
       Enabled = function()
         local ok, on = pcall(funcLuaCommand, 624411898, "battle_bay")
         return not (ok and on == true)
@@ -83,7 +83,8 @@ UTIL_CS.ROW_CELLS = {[0] = 4, 4, 4, 4, 4}
 UTIL_CS.CHIPS = 3                    -- util_cs_cellt instances 0..2
 UTIL_CS.ROWS = 811691761             -- soccer11_20_formation_team_passive (the retail strips, hidden on our page)
 UTIL_CS.L_STATUS = 730911947         -- soccer11_05_formation_status_base
-UTIL_CS.TX_S1105 = 1156047165        -- #/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx
+UTIL_CS.TX_S1105 = 1156047165        -- #/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx (the retail title)
+UTIL_CS.TX_TITLE = 4014788388        -- #/menu/102_team/util_career_title/<LG>/util_career_title.g4tx (the mod's own atlas)
 UTIL_CS.SP_SIXTH = 2885965654        -- gtxt_sixthsense01 (swap node of the title mesh)
 UTIL_CS.SP_TITLE = 1018659885
 UTIL_CS.M_SIXTH_TITLE = 1621221814   -- _gtxt_sixthsense01
@@ -108,7 +109,7 @@ UTIL_CS.QUAD_SPRITE = {
 }
 UTIL_CS.Q_HEAD, UTIL_CS.Q_TOTAL, UTIL_CS.Q_LINE, UTIL_CS.Q_CHIP = 0, 1, 2, 3      -- util_cs_band instances
 UTIL_CS.I_SIGNED, UTIL_CS.I_GOAL, UTIL_CS.I_MVP, UTIL_CS.I_TODAY = 0, 1, 2, 3     -- util_cs_icon instances
-UTIL_CS.TX_BTL0613 = 1191797350      -- #/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx
+UTIL_CS.TX_OWN = 950686152         -- #/menu/102_team/util_career_page/util_career_page.g4tx (the mod's own atlas)
 UTIL_CS.SP_FRAME = 538967808         -- the gauge frame's sprite slot (_hp_base01)
 UTIL_CS.BAND_HIDE = {1257514352 --[[_gtxt_stamina01]], 2609329121 --[[_hp_empty01]], 2043683848 --[[_hp_bar02]]}
 UTIL_CS.FRAME = {94, 816, 476, 44}   -- the gauge frame _hp_base01 in its layout: x, -y, w, h
@@ -281,15 +282,6 @@ function UTIL_CS.Cell(row, col)
     k = k + UTIL_CS.ROW_CELLS[r]
   end
   return UTIL_CS.CELL, k
-end
-
-function UTIL_CS.EachCell(fn)
-  for r = 0, 4 do
-    for c = 0, UTIL_CS.ROW_CELLS[r] - 1 do
-      local L, k = UTIL_CS.Cell(r, c)
-      fn(L, k, r, c)
-    end
-  end
 end
 
 
@@ -654,7 +646,7 @@ function UTIL_CS.Quad(L, i, x0, y0, x1, y1, origin)
     for _, m in ipairs(UTIL_CS.BAND_HIDE) do
       funcLuaMenuCommand(C.MESH_VISIBLE, L, m, false, i)
     end
-    funcLuaMenuCommand(C.SPRITE, L, UTIL_CS.TX_BTL0613, UTIL_CS.QUAD_SPRITE[L][i], UTIL_CS.SP_FRAME, 0, i)
+    funcLuaMenuCommand(C.SPRITE, L, UTIL_CS.TX_OWN, UTIL_CS.QUAD_SPRITE[L][i], UTIL_CS.SP_FRAME, 0, i)
     ready = {}
     UTIL_CS.quadReady[key] = ready
   end
@@ -801,7 +793,7 @@ function UTIL_CS.Decor(ptype)
   funcLuaMenuCommand(C.MESH_VISIBLE, L, UTIL_CS.M_T_TEAMPASS, ptype == 2, 0)
   funcLuaMenuCommand(C.MESH_VISIBLE, L, UTIL_CS.M_DOT4_ON, ptype == 2, 0)
   if mine then
-    funcLuaMenuCommand(C.SPRITE, L, UTIL_CS.TX_S1105, UTIL_CS.SP_TITLE, UTIL_CS.SP_SIXTH, 0, 0)
+    funcLuaMenuCommand(C.SPRITE, L, UTIL_CS.TX_TITLE, UTIL_CS.SP_TITLE, UTIL_CS.SP_SIXTH, 0, 0)
     funcLuaMenuCommand(C.MESH_VISIBLE, L, UTIL_CS.M_SIXTH_TITLE, true, 0)
   elseif not ifp then
     funcLuaMenuCommand(C.SPRITE, L, UTIL_CS.TX_S1105, UTIL_CS.SP_SIXTH, UTIL_CS.SP_SIXTH, 0, 0)

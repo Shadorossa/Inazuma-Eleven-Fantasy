@@ -31,11 +31,7 @@ if CharacterReforged.CreateCard == nil then
   Card.items = nil
 
   function Card.U32(v)
-    v = tonumber(v) or 0
-    if v < 0 then
-      v = v + 4294967296
-    end
-    return v
+    return VRFW_Id.u32(v)
   end
 
   -- the create items of the declared systems (asked once per list: Card.Reset at the list's OnInit)
@@ -148,13 +144,13 @@ if CharacterReforged.CreateCard == nil then
   function Card.Row(L, inst, skill)
     local name = Card.Name(skill)
     if name ~= "" then
-      funcLuaMenuCommand(1083631230, L, 931545948 --[[_text_list01_on]], name, inst)
-      funcLuaMenuCommand(1083631230, L, 3705682548 --[[_text_list01_off]], name, inst)
+      funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, L, 931545948 --[[_text_list01_on]], name, inst)
+      funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, L, 3705682548 --[[_text_list01_off]], name, inst)
     end
     for _, m in ipairs({1255155594 --[[_icon_cmd_type_dmy01]], 2172872396 --[[_icon_cmd_type_base01]],
         559600405 --[[_icon_sp_sub_dmy01]], 1228576956 --[[_base_have01]], 1202991162 --[[_base_equip01]],
         2037408502 --[[_icon_have01]], 1139638886 --[[_gtxt_equip01]]}) do
-      funcLuaMenuCommand(3405944500, L, m, false, inst)
+      funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, L, m, false, inst)
     end
     funcLuaMenuCommand(2158717427, L, 442049775 --[[_pos_equip01]], false, inst)
     funcLuaMenuCommand(2158717427, L, 3426045766 --[[_pos_have01]], false, inst)
@@ -162,10 +158,10 @@ if CharacterReforged.CreateCard == nil then
     funcLuaMenuCommand(1233047821 --[[number visible]], L, inst, 3974820126 --[[num_equip01]], false)
     local icon = Card.ICON_BY_TYPE[Card.AuraType(skill) or -1]
     if icon ~= nil then
-      funcLuaMenuCommand(3405944500, L, 2164615260 --[[_icon_sp_area_dmy01]], true, inst)
+      funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, L, 2164615260 --[[_icon_sp_area_dmy01]], true, inst)
       funcLuaMenuCommand(558735651, L, Card.ICON_ATLAS, icon, 566439826 --[[icon_sp_area_dmy01]], 0, inst)
     else
-      funcLuaMenuCommand(3405944500, L, 2164615260, false, inst)
+      funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, L, 2164615260, false, inst)
     end
   end
 
@@ -176,14 +172,14 @@ if CharacterReforged.CreateCard == nil then
       return false
     end
     local A = Card.MIXIMAX_WINDOW
-    if not funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], A) then
+    if not funcLuaMenuCommand(VRFW_Cmd.IS_EXIST_LAYER, A) then
       return false
     end
     for _, p in ipairs({3407216458 --[[_pos_page01]], 1377611504 --[[_pos_page02]], 3145665477 --[[_pos_page04]],
         3430431571 --[[_pos_page05]], 1307475940 --[[_pos_list01]], 3571920478 --[[_pos_list02]]}) do
       funcLuaMenuCommand(2158717427, A, p, false, 0)
     end
-    funcLuaMenuCommand(711242136, 1921826160 --[[team00_40_change_page_guide]], 0, false)
+    funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, 1921826160 --[[team00_40_change_page_guide]], 0, false)
     -- the template's move page: every part hidden explicitly (a part the fill showed stays drawn under a hidden locator)
     for _, x in ipairs({1179414078 --[[_text_fsp01]], 1899787537 --[[_text_area01]], 3542179801 --[[_text_page_title01]],
         1244139107 --[[_text_page_title02]], 2739645270 --[[_text_page_title04]], 3561790400 --[[_text_page_title05]],
@@ -196,19 +192,19 @@ if CharacterReforged.CreateCard == nil then
         658945009, 905124895, 2370796410, 1956062673, 859266817, 240613041, 380545388, 68880002, 3165086183,
         561011038, 4195885618, 3182975202, 2161668434, 855158082, 4122450641,
         2449339029 --[[_icon_fs_dmy01]], 478320441 --[[_icon_chr_dmy01]]}) do
-      funcLuaMenuCommand(3405944500, A, m, false, 0)
+      funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, A, m, false, 0)
     end
     funcLuaMenuCommand(1233047821 --[[number visible]], A, 0, 2223127589 --[[AT power]], false)
     funcLuaMenuCommand(4176779611 --[[clear face icon]], A, 0, 3237726902 --[[icon_chr_dmy01]])
     -- the description page: the item's own name and text
     funcLuaMenuCommand(2158717427, A, 622567014 --[[_pos_page03]], true, 0)
-    funcLuaMenuCommand(3405944500, A, 728354709, true, 0)
-    funcLuaMenuCommand(1083631230, A, 2915321899 --[[_text_fs01]], Card.Name(skill), 0)
-    funcLuaMenuCommand(1083631230, A, 2956552560 --[[_text_flavor02]], Card.Desc(skill), 0)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, A, 728354709, true, 0)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, A, 2915321899 --[[_text_fs01]], Card.Name(skill), 0)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, A, 2956552560 --[[_text_flavor02]], Card.Desc(skill), 0)
     funcLuaMenuCommand(2735666188, A, 2956552560, true, 0)
     -- the neutral band: the retail Mix-Max band, element 01
     funcLuaMenuCommand(558735651, A, 2815298114 --[[team00_30 <LG>]], 3558327990 --[[mixi_base01]], 1716659057 --[[fs_base01]], 0, 0)
-    funcLuaMenuCommand(3405944500, A, 1605611365, true, 0)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, A, 1605611365, true, 0)
     return true
   end
 
@@ -221,8 +217,6 @@ if CharacterReforged.CreateCard == nil then
   Card.KEY_ROW = 416963278                 -- character_reforged_create_row
   Card.KEY_MOVES = {892911027, 2888952841} -- character_reforged_create_move1 / _move2
   Card.KEY_EARLY = 1743709088              -- character_reforged_create_bank_early: 1 = the bank is already opening
-  Card.PARAM_SET = 3860611758
-  Card.PARAM_DELETE = 3363400568
   Card.TEMP_SET = 2565779025
   Card.BANK_RESULT = 2524660062            -- the bank's pick (retail temp int)
   Card.OPEN_MENU = 433545986               -- CMND_OPEN_MENU_OBJECT
@@ -242,15 +236,15 @@ if CharacterReforged.CreateCard == nil then
       return false
     end
     for _, key in ipairs(Card.KEY_MOVES) do
-      funcLuaCommand(Card.PARAM_DELETE, key)
+      VRFW_Param.Clear(key)
     end
-    funcLuaCommand(Card.PARAM_DELETE, Card.KEY_BASE)
-    funcLuaCommand(Card.PARAM_SET, Card.KEY_BASE, 0, base, 1)
-    funcLuaCommand(Card.PARAM_DELETE, Card.KEY_ROW)
-    funcLuaCommand(Card.PARAM_SET, Card.KEY_ROW, 0, row, 1)
+    VRFW_Param.Clear(Card.KEY_BASE)
+    VRFW_Param.Set(Card.KEY_BASE, base)
+    VRFW_Param.Clear(Card.KEY_ROW)
+    VRFW_Param.Set(Card.KEY_ROW, row)
     funcLuaCommand(Card.TEMP_SET, Card.BANK_RESULT, 0)
-    funcLuaCommand(Card.PARAM_DELETE, Card.KEY_EARLY)
-    funcLuaCommand(Card.PARAM_SET, Card.KEY_EARLY, 0, 1, 1)
+    VRFW_Param.Clear(Card.KEY_EARLY)
+    VRFW_Param.Set(Card.KEY_EARLY, 1)
     if hide ~= nil then
       -- every layer of that menu hidden, not only suspended: closing the list resumes its parent menu, and a resumed
       -- menu draws through the bank (owner 2026-10-14: the player card, role slot, plates and arrows over the bank)

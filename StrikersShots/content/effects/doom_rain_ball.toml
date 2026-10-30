@@ -1,0 +1,109 @@
+# «Doom Rain» («Diluvio letal», whs01390, fire long shot, cut-in ev60_01390): while the ball flies to the goal it wears
+# the cut-in's last shot (c0400, held at its last frame 399 from the aura's first frame): the rain of seven dark balls
+# with their black flame wraps, glows and red-black streaks, the ball inside the front one (the match ball is hidden:
+# content\techniques\doom_rain_split_ball.toml) and the other six behind it at their cut-in places (up to 11.8 m back,
+# 3.5 m across, 1 m lower), x1. The balls spin and the glows flicker as in the cut-in, the streaks' textures flow on.
+# The six balls behind and every streak come out of the kick point as the ball flies (distance clock, never
+# stretched); each streak fades out at its far end.
+# Split shot (Hissatsu Effects' `split_shot` of whs01390: a block takes balls away): the variant with the balls left
+# is shown (`split_left`, shared by the technique type at run time); the balls farthest behind go first. Without a
+# split shot only the first rule (7 balls) matches; the last matching rule wins, so it comes first.
+# The objects are ev6139dl_<n> (n = balls shown; effect/event/ev60/ev6139dl_<n>/), built by
+# research/scripts/doom_rain_ball_fx.py from ev60013900; docs/game/media/doom-rain-ball-fx.md.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The triggers copy the fire long-shot aura's row (like = "ega0085c"): CB_SkillShootBallAura turns +Z along the ball's
+# velocity every frame; the distance clock (anchor = "kick", drift 0.75 m a frame) reveals the rain from the kick point.
+# Flight: content\techniques\doom_rain_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "doom_rain_7"
+from = "ega0085c"
+object = "effect/event/ev60/ev6139dl_7/ev6139dl_7.objbin"
+
+[[effect]]
+name = "doom_rain_6"
+from = "ega0085c"
+object = "effect/event/ev60/ev6139dl_6/ev6139dl_6.objbin"
+
+[[effect]]
+name = "doom_rain_5"
+from = "ega0085c"
+object = "effect/event/ev60/ev6139dl_5/ev6139dl_5.objbin"
+
+[[effect]]
+name = "doom_rain_4"
+from = "ega0085c"
+object = "effect/event/ev60/ev6139dl_4/ev6139dl_4.objbin"
+
+[[effect]]
+name = "doom_rain_3"
+from = "ega0085c"
+object = "effect/event/ev60/ev6139dl_3/ev6139dl_3.objbin"
+
+[[effect]]
+name = "doom_rain_2"
+from = "ega0085c"
+object = "effect/event/ev60/ev6139dl_2/ev6139dl_2.objbin"
+
+[[effect]]
+name = "doom_rain_1"
+from = "ega0085c"
+object = "effect/event/ev60/ev6139dl_1/ev6139dl_1.objbin"
+
+[[shot_aura]]
+name = "doom_rain"
+when = { techniques = ["whs01390"] }
+aura = "doom_rain_7"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "doom_rain_6"
+when = { techniques = ["whs01390"], split_left = 6 }
+aura = "doom_rain_6"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "doom_rain_5"
+when = { techniques = ["whs01390"], split_left = 5 }
+aura = "doom_rain_5"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "doom_rain_4"
+when = { techniques = ["whs01390"], split_left = 4 }
+aura = "doom_rain_4"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "doom_rain_3"
+when = { techniques = ["whs01390"], split_left = 3 }
+aura = "doom_rain_3"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "doom_rain_2"
+when = { techniques = ["whs01390"], split_left = 2 }
+aura = "doom_rain_2"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "doom_rain_1"
+when = { techniques = ["whs01390"], split_left = 1 }
+aura = "doom_rain_1"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75

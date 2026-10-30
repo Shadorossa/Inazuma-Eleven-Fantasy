@@ -13,12 +13,12 @@
 -- Switch: Mods options «Duel counter» (clean_hud.duel_readout, read once per duel: no restart). Plain line duels never
 -- reach the resolver, so they show nothing. Wrappers only (OnInit, OnOpenLayer, Step); no engine call at chunk load.
 
-local DUEL_READOUT_CMD = 2923985347                -- CMND_BETTERUI_DUEL_READOUT
-local DUEL_OPTION_GET = 4082322029                 -- CMND_VRFW_OPTION_GET
+local DUEL_READOUT_CMD = 2923985347
+local DUEL_OPTION_GET = 4082322029
 local DUEL_OPTION_KEY = "clean_hud.duel_readout"
-local DUEL_TEXT_ID = 3096244543                    -- CMND_VRFW_TEXT_ID
-local DUEL_TEXT_GET = 4074371074                   -- CMND_TEXT_GET
-local DUEL_LOG = 3661580131                        -- CMND_EVT_LOG
+local DUEL_TEXT_ID = 3096244543
+local DUEL_TEXT_GET = 4074371074
+local DUEL_LOG = 3661580131
 local DUEL_FRAME_SECONDS = 1549797111              -- seconds since the last frame
 
 local DUEL_LAYER_SELF = 3870405925                 -- clean_hud_duel_telop_self

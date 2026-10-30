@@ -191,6 +191,10 @@ beaten_only_contexts = ["free_match"]
 beaten_only_difficulties = ["Heroica", "HeroicaPlus"]
 # never_modes: game modes (keys of the VR-Framework's game_modes.toml) where the beaten-only rule never applies.
 never_modes = ["story"]
+# speed_min / speed_max: the range the row «Velocidad del Modo Comandante automático» (utilities.auto_commander_speed)
+# is clamped to (game speed factor while your team plays in Commander mode in a match the auto commander handles).
+speed_min = 1.0
+speed_max = 4.0
 
 [tech_preview]
 # Technique preview (docs/game/ui/technique-preview.md): «<RS> Previsualizar» on the special move card of the
@@ -247,6 +251,16 @@ tile_gap = 6
 key_scale = 0.9
 key_dx = 0
 key_dy = 0
+
+[album]
+# «Álbum de jugadores» (docs/game/ui/album.md): every player is shown as his base card (the team planner's card_values)
+# at this rarity (card rarity value: 4 Legendary) and at the level cap in effect: a mod's [VRFW.Level] Max when it
+# raises the cap, else game_level_cap (the game's own cap)
+display_rarity = 4
+game_level_cap = 99
+# «Juego» ends with «Especiales»: every card of a listed player above display_rarity (Idol, Diamond, …) at its own rarity;
+# its tab icon, a sprite of the game's list tab atlas (icon_list_tab.g4tx; its "_off" twin when not focused)
+special_icon = "icon_list_tab_title01"
 
 [match_clock]
 # «Segundos por minuto de partido» (options.toml utilities.match_clock, scripts\match_clock.lua): the game's clock rate

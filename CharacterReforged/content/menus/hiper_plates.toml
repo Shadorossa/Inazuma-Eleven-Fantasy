@@ -39,3 +39,36 @@ add = [
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x06A92100, 0x02B6446F, 0x1A7DB629, 0], after = { param = "NullLayerName", match = { 1 = 0x9A8B0AFA, 2 = 0x9E946F95, 3 = 0x1A7DB629, 4 = 1 } } },
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x04EF9F59, 0x00F0FA36, 0x1A7DB629, 1], after = { param = "NullLayerName", match = { 1 = 0x06A92100, 2 = 0x02B6446F, 3 = 0x1A7DB629, 4 = 0 } } },
 ]
+
+# The page arrows (owner 2026-10-27): while the controlled player's plates have a second page (both slots filled,
+# switched with RB + D-pad), the retail move selector's chevrons (atlas soccer08_07: cmd_arrow01_l / cmd_arrow01_r)
+# stand at the outer ends of the plates. Layout evt_plate_page_arrows = a copy of the selector layout soccer08_07 with
+# its two arrow joints moved to the root (the graft hiper_btn hides the rest, _pos_base01, and places / sizes the
+# arrows); object = the selector's own object on that copy, without its child layers, texts, anchor and touch areas;
+# 2 instances hung on the plates (attach row evt_plate_page_arrows01 of soccer08_10_cmd_act_hiper_slot.objbin).
+[[layout]]
+file = "common/menu/00_soccer/soccer08/evt_plate_page_arrows/evt_plate_page_arrows.g4pkm"
+from = "common/menu/00_soccer/soccer08/soccer08_07/soccer08_07.g4pkm"
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/evt_plate_page_arrows/evt_plate_page_arrows.g4pkm"
+joint = "_pos_arrow01_l"
+parent = "soccer08_07_output"
+translate = [0.0, 0.0, 0.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer08/evt_plate_page_arrows/evt_plate_page_arrows.g4pkm"
+joint = "_pos_arrow01_r"
+parent = "soccer08_07_output"
+translate = [0.0, 0.0, 0.0]
+
+[[object]]
+name = "evt_plate_page_arrows"
+from = "soccer08_07_cmd_act_btn_cmd_base"
+set = [{ param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer08/soccer08_07/soccer08_07.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer08/evt_plate_page_arrows/evt_plate_page_arrows.g4pkm" } }]
+remove_block = ["CMenuAttachLocator", "MenuTextSetting", "MenuAnchorComponent", "MenuCollisionSetting"]
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/00_soccer/soccer08/soccer08_07/soccer08_07.g4tx"] }]
+
+[[patch]]
+menu = "soccer_command_action_menu"
+add_layer = { name = "evt_plate_page_arrows", object = "evt_plate_page_arrows", count = 2, after = "evt_hiper_input", groups = [{ group = "soccer_command_action_menu", after = "soccer08_17_cancel_guide" }, { group = "soccer_battle_command_action_menu", after = "soccer08_17_cancel_guide" }] }

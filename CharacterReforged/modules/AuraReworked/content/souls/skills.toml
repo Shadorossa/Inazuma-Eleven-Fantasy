@@ -1,4 +1,6 @@
 # Souls Rework › the reel's skill families (kind AuraReworked.soul/1, schema content\types\soul.toml;
+# effect "passive": the player carries that passive of the shared passive engine at the skill level (its blocks and
+# values per level: content\special_passives\souls_reel.toml);
 # docs/game/mods/souls-rework-design.md §1.4 Galaxy values, §9 the VR mapping). Edited in ModManager («Auras», a totem's
 # page) or by hand. `galaxy` names the Galaxy skill (wiki Module:WazaData `<galaxy>LV1..3`); its Galaxy values are in
 # the comment above each family. VR has no GP / TP / Shibire: each mapping is the design's (§4.2). `icon` = the
@@ -10,9 +12,9 @@ schema = "AuraReworked.soul/1"
 name = "shoot_up"
 text = "aura_reworked.reel_shoot_up"
 icon = "icon_teambuff02"
-effect = "move_power"
-move_kinds = ["shoot"]
-values = [10, 15, 25]
+effect = "passive"
+passive = "aura_reworked.reel_shoot_up"
+levels = 3
 galaxy = "ShootUp"
 
 # Galaxy: Dribble Up +100 / +150 / +250 dribble power
@@ -20,9 +22,9 @@ galaxy = "ShootUp"
 name = "dribble_up"
 text = "aura_reworked.reel_dribble_up"
 icon = "icon_teambuff03"
-effect = "move_power"
-move_kinds = ["dribble"]
-values = [10, 15, 25]
+effect = "passive"
+passive = "aura_reworked.reel_dribble_up"
+levels = 3
 galaxy = "DribbleUp"
 
 # Galaxy: Block Up +100 / +150 / +250 block power
@@ -30,9 +32,9 @@ galaxy = "DribbleUp"
 name = "block_up"
 text = "aura_reworked.reel_block_up"
 icon = "icon_teambuff13"
-effect = "move_power"
-move_kinds = ["block"]
-values = [10, 15, 25]
+effect = "passive"
+passive = "aura_reworked.reel_block_up"
+levels = 3
 galaxy = "BlockUp"
 
 # Galaxy: Catch Up +100 / +150 / +250 catch power
@@ -40,9 +42,9 @@ galaxy = "BlockUp"
 name = "catch_up"
 text = "aura_reworked.reel_catch_up"
 icon = "icon_teambuff14"
-effect = "move_power"
-move_kinds = ["catch"]
-values = [10, 15, 25]
+effect = "passive"
+passive = "aura_reworked.reel_catch_up"
+levels = 3
 galaxy = "CatchUp"
 
 # Galaxy: SP Setsuyaku −20 / −35 / −50 % SP costs
@@ -50,8 +52,9 @@ galaxy = "CatchUp"
 name = "sp_saving"
 text = "aura_reworked.reel_sp_saving"
 icon = "icon_teambuff18"
-effect = "point_cost"
-values = [20, 35, 50]
+effect = "passive"
+passive = "aura_reworked.reel_sp_saving"
+levels = 3
 galaxy = "SPSetsuyaku"
 
 # Galaxy: Shibire Plus +20 / +35 / +50 numbness damage dealt
@@ -59,8 +62,9 @@ galaxy = "SPSetsuyaku"
 name = "numbness_plus"
 text = "aura_reworked.reel_numbness_plus"
 icon = "icon_teambuff15"
-effect = "shot_vs_keeper"
-values = [4, 7, 10]
+effect = "passive"
+passive = "aura_reworked.reel_numbness_plus"
+levels = 3
 galaxy = "ShibirePlus"
 
 # Galaxy: Shibire Minus −20 / −35 / −50 numbness damage taken
@@ -68,8 +72,9 @@ galaxy = "ShibirePlus"
 name = "numbness_minus"
 text = "aura_reworked.reel_numbness_minus"
 icon = "icon_teambuff24"
-effect = "keeper_vs_shot"
-values = [-4, -7, -10]
+effect = "passive"
+passive = "aura_reworked.reel_numbness_minus"
+levels = 3
 galaxy = "ShibireMinus"
 
 # Galaxy: Level P Plus ×1.2 / ×1.5 / ×2.0 level-up speed
@@ -115,8 +120,8 @@ galaxy = "GPTPKaifuku"
 name = "super_dash"
 text = "aura_reworked.reel_super_dash"
 icon = "icon_teambuff28"
-effect = "move_speed"
-values = [20, 20, 20]
+effect = "passive"
+passive = "aura_reworked.reel_super_dash"
 seconds = [3, 5, 7]
 galaxy = "SuperDash"
 

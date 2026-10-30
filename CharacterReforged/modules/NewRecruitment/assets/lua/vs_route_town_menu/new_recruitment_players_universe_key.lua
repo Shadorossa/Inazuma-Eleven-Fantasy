@@ -10,7 +10,7 @@ if VRFW_Host ~= nil and type(NewRecruitment) == "table" then
   local STEM = "vs_route_town_menu"
   local BUTTONS_LAYER = 1423637364        -- the bottom-left Tab / Alt buttons
   local UNIVERSE_BUTTON = 0
-  local SET_LAYER_VISIBLE = 711242136     -- CMND_SET_LAYER_VISIBLE (layer, instance, visible)
+  local SET_LAYER_VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE     -- (layer, instance, visible)
 
   local function covered()
     local ok, yes = pcall(NewRecruitment.Applies)

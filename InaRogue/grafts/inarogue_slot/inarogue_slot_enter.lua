@@ -3,5 +3,5 @@
 -- title include (graft save_slots) calls EVT_SS_RESERVED_ENTER["<owner>"](slot) when it enters a reserved slot.
 VRFW_SS_RESERVED_ENTER = VRFW_SS_RESERVED_ENTER or {}
 VRFW_SS_RESERVED_ENTER.inarogue = function(slot)
-  pcall(funcLuaCommand, 3463189556 --[[CMND_EVT_SLOT_ROGUE_RETURN]], 0)
+  pcall(funcLuaCommand, @crc:CMND_EVT_SLOT_ROGUE_RETURN@, 0)
 end

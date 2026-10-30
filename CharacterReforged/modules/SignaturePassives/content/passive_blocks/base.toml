@@ -1,29 +1,29 @@
-schema = "SignaturePassives.passive_block/1"
+schema = "VRFW.passive_block/1"
 # Signature Passives › the shared blocks of its passives (block types: content\types\passive_block.toml). Other mods use
 # them as SignaturePassives.<name>.
 
-[[SignaturePassives.MoveElement]]
+[[VRFW.MoveElement]]
 name = "wind_move"
 elements = ["wind"]
 
-[[SignaturePassives.MoveElement]]
+[[VRFW.MoveElement]]
 name = "forest_move"
 elements = ["forest"]
 
-[[SignaturePassives.MoveElement]]
+[[VRFW.MoveElement]]
 name = "fire_move"
 elements = ["fire"]
 
-[[SignaturePassives.MoveElement]]
+[[VRFW.MoveElement]]
 name = "mountain_move"
 elements = ["mountain"]
 
-[[SignaturePassives.MoveElement]]
+[[VRFW.MoveElement]]
 name = "void_move"
 elements = ["void"]
 
 # the factor the elemental passives' texts show (×1.15: content\techniques\element_plus.toml)
-[[SignaturePassives.TechniquePower]]
+[[VRFW.TechniquePower]]
 name = "own_power_15"
 mode = "percent"
 value = 15
@@ -31,33 +31,33 @@ value = 15
 # ---- when a technique ends: the event, its kind and its outcome are separate blocks
 
 # he uses a special move and it is decided (a focus duel, a keeper battle)
-[[SignaturePassives.Trigger]]
+[[VRFW.Trigger]]
 name = "self_uses_technique"
 on = "technique_result"
 by = "self"
 wording = "when"
 
-[[SignaturePassives.MoveKind]]
+[[VRFW.MoveKind]]
 name = "dribble_technique"
 kinds = ["dribble"]
 
-[[SignaturePassives.Outcome]]
+[[VRFW.Outcome]]
 name = "outcome_succeeds"
 result = "succeeds"
 
-[[SignaturePassives.Outcome]]
+[[VRFW.Outcome]]
 name = "outcome_fails"
 result = "fails"
 
 # ---- stacks and resets
 
 # one stack each time, no limit
-[[SignaturePassives.Stack]]
+[[VRFW.Stack]]
 name = "stack_no_limit"
 max = 0
 
 # nullified whenever a team member scores
-[[SignaturePassives.Reset]]
+[[VRFW.Reset]]
 name = "team_scores"
 on = "goal"
 by = "team"
@@ -65,7 +65,7 @@ by = "team"
 # ---- effects
 
 # the Technique parameter of the midfielders of his team (him too when he is one), per passive level
-[[SignaturePassives.Stat]]
+[[VRFW.Stat]]
 name = "mf_team_technique_up"
 stats = ["technique"]
 mode = "flat"

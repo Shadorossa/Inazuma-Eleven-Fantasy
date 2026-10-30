@@ -1,0 +1,10 @@
+schema = "VRFW.game/2"
+
+# Pick cards: a «pick 1 of N» reward screen (docs/framework/pick-cards.md). Run time: scripts\pick_cards.lua; screen:
+# vrfw_pick_cards_menu (graft pick_cards); game Lua side: assets\lua\menu\_all\83_pick_cards.lua.
+
+# (0) -> { title, subtitle, skip, skip_text, focus, count }; (i) -> card i { kind, title, subtitle, lines, desc, badge,
+# rarity, card, icon_atlas, icon_sprite, disabled }
+[[VRFW.Command]]
+name = "CMND_VRFW_PICK_CARDS"
+handler = "PickCards.Get"

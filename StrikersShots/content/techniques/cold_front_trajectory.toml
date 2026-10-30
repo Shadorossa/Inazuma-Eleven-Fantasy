@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Frente frío (Cold Front, whs02930 and its override whs02930_or, cut-in ev60_02930).
+#
+# In the cut-in (c0500) the ball is shot from 13.5 m up down towards the goal. Flight (owner's rule 2026-10-24: every
+# aura shot a straight level line): one straight level line from the kick point to the goal, the ball centre at 2.6 m
+# the whole way, so the blizzard gust (up to ~2.1 m round the axis behind the ball) stays clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Frente frío (whs02930).
+[[edit]]
+target = "whs02930"
+trajectory = { points = [[0.0, 2.6]], straight = true, unblockable = false }
+
+# Frente frío (whs02930_or).
+[[edit]]
+target = "whs02930_or"
+trajectory = { points = [[0.0, 2.6]], straight = true, unblockable = false }

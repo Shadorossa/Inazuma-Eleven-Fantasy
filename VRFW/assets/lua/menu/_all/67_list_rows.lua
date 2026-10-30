@@ -38,7 +38,7 @@
 -- drained at the end of this file (an error is logged, the other queued functions still run).
 if VRFW_ListRows == nil then
   local R = {
-    LOG = 3661580131,                 -- CMND_EVT_LOG
+    LOG = VRFW_Cmd.EVT_LOG,                 -- CMND_EVT_LOG
     menus = {},                       -- menu name -> declaration (adapter data)
     rules = {},                       -- menu name -> {hide = {}, add = {}, handle = {}, order = {}} (arrays of specs)
     SUBWINDOW_CALLBACK_PREFIX = "VRFW_ListRows_Pick_",

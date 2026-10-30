@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_draft, the AI difficulty another mod owns (enjoy_team_select_menu_campaign / _offline).
+-- BattleBayDeluxe bb_draft, the AI difficulty another mod owns (enjoy_team_select_menu_campaign / _offline).
 -- A mod that sets the CPU's AI itself publishes the game's difficulty index as a game_state key (config.toml
 -- [difficulty] owner_states); CMND_BBD_DIFFICULTY_OWNED answers it (-1 = none). While a mod owns it, the menu's
 -- GetSelectDifficultyIdx (what the game's match start and the Torneo's start read) answers that index, the Campaña /
@@ -13,8 +13,10 @@ BBD_DIFFICULTY = {
   index = nil, -- the owned difficulty index; false = none (the player picks it); nil = not answered yet
 }
 
+-- the logger (VRFW_Log), made at the first line: the framework's menu files load after the graft blocks
 function BBD_DifficultyLog(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "bb_chronicle_teams difficulty", ...)
+  BBD_DIFFICULTY.logger = BBD_DIFFICULTY.logger or VRFW_Log.New("BattleBayDeluxe.difficulty")
+  BBD_DIFFICULTY.logger(...)
 end
 
 -- the owned difficulty index, nil = the player picks it (or the scripts did not answer yet)

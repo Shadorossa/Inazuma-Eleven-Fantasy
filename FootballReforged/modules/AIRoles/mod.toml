@@ -1,0 +1,36 @@
+id = "AIRoles"
+# name / description: the English fallback; the card shows the text keys mod_name / mod_description (text\keys.toml)
+name = "AI roles"
+version = "0.1.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Give your players a role that changes how they move without the ball, in Manual and Commander play. In the team commands › «AI settings», pick a player and choose his role among the ones of his position (the game's four roles stay too). The same role can go to several players. Forwards: Poacher, False nine, Inside forward."
+priority = 0
+tags = ["Gameplay"]
+updated = "2026-10-30"
+# This mod's own names (role names AIRoles.X, text keys ai_roles_*); never VRFW.
+prefix = "AIRoles"
+folder = "AIRoles"
+# Created on 2026-10-30 (owner request: rework the per-player AI role as a Football Reforged module; research
+# docs/game/mods/football-reforged-ai-roles-research.md, the module docs/game/mods/ai-roles.md). Only declarations on the
+# VR-Framework's match roles (docs/framework/match-role.md: kind VRFW.match_role/1, the off-ball spot and AI rate
+# hooks, the save of who plays which role, the «AI settings» chooser of BetterUI). Standard layout
+# (docs/framework/mod-layout.md):
+#   content\rules\ai\roles\forward.toml   the forwards' roles: Poacher (Cazagoles), False nine (Falso 9), Inside
+#                                         forward (Extremo interior); a position = one file, a role = one entry
+#   text\keys.toml                        the card's name / description, each role's name and one-line help, 9 languages
+requires = ["VRFW>=2.276.0", "FootballReforged>=1.18.0"]
+conflicts = []
+loader_modules = []
+permissions = []
+
+[exports]
+functions = []
+keys = []
+tables = []
+
+# A MODULE of Football Reforged (docs/framework/mod-families.md): shown inside Football Reforged's entry on the Mods
+# screen; switching Football Reforged off switches it off too. On by default.
+[module]
+of = "FootballReforged"
+order = 150

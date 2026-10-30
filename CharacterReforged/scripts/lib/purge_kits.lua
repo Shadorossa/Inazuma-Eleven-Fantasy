@@ -12,20 +12,16 @@ local T = require "lib/duplicate_players/save_tree"
 
 local PurgeKits = {}
 
-local band = bit32.band
-
 local ITEM_CONFIG = "data/common/gamedata/item/item_config_*.cfg.bin"
 local KIT_LIST = "ITEM_FASHION_INFO"
 -- item_config columns (1-based: the 0-based column + 1): item id, key, uniform
 local COLUMN_ID, COLUMN_KEY, COLUMN_UNIFORM = 1, 12, 19
 local BLOCK_INVENTORY, BLOCK_TEAMS = 4, 7
 
-local function u32(v)
-  if type(v) ~= "number" then return 0 end
-  return band(v, 0xFFFFFFFF)
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
-local function hex(v) return string.format("0x%08X", v) end
+local hex = Id.hex
 
 -- the kit items: key -> { id, uniform }
 local function read_kits()

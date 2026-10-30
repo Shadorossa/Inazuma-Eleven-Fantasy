@@ -1,5 +1,5 @@
-# Aura Points › PE: the sprites of its match HUD bar (graft aura_points_stamina_hud) in the retail btl06_13 atlas (every
-# language file); the retail sprites are untouched. Copies of Inazuma Fantasy's evt_pe_tag01 / evt_gloss_NN under this
+# Aura Points › PE: the sprites of its match HUD bar (graft aura_points_stamina_hud) in the mod's own atlas aura_points_hud
+# (every language file); never a game atlas. Copies of Inazuma Fantasy's evt_pe_tag01 / evt_gloss_NN under this
 # mod's names (2026-10-14, docs/refactor/aura-mods-split.md «Stamina Points»):
 #   stamina_points_pe_tag01          the «PE» / «GP» tag left of the PE bar, Chrono Stone's own stamina-bar tag, its
 #                                    picture per language (es/pt, fr, it «PE»; en/de/ja/zh «GP»;
@@ -15,12 +15,12 @@ schema = "VRFW.image/1"
 # ---- the «PE» tag
 
 [[texture]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_pe_tag"
 size = [64, 32]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 lang = ["es", "pt"]
 name = "stamina_points_pe_tag01"
 texture = "stamina_points_pe_tag"
@@ -29,7 +29,7 @@ y = 2
 png = "tag/pe_es.png"
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 lang = ["fr"]
 name = "stamina_points_pe_tag01"
 texture = "stamina_points_pe_tag"
@@ -38,7 +38,7 @@ y = 2
 png = "tag/pe_fr.png"
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 lang = ["it"]
 name = "stamina_points_pe_tag01"
 texture = "stamina_points_pe_tag"
@@ -47,7 +47,7 @@ y = 2
 png = "tag/pe_it.png"
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 lang = ["", "en", "de", "zh_hans", "zh_hant"]
 name = "stamina_points_pe_tag01"
 texture = "stamina_points_pe_tag"
@@ -58,13 +58,13 @@ png = "tag/gp.png"
 # ---- gloss
 
 [[texture]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss"
 size = [256, 384]
 png = "gloss/stamina_points_gloss.png"
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_00"
 texture = "stamina_points_gloss"
 x = 0
@@ -72,7 +72,7 @@ y = 2
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_01"
 texture = "stamina_points_gloss"
 x = 128
@@ -80,7 +80,7 @@ y = 2
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_02"
 texture = "stamina_points_gloss"
 x = 0
@@ -88,7 +88,7 @@ y = 18
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_03"
 texture = "stamina_points_gloss"
 x = 128
@@ -96,7 +96,7 @@ y = 18
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_04"
 texture = "stamina_points_gloss"
 x = 0
@@ -104,7 +104,7 @@ y = 34
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_05"
 texture = "stamina_points_gloss"
 x = 128
@@ -112,7 +112,7 @@ y = 34
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_06"
 texture = "stamina_points_gloss"
 x = 0
@@ -120,7 +120,7 @@ y = 50
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_07"
 texture = "stamina_points_gloss"
 x = 128
@@ -128,7 +128,7 @@ y = 50
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_08"
 texture = "stamina_points_gloss"
 x = 0
@@ -136,7 +136,7 @@ y = 66
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_09"
 texture = "stamina_points_gloss"
 x = 128
@@ -144,7 +144,7 @@ y = 66
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_10"
 texture = "stamina_points_gloss"
 x = 0
@@ -152,7 +152,7 @@ y = 82
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_11"
 texture = "stamina_points_gloss"
 x = 128
@@ -160,7 +160,7 @@ y = 82
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_12"
 texture = "stamina_points_gloss"
 x = 0
@@ -168,7 +168,7 @@ y = 98
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_13"
 texture = "stamina_points_gloss"
 x = 128
@@ -176,7 +176,7 @@ y = 98
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_14"
 texture = "stamina_points_gloss"
 x = 0
@@ -184,7 +184,7 @@ y = 114
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_15"
 texture = "stamina_points_gloss"
 x = 128
@@ -192,7 +192,7 @@ y = 114
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_16"
 texture = "stamina_points_gloss"
 x = 0
@@ -200,7 +200,7 @@ y = 130
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_17"
 texture = "stamina_points_gloss"
 x = 128
@@ -208,7 +208,7 @@ y = 130
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_18"
 texture = "stamina_points_gloss"
 x = 0
@@ -216,7 +216,7 @@ y = 146
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_19"
 texture = "stamina_points_gloss"
 x = 128
@@ -224,7 +224,7 @@ y = 146
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_20"
 texture = "stamina_points_gloss"
 x = 0
@@ -232,7 +232,7 @@ y = 162
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_21"
 texture = "stamina_points_gloss"
 x = 128
@@ -240,7 +240,7 @@ y = 162
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_22"
 texture = "stamina_points_gloss"
 x = 0
@@ -248,7 +248,7 @@ y = 178
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_23"
 texture = "stamina_points_gloss"
 x = 128
@@ -256,7 +256,7 @@ y = 178
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_24"
 texture = "stamina_points_gloss"
 x = 0
@@ -264,7 +264,7 @@ y = 194
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_25"
 texture = "stamina_points_gloss"
 x = 128
@@ -272,7 +272,7 @@ y = 194
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_26"
 texture = "stamina_points_gloss"
 x = 0
@@ -280,7 +280,7 @@ y = 210
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_27"
 texture = "stamina_points_gloss"
 x = 128
@@ -288,7 +288,7 @@ y = 210
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_28"
 texture = "stamina_points_gloss"
 x = 0
@@ -296,7 +296,7 @@ y = 226
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_29"
 texture = "stamina_points_gloss"
 x = 128
@@ -304,7 +304,7 @@ y = 226
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_30"
 texture = "stamina_points_gloss"
 x = 0
@@ -312,7 +312,7 @@ y = 242
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_31"
 texture = "stamina_points_gloss"
 x = 128
@@ -320,7 +320,7 @@ y = 242
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_32"
 texture = "stamina_points_gloss"
 x = 0
@@ -328,7 +328,7 @@ y = 258
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_33"
 texture = "stamina_points_gloss"
 x = 128
@@ -336,7 +336,7 @@ y = 258
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_34"
 texture = "stamina_points_gloss"
 x = 0
@@ -344,7 +344,7 @@ y = 274
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_35"
 texture = "stamina_points_gloss"
 x = 128
@@ -352,7 +352,7 @@ y = 274
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_36"
 texture = "stamina_points_gloss"
 x = 0
@@ -360,7 +360,7 @@ y = 290
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_37"
 texture = "stamina_points_gloss"
 x = 128
@@ -368,7 +368,7 @@ y = 290
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_38"
 texture = "stamina_points_gloss"
 x = 0
@@ -376,7 +376,7 @@ y = 306
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_39"
 texture = "stamina_points_gloss"
 x = 128
@@ -384,7 +384,7 @@ y = 306
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_40"
 texture = "stamina_points_gloss"
 x = 0
@@ -392,7 +392,7 @@ y = 322
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_41"
 texture = "stamina_points_gloss"
 x = 128
@@ -400,7 +400,7 @@ y = 322
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_42"
 texture = "stamina_points_gloss"
 x = 0
@@ -408,7 +408,7 @@ y = 338
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_43"
 texture = "stamina_points_gloss"
 x = 128
@@ -416,7 +416,7 @@ y = 338
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_44"
 texture = "stamina_points_gloss"
 x = 0
@@ -424,7 +424,7 @@ y = 354
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_45"
 texture = "stamina_points_gloss"
 x = 128
@@ -432,7 +432,7 @@ y = 354
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_46"
 texture = "stamina_points_gloss"
 x = 0
@@ -440,7 +440,7 @@ y = 370
 size = [128, 12]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_gloss_47"
 texture = "stamina_points_gloss"
 x = 128
@@ -450,13 +450,13 @@ size = [128, 12]
 # ---- sprint segment
 
 [[texture]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_sprint_fill"
 size = [512, 32]
 png = "sprint/stamina_points_sprint_fill.png"
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_sprint_fill01"
 texture = "stamina_points_sprint_fill"
 x = 0
@@ -464,13 +464,13 @@ y = 4
 size = [448, 24]
 
 [[texture]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_sprint_winded"
 size = [512, 32]
 png = "sprint/stamina_points_sprint_winded.png"
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"
 name = "stamina_points_sprint_winded01"
 texture = "stamina_points_sprint_winded"
 x = 0

@@ -1,9 +1,28 @@
-# Home Stadium: the stadium picture of the selector (the retail stadium pickers' frame win05_40_sub_image_frame, as in
-# soccer_vs_mydock_option_menu / enjoy_team_select_menu): a layer of «Plantilla de equipo» (soccer_team_dock_menu),
-# not opened with the screen; assets\lua\soccer_team_dock_menu\300_home_stadium.lua opens it with the window and shows
-# the focused stadium's picture in it (GetStadiumTextureInfo, the retail calls of enjoy_team_select_menu_offline).
+# Home Stadium: the stadium selector of «Plantilla de equipo» (soccer_team_dock_menu). Layers not opened with the
+# screen; assets\lua\soccer_team_dock_menu\300_home_stadium.lua opens them with the selector and places them (its
+# layout table L): a square window with the stadium picture on top and under it the name on a plain plate with an arrow
+# inside each end that browses the stadiums one by one with LEFT / RIGHT.
+#   win05_40_sub_image_frame  the retail stadium pickers' picture frame (soccer_vs_mydock_option_menu /
+#                             enjoy_team_select_menu): the shown stadium's picture (GetStadiumTextureInfo)
+#   home_stadium_sel_plate    the framework's quad object (vrfw_mp_plate): the window and the name plate, the two arrows
+#                             (the mod's own pre-coloured atlas home_stadium_ui: the quads cannot be tinted), the check
+#                             of the current home stadium (retail win05_02)
+#   home_stadium_sel_label    the framework's text object (vrfw_mp_label): the name, the hint line
+# The res are the atlases of those sprites (docs/app/game-ui-assets.md).
 schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "soccer_team_dock_menu"
 add_layer = { name = "win05_40_sub_image_frame", object = "win05_40_sub_image_frame", count = 1, groups = [{ group = "soccer_team_dock_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_layer = { name = "home_stadium_sel_plate", object = "vrfw_mp_plate", count = 6, align = [1, 8], scale = 0.2, groups = [{ group = "soccer_team_dock_menu", flags = [0, 0, 0, 0, 1, 0] }] }
+res = [
+    "#/menu/220_img/home_stadium_ui/home_stadium_ui.g4tx",
+    "#/menu/10_win/win05/win05_02/win05_02.g4tx",
+]
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_layer = { name = "home_stadium_sel_label", object = "vrfw_mp_label", count = 2, after = "home_stadium_sel_plate", groups = [{ group = "soccer_team_dock_menu", flags = [0, 0, 0, 0, 1, 0] }] }

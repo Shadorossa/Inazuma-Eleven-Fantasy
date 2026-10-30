@@ -48,20 +48,20 @@ local furor_banner = {
   TEXT = @crc:_text_telop01@,
   TEXT_W = 334, TEXT_H = 70,                  -- the text node's box at scale 1
   TEXTURE_SLOT = @crc:camera_telop01@,        -- the quad's texture slot
-  GLOBAL_POS = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]],
-  SET_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]],
-  SET_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]],
-  SET_TEXT = 1083631230 --[[CMND_SET_MENU_TEXT_STRING]],
-  MESH_VISIBLE = 3405944500 --[[CMND_SET_MESH_VISIBLE]],
-  LAYER_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]],
-  IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]],
-  IS_LOADING = 3057768039 --[[CMND_IS_LOADING_LAYER]],
-  OPEN_ARRAY = 2152386330 --[[CMND_OPEN_LAYER_ARRAY]],
-  LOAD_TEXTURE = 839427544 --[[CMND_LOAD_MENU_RES_TEXTURE]],
+  GLOBAL_POS = @crc:CMND_GET_MESH_GLOBAL_POSITION@,
+  SET_POS = @crc:CMND_SET_LAYER_LOCAL_POS@,
+  SET_SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@,
+  SET_TEXT = @crc:CMND_SET_MENU_TEXT_STRING@,
+  MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@,
+  LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,
+  IS_OPEN = @crc:CMND_IS_OPEN_LAYER@,
+  IS_LOADING = @crc:CMND_IS_LOADING_LAYER@,
+  OPEN_ARRAY = @crc:CMND_OPEN_LAYER_ARRAY@,
+  LOAD_TEXTURE = @crc:CMND_LOAD_MENU_RES_TEXTURE@,
   TEXTURE_LOADING = 1506186496 --[[the texture is still loading]],
   SWAP_TEXTURE = 558735651 --[[swap a mesh texture for an atlas sprite]],
-  TEXT_ID = 3096244543 --[[CMND_VRFW_TEXT_ID]],
-  TEXT_GET = 4074371074 --[[CMND_TEXT_GET]],
+  TEXT_ID = @crc:CMND_VRFW_TEXT_ID@,
+  TEXT_GET = @crc:CMND_TEXT_GET@,
   -- per instance (1 strip, 2 text): mapping, probe, placement, shown, set up
   mapping = {}, probe = {}, place = {}, shown = {}, ready = {},
   texture = 0,                                -- the strip atlas: 0 not asked, 1 loading, 2 in
@@ -97,7 +97,7 @@ function FurorBanner_Log(...)
     return
   end
   FUROR_BANNER_LOGS = FUROR_BANNER_LOGS + 1
-  FurorBanner_Command(3661580131 --[[CMND_EVT_LOG]], "FUROR_BANNER", ...)
+  FurorBanner_Command(@crc:CMND_EVT_LOG@, "FUROR_BANNER", ...)
 end
 
 function FurorBanner_Why(why)

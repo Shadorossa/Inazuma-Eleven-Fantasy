@@ -12,7 +12,7 @@ schema = "VRFW.image/1"
 [[texture]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn"
-size = [512, 1024]
+size = [1024, 1024]
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
@@ -306,91 +306,109 @@ png = "bbd_tn/bbd_tn_dim.png"
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_red"
 texture = "bbd_tn"
-x = 0
-y = 330
-size = [196, 36]
+x = 560
+y = 8
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_red.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_orange"
 texture = "bbd_tn"
-x = 216
-y = 330
-size = [196, 36]
+x = 560
+y = 88
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_orange.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_yellow"
 texture = "bbd_tn"
-x = 0
-y = 372
-size = [196, 36]
+x = 560
+y = 168
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_yellow.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_green"
 texture = "bbd_tn"
-x = 216
-y = 372
-size = [196, 36]
+x = 560
+y = 248
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_green.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_cyan"
 texture = "bbd_tn"
-x = 0
-y = 414
-size = [196, 36]
+x = 560
+y = 328
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_cyan.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_blue"
 texture = "bbd_tn"
-x = 216
-y = 414
-size = [196, 36]
+x = 560
+y = 408
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_blue.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_purple"
 texture = "bbd_tn"
-x = 0
-y = 456
-size = [196, 36]
+x = 560
+y = 488
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_purple.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_pink"
 texture = "bbd_tn"
-x = 216
-y = 456
-size = [196, 36]
+x = 560
+y = 568
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_pink.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_black"
 texture = "bbd_tn"
-x = 264
-y = 236
-size = [196, 36]
+x = 560
+y = 648
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_black.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
 name = "bbd_tn_strip_silver"
 texture = "bbd_tn"
-x = 264
-y = 276
-size = [196, 36]
+x = 560
+y = 728
+size = [392, 72]
 png = "bbd_tn/bbd_tn_strip_silver.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
+name = "bbd_tn_frame_l"
+texture = "bbd_tn"
+x = 560
+y = 808
+size = [408, 88]
+png = "bbd_tn/bbd_tn_frame_l.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"
+name = "bbd_tn_frame_r"
+texture = "bbd_tn"
+x = 560
+y = 904
+size = [408, 88]
+png = "bbd_tn/bbd_tn_frame_r.png"
 
 [[sprite]]
 atlas = "#/menu/220_img/bbd_tn/bbd_tn.g4tx"

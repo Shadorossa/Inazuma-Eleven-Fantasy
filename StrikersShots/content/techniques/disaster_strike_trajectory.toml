@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the ground trajectory of Golpe cataclismo (Disaster Strike, whs02080, and Inazuma Fantasy's
+# whs02080_mm, same cut-in): in the cut-in's last shot (c0040) the ball is kicked (effect frame 286) and runs along
+# the pitch ploughing up its earth ridge into the goal; in the match the ball skims the pitch the whole way, one
+# straight level line at 0.31 m (heights over distances: docs/framework/technique.md §4e,
+# docs/game/mechanics/move-mini-effects.md §7.2). Its aura (content\effects\disaster_strike_ball.toml, ev6208ds00) lays
+# the ridge, the dust ring and the wake on the pitch under the ball at this height
+# (research/scripts/disaster_strike_ball_fx.py FLIGHT_H: keep the two equal).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --move disaster_strike): the event ball's joint ball_tama of
+# ev60020800 c0040, effect frames 286-352: (0.00, 0.29, -33.93) -> (0.00, 0.29, 44.28): 78.2 m along +Z at 0.29 m,
+# 0 deg down. No power, cost or block key. Inazuma Fantasy declares no trajectory for these moves (no conflict).
+
+# Golpe cataclismo (whs02080; the rule covers Inazuma Fantasy's whs02080_mm, an _mm variant that declares no
+# trajectory itself: docs/framework/technique.md §4e).
+[[edit]]
+target = "whs02080"
+trajectory = { points = [[0.0, 0.31]], straight = true, unblockable = false }

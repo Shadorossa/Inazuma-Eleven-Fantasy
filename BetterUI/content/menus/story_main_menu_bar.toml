@@ -1,0 +1,11 @@
+# Hand-maintained. The story's main menu («main_menu», MENÚ PRINCIPAL): its tab banner (layer mainmenu90_02_header_tab, the
+# lightning tab, L2 / R2, the icon row hung on _atc_icon01..09 and the label / «!» badges of mainmenu90_02_2) at the same
+# 0.55 scale as BetterUI's compact top bar (the mainmenu90_01 header: files of ui_clean_build.py, 122 px -> 67 px).
+# Layout data, applied when the menu opens. Only this menu uses mainmenu90_02 (mainmenu90_02_2, shared with the map
+# menus, is untouched: what hangs on the locators inherits the root scale).
+schema = "VRFW.menu/2"
+
+[[layout]]
+file = "common/menu/100_mainmenu/mainmenu90/mainmenu90_02/mainmenu90_02.g4pkm"
+joint = "mainmenu90_02_output"
+scale = [0.55, 0.55, 1.0]

@@ -14,12 +14,12 @@
 --   VRFW_Chronicle.Reset()      -- forget the cached answer (a screen asks again at its OnInit)
 if VRFW_Chronicle == nil then
   local M = {
-    PIECES = 4202063003,       -- CMND_VRFW_CHRONICLE_PIECES () -> {{pieceId, statusFlagIndex, eventType}, ...}
-    CLEAR_GET = 4034518619,    -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
-    NODE = {COUNT = {1208701503, 3004181703}, GET = {3986876567, 1705651873}},   -- CMND_VRFW_TEAM_ROUTE_NODE_*
-    CHAIN_COUNT = {1022542520, 3844893564},   -- CMND_VRFW_TEAM_CHAIN_COUNT
-    OF_PIECE = {735011795, 2747770341},       -- CMND_VRFW_TEAM_CHAIN_OF_PIECE (pieceId) -> chain i, node slot
-    LOG = 3661580131,          -- CMND_EVT_LOG
+    PIECES = VRFW_Cmd.VRFW_CHRONICLE_PIECES,       -- CMND_VRFW_CHRONICLE_PIECES () -> {{pieceId, statusFlagIndex, eventType}, ...}
+    CLEAR_GET = VRFW_Cmd.GET_CHRONICLE_CLEAR_STATUS,    -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
+    NODE = {COUNT = {VRFW_Cmd.VRFW_TEAM_ROUTE_NODE_COUNT, 3004181703}, GET = {VRFW_Cmd.VRFW_TEAM_ROUTE_NODE_GET, 1705651873}},   -- CMND_VRFW_TEAM_ROUTE_NODE_*
+    CHAIN_COUNT = {VRFW_Cmd.VRFW_TEAM_CHAIN_COUNT, 3844893564},   -- CMND_VRFW_TEAM_CHAIN_COUNT
+    OF_PIECE = {VRFW_Cmd.VRFW_TEAM_CHAIN_OF_PIECE, 2747770341},       -- CMND_VRFW_TEAM_CHAIN_OF_PIECE (pieceId) -> chain i, node slot
+    LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
     list = nil,                -- {{piece, slot, difficulty or nil (= the caller's)}} (per VM)
     cache = {},                -- d -> {done, cleared, total, missing}
   }
@@ -35,10 +35,7 @@ if VRFW_Chronicle == nil then
     return nil
   end
 
-  local function u32(v)
-    v = tonumber(v) or 0
-    return math.floor(v) % 4294967296
-  end
+  local function u32(v) return VRFW_Id.u32(v) end
 
   function M.Log(...)
     pcall(funcLuaCommand, M.LOG, "chronicle", ...)

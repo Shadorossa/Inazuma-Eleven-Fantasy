@@ -1,0 +1,90 @@
+# Career mode: the career's clubs (owner 2026-10-30; config.toml [squads] clubs_file). Edit freely.
+# Every career team (Battle Bay Deluxe's clubs and the game's own Battle Bay teams, config.toml [teams]) is a club of its
+# own unless listed here:
+# * [[club]]: one club made of several versions of a team. `key` = the team that gives the club its name, crest, kit and
+#   roster rows; `versions` = the other teams whose players join its squad (a person once; each player still belongs to
+#   the earliest version that has him, scripts/data/club_order.toml). The versions are no clubs of their own.
+# * drop: teams that are no career club (their players go to the other clubs that have them, else to the free players).
+# A club enters a career with config.toml [squads] min_players own players or more; the squad keeps every own player
+# (it may pass fill_to) and a match takes [match] squad_size of them.
+
+drop = [
+    "bb_10_team_omega_2.0",   # Protocolo Omega 2.0: Élite Omega is the club (owner)
+    "bbcr_go2_0100_bb",       # Protocolo Omega
+    "bbcr_go2_0800_bb",       # Protocolo Omega 3.0
+]
+
+[[club]]
+key = "bb_01_team_raimon"            # Raimon (the game's Battle Bay team)
+versions = [
+    "bbcr_legend_ie1_01_bb",          # Raimon 1
+    "bbcr_legend_ie1_10_bb",          # Neo Raimon
+    "bbcr_legend_ie2_10_bb",          # Suplentes del Raimon
+    "bb_08_team_raimon_go",           # Raimon revolucionario
+    "bbcr_legend_go1_10_bb",          # Segundo equipo del Raimon
+]
+
+[[club]]
+key = "bb_03_team_zeus"              # Zeus (the game's Battle Bay team)
+versions = [
+    "bbcr_legend_ie1_09_bb",          # Ultra Zeus
+    "bbcr_ares_0600_bb",              # Zeus (Ares)
+]
+
+[[club]]
+key = "bb_02_team_empire"            # Royal Academy (the game's Battle Bay team)
+versions = [
+    "bbcr_ie2_0800_bb",               # Royal Academy Redux
+    "bbcr_legend_ie2_04_bb",          # Neo Royal Academy
+    "bbcr_go1_0600_bb",               # Royal Academy (GO)
+    "bbcr_ares_0500_bb",              # Royal Academy (Ares)
+    "bbcr_victory_0505_bb",           # Royal Academy (Victory Road)
+]
+
+[[club]]
+key = "bbcr_ie1_0200_bb"             # Inazuma Kids FC
+versions = ["bbcr_go1_0200_bb"]      # Inazuma Kids FC (GO)
+
+[[club]]
+key = "bbcr_ie1_0500_bb"             # Brain
+versions = ["bbcr_ares_0400_bb"]     # Brain (Ares)
+
+[[club]]
+key = "bbcr_ie1_1100_bb"             # Kirkwood
+versions = ["bbcr_go1_1100_bb", "bbcr_ares_0305_bb"]   # Kirkwood (GO, Ares)
+
+[[club]]
+key = "bbcr_legend_ie1_05_bb"        # Fase previa FF A
+versions = ["bbcr_legend_ie1_11_bb"] # Fase previa FF B
+
+[[club]]
+key = "bbcr_legend_ie1_12_bb"        # Fase nacional FF A
+versions = ["bbcr_legend_ie1_08_bb"] # Fase nacional FF B
+
+[[club]]
+key = "bbcr_ie2_0400_bb"             # Alpino
+versions = ["bbcr_go1_1000_bb", "bbcr_ares_0705_bb"]   # Alpino (GO, Ares)
+
+[[club]]
+key = "bbcr_ie2_1800_bb"             # Caos
+versions = ["bbcr_legend_ie2_08_bb"] # Nuevo Caos
+
+[[club]]
+key = "bbcr_legend_ie2_02_bb"        # Alius A
+versions = ["bbcr_legend_ie2_05_bb"] # Alius B
+
+[[club]]
+key = "bbcr_legend_ie2_06_bb"        # Selección nacional A
+versions = ["bbcr_legend_ie2_11_bb"] # Selección nacional B
+
+[[club]]
+key = "bbcr_legend_ie3_03_bb"        # Ángeles del Caos
+versions = ["bbcr_legend_go1_13_bb"] # Ángeles del Caos Zero
+
+[[club]]
+key = "bb_24_team_senshinjapan_a"    # Inazuma Japón Implacable A
+versions = ["bb_25_team_senshinjapan_b"]   # Inazuma Japón Implacable B
+
+[[club]]
+key = "bb_14_team_nagumoharaA"       # Nagumohara A
+versions = ["bb_15_team_nagumoharaB", "bb_16_team_nagumoharaC"]   # Nagumohara B, C

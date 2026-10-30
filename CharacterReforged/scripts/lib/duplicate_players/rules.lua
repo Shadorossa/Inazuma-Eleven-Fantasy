@@ -10,9 +10,14 @@
 --   keep_first = [...]                      which copy stays: the first key that tells two copies apart decides, in
 --                                           order; KEEP_ORDER_KEYS below (default: the list KEEP_ORDER_DEFAULT)
 --   normal_card_rarity = 0..15              the saved rarity every normal card gets (absent = rarities unchanged)
---   normalize_special_rarities = { option = "<mod>.<row>", values = { "<option value>" = [col 41 values] } }
---                                           the special cards (chara_param col 41) that get normal_card_rarity too, by
---                                           the current value of a settings row (none listed for that value = none)
+--   normalize_special_rarities = { option = "<mod>.<row>", values = { "<option value>" = { rarities = [...],
+--                                  save_adjust_label = "<text key>" } } }
+--                                           the special cards that get normal_card_rarity too, by the current value of
+--                                           a settings row (none listed for that value = none). `rarities` names rarity
+--                                           ids of the rarity data (the framework's content\defaults\game_rarities.toml
+--                                           and the mods' content\rarities\: an id stands for its `value` and `also`
+--                                           col 41 values); a whole number is a col 41 value. `save_adjust_label` = the
+--                                           line the save adjust confirmation shows for that value (scripts\save_tools.lua)
 --   element_spirits_per_released_card = n   element spirits (the story's «fichas» of his element) per copy that leaves
 --   release_cards_hidden_in = "<file>"      a file of the declaring mod whose [[hide]] rows / [[remove]] rows with
 --                                           mode = "hide" name cards that leave the club (each declaring mod its own)
@@ -34,8 +39,54 @@ DuplicateRules.KEEP_ORDER_DEFAULT = { "highest_level", "most_experience", "in_a_
 
 local ONE_CARD_PER = { character = true, card = true }
 local HIGHEST_RARITY = 15
+-- the rarity data: the game's rarities (built into the framework) and the mods' rarity files
+local RARITY_FILES = { "content/defaults/game_rarities.toml", "content/rarities" }
 
 local function warn(message) VRFW.warn("duplicate_players: " .. message) end
+
+-- rarity id -> its chara_param col 41 values ({ value, also... }), from every [[rarity]] row with an id and a value
+local function rarity_values()
+  local by_id = {}
+  local ok, files = pcall(VRFW.files.declarations, RARITY_FILES)
+  if not ok or type(files) ~= "table" then
+    warn("the rarity data could not be read (" .. tostring(files) .. "): rarity ids are not resolved")
+    return by_id
+  end
+  for _, file in ipairs(files) do
+    local rows = type(file) == "table" and type(file.data) == "table" and file.data.rarity or nil
+    for _, row in ipairs(type(rows) == "table" and rows or {}) do
+      if type(row) == "table" and type(row.id) == "string" and type(row.value) == "number" then
+        local values = { row.value }
+        for _, extra in ipairs(type(row.also) == "table" and row.also or {}) do
+          if type(extra) == "number" then values[#values + 1] = extra end
+        end
+        by_id[row.id] = values
+      end
+    end
+  end
+  return by_id
+end
+
+-- the col 41 values of a list of rarity ids / numbers (unknown ids left out with a warning)
+local function special_rarity_set(label, list)
+  local set, by_id = {}, nil
+  local function add(rarity)
+    if type(rarity) == "number" and rarity > 0 and rarity <= HIGHEST_RARITY and rarity % 1 == 0 then set[rarity] = true end
+  end
+  for _, entry in ipairs(type(list) == "table" and list or {}) do
+    if type(entry) == "string" then
+      by_id = by_id or rarity_values()
+      if by_id[entry] then
+        for _, rarity in ipairs(by_id[entry]) do add(rarity) end
+      else
+        warn(label .. ": normalize_special_rarities names an unknown rarity id " .. entry .. " (left out)")
+      end
+    else
+      add(entry)
+    end
+  end
+  return set
+end
 
 local function sorted_names(table_of_rules)
   local names = {}
@@ -70,15 +121,18 @@ local function merge_rule(policy, mod_id, rule_name, rule)
       if type(option) == "string" and option:find(".", 1, true) and type(values) == "table" then
         local ok, current = pcall(VRFW.option, option)
         local key = (ok and type(current) == "number") and string.format("%d", math.floor(current)) or tostring(ok and current or "")
-        local list = values[key]
-        local set = {}
-        for _, rarity in ipairs(type(list) == "table" and list or {}) do
-          if type(rarity) == "number" and rarity > 0 and rarity <= HIGHEST_RARITY and rarity % 1 == 0 then set[rarity] = true end
+        local choice = values[key]
+        local list = choice
+        if type(choice) == "table" and (choice.rarities ~= nil or choice.save_adjust_label ~= nil) then
+          list = choice.rarities
+          if type(choice.save_adjust_label) == "string" and choice.save_adjust_label ~= "" then
+            policy.normal_rarity_label = choice.save_adjust_label
+          end
         end
-        policy.normal_special_rarities = set
+        policy.normal_special_rarities = special_rarity_set(label, list)
         policy.normal_special_option = option .. " = " .. tostring(ok and current or "?")
       else
-        warn(label .. ": normalize_special_rarities must be { option = \"<mod>.<row>\", values = { \"<value>\" = [...] } }")
+        warn(label .. ": normalize_special_rarities must be { option = \"<mod>.<row>\", values = { \"<value>\" = { rarities = [...] } } }")
       end
     elseif key == "element_spirits_per_released_card" then
       if type(value) == "number" and value >= 0 and value % 1 == 0 then

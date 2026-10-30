@@ -1,0 +1,17 @@
+schema = "VRFW.sprite_redirect/1"
+# Player Training: the game and the Lua ask these game atlases for the mod's sprites by name; they live in the mod's own
+# atlases (content\images\..., one per game atlas), so the game atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "player_training_icon_common"
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+own_atlas = "#/menu/200_icon/player_training_own/player_training_icon_common.g4tx"
+sprites = [
+    "evt_trn_icon_parameter01",
+    "evt_trn_icon_parameter02",
+    "evt_trn_icon_parameter03",
+    "evt_trn_icon_parameter04",
+    "evt_trn_icon_parameter05",
+    "evt_trn_icon_parameter06",
+    "evt_trn_icon_parameter07",
+]

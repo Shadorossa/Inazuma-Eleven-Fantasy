@@ -82,7 +82,8 @@ function B.from_json(j, slot)
       local uid, param = p.uid, p.param
       if uid ~= 0 and param ~= 0 and not b.by_uid[uid] and not b.by_param[param] then
         local e = { uid = uid, param = param, level = start_level(), runs = U.int(p.runs, 0), added = U.int(p.added, 0),
-          flags = U.int(p.flags, 0), frags = U.int(p.frags, 0), goals = U.int(p.goals, 0), source = U.int(p.source, 0) }
+          flags = U.int(p.flags, 0), frags = U.int(p.frags, 0), goals = U.int(p.goals, 0), source = U.int(p.source, 0),
+          spirits = math.max(U.int(p.spirits, 0), 0), spirit_level = math.max(U.int(p.spirit_level, 0), 0) }
         b.entries[#b.entries + 1] = e
         b.by_uid[uid] = e
         b.by_param[param] = e
@@ -99,7 +100,8 @@ function B.to_json(b)
   for _, e in ipairs(b.entries) do
     if not e.debug then
       players[#players + 1] = J.obj({ { "uid", e.uid }, { "param", e.param }, { "level", e.level }, { "runs", e.runs },
-        { "added", e.added }, { "flags", e.flags }, { "frags", e.frags }, { "goals", e.goals }, { "source", e.source } })
+        { "added", e.added }, { "flags", e.flags }, { "frags", e.frags }, { "goals", e.goals }, { "source", e.source },
+        { "spirits", e.spirits or 0 }, { "spirit_level", e.spirit_level or 0 } })
     end
   end
   return J.pretty(J.obj({

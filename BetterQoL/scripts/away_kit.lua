@@ -23,16 +23,15 @@ local SEP = "\1"
 
 local writes = 0
 
-local function u32(v)
-  return bit32.band(v or 0, 0xFFFFFFFF)
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
--- a Lua number argument as the game's u32 (truncated, wrapped); nil when it is not a number
+-- a Lua number argument as the game's u32; nil when it is not a number
 local function arg_u32(v)
   if type(v) ~= "number" then
     return nil
   end
-  return u32(v >= 0 and math.floor(v) or math.ceil(v))
+  return u32(v)
 end
 
 local function write_allowed(set, team, cur, new)

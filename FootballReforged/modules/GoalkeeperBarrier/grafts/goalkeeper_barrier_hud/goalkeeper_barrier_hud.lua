@@ -31,7 +31,7 @@ FOOTBALL_BARRIER_BAR_HEIGHT = 24
 FOOTBALL_BARRIER_LOCATOR_SPAN = 670           -- x distance from _pos_hp01 (-335) to _pos_hp02 (335), layout units
 FOOTBALL_BARRIER_SHARE = {25, 25}             -- per side: the barrier share of the bar in % (from the command)
 FOOTBALL_BARRIER_DEBUG = false                -- from the command (config.toml hud_debug): plain retail gauge, whole share
-FOOTBALL_BARRIER_BAR_RATE = 3112466283        -- the retail keeper bar fill: (3 own / 4 rival) -> ok, rate 0..1
+FOOTBALL_BARRIER_BAR_RATE = @crc:CMND_GET_SOCCER_TEAM_INFO@        -- the retail keeper bar fill: (3 own / 4 rival) -> ok, rate 0..1
 FOOTBALL_BARRIER_RIVAL_DX = 0                 -- extra offset of the rival's segment (layout units)
 FOOTBALL_BARRIER_RIVAL_DY = 0
 FOOTBALL_BARRIER_PROBE_STEP = 100             -- local units an instance moves while its mapping is measured
@@ -68,15 +68,15 @@ local BARRIER_MESH_FRAME = 1837325853 --[[_hp_base01]]
 local BARRIER_MESH_FILL = 2043683848 --[[_hp_bar02]]
 local BARRIER_MESH_LABEL = 1257514352 --[[_gtxt_stamina01]]
 local BARRIER_MESH_TRAIL = 2609329121 --[[_hp_empty01]]
-local BARRIER_ATLAS = 1191797350 --[[#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx]]
+local BARRIER_ATLAS = 1653991639 --[[#/menu/02_btl/goalkeeper_barrier_hud/goalkeeper_barrier_hud.g4tx: the mod's own atlas]]
 local BARRIER_TEXTURE_SLOT = 538967808 --[[hp_base01: the frame's texture slot]]
 -- measured placement: nodes, commands and per-instance state (one local: the chunk's local budget is shared)
 local barrier_hud = {
   DRAW_NODE = 1837325853 --[[_hp_base01: the frame quad that draws the segment]],
   LOCATORS = {2302841237 --[[_pos_hp01]], 273399855 --[[_pos_hp02]]},
-  GLOBAL_POS = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]],
-  SET_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]],
-  SET_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]],
+  GLOBAL_POS = @crc:CMND_GET_MESH_GLOBAL_POSITION@,
+  SET_POS = @crc:CMND_SET_LAYER_LOCAL_POS@,
+  SET_SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@,
   probe = {nil, nil},
   place = {nil, nil},
   fill = {0, 0},          -- per instance: frames since it was shown
@@ -104,7 +104,7 @@ local function FootballBarrier_Log(...)
     return
   end
   FOOTBALL_BARRIER_LOGS = FOOTBALL_BARRIER_LOGS + 1
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "FR_BARRIER", ...)
+  pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "FR_BARRIER", ...)
 end
 
 -- the barrier of side 1 (own) / 2 (rival): its percent 0..100, or nil (nothing to show)
@@ -302,10 +302,10 @@ end
 
 -- instance i's look: only the frame quad drawn (it carries the bronze sprite), the gauge's fill, label and red trail off
 function FootballBarrier_Fill(i)
-  FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_FILL, false, i)
-  FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_LABEL, false, i)
-  FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_TRAIL, false, i)
-  FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_FRAME, true, i)
+  FootballBarrier_Menu(@crc:CMND_SET_MESH_VISIBLE@, BARRIER_LAYER, BARRIER_MESH_FILL, false, i)
+  FootballBarrier_Menu(@crc:CMND_SET_MESH_VISIBLE@, BARRIER_LAYER, BARRIER_MESH_LABEL, false, i)
+  FootballBarrier_Menu(@crc:CMND_SET_MESH_VISIBLE@, BARRIER_LAYER, BARRIER_MESH_TRAIL, false, i)
+  FootballBarrier_Menu(@crc:CMND_SET_MESH_VISIBLE@, BARRIER_LAYER, BARRIER_MESH_FRAME, true, i)
   if FOOTBALL_BARRIER_SHOWN[i + 1] and not barrier_hud.fill_logged[i + 1] then
     barrier_hud.fill_logged[i + 1] = true
     FootballBarrier_Log("instance", i, "frame quad drawn after the show")
@@ -336,12 +336,12 @@ end
 local function FootballBarrier_HideOne(i)
   if FOOTBALL_BARRIER_SHOWN[i + 1] then
     FOOTBALL_BARRIER_SHOWN[i + 1] = false
-    FootballBarrier_Menu(711242136 --[[CMND_SET_LAYER_VISIBLE]], BARRIER_LAYER, i, false)
+    FootballBarrier_Menu(@crc:CMND_SET_LAYER_VISIBLE@, BARRIER_LAYER, i, false)
   end
 end
 
 function FootballBarrier_Step()
-  if not FOOTBALL_BARRIER_HUD or FootballBarrier_Menu(2640875187 --[[CMND_IS_OPEN_LAYER]], BARRIER_KEEPER_BARS, 0) ~= true then
+  if not FOOTBALL_BARRIER_HUD or FootballBarrier_Menu(@crc:CMND_IS_OPEN_LAYER@, BARRIER_KEEPER_BARS, 0) ~= true then
     FootballBarrier_HideOne(0)
     FootballBarrier_HideOne(1)
     return
@@ -367,26 +367,26 @@ function FootballBarrier_Step()
     FootballBarrier_HideOne(1)
     return
   end
-  if FootballBarrier_Menu(2640875187 --[[CMND_IS_OPEN_LAYER]], BARRIER_LAYER) ~= true then
+  if FootballBarrier_Menu(@crc:CMND_IS_OPEN_LAYER@, BARRIER_LAYER) ~= true then
     barrier_ready = {false, false, init = false}
     barrier_hud.probe, barrier_hud.place, barrier_hud.tries = {nil, nil}, {nil, nil}, {0, 0}
     FOOTBALL_BARRIER_MAPPING = {nil, nil}
     FOOTBALL_BARRIER_SHOWN = {false, false}
     FOOTBALL_BARRIER_SPRITE = {nil, nil}
-    FootballBarrier_Menu(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], BARRIER_LAYER)
+    FootballBarrier_Menu(@crc:CMND_OPEN_LAYER_ARRAY@, BARRIER_LAYER)
     return
   end
-  if FootballBarrier_Menu(3057768039 --[[CMND_IS_LOADING_LAYER]], BARRIER_LAYER) == true then
+  if FootballBarrier_Menu(@crc:CMND_IS_LOADING_LAYER@, BARRIER_LAYER) == true then
     return
   end
   -- the layer opens with both instances visible as the retail gauge: hidden at once, each shown once placed
   if not barrier_ready.init then
     barrier_ready.init = true
     for i = 0, 1 do
-      FootballBarrier_Menu(711242136 --[[CMND_SET_LAYER_VISIBLE]], BARRIER_LAYER, i, false)
-      FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_FILL, false, i)
-      FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_LABEL, false, i)
-      FootballBarrier_Menu(3405944500 --[[CMND_SET_MESH_VISIBLE]], BARRIER_LAYER, BARRIER_MESH_TRAIL, false, i)
+      FootballBarrier_Menu(@crc:CMND_SET_LAYER_VISIBLE@, BARRIER_LAYER, i, false)
+      FootballBarrier_Menu(@crc:CMND_SET_MESH_VISIBLE@, BARRIER_LAYER, BARRIER_MESH_FILL, false, i)
+      FootballBarrier_Menu(@crc:CMND_SET_MESH_VISIBLE@, BARRIER_LAYER, BARRIER_MESH_LABEL, false, i)
+      FootballBarrier_Menu(@crc:CMND_SET_MESH_VISIBLE@, BARRIER_LAYER, BARRIER_MESH_TRAIL, false, i)
     end
     FOOTBALL_BARRIER_SHOWN = {false, false}
     FootballBarrier_Log("layer open: instances hidden")
@@ -400,7 +400,7 @@ function FootballBarrier_Step()
         barrier_ready[i + 1] = true
         FOOTBALL_BARRIER_LAST[i + 1] = nil
         FOOTBALL_BARRIER_SHOWN[i + 1] = false
-        FootballBarrier_Menu(711242136 --[[CMND_SET_LAYER_VISIBLE]], BARRIER_LAYER, i, false)    -- hidden until placed
+        FootballBarrier_Menu(@crc:CMND_SET_LAYER_VISIBLE@, BARRIER_LAYER, i, false)    -- hidden until placed
         FootballBarrier_Fill(i)
         FOOTBALL_BARRIER_SPRITE[i + 1] = nil
         if FOOTBALL_BARRIER_DEBUG then
@@ -413,7 +413,7 @@ function FootballBarrier_Step()
         if not FOOTBALL_BARRIER_SHOWN[i + 1] then
           FOOTBALL_BARRIER_SHOWN[i + 1] = true
           barrier_hud.fill[i + 1] = 0
-          FootballBarrier_Menu(711242136 --[[CMND_SET_LAYER_VISIBLE]], BARRIER_LAYER, i, true)
+          FootballBarrier_Menu(@crc:CMND_SET_LAYER_VISIBLE@, BARRIER_LAYER, i, true)
           local x, y = FootballBarrier_Global(BARRIER_LAYER, i, barrier_hud.DRAW_NODE)
           FootballBarrier_Log("shown", i, "frame node at", string.format("%.1f %.1f", x or 0, y or 0))
         end

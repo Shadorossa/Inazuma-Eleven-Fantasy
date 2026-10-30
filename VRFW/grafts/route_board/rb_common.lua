@@ -91,17 +91,16 @@ end
 -- "<slot>=<Id>;..." (mods' own ranks). Legacy saves: a mod's string under
 -- another owner, key chr_ranks, is read once per slot and merged (the better rank of the
 -- two per piece) the first time the framework's string is read, then written as the framework's.
-VRFW_RB_RANK_ON = true -- kill switch: false = no piece rank recorded or drawn (a chain node keeps its chain's rank)
 VRFW_RB_RANK_SLOTS = 300 -- the board's save status arrays (statusFlagIndex 0-299)
 VRFW_RB_RANK_cache = nil
 
 function VRFW_RB_Ranks()
   if VRFW_RB_RANK_cache == nil then
-    local ok, s = pcall(funcLuaCommand, 2187277743 --[[CMND_VRFW_SAVE_GET]], "vr_framework", "rb_ranks", "")
+    local ok, s = pcall(funcLuaCommand, @crc:CMND_VRFW_SAVE_GET@, "vr_framework", "rb_ranks", "")
     if not ok or type(s) ~= "string" then
       s = ""
     end
-    local okI, old = pcall(funcLuaCommand, 2187277743, "inazuma_fantasy", "chr_ranks", "")
+    local okI, old = pcall(funcLuaCommand, @crc:CMND_VRFW_SAVE_GET@, "inazuma_fantasy", "chr_ranks", "")
     if okI and type(old) == "string" and old ~= "" then
       local merged = {}
       local n = math.max(string.len(s), string.len(old))
@@ -113,7 +112,7 @@ function VRFW_RB_Ranks()
       local m = table.concat(merged)
       if m ~= s then
         s = m
-        pcall(funcLuaCommand, 2574269955 --[[CMND_VRFW_SAVE_SET]], "vr_framework", "rb_ranks", s, 1)
+        pcall(funcLuaCommand, @crc:CMND_VRFW_SAVE_SET@, "vr_framework", "rb_ranks", s, 1)
         if PRINT ~= nil then
           pcall(PRINT, "VRFW_RB ranks: merged Inazuma Fantasy's chr_ranks into rb_ranks")
         end
@@ -128,7 +127,7 @@ VRFW_RB_LEGACY = {["1"] = "B", ["2"] = "A", ["3"] = "S"}
 VRFW_RB_DIGIT = {B = "1", A = "2", S = "3"}
 
 local function vrfw_rb_id_map()
-  local ok, s = pcall(funcLuaCommand, 2187277743 --[[CMND_VRFW_SAVE_GET]], "vr_framework", "rb_rank_ids", "")
+  local ok, s = pcall(funcLuaCommand, @crc:CMND_VRFW_SAVE_GET@, "vr_framework", "rb_rank_ids", "")
   local m = {}
   if ok and type(s) == "string" then
     for k, id in string.gmatch(s, "(%d+)=([^;]+)") do
@@ -180,20 +179,20 @@ function VRFW_RB_RankSet(sfi, rank)
       parts[#parts + 1] = k .. "=" .. v
     end
     table.sort(parts)
-    pcall(funcLuaCommand, 2574269955 --[[CMND_VRFW_SAVE_SET]], "vr_framework", "rb_rank_ids", table.concat(parts, ";"), 1)
+    pcall(funcLuaCommand, @crc:CMND_VRFW_SAVE_SET@, "vr_framework", "rb_rank_ids", table.concat(parts, ";"), 1)
   end
   if ext then
     return true
   end
   s = string.sub(s, 1, sfi) .. c .. string.sub(s, sfi + 2)
   VRFW_RB_RANK_cache = s
-  pcall(funcLuaCommand, 2574269955 --[[CMND_VRFW_SAVE_SET]], "vr_framework", "rb_ranks", s, 1)
+  pcall(funcLuaCommand, @crc:CMND_VRFW_SAVE_SET@, "vr_framework", "rb_ranks", s, 1)
   return true
 end
 
 -- a won board match (state 10): the piece's rank by the declared ranks, its best (highest Order) kept
 function VRFW_RB_Won(piece, slot)
-  if not VRFW_RB_RANK_ON or slot == nil then
+  if slot == nil then
     return
   end
   VRFW_RB_RANK_cache = nil -- another save slot may have been loaded since
@@ -232,7 +231,7 @@ function VRFW_RB_Rank(slot)
   if VRFW_RCH_RankOf ~= nil then
     r = VRFW_RCH_RankOf(slot)
   end
-  if r == nil and VRFW_RB_RANK_ON then
+  if r == nil then
     r = VRFW_RB_RankGet(slot)
   end
   return r
@@ -252,7 +251,6 @@ end
 -- picture = the rank's PieceBadge (defaults\match_rank.toml: a sprite a mod adds to the dots' atlas vsroute01_06b,
 -- e.g. a mod's chronicle_deluxe_rank_{s,a,b}; the framework declares no rank and ships no badge).
 -- Without a rank, or a rank without a PieceBadge, nothing changes.
-VRFW_RB_BADGE_ON = true -- kill switch: false = no badge
 VRFW_RB_BADGE_POS = {x = 40, y = -6} -- badge centre, piece coordinates (crest: 128 px centred at (0, 38))
 VRFW_RB_BADGE_TEX = 2855820778 --[[crc32("#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx")]]
 VRFW_RB_BADGE_TEXREF = 516486421 --[[clear_icon08: the picture of both Legendaria dots]]
@@ -263,7 +261,7 @@ VRFW_RB_BADGE_DOT = {
 }
 
 function VRFW_RB_Badge(a1, a2, a3)
-  if not VRFW_RB_BADGE_ON or a3 == nil or a3 == -1 then
+  if a3 == nil or a3 == -1 then
     return
   end
   local okE, evType = GetTownMapResourceEvent(a3, 1, true)
@@ -289,9 +287,9 @@ function VRFW_RB_Badge(a1, a2, a3)
   funcLuaMenuCommand(1856671416 --[[node translation]], a1, a2, dot.pos, VRFW_RB_BADGE_POS.x, VRFW_RB_BADGE_POS.y, 0)
   funcLuaMenuCommand(2158717427, a1, dot.pos, true, a2)
   for i = 1, #dot.hide do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], a1, dot.hide[i], false, a2)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, a1, dot.hide[i], false, a2)
   end
-  funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], a1, a2)
+  funcLuaMenuCommand(@crc:CMND_OPEN_LAYER@, a1, a2)
 end
 
 -- The retail invite check at the end of PreStep (CheckAndReserveGeneralWindowForInviteNotJoined, include

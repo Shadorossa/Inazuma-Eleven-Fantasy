@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Desfile de pingüinos (Royal Penguin Parade, whs10100).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.60 m the whole way (the king penguin's belly about 0.8 m up and the little penguins
+# about 0.4 m up, swaying: they never touch the grass). unblockable = false: the game's block rules (this mod changes
+# no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Desfile de pingüinos (whs10100).
+[[edit]]
+target = "whs10100"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }

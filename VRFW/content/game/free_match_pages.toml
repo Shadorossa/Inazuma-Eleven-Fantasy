@@ -1,7 +1,8 @@
 schema = "VRFW.game/2"
 
-# Paged tabs for the free-match list; installs the SetTab detour only when a mod declares a paged tab (`apply = "script"`).
-# While page k of a paged tab is shown, the list builds the page's tab index; the answer table is keyed by the title-return count.
+# Paged tabs for the free-match list and the slots of the section bar's later pages; installs the SetTab detour only when
+# a mod declares a paged tab or a later section page is shown (`apply = "script"`). The list builds the tab index the
+# shown bar slot stands for; the answer table is keyed by the title-return count.
 
 # bool SetTab(this, u8 tab): the list's own function
 [[VRFW.Function]]
@@ -17,7 +18,7 @@ expect_fn = "FreeMatch.ListSetTab"
 apply = "script"
 needs = ["FreeMatch.ListSetTab"]
 
-# tab index built for the bar's tab on the current page
+# tab index built for the bar slot (its section on the shown page, then that tab's own page)
 [[VRFW.Hook.answer]]
 phase = "pre"
 table = "VRFW.FreeMatch.Page"
@@ -30,3 +31,9 @@ write = "args[2]"
 [[VRFW.Command]]
 name = "CMND_VRFW_FM_PAGE"
 handler = "FreeMatchPages.Cmd"
+
+# (index of slot 0, index of slot 1, ...) -> live: the tab index each section bar slot lists on the shown page; no
+# argument = page 1 (every slot lists its own index).
+[[VRFW.Command]]
+name = "CMND_VRFW_FM_SECTION_SLOTS"
+handler = "FreeMatchPages.Sections"

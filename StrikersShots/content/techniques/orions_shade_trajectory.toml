@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Sombra de Orión (Orion's Shade, whs03060, cut-in ev60_03060).
+#
+# In the cut-in the player kicks the ball ~12.5 m up (c0400 frame 304) and the last shot (c0500) is the shadow flame
+# coming down out of the sky on one straight 26.9 deg line (the ball itself not shown with it). Flight (owner's rule
+# 2026-10-24: every aura shot a straight level line): one straight level line from the kick point to the goal, the
+# ball centre at 3.0 m the whole way, so the upright flame (its faded far end ~11 m across) stays mostly over the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); points count from the kick; one point = a level flight; straight = true: one straight line from the kick
+# to the goal at that height.
+
+# Sombra de Orión (whs03060).
+[[edit]]
+target = "whs03060"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

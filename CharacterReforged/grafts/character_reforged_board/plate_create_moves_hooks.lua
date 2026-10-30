@@ -17,12 +17,9 @@ do
   P.KEY_PICKED_ROW = 2315084405                      -- character_reforged_create_pick_row
   P.SKILL_ROWS = 1580043721                          -- soccer11_09_formation_chara_skill (the plate's move rows)
   P.KEY_PLATE_RELEASE = 2526449858                   -- character_reforged_create_plate_release
-  P.PARAM_HAS = 2947612279
-  P.PARAM_DELETE = 3363400568
-  P.PARAM_SET = 3860611758
 
   function P.Picking()
-    return funcLuaCommand(P.PARAM_HAS, P.KEY_PICKING) == true
+    return VRFW_Param.Has(P.KEY_PICKING)
   end
 
   function P.Decide(nxt, layer, index, ...)
@@ -33,19 +30,19 @@ do
     if type(TerminateCharaSkillSort) == "function" then
       pcall(TerminateCharaSkillSort, true)
     end
-    funcLuaCommand(P.PARAM_DELETE, P.KEY_PICKED_ROW)
+    VRFW_Param.Clear(P.KEY_PICKED_ROW)
     if type(index) == "number" and index >= 0 then
-      funcLuaCommand(P.PARAM_SET, P.KEY_PICKED_ROW, 0, index + 1, 1)
+      VRFW_Param.Set(P.KEY_PICKED_ROW, index + 1)
     end
     return 1
   end
 
   -- the bank's card off the plate (UpdateCharaStHdlPersonalPlateFromCharaBank(0, ...) from the releasing bank)
   function P.Release(nxt, hdl, ...)
-    if hdl ~= 0 or funcLuaCommand(P.PARAM_HAS, P.KEY_PLATE_RELEASE) ~= true then
+    if hdl ~= 0 or not VRFW_Param.Has(P.KEY_PLATE_RELEASE) then
       return nxt(hdl, ...)
     end
-    funcLuaCommand(P.PARAM_DELETE, P.KEY_PLATE_RELEASE)
+    VRFW_Param.Clear(P.KEY_PLATE_RELEASE)
     if type(TerminateCharaSkillSort) == "function" then
       pcall(TerminateCharaSkillSort, true)
     end

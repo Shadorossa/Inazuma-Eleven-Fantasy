@@ -10,9 +10,9 @@
 -- No engine call at load time.
 if VRFW_Stats == nil then
   local ST = {
-    SAVE_GET = 2187277743,   -- CMND_VRFW_SAVE_GET (owner, key, default)
-    SAVE_SET = 2574269955,   -- CMND_VRFW_SAVE_SET (owner, key, value, commit)
-    LOG = 3661580131,        -- CMND_EVT_LOG
+    SAVE_GET = VRFW_Cmd.VRFW_SAVE_GET,   -- CMND_VRFW_SAVE_GET (owner, key, default)
+    SAVE_SET = VRFW_Cmd.VRFW_SAVE_SET,   -- CMND_VRFW_SAVE_SET (owner, key, value, commit)
+    LOG = VRFW_Cmd.EVT_LOG,        -- CMND_EVT_LOG
     OWNER = "vr_framework",
     floors = {},
   }

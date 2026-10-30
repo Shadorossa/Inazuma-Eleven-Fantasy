@@ -1,0 +1,36 @@
+# The Battle Bay «Reto diario» as native data (schema VRFW.game/1, docs/framework/native.md), handled by
+# scripts\daily_challenge.lua (required by campaign.lua: one VM). The session block `session`, the enjoy table and their
+# structs are declared in campaign.toml (one name space per mod). The graft research/grafts/bb_daily_challenge calls
+# these commands from the Battle Bay top menu and the campaign end window. docs/game/modes/bb-daily-challenge.md.
+schema = "VRFW.game/1"
+
+[[VRFW.Command]]
+# date (YYYYMMDD, UTC: VRFW_Daily.Period("day")) -> table { ok, why, date, team, rivals, matches, k (matches won in the
+# current run), results, loaded, done, best { won, gf, ga }, attempts, last }
+name = "CMND_BBD_DAILY_INFO"
+handler = "BattleBayDeluxe.DailyInfo"
+needs = ["session", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+# date -> table { ok, why, k }: the Campaña's block kept (save blob bb_daily_campaign.json), the run's next match written
+name = "CMND_BBD_DAILY_PREPARE"
+handler = "BattleBayDeluxe.DailyPrepare"
+needs = ["session", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+# -> true: the match request did not start, the Campaña's block back
+name = "CMND_BBD_DAILY_UNLOAD"
+handler = "BattleBayDeluxe.DailyUnload"
+needs = ["session"]
+
+[[VRFW.Command]]
+# -> table { event = "none" | "won" | "lost" | "completed", gf, ga, k }: at every opening of the Battle Bay top menu,
+# the result of a run match recorded and the Campaña's block written back
+name = "CMND_BBD_DAILY_SYNC"
+handler = "BattleBayDeluxe.DailySync"
+needs = ["session", "enjoy", "EnjoyTable", "EnjoyRow"]
+
+[[VRFW.Command]]
+# -> true while a run match holds the block (the campaign end window sends the player back to the top menu)
+name = "CMND_BBD_DAILY_LOADED"
+handler = "BattleBayDeluxe.DailyLoaded"

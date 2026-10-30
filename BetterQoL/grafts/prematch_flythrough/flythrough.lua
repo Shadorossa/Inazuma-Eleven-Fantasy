@@ -25,7 +25,7 @@ utilCamShot = 0                           -- index of the current shot (1..#UTIL
 utilCamT = 0                              -- seconds since the current shot started
 utilCamSet = false                        -- a fixed camera was set: the chase camera must be restored
 function UTIL_CamLog(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], ...)
+  pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, ...)
 end
 function UTIL_CamOnline()                 -- network match / observer: never change anything
   return funcLuaCommand(3959907440) == true or funcLuaCommand(1191545622) == true
@@ -57,7 +57,7 @@ function UTIL_CamNext()
   utilCamShot = utilCamShot % #UTIL_CAM_SHOTS + 1
   utilCamT = 0
   local id = UTIL_CAM_SHOTS[utilCamShot]
-  local ok = funcLuaCommand(1953896148 --[[CMND_CHANGE_SOCCER_CAMERA_TYPE]], 21, 0, 0, 0, id)
+  local ok = funcLuaCommand(@crc:CMND_CHANGE_SOCCER_CAMERA_TYPE@, 21, 0, 0, 0, id)
   utilCamSet = true
   UTIL_CamLog("UTIL camera: shot", utilCamShot, id, ok)
 end
@@ -77,8 +77,8 @@ function UTIL_CamStop(why)
   utilCamFly = false
   if utilCamSet then
     utilCamSet = false
-    funcLuaCommand(1953896148 --[[CMND_CHANGE_SOCCER_CAMERA_TYPE]], 0, 0, 0, 0)   -- retail chase camera
-    funcLuaCommand(2002145547 --[[CMND_CAMERA_RESET]], true)                       -- as prog_common.ReserveBallGet
+    funcLuaCommand(@crc:CMND_CHANGE_SOCCER_CAMERA_TYPE@, 0, 0, 0, 0)   -- retail chase camera
+    funcLuaCommand(@crc:CMND_CAMERA_RESET@, true)                       -- as prog_common.ReserveBallGet
   end
   UTIL_CamLog("UTIL camera: fly-through stop", why)
 end

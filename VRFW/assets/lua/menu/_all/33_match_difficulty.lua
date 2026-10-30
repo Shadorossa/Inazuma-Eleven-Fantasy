@@ -7,9 +7,9 @@
 -- team-list orbs) instead of their own copies.
 if VRFW_MatchDifficulty == nil then
   local D = {
-    LOG = 3661580131,            -- CMND_EVT_LOG
-    COUNT = 2318352727,          -- CMND_VRFW_TEAM_DIFFICULTY_COUNT
-    GET = 3088850053,            -- CMND_VRFW_TEAM_DIFFICULTY_GET
+    LOG = VRFW_Cmd.EVT_LOG,            -- CMND_EVT_LOG
+    COUNT = VRFW_Cmd.VRFW_TEAM_DIFFICULTY_COUNT,          -- CMND_VRFW_TEAM_DIFFICULTY_COUNT
+    GET = VRFW_Cmd.VRFW_TEAM_DIFFICULTY_GET,            -- CMND_VRFW_TEAM_DIFFICULTY_GET
     sets = {},                   -- ctx -> {[difficulty] = true}, or false = nothing declared (every difficulty exists)
     lists = {},                  -- ctx -> {{difficulty, id, level, atlas, sprite}, ...} in order
   }

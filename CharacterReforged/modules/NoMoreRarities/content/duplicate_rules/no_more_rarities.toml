@@ -3,7 +3,7 @@ schema = "CharacterReforged.duplicate_rules/1"
 # Character Reforged; docs/refactor/aura-mods-split.md «Duplicate players hook»): when a save is duplicated into
 # another slot («X: duplicar» of the slot screen), every normal card of the copy is the 5★ card; with apply_on_load, the
 # same on every load of a player slot. Was Inazuma Fantasy's «Ajustar save al mod» rule `legend`
-# (docs/game/engine/savefix.md); Inazuma Fantasy's own load repair («Reparar duplicados») reads the merged policy.
+# (docs/framework/save-adjust.md); Inazuma Fantasy's own load repair («Reparar duplicados») reads the merged policy.
 # The one-card-per-character limit is the module New Recruitment's (its content\duplicate_rules\new_recruitment.toml,
 # since 2026-10-15); rules merge key by key across mods.
 
@@ -15,7 +15,17 @@ normal_card_rarity = 4
 # kept (Character Reforged's scripts\duplicate_players.lua «slot_load», blob
 # save-backup-slot<N>-<stamp>-before-duplicate-rules.bin); the locked retail slot and reserved slots are never touched
 apply_on_load = true
-# the special cards (chara_param col 41) that get normal_card_rarity too: the tiers the option «Rarezas eliminadas»
-# removes (options.toml no_more_rarities.removed_rarities: 0 basic only, 1 + Ídolo 5-7, 2 + Diamante 8, 3 all; the
-# same tiers as NoMoreRarities.RarityRemoved of assets\lua\_all\no_more_rarities_card_look.lua)
-normalize_special_rarities = { option = "no_more_rarities.removed_rarities", values = { "1" = [5, 6, 7], "2" = [8], "3" = [5, 6, 7, 8] } }
+# the special cards that get normal_card_rarity too: the rarity groups the option «Cartas sin aspecto de rareza» removes
+# (options.toml no_more_rarities.removed_rarities: 0 basic only, 1 + Ídolo, 2 + Diamante, 3 all; the same choices as
+# NoMoreRarities.RarityRemoved of assets\lua\_all\no_more_rarities_card_look.lua). `rarities` = rarity ids of the rarity
+# data (the framework's game_rarities.toml: hero = Ídolo / Héroe, fabled = Diamante). The save adjust action (Options ›
+# «Ajustar save») turns those cards into their character's 5★ base card, merging copies of a character the club already
+# has; `save_adjust_label` = its confirmation line for that value (text\rows\save_tools.toml)
+[CharacterReforged.DuplicateRules.no_more_rarities.normalize_special_rarities]
+option = "no_more_rarities.removed_rarities"
+
+[CharacterReforged.DuplicateRules.no_more_rarities.normalize_special_rarities.values]
+"0" = { rarities = [], save_adjust_label = "no_more_rarities_save_tools_normal_rarity" }
+"1" = { rarities = ["hero"], save_adjust_label = "no_more_rarities_save_tools_normal_rarity_idol" }
+"2" = { rarities = ["fabled"], save_adjust_label = "no_more_rarities_save_tools_normal_rarity_diamond" }
+"3" = { rarities = ["hero", "fabled"], save_adjust_label = "no_more_rarities_save_tools_normal_rarity_all" }

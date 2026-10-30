@@ -1,0 +1,123 @@
+schema = "VRFW.changelog/1"
+# AI Roles: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 0.1.0 (2026-10-30): created (a module of Football Reforged): the forwards' roles.
+lang = "es"
+name = "Roles de la IA"
+
+[en]
+name = "AI roles"
+
+[fr]
+name = "Rôles de l'IA"
+
+[de]
+name = "KI-Rollen"
+
+[it]
+name = "Ruoli dell'IA"
+
+[pt]
+name = "Papéis da IA"
+
+[ja]
+name = "AIの役割"
+
+[zh_hans]
+name = "AI角色"
+
+[zh_hant]
+name = "AI角色"
+
+[[release]]
+icon = "general"
+notes = [
+    "Roles que cambian cómo se mueven sin balón.",
+    "En juego manual y en modo Comandante.",
+    "Ajustes de la IA: elige el rol según su posición.",
+    "Un mismo rol para varios jugadores.",
+    "Delanteros: Cazagoles, Falso 9, Extremo interior.",
+    "Módulo de Football Reforged.",
+]
+
+[release.en]
+notes = [
+    "Roles that change how players move without the ball.",
+    "In Manual play and in Commander mode.",
+    "AI settings: pick the role among his position's.",
+    "The same role for several players.",
+    "Forwards: Poacher, False nine, Inside forward.",
+    "A module of Football Reforged.",
+]
+
+[release.fr]
+notes = [
+    "Des rôles qui changent le placement sans ballon.",
+    "En jeu manuel et en mode Commandant.",
+    "Réglages de l'IA : le rôle selon son poste.",
+    "Un même rôle pour plusieurs joueurs.",
+    "Attaquants : Renard des surfaces, Faux 9, Ailier inversé.",
+    "Un module de Football Reforged.",
+]
+
+[release.de]
+notes = [
+    "Rollen, die das Laufen ohne Ball verändern.",
+    "Im manuellen Spiel und im Kommandantenmodus.",
+    "KI-Einstellungen: Rolle passend zur Position.",
+    "Dieselbe Rolle für mehrere Spieler.",
+    "Stürmer: Knipser, Falsche Neun, Inverser Flügel.",
+    "Ein Modul von Football Reforged.",
+]
+
+[release.it]
+notes = [
+    "Ruoli che cambiano come si muovono senza palla.",
+    "Nel gioco manuale e in modalità Comandante.",
+    "Impostazioni IA: il ruolo secondo la posizione.",
+    "Lo stesso ruolo per più giocatori.",
+    "Attaccanti: Rapace d'area, Falso nove, Ala invertita.",
+    "Un modulo di Football Reforged.",
+]
+
+[release.pt]
+notes = [
+    "Papéis que mudam como se movem sem bola.",
+    "No jogo manual e no modo Comandante.",
+    "Ajustes da IA: escolhe o papel pela posição.",
+    "O mesmo papel para vários jogadores.",
+    "Avançados: Matador, Falso 9, Extremo invertido.",
+    "Um módulo de Football Reforged.",
+]
+
+[release.ja]
+notes = [
+    "ボールなしの動きを変える役割。",
+    "マニュアルでもコマンダーモードでも有効。",
+    "AI設定：ポジションに合った役割を選ぶ。",
+    "同じ役割を複数の選手に。",
+    "FW：点取り屋、偽9番、インサイドフォワード。",
+    "Football Reforgedのモジュール。",
+]
+
+[release.zh_hans]
+notes = [
+    "改变球员无球跑位的角色。",
+    "手动操作和指挥官模式都有效。",
+    "AI设置：按位置选择角色。",
+    "同一角色可给多名球员。",
+    "前锋：禁区杀手、伪九号、内锋。",
+    "Football Reforged的模块。",
+]
+
+[release.zh_hant]
+notes = [
+    "改變球員無球跑位的角色。",
+    "手動操作和指揮官模式都有效。",
+    "AI設定：按位置選擇角色。",
+    "同一角色可給多名球員。",
+    "前鋒：禁區殺手、偽九號、內鋒。",
+    "Football Reforged的模組。",
+]

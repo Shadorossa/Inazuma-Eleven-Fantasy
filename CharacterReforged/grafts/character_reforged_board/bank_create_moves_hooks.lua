@@ -42,19 +42,10 @@ do
   B.IS_AVATAR = 2461887648                           -- CMND_GET_IS_AVATAR_CHARA (charaStHdl) -> the player's avatar
   -- the confirmation panel (pair_confirm_window_hooks.lua in general_window reads and clears these): the two cards,
   -- the move, the base's stats and what the pair adds (the system's preview command), the glyph
-  B.PAIR = {N = 3845463003, BASE = 3138498002, PARTNER = 3239651284, MOVE = 2493211851,   -- character_reforged_pair_n / base / partner / move
-    KIND = 1080160106, MASK = 80384131, ICON = 4064933282,           -- character_reforged_pair_kind / mask / icon_sprite
-    PE_S = 2347582693, PE_G = 2436337816, PE_F = 3861946382,         -- character_reforged_pair_pe_s / _pe_g / _pe_f
-    -- character_reforged_pair_s0 .. s8, then _g0 .. g8
-    S = {[0] = 441683322, 1834270188, 4099796054, 2203770048, 490621283, 1782151669, 4080019535, 2218203353, 344458568},
-    G = {[0] = 889018927, 1140484793, 3673373443, 2918452117, 865115702, 1150791328, 3718184730, 2862206860, 975622685}}
+  B.PAIR = @PAIR_HANDOFF_KEYS@
   B.CHARA_STAT = 1938088826                          -- CMND_CHARACTERREFORGED_CHARA_STAT (charaStHdl, stat) -> value
   B.STAT_COUNT = 9
   B.LOG = 2743311895                                 -- CMND_CHARACTERREFORGED_CREATE_LOG (step, values…)
-  B.PARAM_HAS = 2947612279
-  B.PARAM_GET = 3522198769
-  B.PARAM_DELETE = 3363400568
-  B.PARAM_SET = 3860611758
   B.TEMP_SET = 2565779025
   B.BANK_RESULT = 2524660062                         -- the bank's pick (retail temp int)
   B.TEXT_GET = 4074371074                            -- CMND_TEXT_GET (text id)
@@ -297,20 +288,20 @@ do
 
   -- the plate's move rows answer as a pick (true) or as the retail move-order drag (false)
   function B.PickRows(on)
-    funcLuaCommand(B.PARAM_DELETE, B.KEY_PICKED_ROW)
-    funcLuaCommand(B.PARAM_DELETE, B.KEY_PICKING)
+    VRFW_Param.Clear(B.KEY_PICKED_ROW)
+    VRFW_Param.Clear(B.KEY_PICKING)
     if on then
-      funcLuaCommand(B.PARAM_SET, B.KEY_PICKING, 0, 1, 1)
+      VRFW_Param.Set(B.KEY_PICKING, 1)
     end
   end
 
   -- the row the plate reported as decided (0 .. 5), or nil
   function B.TakePickedRow()
-    if funcLuaCommand(B.PARAM_HAS, B.KEY_PICKED_ROW) ~= true then
+    if not VRFW_Param.Has(B.KEY_PICKED_ROW) then
       return nil
     end
-    local v = funcLuaCommand(B.PARAM_GET, B.KEY_PICKED_ROW)
-    funcLuaCommand(B.PARAM_DELETE, B.KEY_PICKED_ROW)
+    local v = VRFW_Param.Get(B.KEY_PICKED_ROW)
+    VRFW_Param.Clear(B.KEY_PICKED_ROW)
     if type(v) ~= "number" or v < 1 then
       return nil
     end
@@ -390,8 +381,8 @@ do
   end
 
   function B.Param(key, value)
-    funcLuaCommand(B.PARAM_DELETE, key)
-    funcLuaCommand(B.PARAM_SET, key, 0, value, 1)
+    VRFW_Param.Clear(key)
+    VRFW_Param.Set(key, value)
   end
 
   -- the base's stat `i` (Character Reforged's per-character stats, as its player page shows them); 0 = not readable
@@ -451,11 +442,11 @@ do
   function B.PairCardsClear()
     local K = B.PAIR
     for _, key in ipairs({K.N, K.BASE, K.PARTNER, K.MOVE, K.ICON, K.KIND, K.MASK, K.PE_S, K.PE_G, K.PE_F}) do
-      funcLuaCommand(B.PARAM_DELETE, key)
+      VRFW_Param.Clear(key)
     end
     for i = 0, B.STAT_COUNT - 1 do
-      funcLuaCommand(B.PARAM_DELETE, K.S[i])
-      funcLuaCommand(B.PARAM_DELETE, K.G[i])
+      VRFW_Param.Clear(K.S[i])
+      VRFW_Param.Clear(K.G[i])
     end
   end
 
@@ -486,8 +477,8 @@ do
           funcLuaCommand(B.SOUND, B.SE_DECIDE)
           funcLuaCommand(B.TEMP_SET, B.BANK_RESULT, hdl)
           for i, key in ipairs(B.KEY_MOVES) do
-            funcLuaCommand(B.PARAM_DELETE, key)
-            funcLuaCommand(B.PARAM_SET, key, 0, picked[i] or 0, 1)
+            VRFW_Param.Clear(key)
+            VRFW_Param.Set(key, picked[i] or 0)
           end
           B.Log("confirmed", "partner", hdl, "moves", picked[1] or 0, picked[2] or 0)
           B.co = nil
@@ -550,14 +541,14 @@ do
   if VRFW_Host ~= nil then
     VRFW_Host.on(B.STEM, "OnInit", {id = B.ID .. ".init", phase = "before", fn = function()
       B.Reset()
-      funcLuaCommand(B.PARAM_DELETE, B.KEY_PLATE_RELEASE)
-      if funcLuaCommand(B.PARAM_HAS, B.KEY_BASE) ~= true or funcLuaCommand(B.PARAM_HAS, B.KEY_ROW) ~= true then
+      VRFW_Param.Clear(B.KEY_PLATE_RELEASE)
+      if not VRFW_Param.Has(B.KEY_BASE) or not VRFW_Param.Has(B.KEY_ROW) then
         return
       end
-      local base = funcLuaCommand(B.PARAM_GET, B.KEY_BASE)
-      local row = funcLuaCommand(B.PARAM_GET, B.KEY_ROW)
-      funcLuaCommand(B.PARAM_DELETE, B.KEY_BASE)
-      funcLuaCommand(B.PARAM_DELETE, B.KEY_ROW)
+      local base = VRFW_Param.Get(B.KEY_BASE)
+      local row = VRFW_Param.Get(B.KEY_ROW)
+      VRFW_Param.Clear(B.KEY_BASE)
+      VRFW_Param.Clear(B.KEY_ROW)
       if type(base) ~= "number" or base == 0 or type(row) ~= "number" or row <= 0 then
         return
       end

@@ -14,7 +14,9 @@
 -- command starts, or over play when the move resolves without one (`match:skill_used`); its script asks
 -- CMND_AURAREWORKED_SOULS_REEL once and reports the stop with CMND_AURAREWORKED_SOULS_REEL_LANDED. The rival's rolls are
 -- applied without it. The result lands when the carousel stops (at the latest when that cut-in ends, which also closes
--- the carousel) and lasts while the totem is out (timed skills: their seconds; recoveries: at once).
+-- the carousel) and lasts while the totem is out (timed skills: their seconds; recoveries: at once). A result of effect
+-- "passive" is a passive of the framework's passive engine granted through its rule flag at the skill
+-- level; this script only sets and clears that flag.
 -- Every level-up queues a pop (a speech bubble in the aura type's colours with «+Nv.» over the player's head) for the graft
 -- souls_rework_level_pop (command CMND_AURAREWORKED_SOULS_LEVEL_POP; config.toml [souls.level_pop]).
 
@@ -25,11 +27,12 @@ if VRFW.option("souls_rework") == 0 then return end
 local D = require "lib/data"
 local A = require "lib/auras"
 
-local function info(...) VRFW.log("aura_reworked souls:", ...) end
-local function warn(...) VRFW.warn("aura_reworked souls:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("aura_reworked souls")
 
 local band = bit32.band
-local function hex(v) return string.format("0x%X", v or 0) end
+local Id = require "VRFW/lib/ids"
+local hex = Id.hex
 
 -- config.toml [souls.*]
 local CFG_AP = VRFW.files.config("souls.aura_points") or {}
@@ -40,14 +43,9 @@ local CFG_FX = VRFW.files.config("souls.effects") or {}
 local CFG_POP = VRFW.files.config("souls.level_pop") or {}
 
 local SP_RESOURCE = tostring(CFG_AP.resource or "")
-local COST_FLAG = tostring(CFG_AP.cost_flag or "")
 local START_FLAG = tostring(CFG_AP.start_flag or "")
 local STAMINA_RESOURCE = tostring(CFG_STAMINA.resource or "")
-local function num(v, d)
-  v = tonumber(v)
-  if v == nil or v ~= v then return d end
-  return v
-end
+local num = VRFW.value.num
 local REEL = {
   show = CFG_REEL.show ~= false,
   screen = "aura_reworked_souls_reel_menu",
@@ -125,9 +123,10 @@ local function bubbles(aura_type)
   end
   return POP.bubbles[key]
 end
-local SHOT_WINDOW_MS = num(CFG_FX.shot_window_s, 8) * 1000
+-- a reel result of effect "passive": the passive engine's grant flag <grant_flag>.<passive>.<actor handle> = its level
+local GRANT_FLAG = tostring(CFG_FX.grant_flag or "")
 local KNOCKDOWN_CLIP = tostring(CFG_FX.knockdown_clip or "")
-local LIVE = {}
+local Live = require "VRFW/lib/match_live"
 -- the level rule: the amounts of level points and the thresholds (config.toml [souls.levels])
 local function amount(v, d)
   v = num(v, d)
@@ -142,26 +141,24 @@ local RULE = {
 for _, v in ipairs(type(CFG_LEVELS.thresholds) == "table" and CFG_LEVELS.thresholds or { 30, 80, 150, 240 }) do
   if type(v) == "number" and v >= 0 then RULE.thresholds[#RULE.thresholds + 1] = v end
 end
-for _, s in ipairs(type(CFG_LEVELS.live_states) == "table" and CFG_LEVELS.live_states or { 9, 14, 15, 16 }) do LIVE[s] = true end
+local LIVE = Live.state_set(CFG_LEVELS.live_states)   -- config.toml [souls.levels] live_states, else open play
 
 -- the part's settings of Mods options (options.toml), read again at every match start:
 --   souls_top_level     every totem is at its top level from the start (no level points, no level-up)
 --   souls_reel          the reel is shown (off: the rolls apply without it)
---   souls_rival_levels  the rival team's totems level up and roll too
 local OPT = { top_level = false }
 local function read_options()
   OPT.top_level = VRFW.option("souls_top_level") == 1
   REEL.show = CFG_REEL.show ~= false and VRFW.option("souls_reel") ~= 0
-  RULE.cpu = CFG_LEVELS.cpu ~= false and VRFW.option("souls_rival_levels") ~= 0
+  RULE.cpu = CFG_LEVELS.cpu ~= false
 end
 read_options()
 
 -- game layout (docs/game/mechanics/keshin-armed.md §2.2, aura-costs.md §2)
-local ACTOR_MAX, ACTOR_STRIDE = 0x3A, 0x570
+local Actors = require "VRFW/lib/actors"
 local SUMMON_FULL, SUMMON_LEFT = 0x360, 0x370
 local SUMMON_ACTIVE = 2
 local ATTR_KESHIN, ATTR_TOTEM = 1, 8
-local IN_PLAY_STATE = 9
 local MODE_DECIDE_FRAMES = 3
 local SLOTS = 6
 
@@ -175,7 +172,6 @@ local pending = {}       -- rolls waiting to land: { hdl, aura, slot, at, shown,
 local reel = { seq = 0, current = nil, busy_until = 0, armed = nil }   -- the carousel: the roll it shows, the last armed roll
 local pop_queue = {}     -- level-up pops for the graft: { seq, hdl, text, bubbles }
 local pop_seq = 0
-local last_shot = nil    -- { hdl, team, at }: the last shot's player (Numbness +)
 local knocked = {}       -- hdl -> { mult, until }: players slowed by a knock-down
 local timed_count = 0    -- live timed effects (move_speed answers stay cheap without any)
 local records = {}       -- AuraReworked.SoulsPlayer rows written: hdl -> fields
@@ -216,7 +212,7 @@ local function clear_match()
   if reel.current then pcall(VRFW.ui.close_menu, REEL.screen, false) end
   players, pending, knocked, records, pop_queue = {}, {}, {}, {}, {}
   reel.current, reel.armed, reel.busy_until = nil, nil, 0
-  last_shot, timed_count = nil, 0
+  timed_count = 0
   pcall(VRFW.native.table_clear, "AuraReworked.SoulsPlayer")
 end
 
@@ -423,18 +419,16 @@ local function apply_result(p, s, level, depth)
   local act = p.active
   if e == "none" then
     return "miss"
-  elseif e == "move_power" or e == "shot_vs_keeper" or e == "keeper_vs_shot" or e == "level_points" then
-    set_fx(p, s, level, { value = v, kinds = s.move_kinds, until_ms = until_ms, timed = until_ms ~= nil })
-    return string.format("%s %+.0f %%%s", e, v, until_ms and string.format(" for %.0f s", secs) or " while out")
-  elseif e == "point_cost" then
-    if act and act.mode == "points" and COST_FLAG ~= "" then
-      local name = COST_FLAG .. "." .. p.hdl
-      pcall(VRFW.set_flag, name, math.max(1, math.floor(100 - v + 0.5)))
-      set_fx(p, s, level, { value = v, flag = name, until_ms = until_ms, timed = until_ms ~= nil })
-      return string.format("SP costs -%.0f %% (flag %s)", v, name)
-    end
+  elseif e == "passive" then
+    -- the shared passive engine carries it while the flag is set: for its seconds, else while the totem is out
+    if GRANT_FLAG == "" or s.passive == "" then return "passive: no grant flag / passive" end
+    local name = string.format("%s.%s.%d", GRANT_FLAG, s.passive, p.hdl)
+    pcall(VRFW.set_flag, name, level)
+    set_fx(p, s, level, { flag = name, until_ms = until_ms, timed = until_ms ~= nil })
+    return string.format("passive %s Lv%d%s", s.passive, level, until_ms and string.format(" for %.0f s", secs) or " while out")
+  elseif e == "level_points" then
     set_fx(p, s, level, { value = v, until_ms = until_ms, timed = until_ms ~= nil })
-    return string.format("tension costs -%.0f %%", v)
+    return string.format("%s %+.0f %%%s", e, v, until_ms and string.format(" for %.0f s", secs) or " while out")
   elseif e == "team_stamina" then
     if team_stamina(p, v) then return string.format("team stamina +%.0f %%", v) end
     local fb = s.fallback ~= "" and DATA.skills[s.fallback]
@@ -449,7 +443,7 @@ local function apply_result(p, s, level, depth)
       parts[#parts + 1] = string.format("tension +%d", units)
     end
     return "team " .. table.concat(parts, ", ")
-  elseif e == "move_speed" or e == "untouchable" then
+  elseif e == "untouchable" then
     set_fx(p, s, level, { value = v, until_ms = until_ms, timed = true })
     return string.format("%s %+.0f %% for %.0f s", e, v, secs)
   elseif e == "knockdown" then
@@ -679,32 +673,26 @@ local function step_player(p, actor, a)
     act.frames = act.frames + 1
     if not act.mode and act.frames >= MODE_DECIDE_FRAMES then decide_mode(p, act, st, T) end
     if act.mode == "points" and st.pool_level ~= st.level then apply_pool_max(p, aura, st, T) end
-    if LIVE[match.state] and a.in_play ~= 0 and match.dt > 0 and match.dt < 1 then add_lp(p, (RULE.per_second or 0) * match.dt) end
+    if match.live and a.in_play ~= 0 then add_lp(p, (RULE.per_second or 0) * match.dt) end
   end
   local release = p.active ~= nil and RULE.no_release
   record(p.hdl, p.active and { level = p.pairs[p.active.aura].level, totem = p.active.aura, no_release = release and 0 or nil } or nil)
-end
-
-local function base_actors()
-  local ok, b = pcall(VRFW.game["Match.SoccerActors.ViaSkillUsed"])
-  if ok and type(b) == "number" and b >= 0x10000 then return b end
-  return nil
 end
 
 VRFW.on("tick", function(ev)
   if not match.on then return nil end
   local m = ev.match or {}
   match.state = m.soccer_state or 0
+  match.live = Live.live_dt(m, LIVE) > 0
   match.user = m.user_team or 0xFF
   match.dt = m.dt or 0
   match.frame = (match.frame or 0) + 1
   ensure_data()
-  local base = base_actors()
-  if not base then return nil end
-  for i = 0, ACTOR_MAX - 1 do
-    local actor = base + i * ACTOR_STRIDE
+  if not Actors.base() then return nil end
+  for _, entry in ipairs(Actors.list()) do
+    local actor = entry.address
     local a = VRFW.mem.read_struct("SrActor", actor)
-    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == i and a.team <= 1 then
+    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == entry.index and a.team <= 1 then
       local p = player(a.hdl)
       p.team, p.actor, p.seen = a.team, actor, match.frame
       step_player(p, actor, a)
@@ -815,6 +803,13 @@ VRFW.on("event_build", function(ev)
   local own = A.move(aura)
   local T = totem_of(aura)
   if own == 0 or own ~= skill or not T then return nil end
+  -- the move already used and its ball not owned again yet: this build is a later scene of that use (the keeper's
+  -- or a blocker's cut-in against the shot), not a new command
+  if p.move_used then
+    info(string.format("actor %s T%d: build of the used move %s (command type %s): a later scene of that use, no roll",
+      hex(hdl), p.team, hex(skill), tostring(ev.arg)))
+    return nil
+  end
   -- the same command built again (one move, several builds): one roll
   local last = p.last_roll
   if last and not last.taken and now() - last.armed_at <= REEL.window_ms then return nil end
@@ -841,6 +836,7 @@ VRFW.on("match:skill_used:post", function(ev)
   info(string.format("actor %s T%d: move %s used with totem %s (%s) out: its own move %s -> %s", hex(hdl), p.team, hex(skill),
     hex(aura), A.key(aura), hex(own), (own ~= 0 and own == skill and T) and "reel" or "not the totem's move"))
   if own == 0 or own ~= skill or not T then return nil end
+  p.move_used = true
   add_lp(p, RULE.per_own_move or 0, "own move")
   local item = p.last_roll
   if item and not item.taken and now() - item.armed_at <= REEL.stale_ms then
@@ -858,108 +854,34 @@ VRFW.on("match:skill_used:post", function(ev)
   return nil
 end)
 
+-- the ball has a new owner: every used move is over, the next build of a totem's move is a new command
+VRFW.on("possession", function(ev)
+  for _, p in pairs(players) do p.move_used = nil end
+  return nil
+end)
+
 -- ---------------------------------------------------------------------------------------------- effect answers
-
-local MOVES = nil   -- skill id -> category
-local function category_of(skill)
-  if MOVES == nil then
-    MOVES = {}
-    for _, id in ipairs({ "skill/skill", "skill" }) do
-      local ok, rows = pcall(VRFW.table.rows, id)
-      if ok and type(rows) == "table" and #rows > 0 then
-        for _, r in ipairs(rows) do
-          if r.skill_id then
-            local sid = tonumber(r.skill_id) or 0
-            if sid < 0 then sid = sid + 4294967296 end
-            MOVES[sid] = tonumber(r.category) or 0
-          end
-        end
-        break
-      end
-    end
-  end
-  return MOVES[skill or 0]
-end
-
-local function kind_ok(kinds, cat)
-  if type(kinds) ~= "table" or #kinds == 0 then return true end
-  for _, k in ipairs(kinds) do
-    if DATA.move_kinds[k] == cat then return true end
-  end
-  return false
-end
-
-VRFW.on("move_power", function(ev)
-  local p = actor_player(ev)
-  if not p or not DATA then return nil end
-  local cat = category_of(ev.skill)
-  if cat == DATA.move_kinds.shoot then last_shot = { hdl = p.hdl, team = p.team, at = now() } end
-  local m = 1
-  for _, fx in pairs(p.fx) do
-    if fx.effect == "move_power" and kind_ok(fx.kinds, cat) then m = m * (1 + fx.value / 100) end
-  end
-  if m ~= 1 then return { power_mult = m, log = "aura_reworked souls reel power" } end
-  return nil
-end)
-
-VRFW.on("keeper_duel", function(ev)
-  local keeper = actor_player(ev)
-  local m = 1
-  if keeper then
-    for _, fx in pairs(keeper.fx) do
-      if fx.effect == "keeper_vs_shot" then m = m * (1 + fx.value / 100) end
-    end
-  end
-  local s = last_shot
-  if s and now() - s.at <= SHOT_WINDOW_MS and (not keeper or s.team ~= keeper.team) and players[s.hdl] then
-    for _, fx in pairs(players[s.hdl].fx) do
-      if fx.effect == "shot_vs_keeper" then m = m * (1 + fx.value / 100) end
-    end
-  end
-  if m ~= 1 then return { power_mult = m, log = "aura_reworked souls reel keeper duel" } end
-  return nil
-end)
-
-VRFW.on("tension_pay", function(ev)
-  local p = actor_player(ev)
-  if not p then return nil end
-  local m = 1
-  for _, fx in pairs(p.fx) do
-    if fx.effect == "point_cost" and not fx.flag then m = m * math.max(0, 1 - fx.value / 100) end
-  end
-  if m ~= 1 then return { cost_mult = m } end
-  return nil
-end)
 
 VRFW.on("move_speed", function(ev)
   if timed_count <= 0 then return nil end
   local h = ev.actor and ev.actor.handle
   if not h then return nil end
   local m = 1
-  local p = players[h]
-  if p then
-    for _, fx in pairs(p.fx) do
-      if fx.effect == "move_speed" then m = m * (1 + fx.value / 100) end
-    end
-  end
   if knocked[h] then m = m * knocked[h].mult end
   if m ~= 1 then return { speed_mult = m } end
   return nil
 end)
 
--- Invincible: no block battle against a player of the other side who holds the ball
+-- Invincible: no field block against his shot (block_battle: a field player's block of a shot in flight; ev.rival =
+-- the shooter)
 VRFW.on("block_battle", function(ev)
   if timed_count <= 0 then return nil end
-  local blocker = ev.actor
-  if not blocker then return nil end
-  for h, p in pairs(players) do
-    if p.team ~= blocker.team then
-      for _, fx in pairs(p.fx) do
-        if fx.effect == "untouchable" then
-          local a = actor_of(h)
-          if a and a.has_ball then return { block = true, log = "aura_reworked souls invincible" } end
-        end
-      end
+  local blocker, shooter = ev.actor, ev.rival and ev.rival.handle
+  if not blocker or not shooter then return nil end
+  local p = players[shooter]
+  if p and p.team ~= blocker.team then
+    for _, fx in pairs(p.fx) do
+      if fx.effect == "untouchable" then return { block = true, log = "aura_reworked souls invincible" } end
     end
   end
   return nil

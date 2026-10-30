@@ -1,0 +1,11 @@
+schema = "VRFW.sprite_redirect/1"
+# Pressing: the game and the Lua ask these game atlases for the mod's sprites by name; they live in the mod's own
+# atlases (content\images\..., one per game atlas), so the game atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "pressing_soccer08_17"
+atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+own_atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
+sprites = [
+    "pressing_gtxt_action_press01",
+]

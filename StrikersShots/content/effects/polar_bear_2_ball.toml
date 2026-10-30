@@ -1,0 +1,26 @@
+# «Oso polar n.º 2» (Polar Bear No. 2, whs02770 and whs02770_or, same cut-in; mountain shot of three players, cut-in
+# ev60_02770): while the ball flies to the goal it keeps the look of the cut-in's last shot (c0500, the polar bear's ice
+# beam shooting the ball), held at its end state from the first frame: the ball inside the ice ball head with its ice
+# light glows, at the front of the bear's ice beam (the two light ribbons and the ice spikes) that comes out of the kick
+# point as the ball flies (never stretched, the same width all along, one smooth fade at the kick point); instead of the
+# plain mountain special-shot aura (ega0075a).
+# The object is ev6277pb00 (effect/event/ev60/ev6277pb00/), built by research/scripts/polar_bear_2_ball_fx.py from the
+# cut-in's effect object ev60027700 (docs/game/media/polar-bear-2-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\polar_bear_2_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "polar_bear_2"
+from = "ega0075a"
+object = "effect/event/ev60/ev6277pb00/ev6277pb00.objbin"
+
+[[shot_aura]]
+name = "polar_bear_2"
+when = { techniques = ["whs02770", "whs02770_or"] }
+aura = "polar_bear_2"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

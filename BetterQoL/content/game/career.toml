@@ -19,12 +19,6 @@ name = "play_data"
 base = "game_root"
 chain = ["ROOT_PLAY_DATA"]
 
-# `[g_soccerActors]` = the soccer actor array (stride 0x570, 0x3A actors; 0 outside matches): the `mov r9, [rip+x]`
-# at +0xC of `CalcUnitMoveSpeed` 0x154DAA0.
-[[VRFW.Global]]
-name = "soccer_actors"
-game = "Match.SoccerActors"
-
 # `[g_ballOwner]` = the ball-owner block (+0x1494 owner actor handle, +0x1498 its team): the site in the handler of
 # `CMND_IS_BALL_OWNER_CHARA` 0xC2A98A.
 [[VRFW.Global]]
@@ -40,7 +34,7 @@ game = "Ball.Global"
 name = "CMND_BETTERQOL_CAREER_MATCH"
 aliases = ["CMND_EVT_CAREER_MATCH"]
 handler = "BetterQoL.Career.Match"
-needs = ["Match.ActorUnit", "match_info", "soccer_actors", "ball"]
+needs = ["Match.ActorUnit", "match_info", "Match.SoccerActors.ViaSkillUsed", "ball"]
 
 # CMND_BETTERQOL_CAREER(charaStHdl) -> ok, signed, before, matches, wins, draws, losses, goals, assists, mvp, topSkill, topUses
 [[VRFW.Command]]

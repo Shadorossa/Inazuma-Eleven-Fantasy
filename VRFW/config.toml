@@ -6,7 +6,7 @@
 #   enabled = false
 # The 1.x domain sections ([chara.technique], [graphics.telop], [audio]...) are still read, with a warning.
 # Every part is always on: an `enabled` key of a type section is ignored with a warning; a deeper switch of an engine's
-# own feature ([sound.armed_voice], [mods_screen.title_button]) still works. docs/app/vr-framework.md
+# own feature ([sound.armed_voice], [mods_screen.title_button]) still works. docs/framework/README.md
 
 # ---------------------------------------------------------------- languages
 [languages]
@@ -44,9 +44,6 @@ reveal_all = false
 all_chains = false
 # reveal_all and all_chains are also forced on by the debug flags `reveal_all` / `all_chains` ([[VRFW.DebugSwitch]]
 # in mod.toml), e.g. while the mod Debug Tools is enabled (docs/framework/debug-flags.md).
-# the BB P2P phase-1 probes (docs/game/modes/bb-p2p-lockstep.md §8: fixed dt, seeded RNG, input record / replay, state
-# hash lines): "off" for players; "record" | "replay" | "replay_p2" only in a test install's loader config
-p2p_probe = "off"
 # Menu capture probe (docs/game/engine/menu-chara-capture.md «Pause screens»): true = three detours count, once per
 # frame, each stage of a menu capture model's draw (draw items queued with the capture callback, meshes drawn into the
 # render texture, meshes that were not and why) and log them as «capture pause probe:» lines; scripts read them with
@@ -55,48 +52,53 @@ p2p_probe = "off"
 #   [mods.vr_framework.debug]
 #   capture_pause_probe = true
 capture_pause_probe = false
+# true = every menu script logs one «command_hooks» line per command handler it installs (owner, command function,
+# command ids). Off for players: a test install sets it in evt_loader\config.toml
+#   [mods.vr_framework.debug]
+#   command_hooks = true
+command_hooks = false
 
 # ---------------------------------------------------------------- chara (chara\)
 [character]
 # the character engine: the mods' characters\*.toml (new characters, edits, hide / delete, office recruit conditions)
-# built at boot into the game's character tables; the names go through the text engine (docs/app/character-engine.md)
+# built at boot into the game's character tables; the names go through the text engine (docs/framework/types/character.md)
 # language of the recruit-condition names when the Lua gives none: "game" (the game's language) or a text language
 lang = "game"
 
 # [chara.rarity] (no developer keys)
 # the rarity engine: the rarity set the mods declare (rarity.toml): kept / removed game rarities and the mods' own
-# (docs/app/rarity-engine.md)
+# (docs/framework/types/rarity.md)
 
 # [chara.looks] (no developer keys)
 # the look engine: the mods' looks\**\*.toml (clothes / shoes / gloves / exmesh models, team kits and own kits, model
 # cells, emblems, icon sprites) built at boot on the character engine's tables, before the team engine
-# (docs/app/look-engine.md)
+# (docs/framework/types/look.md)
 
 [team]
 # the team engine: the mods' teams.toml / teams\*.toml (new teams, edits, hide / delete, where they appear) and the
 # lists mods publish for addons (a free-match tab, a rival pool), built at boot on the character engine's
-# tables; the names go through the text engine, `rules` to the match engine (docs/app/team-engine.md)
+# tables; the names go through the text engine, `rules` to the match engine (docs/framework/types/team.md)
 # language of CMND_EVT_TEAM_GET names when the Lua gives none: "game" (the game's language) or a text language
 lang = "game"
 
 [technique]
 # the technique engine: the mods' techniques\*.toml (new special moves, edits, keshin / armed / mix-max commands,
 # hide / delete, learn lists, shop offers for the item engine) built at boot into the game's move tables; the names
-# go through the text engine (docs/app/technique-engine.md)
+# go through the text engine (docs/framework/types/technique.md)
 # write evt_loader\cache\technique_engine\report.json (the per-mod report of the Mods screen)
 report = true
 # the mods' `goal_event` rules (a goal scored with a move plays its goal event, e.g. the goal smash ev71_00070, whoever
-# scores): false = no hook, only the game's own per-player rows (docs/app/technique-engine.md §3.5)
+# scores): false = no hook, only the game's own per-player rows (docs/framework/types/technique.md)
 goal_events = true
 # the mods' `[[keeper_scene]]` pairs (more random keeper-gauge scenes, e.g. a mod with extra animations): false = the
-# game's own 5 pairs only (docs/app/technique-engine.md §3.6)
+# game's own 5 pairs only (docs/framework/types/technique.md)
 keeper_scenes = true
 
 # ---------------------------------------------------------------- anim (anim\)
 [anim]
 # the anim engine: the mods' anims\**\*.toml (camera presets of a cut, an actor's clip copied from another retail cut,
 # new events whose cuts come from several retail events) built at boot into event packs, cameras and event lists, served
-# from the cache; the technique engine gives the new events their event_env_config rows (docs/app/anim-engine.md)
+# from the cache; the technique engine gives the new events their event_env_config rows (docs/framework/types/anim.md)
 # write evt_loader\cache\anim_engine\report.json (the per-mod report of the Mods screen)
 report = true
 
@@ -104,7 +106,7 @@ report = true
 [item]
 # the item engine: the mods' items\*.toml (new items, edits, hide / delete, currencies) and shops\*.toml (shops and
 # their entries, reward tables) built at boot into item_config / shop_config / loot tables; the names go through the
-# text engine (docs/app/item-engine.md)
+# text engine (docs/framework/types/item.md)
 # language of the currency labels when the Lua gives none: "game" (the game's language) or a text language
 lang = "game"
 
@@ -112,12 +114,12 @@ lang = "game"
 # [tables] (no developer keys)
 # the table engine: the mods' generic row files rows\**\*.toml (schema vr_framework.rows/1: add / set / delete / order
 # on any game table, T2B or RDBN, per map / per language, slices) applied at boot on top of the other parts' tables
-# (docs/app/rdbn-framework.md)
+# (docs/framework/table.md)
 
 # ---------------------------------------------------------------- modes (modes\)
 [mode]
 # the mode engine: the game modes the mods declare in modes\*.toml (schema vr_framework.mode/1: entries in «Modos de
-# juego» / the title row, flow, own save slot, rules, rewards, unlock, switch; docs/app/mode-engine.md)
+# juego» / the title row, flow, own save slot, rules, rewards, unlock, switch; docs/framework/types/mode.md)
 # language of CMND_EVT_MODE_TEXT when the Lua gives none: "game" (the game's language) or a text language
 lang = "game"
 
@@ -130,10 +132,6 @@ lang = "game"
 # the text engine: the mods' texts by readable keys in 9 languages
 # language of CMND_VRFW_TEXT_GET when the call gives none: "game" (the game's language) or a text language
 lang = "game"
-# only with an old ModLoader without file_serve: minimum free room of a new text file, KiB
-headroom_kib = 64
-# only with an old ModLoader without file_serve: prepare files for installed mods that are not active
-prepare_inactive = true
 
 # ---------------------------------------------------------------- save (save\)
 [flag]
@@ -186,7 +184,7 @@ ask_on_boot = false
 # ---------------------------------------------------------------- system (system\)
 [param]
 # the system part (1.4.0): global game rules the mods declare instead of shipping a modified table, built at start on
-# the game's tables (docs/app/system-engine.md)
+# the game's tables (docs/framework/system.md)
 # the mods' params.toml: any value of the property files (game_param: match rules, AI, battles; new members)
 params = true
 # the mods' input.toml: new input commands, other buttons for existing ones (input_ctrl + key_assign)
@@ -247,7 +245,7 @@ lang_values = ["es", "en", "fr", "de", "it", "pt", "ja", "zh_hans", "zh_hant"]
 
 [theme]
 # UI themes (graphics\theme\: the built-in dark theme + the themes\*.toml of every mod that uses it), picked in
-# «Opciones de mods» › «Tema de la interfaz»; applies from the next start (docs/app/theme-engine.md)
+# «Opciones de mods» › «Tema de la interfaz»; applies from the next start (docs/framework/types/theme.md)
 # build a theme that is not ready yet in the background (ready for the next start)
 background_build = true
 # atlases encoded at once (0 = half the cores)
@@ -257,7 +255,7 @@ start_delay = 20
 
 [image]
 # the mods' images: images\**\*.toml + PNG (sprites / textures added to or replaced in any .g4tx atlas), built at
-# boot on the player's atlases (only the changed blocks re-encoded), cached per atlas (docs/app/image-engine.md)
+# boot on the player's atlases (only the changed blocks re-encoded), cached per atlas (docs/framework/types/image.md)
 # BC7 encoder preset: ultrafast, veryfast, fast, basic (better, ~2x slower first build), slow
 bc7 = "fast"
 # encoder threads (0 = every core)
@@ -265,13 +263,13 @@ threads = 0
 
 [effect]
 # the fx engine: the mods' effects\**\*.toml (new pooled effects in effect_define, recolour / copies of effect objects,
-# effects added to events, attach points, timing) built at boot and served from the cache (docs/app/fx-engine.md)
+# effects added to events, attach points, timing) built at boot and served from the cache (docs/framework/types/effect.md)
 # write evt_loader\cache\fx_engine\report.json (the per-mod report of the Mods screen)
 report = true
 
 [model]
 # the model engine: the mods' models\<kind>\<name>\<name>.glb + <name>.toml (heads, kits, armours, special-move props,
-# effect meshes, items) built at boot into G4MD / G4MG / G4SK / G4TX and served from the cache (docs/app/model-engine.md)
+# effect meshes, items) built at boot into G4MD / G4MG / G4SK / G4TX and served from the cache (docs/framework/types/model.md)
 # write evt_loader\cache\model_engine\report.json (the per-mod report of the Mods screen)
 report = true
 
@@ -301,15 +299,13 @@ enabled = true
 [changelog]        # «Novedades de mods» sheet (docs/game/ui/update-notes.md)
 at_title = true             # at the title, once per start: the mods whose summary TEXT is new or changed (never on a version bump)
 first_install = "latest"     # a never-seen mod: latest (its summary shows) | none (marked seen silently)
-max_pages = 1                # hard cap: pages per mod (1..10); each changelog.toml is ONE summary of ONE page
-
-[synergy]
-# The Mercado's synergy panel as the synergy screen's condition card, every box empty (no team evaluated:
-# assets\lua\synergy\shop_menu_buy\310_synergy_shop.lua). false = the game's shop panel (the active squad's members).
-shop_conditions = true
+max_pages = 10               # hard cap: pages per mod (1..10); a changelog.toml summary may take up to 10 pages of 7 note rows
 
 [shop]
 # Shop aura cards (scripts\shop_aura_cards.lua, docs/framework/shop-aura-cards.md): the item sub-kinds mods declare
 # ([[VRFW.ShopAuraCard]], e.g. the game's mode changes) are drawn in a shop with their aura card on the right.
 # false = those rows keep the game's look (no card of their own); the declared card layers stay hidden.
 aura_cards = true
+# A shop's synergy panel as the synergy screen's condition card, every box empty (no team evaluated:
+# assets\lua\synergy\shop_menu_buy\310_synergy_shop.lua). false = the game's shop panel (the active squad's members).
+synergy_conditions = true

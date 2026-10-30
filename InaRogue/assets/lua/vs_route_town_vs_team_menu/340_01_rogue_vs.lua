@@ -435,19 +435,18 @@ do
     SLOT = 2087918688,         -- () -> rogueSlot, active, ...
     RUN_INFO = 3112916915,    -- () -> exists, phase, ...
     MATCH = 3860906442,      -- (node) -> ok, game, diff, stadium, kind, level, rival, emblem
-    P_HAS = 2947612279, P_GET = 3522198769, P_SET = 3860611758, P_CLEAR = 3363400568,
     LOG = 3661580131,                         -- CMND_EVT_LOG
     TEXT_GET = 4074371074,                    -- CMND_TEXT_GET
     on = false, node = 0, game = 0, diff = 1, kind = 0, level = 0, rival = "", emblem = 0, phase = 0, team = 0,
-    -- texts: menu_text rows of the 9 languages (research/scripts/rogue_play_text_build.py); the literal is the fallback
+    -- texts: InaRogue text\rows\menu_text.toml / rogue_bosses.toml (9 languages)
     T = {
-      TITLE = {1406715737, "INAROGUE · Fase {1} · {2}"},
-      K5 = {4027119318, "Pachanga 5 contra 5"},
-      K11 = {2297451940, "Partido 11 contra 11"},
-      KBOSS = {3795316700, "JEFE de la fase"},
-      KELITE = {2654474453, "ÉLITE"},
-      KEPIC = {3305167255, "JEFE ÉPICO"},          -- §33 boss tiers (text/rows/rogue_bosses.toml)
-      KGATE = {1692537202, "JEFE DE PUERTA"},
+      TITLE = {1406715737},
+      K5 = {4027119318},
+      K11 = {2297451940},
+      KBOSS = {3795316700},
+      KELITE = {2654474453},
+      KEPIC = {3305167255},          -- §33 boss tiers (text/rows/rogue_bosses.toml)
+      KGATE = {1692537202},
     },
     -- the class plate over the VS banner (retail icon_class.g4tx of the game's language): INAZUMA for a pachanga /
     -- match, ZONA LETAL for the phase boss, RANGO DIVINO for an élite (instead of «BATALLA HEROICA»)
@@ -471,8 +470,8 @@ do
 
   function EVT_RV.tx(t, ...)
     local s = evt_rv_call(EVT_RV.TEXT_GET, t[1])
-    if type(s) ~= "string" or s == "" then
-      s = t[2]
+    if type(s) ~= "string" then
+      s = ""
     end
     local a = table.pack(...)
     return (s:gsub("{(%d)}", function(k)
@@ -485,10 +484,10 @@ do
   function EVT_RV.check()
     EVT_RV.on = false
     local rs, act = evt_rv_call(EVT_RV.SLOT)
-    if type(rs) ~= "number" or rs ~= act or evt_rv_call(EVT_RV.P_HAS, EVT_RV.KEY) ~= true then
+    if type(rs) ~= "number" or rs ~= act or not VRFW_Param.Has(EVT_RV.KEY) then
       return false
     end
-    local node = (evt_rv_call(EVT_RV.P_GET, EVT_RV.KEY) or 0) - 1
+    local node = (VRFW_Param.Get(EVT_RV.KEY) or 0) - 1
     local ok, game, diff, _, kind, level, rival, emblem = evt_rv_call(EVT_RV.MATCH, node)
     if ok ~= true or type(game) ~= "number" or game == 0 then
       EVT_RV.log("node", node, "has no match: retail screen")
@@ -529,8 +528,8 @@ do
     local okT, team = funcLuaCommand(2204933160, n2, n6)   -- the game row's rival team at that difficulty
     n3 = (okT and type(team) == "number") and team or 0
     n4 = 0
-    n5 = funcLuaCommand(3713813716 --[[CMND_GET_VS_USE_TEAM_SET]])
-    local okF, form = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO?]], n5, EVT_RV.team, 4)
+    n5 = funcLuaCommand(3713813716)
+    local okF, form = funcLuaCommand(1033065575, n5, EVT_RV.team, 4)
     if okF then
       OnInitFormationCommon(form, nil, n5, nil, false)
     end
@@ -548,7 +547,7 @@ do
         funcLuaMenuCommand(558735651, a1, EVT_RV.CLASS_TEX, EVT_RV.CLASS[EVT_RV.kind] or EVT_RV.CLASS_DEFAULT,
                            EVT_RV.CLASS_NODE, 0, 0)
         if EVT_RV.rival ~= "" then
-          funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, 4019622434 --[[_text_team02]], EVT_RV.rival)
+          funcLuaMenuCommand(1083631230, a1, 4019622434 --[[_text_team02]], EVT_RV.rival)
         end
         if n3 == 0 and EVT_RV.emblem ~= 0 then   -- no team row: the rival's emblem from the run
           funcLuaMenuCommand(3190452549, a1, 0, 799706978 --[[_icon_em_e_dmy01]], 1383164046 --[[icon_em_e_dmy01]], EVT_RV.emblem)
@@ -556,14 +555,14 @@ do
         end
         if EVT_RV.level > 0 then                 -- the level the run gives the rival (the engine sets it at kick-off)
           for _, prim in ipairs({3038215778, 3097958688}) do
-            local p = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], a1, 0, prim)
+            local p = funcLuaMenuCommand(1927054058, a1, 0, prim)
             if p then
               funcLuaMenuCommand(3609943765, a1, 0, p, EVT_RV.level)
             end
           end
         end
       elseif a1 == 139522149 --[[vsroute02_03_gametitle]] then
-        funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, 3644612793 --[[_text_ch_title01]],
+        funcLuaMenuCommand(1083631230, a1, 3644612793 --[[_text_ch_title01]],
                            EVT_RV.tx(EVT_RV.T.TITLE, EVT_RV.phase, EVT_RV.kindText()))
       end
     end
@@ -577,37 +576,37 @@ do
       return evt_rv_formation(a1, a2, a3, a4)
     end
     local tm = EVT_RV.team
-    local okF, form = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO?]], n5, tm, 4)
+    local okF, form = funcLuaCommand(1033065575, n5, tm, 4)
     if not okF then
       form = 0
     end
     SetAlwaysCardSizeSmallMode(false)
-    local okK, kit = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO?]], n5, tm, 7)
+    local okK, kit = funcLuaCommand(1033065575, n5, tm, 7)
     if not okK then
       kit = 0
     end
     local cc, lu, ru, ld, rd = 2654143900, 3984567298, 960402397, 2278526192, 1401860911   -- _pos_formation01_*
-    local count = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], a2)
+    local count = funcLuaMenuCommand(1175615627, a2)
     local leader = false
     -- every card AND every blank slot (a3, team00_01_p1_chara_card_blank) starts hidden: retail never hides the blanks
     -- (11v11 fills every slot), so on the 5v5 the unused ones stayed on screen (Nacho 07/10: an empty frame under the
     -- MC, the 5 substitute frames at _pos_sub_atc01..05 and the support frames at _pos_support_atc01..03); only the
     -- slots of a drawn player are shown again below
-    local blanks = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], a3)
+    local blanks = funcLuaMenuCommand(1175615627, a3)
     if type(blanks) ~= "number" or blanks < count then
       blanks = count
     end
     for i = 0, blanks - 1 do
       if i < count then
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a2, i, false)
+        funcLuaMenuCommand(711242136, a2, i, false)
       end
-      if funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER?]], a3, i) == true then
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a3, i, false)
+      if funcLuaMenuCommand(262659071, a3, i) == true then
+        funcLuaMenuCommand(711242136, a3, i, false)
       end
-      funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], a3, 0.85, 0.85, 1, i)
+      funcLuaMenuCommand(3778714801, a3, 0.85, 0.85, 1, i)
     end
-    funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], a4, 0.85, 0.85, 1, 0)
-    funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], 2290394976 --[[team00_01_p1_chara_card_blank_for_leader]], 0.85, 0.85, 1, 0)
+    funcLuaMenuCommand(3778714801, a4, 0.85, 0.85, 1, 0)
+    funcLuaMenuCommand(3778714801, 2290394976 --[[team00_01_p1_chara_card_blank_for_leader]], 0.85, 0.85, 1, 0)
     for i = 0, 28 do
       local okH, hdl = funcLuaCommand(1720957768, n5, tm, i, 0)
       if okH then
@@ -616,7 +615,7 @@ do
         -- MC, 2026-10-06): only the five, the managers and the coach are shown
         local bench5 = type(pos) == "number" and pos >= 5 and pos <= 15
         if okP and not (pos > 19) and not IsSoccerPosNo_Reserve(pos) and not bench5 then
-          local okC, captain = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO?]], n5, tm, 8, hdl)
+          local okC, captain = funcLuaCommand(1033065575, n5, tm, 8, hdl)
           if not okC then
             captain = false
           end
@@ -625,15 +624,15 @@ do
             UpdateLeaderCharaByCharaStHdl(hdl, 1658289671 --[[team00_01_chara_card_for_leader]], 0, lv)
             leader = true
           else
-            local okS, sub = funcLuaCommand(2649030357 --[[CMND_GET_SOCCER_FORMATION_INFO]], 6, form, pos)
+            local okS, sub = funcLuaCommand(2649030357, 6, form, pos)
             if not okS then
               sub = 0
             end
-            funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a2, pos, true)
-            funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a3, pos, true)
+            funcLuaMenuCommand(711242136, a2, pos, true)
+            funcLuaMenuCommand(711242136, a3, pos, true)
             local x, y = CalcFormationIconPosition(pos, form, 2, a1, cc, lu, ru, ld, rd, 60, 90, true, 0.85)
             x, y = x + -378, y + 533
-            local okG, gk = funcLuaCommand(2649030357 --[[CMND_GET_SOCCER_FORMATION_INFO]], 5, form, pos)
+            local okG, gk = funcLuaCommand(2649030357, 5, form, pos)
             if okG and gk == 0 then
               y = y + 20
             end
@@ -645,13 +644,13 @@ do
             else
               UpdateMemberCharaIconInfoByChrStHdl(hdl, pos, form, 0, lv, captain, a2, pos, nil, true, true, kit)
             end
-            funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], a2, x, y, 0, pos)
-            funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], a3, x, y, 0, pos)
+            funcLuaMenuCommand(1389957207, a2, x, y, 0, pos)
+            funcLuaMenuCommand(1389957207, a3, x, y, 0, pos)
             for _, mesh in ipairs({2635558741, 69091055, 814224422, 2843821468}) do   -- _icon_card01/02, _icon_lock01/02
-              funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], a2, mesh, false, pos)
+              funcLuaMenuCommand(3405944500, a2, mesh, false, pos)
             end
-            funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], a2, 0.85, 0.85, 1, pos)
-            funcLuaMenuCommand(3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE?]], a3, 0.85, 0.85, 1, pos)
+            funcLuaMenuCommand(3778714801, a2, 0.85, 0.85, 1, pos)
+            funcLuaMenuCommand(3778714801, a3, 0.85, 0.85, 1, pos)
           end
         end
       end
@@ -673,8 +672,8 @@ do
     funcLuaMenuCommand(2171393651, 2296367164 --[[cmn05_01_cursor]], false)
     flag = true
     EVT_RV.log("Empezar partido: node", EVT_RV.node)
-    funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 747772244 --[[vs_route_town_vs_enemy_formation_menu]])
-    funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 831645521 --[[vs_route_town_vs_team_menu]])
+    funcLuaCommand(320421347, 747772244 --[[vs_route_town_vs_enemy_formation_menu]])
+    funcLuaCommand(320421347, 831645521 --[[vs_route_town_vs_team_menu]])
   end
 
   -- the retail «restore the team» call when the screen closes without a decision pairs with 4138944672, which the

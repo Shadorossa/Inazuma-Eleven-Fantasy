@@ -1,0 +1,22 @@
+# «Llamarada solar» (Solar Flare, whs01860; fire shot, cut-in ev60_01860): the cut-in's last shot (c0500, frame 504):
+# the ball flies inside its small blazing sun, the fire sphere and its flame swirls turning as in the cut-in, the back
+# glow, the yellow and white cores, the ring auras and the fire grains round it (camera-facing: round from every view,
+# the touchline too) and the fire drops round it; x1 (the sun ~4 m across), turned along the flight (no cut-in tilt).
+# The same look from the first frame; nothing trails behind the ball. The object is ev6186sf00, built by
+# research/scripts/solar_flare_ball_fx.py from the cut-in's effect object ev60018600.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\solar_flare_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "solar_flare"
+from = "ega0075c"
+object = "effect/event/ev60/ev6186sf00/ev6186sf00.objbin"
+
+[[shot_aura]]
+name = "solar_flare"
+when = { techniques = ["whs01860"] }
+aura = "solar_flare"
+like = "ega0075c"

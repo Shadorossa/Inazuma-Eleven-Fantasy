@@ -1,0 +1,11 @@
+schema = "VRFW.item/2"
+# InaRogue: no retail match drops in the INAROGUE save while config.toml [drops] retail = false (owner request
+# 2026-10-29). Mechanism: the VR-Framework's [[VRFW.MatchDropRemove]] (docs/framework/drops.md §6), scoped to the
+# current-mode key inarogue.no_retail_drops (content\game_modes\inarogue.toml: the INAROGUE save with the switch off).
+# * Every item category of item_config (schemas/enums.toml item_category): an in-match drop gives nothing and a prize
+#   row is left out of the result (Prizes, default on). Outside that mode the game's drops are unchanged.
+# * Spirits: no player spirit drop either (no character is a spirit candidate of the match).
+[[VRFW.MatchDropRemove]]
+Categories = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240]
+Modes = ["inarogue.no_retail_drops"]
+Spirits = true

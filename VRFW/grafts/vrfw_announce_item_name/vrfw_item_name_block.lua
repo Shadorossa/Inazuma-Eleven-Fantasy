@@ -6,8 +6,8 @@
 -- own name text). Same rule here, so a move manual dropped after a match reads "You obtained <move>!".
 -- VR-Framework (always on, generic: any mod's category-160 items). Called only from the toast's functions, never at chunk load.
 function VRFW_ItemNameConvertMode(itemId, defaultMode)
-  local cat = funcLuaCommand(1883585771 --[[CMND_GET_ITEM_PARAM?]], itemId, 2)
-  local sub = funcLuaCommand(1883585771 --[[CMND_GET_ITEM_PARAM?]], itemId, 3)
+  local cat = funcLuaCommand(@crc:CMND_GET_ITEM_PARAM@, itemId, 2)
+  local sub = funcLuaCommand(@crc:CMND_GET_ITEM_PARAM@, itemId, 3)
   if cat == 160 and sub ~= 177 then
     return 155
   end

@@ -122,6 +122,8 @@ res = [
     "#/menu/220_img/savedata_img/savedata_story_img01.g4tx",
     # the plain shapes (VRFW_ScreenArt.Plain); a mod's declared art is loaded by the script on demand
     "#/menu/220_img/vrfw_plain/vrfw_plain.g4tx",
+    # the node panel style's opaque list row (content\images\menu\220_img\vrfw_pose_row.toml)
+    "#/menu/220_img/vrfw_pose_row/vrfw_pose_row.g4tx",
     { path = "menu_chara_model_comp", kind = 2 },
     "#/menu/100_mainmenu/mainmenu90/mainmenu90_01/<LG>/mainmenu90_01.g4tx",
     # the node panel style's retail art (content\defaults\pose_row.toml [layout.node_panel.art]) and its banner icon
@@ -129,6 +131,8 @@ res = [
     "#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx",
     "#/menu/30_vsroute/vsroute01/vsroute01_17/vsroute01_17.g4tx",
     "#/menu/200_icon/12_icon_minimap/icon_minimap.g4tx",
+    # the node panel list's scroll arrows (chr_arrow01_u / _d)
+    "#/menu/02_btl/btl01/btl01_01/btl01_01.g4tx",
     # the lineup: the pitch, the player cards (their atlas, positions, elements, levels) and their rarity effects
     "#/menu/30_vsroute/vsroute02/vsroute02_06/vsroute02_06.g4tx",
     "#/menu/102_team/team16/team16_03/team16_03.g4tx",

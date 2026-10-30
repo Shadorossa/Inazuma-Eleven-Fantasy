@@ -2,20 +2,19 @@
 -- declares without player passives (Utilities' [[off_mode]], CMND_BETTERQOL_PC_OFF) the team has no passive, so its
 -- «Bonificaciones de equipo» are hidden: the guide layer mainmenu01_18_team_parameter_button_guide stays invisible and
 -- the team parameter menu (soccer_parameter_menu) does not open. Outside such a mode nothing changes.
--- Hook file (graft [[hooks]]): the screen has no VR-Framework host, so PostStep and OpenAndWaitTeamSkillParameterMenu
--- are wrapped directly, once per VM. State lives in UTIL_PCF.
+-- Hook file (graft [[hooks]]): the screen has no VR-Framework host, so OnInit, PostStep and
+-- OpenAndWaitTeamSkillParameterMenu are wrapped directly, once per VM. The plugin is asked when the screen opens
+-- (OnInit) and when the team parameter menu is asked for. State lives in UTIL_PCF.
 do
   UTIL_PCF = UTIL_PCF or {}
   UTIL_PCF.CMD_OFF = 3087534512            -- CMND_BETTERQOL_PC_OFF
   UTIL_PCF.GUIDE = 3159119257              -- mainmenu01_18_team_parameter_button_guide («Bonific. de equipo»)
   UTIL_PCF.MENU = 2049316981               -- soccer_formation_menu
-  UTIL_PCF.OFF_EVERY = 30                  -- frames between two questions to the plugin
   UTIL_PCF.wrapped = UTIL_PCF.wrapped or {}
 
   function UTIL_PCF.OffNow()
     local ok, off = pcall(funcLuaCommand, UTIL_PCF.CMD_OFF)
     UTIL_PCF.off = ok and off == true
-    UTIL_PCF.offAt = 0
     return UTIL_PCF.off
   end
 
@@ -39,14 +38,26 @@ do
     UTIL_PCF.wrapped[name] = w
   end
 
+  UTIL_PCF.Wrap("OnInit", function(prev)
+    return function(...)
+      local r = table.pack(true)
+      if prev then
+        r = table.pack(prev(...))
+      end
+      UTIL_PCF.OffNow()
+      if prev then
+        return table.unpack(r, 1, r.n)
+      end
+    end
+  end, true)
+
   UTIL_PCF.Wrap("PostStep", function(prev)
     return function(...)
       local r = table.pack(true)
       if prev then
         r = table.pack(prev(...))
       end
-      UTIL_PCF.offAt = (UTIL_PCF.offAt or UTIL_PCF.OFF_EVERY) + 1
-      if UTIL_PCF.offAt >= UTIL_PCF.OFF_EVERY then
+      if UTIL_PCF.off == nil then
         UTIL_PCF.OffNow()
       end
       if UTIL_PCF.off then

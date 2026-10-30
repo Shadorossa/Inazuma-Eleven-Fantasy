@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_active_team, the Battle Bay's hub menus (bb_stadium_top_menu, soccer_top_menu; docs/game/modes/
+-- BattleBayDeluxe bb_active_team, the Battle Bay's hub menus (bb_stadium_top_menu, soccer_top_menu; docs/game/modes/
 -- estadio-bb.md §16.4). 1.5.64: each time the hub opens (entering the Battle Bay, back from a match or a result) the
 -- active team is mirrored onto the «Active team» tile (bbd_active_team_common.lua), so a Campaña / Torneo continued
 -- with the tile (no team grid on the way) has the active team's players and its captain as the row's leader for the

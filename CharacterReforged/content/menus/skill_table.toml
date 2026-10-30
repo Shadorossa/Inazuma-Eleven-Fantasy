@@ -603,6 +603,7 @@ set = [
 [[object]]
 name = "evt_ph_move_row"
 from = "soccer11_09_formation_chara_skill"
+set = [{ param = "DispMaxValue", match = { 1 = 0x93171FE6 }, values = { 2 = 9999 } }]   # the AT number: 4 digit slots in retail, clamp lifted
 remove_block = [
     "CMenuAttachLocator",
     "MenuCollisionSetting",
@@ -711,6 +712,7 @@ remove = [
 ]
 set = [
     { param = "NullLayerIndexName", match = { 1 = 0x31A3BDFA, 2 = 0x31A3BDFA, 3 = 0xB84D55F7 }, values = { 3 = 0x5B7DC6FC } },
+    { param = "DispMaxValue", match = { 1 = 0x93171FE6 }, values = { 2 = 9999 } },   # the AT number: 4 digit slots in retail, clamp lifted
 ]
 
 [[object]]
@@ -794,6 +796,7 @@ remove_block = [
     "MenuCollisionSetting",
 ]
 set = [
+    { param = "DispMaxValue", match = { 1 = 0x93171FE6 }, values = { 2 = 9999 } },   # the AT number: 4 digit slots in retail, clamp lifted
     { param = "SkeletonAnime", match = { 1 = "common/menu/00_soccer/soccer11/soccer11_09/soccer11_09.g4pkm" }, values = { 1 = "common/menu/00_soccer/soccer11/evt_ss_row_plate/evt_ss_row_plate.g4pkm" } },
 ]
 

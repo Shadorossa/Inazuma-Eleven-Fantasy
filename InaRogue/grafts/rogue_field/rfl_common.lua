@@ -12,10 +12,10 @@
     SLOT = @crc:CMND_EVT_SLOT_ROGUE@,     -- () -> rogueSlot, active, ...
     BUSY = @crc:CMND_EVT_SLOT_BUSY@,      -- () -> a save / load job is pending (vr-loader saveslots)
     SAVE_WORKING = 1979970074,            -- 0x7603F21A IS_SAVE_WORKING (retail; used when the loader has no BUSY)
-    AUTO_SAVE = 3673719958,               -- CMND_SYSTEM_AUTO_SAVE
-    SOCCER = 4156639577,                  -- CMND_IS_SOCCER_MODE: a match (its menus included) is running
-    EXIST = 264888438,                    -- CMND_IS_EXIST_MENU? (menu object)
-    LOG = 3661580131,                     -- CMND_EVT_LOG
+    AUTO_SAVE = @crc:CMND_SYSTEM_AUTO_SAVE@,               -- CMND_SYSTEM_AUTO_SAVE
+    SOCCER = @crc:CMND_IS_SOCCER_MODE@,                  -- CMND_IS_SOCCER_MODE: a match (its menus included) is running
+    EXIST = @crc:CMND_IS_EXIST_MENU@,                    -- CMND_IS_EXIST_MENU? (menu object)
+    LOG = @crc:CMND_EVT_LOG@,                     -- CMND_EVT_LOG
     MENUS = {3874253475 --[[title_menu_2]], 937147172 --[[soccer_team_dock_menu]], @crc:evt_inarogue_menu@,
              @crc:evt_rogue_map_menu@, @crc:evt_rogue_album_menu@, 91676902 --[[team_dock_common_top_menu]],
              831645521 --[[vs_route_town_vs_team_menu (INAROGUE VS preview)]],
@@ -65,7 +65,7 @@
   -- the retail back to the title (rpg_save_menu.BackToTitle / the dock's FadeOutWait), with the screen already black
   function RF.reset()
     pcall(funcLuaCommand, 937976662, true)          -- no press-start screen (the dock's FadeOutWait does this too)
-    pcall(funcLuaCommand, 3897105282 --[[CMND_GAME_RESET]])
+    pcall(funcLuaCommand, @crc:CMND_GAME_RESET@)
     pcall(funcLuaCommand, 769636339, 0.5)
   end
 

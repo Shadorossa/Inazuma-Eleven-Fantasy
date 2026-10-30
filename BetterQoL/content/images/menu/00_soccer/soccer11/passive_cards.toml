@@ -9,9 +9,17 @@
 # only during a session.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/00_soccer/better_qol_own/better_qol_soccer11_20.g4tx"
+name = "better_qol_soccer11_20"
+size = [72, 92]
+
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"
+atlas = "#/menu/00_soccer/better_qol_own/better_qol_soccer11_20.g4tx"
 name = "util_passive_card_sel"
+texture = "better_qol_soccer11_20"
+x = 0
+y = 0
 size = [72, 92]
 recipe = "sel"
 

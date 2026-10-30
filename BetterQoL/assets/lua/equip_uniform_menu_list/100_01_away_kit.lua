@@ -259,11 +259,11 @@ do
 -- «Visitante» (Utilities' text rows, ids crc32("away_kit.home") / crc32("away_kit.away"); CMND_VRFW_TEXT_ID first),
 -- refreshed when it changes (Y preview, A commit, cursor move). The help line at the bottom stays retail.
 UTIL_AK_KEY = 3114639549
-UTIL_AK_CMD = 1156124049 --[[CMND_BETTERQOL_TEAM_UNIFORM]]
+UTIL_AK_CMD = 1156124049
 UTIL_AK_LOG = 3661580131
 UTIL_AK_BTN_ICON = 3794706590
 UTIL_AK_BTN_KEY = 3421673595
-UTIL_AK_PAIR_CMD = 1005141060 --[[CMND_BETTERQOL_AK_PAIR]]
+UTIL_AK_PAIR_CMD = 1005141060
 -- home <-> away pairs: asked to the plugin (CMND_BETTERQOL_AK_PAIR, built from the item_config / uniform_config the game
 -- loads, the mods' kits included) and cached per id. UTIL_AK_PAIR[u] = the twin of kit u, or the kit of twin u; nil =
 -- none. No table of ids is shipped: a kit a mod or a game update adds gets its pair with no change here.
@@ -297,14 +297,14 @@ UTIL_AK_TXT_ID = {}
 UTIL_AK_BTN_SHOWN = nil
 function UTIL_AK_TextId(key)
   if UTIL_AK_TXT_ID[key] == nil then
-    local ok, id = pcall(funcLuaCommand, 3096244543 --[[CMND_VRFW_TEXT_ID]], key)
+    local ok, id = pcall(funcLuaCommand, 3096244543, key)
     UTIL_AK_TXT_ID[key] = (ok and type(id) == "number" and id ~= 0) and id or UTIL_AK_TXT[key]
   end
   return UTIL_AK_TXT_ID[key]
 end
 function UTIL_AK_Check()
   UTIL_AK_ON = false
-  local api, mods = funcLuaCommand(2217361807 --[[CMND_EVT_LOADER_VERSION]])
+  local api, mods = funcLuaCommand(2217361807)
   if api == false or api == nil or mods == nil or math.floor(mods / 524288) % 2 ~= 1 then
     return
   end
@@ -316,14 +316,14 @@ function UTIL_AK_Log(a, b, c, d, e)
   end
 end
 function UTIL_AK_TeamUniform()
-  local ok, u = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO]], n4, 0, 7)
+  local ok, u = funcLuaCommand(1033065575, n4, 0, 7)
   if not ok or u == nil then
     return 0
   end
   return u
 end
 function UTIL_AK_EquippedInv()
-  local ok, h = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO]], n4, 0, 12)
+  local ok, h = funcLuaCommand(1033065575, n4, 0, 12)
   if not ok or h == nil then
     return 0
   end

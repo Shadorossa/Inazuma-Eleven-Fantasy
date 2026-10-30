@@ -13,20 +13,20 @@ if VRFW_Host ~= nil then
   local ID = "vr_framework.shop_aura_cards_"
 
   local CMD = {
-    CARDS = 3254097885,          -- CMND_VRFW_SHOP_AURA_CARDS() -> on, n, sub 1, aura type 1, layer 1, …
-    SKILL_INFO = 2580586398,     -- CMND_GET_SOCCER_SKILL_INFO(skill, index): 4 name, 5 description, 7 element, 17 aura character
+    CARDS = VRFW_Cmd.VRFW_SHOP_AURA_CARDS,          -- CMND_VRFW_SHOP_AURA_CARDS() -> on, n, sub 1, aura type 1, layer 1, …
+    SKILL_INFO = VRFW_Cmd.GET_SOCCER_SKILL_INFO,     -- CMND_GET_SOCCER_SKILL_INFO(skill, index): 4 name, 5 description, 7 element, 17 aura character
     SKILL_NAME = 720417636,      -- move name text id -> text
     SKILL_TEXT = 4113915188,     -- move description text id -> text
-    LOG = 3661580131,            -- CMND_EVT_LOG
+    LOG = VRFW_Cmd.EVT_LOG,            -- CMND_EVT_LOG
   }
   local MENU = {
-    IS_EXIST_LAYER = 262659071,
-    SET_LAYER_VISIBLE = 711242136,
+    IS_EXIST_LAYER = VRFW_Cmd.IS_EXIST_LAYER,
+    SET_LAYER_VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,
     SET_POS_VISIBLE = 2158717427,
     SET_TEXT_VISIBLE = 2735666188,
     SET_PART_VISIBLE = 1233047821,
-    SET_MESH_VISIBLE = 3405944500,
-    SET_TEXT = 1083631230,
+    SET_MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE,
+    SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,
     SET_TEXTURE = 558735651,
     CLEAR_FACE = 4176779611,
     SWAP_FACE = 346643487,       -- SwapLayerFaceIconTex

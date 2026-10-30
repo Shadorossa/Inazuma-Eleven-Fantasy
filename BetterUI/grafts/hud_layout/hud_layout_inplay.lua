@@ -12,7 +12,6 @@
 -- set by the text, 122..400), 44 high; the error bubble from _atc_error01 (261, 258), centred on it.
 -- Engine calls only from OnSetupLayer / OnOpenLayer / PostStep.
 
-EVT_HL_CMDR_ON = true
 EVT_HL_CMDR_X = 960               -- centre x of the guides, layout units from the left (screen centre)
 EVT_HL_CMDR_HALF_W = 137          -- half the plate width of «Modo Comandante» (the plate grows with the text)
 EVT_HL_CMDR_TOP = 165             -- centre of the first guide, layout units DOWN from the top (the clock ends at ~127)
@@ -27,7 +26,7 @@ local HLC_ERROR = 3087830238 --[[soccer00_58_common_error_message]]
 local HLC_LOC_X = 102
 local HLC_LOC_Y = {141, 198, 255} --[[instances 0, 1, 2]]
 local HLC_ERR_X, HLC_ERR_Y = 261, 258
-local HLC_CMND_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]]
+local HLC_CMND_POS = @crc:CMND_SET_LAYER_LOCAL_POS@
 local HLC_CMND_SWAP = 558735651
 local HLC_ATLAS_0808 = 1822283221 --[[#/menu/00_soccer/soccer08/soccer08_08/<LG>/soccer08_08.g4tx]]
 local HLC_PLATE = 2905228853 --[[cmd_base01]]
@@ -81,9 +80,7 @@ local function HLC_Wrap(name, after)
   end
   rawset(_ENV, name, function(...)
     local r = HLC_Pack(prev(...))
-    if EVT_HL_CMDR_ON then
-      pcall(after, ...)
-    end
+    pcall(after, ...)
     return table.unpack(r, 1, r.n)
   end)
 end

@@ -2,8 +2,9 @@
 # (pe.toml; owner request 2026-10-20). Every player has it, both teams and the keepers. A dash (a manual dash, or the
 # engine's DP consume state of a CPU / AI dash) spends it much faster than the PE; it fills again whenever he does not
 # dash. Empty = «winded»: no manual dash (a running one is ended) and a CPU dash moves at jogging speed for a cooldown of
-# min_seconds (5 s) while the bar refills. It is its own bar, apart from the PE: a dash ends only when it reaches 0. It
-# never goes above the player's PE share (cap_by): it refills only up to the PE fill, and drops with the PE. The HUD
+# min_seconds (5 s) while the bar refills. It is its own bar, apart from the PE: a dash ends only when it reaches 0. Its
+# full size is always `max`, whatever PE is left (a dash still spends PE, pe.toml; at low PE the «exhausted» state of
+# pe.toml blocks the dash). The HUD
 # draws it in front of the controlled player's PE bar on the bar's scale (full = the whole bar), dimmed
 # during the cooldown (graft aura_points_stamina_hud, layer stamina_points_pe_sprint of content\menus\pe_bar.toml;
 # CMND_AURAPOINTS_STAMINA's 9th and 10th values).
@@ -19,8 +20,7 @@ duel_states = [14, 15]
 # + per live second, always (also while dashing: a dash costs drain.dash - regen_per_s net). From empty: 60 % at the
 # end of the 5 s «winded» cooldown, full after 8.3 s.
 regen_per_s = 12.0
-# never above the player's PE share (owner 2026-10-21: «se tiene que recargar solo hasta el tope de la barra normal»)
-cap_by = "aura_points.pe"
+# no cap_by: the bar refills up to `max` for every player, human or AI, whatever PE he has left (owner 2026-10-29)
 
 # Absolute points per live second (no per_match: the sprint bar does not follow the match length).
 # Físico 100: a full bar lasts 100 / (30 - 12) = 5.6 s of dashing, 100 / (48 - 12) = 2.8 s of dash attack (the retail

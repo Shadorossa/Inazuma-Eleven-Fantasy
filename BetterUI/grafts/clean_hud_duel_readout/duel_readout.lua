@@ -11,12 +11,12 @@
 -- Switch: Mods options «Duel counter» (clean_hud.duel_readout, read once per duel: no restart). Plain line duels never
 -- reach the resolver, so they show nothing. Wrappers only (OnInit, OnOpenLayer, Step); no engine call at chunk load.
 
-local DUEL_READOUT_CMD = 2923985347                -- CMND_BETTERUI_DUEL_READOUT
-local DUEL_OPTION_GET = 4082322029                 -- CMND_VRFW_OPTION_GET
+local DUEL_READOUT_CMD = @crc:CMND_BETTERUI_DUEL_READOUT@
+local DUEL_OPTION_GET = @crc:CMND_VRFW_OPTION_GET@
 local DUEL_OPTION_KEY = "clean_hud.duel_readout"
-local DUEL_TEXT_ID = 3096244543                    -- CMND_VRFW_TEXT_ID
-local DUEL_TEXT_GET = 4074371074                   -- CMND_TEXT_GET
-local DUEL_LOG = 3661580131                        -- CMND_EVT_LOG
+local DUEL_TEXT_ID = @crc:CMND_VRFW_TEXT_ID@
+local DUEL_TEXT_GET = @crc:CMND_TEXT_GET@
+local DUEL_LOG = @crc:CMND_EVT_LOG@
 local DUEL_FRAME_SECONDS = 1549797111              -- seconds since the last frame
 
 local DUEL_LAYER_SELF = 3870405925                 -- clean_hud_duel_telop_self
@@ -24,10 +24,10 @@ local DUEL_LAYER_ENEMY = 1690125440                -- clean_hud_duel_telop_enemy
 local DUEL_LAYER_LABEL = 1806193260                -- clean_hud_duel_label
 
 local DUEL_CMD = {
-  OPEN = 629267548, OPEN_ARRAY = 2152386330, CLOSE = 1273612389, IS_OPEN = 2640875187, IS_LOADING = 3057768039,
-  ANIME = 3781155141, SUSPEND = 734148104, NODE_VISIBLE = 2158717427, MESH_VISIBLE = 3405944500,
-  PRIM_VISIBLE = 1233047821, PRIM_INDEX = 1927054058, PRIM_VALUE = 3609943765, VISIBLE = 711242136,
-  POS = 1389957207, SCALE = 3778714801, TEXT = 1083631230, GLOBAL_POS = 499270986,
+  OPEN = @crc:CMND_OPEN_LAYER@, OPEN_ARRAY = @crc:CMND_OPEN_LAYER_ARRAY@, CLOSE = @crc:CMND_CLOSE_LAYER@, IS_OPEN = @crc:CMND_IS_OPEN_LAYER@, IS_LOADING = @crc:CMND_IS_LOADING_LAYER@,
+  ANIME = @crc:CMND_PLAY_ANIME_TYPE@, SUSPEND = 734148104, NODE_VISIBLE = 2158717427, MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@,
+  PRIM_VISIBLE = 1233047821, PRIM_INDEX = @crc:CMND_SEARCH_PRIM_INDEX@, PRIM_VALUE = 3609943765, VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,
+  POS = @crc:CMND_SET_LAYER_LOCAL_POS@, SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@, TEXT = @crc:CMND_SET_MENU_TEXT_STRING@, GLOBAL_POS = @crc:CMND_GET_MESH_GLOBAL_POSITION@,
 }
 local DUEL_ANIME_OPEN = 71445658                   -- Open
 local DUEL_ANIME_COMMON = 1154021400               -- the plates' common open group

@@ -102,6 +102,7 @@ add_layer = { name = "character_reforged_pair_text", object = "character_reforge
 [[object]]
 name = "character_reforged_pair_plate"
 from = "soccer11_09_formation_chara_skill"
+set = [{ param = "DispMaxValue", match = { 1 = 0x93171FE6 }, values = { 2 = 9999 } }]   # the AT number: 4 digit slots in retail, clamp lifted
 free = true
 remove_block = ["CMenuAttachLocator", "MenuCollisionSetting"]
 
@@ -114,14 +115,14 @@ menu = "general_window"
 add_layer = { name = "character_reforged_pair_plate", object = "character_reforged_pair_plate", count = 1, after = "character_reforged_pair_line", groups = [{ group = "general_window", flags = [0, 0, 0, 0, 1, 0], after = "character_reforged_pair_line" }] }
 
 # the panel's atlases: icon_common (Mix-Max glyph, move category icons; Utilities loads it here too), the player
-# page's atlas (btl06_13 + Character Reforged's evt_pp_* sprites: the gauge fills evt_pp_gfill_<colour>, the band, the pill; 60 KB) and
+# page's own atlas (evt_cr_page: Character Reforged's evt_pp_* sprites: the gauge fills evt_pp_gfill_<colour>, the band, the pill) and
 # the retail training gauge's atlas (team13_16: its grey track, 33 KB). The move plate's atlas (soccer08_10, 2.3 MB)
 # is loaded by the Lua only when the panel opens.
 [[patch]]
 menu = "general_window"
 res = [
     "#/menu/200_icon/15_icon_common/icon_common.g4tx",
-    "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx",
+    "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx",
     "#/menu/102_team/team13/team13_16/team13_16.g4tx",
     "#/menu/00_soccer/soccer11/soccer11_09/<LG>/soccer11_09.g4tx",
 ]

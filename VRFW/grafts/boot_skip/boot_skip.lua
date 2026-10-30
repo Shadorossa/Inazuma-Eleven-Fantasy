@@ -17,9 +17,9 @@
 -- VRFW_SKIP_LOGOS / VRFW_SKIP_WARNINGS = true / false (nil = follow the option).
 -- Nothing runs at chunk load but definitions (engine calls only inside the functions).
 
-VRFW_BOOT_SKIP_OPT_GET = 4082322029 -- crc32("CMND_VRFW_OPTION_GET"), the core's option read (the old CMND_EVT_OPT_GET logs a deprecation)
+VRFW_BOOT_SKIP_OPT_GET = @crc:CMND_VRFW_OPTION_GET@ -- crc32("CMND_VRFW_OPTION_GET"), the core's option read (the old CMND_EVT_OPT_GET logs a deprecation)
 VRFW_BOOT_SKIP_KEY = "mods_menu.skip_boot_screens"
-VRFW_BOOT_SKIP_LOG = 3661580131 -- crc32("CMND_EVT_LOG"), the ModLoader's log line (`lua log: "boot_skip: ..."`)
+VRFW_BOOT_SKIP_LOG = @crc:CMND_EVT_LOG@ -- crc32("CMND_EVT_LOG"), the ModLoader's log line (`lua log: "boot_skip: ..."`)
 
 -- (on, where the answer came from: "override" / "option" / "default")
 function VRFW_BootSkipOn(override)

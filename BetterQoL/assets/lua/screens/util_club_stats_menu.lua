@@ -22,7 +22,7 @@ local C = {
   LAYER_NUM = 1175615627, OPEN_LAYER = 629267548, VISIBLE = 711242136, POS = 1389957207, SCALE = 3778714801,
   SPRITE = 558735651, ALPHA = 4231609516, MESH_VISIBLE = 3405944500, NODE_VISIBLE = 2158717427,
   TEXT_VISIBLE = 2735666188, SET_TEXT = 1083631230, LOAD_TEX = 839427544, TEX_LOADING = 1506186496,
-  FACE = 552280324, RESET_FACE = 4176779611, LOADING = 1277042906, CHECK_INPUT = 4265778440,
+  CHECK_INPUT = 4265778440,
   TEXT_STYLE = 2333948100, CTRL = 3518307824, LIST_NUM = 3252599449, FOCUS_SET = 3466097042,
   ATTACH_TRACE = 1774843228,
 }
@@ -61,8 +61,8 @@ local STYLE = {
 }
 -- the page (screen px at 1080p, y down): under the Caseta's header (0-145), above its content guide line (913) and
 -- button guide (980)
-local P = { x = 60, width = 1800, top = 168, cell_h = 92, cell_gap = 10, section_h = 40, columns_h = 32, row_h = 54,
-  row_gap = 2, rows = 8, face = 42, facebox = 52 }
+local P = { x = 60, width = 1800, top = 84, cell_h = 92, cell_gap = 10, section_h = 40, columns_h = 32, row_h = 56,
+  row_gap = 2, rows = 9, face = 56, facebox = 56 }
 -- the player table's columns: x of the column's centre (the name: its left edge)
 local COL = { face = 140, name = 182, matches = 900, goals = 1040, assists = 1180, mvp = 1320, winpct = 1470, signed = 1660 }
 local SORTS = { "goals", "matches", "assists", "mvp", "winpct", "signed" }
@@ -275,29 +275,28 @@ local function Fit(s, px, size)
   return (table.concat(out):gsub("[%s%p]+$", "")) .. "…"
 end
 
-local function Opt(f, ...)
-  if type(f) == "function" then pcall(f, ...) end
-end
-
--- the retail list character card, portrait only, centred at (cx, cy), `size` px; key = chara_base
+-- the whole miniface (the card portrait mesh crops the head): the synergy row's face icon, as VRFW
+-- 30_synergy_rows.lua draws it (team16_03_synergy_chara_condition_list, only its face shown), centred at (cx, cy),
+-- `size` px square; key = chara_base. The face itself: the VR-Framework's shared miniface (VRFW_FaceIcon.Face), hidden
+-- while it loads
+local MINI = { MESH = 478320441 --[[_icon_chr_dmy01]], SLOT = 3237726902 --[[icon_chr_dmy01]], PX = 64, CX = 63,
+  TEXT = 1704438437 --[[_text_name01]], TEXT_VISIBLE = 1505208242, PRIM_COLOR = 855211291,
+  HIDE = { 4051829508, 2309656400, 2519428701, 3231997250, 1504513272, 782908526, 1042467758 } }
 local function Face(key, cx, cy, size)
+  if VRFW_FaceIcon == nil then return end
   local i = Slot(L.FACE)
   if i == nil then return end
-  local s = size / CARD.RH
+  local s = size / MINI.PX
   Show(L.FACE, i)
   Set(L.FACE, i, "sc", C.SCALE, L.FACE, s, s, 1, i)
-  Set(L.FACE, i, "pos", C.POS, L.FACE, cx - CARD.OX * s, -cy - CARD.OY * s, 0, i)
+  Set(L.FACE, i, "pos", C.POS, L.FACE, cx - MINI.CX * s, -cy, 0, i)
   if S.faces[i] ~= key then
-    for _, m in ipairs(CARD.HIDE) do M(C.MESH_VISIBLE, L.FACE, Crc(m), false, i) end
-    for _, m in ipairs(CARD.HIDE_NODES) do M(C.NODE_VISIBLE, L.FACE, Crc(m), false, i) end
-    M(C.TEXT_VISIBLE, L.FACE, CARD.NAME, false, i)
-    M(C.RESET_FACE, L.FACE, i, CARD.TEX)
-    Opt(SetDisableForceCharaInvalidUseTarget)
-    M(C.FACE, L.FACE, i, false, CARD.MESH, CARD.TEX, 0, 0, key, 0, false, true)
-    Opt(SetEnableForceCharaInvalidUseTarget)
+    for _, m in ipairs(MINI.HIDE) do M(C.MESH_VISIBLE, L.FACE, m, false, i) end
+    M(MINI.TEXT_VISIBLE, L.FACE, MINI.TEXT, false, i)
+    M(MINI.PRIM_COLOR, L.FACE, i, MINI.MESH, 1, 1, 1)
     S.faces[i] = key
   end
-  M(C.MESH_VISIBLE, L.FACE, CARD.MESH, M(C.LOADING, L.FACE, i) ~= true, i)
+  VRFW_FaceIcon.Face(L.FACE, i, key, MINI.MESH, MINI.SLOT)
 end
 
 local function BeginFrame() S.used = {} end
@@ -309,7 +308,10 @@ local function EndFrame()
     if layer and i and i >= (S.used[layer] or 0) then
       Set(layer, i, "vis", C.VISIBLE, layer, i, false)
       S.shown[k] = nil
-      if layer == L.FACE then S.faces[i] = nil end
+      if layer == L.FACE then
+        S.faces[i] = nil
+        if VRFW_FaceIcon ~= nil then VRFW_FaceIcon.Forget(L.FACE, i) end
+      end
     end
   end
 end
@@ -492,6 +494,7 @@ end
 function OnInit()
   S.ready, S.art_ok, S.frame, S.sel, S.top, S.sort, S.dirty = false, false, 0, 1, 1, 1, true
   S.sent, S.used, S.shown, S.faces, S.opened, S.cap, S.texts = {}, {}, {}, {}, {}, {}, {}
+  if VRFW_FaceIcon ~= nil then VRFW_FaceIcon.Forget(L.FACE) end
   Load()
 end
 

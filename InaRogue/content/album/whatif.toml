@@ -1,0 +1,8 @@
+schema = "BetterQoL.album/1"
+# BetterQoL's «Álbum de jugadores»: the «¿Y si…?» (Vestigio) cards are INAROGUE-only (rarity vestige, scope
+# inarogue.run; content/characters/whatif.toml): kept out of the album outside the mode. Read only when BetterQoL is on.
+exclude_cards = [
+  0x0AE9D1ED,   # Axel Blaze · ¿Y si…?
+  0xC2ADA4F0,   # Mark Evans · ¿Y si…?
+  0x21D04850,   # Vladimir Blade · ¿Y si…?
+]

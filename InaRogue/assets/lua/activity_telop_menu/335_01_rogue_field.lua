@@ -78,7 +78,7 @@ do
   -- the retail back to the title (rpg_save_menu.BackToTitle / the dock's FadeOutWait), with the screen already black
   function RF.reset()
     pcall(funcLuaCommand, 937976662, true)          -- no press-start screen (the dock's FadeOutWait does this too)
-    pcall(funcLuaCommand, 3897105282 --[[CMND_GAME_RESET]])
+    pcall(funcLuaCommand, 3897105282)
     pcall(funcLuaCommand, 769636339, 0.5)
   end
 
@@ -139,7 +139,7 @@ do
   end
   local steps = 0
   local function hideTelop()
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], 949862058 --[[act02_01_telop]], 0, false)
+    pcall(funcLuaMenuCommand, 711242136, 949862058 --[[act02_01_telop]], 0, false)
   end
   for _, name in ipairs({"SetupLog", "PlayStampAnime"}) do
     local orig = _ENV[name]

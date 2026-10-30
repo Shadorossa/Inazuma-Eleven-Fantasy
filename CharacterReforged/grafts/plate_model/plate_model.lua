@@ -185,19 +185,18 @@ EVT_PPM = EVT_PPM or {}
   M.PAGE = 878737202                     -- team11_01_personal_plate
   M.MENU = 1427722143                    -- personal_plate_menu
   M.WAIT_MAX = 120                       -- Steps a phase may wait before it goes on anyway
-  local CMD_EXIST = 262659071            -- CMND_IS_EXIST_LAYER (layer)
-  local PARAM_HAS = 2947612279           -- CMND_IS_PARAM_EXIST
+  local CMD_EXIST = @crc:CMND_IS_EXIST_LAYER@            -- (layer)
   local TEAM_DRAWER = 3752859857         -- crc32("better_menu_team_over_scene")
-  local CMD_OPEN = 629267548             -- CMND_OPEN_LAYER (layer)
-  local CMD_IS_OPEN = 2640875187         -- CMND_IS_OPEN_LAYER (layer[, inst])
-  local CMD_LOADING = 3057768039         -- CMND_IS_LOADING_LAYER (layer)
-  local CMD_IS_VISIBLE = 1262717583      -- CMND_IS_LAYER_VISIBLE (layer, inst)
-  local CMD_IS_OPEN_OBJ = 3693934564     -- CMND_IS_OPEN_MENU_OBJECT (menu, layer)
+  local CMD_OPEN = @crc:CMND_OPEN_LAYER@             -- (layer)
+  local CMD_IS_OPEN = @crc:CMND_IS_OPEN_LAYER@         -- (layer[, inst])
+  local CMD_LOADING = @crc:CMND_IS_LOADING_LAYER@         -- (layer)
+  local CMD_IS_VISIBLE = @crc:CMND_IS_LAYER_VISIBLE@      -- (layer, inst)
+  local CMD_IS_OPEN_OBJ = @crc:CMND_IS_OPEN_MENU_OBJECT@     -- (menu, layer)
   local SET_CHARA = 59611540             -- (layer, idx, chara, slot)
-  local REGIST = 186863317               -- CMND_SET_SCN_CHARA_REGIST_TYPE (layer, idx, 4, slot)
+  local REGIST = @crc:CMND_SET_SCN_CHARA_REGIST_TYPE@               -- (layer, idx, 4, slot)
   local KIT = 3290636356                 -- (layer, idx, uniform, 10, 0, slot)
   local MOTION = 180466856               -- (layer, idx, motion, 0, 0, 0, 0, slot)
-  local CHANGE = 2232914067              -- CMND_CHARA_MODEL_CHANGE (layer, idx, 0, 9, slot, slot)
+  local CHANGE = @crc:CMND_CHARA_MODEL_CHANGE@              -- (layer, idx, 0, 9, slot, slot)
   local POSE = 2450020144                -- (layer, idx, pose, body type, slot)
   local GET_MODEL = 3895705890           -- (layer, idx, slot) -> model handle (0 = none)
   local COMPLETE = 1583438030            -- (layer, idx, slot) -> the component's build is complete
@@ -205,18 +204,18 @@ EVT_PPM = EVT_PPM or {}
   local LOADING = 2475005551             -- funcLuaCommand (chara) -> true while that chara's model loads
   local CHARA_ST = 1131797651            -- funcLuaCommand (hdl, 4) -> chara id
   local TO_MODEL = 347353059             -- funcLuaCommand (chara id) -> model chara
-  local CHARA_INFO = 4060384944          -- CMND_GET_CHARA_INFO (chara, 3, 0) -> ok, body type
+  local CHARA_INFO = @crc:CMND_GET_CHARA_INFO@          -- (chara, 3, 0) -> ok, body type
   local CAM_OFS = 284729675              -- funcLuaCommand (1752770328, x, y, z)
   local CAM = 1752770328
   local STAND = 2263925137               -- 立ち1L (the dock view's stand motion)
   -- round 8 (Nacho: a miximax with a different body showed arms to the floor): the model is the BASE player's (the
   -- form viewer's CMND_EVT_FORM_MODEL(hdl, 0) = Normal form for this request, CMND_EVT_FORM_CLEAR once it is loaded)
   -- and posed as the dock's own view does: 立ち1L + CMND_UPDATE_CHARA_MODEL_POSE(3459069566), again once loaded
-  local FORM_MODEL, FORM_CLEAR = 1114211089, 1884094670
-  local POSE_UPD, POSE_UPD_ARG = 953552931, 3459069566
-  local CAM_GET, GPOS, LOG = 1877348924, 499270986, 3661580131
+  local FORM_MODEL, FORM_CLEAR = @crc:CMND_EVT_FORM_MODEL@, @crc:CMND_EVT_FORM_CLEAR@
+  local POSE_UPD, POSE_UPD_ARG = @crc:CMND_UPDATE_CHARA_MODEL_POSE@, 3459069566
+  local CAM_GET, GPOS, LOG = 1877348924, @crc:CMND_GET_MESH_GLOBAL_POSITION@, @crc:CMND_EVT_LOG@
   local MODEL_H = 740963128              -- funcLuaCommand (model handle) -> model height (retail visual check)
-  local SCALE_GET = 2211946652           -- CMND_GET_SCALE_OBJECT (model handle) -> sx, sy, sz, valid
+  local SCALE_GET = @crc:CMND_GET_SCALE_OBJECT@           -- (model handle) -> sx, sy, sz, valid
   local SCALE_SET = 2982269573           -- (model handle, sx, sy, sz): the scale of the model object
   local BELONG_KIT = 1701330357          -- (layer, idx, bool): the team dock view's call after the kit
   M.want = M.want or nil                 -- handle the plate shows
@@ -265,7 +264,7 @@ EVT_PPM = EVT_PPM or {}
   M.CAPTURE_MENUS = EVT_PPM_CAPTURE_MENUS or {@crc:chara_pack_probability_list_menu@}
   function M.InCaptureMenu()
     for _, menu in ipairs(M.CAPTURE_MENUS) do
-      if Lc(264888438, menu) == true then                  -- CMND_IS_EXIST_MENU
+      if Lc(@crc:CMND_IS_EXIST_MENU@, menu) == true then                  -- CMND_IS_EXIST_MENU
         return true
       end
     end
@@ -277,8 +276,7 @@ EVT_PPM = EVT_PPM or {}
   -- model was drawn into its render texture every frame. 1.9.0: the framework's quad binding (M.BIND_CMD) keeps the
   -- quad's render-texture entry on the model's cell and the quad stays hidden until the binding is in place.
   function M.InTeamDrawer()
-    local ok, on = pcall(funcLuaCommand, PARAM_HAS, TEAM_DRAWER)
-    return ok and on == true
+    return VRFW_Param.Has(TEAM_DRAWER)
   end
 
   function M.InMatch()
@@ -365,7 +363,7 @@ EVT_PPM = EVT_PPM or {}
     end
     M.capReady = true
     for _, m in ipairs(M.CAP_HIDE) do
-      Cmd(3405944500, M.LAYER, m, false, 0)                -- CMND_SET_MESH_VISIBLE
+      Cmd(@crc:CMND_SET_MESH_VISIBLE@, M.LAYER, m, false, 0)                -- CMND_SET_MESH_VISIBLE
     end
     local b = M.InTeamDrawer() and M.TEAM_BOX or M.CAP_BOX
     Cmd(2575768773, M.LAYER, 0, M.CAP_MESH, 0, b[1])       -- node position x (parent _pos_chr01 sits at 0, 0)
@@ -376,7 +374,7 @@ EVT_PPM = EVT_PPM or {}
     M.bindOn = M.bindGate or nil
     M.gated = not M.bindGate and M.InMatch() and M.Settings().gate
     M.quadOn, M.drawnIn = not (M.gated or M.bindGate), M.DRAWN_EVERY
-    Cmd(3405944500, M.LAYER, M.CAP_MESH, M.quadOn, 0)
+    Cmd(@crc:CMND_SET_MESH_VISIBLE@, M.LAYER, M.CAP_MESH, M.quadOn, 0)
     if M.bindGate then
       pcall(funcLuaCommand, LOG, "EVT_PPM capture quad hidden until bound")
     elseif M.gated then
@@ -384,7 +382,7 @@ EVT_PPM = EVT_PPM or {}
       pcall(funcLuaCommand, LOG, "EVT_PPM capture quad hidden until drawn")
     end
     local okg, gx, gy = pcall(funcLuaMenuCommand, GPOS, M.LAYER, 0, M.CAP_MESH)
-    M.Line("EVT_PPM capture setup", "box", b[1], b[2], b[3], "node", gx, gy, "drawprio", (Cmd(1018283794, M.LAYER, 0)))
+    M.Line("EVT_PPM capture setup", "box", b[1], b[2], b[3], "node", gx, gy, "drawprio", (Cmd(@crc:CMND_GET_DRAW_PRIORITY@, M.LAYER, 0)))
   end
 
   function M.CapSwap(why)
@@ -406,7 +404,7 @@ EVT_PPM = EVT_PPM or {}
       local ok, r = pcall(funcLuaCommand, M.BOUND_CMD)
       if ok and r == 1 then
         M.bindGate, M.quadOn = false, true
-        Cmd(3405944500, M.LAYER, M.CAP_MESH, true, 0)       -- CMND_SET_MESH_VISIBLE
+        Cmd(@crc:CMND_SET_MESH_VISIBLE@, M.LAYER, M.CAP_MESH, true, 0)       -- CMND_SET_MESH_VISIBLE
         pcall(funcLuaCommand, LOG, "EVT_PPM capture quad shown: bound")
       elseif not ok or r ~= 0 then
         M.bindGate = false                                 -- no binding service: the quad stays hidden
@@ -426,7 +424,7 @@ EVT_PPM = EVT_PPM or {}
     local on = ok and r == 1
     if on ~= M.quadOn then
       M.quadOn = on
-      Cmd(3405944500, M.LAYER, M.CAP_MESH, on, 0)          -- CMND_SET_MESH_VISIBLE
+      Cmd(@crc:CMND_SET_MESH_VISIBLE@, M.LAYER, M.CAP_MESH, on, 0)          -- CMND_SET_MESH_VISIBLE
       pcall(funcLuaCommand, LOG, "EVT_PPM capture quad", on and "shown" or "hidden", tostring(r))
     end
   end
@@ -442,6 +440,9 @@ EVT_PPM = EVT_PPM or {}
   -- round 9 (in game: after a form change the next player came smaller): the model component caches the first model's
   -- base scale (menu_chara_model_comp SetScale: l1 kept while non-nil), so every player / form change closes the model
   -- layer (its component and caches go) and the next Step opens a new one
+  -- 2026-10-28 (owner: the model came late on every player change): that close / reopen took ~0.2 s per change; the
+  -- component's cached base scale is now dropped before each new model object (character_reforged_model_scale.lua), so
+  -- the next model is built on the same layer. EVT_PPM_SWAP_IN_PLACE = false restores the close / reopen.
   M.fresh = false
   function M.Fresh()
     M.fresh = true
@@ -522,7 +523,7 @@ EVT_PPM = EVT_PPM or {}
       act = ok and type(v) == "number" and v or nil
     end
     if act == nil then
-      local ok, v = pcall(funcLuaCommand, 3713813716)       -- CMND_GET_VS_USE_TEAM_SET
+      local ok, v = pcall(funcLuaCommand, @crc:CMND_GET_VS_USE_TEAM_SET@)       -- CMND_GET_VS_USE_TEAM_SET
       act = ok and type(v) == "number" and v or nil
     end
     if act ~= nil and act >= 0 then
@@ -543,7 +544,7 @@ EVT_PPM = EVT_PPM or {}
       end
     end
     for _, e in ipairs(u == nil and M.Teams() or {}) do
-      u = Num(1033065575, e[1], 0, 7)                   -- CMND_GET_TEAM_SET_INFO(team, 0, 7) = kit
+      u = Num(@crc:CMND_GET_TEAM_SET_INFO@, e[1], 0, 7)                   -- CMND_GET_TEAM_SET_INFO(team, 0, 7) = kit
       if u ~= nil and u ~= 0 then
         team, src = e[1], e[2]
         break
@@ -560,7 +561,7 @@ EVT_PPM = EVT_PPM or {}
         if slot ~= nil then
           number = Num(1720957768, team, 0, slot, 2) or 1     -- his number in that team
         end
-        local okc, has, cap = pcall(funcLuaCommand, 1033065575, team, 0, 8, hdl)
+        local okc, has, cap = pcall(funcLuaCommand, @crc:CMND_GET_TEAM_SET_INFO@, team, 0, 8, hdl)
         if okc and has == true and cap == true then
           flags = flags + 8                                   -- captain
         end
@@ -609,8 +610,8 @@ EVT_PPM = EVT_PPM or {}
   -- (hdl, form) -> model id: armour forms put it on the menu entry 0x92E95AA6 before the chara)
   M.ARMOUR_FORMS = {[2] = true, [3] = true, [4] = true}
   M.FUSED_FORMS = {[1] = true, [3] = true, [4] = true}
-  local FORM_LIST, SET_MODEL = 125022960, 2464766630
-  local CHECK, CTRL, CTRL_AN, R3 = 4265778440, 1332654303, 2748927068, 3147328756   -- CMD_FUNC6 = R3
+  local FORM_LIST, SET_MODEL = @crc:CMND_EVT_FORM_LIST@, 2464766630
+  local CHECK, CTRL, CTRL_AN, R3 = @crc:CMND_CHECK_INPUT_CMD@, 1332654303, 2748927068, 3147328756   -- CMD_FUNC6 = R3
   M.forms = M.forms or {0}
   M.fidx = M.fidx or 1
   M.fhdl = M.fhdl or nil
@@ -751,7 +752,7 @@ EVT_PPM = EVT_PPM or {}
     M.fit, M.fitLog = nil, nil            -- the fit is written on the model once it is built (M.ApplyFit)
     if M.Capture() then
       if M.Settings().bust then
-        Cmd(1088067423, M.LAYER, 0, 0, 0, 0, 0)  -- CMND_SET_CHARA_MODEL_POS: the bust camera looks at the origin
+        Cmd(@crc:CMND_SET_CHARA_MODEL_POS@, M.LAYER, 0, 0, 0, 0, 0)  -- CMND_SET_CHARA_MODEL_POS: the bust camera looks at the origin
       end
       Cmd(3986622543, M.LAYER, 0, 0, M.CAP_CAM)  -- the model's capture camera (SetupSoccereMenuCharaModel arg 14)
     end
@@ -804,7 +805,7 @@ EVT_PPM = EVT_PPM or {}
     if okU and uni == true then
       return false
     end
-    local ok, v = pcall(funcLuaCommand, 264888438, 3170360552)   -- CMND_IS_EXIST_MENU(shop_menu)
+    local ok, v = pcall(funcLuaCommand, @crc:CMND_IS_EXIST_MENU@, 3170360552)   -- CMND_IS_EXIST_MENU(shop_menu)
     return ok and v == true
   end
 
@@ -910,7 +911,7 @@ EVT_PPM = EVT_PPM or {}
     end
     M.last = M.tick
     M.fidx = M.fidx % #M.forms + 1
-    Lc(1917805374, 2629173176)            -- sy0009, the viewer's switch sound
+    Lc(@crc:CMND_SND_PLAY_SE@, 2629173176)            -- sy0009, the viewer's switch sound
     Lc(LOG, "EVT_PPM form", tostring(M.fhdl), tostring(M.forms[M.fidx]))
     M.Fresh()                              -- rebuilt on a fresh model layer with the new form
     return true
@@ -995,7 +996,7 @@ EVT_PPM = EVT_PPM or {}
       return false
     end
     for _, menu in ipairs(M.OTHER_MODEL_MENUS) do
-      if Lc(264888438, menu) == true then                  -- CMND_IS_EXIST_MENU: that screen owns the camera now
+      if Lc(@crc:CMND_IS_EXIST_MENU@, menu) == true then                  -- CMND_IS_EXIST_MENU: that screen owns the camera now
         return false
       end
     end
@@ -1025,10 +1026,10 @@ EVT_PPM = EVT_PPM or {}
     local menuCloses = (why ~= "hidden" or M.want == nil) and M.InCaptureMenu()
     if menuCloses then                    -- the page's menu closes: its own close takes our layer too
       if why ~= "hidden" then
-        M.Line("EVT_PPM release", why, "layer left to the menu, menu closed", Lc(1521844538, M.MENU))
+        M.Line("EVT_PPM release", why, "layer left to the menu, menu closed", Lc(@crc:CMND_IS_CLOSE_MENU_OBJECT@, M.MENU))
       end
     elseif not M.closing and Cmd(CMD_EXIST, M.LAYER) == true and Cmd(CMD_IS_OPEN, M.LAYER) == true then
-      Cmd(1273612389, M.LAYER)          -- CMND_CLOSE_LAYER (our own layer evt_pp_model), once
+      Cmd(@crc:CMND_CLOSE_LAYER@, M.LAYER)          -- CMND_CLOSE_LAYER (our own layer evt_pp_model), once
       M.closing = true
       did = true
     end
@@ -1067,6 +1068,13 @@ EVT_PPM = EVT_PPM or {}
     if Cmd(CMD_IS_OPEN, M.LAYER) ~= true then
       M.closing = false
       M.capReady = false
+      -- 2026-10-28 (BetterQoL album: the capture quad set up again ~0.1 s after the model showed, then no model): the
+      -- layer closed with our model built (a close of the page's own flow), so its model went with it; the reopened
+      -- layer builds it again instead of staying «ready» on a model that no longer exists
+      if M.built ~= nil then
+        M.built, M.chara, M.phase, M.n, M.shown, M.entryModel = nil, 0, nil, 0, false, false
+        pcall(funcLuaCommand, LOG, "EVT_PPM layer closed with the model built: built again when it reopens")
+      end
       pcall(M.ChooseLayer)
       if Cmd(CMD_EXIST, M.LAYER) ~= true then
         return
@@ -1094,9 +1102,22 @@ EVT_PPM = EVT_PPM or {}
     end
     if M.fresh or (M.want ~= M.built and M.built ~= nil) then
       M.fresh = false
-      Clear()
-      Cmd(1273612389, M.LAYER)            -- CMND_CLOSE_LAYER: a new component (no cached scale) next Step
-      return
+      if EVT_PPM_SWAP_IN_PLACE ~= false then
+        -- the new model is built on the same component (the scale cache is dropped per build by the component patch
+        -- menu_chara_model_comp/character_reforged_model_scale.lua): no layer close / reopen between players
+        Vis(false)
+        Lc(FORM_CLEAR)
+        M.built, M.phase, M.n = nil, nil, 0
+        if M.Capture() then
+          M.capReady = false
+          pcall(M.CapSetup)               -- the quad hidden and bound again for the new model's cell
+        end
+      else
+        Clear()
+        Cmd(@crc:CMND_CLOSE_LAYER@, M.LAYER)          -- CMND_CLOSE_LAYER: a new component (no cached scale) next Step
+        M.closing = true                  -- a closing layer still answers IS_OPEN: no build on it until it is closed
+        return
+      end
     end
     if M.want ~= M.built then             -- another player: one build, hidden until complete
       local c = CharaOf(M.want)
@@ -1204,7 +1225,7 @@ EVT_PPM = EVT_PPM or {}
     if EVT_PPM_STICK_TURN == false or EVT_PPM_PAGE_FORMS ~= true then
       return
     end
-    local ok, x = pcall(funcLuaCommand, 1440697067, 2)
+    local ok, x = pcall(funcLuaCommand, @crc:CMND_GET_ANALOG_VALUE@, 2)
     local dead = EVT_PPM_STICK_DEAD or 0.2
     if not ok or type(x) ~= "number" or math.abs(x) <= dead then
       if M.turning then

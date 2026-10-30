@@ -14,8 +14,8 @@ SkillTabs = SkillTabs or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("skill_tabs:", ...) end
-local function warn(...) VRFW.warn("skill_tabs:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("skill_tabs")
 
 local TAB_ON = false      -- the native list is the registry's
 local GAME = nil          -- the game's tabs (categories in table order), read on demand

@@ -8,6 +8,8 @@ schema = "VRFW.changelog/1"
 # 1.2.18 (2026-10-21): the module Pressing (modules\Pressing\).
 # 1.3.0 (2026-10-21): the module Duel Auras (modules\DuelAuras\).
 # 1.5.0 (2026-10-21): the match formats are part of the base (no longer a module).
+# 1.12.0 (2026-10-28): the module Stoppage Time (modules\StoppageTime\).
+# 1.13.0 (2026-10-29): the module Skill Duel (modules\SkillDuel\).
 lang = "es"
 name = "Football Reforged"
 
@@ -43,6 +45,8 @@ notes = [
     "Estadio local por equipo para sus partidos en casa.",
     "Presión: L2 sin balón manda a 2-4 compañeros al rival.",
     "Formatos en la base: Fútbol 7, Inazuma Street y 5v5.",
+    "Tiempo añadido en cada parte; la jugada final sigue.",
+    "Duelo de habilidad: si chocas con el defensa, gana él.",
 ]
 
 [release.en]
@@ -52,6 +56,8 @@ notes = [
     "A home stadium per team for its home matches.",
     "Pressing: L2 without the ball sends 2-4 mates at him.",
     "Match formats in the base: Football 7, Street, 5v5.",
+    "Stoppage time every half; the last attack plays on.",
+    "Skill Duel: run into the defender and he wins.",
 ]
 
 [release.fr]
@@ -61,6 +67,8 @@ notes = [
     "Un stade à domicile par équipe pour ses matchs.",
     "Pressing : L2 sans ballon envoie 2-4 joueurs au porteur.",
     "Formats dans la base : Football à 7, Street, 5v5.",
+    "Temps additionnel ; la dernière attaque continue.",
+    "Duel d'adresse : percuter le défenseur, il gagne.",
 ]
 
 [release.de]
@@ -70,6 +78,8 @@ notes = [
     "Ein Heimstadion pro Team für seine Heimspiele.",
     "Pressing: L2 ohne Ball schickt 2-4 Mitspieler los.",
     "Spielformate in der Basis: 7er, Street, 5 gegen 5.",
+    "Nachspielzeit; der letzte Angriff läuft weiter.",
+    "Geschicklichkeitsduell: Wer ihn trifft, verliert.",
 ]
 
 [release.it]
@@ -79,6 +89,8 @@ notes = [
     "Uno stadio di casa per squadra per le gare in casa.",
     "Pressing: L2 senza palla manda 2-4 compagni sul rivale.",
     "Formati nella base: Calcio a 7, Street, 5 contro 5.",
+    "Recupero in ogni tempo; l'ultima azione continua.",
+    "Duello di abilità: se urti il difensore, vince lui.",
 ]
 
 [release.pt]
@@ -88,6 +100,8 @@ notes = [
     "Um estádio da casa por equipa para os jogos em casa.",
     "Pressão: L2 sem bola manda 2-4 colegas ao portador.",
     "Formatos na base: Futebol de 7, Street, 5 contra 5.",
+    "Compensação em cada parte; a última jogada segue.",
+    "Duelo de habilidade: chocar com o defesa, ganha ele.",
 ]
 
 [release.ja]
@@ -97,6 +111,8 @@ notes = [
     "チームごとのホームスタジアムでホーム戦。",
     "プレス：ボールなしのL2で味方2〜4人が保持者へ。",
     "試合形式をベースに収録：7人制、ストリート、5人制。",
+    "各ハーフにアディショナルタイム、最後の攻撃は続く。",
+    "テクニック勝負：守備にぶつかれば守備の勝ち。",
 ]
 
 [release.zh_hans]
@@ -106,6 +122,8 @@ notes = [
     "每支队伍的主场球场，用于主场比赛。",
     "逼抢：无球时按L2，2到4名队友冲向持球者。",
     "基础含比赛形式：7人制、闪电街头、5人制。",
+    "每个半场都有补时，最后一次进攻会继续。",
+    "技巧对决：撞上防守方，防守方获胜。",
 ]
 
 [release.zh_hant]
@@ -115,4 +133,6 @@ notes = [
     "每支隊伍的主場球場，用於主場比賽。",
     "逼搶：無球時按L2，2到4名隊友衝向持球者。",
     "基礎含比賽形式：7人制、閃電街頭、5人制。",
+    "每個半場都有補時，最後一次進攻會繼續。",
+    "技巧對決：撞上防守方，防守方獲勝。",
 ]

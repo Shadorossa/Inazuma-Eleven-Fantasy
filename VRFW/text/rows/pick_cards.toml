@@ -1,0 +1,28 @@
+# The pick cards screen (vrfw_pick_cards_menu, docs/framework/pick-cards.md): the button guide's Accept and the default
+# label of the «skip» choice. Rows of menu_text, read by id = crc32(row id).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "VRFW.PickCards.Choose"
+es = "Elegir"
+en = "Choose"
+fr = "Choisir"
+de = "Wählen"
+it = "Scegli"
+pt = "Escolher"
+ja = "選ぶ"
+zh_hans = "选择"
+zh_hant = "選擇"
+
+[[row]]
+id = "VRFW.PickCards.Skip"
+es = "Saltar"
+en = "Skip"
+fr = "Passer"
+de = "Überspringen"
+it = "Salta"
+pt = "Pular"
+ja = "スキップ"
+zh_hans = "跳过"
+zh_hant = "跳過"

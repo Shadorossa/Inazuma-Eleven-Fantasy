@@ -1,9 +1,11 @@
 # InaRogue: the icon of «Puntos de rogue» (INAROGUE currency), a new texture of icon_item10 (the `tk`
 # sheet). Written by research/scripts/rogue_points_icon.py (docs/game/modes/inarogue-avatars.md).
+# In the mod's own atlas inarogue_item_icons (never the game's icon_item10): the game asks icon_item10 for it by
+# the item key; content\sprite_redirects\rogue_points.toml serves it from here.
 schema = "VRFW.image/1"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item10.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/inarogue_item_icons.g4tx"
 name = "tk_rg000001"
 png = "rogue_points/tk_rg000001.png"
 mips = 1

@@ -28,8 +28,8 @@ do
   -- (chronicle_deluxe_legendary_orb, content/images/menu/30_vsroute/vsroute01/vsroute01_06b.toml)
   local ORB_SPRITE = {[6] = 1729383857, [7] = 4263320587, [8] = 2290219986, [9] = 2290219986}   -- clear_icon01, clear_icon02, legendary
   local CLASSES = {6, 7, 8, 9}
-  local CLEAR = 989257499           -- CMND_GET_SOCCER_GAME_CLEAR_FLAG (game, class)
-  local LOG = 3661580131            -- CMND_EVT_LOG
+  local CLEAR = VRFW_Cmd.GET_SOCCER_GAME_CLEAR_FLAG           -- (game, class)
+  local LOG = VRFW_Cmd.EVT_LOG
   -- the pill + orb in the layout once [VRFW.FreeMatch] Orb = "best" put the class orbs on the single slot: centred on
   -- the capsule's top orb _pos_clear04 (27, -33) of vsroute01_06b.g4pkm; its height is the pill's (_clear_base02,
   -- 48 x 32 px; the orbs are 32 px too). Spacing (owner 2026-10-19: centred between the crest and the name): with
@@ -51,14 +51,14 @@ do
 
   -- the layer's instance exists (the menu patch applied): every layer command below is guarded by it
   local function has_layer()
-    local n = M(1175615627, LAYER)            -- created instances of the layer
+    local n = M(VRFW_Cmd.GET_CREATE_LAYER_NUM, LAYER)            -- created instances of the layer
     return type(n) == "number" and n >= 1
   end
 
   local function hide()
     local C = BetterMenu and BetterMenu.Competition
     if type(C) == "table" and type(C.ReserveUnderCrest) == "function" then C.ReserveUnderCrest(ID, 0) end
-    if has_layer() then M(711242136, LAYER, 0, false) end
+    if has_layer() then M(VRFW_Cmd.SET_LAYER_VISIBLE, LAYER, 0, false) end
   end
 
   -- the gauge of the focused team: its highest class won, or the empty pill
@@ -78,7 +78,7 @@ do
     local name_top = top + band + glyph
     local centre = (crest_bottom + name_top) / 2
     if not G.opened then
-      M(629267548, LAYER, 0)
+      M(VRFW_Cmd.OPEN_LAYER, LAYER, 0)
       M(3849595087, LAYER, 2, 0)                -- as the retail list opens its clear-icon instances
       G.opened = true
     end
@@ -86,8 +86,8 @@ do
     M(2158717427, LAYER, PILL, true, 0)
     local sprite = ORB_SPRITE[best]
     M(2158717427, LAYER, PILL_ORB, sprite ~= nil, 0)
-    M(3405944500, LAYER, PILL_ORB_MESH, sprite ~= nil, 0)
-    for _, mesh in ipairs(PILL_ORB_GLOWS) do M(3405944500, LAYER, mesh, false, 0) end
+    M(VRFW_Cmd.SET_MESH_VISIBLE, LAYER, PILL_ORB_MESH, sprite ~= nil, 0)
+    for _, mesh in ipairs(PILL_ORB_GLOWS) do M(VRFW_Cmd.SET_MESH_VISIBLE, LAYER, mesh, false, 0) end
     local swapped = {}
     if sprite ~= nil then
       for k, slot in ipairs(ORB_SLOTS) do swapped[k] = tostring(M(558735651, LAYER, ORB_ATLAS, sprite, slot, 0, 0)) end
@@ -98,10 +98,10 @@ do
       for _, d in ipairs(CLASSES) do won[#won + 1] = d .. "=" .. tostring(funcLuaCommand(CLEAR, game, d)) end
       pcall(funcLuaCommand, LOG, string.format("ChronicleDeluxe cleared gauge: game %s best %s won [%s] orb sprite swap [%s] at y %s",
         tostring(game), tostring(best), table.concat(won, " "), table.concat(swapped, " "), tostring(centre)))
-    end    M(3778714801, LAYER, SCALE, SCALE, 1, 0)
-    M(1389957207, LAYER, x - CENTRE_X * SCALE, -centre - CENTRE_Y * SCALE, 0, 0)
-    M(1491630496, LAYER, 0, PRIORITY, true)
-    M(711242136, LAYER, 0, true)
+    end    M(VRFW_Cmd.SET_LAYER_LOCAL_SCALE, LAYER, SCALE, SCALE, 1, 0)
+    M(VRFW_Cmd.SET_LAYER_LOCAL_POS, LAYER, x - CENTRE_X * SCALE, -centre - CENTRE_Y * SCALE, 0, 0)
+    M(VRFW_Cmd.SET_DRAW_PRIORITY, LAYER, 0, PRIORITY, true)
+    M(VRFW_Cmd.SET_LAYER_VISIBLE, LAYER, 0, true)
   end
 
   -- BetterMenu's strip turned on (its overlay set): draw the gauge of the team already focused (BetterMenu calls

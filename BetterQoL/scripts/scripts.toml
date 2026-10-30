@@ -50,10 +50,11 @@ file = "passive_config.lua"
 budget = 5000000
 memory_kb = 65536
 
-# Auto Commander mode: the match scene's first coach mode (two init hooks, content\game\auto_commander.toml)
+# Auto Commander mode: the match scene's first coach mode (two init hooks, content\game\auto_commander.toml); effects:
+# the rival's match AI profiles on your team in Commander mode (VRFW.ai.mirror_profiles / reset_profiles)
 [[script]]
 file = "auto_commander.lua"
-allow = []
+allow = ["effects"]
 
 # Chronicle route map speed (the defaults)
 [[script]]
@@ -73,6 +74,14 @@ file = "skill_board.lua"
 file = "shop_filter.lua"
 budget = 500000
 memory_kb = 8192
+allow = []
+
+# Kit and emblem order: belong_team_config and the kit / emblem rows of item_config are read once at load; each
+# inventory kits / emblems tab sort re-orders up to 0x898 row pointers
+[[script]]
+file = "kit_emblem_order.lua"
+budget = 2000000
+memory_kb = 16384
 allow = []
 
 # Team bank repair (exports TeamBanksMembers / TeamBanksRepair, called by Inazuma Fantasy's «Reparar duplicados»):

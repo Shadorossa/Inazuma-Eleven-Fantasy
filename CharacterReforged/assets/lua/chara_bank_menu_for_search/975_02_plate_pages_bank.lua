@@ -128,12 +128,12 @@ do
   local F = EVT_PPG_FANTASY_MOVES
   F.GET_SKILL = 903078840               -- (charaStHdl, list position 0..5) -> move (save skill_list)
   F.LEARNABLE = 3475351727              -- (charaStHdl) -> ok, {move per slot}, {unlock level per slot}
-  F.LEARN_LEVEL = 8867751               -- CMND_VRFW_CHARACTER_LEARN_LEVEL (charaStHdl, move) -> level needed, player's level
+  F.LEARN_LEVEL = 8867751               -- (charaStHdl, move) -> level needed, player's level
   F.SKILL_INFO = 2580586398             -- (move, 9) -> ok, category (8 = an aura)
   F.BOARD_INV = 632801955               -- (charaStHdl, board slot, kind 1 placed / 0 native) -> inventory handle
   F.INV_ITEM = 2662166687               -- (inventory handle, 0) -> move
   F.ROW_COUNT = 6
-  F.SKILL_SET = 640242939               -- CMND_VRFW_SKILL_SET (charaStHdl) -> answered, aura, mix, aura_from, mix_from, row1..6, technique1..6
+  F.SKILL_SET = 640242939               -- (charaStHdl) -> answered, aura, mix, aura_from, mix_from, row1..6, technique1..6
 
   local function U32(v)
     v = tonumber(v) or 0
@@ -395,15 +395,15 @@ do
   -- frame, guide label). Victory Road: untouched.
   F.AI_USE_GET = 232181607              -- (charaStHdl, list position) -> the AI may use the move (nil = no move there)
   F.AI_USE_SET = 139872667              -- (charaStHdl, list position, allowed): writes the save
-  F.SET_SKILL = 2394267160              -- CMND_SET_SKILL (charaStHdl, move, list position): swap, writes the save
+  F.SET_SKILL = 2394267160              -- (charaStHdl, move, list position): swap, writes the save
   F.LIST_POSITION_OF = 26437624         -- (charaStHdl, move) -> its list position (6 or more = not in the list)
   F.FOCUSED_INSTANCE = 2603265800       -- menu command (layer) -> focused instance
   F.AI_TOGGLE_FUNCTION = 2941571381     -- OnFunctionCommon id of the AI-use toggle
   F.PLAY_SOUND = 1917805374
   F.CANNOT_SOUND = 3791946501           -- sy0004
-  F.BOARD_PLACE = 3270716539            -- CMND_CHARACTERREFORGED_BOARD_PLACE (charaStHdl, inventory handle, board slot)
-  F.BOARD_CLEAR = 1398771376            -- CMND_CHARACTERREFORGED_BOARD_CLEAR (charaStHdl, board slot, keepOpen)
-  F.LOG = 3661580131                    -- CMND_EVT_LOG
+  F.BOARD_PLACE = 3270716539            -- (charaStHdl, inventory handle, board slot)
+  F.BOARD_CLEAR = 1398771376            -- (charaStHdl, board slot, keepOpen)
+  F.LOG = 3661580131
   F.BOARD_SLOTS = 9                     -- board slots 0-8 (0-5 = list positions, 8 = the aura slot)
 
   -- the move on board slot `slot` of card `hdl` and its inventory handle (placed item, else the native one)
@@ -633,14 +633,14 @@ do
     if EVT_PPB_OFF == true then
       return false
     end
-    local ok, v = pcall(funcLuaCommand, 264888438 --[[CMND_IS_EXIST_MENU]], B.PLATE_MENU)
+    local ok, v = pcall(funcLuaCommand, 264888438, B.PLATE_MENU)
     if not (ok and v == true) then
       return false, "no plate menu"
     end
     -- 2026-10-06 (in game: the lineup gone with the stats view CLOSED - the bank keeps the plate menu alive): only
     -- while the plate's page is SHOWN (the retail bank's own test: CMND_IS_LAYER_VISIBLE with the menu as 4th
     -- argument, chara_bank_menu_for_search)
-    local okv, vis = pcall(funcLuaMenuCommand, 1262717583 --[[CMND_IS_LAYER_VISIBLE]], B.PAGE, 0, B.PLATE_MENU)
+    local okv, vis = pcall(funcLuaMenuCommand, 1262717583, B.PAGE, 0, B.PLATE_MENU)
     if not (okv and vis == true) then
       return false, "stats hidden"
     end
@@ -782,7 +782,9 @@ do
       EVT_PPG_Wrap(fname, function(orig)
         return function(...)
           local r = table.pack(orig(...))
-          if next(B.hid) ~= nil then
+          -- OnCloseLayer runs for every layer of the bank (e.g. the command popup's explanation window on each
+          -- option focus): the lineup comes back only when the player page is no longer shown
+          if next(B.hid) ~= nil and (fname == "FinalizeMenu" or not Want()) then
             pcall(B.Restore, fname)
           end
           return table.unpack(r, 1, r.n)

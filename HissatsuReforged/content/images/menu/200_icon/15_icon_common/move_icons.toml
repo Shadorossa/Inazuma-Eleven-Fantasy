@@ -6,32 +6,55 @@
 # New sprites without `texture`: the image type packs them into a new texture of the retail atlas.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/200_icon/hissatsu_reforged_own/hissatsu_reforged_icon_common.g4tx"
+name = "hissatsu_reforged_icon_common"
+size = [1460, 96]
+
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/hissatsu_reforged_own/hissatsu_reforged_icon_common.g4tx"
 name = "evt_icon_sp_sub2_long_a"
+texture = "hissatsu_reforged_icon_common"
+x = 976
+y = 0
 png = "move_icons/evt_icon_sp_sub2_long_a.png"
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/hissatsu_reforged_own/hissatsu_reforged_icon_common.g4tx"
 name = "evt_icon_sp_sub2_long_b"
+texture = "hissatsu_reforged_icon_common"
+x = 1220
+y = 0
 png = "move_icons/evt_icon_sp_sub2_long_b.png"
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/hissatsu_reforged_own/hissatsu_reforged_icon_common.g4tx"
 name = "evt_icon_sp_sub2_counter_a"
+texture = "hissatsu_reforged_icon_common"
+x = 488
+y = 0
 png = "move_icons/evt_icon_sp_sub2_counter_a.png"
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/hissatsu_reforged_own/hissatsu_reforged_icon_common.g4tx"
 name = "evt_icon_sp_sub2_counter_b"
+texture = "hissatsu_reforged_icon_common"
+x = 732
+y = 0
 png = "move_icons/evt_icon_sp_sub2_counter_b.png"
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/hissatsu_reforged_own/hissatsu_reforged_icon_common.g4tx"
 name = "evt_icon_sp_sub2_block_a"
+texture = "hissatsu_reforged_icon_common"
+x = 0
+y = 0
 png = "move_icons/evt_icon_sp_sub2_block_a.png"
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/hissatsu_reforged_own/hissatsu_reforged_icon_common.g4tx"
 name = "evt_icon_sp_sub2_block_b"
+texture = "hissatsu_reforged_icon_common"
+x = 244
+y = 0
 png = "move_icons/evt_icon_sp_sub2_block_b.png"

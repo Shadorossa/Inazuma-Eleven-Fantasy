@@ -1,0 +1,28 @@
+# «Futuro negativo» (No Future, whs02320; fire; a two-player combo shot; cut-in ev60_02320): while the ball flies to
+# the goal it wears the cut-in's last shot (c0400, held at frame 478 from the aura's first frame): the white / cyan
+# comet with the ball in its star core (the dome laid on the flight, nothing of the comet ahead of it), the star head,
+# tail sheets, lines and glow behind it, their widths pulsing and texture flow running on, x0.25 (~16 m long). The
+# comet comes out of the kick point as the ball flies (distance clock, never stretched) and fades out over the last
+# 45 % of its length (no end line).
+# The cut-in's last shot has no event ball: the ball is the centre of the comet's star core (_850_star_head_01).
+# The object is ev6232nf00 (effect/event/ev60/ev6232nf00/), built by research/scripts/no_future_ball_fx.py from
+# ev60023200. docs/game/media/no-future-ball-fx.md.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"); the distance clock (anchor = "kick", drift
+# 0.75 m a frame) reveals the comet from the kick point.
+# Flight: content\techniques\no_future_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "no_future"
+from = "ega0075c"
+object = "effect/event/ev60/ev6232nf00/ev6232nf00.objbin"
+
+[[shot_aura]]
+name = "no_future"
+when = { techniques = ["whs02320"] }
+aura = "no_future"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

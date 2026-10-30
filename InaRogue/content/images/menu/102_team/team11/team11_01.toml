@@ -1,14 +1,15 @@
 schema = "VRFW.image/1"
-# InaRogue: the INAROGUE tier frames / «¿Y si…?» Vestigio sprites of this atlas (moved from Inazuma
+# InaRogue: the INAROGUE tier frames / «¿Y si…?» Vestigio sprites the game asks team11_01 for, in the mod's own
+# atlas inarogue_plates (never the game's: content\sprite_redirects\card_frames.toml serves them). (Moved from Inazuma
 # Fantasy 2026-10-14; the image type merges them per name with the other mods' rows of the atlas).
 
 [[texture]]
-atlas = "#/menu/102_team/team11/team11_01/team11_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_plates.g4tx"
 name = "evt_whatif_atl"
 size = [960, 1172]
 
 [[sprite]]
-atlas = "#/menu/102_team/team11/team11_01/team11_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_plates.g4tx"
 name = "status_chr_plate01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -16,7 +17,7 @@ y = 0
 png = "team11_01/status_chr_plate01_13.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team11/team11_01/team11_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_plates.g4tx"
 name = "status_chr_plate01_13_02"
 texture = "evt_whatif_atl"
 x = 0
@@ -24,7 +25,7 @@ y = 196
 png = "team11_01/status_chr_plate01_13_02.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team11/team11_01/team11_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_plates.g4tx"
 name = "status_chr_plate01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -32,7 +33,7 @@ y = 392
 png = "team11_01/status_chr_plate01_14.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team11/team11_01/team11_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_plates.g4tx"
 name = "status_chr_plate01_14_02"
 texture = "evt_whatif_atl"
 x = 0
@@ -40,7 +41,7 @@ y = 588
 png = "team11_01/status_chr_plate01_14_02.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team11/team11_01/team11_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_plates.g4tx"
 name = "status_chr_plate01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -48,7 +49,7 @@ y = 784
 png = "team11_01/status_chr_plate01_15.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team11/team11_01/team11_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_plates.g4tx"
 name = "status_chr_plate01_15_02"
 texture = "evt_whatif_atl"
 x = 0

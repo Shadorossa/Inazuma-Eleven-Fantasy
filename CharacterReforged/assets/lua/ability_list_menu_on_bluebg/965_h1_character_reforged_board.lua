@@ -15,8 +15,6 @@ do
   CharacterReforged_BoardList = CharacterReforged_BoardList or {}
   local List = CharacterReforged_BoardList
   List.KEY_BASE = 938944415                         -- character_reforged_list_base
-  List.PARAM_HAS = 2947612279
-  List.PARAM_GET = 3522198769
   List.ITEM_LAYER = 1205526439                      -- team08_02_ability_list_item
   List.LIST_LAYER = 3520823522                      -- team08_01_ability_list
   List.ITEM_OF = 901208644                          -- (inventory handle) -> item id
@@ -47,8 +45,8 @@ do
     return function(...)
       List.base, List.focus, List.refused = 0, 0, {}
       pcall(function()
-        if funcLuaCommand(List.PARAM_HAS, List.KEY_BASE) == true then
-          local h = funcLuaCommand(List.PARAM_GET, List.KEY_BASE)
+        if VRFW_Param.Has(List.KEY_BASE) then
+          local h = VRFW_Param.Get(List.KEY_BASE)
           List.base = type(h) == "number" and h or 0
         end
         local card = List.Card()

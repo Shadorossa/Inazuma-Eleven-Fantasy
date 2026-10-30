@@ -1,0 +1,27 @@
+# «Lanza letal» (Doom Spear, whs01400; forest long shot, cut-in ev60_01400): while the ball flies to the goal it is the
+# spear of the cut-in's last shot (c0300, fully formed at frame 288, held from the aura's first frame, x1.6): the ball
+# at the front of the turning lattice spear head (dark body, red veins, red edge; thickened) with its black drill, the
+# black barbed arrowhead round it and the solid dark lance body behind (red glow round it), a short soft trail of the
+# shot's end behind the spear (red glow streak, black wave, the turning red swirl tube of wisps, animated), the red fog
+# halo round the spear, round from every side, coming out of the kick point as the ball flies (never stretched). The
+# spike crown, the speed lines and the rings stay out.
+# The object is ev6014ds00 (effect/event/ev60/ev6014ds00/), built by research/scripts/doom_spear_ball_fx.py from
+# ev60014000 (docs/game/media/doom-spear-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest long-shot aura's row (like = "ega0085d"). Flight:
+# content\techniques\doom_spear_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "doom_spear_lattice_spear"
+from = "ega0085d"
+object = "effect/event/ev60/ev6014ds00/ev6014ds00.objbin"
+
+[[shot_aura]]
+name = "doom_spear_lattice_spear"
+when = { techniques = ["whs01400"] }
+aura = "doom_spear_lattice_spear"
+like = "ega0085d"
+anchor = "kick"
+drift = 0.75

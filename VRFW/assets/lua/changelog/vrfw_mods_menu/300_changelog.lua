@@ -23,7 +23,7 @@ local CLM = {
   SESSION = CLM_Crc("CMND_VRFW_CHANGELOG_SESSION"),
   OPEN = CLM_Crc("CMND_VRFW_CHANGELOG_OPEN"),       -- (1 on demand, languageCode) -> pages
   CLOSE = CLM_Crc("CMND_VRFW_CHANGELOG_CLOSE"),
-  LANG = 477234096,                                -- CMND_GET_LANGUAGE_CODE
+  LANG = VRFW_Cmd.GET_LANGUAGE_CODE,                                -- CMND_GET_LANGUAGE_CODE
   SHEET = 3492314538,                              -- title_tutorial_menu
 }
 
@@ -50,8 +50,8 @@ VRFW_MM_EXTRA[#VRFW_MM_EXTRA + 1] = {
       return false
     end
     funcLuaMenuCommand(1558704558, menu, false)                                -- the screen's input off
-    funcLuaCommand(433545986, CLM.SHEET)                                      -- CMND_OPEN_MENU_OBJECT
-    while funcLuaMenuCommand(2231168902, CLM.SHEET) do                        -- until the sheet is closed
+    funcLuaCommand(VRFW_Cmd.OPEN_MENU_OBJECT, CLM.SHEET)                                      -- CMND_OPEN_MENU_OBJECT
+    while funcLuaMenuCommand(VRFW_Cmd.IS_EXIST_MENU_OBJECT, CLM.SHEET) do                        -- until the sheet is closed
       coroutine.yield()
     end
     CLM_Call(CLM.CLOSE)

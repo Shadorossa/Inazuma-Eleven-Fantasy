@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Llamarada solar (Solar Flare, whs01860), cut-in ev60_01860.
+#
+# In the cut-in's last shot (c0500) the sun dives ~29 deg onto the camera; the aura is turned onto the match flight.
+# Flight: straight and level at 2.5 m into the goal (the sun, ~4 m across, clears the grass). unblockable = false: the
+# game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count
+# from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that
+# height.
+
+# Llamarada solar (whs01860).
+[[edit]]
+target = "whs01860"
+trajectory = { points = [[0.0, 2.5]], straight = true, unblockable = false }

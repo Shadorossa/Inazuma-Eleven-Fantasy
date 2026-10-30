@@ -17,10 +17,10 @@ do
   if not X.wrapped then
     X.wrapped = true
     local C = {
-      COVER = 2007754216,      -- CMND_VRFW_MATCH_EXIT_COVER(op, arg)
-      MODE = 3507337950,       -- CMND_VRFW_MODE_CURRENT -> key, id, play mode, in match, …
+      COVER = VRFW_Cmd.VRFW_MATCH_EXIT_COVER,      -- CMND_VRFW_MATCH_EXIT_COVER(op, arg)
+      MODE = VRFW_Cmd.VRFW_MODE_CURRENT,       -- CMND_VRFW_MODE_CURRENT -> key, id, play mode, in match, …
       FADE = 609722083,        -- (alpha, seconds, layer): the bright fade
-      LOG = 3661580131,        -- CMND_EVT_LOG
+      LOG = VRFW_Cmd.EVT_LOG,        -- CMND_EVT_LOG
     }
     local LAYER = 1            -- the bright-fade layer of the cover (layer 0 stays the game's)
     local FADE_OUT_S = 0.3     -- the fade to black when the hold gauge is full

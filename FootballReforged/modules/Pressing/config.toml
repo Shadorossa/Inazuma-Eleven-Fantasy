@@ -51,6 +51,20 @@ hud_sprite = "pressing_gtxt_action_press01"
 # their press ends: "user" (your team's pressers), "both" (the CPU's too) or "off".
 arrows = "user"
 
+# THE AI'S OWN PRESS (both teams, applied the same way to each): without a team press (your L2, the CPU's rules
+# above), an AI-controlled defender (never the keeper, never the player you control, never a winded one) who is the
+# nearest or second nearest of his team to the carrier (ranks) and within radius_m of him starts a press of his own when
+# his roll of chance (0..1) wins: he sprints at the carrier for press_ms (at most 5000), then he does not press on his
+# own for cooldown_ms. Checked every decide_ms and at every change of carrier; false = off.
+[pressing.ai]
+enabled = true
+radius_m = 10.0
+ranks = 2
+chance = 0.3
+press_ms = 2000
+cooldown_ms = 6000
+decide_ms = 600
+
 # The carrier is near the CPU's goal.
 [[pressing.cpu_rule]]
 carrier_to_own_goal_max_m = 30.0

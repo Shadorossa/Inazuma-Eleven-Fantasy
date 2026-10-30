@@ -78,7 +78,7 @@ do
   -- the retail back to the title (rpg_save_menu.BackToTitle / the dock's FadeOutWait), with the screen already black
   function RF.reset()
     pcall(funcLuaCommand, 937976662, true)          -- no press-start screen (the dock's FadeOutWait does this too)
-    pcall(funcLuaCommand, 3897105282 --[[CMND_GAME_RESET]])
+    pcall(funcLuaCommand, 3897105282)
     pcall(funcLuaCommand, 769636339, 0.5)
   end
 

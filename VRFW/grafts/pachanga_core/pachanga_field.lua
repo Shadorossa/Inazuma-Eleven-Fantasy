@@ -13,7 +13,7 @@ do
       return
     end
     local st = P.state()
-    local ok, soccer = pcall(funcLuaCommand, 4156639577 --[[CMND_IS_SOCCER_MODE]])
+    local ok, soccer = pcall(funcLuaCommand, @crc:CMND_IS_SOCCER_MODE@)
     if not (st.phase >= 2 and st.phase <= 3 and st.ret == 1 and st.field_net) or (ok and soccer == true) then
       G.steps = 0
       return
@@ -29,7 +29,7 @@ do
       pcall(funcLuaMenuCommand, 3479138216, 0)      -- no next-state menu (retail BackToTitle)
     end
     pcall(funcLuaCommand, 937976662, true)          -- no press-start screen
-    pcall(funcLuaCommand, 3897105282 --[[CMND_GAME_RESET]])
+    pcall(funcLuaCommand, @crc:CMND_GAME_RESET@)
     pcall(funcLuaCommand, 769636339, 0.5)
   end
   VRFW_PACHANGA_FieldTick = tick

@@ -36,12 +36,8 @@ local A = {}
 
 local TABLE = "BattleBayDeluxe.ActiveTeam"
 
-local function info(...)
-  VRFW.log("active team:", ...)
-end
-local function warn(...)
-  VRFW.warn("active team:", ...)
-end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("active team")
 
 local TEAM_NAME = U.trim(tostring(U.config("active_team.team", "active_team")))
 

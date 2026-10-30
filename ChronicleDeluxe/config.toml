@@ -140,6 +140,18 @@ victory_road = "VR"
 team = "tm_cro_go2_0800"     # Protocolo Omega 3.0 (its players miximaxed with Zanark)
 name = "fm_protocol_omega_3_base"
 
+# Plathos and Destructores (owner 2026-10-30): the Chronicle teams play possessed (c1121 02x0 / c1122 02x0, Victorio
+# c11600090); their BATALLA LEGENDARIA plays the same players unpossessed (the cards of their Battle Bay copies), as
+# Épsilon's plays Épsilon Plus. Destructores' coach too.
+[[free_match_base_form]]
+team = "tm_cro_original_0300" # Plathos
+name = "fm_plathos_base"
+
+[[free_match_base_form]]
+team = "tm_cro_original_0400" # Destructores
+name = "fm_destructores_base"
+coach = true
+
 # Free-match teams that play with their line-up swapped (owner 2026-10-20; docs/game/mods/chronicle-deluxe-free-match.md
 # §16): research/scripts/chronicle_deluxe_shuffle_build.py writes content/teams/90_rules/free_match_shuffles.toml, the
 # class team `chronicle_deluxe.<name>` (game key `key`, which starts with chronicle_deluxe_fms_) and its four position
@@ -176,7 +188,7 @@ manuals = 4.0             # the rival's unlocked manuals, shared by all of them
 boots = 1.0               # the rival team's own boots
 auras = 0.5               # its players' aura items (keshin, totems, Mix-Max, mode changes; never armours), shared
 books = [
-  { item = "abl_ub000001", rate = 1.0 },   # Libro de mejora de supertécnica (+1 grade, up to grade 4)
+  { item = "abl_000001", rate = 1.0 },   # Mejora de supertécnica (+1 grade, up to grade 4)
 ]
 
 # Batalla heroica (4): the higher tier also gives the last grade's book
@@ -187,6 +199,6 @@ boots = 2.5
 auras = 1.5
 golden_coin = 10.0        # the golden coin ([golden_coin] item), every Batalla heroica (owner 2026-10-23, default 10 %)
 books = [
-  { item = "abl_ub000001", rate = 2.0 },   # Libro de mejora de supertécnica
+  { item = "abl_000001", rate = 2.0 },   # Mejora de supertécnica
   { item = "abl_ue000001", rate = 0.5 },   # Cuaderno de evolución definitiva (grade 4 -> 5)
 ]

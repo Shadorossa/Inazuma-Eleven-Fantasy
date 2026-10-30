@@ -13,8 +13,8 @@
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("shot_rules:", ...) end
-local function warn(...) VRFW.warn("shot_rules:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("shot_rules")
 
 local BOX = "ShotZone.Box"
 local KEY_BALL, KEY_SETPIECE = "vrfw.shot_zone.ball", "vrfw.shot_zone.setpiece"
@@ -24,15 +24,18 @@ local PLAY_FLAGS_FIELD = "Match.PlayControlFlags"
 local ZONE_HOOKS = { "ShotZone.Area", "ShotZone.AreaAny" }
 local ANY_FIRST = 10
 
--- field data: valid byte, half length z, centre z, the two boxes (+0x16884 + i x 0x28 = {x0, z0, x1, z1, ..., cz +0x1C})
-local FIELD_VALID, FIELD_HALF_Z, FIELD_CENTRE_Z = 0x7BF92, 0x4, 0x70
-local FIELD_BOX, FIELD_BOX_STRIDE, BOX_CZ = 0x16884, 0x28, 0x1C
--- field boxes 0 / 1 = the penalty boxes, 2 / 3 = the goal areas (FieldBuild 0x1615350)
+-- the field data and match info records (game profile structs FieldData, FieldBox, MatchInfo, MatchTeam):
+-- field boxes 0 / 1 = the penalty boxes, 2 / 3 = the goal areas (FieldBuild 0x1615350); MatchTeam.AttackSign = the
+-- team's attack direction
 local GOAL_AREA_FIRST = 2
 local AREAS = { retail = true, penalty_box = true, goal_area = true }
 local BAND = 1e9
--- match info: team block + 0x60 + team x 0x1130, attack sign i8 at + 0x1102
-local MI_TEAMS, TEAM_STRIDE, TEAM_SIGN = 0x60, 0x1130, 0x1102
+local LAYOUT_NAMES = {
+  valid = "FieldData.Valid", half_z = "FieldData.HalfLength", centre_z = "FieldData.CentreZ", boxes = "FieldData.Boxes",
+  box = "FieldBox", box_x0 = "FieldBox.X0", box_z0 = "FieldBox.Z0", box_x1 = "FieldBox.X1", box_z1 = "FieldBox.Z1",
+  box_cz = "FieldBox.CentreZ",
+  teams = "MatchInfo.Teams", team = "MatchTeam", team_sign = "MatchTeam.AttackSign",
+}
 local MAX_FIELD_LOGS = 20
 
 -- long-shot sites: bytes that pass the check (`on`) and the game's (`off`), as in content/game/shot_rules.toml
@@ -46,6 +49,22 @@ local function rd(ty, at)
   local ok, v = pcall(VRFW.mem.read, ty, at)
   if ok then return v end
   return nil
+end
+
+local LAYOUT = nil
+local function layout()
+  if LAYOUT == nil then
+    local out = {}
+    for key, name in pairs(LAYOUT_NAMES) do
+      local ok, v = pcall(VRFW.game.field, name)
+      if not ok or type(v) ~= "number" then
+        return nil
+      end
+      out[key] = v
+    end
+    LAYOUT = out
+  end
+  return LAYOUT
 end
 
 local function global(name)
@@ -162,12 +181,14 @@ end
 
 local function read_field()
   local f = global("shot_zone_field")
-  if not f or (rd("u8", f + FIELD_VALID) or 0) == 0 then return nil end
-  local field = { half_z = rd("f32", f + FIELD_HALF_Z), centre_z = rd("f32", f + FIELD_CENTRE_Z), boxes = {} }
+  local L = layout()
+  if not f or not L or (rd("u8", f + L.valid) or 0) == 0 then return nil end
+  local field = { half_z = rd("f32", f + L.half_z), centre_z = rd("f32", f + L.centre_z), boxes = {} }
   if not field.half_z or not field.centre_z then return nil end
   for i = 0, 3 do
-    local a = f + FIELD_BOX + i * FIELD_BOX_STRIDE
-    local b = { x0 = rd("f32", a), z0 = rd("f32", a + 4), x1 = rd("f32", a + 8), z1 = rd("f32", a + 0xC), cz = rd("f32", a + BOX_CZ) }
+    local a = f + L.boxes + i * L.box
+    local b = { x0 = rd("f32", a + L.box_x0), z0 = rd("f32", a + L.box_z0), x1 = rd("f32", a + L.box_x1),
+      z1 = rd("f32", a + L.box_z1), cz = rd("f32", a + L.box_cz) }
     if not (b.x0 and b.z0 and b.x1 and b.z1 and b.cz) then return nil end
     field.boxes[i + 1] = b
   end
@@ -175,8 +196,9 @@ local function read_field()
 end
 
 local function sign_of(mi, team)
-  if not mi then return 0 end
-  return rd("i8", mi + MI_TEAMS + team * TEAM_STRIDE + TEAM_SIGN) or 0
+  local L = layout()
+  if not mi or not L then return 0 end
+  return rd("i8", mi + L.teams + team * L.team + L.team_sign) or 0
 end
 
 -- the box of one kind (first = 0: penalty boxes, GOAL_AREA_FIRST: goal areas) a team with attack sign `sign` shoots at

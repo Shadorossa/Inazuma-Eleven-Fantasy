@@ -6,27 +6,29 @@
 --   CMND_GET_CHARA_TEAM_PASSIVE_INFO (filter)     the plate's 5 passive rows read empty
 --   CMND_VRFW_PASSIVE_SLOTS_OFF                   () -> true while a declared mode runs
 --   CMND_VRFW_SIGNATURE_PASSIVE                   (hdl) -> passive id, open, mode on: what the slot 9 readers answer
+-- A [[VRFW.NoPassives]] names a game_state key that is 1 while no player carries any passive (the declaring mod answers
+-- the slot readers); its readers test one key:
+--   state key vrfw.passive.all_off                1 while such a mode runs (set on slot / mode / match events)
 
 PassiveSlots = PassiveSlots or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("passive_slots:", ...) end
-local function warn(...) VRFW.warn("passive_slots:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("passive_slots")
 
 local KEY_OFF = "vrfw.passive.slots_off"
+local KEY_ALL_OFF = "vrfw.passive.all_off"
 local N_SLOTS = 5
 local LIST_HANDLE_BASE, LIST_HANDLE_MASK = 0xE000, 0xFFFFF000
 
-local MODES = {}       -- { key, state }
-local PUBLISHED = nil  -- the value last written to KEY_OFF
+local MODES = {}               -- [[VRFW.SignatureOnly]]: { key, state }
+local NO_PASSIVE_MODES = {}    -- [[VRFW.NoPassives]]: { key, state }
+local PUBLISHED = {}           -- state key -> the value last written
 local BUF_ID, BUF_HDL
 
-local function u32(v)
-  v = tonumber(v)
-  if not v or v ~= v then return nil end
-  return math.floor(v) % 4294967296
-end
+local Id = require "lib/ids"
+local function u32(v) return Id.u32_or(v, nil) end
 
 local function load()
   local schema, why = D.schema("passive_slot_mode")
@@ -34,38 +36,53 @@ local function load()
     warn(tostring(why))
     return
   end
+  local lists = { SignatureOnly = MODES, NoPassives = NO_PASSIVE_MODES }
   for _, d in ipairs(D.load(schema, warn)) do
-    if d.entry == "SignatureOnly" and type(d.v.state) == "string" and d.v.state ~= "" then
-      MODES[#MODES + 1] = { key = d.key, state = d.v.state }
+    local list = lists[d.entry]
+    if list and type(d.v.state) == "string" and d.v.state ~= "" then
+      list[#list + 1] = { key = d.key, state = d.v.state }
     end
   end
-  if #MODES > 0 then
-    local names = {}
-    for _, m in ipairs(MODES) do names[#names + 1] = m.key .. " (" .. m.state .. ")" end
-    info("signature-only modes: " .. table.concat(names, ", "))
+  for entry, list in pairs(lists) do
+    if #list > 0 then
+      local names = {}
+      for _, m in ipairs(list) do names[#names + 1] = m.key .. " (" .. m.state .. ")" end
+      info(entry .. " modes: " .. table.concat(names, ", "))
+    end
   end
 end
 
--- the declared mode running now, or nil
-local function running()
-  for _, m in ipairs(MODES) do
+-- the mode of `list` running now, or nil
+local function running_of(list)
+  for _, m in ipairs(list) do
     local ok, v = pcall(VRFW.state.get, m.state)
     if ok and tonumber(v) == 1 then return m end
   end
   return nil
 end
 
-local function publish(why)
-  local m = running()
+-- the declared signature-only mode running now, or nil
+local function running()
+  return running_of(MODES)
+end
+
+local function publish_key(key, list, why)
+  if #list == 0 then return end
+  local m = running_of(list)
   local v = m and 1 or 0
-  if v == PUBLISHED then return end
-  local ok, e = pcall(VRFW.state.set, KEY_OFF, v)
+  if v == PUBLISHED[key] then return end
+  local ok, e = pcall(VRFW.state.set, key, v)
   if not ok then
-    warn(KEY_OFF .. ": " .. tostring(e))
+    warn(key .. ": " .. tostring(e))
     return
   end
-  PUBLISHED = v
-  info(string.format("%s = %d (%s%s)", KEY_OFF, v, why, m and (", " .. m.key) or ""))
+  PUBLISHED[key] = v
+  info(string.format("%s = %d (%s%s)", key, v, why, m and (", " .. m.key) or ""))
+end
+
+local function publish(why)
+  publish_key(KEY_OFF, MODES, why)
+  publish_key(KEY_ALL_OFF, NO_PASSIVE_MODES, why)
 end
 
 -- ---------------------------------------------------------------------------------------------- filters and commands
@@ -112,7 +129,7 @@ do
   local ok, e = pcall(load)
   if not ok then warn("declarations: " .. tostring(e)) end
 end
-if #MODES > 0 then
+if #MODES > 0 or #NO_PASSIVE_MODES > 0 then
   publish("start")
   for _, ev in ipairs({ "slot_load", "game_reset", "mode_enter", "mode_leave", "match_start" }) do
     VRFW.on(ev, function() publish(ev) end)

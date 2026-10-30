@@ -1,0 +1,25 @@
+# «Excálibur» (Excalibur, whs00970; wind long shot, cut-in ev60_00970): the cut-in's last shot (c0400): the ball runs
+# along the pitch at the tip of the sword's slash wave, the cyan-white blade sheets fanned up and back from it, the
+# white streak on the ground and the sand-coloured dust wall trailing behind (held at frame 340, texture flow running
+# on), every part behind the ball coming out of the kick point as the ball moves away (never stretched); the rocky
+# ridge of the cut laid fixed on the pitch from the kick point and shown as the ball passes, its lowest point just over
+# the grass, drawn under the wave. x1 (blades up to 4.2 m at the ball).
+# Built by research/scripts/excalibur_ball_fx.py from the cut-in's effect object ev60009700 (object ev6097ex00).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind long-shot aura's row (like = "ega0085b"). Flight:
+# content\techniques\excalibur_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "excalibur"
+from = "ega0085b"
+object = "effect/event/ev60/ev6097ex00/ev6097ex00.objbin"
+
+[[shot_aura]]
+name = "excalibur"
+when = { techniques = ["whs00970"] }
+aura = "excalibur"
+like = "ega0085b"
+anchor = "kick"
+drift = 0.75

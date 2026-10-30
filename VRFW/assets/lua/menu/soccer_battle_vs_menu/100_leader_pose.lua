@@ -16,8 +16,8 @@ do
   if not P.wrapped and type(setup) == "function" then
     P.wrapped = true
     local C = {
-      LOG = 3661580131,          -- CMND_EVT_LOG
-      MOTION_SET = 1229214512,   -- CMND_VRFW_CHARA_MOTION_SET
+      LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
+      MOTION_SET = VRFW_Cmd.VRFW_CHARA_MOTION_SET,   -- CMND_VRFW_CHARA_MOTION_SET
       MODEL_CHANGE = 59611540,   -- the retail model change (layer, idx, model key)
       PLAY_CLIP = 180466856,     -- the retail clip play (layer, idx, clip)
     }
@@ -27,10 +27,7 @@ do
     local RETAIL_SETS = { c000101 = true, c000102 = true, c000111 = true }
     local RETAIL_BODIES = { [0] = true, [1] = true }
 
-    local function hex(v)
-      local ok, s = pcall(string.format, "0x%08X", v)
-      return ok and s or tostring(v)
-    end
+    local function hex(v) return VRFW_Id.hex(v) end
 
     local function log(...)
       pcall(funcLuaCommand, C.LOG, "VRFW vs leader", ...)

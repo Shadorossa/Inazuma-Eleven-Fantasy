@@ -46,8 +46,9 @@ local REC_TEAM_FLAG = 0x1EC
 local CAPTAIN_PARAM, CAPTAIN_HDL = 0x2A0, 0x2A4
 local C = { OK = 0, BAD_ARGS = 1, NOT_READY = 2, STORY = 3, EXCEPTION = 7 }
 
-local function info(...) VRFW.log("pachanga:", ...) end
-local function warn(...) VRFW.warn("pachanga:", ...) end
+require "VRFW/lib/basics"
+require "VRFW/lib/save_doc"
+local info, warn = VRFW.logger("pachanga")
 
 local function rd(ty, at)
   if not at or at < 0x10000 then return nil end
@@ -75,7 +76,6 @@ local function int(v, def)
 end
 
 local function dock_no(set) return set - FIRST_DOCK + 1 end
-local function hex(h) return string.format("0x%08X", h or 0) end
 
 -- ---------------------------------------------------------------------------------------- game memory
 
@@ -222,8 +222,6 @@ end
 
 -- ---------------------------------------------------------------------------------------- pachanga.json
 
-local pt = nil -- the file of the active slot
-
 local function fresh(s) return { slot = s, active = {}, vs_restore = nil, split = {} } end
 
 local function bank_ok(k)
@@ -231,11 +229,8 @@ local function bank_ok(k)
   return b and b == math.floor(b) and b >= 1 and b <= MAX_BANKS
 end
 
--- the file's JSON: wrong slot / version / JSON = nil + why; entries that are not a dock or a bank are dropped
-local function parse(text, s)
-  local j, why = VRFW.json.decode(text)
-  if type(j) ~= "table" then return nil, "bad JSON: " .. tostring(why) end
-  if tonumber(j.version) ~= VERSION then return nil, "version " .. tostring(j.version) .. " (expected " .. VERSION .. ")" end
+-- the file's JSON: wrong slot = nil + why; entries that are not a dock or a bank are dropped
+local function decode(j, s)
   if tonumber(j.slot) ~= s then return nil, "written for slot " .. tostring(j.slot) .. ", not slot " .. s end
   local f = fresh(s)
   if type(j.active) == "table" then
@@ -262,67 +257,24 @@ local function parse(text, s)
   return f
 end
 
-local function sorted_keys(t)
-  local ks = {}
-  for k in pairs(t) do ks[#ks + 1] = k end
-  table.sort(ks) -- string order, as the DLL's BTreeMap<String, _>
-  return ks
-end
-
--- serde_json's pretty layout of the DLL's struct (version, slot, active, vs_restore, split) + a final newline
-local function encode(f)
-  local L = { "{", '  "version": ' .. VERSION .. ",", '  "slot": ' .. f.slot .. "," }
-  local ks = sorted_keys(f.active)
-  if #ks == 0 then
-    L[#L + 1] = '  "active": {},'
-  else
-    L[#L + 1] = '  "active": {'
-    for i, k in ipairs(ks) do L[#L + 1] = '    "' .. k .. '": ' .. f.active[k] .. (i < #ks and "," or "") end
-    L[#L + 1] = "  },"
-  end
-  L[#L + 1] = '  "vs_restore": ' .. (f.vs_restore and tostring(f.vs_restore) or "null") .. ","
-  ks = sorted_keys(f.split)
-  if #ks == 0 then
-    L[#L + 1] = '  "split": {}'
-  else
-    L[#L + 1] = '  "split": {'
-    for i, k in ipairs(ks) do
-      local v = f.split[k]
-      L[#L + 1] = '    "' .. k .. '": ['
-      for n, x in ipairs(v) do L[#L + 1] = "      " .. x .. (n < #v and "," or "") end
-      L[#L + 1] = "    ]" .. (i < #ks and "," or "")
-    end
-    L[#L + 1] = "  }"
-  end
-  L[#L + 1] = "}"
-  return table.concat(L, "\n") .. "\n"
-end
-
-local function pt_read(s)
-  local text, err = VRFW.save.blob(BLOB, s)
-  if err then
-    VRFW.error("pachanga: cannot read " .. BLOB .. " of slot " .. s .. " (" .. tostring(err) .. "): no active pachanga team")
-    return fresh(s)
-  end
-  if not text then return fresh(s) end
-  local f, why = parse(text, s)
-  if not f then
-    warn(BLOB .. " of slot " .. s .. " ignored (" .. tostring(why) .. "): no active pachanga team")
-    return fresh(s)
-  end
-  return f
-end
+-- an unusable file is left as it is (the next change writes a new one): no active pachanga team meanwhile
+local STORE = VRFW.save.doc(BLOB, {
+  version = VERSION,
+  decode = decode,
+  encode = function(f) return { version = VERSION, slot = f.slot, active = f.active, vs_restore = f.vs_restore, split = f.split } end,
+  default = fresh,
+  pretty = true,
+  aside = false,
+  log = "pachanga",
+})
 
 local function pt_write(f)
-  local ok, where = VRFW.save.blob_write(BLOB, encode(f), f.slot)
+  local ok, where = STORE:put(f, f.slot, true)
   if not ok then VRFW.error("pachanga: cannot write the pachanga pointer: " .. tostring(where)) end
   return ok
 end
 
-local function with_pt(s)
-  if not pt or pt.slot ~= s then pt = pt_read(s) end
-  return pt
-end
+local function with_pt(s) return (STORE:get(s)) end
 
 -- the team bank page Utilities has mounted (0-based), else 0 (pages off / not ready / slot 1 / story)
 local function bank()

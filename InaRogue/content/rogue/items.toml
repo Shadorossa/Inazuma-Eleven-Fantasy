@@ -19,7 +19,8 @@ schema = "InaRogue.rogue_items/1"
 #   upgrade_cost   Rogue points of each «Mejorar» (level 1->2, 2->3, …); a number = the same each time; none = the
 #                  rarity's, else price × level
 #   archetypes     the archetypes it counts 1 item for (keys of content\rogue\archetypes.toml)
-#   sources        where it drops: chest, elite, boss, shop, event
+#   sources        where it drops: chest (Cofre, events, Tragaperras), elite, boss, shop
+#   unlock         { runs_won, best_stage, ascension }: v2 meta unlock, never drops before (scripts\lib\rogue\meta_store.lua)
 #   icon           its icon (default: [defaults] icon)
 #   [[item.effect]] one piece or one grant each (scripts\lib\rogue\pieces.lua, scripts\lib\rogue\blocks.lua): `kind`,
 #                  its parameters, and its value: a number (every level), a list (one value per level) or
@@ -289,6 +290,176 @@ kind = "grant_player"
 players = { team = ["0xF01BB293", "0x83D22BED", "0x7ABBC40C"], rarity_max = 3 }
 on = "on_phase_end"
 chance = 3
+
+# ------------------------------------------------------------------------------------------------ v2 relics
+# The relics of the v2 runs (docs/game/mods/inarogue-loop-v2.md §5.4): built only from implemented pieces. Texts in
+# 9 languages: text/rows/rogue_relics.toml.
+
+# Moneda de la suerte (rare): the run's wins pay 25 % more coins → 50 %
+[[item]]
+key = "lucky_coin"
+rarity = "rare"
+scope = "outside"
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "reward_mult"
+reward = "coins"
+value = { base = 1.25, max = 1.50 }
+
+# Carné de socio (common): Tienda prices 15 % lower → 30 %
+[[item]]
+key = "member_card"
+rarity = "common"
+scope = "outside"
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "shop_cost_multiplier"
+value = { base = 0.85, max = 0.70 }
+
+# Racha ganadora (epic, scales like a Balatro joker): every stat +1 % per match won in this run
+[[item]]
+key = "winning_streak"
+rarity = "epic"
+scope = "match"
+sources = ["elite", "boss", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+stat = "all"
+per_stack = 0.01
+count = { kind = "count_trigger", on = "on_match_won", scope = "run" }
+
+# Muro de hierro (common): defenders' physical +8 % → +20 %
+[[item]]
+key = "iron_wall"
+rarity = "common"
+scope = "match"
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "position"
+position = "DF"
+stat = "physical"
+value = { base = 1.08, max = 1.20 }
+
+# Guantes de oro (rare): goalkeepers +15 to every stat → +40
+[[item]]
+key = "golden_gloves"
+rarity = "rare"
+scope = "match"
+sources = ["chest", "elite"]
+
+[[item.effect]]
+kind = "stat_bonus"
+target = "position"
+position = "GK"
+stat = "all"
+value = { base = 15, max = 40 }
+
+# Botas de goleador (rare): forwards' kick +10 % → +25 %
+[[item]]
+key = "striker_boots"
+rarity = "rare"
+scope = "match"
+sources = ["chest", "elite", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "position"
+position = "FW"
+stat = "kick"
+value = { base = 1.10, max = 1.25 }
+
+# Motor del centro del campo (common): midfielders' control and agility +6 % → +15 %
+[[item]]
+key = "midfield_engine"
+rarity = "common"
+scope = "match"
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "position"
+position = "MF"
+stat = "control"
+value = { base = 1.06, max = 1.15 }
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "position"
+position = "MF"
+stat = "agility"
+value = { base = 1.06, max = 1.15 }
+
+# Emblemas elementales (common): the players of one element +6 % to every stat → +15 %
+[[item]]
+key = "wind_crest"
+rarity = "common"
+scope = "match"
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "element"
+element = "wind"
+stat = "all"
+value = { base = 1.06, max = 1.15 }
+
+[[item]]
+key = "forest_crest"
+rarity = "common"
+scope = "match"
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "element"
+element = "forest"
+stat = "all"
+value = { base = 1.06, max = 1.15 }
+
+[[item]]
+key = "fire_crest"
+rarity = "common"
+scope = "match"
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "element"
+element = "fire"
+stat = "all"
+value = { base = 1.06, max = 1.15 }
+
+[[item]]
+key = "mountain_crest"
+rarity = "common"
+scope = "match"
+sources = ["chest", "shop"]
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "element"
+element = "mountain"
+stat = "all"
+value = { base = 1.06, max = 1.15 }
+
+# Espíritu de equipo (legendary, opens after the first won run): every stat of the team +8 % → +20 %
+[[item]]
+key = "team_spirit"
+rarity = "legendary"
+scope = "match"
+sources = ["boss"]
+unlock = { runs_won = 1 }
+
+[[item.effect]]
+kind = "stat_multiplier"
+target = "team"
+stat = "all"
+value = { base = 1.08, max = 1.20 }
 
 # «Talento +1»: the talent of one run player goes up one level (up to 5 times)
 [[item]]

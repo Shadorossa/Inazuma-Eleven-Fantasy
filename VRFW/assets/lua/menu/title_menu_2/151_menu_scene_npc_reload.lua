@@ -16,17 +16,17 @@
 do
   local NpcReload = {
     ID = "vrfw.menu_scene.npc_reload",
-    STATE = 2588710643,         -- CMND_VRFW_MENU_SCENE_STATE () -> state, key, …
-    SCENE = 1465766639,         -- CMND_VRFW_MENU_SCENE (key) -> table | ""
-    RELOAD_NPC = 1438169648,    -- CMND_RELOAD_NPC
-    LOG = 3661580131,           -- crc32("CMND_EVT_LOG")
+    STATE = VRFW_Cmd.VRFW_MENU_SCENE_STATE,         -- CMND_VRFW_MENU_SCENE_STATE () -> state, key, …
+    SCENE = VRFW_Cmd.VRFW_MENU_SCENE,         -- CMND_VRFW_MENU_SCENE (key) -> table | ""
+    RELOAD_NPC = VRFW_Cmd.RELOAD_NPC,    -- CMND_RELOAD_NPC
+    LOG = VRFW_Cmd.EVT_LOG,           -- crc32("CMND_EVT_LOG")
     ASK_AT_FRAMES = { 30, 120, 300 },   -- after the scene is up (60 a second)
     ASK_AGAIN_AT_FRAMES = { 2, 60, 240 },   -- after a menu over the title gave it back
-    PEOPLE = 496639384,         -- CMND_VRFW_MENU_SCENE_PEOPLE (key, members, uniform, avatar) -> placed, text
-    AVATAR = 603653521,         -- CMND_VRFW_MENU_SCENE_AVATAR () -> chara_base of the save's avatar
-    MOTION_SET = 1229214512,    -- CMND_VRFW_CHARA_MOTION_SET (chara_base) -> motion set
-    NPC_READ = 437747477,       -- CMND_VRFW_MENU_SCENE_NPC_READ () -> "read" | "busy" | "none" | "failed"
-    NPC_ENTRIES = 3677558558,     -- CMND_VRFW_MENU_SCENE_NPC_ENTRIES (why) -> text (logged)
+    PEOPLE = VRFW_Cmd.VRFW_MENU_SCENE_PEOPLE,         -- CMND_VRFW_MENU_SCENE_PEOPLE (key, members, uniform, avatar) -> placed, text
+    AVATAR = VRFW_Cmd.VRFW_MENU_SCENE_AVATAR,         -- CMND_VRFW_MENU_SCENE_AVATAR () -> chara_base of the save's avatar
+    MOTION_SET = VRFW_Cmd.VRFW_CHARA_MOTION_SET,    -- CMND_VRFW_CHARA_MOTION_SET (chara_base) -> motion set
+    NPC_READ = VRFW_Cmd.VRFW_MENU_SCENE_NPC_READ,       -- CMND_VRFW_MENU_SCENE_NPC_READ () -> "read" | "busy" | "none" | "failed"
+    NPC_ENTRIES = VRFW_Cmd.VRFW_MENU_SCENE_NPC_ENTRIES,     -- CMND_VRFW_MENU_SCENE_NPC_ENTRIES (why) -> text (logged)
   }
   local frames, scene_key, people = 0, nil, false
   local asks, reason = NpcReload.ASK_AT_FRAMES, "up"

@@ -1,5 +1,5 @@
 # Player Training › the «Entrenar» button of Character Reforged's «Fantasy» skill table (docs/framework/
-# skill-table-host.md; docs/game/mechanics/stat-training.md §9): the FOOTER BUTTON of that screen's host (Character
+# skill-table-host.md; docs/game/mechanics/training-classic.md §6.1): the FOOTER BUTTON of that screen's host (Character
 # Reforged's content\menus\skill_table_host.toml, graft skill_table_host), between «Set de jugador» and «Pasiva
 # personalizada». The host draws the label (text row evt_tr_btn of text\rows\training.toml), the guide line comes from
 # PlayerTraining.SkillTableButton("guide") and Aceptar calls PlayerTraining.SkillTableButton("press"): the training mode
@@ -13,3 +13,9 @@ id = "training"
 text = "evt_tr_btn"
 order = 100
 action = { lua = "PlayerTraining.SkillTableButton" }
+
+# the mod's own atlas player_training (the column backing evt_trn_col_back of the training mode:
+# content\images\menu\training_row_back.toml)
+[[patch]]
+menu = "evt_skill_slot_menu"
+res = ["#/menu/102_team/player_training/player_training.g4tx"]

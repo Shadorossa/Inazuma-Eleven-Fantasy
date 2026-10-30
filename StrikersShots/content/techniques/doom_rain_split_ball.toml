@@ -1,0 +1,9 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: Diluvio letal (Doom Rain, whs01390) flies as the front ball of the rain of seven dark balls of
+# effects\doom_rain_ball.toml, so the real match ball is not drawn while the shot flies (`hide_ball`, visual only):
+# shown again when the shot is over (goal, save, block, out). Always on, with or without Hissatsu Effects (whose split
+# shot of the same move is gameplay; the hidden ball is the same either way).
+
+[[edit]]
+target = "whs01390"
+hide_ball = true

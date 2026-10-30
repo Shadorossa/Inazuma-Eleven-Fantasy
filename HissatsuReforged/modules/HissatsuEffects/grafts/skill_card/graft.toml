@@ -9,14 +9,20 @@
 # card's events (fill, page turn, sort / filter windows (CallBackSort), back), no per-frame re-hiding; every fill first
 # hides the retail aura windows' page guide team00_40 and the stale aura windows (Inazuma Fantasy's archived graft
 # aura_guide_reset did it until IF was switched off); the retail shows it again for a paged aura only.
+# Hissatsu Effects 1.6.0: a move in a technique family gets one page per family (the family's name over its moves in 2
+# columns, the right stick scrolls a long list; layer evt_skc_fam), its families read from Hissatsu Reforged's
+# CMND_HISSATSUREFORGED_MOVE_FAMILIES; the row shows one dot per page (up to 6).
+# Hissatsu Effects 1.9.0: page 2 also shows the sentences of the behaviour rules that name the move (the technique
+# effects of content/rules/technique_effects_*.toml, any mod's rule with `text`), read from
+# CMND_HISSATSUEFFECTS_MOVE_RULE_TEXTS.
 name = "skill_card"
 mod = "HissatsuEffects"
 order = 220
 module = ""
 requires = []
 conflicts = []
-wraps = ["UpdateSkillDetailWindow", "UpdateButtonGuide", "Step", "OnBack", "OnFunction", "OnChangeFocus", "OnAfterReceiveFilterParam", "CallBackSort"]
-description = "Move card: Q / E (LT / RT) show the move's ball / shot / keeper mini-effects, with page dots"
+wraps = ["UpdateSkillDetailWindow", "Step", "OnBack", "OnFunction", "OnChangeFocus", "OnAfterReceiveFilterParam", "CallBackSort"]
+description = "Move card: Q / E (LT / RT) turn its pages: description, ball / shot / keeper mini-effects and technique effects, one page per technique family (right stick scrolls), with page dots"
 
 [[files]]
 stem = "ability_list_menu"

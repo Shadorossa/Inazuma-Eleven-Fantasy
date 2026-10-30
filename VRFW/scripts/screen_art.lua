@@ -20,8 +20,8 @@
 
 ScreenArt = ScreenArt or {}
 
-local function warn(...) VRFW.warn("screen_art:", ...) end
-local function info(...) VRFW.log("screen_art:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("screen_art")
 
 local SCHEMA = "VRFW.screen_art/1"
 local ART = nil   -- screen -> role -> { atlas, sprite, mod }

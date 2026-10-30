@@ -1,7 +1,7 @@
 schema = "VRFW.text_key/1"
 # Texts of «Home Stadium» (mod home_stadium, a module of Football Reforged) (format: docs/framework/types/text.md): the
 # «Mods» screen's name and description and the team dock row (menu_text, id crc32("home_stadium.<name>"): row,
-# row_help, none are read by assets\lua\soccer_team_dock_menu\300_home_stadium.lua). A language missing here falls back
+# row_help, none, select_hint (the selector's hint line) are read by assets\lua\soccer_team_dock_menu\300_home_stadium.lua). A language missing here falls back
 # to English. The help line fits the help bar on one line (about 75 characters).
 default_lang = "en"
 
@@ -11,6 +11,7 @@ mod_description = "Each of your teams gets a home stadium: Team Dock › «Home 
 row = "Home stadium"
 row_help = "Pick this team's home stadium among the stadiums you own."
 none = "No home stadium"
+select_hint = "<CMD_ENTER> Accept      <CMD_BACK> Back"
 
 [es.new]
 mod_name = "Estadio local"
@@ -18,3 +19,60 @@ mod_description = "Cada uno de tus equipos tiene un estadio local: Plantilla de 
 row = "Estadio local"
 row_help = "Elige el estadio local de este equipo entre los estadios que tienes."
 none = "Sin estadio local"
+select_hint = "<CMD_ENTER> Aceptar      <CMD_BACK> Volver"
+
+[fr.new]
+mod_name = "Stade à domicile"
+mod_description = "Chacune de tes équipes a un stade à domicile : Effectif › « Stade à domicile » (un bouton avec image sous Tactiques avec BetterUI, une ligne de la liste sans lui) liste les stades que tu possèdes (achetés ou débloqués) et enregistre le choix pour l'équipe à l'écran. L'équipe y joue ses matchs à domicile : les matchs amicaux qui laissent le stade libre (sans stade propre ni celui du rival). Compétition, Chronique et Battle Bay gardent leurs stades. Un module de Football Reforged."
+row = "Stade à domicile"
+row_help = "Choisis le stade à domicile de cette équipe parmi tes stades."
+none = "Aucun stade à domicile"
+select_hint = "<CMD_ENTER> Valider      <CMD_BACK> Retour"
+
+[de.new]
+mod_name = "Heimstadion"
+mod_description = "Jedes deiner Teams bekommt ein Heimstadion: Teamaufstellung › „Heimstadion“ (mit BetterUI ein Bildknopf unter Taktik, ohne es eine Listenzeile) listet die Stadien auf, die du besitzt (gekauft oder freigeschaltet), und speichert die Wahl für das Team auf dem Bildschirm. Das Team spielt dort seine Heimspiele: die Freundschaftsspiele, die das Stadion offen lassen (ohne eigenes Stadion und ohne das des Gegners). Wettbewerb, Chronik und Battle Bay behalten ihre Stadien. Ein Modul von Football Reforged."
+row = "Heimstadion"
+row_help = "Wähle das Heimstadion dieses Teams aus deinen Stadien."
+none = "Kein Heimstadion"
+select_hint = "<CMD_ENTER> Bestätigen      <CMD_BACK> Zurück"
+
+[it.new]
+mod_name = "Stadio di casa"
+mod_description = "Ognuna delle tue squadre ha uno stadio di casa: Rosa della squadra › «Stadio di casa» (un pulsante con immagine sotto Tattiche con BetterUI, una riga dell'elenco senza) elenca gli stadi che possiedi (acquistati o sbloccati) e salva la scelta per la squadra sullo schermo. La squadra vi gioca le partite in casa: le amichevoli che lasciano libero lo stadio (senza stadio proprio né quello dell'avversario). Competizione, Cronaca e Battle Bay mantengono i loro stadi. Un modulo di Football Reforged."
+row = "Stadio di casa"
+row_help = "Scegli lo stadio di casa di questa squadra tra quelli che possiedi."
+none = "Nessuno stadio di casa"
+select_hint = "<CMD_ENTER> Conferma      <CMD_BACK> Indietro"
+
+[pt.new]
+mod_name = "Estádio da casa"
+mod_description = "Cada uma das tuas equipas tem um estádio da casa: Plantel da equipa › «Estádio da casa» (um botão com imagem por baixo de Táticas com BetterUI, uma linha da lista sem ele) lista os estádios que tens (comprados ou desbloqueados) e guarda a escolha para a equipa no ecrã. A equipa joga lá os seus jogos em casa: os amigáveis que deixam o estádio livre (sem estádio próprio nem o do adversário). Competição, Crónica e Battle Bay mantêm os seus estádios. Um módulo do Football Reforged."
+row = "Estádio da casa"
+row_help = "Escolhe o estádio da casa desta equipa entre os estádios que tens."
+none = "Sem estádio da casa"
+select_hint = "<CMD_ENTER> Aceitar      <CMD_BACK> Voltar"
+
+[ja.new]
+mod_name = "ホームスタジアム"
+mod_description = "チームごとにホームスタジアムを設定できる。チーム編成›「ホームスタジアム」（BetterUIありでは戦術の下の画像ボタン、なしではリストの項目）で、所有しているスタジアム（購入・解放済み）が一覧表示され、画面のチームに選んだものが保存される。そのチームはホーム戦をそのスタジアムで行う。対象は、スタジアムが決まっていない親善試合（自分専用のスタジアムも相手のホームもない場合）。大会・クロニクル・Battle Bayは従来どおりのスタジアムを使う。Football Reforgedのモジュール。"
+row = "ホームスタジアム"
+row_help = "このチームのホームスタジアムを、所有するスタジアムから選ぶ。"
+none = "ホームスタジアムなし"
+select_hint = "<CMD_ENTER> 決定      <CMD_BACK> 戻る"
+
+[zh_hans.new]
+mod_name = "主场球场"
+mod_description = "你的每支队伍都有一个主场球场：队伍阵容›「主场球场」（有BetterUI时是战术下方的图片按钮，没有时是列表中的一行）会列出你拥有的球场（已购买或已解锁），并为屏幕上的队伍保存所选球场。该队在那里进行主场比赛：即没有指定球场的友谊赛（既没有自己的球场，也不是对手的主场）。赛事、编年史和Battle Bay沿用各自的球场。Football Reforged的模块。"
+row = "主场球场"
+row_help = "从你拥有的球场中为这支队伍选择主场球场。"
+none = "无主场球场"
+select_hint = "<CMD_ENTER> 确定      <CMD_BACK> 返回"
+
+[zh_hant.new]
+mod_name = "主場球場"
+mod_description = "你的每支隊伍都有一個主場球場：隊伍陣容›「主場球場」（有BetterUI時是戰術下方的圖片按鈕，沒有時是列表中的一行）會列出你擁有的球場（已購買或已解鎖），並為螢幕上的隊伍儲存所選球場。該隊在那裡進行主場比賽：即沒有指定球場的友誼賽（既沒有自己的球場，也不是對手的主場）。賽事、編年史和Battle Bay沿用各自的球場。Football Reforged的模組。"
+row = "主場球場"
+row_help = "從你擁有的球場中為這支隊伍選擇主場球場。"
+none = "無主場球場"
+select_hint = "<CMD_ENTER> 確定      <CMD_BACK> 返回"

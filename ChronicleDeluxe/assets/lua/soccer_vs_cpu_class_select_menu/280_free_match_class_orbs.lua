@@ -13,7 +13,7 @@ do
   local TICK_SLOT = 2107860330      -- list_icon_state_comp01
   local TICK_MESH = 3583161402      -- _list_icon_state_comp01
   local SET_SPRITE = 558735651      -- (layer, atlas, sprite, slot, 0, item)
-  local SET_MESH_VISIBLE = 3405944500
+  local SET_MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE
   local ORB_BY_CLASS = {
     [6] = 1950977645,               -- chronicle_deluxe_class_orb_inazuma
     [7] = 3816657784,               -- chronicle_deluxe_class_orb_lethal_zone

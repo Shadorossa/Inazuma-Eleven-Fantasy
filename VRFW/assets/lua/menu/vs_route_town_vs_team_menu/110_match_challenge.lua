@@ -14,10 +14,9 @@ if VRFW_MC ~= nil then
   local S = type(VRFW_MC_VsScreen) == "table" and VRFW_MC_VsScreen or {game = 0, diff = 1, slot = nil}
   VRFW_MC_VsScreen = S
   local C = {
-    PARAM_HAS = 2947612279, PARAM_GET = 3522198769,
     PIECE = 160947459, DIFFICULTY = 2968810192,
     PIECE_INFO = 126049514,
-    CLEAR_GET = 4034518619,     -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
+    CLEAR_GET = VRFW_Cmd.GET_CHRONICLE_CLEAR_STATUS,     -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
   }
 
   local function call(...)
@@ -29,8 +28,8 @@ if VRFW_MC ~= nil then
   end
 
   local function param(key)
-    if call(C.PARAM_HAS, key) then
-      return call(C.PARAM_GET, key)
+    if VRFW_Param.Has(key) then
+      return VRFW_Param.Get(key)
     end
     return nil
   end

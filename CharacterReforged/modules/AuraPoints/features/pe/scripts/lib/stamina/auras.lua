@@ -25,11 +25,8 @@ local carriers = {}
 local loaded = false
 local ids = {}         -- aura ids in table order
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return v
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 function M.load()
   if loaded then return true end

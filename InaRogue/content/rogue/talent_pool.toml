@@ -1,0 +1,133 @@
+schema = "InaRogue.talent_pool/1"
+# InaRogue › the talents a v2 run can give (docs/game/mods/inarogue-loop-v2.md «Talento propio»): one per player of the
+# run's team (only a player with no «Talento propio» of content/rogue/talents.toml), in his custom passive slot until
+# the run ends. Read by scripts/lib/rogue/talent_pool.lua; offered by the Tienda (price by rarity), an Élite reward
+# and the event «El mentor» (weights per source: config.toml [rogue.run] talent_weights). Texts (9 languages):
+# text/rows/rogue_talents.toml, InaRogue.run_talent_<key>_name / _desc.
+#
+# [[talent]]
+#   key      a-z 0-9 _
+#   rarity   common / rare / epic
+#   passive  the game passive in the slot (a retail base id: the game picks its version by the player's rarity;
+#            one single effect each, values in docs/game/mechanics/pasivas-configurables.md)
+#   sources  shop / elite / event
+
+[[talent]]
+key = "rival_half_shot"
+rarity = "common"
+passive = "ps10039"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "own_half_focus"
+rarity = "common"
+passive = "ps10034"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "rival_half_focus"
+rarity = "common"
+passive = "ps10041"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "outside_box_focus"
+rarity = "common"
+passive = "ps10046"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "own_half_duel"
+rarity = "common"
+passive = "ps10036"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "rival_half_duel"
+rarity = "common"
+passive = "ps10043"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "outside_box_duel"
+rarity = "common"
+passive = "ps10048"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "kin_wall"
+rarity = "common"
+passive = "ps10026"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "kin_shot"
+rarity = "rare"
+passive = "ps10020"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "mixed_shot"
+rarity = "rare"
+passive = "ps10028"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "kin_focus"
+rarity = "rare"
+passive = "ps10022"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "mixed_focus"
+rarity = "rare"
+passive = "ps10030"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "kin_duel"
+rarity = "rare"
+passive = "ps10024"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "mixed_wall"
+rarity = "rare"
+passive = "ps10032"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "super_sub"
+rarity = "rare"
+passive = "ps10102"
+sources = ["shop", "event", "elite"]
+
+[[talent]]
+key = "first_half_attack"
+rarity = "epic"
+passive = "ps10108"
+sources = ["shop", "elite"]
+
+[[talent]]
+key = "second_half_defence"
+rarity = "epic"
+passive = "ps10110"
+sources = ["shop", "elite"]
+
+[[talent]]
+key = "tension_engine"
+rarity = "epic"
+passive = "ps10063"
+sources = ["shop", "elite"]
+
+[[talent]]
+key = "full_tension_shot"
+rarity = "epic"
+passive = "ps10067"
+sources = ["shop", "elite"]
+
+[[talent]]
+key = "team_stamina"
+rarity = "epic"
+passive = "ps10112"
+sources = ["shop", "elite"]

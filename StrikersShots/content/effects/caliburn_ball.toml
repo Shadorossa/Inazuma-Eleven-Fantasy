@@ -1,0 +1,26 @@
+# «Caliburn» (Caliburn, whs01890; void shot for 2 players, cut-in ev60_01890): while the ball flies to the goal after
+# the cut-in it keeps the look of the end of the cut-in's last cut (c0500, the ball struck by the sword out of the
+# storm sky): the flying sword slash (the white-blue blade, its blue base and the rim-lit crescent wave) lying flat
+# across the flight with the ball in its middle, the blue lightning loops blinking round it, the whole aura swaying
+# gently about the flight, instead of the plain void special-shot aura. The crescent behind the ball comes out of the
+# kick point as the ball flies and fades at its far end. The object is ev6189cb00
+# (effect/event/ev60/ev6189cb00/), built by research/scripts/caliburn_ball_fx.py from the cut-in's effect object
+# ev60018900: c0500's frame 452 held from the aura's first frame (the lightning's own blinks replayed), the ball at
+# the origin, the flight along +Z, x0.6. Left out: the storm scenery, the thunder from the sky, the flashes and
+# white-outs, the sword swing's trace and the glow on the sword in the player's hand.
+# The trigger copies the void special-shot aura's row (like = "ega0075e"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). The move has no _or / _mm / _cro variant.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "caliburn_slash"
+from = "ega0075e"
+object = "effect/event/ev60/ev6189cb00/ev6189cb00.objbin"
+
+[[shot_aura]]
+name = "caliburn_slash"
+when = { techniques = ["whs01890"] }
+aura = "caliburn_slash"
+like = "ega0075e"

@@ -1,0 +1,42 @@
+# «Lion Assault» («Rugido de león», whs02710, forest; with the same cut-in «Rugido de Doruga» / Doruga Assault
+# whs02711, fire, and «Rugido de Goliger» / Goliger Assault whs02712, mountain; cut-in ev60_02710): the end of the
+# cut-in's last shot (c0400: the ball struck out of the two fire swirls). One effect, lion_assault (object ev6271la00,
+# `aura`, on the distance clock): the ball inside the two orange fire swirls, which fly with it (owner 2026-10-30: the
+# fire never stays behind), turning on and facing the camera (round from every side), with the ball's golden light
+# and rings round it; the same look for the whole flight, x1.
+# Left out: the lion's golden roar (the charge round the held ball, gone at the strike), the blur cards, the whiteout,
+# the aftermath and the lion. The objects are generated on the author's PC from the game's own cut-in effect
+# ev60027100 by research/scripts/lion_assault_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# One trigger per element, each copying its element's special-shot aura row (like: ega0075d forest whs02710,
+# ega0075c fire whs02711, ega0075a mountain whs02712; skillEffectBitFlag 0). Flight:
+# content\techniques\lion_assault_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "lion_assault"
+from = "ega0075d"
+object = "effect/event/ev60/ev6271la00/ev6271la00.objbin"
+
+[[shot_aura]]
+name = "lion_assault"
+when = { techniques = ["whs02710"] }
+aura = "lion_assault"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "lion_assault_fire"
+when = { techniques = ["whs02711"] }
+aura = "lion_assault"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "lion_assault_mountain"
+when = { techniques = ["whs02712"] }
+aura = "lion_assault"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

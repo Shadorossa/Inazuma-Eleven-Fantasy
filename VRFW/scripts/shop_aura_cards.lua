@@ -10,8 +10,8 @@ ShopAuraCards = ShopAuraCards or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("shop_aura_cards:", ...) end
-local function warn(...) VRFW.warn("shop_aura_cards:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("shop_aura_cards")
 
 local ON = false
 local CARDS = {}   -- { sub, aura_type, layer, key } in load order

@@ -34,7 +34,7 @@ local MM = {
                                           --    menu (crc32 of the menu the screen is opened as), where the button is,
                                           --    the tile's sprite names
   TEXT = MM_Crc("CMND_VRFW_MM_TEXT"),     -- (name, language code) -> text of the mod's text.toml
-  LANG = 477234096,                       -- CMND_GET_LANGUAGE_CODE
+  LANG = VRFW_Cmd.GET_LANGUAGE_CODE,                       -- CMND_GET_LANGUAGE_CODE
   MENU = MM_Crc("vrfw_mods_menu"),        -- until the plugin says otherwise (MM_Mode)
   TITLE = 3874253475,                     -- title_menu_2
   CURSOR = 24113234,                      -- cmn05_01_coursor
@@ -125,16 +125,16 @@ end
 local function MM_Coroutine()
   MM_Mode()                                                     -- MM.MENU from the plugin
   funcLuaMenuCommand(1558704558, MM.TITLE, false)               -- title input off
-  funcLuaMenuCommand(711242136, MM.CURSOR, 0, false)            -- CMND_SET_LAYER_VISIBLE: cursor
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, MM.CURSOR, 0, false)            -- CMND_SET_LAYER_VISIBLE: cursor
   coroutine.yield()
-  funcLuaCommand(433545986, MM.MENU)                            -- CMND_OPEN_MENU_OBJECT
+  funcLuaCommand(VRFW_Cmd.OPEN_MENU_OBJECT, MM.MENU)                            -- CMND_OPEN_MENU_OBJECT
   funcLuaCommand(2039986631, false)
   coroutine.yield()
-  while funcLuaMenuCommand(2231168902, MM.MENU) do              -- CMND_IS_EXIST_MENU_OBJECT
+  while funcLuaMenuCommand(VRFW_Cmd.IS_EXIST_MENU_OBJECT, MM.MENU) do              -- CMND_IS_EXIST_MENU_OBJECT
     coroutine.yield()
   end
   funcLuaCommand(2039986631, true)
-  funcLuaMenuCommand(711242136, MM.CURSOR, 0, true)
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, MM.CURSOR, 0, true)
   funcLuaMenuCommand(1558704558, MM.TITLE, true)
   mm_co = nil
 end
@@ -143,7 +143,7 @@ function VRFW_MM_OpenScreen()
   if mm_co ~= nil then
     return 1
   end
-  funcLuaCommand(1917805374, 766561556)                         -- sy0080
+  funcLuaCommand(VRFW_Cmd.SND_PLAY_SE, 766561556)                         -- sy0080
   mm_co = coroutine.create(MM_Coroutine)
 end
 
@@ -188,7 +188,7 @@ if VRFW_Host ~= nil and type(GetItemListIdx) == "function" and type(OnEnter) == 
   on("GetTextItemName", "around", function(nxt, a1, a2)
     if a2 ~= true and MM_Own() and a1 == MM.NAME then
       local s = MM_Text("title_button")
-      local g = funcLuaCommand(4074371074, MM.GAIJI_1P)          -- CMND_TEXT_GET
+      local g = funcLuaCommand(VRFW_Cmd.TEXT_GET, MM.GAIJI_1P)          -- CMND_TEXT_GET
       if type(g) == "string" and g ~= "" then
         s = s .. "  " .. g
       end
@@ -258,7 +258,7 @@ if VRFW_Host ~= nil and type(GetItemListIdx) == "function" and type(OnEnter) == 
     if MM_Own() and GetSelectItemLayerName and GetSelectItemLayerName() == MM.L_LOWER and GetSelectItemIdx() == MM.POS then
       local s = MM_Text("title_flavor")
       if s ~= "" and GetCurrentVisibleFlavorLayer then
-        funcLuaMenuCommand(1083631230, GetCurrentVisibleFlavorLayer(), MM.EXPLAIN, s, 0)
+        funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, GetCurrentVisibleFlavorLayer(), MM.EXPLAIN, s, 0)
       end
       return
     end
@@ -296,7 +296,7 @@ if VRFW_Host ~= nil and type(GetItemListIdx) == "function" and type(OnEnter) == 
       if not ok then
         MM_Call(MM.LOG, "mods_menu", "title coroutine", tostring(err))
         mm_co = nil
-        funcLuaMenuCommand(711242136, MM.CURSOR, 0, true)
+        funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, MM.CURSOR, 0, true)
         funcLuaMenuCommand(1558704558, MM.TITLE, true)
       end
     end

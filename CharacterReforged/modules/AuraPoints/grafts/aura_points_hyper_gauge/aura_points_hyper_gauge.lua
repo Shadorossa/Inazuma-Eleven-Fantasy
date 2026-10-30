@@ -16,8 +16,8 @@ G.answered = false                     -- the command answered once (the mod's p
 G.layers = {}                          -- the layer hashes to hide
 
 local COMMAND_HIDDEN_LAYERS = @crc:CMND_AURAPOINTS_HUD_HIDDEN_LAYERS@
-local CMND_SET_LAYER_VISIBLE = 711242136
-local CMND_GET_CREATE_LAYER_NUM = 1175615627
+local CMND_SET_LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@
+local CMND_GET_CREATE_LAYER_NUM = @crc:CMND_GET_CREATE_LAYER_NUM@
 
 local function MenuCommand(...)
   if type(funcLuaMenuCommand) ~= "function" then

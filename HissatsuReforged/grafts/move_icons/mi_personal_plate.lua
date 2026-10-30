@@ -44,7 +44,7 @@ function EVT_MI_PP.Card(name, after, ...)
   local real, seen = funcLuaMenuCommand, nil
   if real ~= nil then
     funcLuaMenuCommand = function(c, L, m, v, inst, ...)
-      if c == 3405944500 and m == 1220252763 --[[_gtxt_longshoot01]] then
+      if c == @crc:CMND_SET_MESH_VISIBLE@ and m == 1220252763 --[[_gtxt_longshoot01]] then
         seen = {L, inst}
       end
       return real(c, L, m, v, inst, ...)

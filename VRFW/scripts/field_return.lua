@@ -14,7 +14,8 @@ local GUARD_MAX, NO_PRESS_START_MAX = 5, 1   -- max values the game stores there
 
 local armed, to_title, keep_game, taken, titles = false, false, true, 0, 0
 
-local function info(...) VRFW.log("field_return:", ...) end
+require "VRFW/lib/basics"
+local info = VRFW.logger("field_return")
 
 local function int(v, def)
   if type(v) == "boolean" then return v and 1 or 0 end

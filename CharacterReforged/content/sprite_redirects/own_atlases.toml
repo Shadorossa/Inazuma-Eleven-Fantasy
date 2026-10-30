@@ -1,0 +1,23 @@
+schema = "VRFW.sprite_redirect/1"
+# Character Reforged: the game and the Lua ask these game atlases for the mod's sprites by name; they live in the mod's own
+# atlases (content\images\..., one per game atlas), so the game atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "character_reforged_soccer11_20"
+atlas = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"
+own_atlas = "#/menu/00_soccer/character_reforged_own/character_reforged_soccer11_20.g4tx"
+sprites = [
+    "evt_pp_card_blue",
+]
+
+[[VRFW.SpriteRedirect]]
+name = "character_reforged_icon_common"
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+own_atlas = "#/menu/200_icon/character_reforged_own/character_reforged_icon_common.g4tx"
+sprites = [
+    "character_reforged_player_sets_icon",
+    "evt_vrm_down_dark",
+    "evt_vrm_down_white",
+    "evt_vrm_up_dark",
+    "evt_vrm_up_white",
+]

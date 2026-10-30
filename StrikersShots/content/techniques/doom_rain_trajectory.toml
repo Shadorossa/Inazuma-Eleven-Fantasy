@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Diluvio letal (Doom Rain, whs01390, cut-in ev60_01390) (docs/framework/types/technique.md
+# `trajectory`): one level line at 2.0 m from the kick point into the goal point (owner 2026-10-24: horizontal, never
+# rising or falling), whatever the shot's length; the cut-in's dive from ~20 m is not kept. The lowest of the seven
+# balls flies 1 m under the ball, its flame wraps ~0.5 m over the pitch.
+# straight = true: one straight line from the kick to the goal at that height.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m): points from the kick, goal_points counted back from the goal point; the first / last height is held.
+# The hidden match ball: doom_rain_split_ball.toml.
+
+# Diluvio letal (whs01390).
+[[edit]]
+target = "whs01390"
+trajectory = { points = [[0.0, 2.0]], goal_points = [[0.0, 2.0]], straight = true, unblockable = false }

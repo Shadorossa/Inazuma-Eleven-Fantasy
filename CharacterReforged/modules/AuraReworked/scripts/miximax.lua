@@ -22,16 +22,12 @@ local BLOB = "miximax.json"
 local StatTransfer = require "lib/stat_transfer"
 local Scene = require "lib/scene"
 
-local function u32(v)
-  if type(v) == "boolean" then return v and 1 or 0 end
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
-local function hex(v) return string.format("0x%08X", u32(v)) end
-local function info(...) VRFW.log("aura_reworked miximax:", ...) end
-local function warn(...) VRFW.warn("aura_reworked miximax:", ...) end
+local hex = Id.hex
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("aura_reworked miximax")
 
 local function mx(op)
   local ok, r = pcall(VRFW.miximax.call, op)
@@ -370,4 +366,10 @@ AuraReworked.MixFusions = AuraReworked.Miximaxed.Fusions
 AuraReworked.MixStoreBlob = AuraReworked.Miximaxed.StoreBlob
 
 -- the partner locks of the loaded save
-VRFW.on("slot_load", function() publish_locks(store().fusions) end)
+-- the save's loading screen: the stat transfer's owner check and rules (content/transforms, content/stat_transfer)
+-- read before the first CMND_AURAREWORKED_MIXIMAX_GAINS, never inside a menu command
+VRFW.on("slot_load", function()
+  pcall(StatTransfer.Owned)
+  pcall(StatTransfer.Rules)
+  publish_locks(store().fusions)
+end)

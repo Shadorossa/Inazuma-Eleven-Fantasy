@@ -1,0 +1,101 @@
+schema = "VRFW.table/1"
+table = "skill/synergy_flag"
+
+# Synergies Reworked › the synergy_flag_config row of «Los cuatro magníficos» (key sf11001 = the item's id, cloned from the
+# offensive retail row sf10001, whose two effect / condition children are replaced). Effects (retail effect kinds, values in %):
+# AT del equipo +3 %, Valor de foco en AT +4 %, and as the secondary effect AT y DF del equipo durante la segunda mitad +2 %.
+# Conditions: the four seasons players (chara_base ids of Ted Autumn, Alan Sumner, Verne Spring, George Winters): all four.
+
+[[add]]
+key = "sf11001"
+from = "sf10001"
+cells = { REF_EFFECT = { set = [
+  { effect = -1473100456, value = 3, flag_9 = 1 },
+  { effect = 911659259, value = 4, flag_9 = 1 },
+  { effect = -1611085049, value = 2, flag_9 = 0 },
+] }, REF_EXEC_COND = { set = [
+  { chara = 301359785 },   # Ted Autumn
+  { chara = 801048994 },   # Alan Sumner
+  { chara = 1320565835 },   # Verne Spring
+  { chara = -277304390 },   # George Winters
+] } }
+
+# Estrellas asiáticas (sf08001, retail «Las estrellas de China»): the pool is wide (any 3 of 14 national teams instead of
+# 2 named players), so its values are lower (docs/game/mechanics/synergy-rework.md §4.2: an easier requirement, smaller
+# lines). Valor de foco en AT en campo contrario 8 -> 6 %, Velocidad de movimiento 5 -> 3 %; the effect kinds stay.
+[[set]]
+key = "sf08001"
+cells = { REF_EFFECT = { set = [
+  { effect = 1071684816, value = 6, flag_9 = 1 },
+  { effect = 411529189, value = 3, flag_9 = 0 },
+] } }
+
+# Japón en la sombra (sf11002, a NEW synergy cloned from the offensive retail row sf10001): a two-team pair, one player of
+# each team, so small pair values (retail pairs: 2 lines of +2-5 %): AT del equipo +2 %, and as the secondary effect
+# Valor de foco en AT +3 %. Conditions: Neo Japón's captain Dave Quagmire and Caleb Stonewall (Resistencia Japón); who
+# counts is decided by the pools of content/synergies/reworked_synergies.toml.
+[[add]]
+key = "sf11002"
+from = "sf10001"
+cells = { REF_EFFECT = { set = [
+  { effect = -1473100456, value = 2, flag_9 = 1 },
+  { effect = 911659259, value = 3, flag_9 = 0 },
+] }, REF_EXEC_COND = { set = [
+  { chara = 532942127 },    # Dave Quagmire c03030070
+  { chara = 1461484648 },   # Caleb Stonewall c06039230
+] } }
+
+# Los chicos de la Segunda Fase (sf11003, a NEW synergy cloned from the offensive retail row sf10001): a wide pool (any 3 of
+# 88 persons), so small values like Estrellas asiáticas. The Second Stage gift of Feida: Efecto de afinidad elemental +4 %
+# (the genetic super-abilities), Velocidad de movimiento +3 % (the improved body) and, as the secondary effect, AT y DF del
+# equipo durante la segunda mitad +2 % (the «second stage»). Conditions: Fei and Zanark (chara_base ids of c05020110 and
+# c05021500); who counts is decided by the pool of content/synergies/reworked_synergies.toml.
+[[add]]
+key = "sf11003"
+from = "sf10001"
+cells = { REF_EFFECT = { set = [
+  { effect = -2121384353, value = 4, flag_9 = 1 },
+  { effect = 411529189, value = 3, flag_9 = 1 },
+  { effect = -1611085049, value = 2, flag_9 = 0 },
+] }, REF_EXEC_COND = { set = [
+  { chara = 384621588 },    # Fei c05020110
+  { chara = -1337842964 },  # Zanark c05021500
+] } }
+
+# Los cinco hermanos Blackley (sf11004, a NEW synergy cloned from the offensive retail row sf10001): any 3 of the five
+# brothers (idea 1 of the teamless groups), a closed group like Los cuatro magníficos but easier (3 of 5), so the same
+# scale: Valor de foco en AT +4 %, Valor de foco en DF +3 % and, as the secondary effect, AT y DF del equipo durante la
+# segunda mitad +2 %. Conditions: the five brothers (chara_base ids).
+[[add]]
+key = "sf11004"
+from = "sf10001"
+cells = { REF_EFFECT = { set = [
+  { effect = 911659259, value = 4, flag_9 = 1 },
+  { effect = -1352695487, value = 3, flag_9 = 1 },
+  { effect = -1611085049, value = 2, flag_9 = 0 },
+] }, REF_EXEC_COND = { set = [
+  { chara = -216967689 },   # Uno Blackley c04015030
+  { chara = -1135557840 },  # Due Blackley c04015040
+  { chara = 854605392 },    # Tre Blackley c04011140
+  { chara = -1521749391 },  # Quattro Blackley c04015050
+  { chara = -1905876558 },  # Cinque Blackley c04015060
+] } }
+
+# Los cinco hermanos Whitely (sp11001, a NEW defensive synergy cloned from the defensive retail row sp09003): any 3 of the
+# five brothers (idea 2 of the teamless groups). The lines of the retail «Promesa del camino a la victoria» (sp09001) with
+# DF del equipo in place of the focus line: DF del muro +5 %, DF del equipo +2 % and, as the secondary effect, Reducción
+# de Tensión 5 %. Conditions: the five brothers (chara_base ids).
+[[add]]
+key = "sp11001"
+from = "sp09003"
+cells = { REF_EFFECT = { set = [
+  { effect = -665275945, value = 5, flag_9 = 1 },
+  { effect = -550144562, value = 2, flag_9 = 1 },
+  { effect = 2017519104, value = 5, flag_9 = 0 },
+] }, REF_EXEC_COND = { set = [
+  { chara = -1753378573 },  # Eins Whitely c04015070
+  { chara = 283479100 },    # Zwei Whitely c04015080
+  { chara = -1234605553 },  # Drei Whitely c04010960
+  { chara = 167689597 },    # Vier Whitely c04015090
+  { chara = -637637629 },   # Fünf Whitely c04015100
+] } }

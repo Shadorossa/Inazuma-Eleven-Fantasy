@@ -26,7 +26,6 @@ stem = "vs_route_town_menu"
   type = "insert_before"
   point = "vs_route_town_menu.FinalizeMenu.RouteNodes"
   src = "rb_common.lua"
-  crc = "none"
 
   # a command-menu result that is a mod's item (VRFW_RB_IsCommand / VRFW_RB_Command): run it; refused = error
   # sound and back to the command menu (the retail retry label)
@@ -219,7 +218,6 @@ stem = "vs_route_town_command_select_menu"
   type = "insert_before"
   point = "vs_route_town_command_select_menu.FinalizeMenu.RouteNodes"
   src = "rbc_common.lua"
-  crc = "none"
 
   # the piece's rows: the mods' filters, then route_nodes' (a node lists only its shown difficulties)
   [[files.ops]]

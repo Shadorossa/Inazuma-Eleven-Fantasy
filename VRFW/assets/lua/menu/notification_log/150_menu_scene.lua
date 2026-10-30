@@ -5,12 +5,11 @@
 -- nothing runs at load time.
 do
   local KEY = 3499142076 --[[crc32 vrfw_menu_scene_hud_off]]
-  local VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]]
+  local VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE
   local MINIMAP = 1868910795 --[[0x6F6550CB: the field minimap shown / hidden]]
   local seen, logged = {}, false
   local function off()
-    local ok, on = pcall(funcLuaCommand, 2947612279, KEY)
-    return ok and on == true
+    return VRFW_Param.Has(KEY)
   end
   local function hide(a1, a2)
     if a1 == nil or not off() then
@@ -21,7 +20,7 @@ do
     if not logged then
       logged = true
       pcall(funcLuaCommand, MINIMAP, false)
-      pcall(funcLuaCommand, 3661580131, "menu_scene", "notification_log", "field HUD hidden under the menu scene (first layer", a1, ")")
+      pcall(funcLuaCommand, VRFW_Cmd.EVT_LOG, "menu_scene", "notification_log", "field HUD hidden under the menu scene (first layer", a1, ")")
     end
   end
   for _, name in ipairs({ "OnSetupLayer", "OnOpenLayer", "OnOpenEndLayer" }) do

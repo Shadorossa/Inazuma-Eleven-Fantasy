@@ -15,6 +15,11 @@
 # 26..92 in a box.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/200_icon/better_ui_own/better_ui_icon_tactics.g4tx"
+name = "better_ui_icon_tactics"
+size = [356, 120]
+
 [[recipe]]
 name = "plate"
 game = "#/menu/00_soccer/soccer08/soccer08_12/soccer08_12.g4tx"
@@ -65,19 +70,28 @@ from = "box"
 ops = [{ op = "paste", image = "body_r", at = [5, 26] }, { op = "alpha_from", image = "box" }]
 
 [[sprite]]
-atlas = "#/menu/200_icon/13_icon_tactics/icon_tactics.g4tx"
+atlas = "#/menu/200_icon/better_ui_own/better_ui_icon_tactics.g4tx"
 name = "chd_tactic_row_l"
+texture = "better_ui_icon_tactics"
+x = 0
+y = 0
 recipe = "slice_l"
 size = [116, 118]
 
 [[sprite]]
-atlas = "#/menu/200_icon/13_icon_tactics/icon_tactics.g4tx"
+atlas = "#/menu/200_icon/better_ui_own/better_ui_icon_tactics.g4tx"
 name = "chd_tactic_row_m"
+texture = "better_ui_icon_tactics"
+x = 120
+y = 0
 recipe = "slice_m"
 size = [116, 118]
 
 [[sprite]]
-atlas = "#/menu/200_icon/13_icon_tactics/icon_tactics.g4tx"
+atlas = "#/menu/200_icon/better_ui_own/better_ui_icon_tactics.g4tx"
 name = "chd_tactic_row_r"
+texture = "better_ui_icon_tactics"
+x = 240
+y = 0
 recipe = "slice_r"
 size = [116, 118]

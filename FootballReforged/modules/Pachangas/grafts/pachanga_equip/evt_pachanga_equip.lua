@@ -13,8 +13,7 @@
 do
   local PQ = {
     KEYS = {{3357163798, 4081600465}, {2371475758, 2898803562}},   -- (dock, kind) param pairs
-    EXISTS = 2947612279, GET = 3522198769,
-    CMDS = {[1506470613] = true, [1033065575] = true, [1598711521] = true},  -- SET / GET_TEAM_SET_INFO, EVT_TEAM_UNIFORM
+    CMDS = {[@crc:CMND_SET_TEAM_SET_INFO@] = true, [@crc:CMND_GET_TEAM_SET_INFO@] = true, [@crc:CMND_EVT_TEAM_UNIFORM@] = true},  -- SET / GET_TEAM_SET_INFO, EVT_TEAM_UNIFORM
     dock = nil, on = false, logs = 0,
   }
   EVT_PQ = PQ
@@ -22,7 +21,7 @@ do
   function PQ.log(...)
     if PQ.logs < 12 and type(funcLuaCommand) == "function" then
       PQ.logs = PQ.logs + 1
-      pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga_equip", ...)
+      pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT pachanga_equip", ...)
     end
   end
 
@@ -75,12 +74,12 @@ do
     local w = function(...)
       PQ.on, PQ.dock = false, nil
       local ok = pcall(function()
-        if funcLuaCommand(3004482920 --[[CMND_GET_PLAY_GAME_MODE?]]) == 2 then
+        if funcLuaCommand(@crc:CMND_GET_PLAY_GAME_MODE@) == 2 then
           return
         end
         for _, k in ipairs(PQ.KEYS) do
-          if funcLuaCommand(PQ.EXISTS, k[2]) and funcLuaCommand(PQ.GET, k[2]) == 1 and funcLuaCommand(PQ.EXISTS, k[1]) then
-            PQ.dock = funcLuaCommand(PQ.GET, k[1])
+          if VRFW_Param.Has(k[2]) and VRFW_Param.Get(k[2]) == 1 and VRFW_Param.Has(k[1]) then
+            PQ.dock = VRFW_Param.Get(k[1])
             PQ.on = type(PQ.dock) == "number"
             return
           end

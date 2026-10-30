@@ -5,25 +5,25 @@ schema = "VRFW.text_key/1"
 default_lang = "en"
 
 [en.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "One card per character, as in the classic Inazuma Eleven games. Matches no longer drop players: you get them from other sources, such as the Recruitment Office in the Market, which sells the players of every team you have beaten. No spirit screen and no spirit notices. A save keeps one card per character: the best copy stays and the others are merged into it. An option chooses where you sign players: the pick-up matches, the Clubroom's Player album (A on a player you do not have) or both."
-option_recruit_source = "Recruitment"
+option_recruit_source = "Where to sign new players"
 option_recruit_source_help = "Where you sign new players: the pick-up matches of the Chronicle board, the Clubroom's Player album (A on a player you do not have) or both."
 recruit_pachangas = "Pick-up matches"
 recruit_album = "Player album"
-recruit_both = "Both"
+recruit_both = "Pick-up matches and album"
 
 [es.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "Una carta por personaje, como en los Inazuma Eleven clásicos. Los partidos ya no sueltan jugadores: se consiguen por otras vías, como la Oficina de fichajes del Mercado, que vende a los jugadores de cada equipo que hayas vencido. Sin pantalla de espíritus ni avisos de espíritus. Una partida conserva una carta por personaje: se queda la mejor copia y las demás se funden en ella. Una opción elige dónde fichas: las pachangas, el Álbum de jugadores de la Caseta (A sobre un jugador que no tienes) o ambos."
-option_recruit_source = "Fichajes"
+option_recruit_source = "Dónde fichar jugadores nuevos"
 option_recruit_source_help = "Dónde fichas jugadores nuevos: las pachangas del tablero de la Crónica, el Álbum de jugadores de la Caseta (A sobre un jugador que no tienes) o ambos."
 recruit_pachangas = "Pachangas"
-recruit_album = "Álbum"
-recruit_both = "Ambos"
+recruit_album = "Álbum de jugadores"
+recruit_both = "Pachangas y álbum"
 
 [fr.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "Une carte par personnage, comme dans les Inazuma Eleven classiques. Les matchs ne donnent plus de joueurs : ils s'obtiennent autrement, par exemple au Bureau des recrues du Marché, qui vend les joueurs de chaque équipe que tu as battue. Plus d'écran des esprits ni d'alertes d'esprits. Une partie garde une carte par personnage : la meilleure copie reste et les autres y sont fusionnées. Une option choisit où recruter : les matchs amicaux, l'Album des joueurs de la Salle du club (A sur un joueur que tu n'as pas) ou les deux."
 option_recruit_source = "Recrutement"
 option_recruit_source_help = "Où recruter de nouveaux joueurs : les matchs amicaux du tableau de la Chronique, l'Album des joueurs de la Salle du club (A sur un joueur que tu n'as pas) ou les deux."
@@ -32,7 +32,7 @@ recruit_album = "Album"
 recruit_both = "Les deux"
 
 [de.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "Eine Karte pro Figur, wie in den klassischen Inazuma-Eleven-Spielen. Spiele lassen keine Spieler mehr fallen: Du bekommst sie auf anderen Wegen, etwa im Transferbüro des Markts, das die Spieler jedes besiegten Teams verkauft. Kein Geister-Bildschirm und keine Geister-Hinweise. Ein Spielstand behält eine Karte pro Figur: Die beste Kopie bleibt, die anderen werden mit ihr verschmolzen. Eine Option wählt, wo du verpflichtest: Freundschaftsspiele, das Spieleralbum im Clubraum (A auf einem Spieler, den du nicht hast) oder beides."
 option_recruit_source = "Verpflichtungen"
 option_recruit_source_help = "Wo du neue Spieler verpflichtest: die Freundschaftsspiele auf dem Brett der Chronik, das Spieleralbum im Clubraum (A auf einem Spieler, den du nicht hast) oder beides."
@@ -41,7 +41,7 @@ recruit_album = "Album"
 recruit_both = "Beides"
 
 [it.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "Una carta per personaggio, come negli Inazuma Eleven classici. Le partite non danno più giocatori: si ottengono in altri modi, come l'Ufficio ingaggi del Mercato, che vende i giocatori di ogni squadra che hai battuto. Niente schermata degli spiriti né avvisi degli spiriti. Un salvataggio tiene una carta per personaggio: resta la copia migliore e le altre vi vengono fuse. Un'opzione sceglie dove ingaggi: le partitelle, l'Album dei giocatori della Sala del club (A su un giocatore che non hai) o entrambi."
 option_recruit_source = "Ingaggi"
 option_recruit_source_help = "Dove ingaggi nuovi giocatori: le partitelle del tabellone della Cronaca, l'Album dei giocatori della Sala del club (A su un giocatore che non hai) o entrambi."
@@ -50,7 +50,7 @@ recruit_album = "Album"
 recruit_both = "Entrambi"
 
 [pt.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "Uma carta por personagem, como nos Inazuma Eleven clássicos. Os jogos já não dão jogadores: obtêm-se por outras vias, como o Gabinete de contratações do Mercado, que vende os jogadores de cada equipa que venceste. Sem ecrã de espíritos nem avisos de espíritos. Um jogo fica com uma carta por personagem: a melhor cópia fica e as outras fundem-se nela. Uma opção escolhe onde contratas: as peladinhas, o Álbum de jogadores da Sala do clube (A num jogador que não tens) ou ambos."
 option_recruit_source = "Contratações"
 option_recruit_source_help = "Onde contratas jogadores novos: as peladinhas do tabuleiro da Crónica, o Álbum de jogadores da Sala do clube (A num jogador que não tens) ou ambos."
@@ -59,7 +59,7 @@ recruit_album = "Álbum"
 recruit_both = "Ambos"
 
 [ja.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "昔のイナズマイレブンのように、キャラクター1人につきカード1枚。試合で選手はドロップしなくなる。選手はほかの方法で手に入れる（マーケットのスカウトオフィスでは、勝利したチームの選手を獲得できる）。スピリット画面とスピリットのお知らせはなし。セーブはキャラクター1人につきカード1枚（一番良いカードを残し、ほかはそこに統合）。設定で選手の獲得方法を選べます：ミニバトル、クラブルームの選手アルバム（持っていない選手でA）、または両方。"
 option_recruit_source = "スカウト"
 option_recruit_source_help = "新しい選手を獲得する方法：クロニクルの盤面のミニバトル、クラブルームの選手アルバム（持っていない選手でA）、または両方。"
@@ -68,7 +68,7 @@ recruit_album = "アルバム"
 recruit_both = "両方"
 
 [zh_hans.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "像经典的闪电十一人一样，每个角色只有一张卡。比赛不再掉落球员，球员需通过其他途径获得，例如市场里的球员签约处：可签下你击败过的每支队伍的球员。没有灵魂画面和灵魂提示。存档中每个角色只保留一张卡：保留最好的一张，其余合并到它身上。可在选项中选择招募方式：街头对战、俱乐部室的球员图鉴（对未拥有的球员按A），或两者。"
 option_recruit_source = "招募"
 option_recruit_source_help = "招募新球员的方式：编年史棋盘上的街头对战、俱乐部室的球员图鉴（对未拥有的球员按A），或两者。"
@@ -77,7 +77,7 @@ recruit_album = "球员图鉴"
 recruit_both = "两者"
 
 [zh_hant.new]
-mod_name = "New Recruitment"
+mod_name = "Classic Recruitment"
 mod_description = "像經典的閃電十一人一樣，每個角色只有一張卡。比賽不再掉落球員，球員需透過其他途徑獲得，例如市場裡的球員簽約處：可簽下你擊敗過的每支隊伍的球員。沒有靈魂畫面和靈魂提示。存檔中每個角色只保留一張卡：保留最好的一張，其餘合併到它身上。可在選項中選擇招募方式：街頭對戰、俱樂部室的球員圖鑑（對未擁有的球員按A），或兩者。"
 option_recruit_source = "招募"
 option_recruit_source_help = "招募新球員的方式：編年史棋盤上的街頭對戰、俱樂部室的球員圖鑑（對未擁有的球員按A），或兩者。"

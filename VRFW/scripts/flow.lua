@@ -10,8 +10,8 @@ Flow = Flow or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("flow:", ...) end
-local function warn(...) VRFW.warn("flow:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("flow")
 
 -- toggles: name -> { values = { value = true }, hook = detour a non-game value needs }
 local TOGGLES = {

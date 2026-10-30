@@ -102,12 +102,26 @@ name = "vrfw_cm_ui"
 from = "cmn01_10_new_icon"
 set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } }]
 
+# the info card's panel (455: under the requirement plates and the card's player busts, 457)
 [[object]]
 name = "vrfw_cm_card"
 from = "cmn01_10_new_icon"
-set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 459 } }]
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 455 } }]
 
-# the card's requirement icons (462: 5 rows + a team page's check box and its mark) and their met / unmet badges (463)
+# the requirement card's 4 plates + the header's counter chip (456) and the plates' progress bar tracks (460; the
+# fills are vrfw_cm_req 7-10)
+[[object]]
+name = "vrfw_cm_reqplate"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 456 } }]
+
+[[object]]
+name = "vrfw_cm_reqbar"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 460 } }]
+
+# the card's requirement icons (462: 5 rows, a team page's check box and its mark, the plates' bar fills) and their
+# met / unmet badges (463)
 [[object]]
 name = "vrfw_cm_req"
 from = "cmn01_10_new_icon"
@@ -177,10 +191,12 @@ layer = [
     { layer = "vrfw_cm_icon", object = "vrfw_cm_icon", count = 1, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_bust", object = "vrfw_cm_bust", count = 162 },
     { layer = "vrfw_cm_busticon", object = "vrfw_cm_busticon", count = 1 },
-    { layer = "vrfw_cm_req", object = "vrfw_cm_req", count = 7, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_req", object = "vrfw_cm_req", count = 11, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_reqok", object = "vrfw_cm_reqok", count = 4, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_reqplate", object = "vrfw_cm_reqplate", count = 5, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_reqbar", object = "vrfw_cm_reqbar", count = 4, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_title", object = "save01_02_list_item", count = 20, align = [1, 8], scale = 0.20000000298023224 },
-    { layer = "vrfw_cm_cardtxt", object = "save01_02_list_item", count = 6, align = [1, 8], scale = 0.20000000298023224 },
+    { layer = "vrfw_cm_cardtxt", object = "save01_02_list_item", count = 12, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_panel", object = "vrfw_cm_panel", count = 2, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "vrfw_cm_model", object = "vrfw_cm_model", count = 1, align = [1, 8], scale = 0.20000000298023224 },
     { layer = "mainmenu01_08_chara_3d_shadow", from = "shop_menu" },
@@ -268,6 +284,8 @@ group_base = [
     { layer = "vrfw_cm_busticon", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "vrfw_cm_req", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "vrfw_cm_reqok", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_reqplate", flags = [0, 0, 0, 0, 1, 0] },
+    { layer = "vrfw_cm_reqbar", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "vrfw_cm_title", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "vrfw_cm_cardtxt", flags = [0, 0, 0, 0, 1, 0] },
     { layer = "vrfw_cm_panel", flags = [0, 0, 0, 0, 1, 0] },
@@ -285,7 +303,7 @@ group_base = [
 ]
 group = [
     { group = "common", slice = [0, 3] },
-    { group = "vrfw_contact_map_menu", flags = [1], slice = [3, 33] },
+    { group = "vrfw_contact_map_menu", flags = [1], slice = [3, 35] },
 ]
 focus_group = [
     { layer = "save01_02_list_item", flags = [0, 0, 0], slice = [0, 1] },

@@ -24,7 +24,6 @@ stem = "title_menu_2"
   type = "insert_before"
   point = "title_menu_2.OnInit.Inarogue"
   src = "inarogue_title_1.lua"
-  crc = "none"
 
   [[files.ops]]
   type = "insert_before"
@@ -181,10 +180,13 @@ end
 [[files]]
 path = "common/script/lua/menu/evt_inarogue_menu.lua.bin"
 
+  # The menu is one chunk assembled from its feature files: the main screen (evt_inarogue_menu.lua) with the squad /
+  # team builder, the story-complete and Chronicle unlock, the run flow (start, offers, map, VS preview, match, loot)
+  # and the welcome gacha in at their placeholders, in this order (shared top-level locals: one chunk, as before)
   [[files.ops]]
   type = "new_file"
   src = "evt_inarogue_menu.lua"
-  crc = "none"
+  include = { "@IR_SQUAD@" = "ir_squad.lua", "@IR_PROGRESS@" = "ir_progress.lua", "@IR_RUN@" = "ir_run.lua", "@IR_WELCOME@" = "ir_welcome.lua" }
   vars = { "@MENU_FILE@" = "evt_inarogue_menu" }   # --@lib evt_menu_kit.lua#StartCo
 
 # §28 (Nacho, 30/09: a WHITE flash while «Plantilla de equipo» loads from INAROGUE): the title's mode transition uses

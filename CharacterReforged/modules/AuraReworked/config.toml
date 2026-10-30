@@ -15,8 +15,6 @@ enabled = true
 # level sets the pool's max to the totem's SP at that level; without it, each level lengthens the totem's summon time.
 [souls.aura_points]
 resource = "aura_points.sp"
-# the rule flag <cost_flag>.<hdl> = percent of that player's SP costs (SP Saving)
-cost_flag = "aura_points.cost_pct"
 # the rule flag <start_flag>.<aura id> = the totem's SP at level 1: its SP bar starts there in matches and menus
 start_flag = "aura_points.sp_start"
 
@@ -119,15 +117,16 @@ per_goal = 30.0
 per_own_move = 10.0
 # without Aura Points: extra summon time = full time x (SP[level] - SP[1]) / SP[1] x this
 time_scale = 1.0
-# the rival (CPU) team's totems gain levels and roll the reel too (its rolls are never shown)
+# the rival (CPU) team's totems gain levels and roll the reel too, whenever the part is on (its rolls are never shown)
 cpu = true
 # the release button does nothing while a totem is out
 no_release = true
 # the soccer states of live play (the level points per second count only there)
 live_states = [9, 14, 15, 16]
 
-# the shot that a keeper duel follows: the shooter's move_power within this many seconds (Numbness +)
 [souls.effects]
-shot_window_s = 8
+# a reel result of effect "passive": the framework's passive engine grant flag prefix (VRFW content\types\passive.toml [grant]
+# flag_prefix); the flag <grant_flag>.<passive>.<actor handle> = the skill level while the result lasts
+grant_flag = "VRFW.passive.grant"
 # knock-down: a field clip played on the opponent (<mod>.<name>; "" = none, only the slow-down)
 knockdown_clip = ""

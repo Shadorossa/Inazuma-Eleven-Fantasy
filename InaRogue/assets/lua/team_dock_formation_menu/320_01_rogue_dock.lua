@@ -31,24 +31,24 @@ do
     on = false, run = false, set = 0, frames = 0, text = "", spent = 0, budget = 0, foreign = 0, logs = 0, map = nil,
     why = 0,                              -- the request INAROGUE opened the dock with (1 start, 2 run, 3 before a match,
                                           -- 4 the team outside a run, 5 «Empezar partido» of the VS preview, §28)
-    -- texts: menu_text rows of the 9 languages (research/scripts/rogue_play_text_build.py); the literal is the fallback
+    -- texts: InaRogue text\rows\menu_text.toml (9 languages)
     T = {
-      MATCH11 = {159804897, "INAROGUE · Partido 11 contra 11 · Titulares {1}/11 · Equipo {2}/16"},
-      MATCH5 = {942046722, "INAROGUE · Pachanga 5 contra 5 (el mismo equipo) · Titulares {1}/5 · Equipo {2}/16"},
-      POINTS = {3946673359, "Puntos {1}/{2}"},
-      OVER = {2268593411, "Puntos {1}/{2} (te pasas)"},
-      FOREIGN = {2371301015, "quita a quien no es de INAROGUE"},
-      BACK_MAP = {274852836, "Atrás: continuar"},
-      BACK_PLAY = {2782813854, "Atrás: jugar el partido"},
-      NEXT = {937709158, "Rival: {1} (Nv. {2})"},
+      MATCH11 = {159804897},
+      MATCH5 = {942046722},
+      POINTS = {3946673359},
+      OVER = {2268593411},
+      FOREIGN = {2371301015},
+      BACK_MAP = {274852836},
+      BACK_PLAY = {2782813854},
+      NEXT = {937709158},
     },
   }
 
-  -- a menu_text row in the game's language (fallback: the Spanish literal); {1}.. = values
+  -- a menu_text row in the game's language ("" when missing); {1}.. = values
   function IRD.tx(t, ...)
-    local ok, s = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], t[1])
-    if not ok or type(s) ~= "string" or s == "" then
-      s = t[2]
+    local ok, s = pcall(funcLuaCommand, 4074371074, t[1])
+    if not ok or type(s) ~= "string" then
+      s = ""
     end
     local a = table.pack(...)
     return (s:gsub("{(%d)}", function(k)
@@ -279,15 +279,11 @@ do
     return n
   end
 
-  -- Each team keeps a formation of its own kind (2026-10-06): the 11v11 team (0) never a 5v5 formation (the retail 5v5
-  -- ids, formation_config rows 82-89 / 91, as match_engine FORM5_IDS) or none, the 5v5 team (1) only one of the 5
-  -- pachanga formations. A save left with the 11v11 team on «Formación en Y» (the Partido formation screen kept the
-  -- Pachanga list) gets 4-4-2 Diamante back (retail, always owned); a 5v5 team without a 5v5 formation gets the
-  -- story's one. -> number of teams fixed
-  IRD.FORM5_ALL = {[756751420] = true, [3021098374] = true, [3272965392] = true, [1567746227] = true,
-                   [712431653] = true, [3011479967] = true, [3296246025] = true, [1422369944] = true,
-                   [665097345] = true}
-  IRD.FORM5 = {[1567746227] = true, [712431653] = true, [3011479967] = true, [3296246025] = true, [1422369944] = true}
+  -- Each team keeps a formation of its own kind (2026-10-06): the 11v11 team (0) never a 5v5 formation (a formation of
+  -- formation_config with 5 players, VRFW_Formation) or none, the 5v5 team (1) only a 5v5 formation. A save left with
+  -- the 11v11 team on «Formación en Y» (the Partido formation screen kept the Pachanga list) gets 4-4-2 Diamante back
+  -- (retail, always owned); a 5v5 team without a 5v5 formation gets the story's one. No answer from the framework
+  -- (nil) changes nothing. -> number of teams fixed
   IRD.FORM11_DEFAULT, IRD.FORM5_DEFAULT = 2484170522, 712431653   -- 4-4-2 Diamante / Formación en Y
   IRD.GET_INFO, IRD.SET_INFO = 1033065575, 1506470613            -- CMND_GET / SET_TEAM_SET_INFO (set, team, field, ...)
   function IRD.fix_forms()
@@ -296,13 +292,13 @@ do
     end
     local n = 0
     local ok, got, f = pcall(funcLuaCommand, IRD.GET_INFO, IRD.set, 0, 4)
-    if ok and got == true and (type(f) ~= "number" or f == 0 or IRD.FORM5_ALL[f]) then
+    if ok and got == true and (type(f) ~= "number" or f == 0 or VRFW_Formation.IsFiveASide(f)) then
       pcall(funcLuaCommand, IRD.SET_INFO, IRD.set, 0, 3, IRD.FORM11_DEFAULT)
       IRD.log("11v11 team had formation", tostring(f), "-> 4-4-2 Diamante")
       n = n + 1
     end
     ok, got, f = pcall(funcLuaCommand, IRD.GET_INFO, IRD.set, 1, 4)
-    if ok and got == true and not IRD.FORM5[f] then
+    if ok and got == true and VRFW_Formation.IsFiveASide(f) == false then
       pcall(funcLuaCommand, IRD.SET_INFO, IRD.set, 1, 3, IRD.FORM5_DEFAULT)
       IRD.log("5v5 team had formation", tostring(f), "-> Formacion en Y")
       n = n + 1

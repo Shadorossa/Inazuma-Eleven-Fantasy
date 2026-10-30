@@ -39,16 +39,6 @@ function U.keys(t)
   return VRFW.sort(k)
 end
 
--- Iterate `t` in key order.
-function U.spairs(t)
-  local k = U.keys(t)
-  local i = 0
-  return function()
-    i = i + 1
-    if k[i] ~= nil then return k[i], t[k[i]] end
-  end
-end
-
 function U.contains(list, v)
   for _, x in ipairs(list) do
     if x == v then return true end
@@ -60,13 +50,6 @@ function U.copy(t)
   local o = {}
   for k, v in pairs(t) do o[k] = v end
   return o
-end
-
--- Deep copy of an entry table ({ name, hash, values }).
-function U.copy_entry(e)
-  local v = {}
-  for i, x in ipairs(e.values) do v[i] = x end
-  return { name = e.name, hash = e.hash, values = v }
 end
 
 function U.is_empty(t)
@@ -86,23 +69,6 @@ function U.opt(v)
   if v == nil then return "None" end
   if type(v) == "string" then return 'Some("' .. v .. '")' end
   return "Some(" .. tostring(v) .. ")"
-end
-
--- The languages of a per-language map: `language = value`, keys normalized (`all` kept), unknown ones dropped.
--- `f` picks the value (nil = skipped); blank strings are skipped.
-function U.pick_langs(map, f)
-  local out, any = {}, false
-  for _, l in ipairs(U.keys(map)) do
-    local n = VRFW.lang.norm_or_all(l)
-    if n then
-      local s = f(map[l])
-      if s ~= nil and U.trim(s) ~= "" then
-        out[n] = s
-        any = true
-      end
-    end
-  end
-  return out, any
 end
 
 -- The default language of a declaration: `d` normalized, else the first language of `text` in canonical order.

@@ -1,10 +1,25 @@
 # VR-Framework 2.0.1: the free-match list («Competir contra bots» / «Partido libre», soccer_vs_cpu_list_menu) gets 12
 # tab instances (retail 9) for the extra tabs the mods declare ([[VRFW.FreeMatchTab]] of the team type,
 # docs/framework/free-match-tabs.md). The framework's Lua (menu_engine soccer_vs_cpu_list_menu/100_free_match_tabs.lua)
-# sets the tab count and hides the instances past it, so with no declared tab the bar is the retail one.
+# sets the tab count and hides the instances past it, so with no declared tab the bar looks retail.
 schema = "VRFW.menu/2"
 
 [[patch]]
 menu = "soccer_vs_cpu_list_menu"
 layer = "cmn06_20_list_tab_item"
 count = 12                                # 9 retail + at most 3 extra (the longest bar layout a mod can declare: 12)
+
+# Section pages (docs/framework/team-sections.md): L2 / R2 (keyboard Q / E) turn the page of the section bar. The retail
+# screen binds nothing to them; the Lua does nothing while every section fits on one page.
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_cmd = [
+    { layer = "cmn06_20_list_tab_item", input = "CMD_FUNCL2", command = "CMD_FUNCTION", arg = 0x3D05AF17 },   # vrfw_fm_section_page_prev
+    { layer = "cmn06_20_list_tab_item", input = "CMD_FUNCR2", command = "CMD_FUNCTION", arg = 0x85C8377E },   # vrfw_fm_section_page_next
+]
+
+# The two key glyphs at the bar's ends (L2 left, R2 right): two copies of the retail change-page plate, only its key
+# glyph shown. Opened by the Lua only when there is more than one page.
+[[patch]]
+menu = "soccer_vs_cpu_list_menu"
+add_layer = { name = "vrfw_fm_section_keys", object = "team00_40_change_page_guide", count = 2, after = "cmn06_20_list_tab_item", groups = [{ group = "soccer_vs_cpu_list_menu", flags = [0, 0, 0, 0, 1, 0], after = "cmn06_20_list_tab_item" }] }

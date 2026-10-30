@@ -103,7 +103,7 @@ local function parse_slot(text, skills)
   local s = skills[name]
   if not s then return nil, "skill `" .. name .. "` is not declared" end
   level = tonumber(level)
-  local n = math.max(#s.values, #s.units, #s.seconds, 1)
+  local n = math.max(#s.values, #s.units, #s.seconds, s.levels or 0, 1)
   if level < 1 or level > n then return nil, string.format("%s: level %d (it has %d)", name, level, n) end
   return { skill = s, level = level, text = text }
 end

@@ -7,6 +7,11 @@
 # Width = retail width - 18 per missing socket. No Level-5 pixel ships with the mod.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06c.g4tx"
+name = "chronicle_deluxe_vsroute01_06c"
+size = [464, 32]
+
 # ---------------------------------------------------------------- route pieces (retail clear_base01_02, 124 x 32, 6 sockets)
 
 [[recipe]]
@@ -48,8 +53,11 @@ ops = [
 ]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06c.g4tx"
 name = "chronicle_deluxe_orb_bar_route_1"
+texture = "chronicle_deluxe_vsroute01_06c"
+x = 92
+y = 0
 recipe = "chronicle_deluxe_orb_bar_route_1"
 
 [[recipe]]
@@ -61,8 +69,11 @@ ops = [
 ]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06c.g4tx"
 name = "chronicle_deluxe_orb_bar_route_2"
+texture = "chronicle_deluxe_vsroute01_06c"
+x = 132
+y = 0
 recipe = "chronicle_deluxe_orb_bar_route_2"
 
 [[recipe]]
@@ -75,8 +86,11 @@ ops = [
 ]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06c.g4tx"
 name = "chronicle_deluxe_orb_bar_route_3"
+texture = "chronicle_deluxe_vsroute01_06c"
+x = 188
+y = 0
 recipe = "chronicle_deluxe_orb_bar_route_3"
 
 [[recipe]]
@@ -90,8 +104,11 @@ ops = [
 ]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06c.g4tx"
 name = "chronicle_deluxe_orb_bar_route_4"
+texture = "chronicle_deluxe_vsroute01_06c"
+x = 264
+y = 0
 recipe = "chronicle_deluxe_orb_bar_route_4"
 
 [[recipe]]
@@ -106,8 +123,11 @@ ops = [
 ]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06c.g4tx"
 name = "chronicle_deluxe_orb_bar_route_5"
+texture = "chronicle_deluxe_vsroute01_06c"
+x = 356
+y = 0
 recipe = "chronicle_deluxe_orb_bar_route_5"
 
 # ---------------------------------------------------------------- gate pieces (retail clear_base02_2, 68 x 32, 3 sockets)
@@ -151,8 +171,11 @@ ops = [
 ]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06c.g4tx"
 name = "chronicle_deluxe_orb_bar_gate_1"
+texture = "chronicle_deluxe_vsroute01_06c"
+x = 0
+y = 0
 recipe = "chronicle_deluxe_orb_bar_gate_1"
 
 [[recipe]]
@@ -164,6 +187,9 @@ ops = [
 ]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06c/vsroute01_06c.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06c.g4tx"
 name = "chronicle_deluxe_orb_bar_gate_2"
+texture = "chronicle_deluxe_vsroute01_06c"
+x = 36
+y = 0
 recipe = "chronicle_deluxe_orb_bar_gate_2"

@@ -19,8 +19,8 @@ local D = require "lib/declarations"
 local band = bit32.band
 local KEY_RESETS = "vrfw.game_resets"
 
-local function info(...) VRFW.log("shop_rows:", ...) end
-local function warn(...) VRFW.warn("shop_rows:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("shop_rows")
 
 -- SHOP_INFO_ITEM row layout (stride 0xB8) and SHOP_INFO row fields.
 local ROW_STRIDE, ROW_ITEM, ROW_COND, ROW_LINEUP = 0xB8, 0x4, 0x58, 0x60
@@ -344,11 +344,8 @@ end
 
 -- ---------------------------------------------------------------------------------------------- what a row waits for
 
-local function u32(v)
-  v = tonumber(v)
-  if not v or v ~= v then return 0 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
 
 local function slice(v)
   if type(v) ~= "table" then return nil end

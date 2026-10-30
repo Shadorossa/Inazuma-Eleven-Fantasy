@@ -15,8 +15,9 @@
 -- Without Utilities' script (CMND_BETTERQOL_TP_INFO unanswered) nothing changes.
 do
   -- ---- shared by both hook files (gen_hooks.py puts it in place of @COMMON@) -------------------------------------
-  UTIL_TP = UTIL_TP or {}
-  local TP = UTIL_TP
+  BetterQoL = BetterQoL or {}
+  BetterQoL.TeamPlanner = BetterQoL.TeamPlanner or {}
+  local TP = BetterQoL.TeamPlanner
   TP.C = {
     INFO = 2781696587,
     LIST = 713857796,
@@ -49,7 +50,6 @@ do
     PLACE_CHECK = 1730898405,    -- (hdl, set, pos, from set, type) -> ok, code: the check of SwapChara (writes nothing)
     PLACE = 193693077,           -- (set, pos, from set, hdl, type): the bank -> slot placement
     PLACE_PREP = 2379170951,     -- funcLuaMenuCommand(hdl): what SwapChara / the bank call before placing
-    PARAM_HAS = 2947612279, PARAM_GET = 3522198769, PARAM_DEL = 3363400568, PARAM_SET = 3860611758,
     VS_TEAM = 3713813716,        -- CMND_GET_VS_USE_TEAM_SET
   }
   TP.CARD = 1973487846           -- team00_01_chara_card_for_soccer
@@ -477,8 +477,7 @@ do
 
   -- the formation screen asked for the game's bank («Añadir del banco»): the retail «Banco» once it has closed
   function TP.BankRequest(from)
-    local ok, has = pcall(funcLuaCommand, TP.C.PARAM_HAS, TP.KEY_BANK)
-    if not ok or not has then
+    if not VRFW_Param.Has(TP.KEY_BANK) then
       return
     end
     -- OpenCharaBank waits for the bank to close: it needs the dock's coroutine (never the main thread)
@@ -487,8 +486,8 @@ do
       TP.Log("bank request seen at", from, "outside a coroutine: kept for the next one")
       return
     end
-    local set = funcLuaCommand(TP.C.PARAM_GET, TP.KEY_BANK)
-    funcLuaCommand(TP.C.PARAM_DEL, TP.KEY_BANK)
+    local set = VRFW_Param.Get(TP.KEY_BANK)
+    VRFW_Param.Clear(TP.KEY_BANK)
     local cur = squad()
     if type(OpenCharaBank) ~= "function" or (cur ~= nil and set ~= cur) then
       TP.Log("bank request of squad", tostring(set), "dropped (dock on", tostring(cur), ")")

@@ -5,8 +5,8 @@
 --   when = { state = "fantasy.prime.team_limit" }   # optional: on while that game_state key is non-zero
 -- The Diamond counter then answers the largest of the game's count and each such type's starters, so a second card of the type trips the game's 1-Diamond check; when Diamonds are lifted (`max_per_card_type.diamond = "unlimited"`) the type's own limit stays.
 
-local function info(...) VRFW.log("limits:", ...) end
-local function warn(...) VRFW.warn("limits:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("limits")
 
 -- Team set layout the counter walks: 29 member entries from +0x80, stride 0x10, +0 handle, +0xE slot (starters = slot < 11, < 5 for party type 1); same as synergy.lua.
 local N_MEMBERS, MEMBER_BASE, MEMBER_STRIDE, MEMBER_SLOT = 0x1D, 0x80, 0x10, 0x0E

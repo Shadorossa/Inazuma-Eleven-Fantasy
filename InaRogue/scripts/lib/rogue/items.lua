@@ -19,7 +19,7 @@ I.KINDS = { passive = true, talent_up = true }
 I.TALENT_MAX_LEVEL = 6
 
 local FIELDS = { key = true, kind = true, rarity = true, scope = true, max_level = true, price = true,
-  upgrade_cost = true, archetypes = true, sources = true, icon = true, effect = true }
+  upgrade_cost = true, archetypes = true, sources = true, icon = true, effect = true, unlock = true }
 
 local cat = nil
 
@@ -146,7 +146,9 @@ local function parse_item(t, where, rarities)
   return { key = key, kind = kind, rarity = rd.index, rarity_key = rd.key, scope = scope, max_level = max_level,
     price = price, upgrade = upgrade, archetypes = archetypes_of, sources = sources,
     icon = type(t.icon) == "string" and t.icon or rarities.icon, effects = by_level,
-    matches = P.duration_matches(by_level[1]) }
+    matches = P.duration_matches(by_level[1]),
+    -- meta unlock of the v2 runs (lib/rogue/meta_store.lua item_open): { runs_won, best_stage, ascension }
+    unlock = type(t.unlock) == "table" and t.unlock or nil }
 end
 
 function I.catalogue()
@@ -191,11 +193,6 @@ end
 -- the text key of a rarity's name (text/rows/rogue_items.toml)
 function I.rarity_text_key(key)
   return "InaRogue.rogue_rarity_" .. key
-end
-
--- the text keys of an item's name and explanation (text/rows/rogue_items.toml)
-function I.text_keys(key)
-  return "InaRogue.rogue_item_" .. key .. "_name", "InaRogue.rogue_item_" .. key .. "_desc"
 end
 
 -- a new owned item: level 1, its match count when one of its pieces lasts N matches

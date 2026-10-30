@@ -15,8 +15,8 @@ ShopTabs = ShopTabs or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("shop_tabs:", ...) end
-local function warn(...) VRFW.warn("shop_tabs:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("shop_tabs")
 
 -- shop list view fields
 local VIEW_SHOP, VIEW_TAB_COUNT, VIEW_TABS = 0x2040, 0x1FE8, 0x1FEC
@@ -30,11 +30,8 @@ local BY_ID = {}   -- shop id -> rule { split, tabs = { { subs = set, icon, text
 local LIVE = false
 local hits = 0
 
-local function u32(v)
-  v = tonumber(v)
-  if not v or v ~= v then return 0 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
 
 local function rd(ty, at)
   if type(at) ~= "number" or at < 0x10000 then return nil end

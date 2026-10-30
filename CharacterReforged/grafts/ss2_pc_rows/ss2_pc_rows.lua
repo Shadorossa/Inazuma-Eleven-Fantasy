@@ -8,7 +8,7 @@ do
   EVT_PCS2 = EVT_PCS2 or {}
 
   function EVT_PCS2.Rows(L)
-    local ok, n = pcall(funcLuaMenuCommand, 1175615627, L)
+    local ok, n = pcall(funcLuaMenuCommand, @crc:CMND_GET_CREATE_LAYER_NUM@, L)
     if ok and type(n) == "number" and n >= 1 and PL ~= nil then
       PL.SSROWS = math.min(n, 9)
     end
@@ -37,7 +37,7 @@ do
     funcLuaMenuCommand = real
     local item = id ~= nil and id ~= 0
     UTIL_PCI.RowBacking(L, k, item, false)
-    funcLuaMenuCommand(3405944500, L, 2384755812, false, k)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, L, 2384755812, false, k)
     if not ok then
       error(err)
     end

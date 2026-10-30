@@ -5,7 +5,7 @@
 # next Mercado entry (wrapping, Mercado list order) directly: the Mercado side (ss_market.lua) skips the retail lines
 # that bring the Mercado list back and opens the next entry through its own OnDecideFocus in the same coroutine (no
 # Mercado list, no «Mercado» title between two shops). Host handshake in the param store (evt_shop_cycle_host: 1
-# Mercado, 2 «Modos de juego» of IF's modes_hub, which keeps its own Tienda general <-> Tienda Vínculo loop): a shop
+# Mercado): a shop
 # opened from anywhere else keeps L2 / R2 retail. The shop side uses the retail shop_menu_setting row that already
 # routes L2 / R2 of the item list to OnFunction (unused by retail); the office hub polls CMND_CHECK_INPUT_CMD. L1 / R1
 # (tabs) untouched. Guide: «<L2><R2> Cambiar de tienda» (text clean_hud.shop_switch, text.toml of clean_hud).
@@ -27,7 +27,6 @@ stem = "shop_menu_buy"
   type = "append_block"
   src = "ss_buy.lua"
   marker = "shop_shortcuts shop"
-  crc = "none"
 
 [[files]]
 stem = "market_menu"
@@ -36,7 +35,6 @@ stem = "market_menu"
   type = "append_block"
   src = "ss_market.lua"
   marker = "shop_shortcuts market"
-  crc = "none"
 
 [[files]]
 stem = "soccer_vs_cpu_list_menu"
@@ -45,4 +43,3 @@ stem = "soccer_vs_cpu_list_menu"
   type = "append_block"
   src = "ss_office.lua"
   marker = "shop_shortcuts office"
-  crc = "none"

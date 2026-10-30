@@ -8,7 +8,6 @@
 -- rewritten, so the order of the funcLuaMenuCommand wrappers of this menu does not matter).
 -- Runs as a bytecode child at the end of the chunk; engine calls only from Step / OnSetupLayer.
 
-EVT_HL_BUFF_ON = true
 EVT_HL_BUFF_CENTER_X = 960        -- layout units from the left edge (screen centre of a 1920-wide layout)
 EVT_HL_BUFF_UP = 0                -- layout units up from the retail row (the guide row above it is at y 110..162)
 
@@ -21,8 +20,8 @@ local HLB_LAYERS = {
   [2861847060] = true, --[[soccer00_51_team_buff_icon_technical_combo]]
   [1535165083] = true, --[[soccer00_53_aura_buff_chara_icon]]
 }
-local HLB_CMND_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]]
-local HLB_CMND_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]]
+local HLB_CMND_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@
+local HLB_CMND_POS = @crc:CMND_SET_LAYER_LOCAL_POS@
 local HLB_vis = {}
 local HLB_count = 0
 local HLB_last = nil
@@ -56,9 +55,7 @@ local function HLB_WrapCommand(f)
     return f
   end
   local w = function(id, ...)
-    if EVT_HL_BUFF_ON then
-      pcall(HLB_Observe, id, ...)
-    end
+    pcall(HLB_Observe, id, ...)
     return f(id, ...)
   end
   EVT_HL_WRAPPED[w] = true
@@ -99,7 +96,7 @@ local function HLB_UiStep()
 end
 
 local function HLB_Apply(force)
-  if not EVT_HL_BUFF_ON or type(funcLuaMenuCommand) ~= "function" then
+  if type(funcLuaMenuCommand) ~= "function" then
     return
   end
   local step, dx0 = HLB_UiStep()

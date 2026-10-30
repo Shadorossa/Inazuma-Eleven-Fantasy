@@ -14,7 +14,7 @@
 -- functions: no engine call at load time. Log (CMND_EVT_LOG): «model_wait_guard <name> ...» when the wait took
 -- 30+ frames or hit the cap.
 local MWG_READY = 1583438030   -- menu model component complete? (layer, idx)
-local MWG_LOG = 3661580131     -- CMND_EVT_LOG
+local MWG_LOG = VRFW_Cmd.EVT_LOG
 local MWG_SLOW = 30            -- frames from which a wait is logged
 
 function VRFW_ModelWaitGuard(name, o)

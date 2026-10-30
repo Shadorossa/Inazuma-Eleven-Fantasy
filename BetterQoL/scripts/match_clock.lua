@@ -14,7 +14,8 @@
 local OPTION = "match_clock"
 local RATE_AT = 0x10
 
-local function info(...) VRFW.log("match_clock:", ...) end
+require "VRFW/lib/basics"
+local info = VRFW.logger("match_clock")
 
 local function config_rate()
   local ok, v = pcall(VRFW.files.config, "match_clock.game_rate")

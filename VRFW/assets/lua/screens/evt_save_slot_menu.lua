@@ -38,7 +38,7 @@ INCLUDE("LUA_MENU_DEF")                       -- MENU_DEF.OpenSubWindow (options
 local EVT_LOADER = {
   VERSION = 2217361807,         -- () -> api, modules (bit1 = save_slots)
   GET_SLOT = 4245285902,              -- () -> active slot 1..3
-  SLOT_INFO = 1195222835,            -- (n) -> exists, chapter, avgLevel, playSeconds, year, month, day,
+  SLOT_INFO = 1195222835,            -- (n) -> exists, chapter, teamLevel, playSeconds, year, month, day,
                                                    --        hour, minute, victories, maxLevel, storyPhase, gameClear,
                                                    --        leaderCharaId, memberCount
   SLOT_INFO_TEXT = 4119688835,  -- (n) -> playTime "387:15:24", date "24/09/2026 01:26"
@@ -71,7 +71,7 @@ local TXT = {
   HINT_EMPTY = "Accept: new game · X: duplicate here",
   HINT_LOCKED = "Read only · X: duplicate to play",
   NO_TEAM = "No team",
-  LEVEL_LINE = "Max Lv. %d · avg. %d",
+  LEVEL_LINE = "Lv. %d",
   T_STORY = "Story",
   T_CHRON = "Chronicle",
   MATCHES = "%d matches",
@@ -220,7 +220,7 @@ local RETAIL_ICONS = {
   row_tex = 1253411383, row_on = 3989988929, row_off = 3208381064,   -- save_icon_list_s01_on / _off
 }
 local ROW_OK = 3292070381      -- _list_base_s01_ok: the row of the slot being played ("current")
-local ROW_ALPHA = 4231609516   -- CMND_SET_LAYER_MODEL_ALPHA (layer, idx, 0, alpha): locked / empty cards dimmed
+local ROW_ALPHA = 4231609516   -- (layer, idx, 0, alpha): locked / empty cards dimmed
 local MENU = 3561559540
 local KEY_RESULT = 2449975398
 
@@ -264,7 +264,6 @@ local C = {
   CLOSE_MENU = 320421347,     -- CMND_CLOSE_MENU_OBJECT
   FADE = 609722083,           -- (1 out / 0 in, seconds)
   FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568, P_HAS = 2947612279,   -- parameter store
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669,
   MSG_BUSY = 898725220,
   MSG_DEFAULT_NO = 3125954271,   -- (true, false) after MSG_KIND(2, 15): retail "Reiniciar datos" confirm [inferred: cursor on No]
@@ -322,7 +321,7 @@ local G_DUP = 3316700371   -- menu_text row evt_slot_dup_text (text/rows/save_sl
 -- the guide shows the retail "Change page" with the R1 glyph
 local K_PAGE_PREV, K_PAGE_NEXT = 3559725168, 2955903379
 local G_PAGE, I_R1, K_R1 = 884337385 --[[Change page]], 1596629152 --[[<CMD_FUNCR1>]], 942075773 --[[CMD_FUNCR1]]
-local MENU_CTRL, CHECK_INPUT = 1332654303, 4265778440   -- CMND_CHECK_INPUT_CMD(MENU_CTRL, cmd)
+local MENU_CTRL, CHECK_INPUT = 1332654303, 4265778440   -- (MENU_CTRL, cmd)
 local SE_OK, SE_DECIDE, SE_BACK = 3848881948, 4235359837, 202039849
 
 -- card nodes (evt_save01_04_card.g4pkm = save01_04 with the v4.1 geometry; the hashes are the retail node names).
@@ -778,7 +777,7 @@ local function FillWindow(idx)
   Mesh(idx, N.CH_IMG, true)
   local team = s.teamName ~= "" and s.teamName or TXT.NO_TEAM
   Text(idx, N.CAT[6], team)
-  Text(idx, N.SUB[1], string.format(TXT.LEVEL_LINE, Int(s.maxLevel), Int(s.avgLevel)))
+  Text(idx, N.SUB[1], string.format(TXT.LEVEL_LINE, Int(s.avgLevel)))
   local function Num(textId, v)
     return funcLuaCommand(C.TEXT_NUM, funcLuaCommand(C.TEXT_GET, textId), "NUM", v)
   end
@@ -945,8 +944,7 @@ local function UpdateButtonGuide()
 end
 
 local function Close(result)
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_SET, KEY_RESULT, 0, result, 1)
+  VRFW_Param.Replace(KEY_RESULT, result)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
   funcLuaCommand(C.CLOSE_MENU, MENU)
 end
@@ -977,7 +975,7 @@ end
 local P_YES = 1449645767
 local function AskDanger(text)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
-  funcLuaCommand(C.P_CLEAR, P_YES)
+  VRFW_Param.Clear(P_YES)
   funcLuaCommand(C.MSG_OPEN, text, 0, 0, 0, 0, 0, false)
   funcLuaCommand(C.MSG_KIND, 2, 15)
   funcLuaCommand(C.MSG_DEFAULT_NO, true, false)
@@ -986,14 +984,14 @@ local function AskDanger(text)
   end
   local yes = false
   while not funcLuaCommand(C.MSG_DONE) and not yes do
-    yes = funcLuaCommand(C.P_HAS, P_YES) == true
+    yes = VRFW_Param.Has(P_YES)
     coroutine.yield()
   end
   if not yes then
-    yes = funcLuaCommand(C.P_HAS, P_YES) == true
+    yes = VRFW_Param.Has(P_YES)
   end
   local r = funcLuaCommand(C.MSG_RESULT)
-  funcLuaCommand(C.P_CLEAR, P_YES)
+  VRFW_Param.Clear(P_YES)
   while not funcLuaCommand(C.MSG_DONE) do
     coroutine.yield()
   end
@@ -1642,7 +1640,7 @@ function OnInit()
   if res ~= nil then
     info[res.slot] = ReadInfo(res.slot)
   end
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
 end
 
 -- ---- card layout: N cards spread evenly over the screen width ------------------------------------------------------
@@ -1656,7 +1654,7 @@ end
 -- zone follows). Never node writes: the old runtime locator moves failed per card ("no effect of the move") and dropped one group back to the retail x while the other kept
 -- its move (headers and bodies apart). One log line per pass: bodies x, headers x (left edges), applied / fallback.
 local SCREEN_W, CARD_W = 1920, 424
-local GPOS = 499270986         -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, node) -> x, y, z
+local GPOS = 499270986         -- (layer, idx, node) -> x, y, z
 local LAYER_GET, LAYER_SET = 2834507455, 1389957207   -- layer local position (layer, idx) / (layer, x, y, z, idx)
 local N_ROW_EDGE, N_WIN_EDGE = 3025401186, 1215790087 -- _list_base_s01_on / _save_info_base01 (left-edge nodes)
 local layout_done, layout_co, rows_open = false, nil, false
@@ -2004,7 +2002,7 @@ end
 -- cannot tell (no slot service): the clause is not checked, as the mode engine did when it asked the command itself.
 -- Only a definition: nothing runs at chunk load.
 function VRFW_STORY_PROVIDER()
-  local ok, _, _, cleared = pcall(funcLuaCommand, 1176769167 --[[CMND_VRFW_STORY_START_GET]])
+  local ok, _, _, cleared = pcall(funcLuaCommand, 1176769167)
   if not ok or cleared == nil then
     return nil
   end

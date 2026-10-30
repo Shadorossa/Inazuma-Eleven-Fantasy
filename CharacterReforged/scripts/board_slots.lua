@@ -26,8 +26,9 @@
 -- 0xE7AA10 (PlaceByHandle maps a piece to a slot through the definition, so it can not reach that slot). His own
 -- pieces are untouched; the slot is open at once, as the definition's own aura piece is when PLACE opens it.
 --
--- Record rec8 = VRFW.chara.record(hdl).addr: +0x94 + 4*slot placed item, +0xC8 + 4*slot native item, +0x165 + slot
--- piece effect index (byte; >= 0x80 closed). docs/game/ui/skill-board-original.md.
+-- Record rec8 = VRFW.chara.record(hdl).addr, the game profile's [struct.CharaData]: PlacedSkills + 4*slot placed item,
+-- NativeSkills + 4*slot native item, BoardPieces + slot piece effect index (byte; >= 0x80 closed).
+-- docs/game/ui/skill-board-original.md.
 
 CharacterReforged = CharacterReforged or {}
 CharacterReforged.BoardSlots = CharacterReforged.BoardSlots or {}
@@ -36,20 +37,15 @@ local BoardSlots = CharacterReforged.BoardSlots
 local STATUS_OK, STATUS_REFUSED, STATUS_MISMATCH = 1, 0, 2
 local STATUS_BAD_ARGUMENTS, STATUS_NOT_READY, STATUS_CLOSED, STATUS_EXCEPTION, STATUS_NO_RECORD = -1, -2, -3, -4, -5
 local STATUS_WOULD_CLOSE = -6
-local OFFSET_PIECES, OFFSET_PLACED, OFFSET_NATIVE = 0x165, 0x94, 0xC8
 local LAST_SLOT = 8
 
 local handle_buffer, pieces_buffer = nil, nil
 
-local function u32(v)
-  if type(v) == "boolean" then return v and 1 or 0 end
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return math.floor(v) % 4294967296
-end
-local function hex(v) return string.format("0x%08X", u32(v)) end
-local function info(...) VRFW.log("board slots:", ...) end
-local function warn(...) VRFW.warn("board slots:", ...) end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
+local hex = Id.hex
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("board slots")
 
 local function read(ty, address)
   local ok, v = pcall(VRFW.mem.read, ty, address)
@@ -70,9 +66,36 @@ local function slot_argument(v)
   return nil
 end
 
+-- the game profile's offset of a struct field (game\<build>\structs.toml), nil when the running build lacks it
+local function profile_field(name)
+  local ok, v = pcall(VRFW.game.field, name)
+  if ok and type(v) == "number" then return v end
+  return nil
+end
+
+-- the character data's board fields (profile [struct.CharaData]: the piece bytes, the placed and the native items of
+-- each board slot), read once; nil when the running build's profile lacks one
+local BOARD = nil
+local board_warned = false
+local function board_layout()
+  if BOARD then return BOARD end
+  local pieces, placed, native = profile_field("CharaData.BoardPieces"), profile_field("CharaData.PlacedSkills"),
+    profile_field("CharaData.NativeSkills")
+  if not pieces or not placed or not native then
+    if not board_warned then
+      board_warned = true
+      warn("the game profile has no CharaData.BoardPieces / PlacedSkills / NativeSkills: the board slot commands are off")
+    end
+    return nil
+  end
+  BOARD = { pieces = pieces, placed = placed, native = native }
+  return BOARD
+end
+
 -- the character data (record + 8) of a handle, or nil + status
 local function character_data(hdl)
   if hdl == 0 then return nil, STATUS_BAD_ARGUMENTS end
+  if not board_layout() then return nil, STATUS_NOT_READY end
   local ok, r = pcall(VRFW.chara.record, hdl)
   if not ok then return nil, STATUS_EXCEPTION end
   if type(r) ~= "table" or not r.addr or r.addr < 0x10000 then return nil, STATUS_NO_RECORD end
@@ -80,9 +103,9 @@ local function character_data(hdl)
 end
 
 local function read_slot(data, slot)
-  local piece = read("u8", data + OFFSET_PIECES + slot)
-  local placed = read("u32", data + OFFSET_PLACED + slot * 4)
-  local native = read("u32", data + OFFSET_NATIVE + slot * 4)
+  local piece = read("u8", data + BOARD.pieces + slot)
+  local placed = read("u32", data + BOARD.placed + slot * 4)
+  local native = read("u32", data + BOARD.native + slot * 4)
   if piece == nil or placed == nil or native == nil then return nil end
   return { piece = piece, placed = u32(placed), native = u32(native) }
 end
@@ -140,7 +163,7 @@ local function free_aura_piece(data, hdl)
   local used = {}
   for k = 0, def.n - 1 do used[def[k]] = true end
   for k = 0, LAST_SLOT do
-    local b = read("u8", data + OFFSET_PIECES + k)
+    local b = read("u8", data + BOARD.pieces + k)
     if b ~= nil then used[b] = true end
   end
   for p = LAST_EFFECT, 0, -1 do
@@ -191,7 +214,7 @@ local function put(data, hdl, inv, slot)
   local st
   if free then
     if is_closed(before) then
-      pcall(VRFW.mem.write, "u8", data + OFFSET_PIECES + slot, piece)
+      pcall(VRFW.mem.write, "u8", data + BOARD.pieces + slot, piece)
       info(string.format("aura slot of %s opened with the free piece %d (his board has no aura piece)", hex(hdl), piece))
     end
     st = equip_slot(hdl, inv, slot, false)
@@ -234,7 +257,7 @@ local function clear(data, hdl, slot, keep_open, drop_native)
     if st then return st, effective(before) end
     local now = read_slot(data, slot)
     if not now then return STATUS_NOT_READY, 0 end
-    if is_closed(now) then pcall(VRFW.mem.write, "u8", data + OFFSET_PIECES + slot, piece) end
+    if is_closed(now) then pcall(VRFW.mem.write, "u8", data + BOARD.pieces + slot, piece) end
     before = read_slot(data, slot) or now
     keep_open = true
   end
@@ -245,7 +268,7 @@ local function clear(data, hdl, slot, keep_open, drop_native)
   local after = read_slot(data, slot)
   if not after then return STATUS_NOT_READY, 0 end
   if is_closed(after) and keep_open and after.placed == 0 and after.native == 0 then
-    pcall(VRFW.mem.write, "u8", data + OFFSET_PIECES + slot, piece)
+    pcall(VRFW.mem.write, "u8", data + BOARD.pieces + slot, piece)
     after = read_slot(data, slot) or after
   end
   local ok = after.placed == 0 and not is_closed(after)
@@ -294,7 +317,7 @@ end
 
 
 -- ------------------------------------------------------------------------------------- the custom passive slot
--- Board equip slot 9 (skillEquipInvInfo.sixSense, record +0x94 + 9 * 4): the skill table's custom passive button reads
+-- Board equip slot 9 (skillEquipInvInfo.sixSense, CharaData.PlacedSkills + 9 * 4): the skill table's custom passive button reads
 -- and writes it here (graft ss2_menus); the game's own slot writer gives the old item's use back.
 local SIX_SENSE_SLOT = 9
 
@@ -302,7 +325,7 @@ function BoardSlots.SixSense(hdl, op, inv, piece)
   hdl, op, inv = u32(hdl), math.floor(tonumber(op) or 0), u32(inv)
   local data, why = character_data(hdl)
   if not data then return why, 0, 0 end
-  local at = data + OFFSET_PLACED + SIX_SENSE_SLOT * 4
+  local at = data + BOARD.placed + SIX_SENSE_SLOT * 4
   local st = STATUS_OK
   if op == 1 then
     local before = u32(read("u32", at) or 0)

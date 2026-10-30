@@ -6,19 +6,33 @@
 # 2026-10-14). Other mods may declare other sprites of this atlas; sprite names differ, so they merge.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06b.g4tx"
+name = "chronicle_deluxe_vsroute01_06b"
+size = [236, 64]
+
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06b.g4tx"
 name = "chronicle_deluxe_rank_s"
+texture = "chronicle_deluxe_vsroute01_06b"
+x = 136
+y = 0
 png = "vsroute01_06b/chronicle_deluxe_rank_s.png"
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06b.g4tx"
 name = "chronicle_deluxe_rank_a"
+texture = "chronicle_deluxe_vsroute01_06b"
+x = 0
+y = 0
 png = "vsroute01_06b/chronicle_deluxe_rank_a.png"
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06b.g4tx"
 name = "chronicle_deluxe_rank_b"
+texture = "chronicle_deluxe_vsroute01_06b"
+x = 68
+y = 0
 png = "vsroute01_06b/chronicle_deluxe_rank_b.png"
 
 # The «team cleared» gauge's orb of BATALLA LEGENDARIA (owner 2026-10-19: INAZUMA blue, ZONA LETAL purple, BATALLA
@@ -49,6 +63,9 @@ from = "chronicle_deluxe_legendary_orb_base"
 ops = [{ op = "mix_gradient", image = "chronicle_deluxe_legendary_orb_cyan", weight = [-0.2, 1.4, 1.4], clamp = [0.0, 1.0] }, { op = "mix_gradient", image = "chronicle_deluxe_legendary_orb_lime", weight = [-1.2, 1.6, 1.6], clamp = [0.0, 1.0] }]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_06b.g4tx"
 name = "chronicle_deluxe_legendary_orb"
+texture = "chronicle_deluxe_vsroute01_06b"
+x = 204
+y = 0
 recipe = "chronicle_deluxe_legendary_orb"

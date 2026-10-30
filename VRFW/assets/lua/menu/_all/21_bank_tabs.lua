@@ -22,17 +22,17 @@
 -- No engine call at load time.
 if VRFW_BankTabs == nil then
   local BT = {
-    CMD_TABS = 220023428,     -- CMND_VRFW_CARD_FILTER_TABS() -> n
-    CMD_TAB = 2135608063,     -- CMND_VRFW_CARD_FILTER_TAB(i) -> key, series, team, atlas, icon, icon_off
-    CMD_BAR = 622987679,      -- CMND_VRFW_CARD_FILTER_TAB_BAR(total) -> attach row ids
-    LOG = 3661580131,         -- CMND_EVT_LOG
-    SERIES_INFO = 964991930,  -- CMND_GET_CHARA_SERIES_INFO(1, id) -> ok, name
-    SET_TEXT = 1083631230,    -- CMND_SET_MENU_TEXT_STRING
-    VISIBLE = 711242136,      -- CMND_SET_LAYER_VISIBLE
-    MESH_VISIBLE = 3405944500,
+    CMD_TABS = VRFW_Cmd.VRFW_CARD_FILTER_TABS,     -- CMND_VRFW_CARD_FILTER_TABS() -> n
+    CMD_TAB = VRFW_Cmd.VRFW_CARD_FILTER_TAB,     -- CMND_VRFW_CARD_FILTER_TAB(i) -> key, series, team, atlas, icon, icon_off
+    CMD_BAR = VRFW_Cmd.VRFW_CARD_FILTER_TAB_BAR,      -- CMND_VRFW_CARD_FILTER_TAB_BAR(total) -> attach row ids
+    LOG = VRFW_Cmd.EVT_LOG,         -- CMND_EVT_LOG
+    SERIES_INFO = VRFW_Cmd.GET_CHARA_SERIES_INFO,  -- CMND_GET_CHARA_SERIES_INFO(1, id) -> ok, name
+    SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,    -- CMND_SET_MENU_TEXT_STRING
+    VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,      -- CMND_SET_LAYER_VISIBLE
+    MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE,
     SET_SPRITE = 558735651,
     ATTACH_CLEAR = 4233535095,
-    ATTACH_ROW = 1774843228,
+    ATTACH_ROW = VRFW_Cmd.SET_LAYER_ATTACH_LOCATOR_TRACE,
     FOCUSED = 2603265800,
     TAB_ITEM = 4044286600,    -- cmn06_20_list_tab_item
     BAR = 3310065218,         -- cmn06_04_list_tab_attach_11_only

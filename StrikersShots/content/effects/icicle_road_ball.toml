@@ -1,0 +1,38 @@
+# «Lanza de carámbanos» (Icicle Road, whs01830; wind shot, cut-in ev60_01830): while the ball flies to the goal it keeps
+# the look of the cut-in's last shot (c0300), held at its end state from the first frame: the ice ball in its spiky ice
+# flower, its tails laid from the kick point (never stretched, far end fading); and the icy road of the cut fixed on the
+# pitch from the kick point: the frost and the ice crystals freezing and bursting out of the pitch as the ball passes
+# over them and staying there, the blizzard streak and the ice glints shown as the ball passes; instead of the plain
+# wind special-shot aura (ega0075b).
+# * icicle_road (object ev6183ir00): the ball, its ice flower and tails;
+# * icicle_road_ice (object ev6183iw00, `ground_effect`): the icy road, its origin at the kick point, the cut-in replayed
+#   on the ball's distance from it (0.75 m a clip frame).
+# Both built by research/scripts/icicle_road_ball_fx.py from the cut-in's effect object ev60018300
+# (docs/game/media/icicle-road-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\icicle_road_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "icicle_road"
+from = "ega0075b"
+object = "effect/event/ev60/ev6183ir00/ev6183ir00.objbin"
+
+[[effect]]
+name = "icicle_road_ice"
+from = "ega0021"
+object = "effect/event/ev60/ev6183iw00/ev6183iw00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "icicle_road"
+when = { techniques = ["whs01830"] }
+aura = "icicle_road"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75
+# the icy road stays on the pitch from the kick point, played on the ball's ground distance from it (0.75 m a clip
+# frame, the generator's DRIFT; docs/framework/types/effect.md «Ground effect», «Distance clock»)
+ground_effect = { effect = "icicle_road_ice", anchor = "kick", drift = 0.75 }

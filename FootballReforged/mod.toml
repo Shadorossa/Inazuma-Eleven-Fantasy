@@ -3,13 +3,13 @@ former_ids = ["football_reforged"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Football Reforged"
-version = "1.11.0"
+version = "1.18.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "A base of match mechanics in modules: each module is a card on this mod's page in Mods (on / off, applies after a restart). Goalkeeper barrier: keepers resist shots while an orange part of their fatigue bar lasts. Furor: the GO Strikers tension gauge, a fire bar by each crest; full, L3 / R starts the furor phase. Both on by default. Match formats in the base: Football 7 (7 vs 7), Inazuma Street (3 vs 3, no keepers or referee) and the 5-a-side friendly without tactics or referee, rulebooks other mods and modes can pick."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-24"
+updated = "2026-10-30"
 # This mod's own names (TOML keys [FootballReforged.X], Lua FootballReforged.X, commands CMND_FOOTBALLREFORGED_*, tables
 # FootballReforged.*); never VRFW.
 prefix = "FootballReforged"
@@ -35,6 +35,12 @@ folder = "FootballReforged"
 #                                sides (the VR-Framework's [VRFW.DuelAura]; was Character Reforged's, gated by its option)
 #   modules\GoGameplay\          go_gameplay (GoGameplay.X): Inazuma Eleven GO style duels (side run back, no focus
 #                                countdown, no sliding tackles); off by default (docs/game/mods/go-gameplay.md)
+#   modules\StoppageTime\        StoppageTime (StoppageTime.X): added time at the end of every half from its events
+#                                and play-on while a team attacks when it runs out (docs/game/mods/stoppage-time.md)
+#   modules\SkillDuel\           SkillDuel (SkillDuel.X): a plain focus duel is won by reading the side: a contact on the
+#                                defender wins for him, the stats only nudge his reach (docs/game/mods/skill-duel.md)
+#   modules\AIRoles\             AIRoles (AIRoles.X): per-player AI roles by position that move a player without the
+#                                ball, Manual and Commander (VRFW match roles; docs/game/mods/ai-roles.md). 1.18.0
 # Until 1.1.0 they were internal modules (option rows of «Opciones de mods»); those rows are gone.
 # 1.4.0 (owner 2026-10-21): the own keeper's fatigue bar on the scoreboard empties left to right (anchored at its
 # inner, crest, end), mirroring the rival's bar (retail, empties right to left): assets\menu\00_soccer\soccer00\soccer00_01_kp\

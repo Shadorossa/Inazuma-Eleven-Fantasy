@@ -830,6 +830,80 @@ ja = "×%d（%d）"
 zh_hans = "×%d（%d）"
 zh_hant = "×%d（%d）"
 
+# the requirement card of a player: its header, a plate's / the header's count (%s = the first number, coloured)
+[[row]]
+id = "vrfw_cm_req_title"
+es = "Requisitos"
+en = "Requirements"
+fr = "Conditions"
+de = "Voraussetzungen"
+it = "Requisiti"
+pt = "Requisitos"
+ja = "条件"
+zh_hans = "条件"
+zh_hant = "條件"
+
+[[row]]
+id = "vrfw_cm_req_count"
+es = "%s / %d"
+en = "%s / %d"
+fr = "%s / %d"
+de = "%s / %d"
+it = "%s / %d"
+pt = "%s / %d"
+ja = "%s / %d"
+zh_hans = "%s / %d"
+zh_hant = "%s / %d"
+
+# a plate's name of a counted requirement (the plate shows have / need itself); elem: %s = the element / position
+[[row]]
+id = "vrfw_cm_req_team_level_short"
+es = "Nivel del equipo"
+en = "Team level"
+fr = "Niveau de l'équipe"
+de = "Teamstufe"
+it = "Livello della squadra"
+pt = "Nível da equipa"
+ja = "チームレベル"
+zh_hans = "队伍等级"
+zh_hant = "隊伍等級"
+
+[[row]]
+id = "vrfw_cm_req_elem_short"
+es = "Jugadores de %s"
+en = "%s players"
+fr = "Joueurs %s"
+de = "%s-Spieler"
+it = "Giocatori %s"
+pt = "Jogadores de %s"
+ja = "%sの選手"
+zh_hans = "%s球员"
+zh_hant = "%s球員"
+
+[[row]]
+id = "vrfw_cm_req_wins_short"
+es = "Partidos ganados"
+en = "Matches won"
+fr = "Matchs gagnés"
+de = "Gewonnene Spiele"
+it = "Partite vinte"
+pt = "Jogos ganhos"
+ja = "勝利数"
+zh_hans = "胜场"
+zh_hant = "勝場"
+
+[[row]]
+id = "vrfw_cm_req_goals_short"
+es = "Goles marcados"
+en = "Goals scored"
+fr = "Buts marqués"
+de = "Erzielte Tore"
+it = "Gol segnati"
+pt = "Golos marcados"
+ja = "得点数"
+zh_hans = "进球数"
+zh_hant = "進球數"
+
 # a team page: a player shown here who is signed on another page («Se ficha en: Raimon»)
 [[row]]
 id = "vrfw_cm_sold_at"
@@ -842,3 +916,41 @@ pt = "Contrata-se em: %s"
 ja = "スカウト先: %s"
 zh_hans = "招募于：%s"
 zh_hant = "招募於：%s"
+
+# a ghost's card, under «Signed on»: Accept asks to open that team page
+[[row]]
+id = "vrfw_cm_go_hint"
+es = "Aceptar: ir a ficharlo allí"
+en = "Accept: go and sign him there"
+fr = "Valider : aller le recruter là-bas"
+de = "Bestätigen: dort verpflichten"
+it = "Conferma: vai a ingaggiarlo lì"
+pt = "Aceitar: ir contratá-lo lá"
+ja = "決定: そのチームでスカウトする"
+zh_hans = "确定：前往该队招募"
+zh_hant = "確定：前往該隊招募"
+
+# a ghost's window: the button that opens his home page / the one that closes the window
+[[row]]
+id = "vrfw_cm_go"
+es = "Ir"
+en = "Go"
+fr = "Y aller"
+de = "Hingehen"
+it = "Vai"
+pt = "Ir"
+ja = "行く"
+zh_hans = "前往"
+zh_hant = "前往"
+
+[[row]]
+id = "vrfw_cm_close"
+es = "Cerrar"
+en = "Close"
+fr = "Fermer"
+de = "Schließen"
+it = "Chiudi"
+pt = "Fechar"
+ja = "閉じる"
+zh_hans = "关闭"
+zh_hant = "關閉"

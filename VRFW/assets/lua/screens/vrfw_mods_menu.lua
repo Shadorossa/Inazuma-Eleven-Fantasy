@@ -15,5 +15,5 @@ end
 
 function Step()
   funcLuaMenuCommand(1558704558, 4051526990 --[[crc32("vrfw_mods_menu")]], false)
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 4051526990)
+  funcLuaCommand(VRFW_Cmd.CLOSE_MENU_OBJECT, 4051526990)
 end

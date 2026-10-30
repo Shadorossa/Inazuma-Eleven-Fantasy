@@ -19,10 +19,8 @@ B.DEFAULT_LEVELS = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 150, 200 }
 
 local cat = nil -- false = none (off / unreadable)
 
-local function num(v, d)
-  if type(v) == "number" then return v end
-  return d
-end
+require "VRFW/lib/basics"
+local num = VRFW.value.num
 
 local function strs(v)
   local o = {}

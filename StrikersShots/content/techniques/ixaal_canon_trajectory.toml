@@ -1,0 +1,20 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Ixaal Canon (whs02730) and Vairaas Canon (whs02731), one cut-in ev60_02730.
+# Auras: content\effects\ixaal_canon_ball.toml (Ixaal) and content\effects\vairaas_canon_ball.toml (Vairaas).
+#
+# Measured: in the cut-in's last shot (c0300) the ball does not fly; the cannon beam fires from the ball's place at
+# 5.58 m, 20 deg down; the aura makes it level. Its beam reaches 2.6 m about the flight and the creature hangs 1.2 m
+# under it (research/scripts/ixaal_canon_ball_fx.py, vairaas_canon_ball_fx.py).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 2.80 m the whole way (nothing in the grass). unblockable = false: the game's block
+# rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Ixaal Canon (whs02730).
+[[edit]]
+target = "whs02730"
+trajectory = { points = [[0.0, 2.80]], straight = true, unblockable = false }
+
+# Vairaas Canon (whs02731).
+[[edit]]
+target = "whs02731"
+trajectory = { points = [[0.0, 2.80]], straight = true, unblockable = false }

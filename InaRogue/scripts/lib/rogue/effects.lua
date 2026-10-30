@@ -51,7 +51,9 @@ function E.parse_effect(t)
     return { kind = "node_weight", content = c, mult = v }
   elseif kind == "reward_mult" then
     local r = t.reward or "all"
-    if r ~= "frags" and r ~= "points" and r ~= "all" then return nil, "reward_mult: reward `" .. tostring(r) .. "` (frags / points / all)" end
+    if r ~= "frags" and r ~= "points" and r ~= "coins" and r ~= "all" then
+      return nil, "reward_mult: reward `" .. tostring(r) .. "` (frags / points / coins / all)"
+    end
     local v, why = value("value")
     if not v then return nil, why end
     return { kind = "reward_mult", reward = r, value = v }

@@ -1,0 +1,19 @@
+schema = "VRFW.sprite_redirect/1"
+# Chronicle Deluxe: the game draws an item's icon from its key prefix's sheet by the key; the mod's item icons
+# live in its own atlas (content\images\menu\200_icon\02_icon_item\golden_coin.toml, icon_item02.toml).
+
+[[VRFW.SpriteRedirect]]
+name = "golden_coin_icon"
+atlas = "#/menu/200_icon/02_icon_item/icon_item10.g4tx"
+own_atlas = "#/menu/200_icon/02_icon_item/chronicle_deluxe_item_icons.g4tx"
+sprites = [
+    "tk_gc000001",
+]
+
+[[VRFW.SpriteRedirect]]
+name = "master_seal_icon"
+atlas = "#/menu/200_icon/02_icon_item/icon_item02.g4tx"
+own_atlas = "#/menu/200_icon/02_icon_item/chronicle_deluxe_item_icons.g4tx"
+sprites = [
+    "ke000900",
+]

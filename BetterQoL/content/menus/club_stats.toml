@@ -5,7 +5,7 @@
 # Layers: the retail content guide line of the archive (the totals' «since» line), one retail list row of «Guardar»
 # kept off screen as the input anchor (every key of the page comes to it: MENU_CMD_INFO rows -> OnFunction / OnBack),
 # and the page's drawing pools: quads of cmn01_10_new_icon for the page's atlas (util_club_stats) and the game's list
-# plates, the retail list character card for the portraits, the retail back-button text for the texts.
+# plates, the synergy row's face icon for the minifaces, the retail back-button text for the texts.
 # Script: assets/lua/screens/util_club_stats_menu.lua.
 schema = "VRFW.menu/2"
 
@@ -32,7 +32,7 @@ set = [
 
 [[object]]
 name = "util_cst_face"
-from = "team00_01_chara_card_for_list"
+from = "team16_03_synergy_chara_condition_list"
 priority = 1004
 
 [[object]]

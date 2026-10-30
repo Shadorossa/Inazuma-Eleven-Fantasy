@@ -17,11 +17,11 @@
 -- global wrapped here, and the VRFW_Host dispatcher for a stem patch that redefines OnInit later, e.g. a menu's
 -- fm_build); the check runs once per menu. No engine call at load time.
 do
-  local NET = 3706164102          -- crc32("CMND_VRFW_FRIENDLY_TITLE_NET")
-  local MENU_BACK = 879824671     -- crc32("CMND_VRFW_FRIENDLY_MENU_BACK")
-  local BACK = 3133514456         -- crc32("CMND_EVT_PACHANGA_BACK") (= CMND_VRFW_FRIENDLY_BACK)
-  local LOG = 3661580131          -- crc32("CMND_EVT_LOG")
-  local GAME_RESET = 3897105282   -- crc32("CMND_GAME_RESET")
+  local NET = VRFW_Cmd.VRFW_FRIENDLY_TITLE_NET          -- crc32("CMND_VRFW_FRIENDLY_TITLE_NET")
+  local MENU_BACK = VRFW_Cmd.VRFW_FRIENDLY_MENU_BACK     -- crc32("CMND_VRFW_FRIENDLY_MENU_BACK")
+  local BACK = VRFW_Cmd.EVT_PACHANGA_BACK         -- crc32("CMND_EVT_PACHANGA_BACK") (= CMND_VRFW_FRIENDLY_BACK)
+  local LOG = VRFW_Cmd.EVT_LOG          -- crc32("CMND_EVT_LOG")
+  local GAME_RESET = VRFW_Cmd.GAME_RESET   -- crc32("CMND_GAME_RESET")
   local FADE = 609722083          -- (on, seconds): screen fade to black
   local TITLE = {title_menu_2 = true, title_main = true}
 
@@ -51,9 +51,9 @@ do
     -- a hub without the friendly executor: BACK + the VS team (no reward table rolled here: logged)
     local okb, closed, _, _, _, team_swapped = pcall(funcLuaCommand, BACK, 3)
     if okb and closed == true and team_swapped == true then
-      local okv, had, vs = pcall(funcLuaCommand, 4127470188 --[[CMND_EVT_PACHANGA_VS]], 0)
+      local okv, had, vs = pcall(funcLuaCommand, VRFW_Cmd.EVT_PACHANGA_VS, 0)
       if okv and had == true and type(vs) == "number" and vs >= 0 then
-        pcall(funcLuaCommand, 662075964 --[[CMND_SET_VS_USE_TEAM_SET]], vs)
+        pcall(funcLuaCommand, VRFW_Cmd.SET_VS_USE_TEAM_SET, vs)
       end
     end
     log("friendly " .. tostring(id) .. ": back in its hub, closed without VRFW_PACHANGA (no rewards rolled)",

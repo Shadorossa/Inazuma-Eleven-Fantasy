@@ -7,19 +7,19 @@ do
   local D = VRFW_DropList
   D.ROW = @crc:CMND_VRFW_DROP_ROW@                  -- () -> section (1 AURAS header, 2 aura item, 3 a declared section's header, 0 other, -1 none), kind, id[, picture]
   D.TEXT_AURAS = @crc:vrfw_drop_list_auras@          -- menu_text "AURAS"
-  D.TEXT_GET = 4074371074                            -- CMND_TEXT_GET (textId) -> text
-  D.SET_TEXT = 1083631230                            -- (layer, text node, string, instance)
-  D.TEXT_VISIBLE = 1505208242                        -- (layer, text node, on, instance)
-  D.TEXT_RECT = 3549540977                           -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, instance, text node, string) -> w, h
-  D.MESH_VISIBLE = 3405944500                        -- (layer, mesh, on, instance)
+  D.TEXT_GET = @crc:CMND_TEXT_GET@                            -- (textId) -> text
+  D.SET_TEXT = @crc:CMND_SET_MENU_TEXT_STRING@                            -- (layer, text node, string, instance)
+  D.TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@                        -- (layer, text node, on, instance)
+  D.TEXT_RECT = @crc:CMND_GET_MENU_TEXT_RECT_SIZE@                           -- (layer, instance, text node, string) -> w, h
+  D.MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@                        -- (layer, mesh, on, instance)
   D.LOC_VISIBLE = 2158717427                         -- (layer, locator, on, instance)
   D.NODE_POS = 1856671416                            -- (layer, instance, node, x, y, z)
   D.NODE_SCALE = 2885415772                          -- (layer, instance, node, w, h)
   D.SET_TEX = 558735651                              -- (layer, atlas path, sprite, texture slot, 0, instance)
-  D.LOAD_TEX = 839427544                             -- CMND_LOAD_MENU_RES_TEXTURE (path)
-  D.ALPHA = 4231609516                               -- CMND_SET_LAYER_MODEL_ALPHA (layer, instance, 1, alpha, mesh)
+  D.LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@                             -- (path)
+  D.ALPHA = @crc:CMND_SET_LAYER_MODEL_ALPHA@                               -- (layer, instance, 1, alpha, mesh)
   D.FACE = 346643487                                 -- face icon (layer, instance, mesh, slot, charaId, 0, size, ...)
-  D.SKILL_INFO = 2580586398                          -- CMND_GET_SOCCER_SKILL_INFO (item, n): 7 element, 13 aura type, 17 aura chara
+  D.SKILL_INFO = @crc:CMND_GET_SOCCER_SKILL_INFO@                          -- (item, n): 7 element, 13 aura type, 17 aura chara
   D.W38 = 2268931645                                 -- #/menu/10_win/win05/win05_38/<LG>/win05_38.g4tx
   D.T30_PATH = "#/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx"
   D.T30 = 2815298114                                 -- crc of D.T30_PATH (the aura cards' atlas)
@@ -55,12 +55,12 @@ do
   -- the team00_30 band of each aura type (CMND_GET_SOCCER_SKILL_INFO 13: 0 keshin, 1 armed keshin, 2 Mix-Max, 3 totem,
   -- 4 bond transformation, 5 awakening, 6 mode change), one per element 1-5 (fire / wind / wood / earth / none)
   D.BANDS = {
-    [0] = {1716659057, 4284183243, 2287747677, 372824062, 1631577960},   -- fs_base01-05
-    [1] = {1742805750, 4276636492, 2314173402, 395046521, 1619844847},   -- fsa_base01-05
-    [2] = {3558327990, 1293850380, 974759834, 2759668281, 3547988655},   -- mixi_base01-05
-    [3] = {2619781135, 87024053, 1915277603, 3964421248, 2605413398},    -- soul_base01-05
-    [4] = {1514509020, 3276587878, 3024876528, 707749459, 1562924741},   -- kizuna_base01-05
-    [5] = {4250578944, 1683218874, 324325676, 2368750735, 4197938201},   -- power_base01-05
+    [0] = {@crc:fs_base01@, @crc:fs_base02@, @crc:fs_base03@, @crc:fs_base04@, @crc:fs_base05@},
+    [1] = {@crc:fsa_base01@, @crc:fsa_base02@, @crc:fsa_base03@, @crc:fsa_base04@, @crc:fsa_base05@},
+    [2] = {@crc:mixi_base01@, @crc:mixi_base02@, @crc:mixi_base03@, @crc:mixi_base04@, @crc:mixi_base05@},
+    [3] = {@crc:soul_base01@, @crc:soul_base02@, @crc:soul_base03@, @crc:soul_base04@, @crc:soul_base05@},
+    [4] = {@crc:kizuna_base01@, @crc:kizuna_base02@, @crc:kizuna_base03@, @crc:kizuna_base04@, @crc:kizuna_base05@},
+    [5] = {@crc:power_base01@, @crc:power_base02@, @crc:power_base03@, @crc:power_base04@, @crc:power_base05@},
     [6] = {3293713115, 1566262113, 710702071, 3023627860, 3275740866}    -- mode_base01-05
   }
   D.styled = {}   -- instance -> "aura" / "header" (its nodes moved)
@@ -139,7 +139,7 @@ do
   -- the aura's portrait on (mesh, slot) as the game's aura windows draw it: the aura character as aura art of its type
   -- (SwapLayerFaceIconTex, D.ART_SIZE: keshin / armour / bond / awakening 8 = aura_fs, totem 14 = aura_soul, Mix-Max /
   -- mode change 12 = aura_mixi, the last only when 2208175668 says that art exists); without that art the character's
-  -- list face icon (552280324). True = drawn.
+  -- list face icon (VRFW_FaceIcon.Request). True = drawn.
   function D.Portrait(L, i, mesh, slot, chara, kind)
     local art = D.ART_SIZE[kind] or 8
     if art == 12 then
@@ -155,16 +155,13 @@ do
       end
       cmd(D.RESET_FACE, L, i, slot)
     end
-    pcall(SetDisableForceCharaInvalidUseTarget)
-    local ok, r = pcall(funcLuaMenuCommand, 552280324 --[[chara face icon]], L, i, false, mesh, slot, 0, 0, chara)
-    pcall(SetEnableForceCharaInvalidUseTarget)
-    return ok and r ~= false
+    return VRFW_FaceIcon.Request(L, i, chara, mesh, slot)
   end
 
   -- a Mix-Max / mode change named by its own part: the game's item name («Miximax Trans: Liu Bei») when it fits before
   -- the rate, else only the part after the colon («Liu Bei»; a text tag there: the character's name)
   function D.SpecificName(L, i, item, chara)
-    local okn, name = pcall(funcLuaCommand, 1883585771 --[[CMND_GET_ITEM_PARAM]], item, 0)
+    local okn, name = pcall(funcLuaCommand, @crc:CMND_GET_ITEM_PARAM@, item, 0)
     if not okn or type(name) ~= "string" then
       return
     end
@@ -177,7 +174,7 @@ do
       return
     end
     if string.find(tail, "<", 1, true) ~= nil and chara ~= 0 then
-      local okc, a, b = pcall(funcLuaCommand, 4060384944 --[[CMND_GET_CHARA_INFO]], chara, 10)
+      local okc, a, b = pcall(funcLuaCommand, @crc:CMND_GET_CHARA_INFO@, chara, 10)
       tail = (okc and type(b) == "string" and b) or (okc and type(a) == "string" and a) or nil
     end
     if tail ~= nil and tail ~= "" then
@@ -250,10 +247,9 @@ end
 local vrfw_dl_init = OnInit
 function OnInit(...)
   local game = 0
-  local okh, has = pcall(funcLuaCommand, 2947612279, VRFW_DropList.GAME_PARAM)
-  if okh and has then
-    local okg, g = pcall(funcLuaCommand, 3522198769, VRFW_DropList.GAME_PARAM)
-    if okg and type(g) == "number" then game = g end
+  if VRFW_Param.Has(VRFW_DropList.GAME_PARAM) then
+    local g = VRFW_Param.Get(VRFW_DropList.GAME_PARAM)
+    if type(g) == "number" then game = g end
   end
   VRFW_DropList.ExcludeOwnedFor(game)
   local r = {vrfw_dl_init(...)}
@@ -360,9 +356,9 @@ function OnUpdateTabData(a1, ...)
   end
   local r = {vrfw_dl_tabs(a1, ...)}
   if left == 1 then
-    local okn, n = pcall(funcLuaMenuCommand, 1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], D.TAB_ITEM)
+    local okn, n = pcall(funcLuaMenuCommand, @crc:CMND_GET_CREATE_LAYER_NUM@, D.TAB_ITEM)
     for k = 0, ((okn and type(n) == "number") and n or 1) - 1 do
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], D.TAB_ITEM, k, false)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, D.TAB_ITEM, k, false)
     end
   end
   return table.unpack(r)

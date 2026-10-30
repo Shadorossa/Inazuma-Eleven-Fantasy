@@ -233,7 +233,7 @@ do
     TEXT_PLATE = 1172899594,         -- (layer, idx, node): the plate follows the text
     LAYER_VISIBLE = 711242136,
     SOUND = 1917805374, SE_OK = 3848881948, SE_DECIDE = 4235359837, SE_NG = 2086672038,
-    PARAM_HAS = 2947612279, PARAM_GET = 3522198769, PARAM_CHARA = 4161869490,
+    PARAM_CHARA = 4161869490,
     SKILL_INFO = 2580586398,         -- (skill, 4) -> ok, name text id
     NAME_TEXT = 720417636,           -- (name text id) -> string
     TELOP_FRAMES = 300,              -- how long a question / an answer stays (frames)
@@ -435,8 +435,8 @@ do
       Board.chara, Board.mode, Board.last_idx, Board.guide_on, Board.detail = nil, nil, nil, false, nil
       Board.armed, Board.telop_ours, Board.telop_frames, Board.cooldown = nil, false, 0, 0
       pcall(function()
-        if funcLuaCommand(Board.PARAM_HAS, Board.PARAM_CHARA) == true then
-          Board.SetChara(funcLuaCommand(Board.PARAM_GET, Board.PARAM_CHARA))
+        if VRFW_Param.Has(Board.PARAM_CHARA) then
+          Board.SetChara(VRFW_Param.Get(Board.PARAM_CHARA))
         end
       end)
       return previous(...)

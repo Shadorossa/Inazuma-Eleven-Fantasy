@@ -1,0 +1,26 @@
+# «Desolación eterna» (Dark Reaver, whs01930; void shot, cut-in ev60_01930): while the ball flies to the goal it wears
+# the cut-in's last shot (c0500, the ball diving from 12.8 m toward the camera, held at frame 484 from the aura's first
+# frame): the white-hot core in its red-black rings (round from every side), the red flame swirl streaming back, the
+# dark-red whips round it and the dark breath it sheds, a row of spiral vortex rings facing along the flight, coming
+# out of the kick point as the ball flies (never stretched) and fading out at the far end, x0.45. The scenery, the
+# keshin and the parts of the kick gone by then (the slash trail, the flashes) stay out.
+# The object is ev6193dr00 (effect/event/ev60/ev6193dr00/), built by research/scripts/dark_reaver_ball_fx.py from
+# ev60019300 (docs/game/media/dark-reaver-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the void special-shot aura's row (like = "ega0075e"). Flight:
+# content\techniques\dark_reaver_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "dark_reaver_breath"
+from = "ega0075e"
+object = "effect/event/ev60/ev6193dr00/ev6193dr00.objbin"
+
+[[shot_aura]]
+name = "dark_reaver_breath"
+when = { techniques = ["whs01930"] }
+aura = "dark_reaver_breath"
+like = "ega0075e"
+anchor = "kick"
+drift = 0.75

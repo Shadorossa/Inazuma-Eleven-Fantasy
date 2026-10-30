@@ -6,7 +6,7 @@
 #   util_cs_panel   the panel (soccer11_20 with its meshes off screen + 20 locators _atc_cs<r><c>) that mounts the cells
 #                   and the free texts
 #   util_cs_band    x6, sprite quads: a copy of the retail stamina gauge btl06_13 whose frame shows one of Utilities'
-#                   sprites (v6: table row bands, timeline line, chip backs; under the texts: priority 302 < 303)
+#                   sprites (its own atlas util_career_page, loaded by the patches at the end; v6: table row bands, timeline line, chip backs; under the texts: priority 302 < 303)
 #   util_cs_icon    x4 (v6), the same quad over the texts (priority 304): milestone icons, today's dot
 # v6 (2026-10-16): a timeline (signing, first goal, first MVP, today) with three chips, then a card-back table (modes,
 # total, record line); see the graft's util_cs_plate.src.lua.
@@ -108,3 +108,21 @@ add_layer = { name = "util_cs_text", object = "util_cs_text", count = 32, align 
 [[patch]]
 menu = "personal_plate_menu_for_datafile"
 add_layer = { name = "util_cs_textb", object = "util_cs_textb", count = 8, align = ["right", "middle"], scale = 0.20000000298023224, after = "util_cs_text", groups = [{ group = "personal_plate_menu", flags = [0, 0, 0, 0, 1, 0], after = "util_cs_text" }] }
+
+# the mod's own atlas util_career_page (the page's band, line, chip and icon sprites: images\menu\career_band.toml)
+[[patch]]
+menu = "personal_plate_menu"
+res = ["#/menu/102_team/util_career_page/util_career_page.g4tx"]
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+res = ["#/menu/102_team/util_career_page/util_career_page.g4tx"]
+
+# the mod's own localised atlas util_career_title (the page title util_gtxt_career01: images\menu\00_soccer\soccer11\career_title.toml)
+[[patch]]
+menu = "personal_plate_menu"
+res = ["#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"]
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+res = ["#/menu/102_team/util_career_title/<LG>/util_career_title.g4tx"]

@@ -33,11 +33,14 @@ local loot = require "lib/rogue/loot"
 local Bk = require "lib/rogue/bank"
 local Items = require "lib/rogue/items"
 local Blocks = require "lib/rogue/svc_blocks"
+local Rules = require "lib/rogue/run_rules"
+require "lib/rogue/ascension" -- the Ascension / challenge modifiers of the v2 runs (lib/rogue/run_rules.lua)
 local info, warn, err = U.logger("rogue run")
 
 local S = {}
 local K, C, ST = map.KIND, R.CODE, R.STAGE
-S.OUTCOME = { CLEARED = 1, RUN_OVER = 2, REPLAY = 3 }
+-- RUN_WON: the final boss of a v2 run is beaten (the run waits for CMND_INAROGUE_RL_RUN_OUTRO: endless or the end)
+S.OUTCOME = { CLEARED = 1, RUN_OVER = 2, REPLAY = 3, RUN_WON = 4 }
 local OUT = S.OUTCOME
 
 local inner = nil       -- { slot, run, map }
@@ -52,15 +55,52 @@ local function cat() return bosses.catalogue(cfg().bosses) end
 local function run_map(r)
   local mults = nil
   if r.coach_since ~= 0 and r.phase >= r.coach_since then mults = Core.meta.coach_content_mults(r.coach) end
-  local m = map.generate(r.seed, r.phase, cfg(), mults)
+  local m = map.generate(r.seed, r.phase, Rules.run_cfg(cfg(), r), mults)
   local c = cat()
   if r.rivals_rule >= bosses.RULE and c then bosses.place(m, r.seed, r.phase, c) end
   return m
 end
 
-local function note_coach(r)
+-- the endless rivals' stat multiplier in the native table InaRogue.RivalScale (content\game\rogue.toml's
+-- [[VRFW.MatchStat]] InaRogue.RivalScale, the rival roster rows of the match): written when it changes
+local published_scale = nil
+local pick_for                -- (below) the seeded match of a node
+
+-- the levels the match of run `r`'s node in progress asks above the level the game plays (the stat multiplier
+-- [rogue.run] over_cap_stat_per_level per level; 0 = none)
+local function over_cap_levels(r, m)
+  if not r or not m then return 0 end
+  local node = (r.pending and r.pending.node) or r.cur
+  local n = map.node(m, node)
+  if not n or not pick_for then return 0 end
+  local nominal
+  if n.kind == K.BOSS then
+    nominal = matches.boss_level_raw(Rules.run_cfg(cfg(), r), r.phase, math.max(m.cols - 1, 1))
+  else
+    local p = pick_for(r, m, node)
+    nominal = p and (p.nominal or p.level) or 0
+  end
+  return require("lib/rogue/growth").over_cap(nominal or 0)
+end
+
+local function publish_rival_scale(r, m)
+  local over = over_cap_levels(r, m)
+  local k = Rules.rival_scale(r) * (1 + over * Rules.layout(r).over_cap_stat_per_level)
+  if k == published_scale then return end
+  local rows = (k ~= 1.0) and { { 0, k } } or {}
+  local ok, e = pcall(VRFW.native.table_replace, "InaRogue.RivalScale", nil, rows)
+  if ok then
+    published_scale = k
+    info(string.format("rival stats x%.3f (endless x%.2f, %d level(s) above the cap)", k, Rules.rival_scale(r), over))
+  else
+    warn("InaRogue.RivalScale: " .. tostring(e))
+  end
+end
+
+local function note_coach(r, m)
   if r then last_coach = r.coach end
   Core.meta.coach_sync(r)
+  publish_rival_scale(r, m)
   Core.run_changed(r)
 end
 
@@ -107,7 +147,7 @@ local function save(i, why)
   local r = i.run
   if not r then return C.NO_RUN end
   i.map = run_map(r)
-  note_coach(r)
+  note_coach(r, i.map)
   local ok, where = R.save(r)
   if ok then
     local cl = {}
@@ -155,14 +195,14 @@ local function sync_lifetime(force)
 end
 
 -- the seeded match of node k of the current phase
-local function pick_for(r, m, k)
+pick_for = function(r, m, k)
   local n = map.node(m, k)
   if not n then return nil end
   local beaten = {}
   for _, b in ipairs(r.beaten_phase) do beaten[U.lower(U.trim(b))] = true end
   for _, b in ipairs(lifetime) do beaten[U.lower(U.trim(b))] = true end
   local cols = math.max(m.cols - 1, 1)
-  return matches.pick(r.seed, r.phase, k, n.kind, n.col, cols, r.rivals_rule, { cfg = cfg(), cat = cat(), beaten = beaten })
+  return matches.pick(r.seed, r.phase, k, n.kind, n.col, cols, r.rivals_rule, { cfg = Rules.run_cfg(cfg(), r), cat = cat(), beaten = beaten })
 end
 
 -- the coach of the run in progress (nil = no run) / of the last run
@@ -195,13 +235,35 @@ local function clock_seed()
   return math.max(s, 1)
 end
 
+-- the options the next run starts with (CMND_INAROGUE_RL_RUN_OPTIONS, lib/rogue/ascension.lua): Ascension, challenge
+-- keys, weekly run (week id, its seed)
+local function no_options() return { ascension = 0, challenges = {}, weekly = 0, seed = 0 } end
+local start_options = no_options()
+function S.set_start_options(o) start_options = o or no_options() end
+function S.start_options() return start_options end
+
+-- a v2 run: the stage board, the run currency, the options of the menu (taken once)
+local function make_v2(r)
+  local o = start_options
+  start_options = no_options()
+  r.board_rule = Rules.BOARD_RULE
+  r.stages = Rules.layout(r).stages
+  r.ascension = math.max(U.int(o.ascension, 0), 0)
+  r.challenges = U.copy(o.challenges or {})
+  r.weekly = U.int(o.weekly, 0)
+  r.coins = math.max(Rules.get().start_coins + Rules.modifiers(r).start_coins, 0)
+  r.stats = R.new_stats()
+end
+
 -- start a run of the active slot (replaces any run): code, seed. `squad` = bank uids, `slots` = the team screen's slots
 -- (empty = the picker), `formation` = formId
 function S.start_run(seed, squad, slots, formation)
+  if seed == 0 and U.int(start_options.seed, 0) ~= 0 then seed = start_options.seed % U.TWO32 end
   if seed == 0 then seed = clock_seed() end
   local coach = Core.meta.coach_take_pick()
   local code = with(function(i)
     local r = R.new(i.slot, seed)
+    make_v2(r)
     R.set_coach(r, coach, Core.meta.coach_has_start_items(coach))
     r.squad = squad
     r.slots = slots
@@ -325,9 +387,44 @@ local function edge_into(r, m, node)
   return 0, 0
 end
 
+-- the name a random rival shows when its look has no name text (text/rows/team_text.toml)
+local UNNAMED_RIVAL = "evt_rl_tmname_unknown"
+
+local function text_of(key)
+  local ok, s = pcall(VRFW.text, key)
+  return ok and type(s) == "string" and s or ""
+end
+
+-- the name and emblem a node's rival shows. A random-team rival takes the look its build will write over the slot team
+-- (RandomTeam.LookOf: same rule, seed, node key and stage as S.Rival), so the map node, the VS screen and the match
+-- show one team; any other row shows its own name and emblem.
+local function rival_shown(row, guest, node, phase, seed)
+  if guest ~= 0 or not pool.is_random(row) then return row.rival, row.emblem end
+  local RT = rawget(_G, "RandomTeam")
+  local name, emblem = "", row.emblem
+  if RT and RT.LookOf then
+    local key = (math.max(phase, 1) - 1) * pool.PHASE_STRIDE + node
+    local _, em, _, text = RT.LookOf(pool.random_rule(cfg().rivals, row), seed % U.TWO32, key, row.tier)
+    if type(em) == "number" and em ~= 0 then emblem = em end
+    if type(text) == "string" and text ~= "" then name = text_of(text) end
+  end
+  if name == "" then name = text_of(UNNAMED_RIVAL) end
+  return name, emblem
+end
+
 local function match_values(p)
   local row = matches.row_of(p.game, cfg().rivals)
-  return p.game, p.diff, p.stadium, p.level, row and row.rival or ""
+  local name = row and row.rival or ""
+  if row and pool.is_random(row) then
+    local q = with(function(i)
+      local r, m = i.run, i.map
+      if not r or not m then return nil end
+      local np = pick_for(r, m, p.node)
+      return np and { np.guest, r.phase, r.seed } or nil
+    end)
+    if q then name = rival_shown(row, q[1], p.node, q[2], q[3]) end
+  end
+  return p.game, p.diff, p.stadium, p.level, name
 end
 
 function S.Resume()
@@ -372,11 +469,12 @@ function S.Match(k_arg)
     if not n then return nil end
     local p = pick_for(r, m, k)
     if not p then return nil end
-    return { p, n.kind }
+    return { p, n.kind, r.phase, r.seed }
   end)
   if not x then return false end
   local p = x[1]
-  return true, p.game, p.diff, p.row.stadium, x[2], p.level, p.row.rival, p.row.emblem
+  local rival, emblem = rival_shown(p.row, p.guest, k, x[3], x[4])
+  return true, p.game, p.diff, p.row.stadium, x[2], p.level, rival, emblem
 end
 
 -- CMND_EVT_RL_RUN_RIVAL (node; -1 = the pending / current node) -> rule, seed, node key, stage, slot: the random-team
@@ -419,6 +517,7 @@ function S.Reserve()
     met_row = p.row
     local pend = r.pending
     pend.game, pend.diff, pend.stadium, pend.level = p.game, p.diff, p.row.stadium, p.level
+    pend.result, pend.gf, pend.ga = 0, 0, 0
     out = U.copy(pend)
     local c = save(i, "match reserved")
     if c ~= C.OK then
@@ -437,14 +536,56 @@ function S.Reserve()
   return code, 0, 0, 0, 0, ""
 end
 
+-- CMND_INAROGUE_RL_RUN_RECORDED () -> result (0 none, 1 win, 2 lose, 3 draw), gf, ga: the result of the reserved match
+-- recorded in the run file at its end (S.on_match_result), so no screen change or game reset loses it
+function S.Recorded()
+  sync_lifetime(false)
+  local x = with(function(i)
+    local r = i.run
+    if not r or not r.pending or R.stage(r) ~= ST.MATCH then return nil end
+    return { r.pending.result or 0, r.pending.gf or 0, r.pending.ga or 0 }
+  end)
+  if not x then return 0, 0, 0 end
+  return x[1], x[2], x[3]
+end
+
+-- signal vrfw.match_result (VR-Framework, at the match's result builder, before the result screen): the result of the
+-- run's reserved match is written into the run file at once
+function S.on_match_result()
+  if not U.rogue_active() then return nil end
+  local MR = rawget(_G, "MatchResult")
+  local last = MR and MR.last
+  if type(last) ~= "table" then return nil end
+  local f, a = U.int(last.score_for, 0), U.int(last.score_against, 0)
+  local res = last.won == true and 1 or (f == a and 3 or 2)
+  local code = edit("match result recorded", function(r)
+    local p = r.pending
+    if not p or R.stage(r) ~= ST.MATCH then return C.NOT_CLEARED end
+    if p.game ~= 0 and U.int(last.game, 0) % U.TWO32 ~= p.game % U.TWO32 then return C.BAD_NODE end
+    p.result, p.gf, p.ga = res, f > a and 1 or 0, a > f and 1 or 0
+    if r.stats then r.stats.goals = (r.stats.goals or 0) + math.max(f, 0) end   -- the run's goals (its records)
+    return C.OK
+  end)
+  info(string.format("match result %d (%d-%d) of game %s -> code %d", res, f, a, U.hex(U.int(last.game, 0)), code))
+  return nil
+end
+
 function S.Result(result_arg, gf_arg, ga_arg)
   sync_lifetime(false)
   local result = U.int(result_arg, 0)
   local gf, ga = U.int(gf_arg, 0), U.int(ga_arg, 0)
+  if result == 0 then
+    local rr, rgf, rga = S.Recorded()
+    if rr ~= 0 then
+      result, gf, ga = rr, rgf, rga
+      info(string.format("result: no result flag, the recorded result %d is used", rr))
+    end
+  end
   local c = cfg()
   local lost = result == 2 or (result == 3 and c.draw_is_loss) or (result == 0 and c.quit_is_loss)
   local won = result == 1
   local boss, uids, phase, outcome = false, {}, 0, OUT.REPLAY
+  local coins_got, ended = 0, nil
   local seed, node, kind = 0, 0, 0
   local rival, row, guest, era = "", "", 0, ""
   local code = with(function(i)
@@ -472,6 +613,19 @@ function S.Result(result_arg, gf_arg, ga_arg)
       outcome = OUT.CLEARED
       local e = R.clear_current(r)
       if e ~= C.OK then return e end
+      if Rules.is_v2(r) then
+        coins_got = Rules.coins_for_win(r, kind)
+        r.coins = r.coins + coins_got
+        local st = r.stats
+        st.coins_earned = st.coins_earned + coins_got
+        st.wins = st.wins + 1
+        if kind == K.ELITE then st.elites = st.elites + 1 end
+        if boss then st.bosses = st.bosses + 1 end
+        if boss and Rules.final_stage(r) then
+          outcome = OUT.RUN_WON
+          r.outro = true
+        end
+      end
       local cc = save(i, "match won")
       if cc ~= C.OK then
         i.run = before
@@ -481,11 +635,13 @@ function S.Result(result_arg, gf_arg, ga_arg)
     elseif lost then
       outcome = OUT.RUN_OVER
       r.lost = r.lost + 1
+      ended = R.copy(r)
       if delete(i) then
         info(string.format("slot %d: match lost, run over (file deleted)", i.slot))
         i.run = nil
         i.map = nil
         Core.meta.coach_sync(nil)
+    publish_rival_scale(nil)
         return C.OK
       end
       i.run = before
@@ -504,8 +660,10 @@ function S.Result(result_arg, gf_arg, ga_arg)
   local fid, fname, frar, fown, ftot = 0, "", 0, 0, 0
   if code == C.OK then
     if outcome == OUT.RUN_OVER then
-      Core.bank.record_run_end(Bk.RESULT.LOST, phase)
-    elseif outcome == OUT.CLEARED then
+      local won_before = ended ~= nil and ended.victory
+      local pts = Core.bank.record_run_end(won_before and Bk.RESULT.WON or Bk.RESULT.LOST, phase)
+      S.note_summary(ended, won_before and "won" or "lost", pts)
+    elseif outcome == OUT.CLEARED or outcome == OUT.RUN_WON then
       -- a won «Jefe de puerta» (§33) pays the boss fragments too (it does not end the phase)
       local big = boss or kind == K.GATE
       each = big and c.frags_boss or c.frags_win
@@ -517,12 +675,14 @@ function S.Result(result_arg, gf_arg, ga_arg)
       Core.meta.unlocks_on_win(kind, phase, rival, row, uids, guest ~= 0 and { guest } or {}, era)
       require("lib/rogue/collections").team_beaten(rival, phase)
       points = Core.meta.earn_win(kind, phase)
+      -- a v2 run: the rewards of the win the menus show next (pick 1 of 3 players, the relic of an Élite / boss)
+      if outcome == OUT.CLEARED then require("lib/rogue/offers").after_win(node, kind, coins_got) end
     end
     Blocks.after_result(outcome == OUT.CLEARED, outcome == OUT.RUN_OVER, boss or kind == K.GATE)
   end
   info(string.format("result %d (%d-%d) -> code %d outcome %d boss %s frags %d x %d", result, gf, ga, code, outcome,
     tostring(boss), each, players))
-  return code, outcome, boss, each, players, fid, fname, frar, fown, ftot, points
+  return code, outcome, boss, each, players, fid, fname, frar, fown, ftot, points, coins_got
 end
 
 function S.Clear()
@@ -555,19 +715,130 @@ function S.NextPhase()
 end
 
 function S.Abandon()
-  local ended = nil
+  local ended, snap = nil, nil
   local code = with(function(i)
+    snap = i.run and R.copy(i.run) or nil
     if not delete(i) then return C.WRITE_FAILED end
     info(string.format("slot %d: run abandoned (file deleted)", i.slot))
     ended = i.run and i.run.phase or nil
     i.run = nil
     i.map = nil
     Core.meta.coach_sync(nil)
+    publish_rival_scale(nil)
     return C.OK
   end)
-  if ended then Core.bank.record_run_end(Bk.RESULT.ABANDONED, ended) end
+  if ended then
+    local won_before = snap ~= nil and snap.victory
+    local pts = Core.bank.record_run_end(won_before and Bk.RESULT.WON or Bk.RESULT.ABANDONED, ended)
+    S.note_summary(snap, won_before and "won" or "abandoned", pts)
+  end
   return code
 end
+
+-- ---------------------------------------------------------------------------------------- the run end (v2)
+
+local last_summary = ""
+
+local function summary_text(r, result, points)
+  if not r then return "" end
+  local st = r.stats or R.new_stats()
+  local stages = (r.stages or 0) > 0 and r.stages or Rules.layout(r).stages
+  local head = Rules.text("InaRogue.run_summary_" .. result, r.phase, stages)
+  local body = Rules.text("InaRogue.run_summary_body", st.wins, st.elites, st.bosses, st.recruits, st.coins_earned, st.items,
+    points or 0)
+  local extra = ""
+  if (r.ascension or 0) > 0 then extra = "\n" .. Rules.text("InaRogue.run_summary_ascension", r.ascension) end
+  -- endless mode: the phases cleared past the final boss
+  local beyond = math.max((r.phase or 0) - 1 - stages, 0)
+  if r.victory and beyond > 0 then extra = extra .. "\n" .. Rules.text("InaRogue.run_summary_endless", beyond, st.goals or 0) end
+  return head .. "\n" .. body .. extra
+end
+
+-- the summary of a run that just ended (CMND_INAROGUE_RL_RUN_SUMMARY shows it), with the meta progress it made
+-- (lib/rogue/meta_store.lua: Ascension unlocked, challenges, weekly record, relics unlocked)
+function S.note_summary(r, result, points)
+  local meta_text = ""
+  local okm, ms = pcall(function() return require("lib/rogue/meta_store").on_run_end(r, result) end)
+  if okm and type(ms) == "string" then meta_text = ms elseif not okm then warn("meta store: " .. tostring(ms)) end
+  last_summary = summary_text(r, result, points)
+  if meta_text ~= "" then last_summary = last_summary .. "\n" .. meta_text end
+  info(string.format("run end %s at phase %d, %d points", result, r and r.phase or 0, points or 0))
+end
+
+-- CMND_INAROGUE_RL_RUN_SUMMARY () -> the text of the last run that ended ("" = none since the game started)
+function S.Summary()
+  return last_summary
+end
+
+-- the victory of a v2 run (once): the bonus Rogue points of a won run (+ per Ascension level, + its challenges)
+local function record_victory(r)
+  if r.victory then return 0 end
+  r.victory = true
+  local c = Rules.get()
+  local bonus = c.rogue_points_won + c.rogue_points_per_ascension * (r.ascension or 0)
+  local okc, pts = pcall(function() return require("lib/rogue/ascension").challenge_bonus(r) end)
+  if okc and type(pts) == "number" then bonus = bonus + pts end
+  return Core.meta.earn_bonus(bonus, "run won") or 0
+end
+
+-- CMND_INAROGUE_RL_RUN_OUTRO (op): the end of a won v2 run (the final boss beaten).
+--   op 0 -> pending, title text, endless question ("" = no endless mode)
+--   op 1 -> code, phase: endless mode (the next phase's board; the run already counts as won)
+--   op 2 -> code, summary text: the run ends as won
+function S.Outro(op_arg)
+  local op = U.int(op_arg, 0)
+  if op == 0 then
+    local x = with(function(i)
+      local r = i.run
+      if not r or not r.outro then return nil end
+      return { r.stages }
+    end)
+    if not x then return false, "", "" end
+    local q = Rules.get().endless and Rules.text("InaRogue.run_ask_endless") or ""
+    if q ~= "" then q = q .. "\n" .. Rules.text("InaRogue.run_endless_scale_info") end
+    return true, Rules.text("InaRogue.run_won_title", x[1]), q
+  end
+  if op == 1 then
+    local bonus, phase = 0, 0
+    local code = edit("endless", function(r, i)
+      if not r.outro or not Rules.get().endless then return C.NOT_CLEARED end
+      bonus = record_victory(r)
+      r.outro = false
+      r.endless = true
+      local e = R.next_phase(r, i.map)
+      if e ~= C.OK then return e end
+      phase = r.phase
+      return C.OK
+    end)
+    if code == C.OK then
+      Core.bank.record_phase(phase)
+      Blocks.fire_run({ "on_phase_end" }, {}, "phase end")
+      local okm, em = pcall(function() require("lib/rogue/meta_store").on_victory(S.run_hdls()) end)
+      if not okm then warn("meta store: " .. tostring(em)) end
+    end
+    info(string.format("endless chosen -> code %d phase %d (+%d points)", code, phase, bonus))
+    return code, phase
+  end
+  local snap, bonus = nil, 0
+  local code = with(function(i)
+    local r = i.run
+    if not r or not r.outro then return C.NOT_CLEARED end
+    bonus = record_victory(r)
+    snap = R.copy(r)
+    if not delete(i) then return C.WRITE_FAILED end
+    i.run = nil
+    i.map = nil
+    Core.meta.coach_sync(nil)
+    publish_rival_scale(nil)
+    return C.OK
+  end)
+  if code == C.OK and snap then
+    local pts = Core.bank.record_run_end(Bk.RESULT.WON, snap.phase)
+    S.note_summary(snap, "won", pts + bonus)
+  end
+  return code, last_summary
+end
+
 
 -- ---- the run's players in the INAROGUE save (§14 stages 2-3)
 
@@ -582,9 +853,9 @@ function S.Squad(slot_arg)
     return { uid, r.hdls[slot + 1] or 0 }
   end)
   if not x then return false end
-  local param, frags, tier = Core.bank.bank_entry(x[1])
+  local param, frags, tier, spirit_level = Core.bank.bank_entry(x[1])
   if not param then return false end
-  return true, x[1], param, x[2], tier, St.cost(cfg(), tier, frags)
+  return true, x[1], param, x[2], tier, St.cost(cfg(), tier, frags, spirit_level)
 end
 
 function S.SetHdl(slot_arg, hdl_arg)
@@ -635,7 +906,7 @@ function S.Recruit(op_arg, param_arg)
   if op == 0 then
     local x = with(function(i)
       local r = i.run
-      if not r then return nil end
+      if not r or Rules.modifiers(r).no_recruit then return nil end -- the challenge «no recruits» closes the Fichaje
       local o = recruit_offer(r)
       if not o then return nil end
       return { o[1], o[2], R.free_bench_slot(r) or -1 }
@@ -653,6 +924,7 @@ function S.Recruit(op_arg, param_arg)
         R.set_slot(r, s, uid)
         slot = s
       end
+      if Rules.is_v2(r) and code == Bk.CODE.OK then r.stats.recruits = r.stats.recruits + 1 end
       return C.OK
     end)
     if e ~= C.OK then slot = -1 end

@@ -28,20 +28,20 @@
 if VRFW_Daily == nil then
   local D = {
     CMD = {
-      PERIOD = 2921688063,    -- CMND_VRFW_DAILY_PERIOD (kind [, id]) -> id, secs, label
-      SEED = 3647260915,      -- CMND_VRFW_DAILY_SEED (key, kind, version [, id]) -> hex, id, generator
-      INT = 621641748,        -- CMND_VRFW_DAILY_INT (key, kind, version, id, cursor, lo, hi) -> value, cursor
-      PICK = 70132846,        -- CMND_VRFW_DAILY_PICK (key, kind, version, id, cursor, keys) -> index, cursor
-      SAMPLE = 2593522674,    -- CMND_VRFW_DAILY_SAMPLE (..., keys, k) -> "i,j,...", cursor
-      SHUFFLE = 1495655670,   -- CMND_VRFW_DAILY_SHUFFLE (..., keys) -> "i,j,...", cursor
-      WEIGHTED = 2838960472,  -- CMND_VRFW_DAILY_WEIGHTED (..., keys, weights) -> index, cursor
-      SEEN = 967909869,       -- CMND_VRFW_DAILY_SEEN (key, kind) -> isNew, previous, current
-      MARK_DONE = 1806895942, -- CMND_VRFW_DAILY_MARK_DONE (key, kind) -> ok, streak, newlyDone
-      IS_DONE = 784620553,    -- CMND_VRFW_DAILY_IS_DONE (key, kind) -> done
-      STREAK = 1914138136,    -- CMND_VRFW_DAILY_STREAK (key, kind) -> streak, best, total
-      STATUS = 278728749,     -- CMND_VRFW_DAILY_STATUS (key, kind) -> done, streak, best, total, lastDone, current, secs
+      PERIOD = VRFW_Cmd.VRFW_DAILY_PERIOD,    -- CMND_VRFW_DAILY_PERIOD (kind [, id]) -> id, secs, label
+      SEED = VRFW_Cmd.VRFW_DAILY_SEED,      -- CMND_VRFW_DAILY_SEED (key, kind, version [, id]) -> hex, id, generator
+      INT = VRFW_Cmd.VRFW_DAILY_INT,        -- CMND_VRFW_DAILY_INT (key, kind, version, id, cursor, lo, hi) -> value, cursor
+      PICK = VRFW_Cmd.VRFW_DAILY_PICK,        -- CMND_VRFW_DAILY_PICK (key, kind, version, id, cursor, keys) -> index, cursor
+      SAMPLE = VRFW_Cmd.VRFW_DAILY_SAMPLE,    -- CMND_VRFW_DAILY_SAMPLE (..., keys, k) -> "i,j,...", cursor
+      SHUFFLE = VRFW_Cmd.VRFW_DAILY_SHUFFLE,   -- CMND_VRFW_DAILY_SHUFFLE (..., keys) -> "i,j,...", cursor
+      WEIGHTED = VRFW_Cmd.VRFW_DAILY_WEIGHTED,  -- CMND_VRFW_DAILY_WEIGHTED (..., keys, weights) -> index, cursor
+      SEEN = VRFW_Cmd.VRFW_DAILY_SEEN,       -- CMND_VRFW_DAILY_SEEN (key, kind) -> isNew, previous, current
+      MARK_DONE = VRFW_Cmd.VRFW_DAILY_MARK_DONE, -- CMND_VRFW_DAILY_MARK_DONE (key, kind) -> ok, streak, newlyDone
+      IS_DONE = VRFW_Cmd.VRFW_DAILY_IS_DONE,    -- CMND_VRFW_DAILY_IS_DONE (key, kind) -> done
+      STREAK = VRFW_Cmd.VRFW_DAILY_STREAK,    -- CMND_VRFW_DAILY_STREAK (key, kind) -> streak, best, total
+      STATUS = VRFW_Cmd.VRFW_DAILY_STATUS,     -- CMND_VRFW_DAILY_STATUS (key, kind) -> done, streak, best, total, lastDone, current, secs
     },
-    LOG = 3661580131,         -- CMND_EVT_LOG
+    LOG = VRFW_Cmd.EVT_LOG,         -- CMND_EVT_LOG
     KINDS = { day = true, week = true, month = true },
     handlers = {},            -- handlers[kind] = { { id, fn }, ... }
     last = {},                -- last[kind] = id seen by the last Poll of this VM

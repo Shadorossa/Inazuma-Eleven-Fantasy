@@ -14,7 +14,6 @@
 -- badge is the average of the chains' ranks.
 -- Generic: every chain node of every mod (CMND_VRFW_TEAM_ROUTE_NODE_* via route_nodes' VRFW_RN_Load, then
 -- CMND_VRFW_TEAM_CHAIN_OF_PIECE). Data loaded lazily, never at Lua load. Log: "LUAPRINT … VRFW_RCH …".
-VRFW_RCH_ON = true -- kill switch: false = chain nodes open their own command menu (their piece's game)
 VRFW_RCH = nil     -- save slot -> {board, slot} of every chain node (built on first use)
 VRFW_RCH_CMD_MENU = 1193383590 --[[vs_route_town_command_select_menu]]
 
@@ -47,7 +46,7 @@ end
 
 -- the chain node of board piece index `idx` (nil = a plain piece)
 function VRFW_RCH_Of(idx)
-  if not VRFW_RCH_ON or idx == nil or idx < 0 then
+  if idx == nil or idx < 0 then
     return nil
   end
   local ok, sfi = funcLuaCommand(126049514, idx, 6)
@@ -63,13 +62,13 @@ function VRFW_RCH_MenuFor(idx)
   if n == nil then
     return VRFW_RCH_CMD_MENU
   end
-  funcLuaCommand(3363400568, VRFW_Chain.P_PICK)
-  funcLuaCommand(3363400568, VRFW_Chain.P_CHAIN)
-  funcLuaCommand(3363400568, VRFW_Chain.P_HUB)
-  funcLuaCommand(3363400568, VRFW_Chain.P_PICK_CHAIN)
-  funcLuaCommand(3860611758, VRFW_Chain.P_CHAIN, 0, n.board.i, 1)
+  VRFW_Param.Clear(VRFW_Chain.P_PICK)
+  VRFW_Param.Clear(VRFW_Chain.P_CHAIN)
+  VRFW_Param.Clear(VRFW_Chain.P_HUB)
+  VRFW_Param.Clear(VRFW_Chain.P_PICK_CHAIN)
+  VRFW_Param.Set(VRFW_Chain.P_CHAIN, n.board.i)
   if n.hub ~= nil then
-    funcLuaCommand(3860611758, VRFW_Chain.P_HUB, 0, n.slot, 1)
+    VRFW_Param.Set(VRFW_Chain.P_HUB, n.slot)
     VRFW_RCH_Log("open hub", n.slot, "chains", #n.hub, "piece", idx)
   else
     VRFW_RCH_Log("open board", n.board.key, "piece", idx, "slot", n.slot, "state", VRFW_Chain.State(n.board))
@@ -108,17 +107,17 @@ VRFW_RCH_NEW_SEEN = nil
 function VRFW_RCH_NewIcon(show)
   local L = 2505232397 --[[cmn01_12_new_icon]]
   if not show then
-    local okN, n = pcall(funcLuaMenuCommand, 1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], L)
+    local okN, n = pcall(funcLuaMenuCommand, 1175615627, L)
     VRFW_RCH_NEW_SEEN = {}
     for i = 0, (okN and tonumber(n) or 0) - 1 do
-      local okV, v = pcall(funcLuaMenuCommand, 1262717583 --[[CMND_IS_LAYER_VISIBLE]], L, i)
+      local okV, v = pcall(funcLuaMenuCommand, 1262717583, L, i)
       VRFW_RCH_NEW_SEEN[i] = okV and v == true
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, false)
+      pcall(funcLuaMenuCommand, 711242136, L, i, false)
     end
     VRFW_RCH_Log("new badge hidden", okN and n or "?")
   elseif VRFW_RCH_NEW_SEEN ~= nil then
     for i, v in pairs(VRFW_RCH_NEW_SEEN) do
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, v)
+      pcall(funcLuaMenuCommand, 711242136, L, i, v)
     end
     VRFW_RCH_NEW_SEEN = nil
   end
@@ -132,13 +131,13 @@ function VRFW_RCH_NewIconStep()
     return
   end
   local L = 2505232397 --[[cmn01_12_new_icon]]
-  local okN, n = pcall(funcLuaMenuCommand, 1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], L)
+  local okN, n = pcall(funcLuaMenuCommand, 1175615627, L)
   for i = 0, (okN and tonumber(n) or 0) - 1 do
     if VRFW_RCH_NEW_SEEN[i] == nil then
-      local okV, v = pcall(funcLuaMenuCommand, 1262717583 --[[CMND_IS_LAYER_VISIBLE]], L, i)
+      local okV, v = pcall(funcLuaMenuCommand, 1262717583, L, i)
       VRFW_RCH_NEW_SEEN[i] = okV and v == true
     end
-    pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, false)
+    pcall(funcLuaMenuCommand, 711242136, L, i, false)
   end
 end
 
@@ -165,17 +164,17 @@ function VRFW_RCH_Picked(idx)
   end
   VRFW_RCH_ParentUi(nil, true)
   local t = 0
-  if funcLuaCommand(2947612279, VRFW_Chain.P_PICK) then
-    t = funcLuaCommand(3522198769, VRFW_Chain.P_PICK) or 0
-    funcLuaCommand(3363400568, VRFW_Chain.P_PICK)
+  if VRFW_Param.Has(VRFW_Chain.P_PICK) then
+    t = VRFW_Param.Get(VRFW_Chain.P_PICK) or 0
+    VRFW_Param.Clear(VRFW_Chain.P_PICK)
   end
   -- a hub: the chain of the picked tile (the screen's P_PICK_CHAIN = chain index + 1)
   local b = n.board
   if n.hub ~= nil then
     b = nil
-    if funcLuaCommand(2947612279, VRFW_Chain.P_PICK_CHAIN) then
-      b = VRFW_Chain.Board((funcLuaCommand(3522198769, VRFW_Chain.P_PICK_CHAIN) or 0) - 1)
-      funcLuaCommand(3363400568, VRFW_Chain.P_PICK_CHAIN)
+    if VRFW_Param.Has(VRFW_Chain.P_PICK_CHAIN) then
+      b = VRFW_Chain.Board((VRFW_Param.Get(VRFW_Chain.P_PICK_CHAIN) or 0) - 1)
+      VRFW_Param.Clear(VRFW_Chain.P_PICK_CHAIN)
     end
     if b == nil then
       VRFW_RCH_Log("hub closed", n.slot, "pick", t)
@@ -210,8 +209,8 @@ function VRFW_RCH_AfterMatch()
     return
   end
   VRFW_Chain.ClearPending()
-  local back = funcLuaCommand(2283097588 --[[CMND_GET_TEMP_BIT_FLAG]], 1388584433)
-  local won = funcLuaCommand(2283097588 --[[CMND_GET_TEMP_BIT_FLAG]], 2046383450)
+  local back = funcLuaCommand(2283097588, 1388584433)
+  local won = funcLuaCommand(2283097588, 2046383450)
   local n = VRFW_RCH_Load()[slot]
   local b = (n ~= nil and n.board.key == key) and n.board or VRFW_Chain.ByKey(key)   -- a hub: the pending tile's chain
   if not back or b == nil or b.tiles[t] == nil then
@@ -230,7 +229,7 @@ function VRFW_RCH_AfterMatch()
   end
   local best = VRFW_Chain.Win(b, t, rank)
   -- the piece's own clear flow (state 10: clear bit, open effect, rank of the piece) is not run for a chain match
-  funcLuaCommand(3964465990 --[[CMND_SET_TEMP_BIT_FLAG]], 2046383450, false)
+  funcLuaCommand(3964465990, 2046383450, false)
   local complete = VRFW_Chain.Complete(b)
   VRFW_RCH_Log("result", key, b.tiles[t].id, "score", f, a, "rank", rank, "best", best, "complete", complete, "chain rank", VRFW_Chain.Average(b))
   if n ~= nil and n.hub ~= nil then
@@ -238,8 +237,8 @@ function VRFW_RCH_AfterMatch()
   end
   if complete and n ~= nil then
     local d = (n.diffs and n.diffs[1]) or 4
-    if not funcLuaCommand(4034518619 --[[CMND_GET_CHRONICLE_CLEAR_STATUS]], n.slot, d) then
-      funcLuaCommand(1891570685 --[[CMND_SET_CHRONICLE_CLEAR_STATUS?]], n.slot, true, d)
+    if not funcLuaCommand(4034518619, n.slot, d) then
+      funcLuaCommand(1891570685, n.slot, true, d)
       VRFW_RCH_Log("chain cleared: node slot", n.slot, "difficulty", d)
     end
   end
@@ -247,7 +246,7 @@ end
 
 -- the "C" crest's badge: a chain node's slot answers its chain's rank (0 = a plain piece, or the chain not won yet)
 function VRFW_RCH_RankOf(sfi)
-  if VRFW_RCH_ON and VRFW_Chain ~= nil and sfi ~= nil then
+  if VRFW_Chain ~= nil and sfi ~= nil then
     local n = VRFW_RCH_Load()[sfi]
     if n ~= nil and n.hub ~= nil then
       return VRFW_Chain.HubAverage(n.hub)

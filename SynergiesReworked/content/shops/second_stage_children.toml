@@ -1,0 +1,24 @@
+schema = "VRFW.shop/2"
+
+# Synergies Reworked › «Los chicos de la Segunda Fase» in the retail synergy shop (0x5B032CEA, the Mercado de fichas that sells
+# the synergies for the cards of their members: here 10 cards of Fei and 10 of Zanark, rarity 4).
+[[edit]]
+target = "0x5B032CEA"
+  [[edit.entry]]
+  item = "second_stage_children"
+  stock = 1
+  costs = [
+    { currency = "fei_card", count = 10 },
+    { currency = "zanark_card", count = 10 },
+  ]
+
+# Inazuma Fantasy's training shop also sells it, at the price of every other synergy there (1 Punto de pasión, stock 1);
+# only while Inazuma Fantasy is active.
+[[edit]]
+target = "inazuma_fantasy_2.training_shop"
+if_mod = "inazuma_fantasy_2"
+  [[edit.entry]]
+  item = "second_stage_children"
+  price = 1
+  currency = "tk_bb000001"
+  stock = 1

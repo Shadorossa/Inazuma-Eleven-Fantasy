@@ -27,12 +27,10 @@ local P = CharacterReforged.PageCapture
 local MODES = {off = 0, match = 1, always = 2}   -- "auto": "match" while the framework's capture probe runs, else "off"
 local CAMERAS = {vs = 0xB7EE99E6, bust = 0x059B5FFD}   -- VS screen full body (512 x 512, FOV 20); keeper gauge bust
 local POOL_TYPES = {2, 3}
-local ENTRY_SIZE, TARGET_SIZE, CAMERA_SIZE = 0x38, 0x70, 0x5C
 local MAX_ENTRIES, MAX_CAMERAS = 64, 4096
 
-local function log(...) VRFW.log("player_page_capture:", ...) end
-local RECORD_SIZE, RECORD_HANDLE, RECORD_FLAGS, RECORD_RENDER = 0x1460, 0x80, 0x70, 0x7D0   -- scene chara records
-local FREEZE_FLAG = 0xD8                                                                     -- render settings
+require "VRFW/lib/basics"
+local log = VRFW.logger("player_page_capture")
 
 local function setting(path, default)
   local ok, value = pcall(VRFW.files.config, path)
@@ -47,10 +45,10 @@ local function read(kind, addr)
   return nil
 end
 
+local Id = require "VRFW/lib/ids"
 local function hex(v)
   if type(v) ~= "number" then return tostring(v) end
-  v = v % 4294967296
-  return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
+  return Id.hex(v)
 end
 
 local function hex64(v)
@@ -58,17 +56,25 @@ local function hex64(v)
   return string.format("0x%X%08X", math.floor(v / 4294967296), v % 4294967296)
 end
 
--- the variable a RIP-relative instruction at `at` addresses (disp32 at +3, 7-byte instruction)
-local function rip_target(at)
-  local disp = read("i32", at + 3)
-  if not disp then return nil end
-  return at + 7 + disp
+-- the game profile's value of a name (a struct field's offset, a struct's size, an offset), nil when it does not resolve
+local function field(name)
+  local ok, v = pcall(VRFW.game.field, name)
+  if ok and type(v) == "number" then return v end
+  return nil
 end
 
-local function profile_address(name, offset)
+-- the address of a game profile global, nil when it does not resolve
+local function global_address(name)
   local ok, at = pcall(VRFW.game.sym, name)
-  if not ok or type(at) ~= "number" or at == 0 then return nil end
-  return rip_target(at + (offset or 0))
+  if ok and type(at) == "number" and at ~= 0 then return at end
+  return nil
+end
+
+-- the profile field `name` of the record at `base` (+ `extra` bytes); nil when the record or the field is unknown
+local function read_field(kind, base, name, extra)
+  local at = field(name)
+  if type(base) ~= "number" or not at then return nil end
+  return read(kind, base + at + (extra or 0))
 end
 
 -- the framework's menu capture probe (VRFW [debug] capture_pause_probe), or nil when it is not running
@@ -130,34 +136,38 @@ function P.Drawn(reset)
 end
 
 local function report_pool(key)
-  local var = profile_address("Render.SetCaptureGrid", 0)
+  local var = global_address("Render.CapturePool")
   local pool = read("ptr", var)
   if not pool or pool == 0 then
-    log("pool: not reachable (Render.SetCaptureGrid " .. tostring(var and hex(var) or "unresolved") .. ")")
+    log("pool: not reachable (Render.CapturePool " .. tostring(var and hex(var) or "unresolved") .. ")")
     return
   end
-  local entries, count = read("ptr", pool + 8), read("u16", pool + 0xC0) or 0
-  local mask = read("u32", pool + 0xB8)
+  local entries, count = read_field("ptr", pool, "CapturePool.Cells"), read_field("u16", pool, "CapturePool.CellCount") or 0
+  local mask = read_field("u32", pool, "CapturePool.LiveTypes")
   local types = {}
   for _, t in ipairs(POOL_TYPES) do
-    types[#types + 1] = string.format("type %d grid %sx%s capacity %s", t, tostring(read("u8", pool + 0xC2 + t * 2)),
-      tostring(read("u8", pool + 0xC3 + t * 2)), tostring(read("u8", pool + 0xD0 + t)))
+    types[#types + 1] = string.format("type %d grid %sx%s capacity %s", t,
+      tostring(read_field("u8", pool, "CapturePool.GridColumns", t * 2)),
+      tostring(read_field("u8", pool, "CapturePool.GridRows", t * 2)),
+      tostring(read_field("u8", pool, "CapturePool.TypeCapacity", t)))
   end
   log(string.format("pool %s entries %d live types mask %s; %s", hex(pool), count, hex(mask), table.concat(types, ", ")))
+  local cell_size = field("CaptureCell")
   local ours = 0
   for i = 0, math.min(count, MAX_ENTRIES) - 1 do
-    local e = entries and entries + i * ENTRY_SIZE
-    local handle = read("u32", e and e + 8)
+    local e = entries and cell_size and entries + i * cell_size
+    local handle = read_field("u32", e, "CaptureCell.Handle")
     if handle and handle ~= 0 then
       local t = math.floor(handle / 256) % 256
-      local k = read("u32", e + 0x1C)
+      local k = read_field("u32", e, "CaptureCell.Key")
       if t == 2 or t == 3 then
         local mine = k == key
         if mine then ours = ours + 1 end
         log(string.format("cell %d handle %s type %d key %s%s cell %s live %s shown %s freeing %s users %s scale %s",
-          i, hex(handle), t, hex(k), mine and " (ours)" or "", tostring(read("u8", e + 0x30)), tostring(read("u8", e + 0x31)),
-          tostring(read("u8", e + 0x32)), tostring(read("u8", e + 0x33)), tostring(read("u32", e + 0x2C)),
-          tostring(read("f32", e + 0x28))))
+          i, hex(handle), t, hex(k), mine and " (ours)" or "", tostring(read_field("u8", e, "CaptureCell.Cell")),
+          tostring(read_field("u8", e, "CaptureCell.Live")), tostring(read_field("u8", e, "CaptureCell.Shown")),
+          tostring(read_field("u8", e, "CaptureCell.Freeing")), tostring(read_field("u32", e, "CaptureCell.Users")),
+          tostring(read_field("f32", e, "CaptureCell.Scale"))))
       end
     end
   end
@@ -165,27 +175,30 @@ local function report_pool(key)
 end
 
 local function report_targets()
-  local var = profile_address("Render.GetTarget", 0)
+  local var = global_address("Render.TargetManager")
   local manager = read("ptr", var)
-  if not manager or manager == 0 then
-    log("render targets: not reachable (Render.GetTarget " .. tostring(var and hex(var) or "unresolved") .. ")")
+  local target_size = field("RenderTarget")
+  if not manager or manager == 0 or not target_size then
+    log("render targets: not reachable (Render.TargetManager " .. tostring(var and hex(var) or "unresolved") .. ")")
     return
   end
   for _, slot in ipairs(POOL_TYPES) do
-    local s = manager + slot * TARGET_SIZE
-    log(string.format("render target slot %d users %s pending free %s size %sx%s", slot, tostring(read("u32", s + 0x68)),
-      tostring(read("u8", s + 0x6C)), tostring(read("u16", s + 0x3A)), tostring(read("u16", s + 0x3C))))
+    local s = manager + slot * target_size
+    log(string.format("render target slot %d users %s pending free %s size %sx%s", slot,
+      tostring(read_field("u32", s, "RenderTarget.Users")), tostring(read_field("u8", s, "RenderTarget.PendingFree")),
+      tostring(read_field("u16", s, "RenderTarget.Width")), tostring(read_field("u16", s, "RenderTarget.Height"))))
   end
 end
 
 local function report_camera(camera)
-  local config = profile_address("Camera.GetConfig", 0x20)
-  local entries, count = read("ptr", config and config + 0x48), read("u32", config and config + 0x50)
-  if not entries or not count or count == 0 or count > MAX_CAMERAS then
-    log("camera config: not reachable (Camera.GetConfig " .. tostring(config and hex(config) or "unresolved") .. ")")
+  local config = global_address("Camera.ExternalConfig")
+  local entries, count = read_field("ptr", config, "CameraConfig.Entries"), read_field("u32", config, "CameraConfig.Count")
+  local entry_size, name_at = field("CameraConfigEntry"), field("CameraConfigEntry.Name")
+  if not entries or not count or count == 0 or count > MAX_CAMERAS or not entry_size or not name_at then
+    log("camera config: not reachable (Camera.ExternalConfig " .. tostring(config and hex(config) or "unresolved") .. ")")
     return
   end
-  local ok, names = pcall(VRFW.mem.read_array, "u32", entries, count, CAMERA_SIZE)
+  local ok, names = pcall(VRFW.mem.read_array, "u32", entries + name_at, count, entry_size)
   if not ok or type(names) ~= "table" then
     log("camera config: entries not readable")
     return
@@ -198,18 +211,12 @@ local function report_camera(camera)
     found and ("entry " .. found) or "MISSING"))
 end
 
--- the render settings object (the static the getter at Render.GetSettings returns: `lea rax` at +0x20)
-local function render_settings()
-  return profile_address("Render.GetSettings", 0x20)
-end
-
 local function report_pause()
-  local system = profile_address("Render.GetSystem", 0x20)
-  local view = read("ptr", system and system + 0x808)
-  local settings = render_settings()
-  log(string.format("pause: time scale %s, render settings +0xD7 %s +0xD8 %s +0xD9 %s (all of time scale <= 0, D7, D8 = the pause freeze: a CharaRenderProperty's +0x2AE goes 0)",
-    tostring(read("f32", view and view + 0x734)), tostring(read("u8", settings and settings + 0xD7)),
-    tostring(read("u8", settings and settings + FREEZE_FLAG)), tostring(read("u8", settings and settings + 0xD9))))
+  local view = read_field("ptr", global_address("Render.System"), "RenderSystem.View")
+  local settings = global_address("Render.Settings")
+  log(string.format("pause: time scale %s, render settings pause flags %s %s %s (time scale <= 0 with the first two set = the pause freeze: a CharaRenderProperty's drawn flag goes 0)",
+    tostring(read_field("f32", view, "RenderView.TimeScale")), tostring(read_field("u8", settings, "RenderSettings.PauseFlag1")),
+    tostring(read_field("u8", settings, "RenderSettings.PauseFlag2")), tostring(read_field("u8", settings, "RenderSettings.PauseFlag3"))))
 end
 
 local function report_model(model)
@@ -217,29 +224,31 @@ local function report_model(model)
     log("model: no handle")
     return
   end
-  local ok, at = pcall(VRFW.game.sym, "Scene.GameState")
-  local manager = ok and read("ptr", at)
-  local records = manager and read("ptr", manager + 0x50)
+  local manager = read("ptr", global_address("Scene.GameState"))
+  local records = read_field("ptr", manager, "Scene.CharaObjects")
   local index = model % 65536
-  local record = records and index < 0x280 and records + index * RECORD_SIZE
-  local handle = read("u32", record and record + RECORD_HANDLE)
+  local count, size, base = field("Scene.CharaObjectCount"), field("Scene.CharaObjectSize"), field("Scene.CharaObjectBase")
+  local object = records and count and size and base and index < count and records + index * size + base
+  local handle = read_field("u32", object, "Scene.CharaObjectHandle")
   if handle ~= model then
     log(string.format("model %s: no scene chara record (found %s)", hex(model), hex(handle)))
     return
   end
-  local p = read("ptr", record + RECORD_RENDER)
+  local p = read_field("ptr", object, "Scene.CharaObjectRenderProperty")
   log(string.format("model %s: record flags %s, CharaRenderProperty %s", hex(model),
-    hex(read("u8", record + RECORD_FLAGS)), p and hex64(p) or "nil"))
+    hex(read_field("u8", object, "Scene.CharaObjectFlags")), p and hex64(p) or "nil"))
   if not p or p == 0 then return end
-  local b = function(o) return tostring(read("u8", p + o)) end
-  log(string.format("render property: camera %s view %s handle %s capture +2AC %s last +2AD %s drawn +2AE %s cell on +2AF %s mask +2B0 %s slot +2B1 %s mask slot +2B2 %s viewport %s %s %s %s",
-    hex(read("u32", p + 0x2A0)), tostring(read("u16", p + 0x2A4)), hex(read("u32", p + 0x2A8)), b(0x2AC), b(0x2AD), b(0x2AE),
-    b(0x2AF), b(0x2B0), b(0x2B1), b(0x2B2), tostring(read("u32", p + 0x290)), tostring(read("u32", p + 0x294)),
-    tostring(read("u32", p + 0x298)), tostring(read("u32", p + 0x29C))))
-  local proxy = read("ptr", p + 0x2C0)
+  local function f(kind, name, extra) return read_field(kind, p, "CharaRenderProperty." .. name, extra) end
+  local function b(name) return tostring(f("u8", name)) end
+  log(string.format("render property: camera %s view %s handle %s capture %s last %s drawn %s cell on %s mask %s slot %s mask slot %s viewport %s %s %s %s",
+    hex(f("u32", "Camera")), tostring(f("u16", "View")), hex(f("u32", "Handle")), b("Capture"), b("LastCapture"), b("Drawn"),
+    b("CellOn"), b("Mask"), b("Slot"), b("MaskSlot"), tostring(f("u32", "Viewport")), tostring(f("u32", "Viewport", 4)),
+    tostring(f("u32", "Viewport", 8)), tostring(f("u32", "Viewport", 12))))
+  local proxy = f("ptr", "Proxy")
   if proxy and proxy ~= 0 then
-    log(string.format("render proxy: slot +2A4 %s mode +2A6 %s +2B0 %s flags +2B1 %s", tostring(read("u8", proxy + 0x2A4)),
-      tostring(read("u16", proxy + 0x2A6)), tostring(read("u8", proxy + 0x2B0)), hex(read("u8", proxy + 0x2B1))))
+    log(string.format("render proxy: slot %s mode %s state %s flags %s", tostring(read_field("u8", proxy, "RenderProxy.Slot")),
+      tostring(read_field("u16", proxy, "RenderProxy.Mode")), tostring(read_field("u8", proxy, "RenderProxy.State")),
+      hex(read_field("u8", proxy, "RenderProxy.Flags"))))
   else
     log("render proxy: none")
   end
@@ -270,11 +279,21 @@ function P.Bind(key, mesh)
   return 1
 end
 
+-- the last binding state logged (one line when it changes: why a quad stays hidden until bound)
+local bound_seen = nil
+
 function P.Bound()
   local bound = VRFW.render and VRFW.render.capture_bound
   if type(bound) ~= "function" then return -1 end
   local ok, s = pcall(bound)
   if not ok or type(s) ~= "table" then return -1 end
+  local seen = tostring(s.bound) .. " " .. tostring(s.reason) .. " " .. tostring((s.frames or 0) > 0)
+  if seen ~= bound_seen then
+    bound_seen = seen
+    log("bound " .. tostring(s.bound) .. " key " .. hex(s.key or 0) .. " mesh " .. hex(s.mesh or 0) .. " frames "
+      .. tostring(s.frames) .. " repairs " .. tostring(s.repairs) .. " idle_ms " .. tostring(s.idle_ms) .. " reason "
+      .. tostring(s.reason))
+  end
   return s.bound and 1 or 0
 end
 

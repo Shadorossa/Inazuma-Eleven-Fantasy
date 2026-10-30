@@ -1,0 +1,26 @@
+id = "CareerMode"
+# name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
+# game's language (text\keys.toml)
+name = "Career Mode"
+version = "0.10.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Career mode, in the title row group «Game modes». Start a career with a club and play its season. The clubs are Battle Bay Deluxe's and the game's own Battle Bay teams; the versions of one club in several games are one club (scripts/data/career_clubs.toml, editable), its squad all their players: the SuperLiga (every club, a Swiss system of 12 rounds), the draw of the best 56 into 4 leagues of 14 (14 pots of 4, drawn ball by ball on screen), 26 home-and-away matchdays, then the Football Frontier (single matches: places 1-2 of each league go to the round of 16, places 3-6 play a round of 32; winning the final plays Battle Bay Deluxe's trophy lift). You play your club's matches, the other results are simulated; a club out of the season sees it and starts the next one. Every player exists once in a career: a player shared by several clubs stays with his earliest club in the story, the clubs that keep 11 of their own players enter, and their squads are completed to 16 with free players of the same position and strength (the same game first, drawn per career); a squad keeps every own player; a match takes 19 of them (the player picks his club's call-up on «Plantilla», a rival plays its best), every signing on the bench; every list shows each player's miniface in the kit of the side he plays for. Every fixture has a date (FIFA-style calendar from config.toml [calendar]: the season starts on August 1, the final is played by June 1; the transfer windows of August and January and the World Cup's days are shown on the calendar and on the hub). National sides (the FFI of IE3, Galaxy's Asian qualifiers, Orion) play no club competition: their players may also be signed by a club. After the Frontier final, the World Cup: one national team per country (the versions of a country in several games are one country, config.toml [[world_cup.countries]]), today 24 countries (Galaxy's planets Sílice, Naiadi, Magmavís, Fertilia and Falam Medius among them) in 6 groups of 4, the first two and the 4 best thirds to the round of 16; the player is offered one country at random and picks its squad among every player of that nationality. The career hub has tabs (home, calendar by month, competition: each competition by name, its table or bracket; the World Cup's groups together, then its bracket, squad). One career per save slot."
+priority = 0
+tags = ["Mode"]
+updated = "2026-10-30"
+prefix = "CareerMode"
+folder = "CareerMode"
+# The clubs, their rosters and ratings are Battle Bay Deluxe's (read at run time, never copied: config.toml [teams]
+# sources / national_mod, [ratings]; content\teams\stand_in.toml is based on one of its teams): that data is why it is
+# required. The screens and texts come from the VR-Framework's menu and text engines; the competitions' round robin,
+# standings and knockout tree and the bracket screen are the framework's (VRFW/lib/competition, VRFW_Bracket).
+requires = ["VRFW>=2.306.0", "text_engine>=1.1.0", "menu_engine>=1.0.0", "BattleBayDeluxe>=1.84.0"]
+conflicts = []
+# the career commands (content\game\commands.toml) answered by scripts\career.lua
+permissions = ["command"]
+loader_modules = ["lua_bridge"]
+
+[exports]
+functions = []
+keys = []

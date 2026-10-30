@@ -1,0 +1,17 @@
+# Stoppage Time › the «+N» telop on the match HUD (docs/game/mods/stoppage-time.md): one layer of 1 instance, not
+# opened by the screen: assets\lua\_all\stoppage_time_telop.lua opens it when a half's regular time ends, writes the
+# text key telop_added_time in its text node and closes it after config.toml [telop] hold_seconds. Its object is the
+# retail AI-camera telop (soccer00_71: one quad _camera_telop01 and one text node _text_telop01) with its own look,
+# place and draw priority. In both groups that show the scoreboard. No retail byte.
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "stoppage_time_telop"
+from = "soccer00_71_camera_change_telop"
+
+[[patch]]
+menu = "soccer_constant_menu"
+add_layer = { name = "stoppage_time_telop", object = "stoppage_time_telop", count = 1, after = "soccer00_02_kp2_kp_empty_enemy", groups = [
+    { group = "soccer_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+    { group = "soccer_battle_constant_menu", flags = [0, 0, 0, 0, 1, 0] },
+] }

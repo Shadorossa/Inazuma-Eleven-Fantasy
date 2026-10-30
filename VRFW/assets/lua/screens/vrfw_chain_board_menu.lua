@@ -136,7 +136,6 @@ local C = {
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
   SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
   FADE = 609722083, FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568, P_EXISTS = 2947612279, P_GET = 3522198769,
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
   TEXT_VISIBLE = 1505208242,
   TEXT_GET = 4074371074,
@@ -1402,8 +1401,7 @@ local function ItemGet(id)
 end
 
 local function Close(result)
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_SET, KEY_RESULT, 0, result, 1)
+  VRFW_Param.Replace(KEY_RESULT, result)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
   funcLuaCommand(C.CLOSE_MENU, MENU)
 end
@@ -1547,9 +1545,9 @@ local function Decide()
     return
   end
   Log("match", B.key, tile.id, "game", tile.game, "difficulty", tile.difficulty, "level", tile.level)
-  funcLuaCommand(C.P_CLEAR, KEY_PICK_CHAIN)
+  VRFW_Param.Clear(KEY_PICK_CHAIN)
   if HUB ~= nil then
-    funcLuaCommand(C.P_SET, KEY_PICK_CHAIN, 0, B.i + 1, 1)   -- the opener plays the tile of THIS chain
+    VRFW_Param.Set(KEY_PICK_CHAIN, B.i + 1)   -- the opener plays the tile of THIS chain
   end
   Close(focus)
 end
@@ -1670,8 +1668,8 @@ end
 
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------
 function OnInit()
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_CLEAR, KEY_PICK_CHAIN)
+  VRFW_Param.Clear(KEY_RESULT)
+  VRFW_Param.Clear(KEY_PICK_CHAIN)
   for _, path in ipairs(VRFW_ScreenArt.Atlases(ART_SCREEN)) do
     Atlas(path)                   -- the declared art's atlases, asked now (drawn once in)
   end
@@ -1680,15 +1678,15 @@ function OnInit()
   B = nil
   pay_check = nil
   local i = -1
-  if funcLuaCommand(C.P_EXISTS, KEY_CHAIN) then
-    i = Int(funcLuaCommand(C.P_GET, KEY_CHAIN))
-    funcLuaCommand(C.P_CLEAR, KEY_CHAIN)
+  if VRFW_Param.Has(KEY_CHAIN) then
+    i = Int(VRFW_Param.Get(KEY_CHAIN))
+    VRFW_Param.Clear(KEY_CHAIN)
   end
   HUB, mode, hfocus, htop = nil, "board", 1, 1
   local hub_slot = nil
-  if funcLuaCommand(C.P_EXISTS, KEY_HUB) then
-    hub_slot = Int(funcLuaCommand(C.P_GET, KEY_HUB))
-    funcLuaCommand(C.P_CLEAR, KEY_HUB)
+  if VRFW_Param.Has(KEY_HUB) then
+    hub_slot = Int(VRFW_Param.Get(KEY_HUB))
+    VRFW_Param.Clear(KEY_HUB)
   end
   if VRFW_Chain == nil then
     Log("error", "VRFW_Chain missing (the menu part's lua\\_all\\30_chain.lua did not run in this VM)")

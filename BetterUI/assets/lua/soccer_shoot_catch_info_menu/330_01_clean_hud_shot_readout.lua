@@ -5,7 +5,7 @@
 -- OpenAtKpPowerInfoTelop) can be hidden: Mods options «AT / PP counter» (clean_hud.shot_readout, read at each shot: no
 -- restart). Off = the call is not passed on, so the plates never open (the zone menu's shooter power stays as it is).
 -- Wrapper only; nothing runs at chunk load.
-local SHOT_READOUT_OPTION_GET = 4082322029         -- CMND_VRFW_OPTION_GET
+local SHOT_READOUT_OPTION_GET = 4082322029
 local SHOT_READOUT_OPTION_KEY = "clean_hud.shot_readout"
 
 local function BetterUIShotReadout_Enabled()

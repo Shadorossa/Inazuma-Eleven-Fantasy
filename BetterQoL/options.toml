@@ -93,6 +93,27 @@ default = 0
 parent = "mod_options.game_settings"
 order = 103
 
+# «Velocidad del Modo Comandante automático» (owner request 2026-10-29): the game speed while your team plays in
+# Commander mode in a match the auto commander handles (the row above on). x1 (the default) = normal speed, whatever
+# the game's own «Modo Comandante veloz»; x1.5 / x2 / x3 / x4 = that speed. Other matches and the row above off: the
+# game's own rule. Clamped by config.toml [auto_commander] speed_min / speed_max. Read at each match init by
+# scripts\auto_commander.lua. Right after «Modo comandante automático» (same order, file order; one child level only).
+[[option]]
+id = "auto_commander_speed"                    # row key utilities.auto_commander_speed
+type = "list"
+label = "auto_commander_speed"                 # text\keys.toml, 9 languages
+help = "auto_commander_speed_help"
+parent = "mod_options.game_settings"
+values = [
+    { value = 1.0, text = "x1" },
+    { value = 1.5, text = "x1.5" },
+    { value = 2.0, text = "x2" },
+    { value = 3.0, text = "x3" },
+    { value = 4.0, text = "x4" },
+]
+default = 1.0
+order = 103
+
 # ---------------------------------------------------------------- match clock (scripts\match_clock.lua)
 
 # «Segundos por minuto de partido» (owner request 2026-10-19): the real seconds one game minute of the match clock

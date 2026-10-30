@@ -1,0 +1,37 @@
+# «Cañón de meteoritos» (Meteor Blade, whs00510; fire; cut-in ev60_00510): while the ball flies to the goal it wears the
+# cut-in's last shot (c0040, held at frame 386, the meteor diving out of the sky): the meteor's beam of white, yellow,
+# orange and purple sheets (laid level along the flight, drawn three times turned about it so it reads as the same cone
+# from the touchline and from behind), its texture flowing, out of a fixed source at the kick point (the c0030 launch
+# burst the meteor comes from: its white core and yellow, orange and purple rings, round from every side) to the ball
+# inside its head, the meteorite fireballs bursting along it (round, three of the cut-in's 24-frame rounds looped);
+# x0.25 (the beam ~1.9 m across, the source ~3.5 m). The white-out, the burst's rays and streaks, the fake-particle
+# streams and the space backdrop stay out.
+# Objects: ev6051mb00 (the beam on the ball) and ev6051mf00 (the source), effect/event/ev60/<object>/, built by
+# research/scripts/meteor_blade_ball_fx.py from the cut-in's effect object ev60005100. docs/game/media/meteor-blade-ball-fx.md.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"); the distance clock lays the beam from the
+# source at the kick point to the ball; the source is a ground effect fixed at the kick point.
+# Flight: content\techniques\meteor_blade_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "meteor_blade"
+from = "ega0075c"
+object = "effect/event/ev60/ev6051mb00/ev6051mb00.objbin"
+
+[[effect]]
+name = "meteor_blade_source"
+from = "ega0021"
+object = "effect/event/ev60/ev6051mf00/ev6051mf00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "meteor_blade"
+when = { techniques = "whs00510" }
+aura = "meteor_blade"
+like = "ega0075c"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "meteor_blade_source" }

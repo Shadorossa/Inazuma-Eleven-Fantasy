@@ -1,0 +1,223 @@
+schema = "VRFW.base_table/1"
+# BetterUI > the miximax partner busts (content/images/menu/200_icon/10_icon_chr/aura_mixi_partners.toml): one
+# chara_menu_resource_info row per partner character id (the base id and its armour / filler variants), keyed by crc32 of
+# the id like the retail rows (cn0221 is the row of c05020270), whose aura_mixi picture columns (c12 small, c13 large)
+# name the new g4tx.
+
+[[keyed]]
+table = "menu/chara_menu_resource_info"
+
+# Tezcat
+  [[keyed.add]]
+  key = 0xC57866DD                                  # c04003700
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_tezcat_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_tezcat_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE5274D8F                                  # c04003700_5000
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_tezcat_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_tezcat_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE4E527B8                                  # c04003700_5100
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_tezcat_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_tezcat_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x67B06997                                  # c11908180
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_tezcat_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_tezcat_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Arion Sherwind
+  [[keyed.add]]
+  key = 0x1A5B55BE                                  # c04000080
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE5803634                                  # c04000080_5000
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE4425C03                                  # c04000080_5100
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE7C6886D                                  # c04000080_5300
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE0ACFC4E                                  # c05028030
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE16E9679                                  # c05028130
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xCE3983AC                                  # c06037460
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xCB05269B                                  # c11908140
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x7EAB58D6                                  # c11908190
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_arion_sherwind_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Victor Blade
+  [[keyed.add]]
+  key = 0xD340B581                                  # c04000100
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x1AC578CD                                  # c04000100_5000
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x1B0712FA                                  # c04000100_5100
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xD358F4FB                                  # c05028110
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x6D2F5175                                  # c05029410
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x1058A530                                  # c05029440
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x30F46D02                                  # c06039070
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_victor_blade_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Mark Evans
+  [[keyed.add]]
+  key = 0x99A1C150                                  # c01000010
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE8BB04F7                                  # c01000010_5000
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE76A3F78                                  # c01000010_5900
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x9CC15DC6                                  # c05024610
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x226EC7B2                                  # c05029460
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_mark_evans_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Bai Long
+  [[keyed.add]]
+  key = 0xC6FCB2B3                                  # c04003500
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xA7024AF2                                  # c04003500_5000
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xA6C020C5                                  # c04003500_5100
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xAE2F00BE                                  # c05028140
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x09439471                                  # c05029450
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE0287558                                  # c11908170
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_bai_long_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Riccardo Di Rigo
+  [[keyed.add]]
+  key = 0x034064FF                                  # c04000090
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x43F73D80                                  # c04000090_5000
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x423557B7                                  # c04000090_5100
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xAFED6A89                                  # c05028040
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xD21E17DA                                  # c11908150
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_riccardo_di_rigo_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Gabriel Garcia
+  [[keyed.add]]
+  key = 0xF9AF8C75                                  # c04000030
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xE78762CE                                  # c04000030_5000
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xB6F65BC8                                  # c05028050
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x460202B6                                  # c05029420
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x5F1933F7                                  # c05029430
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_gabriel_garcia_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Axel Blaze
+  [[keyed.add]]
+  key = 0x81789A26                                  # c01000100
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x82660FDD                                  # c01000100_5000
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x8DB73452                                  # c01000100_5900
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x9D0337F1                                  # c05024710
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x3B75F6F3                                  # c05029470
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x4FC5271E                                  # c06039320
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x56DE165F                                  # c06039330
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x32917B1A                                  # c07050010
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x313BF014                                  # c11500530
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x136DD97A                                  # c90000130
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_axel_blaze_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Jude Sharp
+  [[keyed.add]]
+  key = 0x82FC4E48                                  # c01000300
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xFD4A74E9                                  # c01010970
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xCA9BFA40                                  # c05024670
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xAA5E9EFE                                  # c07020120
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x2820C155                                  # c11500520
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x843B0B93                                  # c11901160
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xB4346C87                                  # c11908210
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_jude_sharp_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+
+# Caleb Stonewall
+  [[keyed.add]]
+  key = 0xDC680087                                  # c02023700
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x2DF26FAD                                  # c03030050
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xD380CB01                                  # c05024660
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xBCEDEA3C                                  # c05029480
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x571C7C68                                  # c06039230
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0x4993424D                                  # c07070110
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }
+  [[keyed.add]]
+  key = 0xAD541BF0                                  # c11250040
+  cells = { c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0, c7 = 0, c8 = 0, c9 = 0, c10 = 0, c11 = 0, c12 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c13 = "200_icon/10_icon_chr/aura_mixi/mixi_caleb_stonewall_l.g4tx", c14 = 0, c15 = 0, c16 = 0, c17 = 0 }

@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Excálibur (Excalibur, whs00970), cut-in ev60_00970.
+#
+# In the cut-in's last shot (c0400) the ball runs along the pitch at the tip of the slash wave
+# (research/scripts/excalibur_ball_fx.py FLIGHT_H: keep the two equal). Flight: straight and level at 0.11 m (the
+# ball's radius: rolling on the grass) into the goal. unblockable = false: the game's block rules (this mod changes no
+# block rule). Heights are the ball centre over the pitch (m); points count from the kick; one point = a level flight;
+# straight = true: one straight line from the kick to the goal at that height.
+
+# Excálibur (whs00970).
+[[edit]]
+target = "whs00970"
+trajectory = { points = [[0.0, 0.11]], straight = true, unblockable = false }

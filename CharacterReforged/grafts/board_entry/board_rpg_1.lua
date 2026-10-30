@@ -24,11 +24,11 @@ function EVT_OpenSkillSlotsFromRpgDock()
   end
   n2 = 1
   local function p(key, v, num)
-    funcLuaCommand(3363400568, key)
+    VRFW_Param.Clear(key)
     if num then
-      funcLuaCommand(3860611758, key, 0, v, 1)
+      VRFW_Param.Set(key, v)
     else
-      funcLuaCommand(3860611758, key, 0, v)
+      VRFW_Param.Set(key, v, "plain")
     end
   end
   p(2029825652, true)        -- flag5: member list (L/R)
@@ -39,15 +39,15 @@ function EVT_OpenSkillSlotsFromRpgDock()
   p(4081600465, 2, true)     -- dock type 2 = RPG field party
   p(1038144478, h, true)     -- the character
   p(622145442, ret, true)    -- selected index
-  funcLuaCommand(3363400568, 239878988)   -- never read-only here
+  VRFW_Param.Clear(239878988)   -- never read-only here
   funcLuaMenuCommand(972795058, false)
-  funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], EVT_SKILL_SLOT_MENU)
+  funcLuaCommand(@crc:CMND_OPEN_MENU_OBJECT@, EVT_SKILL_SLOT_MENU)
   funcLuaMenuCommand(1129326309, 1730641026 --[[team_dock_menu]])
   funcLuaMenuCommand(1558704558, 1730641026 --[[team_dock_menu]], false)
   funcLuaCommand(830228314, 2645952753 --[[main_menu]], "ChangeHeaderMode", 12)
   coroutine.yield()
   waitFalse(function()
-    return funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], EVT_SKILL_SLOT_MENU)
+    return funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, EVT_SKILL_SLOT_MENU)
   end)
   funcLuaMenuCommand(1453710531, 1730641026 --[[team_dock_menu]])
   ReturnCharacterInstant()
@@ -57,9 +57,9 @@ function EVT_OpenSkillSlotsFromRpgDock()
   funcLuaMenuCommand(1558704558, 1730641026 --[[team_dock_menu]], true)
   funcLuaMenuCommand(1558704558, 2645952753 --[[main_menu]], true)
   funcLuaCommand(830228314, 2645952753 --[[main_menu]], "ChangeHeaderMode", 0)
-  if funcLuaCommand(2947612279, 622145442) then
-    n = funcLuaCommand(3522198769, 622145442)
-    funcLuaCommand(3363400568, 622145442)
+  if VRFW_Param.Has(622145442) then
+    n = VRFW_Param.Get(622145442)
+    VRFW_Param.Clear(622145442)
   end
 end
 local EVT_RetailExecAbilityBoardMenu = ExecAbilityBoardMenu

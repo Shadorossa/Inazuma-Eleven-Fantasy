@@ -93,7 +93,7 @@ local R = AuraPoints_BuffRow
 local CMD_TEAM_MAX = 407899857
 local CMD_PARTS = 1040362010 --[[the mod's parts this start: ok, peg, sp, pe]]
 local PORTRAIT = 1535165083 --[[soccer00_53_aura_buff_chara_icon]]
-local CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
+local CMND_IS_OPEN = 2640875187
 local MEMBERS = 29 --[[the retail member loop of UpdateAuraBuffCharaIcon (0..28)]]
 R.RESWAP_FRAMES = 30 --[[a second face swap of one instance within this many frames is redone this many frames later]]
 R.frame = R.frame or 0
@@ -221,8 +221,8 @@ if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrappe
       local l2 = IsInvalidSoccerCharaHdl(aura_chara_hdl) == false
       local flag = false
       if t5[i2 + 1].auraCharaHdl ~= aura_chara_hdl or t5[i2 + 1].auraAttr ~= aura_attr then
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], n7, i2, l2)
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], n8, i2, l2)
+        funcLuaMenuCommand(711242136, n7, i2, l2)
+        funcLuaMenuCommand(711242136, n8, i2, l2)
         flag = true
       end
       t5[i2 + 1].auraCharaHdl = aura_chara_hdl
@@ -240,7 +240,7 @@ if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrappe
         AuraPoints_BuffRow.SwapFace(aura_chara_hdl, n7, i2, is_aura_skill_metamorphosed)
       end
       local l3 = 68 * n6
-      funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], n7, l3, 0, 0, i2)
+      funcLuaMenuCommand(1389957207, n7, l3, 0, 0, i2)
       n6 = n6 + 1
     end
   end
@@ -321,7 +321,7 @@ local CMD_LOG = 3661580131 --[[the loader's log line]]
 local LAYER = 3914453936
 local PORTRAIT = 1535165083 --[[soccer00_53_aura_buff_chara_icon]]
 local GAUGE = 698939060 --[[soccer00_54_aura_recast_gauge]]
-local ATLAS = 1191797350 --[[#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx]]
+local ATLAS = 1191797350 --[[#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx: the retail gauge's own sprites (hp_bar02)]]
 local FILL_SLOT = 1460691304 --[[hp_bar02]]
 local FILL_PEG = 351956081 --[[evt_peg_fill01]]
 local FILL_SP = 2515711484 --[[evt_sp_fill01]]
@@ -338,6 +338,7 @@ K.LEVEL_LAYER = 3507741955
 K.SLOTS = 7 --[[glyph slots per bar: 3 digits, slash, 3 digits]]
 K.FRAME_SPRITE = 538967808 --[[hp_base01: the gauge frame's sprite the glyphs replace]]
 K.MESH_FILL = 2043683848 --[[_hp_bar02]]
+K.OWN_ATLAS = 641552684 --[[#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx: the mod's own atlas]]
 K.ATLAS_GLYPHS = {[0] = 2750449652, 3573004130, 1308550872,
   989451854, 2761769965, 3550114683, 1251156673,
   1033114199, 2905280454, 3660332880}
@@ -346,21 +347,21 @@ K.LEVEL_QUAD = 691516036 --[[the telop's quad (hidden: the label is the text onl
 K.LEVEL_TEXT = 1181146041
 K.LEVEL_TEXT_W = 334 --[[the text node's box at scale 1]]
 K.LEVEL_TEXT_H = 70
-K.CMND_GLOBAL_POS = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]]
+K.CMND_GLOBAL_POS = 499270986
 K.CMND_LAYER_GLOBAL_POS = 4002164178 --[[a layer instance's global position (layer, instance)]]
 K.PROBE_TRIES = 6 --[[level label probe: measurements before it gives up on steady units]]
-K.CMND_SET_TEXT = 1083631230 --[[CMND_SET_MENU_TEXT_STRING]]
-local CMND_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]]
-local CMND_IS_VISIBLE = 1262717583 --[[CMND_IS_LAYER_VISIBLE]]
-local CMND_OPEN = 629267548 --[[CMND_OPEN_LAYER]]
-local CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
-local CMND_IS_LOADING = 3057768039 --[[CMND_IS_LOADING_LAYER]]
-local CMND_LOCAL_POS = 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]]
-local CMND_SET_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]]
-local CMND_SET_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]]
+K.CMND_SET_TEXT = 1083631230
+local CMND_VISIBLE = 711242136
+local CMND_IS_VISIBLE = 1262717583
+local CMND_OPEN = 629267548
+local CMND_IS_OPEN = 2640875187
+local CMND_IS_LOADING = 3057768039
+local CMND_LOCAL_POS = 2834507455
+local CMND_SET_POS = 1389957207
+local CMND_SET_SCALE = 3778714801
 local CMND_RATE_INIT = 541357333
 local CMND_RATE = 1595998683
-local CMND_MESH_VISIBLE = 3405944500 --[[CMND_SET_MESH_VISIBLE]]
+local CMND_MESH_VISIBLE = 3405944500
 local CMND_SWAP_TEX = 558735651 --[[swap a mesh texture: (layer, atlas, new sprite, old sprite, 0, instance)]]
 local CMND_MEMBER = 66484325 --[[(team, member, true) -> ok, soccer handle]]
 local ATTR_KESHIN, ATTR_ARMOUR, ATTR_MIXIMAX, ATTR_TOTEM = 1, 2, 4, 8
@@ -585,7 +586,7 @@ function B.DrawNumber(k, cur, max, cx, cy, scale)
     end
     if D.glyph[inst] ~= g then
       D.glyph[inst] = g
-      Menu(CMND_SWAP_TEX, K.DIGIT_LAYER, ATLAS, g == "/" and K.GLYPH_SLASH or K.ATLAS_GLYPHS[g], K.FRAME_SPRITE, 0, inst)
+      Menu(CMND_SWAP_TEX, K.DIGIT_LAYER, K.OWN_ATLAS, g == "/" and K.GLYPH_SLASH or K.ATLAS_GLYPHS[g], K.FRAME_SPRITE, 0, inst)
     end
     -- the cell is centred on its advance
     local px = x + adv / 2 - FRAME_CX * sx
@@ -649,7 +650,7 @@ function B.Draw(e)
   end
   if B.fill[e.k] ~= soul then
     B.fill[e.k] = soul
-    Menu(CMND_SWAP_TEX, LAYER, ATLAS, soul == "pe" and FILL_SLOT or (soul == "change" and FILL_CHANGE or (soul == "sp" and FILL_SP or FILL_PEG)), FILL_SLOT, 0, e.k)
+    Menu(CMND_SWAP_TEX, LAYER, soul == "pe" and ATLAS or K.OWN_ATLAS, soul == "pe" and FILL_SLOT or (soul == "change" and FILL_CHANGE or (soul == "sp" and FILL_SP or FILL_PEG)), FILL_SLOT, 0, e.k)
   end
   -- the entry's stopwatch off, the bar on its place
   Menu(CMND_VISIBLE, GAUGE, e.face, false)

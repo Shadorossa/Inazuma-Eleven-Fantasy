@@ -9,14 +9,14 @@ if VRFW_Host ~= nil then
   local ID = "vr_framework.shop_tabs_"
 
   local CMD = {
-    TAB_KEYS = 3733468157,      -- CMND_VRFW_SHOP_TAB_KEYS() -> n, key 1 … key n
-    TAB_BIND = 751469634,       -- CMND_VRFW_SHOP_TAB_BIND(key, shop id) -> bound
-    TABS = 2175056619,          -- CMND_VRFW_SHOP_TABS(shop id) -> split, n, icon 1, text id 1, …
-    REG_FIND = 2175579023,      -- CMND_VRFW_REG_FIND(type, key) -> id (-1)
-    TEXT_GET = 4074371074,      -- CMND_TEXT_GET(text id) -> text
-    LOG = 3661580131,           -- CMND_EVT_LOG
+    TAB_KEYS = VRFW_Cmd.VRFW_SHOP_TAB_KEYS,      -- CMND_VRFW_SHOP_TAB_KEYS() -> n, key 1 … key n
+    TAB_BIND = VRFW_Cmd.VRFW_SHOP_TAB_BIND,       -- CMND_VRFW_SHOP_TAB_BIND(key, shop id) -> bound
+    TABS = VRFW_Cmd.VRFW_SHOP_TABS,          -- CMND_VRFW_SHOP_TABS(shop id) -> split, n, icon 1, text id 1, …
+    REG_FIND = VRFW_Cmd.VRFW_REG_FIND,      -- CMND_VRFW_REG_FIND(type, key) -> id (-1)
+    TEXT_GET = VRFW_Cmd.TEXT_GET,      -- CMND_TEXT_GET(text id) -> text
+    LOG = VRFW_Cmd.EVT_LOG,           -- CMND_EVT_LOG
     FOCUS_INSTANCE = 2603265800,
-    SET_TEXT = 1083631230,
+    SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,
   }
   local TAB_ITEM = 4044286600   -- cmn06_20_list_tab_item (one plate per tab)
   local TAB_BAR = 1887158505    -- cmn06_01_list_tab_attach (the title bar)
@@ -36,11 +36,7 @@ if VRFW_Host ~= nil then
     VRFW_Host.on(STEM, point, { id = ID .. point, phase = phase, fn = fn })
   end
 
-  local function unsigned(v)
-    if type(v) ~= "number" then return 0 end
-    if v < 0 then return v + 4294967296 end
-    return v
-  end
+  local function unsigned(v) return VRFW_Id.u32(v) end
 
   -- the ids of the shops declared by key (once per menu)
   local function bind()

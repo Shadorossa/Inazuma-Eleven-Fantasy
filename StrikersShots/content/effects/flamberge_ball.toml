@@ -1,0 +1,28 @@
+# «Flamberge» (Flamberge, whs01900; fire shot, Grifo's keshin shot, cut-in ev60_01900): while the ball flies to the goal
+# it wears the cut-in's last shot (c0400, the volley after the keshin's flaming sword swing, held at frame 490 from the
+# aura's first frame): the swirling fire head round the ball (its flame domes and waves, the swirl textures flowing on)
+# with its glow cards (round from every side), and the train of six fire rings behind it (~4 m across, 1-26 m back),
+# facing along the flight so the ball flies through them, spinning in their plane at the cut-in's own rate, coming out
+# of the kick point as the ball flies (never stretched) and fading out at the far end, x1. The scenery, the keshin's
+# flaming sword (left at the kick point) and the parts of the kick gone by then stay out.
+# The object is ev6190fl00 (effect/event/ev60/ev6190fl00/), built by research/scripts/flamberge_ball_fx.py from
+# ev60019000 (docs/game/media/flamberge-ball-fx.md). Inazuma Fantasy's three-player Flamberge (ev60_81900) is the same
+# key and gets the same aura.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\flamberge_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "flamberge"
+from = "ega0075c"
+object = "effect/event/ev60/ev6190fl00/ev6190fl00.objbin"
+
+[[shot_aura]]
+name = "flamberge"
+when = { techniques = ["whs01900"] }
+aura = "flamberge"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_tournament, campaign end window (bb_stadium_campaign_end_window; docs/game/modes/bb-tournament.md
+-- BattleBayDeluxe bb_tournament, campaign end window (bb_stadium_campaign_end_window; docs/game/modes/bb-tournament.md
 -- §5.3). After a won match the game asks «continue / back to the Battle Bay»; during a tournament both answers go back
 -- to the Battle Bay top menu (choice 1): there the tournament records the result, simulates the round and shows the
 -- results and the bracket before the next match (Enter there = the next match). Its «next stage» telop reads the

@@ -1,0 +1,27 @@
+# «Sombra de Orión» (Orion's Shade, whs03060; void shot, cut-in ev60_03060): while the ball flies to the goal it keeps
+# the look of the cut-in's last shot (c0500, the shot coming down out of the sky), held at frame 440 from the first
+# frame: the ball on the narrow bright head of the red-and-black shadow flame (_500_main_01 / _600_main_02), the flame
+# widening behind it, stood upright along the flight (face on from the touchline) with crossed copies for volume, its
+# texture flowing, coming out of the kick point as the ball flies (never stretched, far end fading); the cut-in's red
+# and dark rings emitted at the ball every 19 frames, growing and fading where they are born; instead of the plain
+# void special-shot aura (ega0075e).
+# The object is ev6306os00 (effect/event/ev60/ev6306os00/), built by research/scripts/orions_shade_ball_fx.py from
+# ev60030600 (docs/game/media/orions-shade-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the void special-shot aura's row (like = "ega0075e"). Flight:
+# content\techniques\orions_shade_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "orions_shade_flame"
+from = "ega0075e"
+object = "effect/event/ev60/ev6306os00/ev6306os00.objbin"
+
+[[shot_aura]]
+name = "orions_shade_flame"
+when = { techniques = ["whs03060"] }
+aura = "orions_shade_flame"
+like = "ega0075e"
+anchor = "kick"
+drift = 0.75

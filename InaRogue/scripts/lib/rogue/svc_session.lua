@@ -35,7 +35,7 @@ function S.start()
     warn("the framework refused the session (code " .. tostring(r) .. "): CMND_EVT_RL_SESSION_* off (INAROGUE keeps its own slot)")
     return false
   end
-  ENTRY = U.cfg("rogue.session_entry", false) == true
+  ENTRY = U.cfg("rogue.session_entry", true) == true
   DEBUG = U.cfg("rogue.session_debug", false) == true
   READY = true
   info(string.format("ready on the VR-Framework session (INAROGUE entry as a session: %s; debug checklist: %s; storage slot %d; journal %s)",

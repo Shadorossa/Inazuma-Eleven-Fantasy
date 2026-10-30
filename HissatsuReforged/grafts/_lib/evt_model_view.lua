@@ -20,8 +20,8 @@ local MV = {}
 MV.CAM, MV.CAM_OFS, MV.CAM_GET = 1752770328, 284729675, 1877348924   -- shared menu model camera offset (set / get)
 MV.ROT = 2463117189                    -- (layer, idx, rx, ry, rz): the retail view's turn after a build
 MV.MOTION, MV.STAND = 180466856, 2263925137                          -- (layer, idx, motion, 0, 0...): 立ち1L
-MV.POSE_UPD, MV.POSE_ARG = 953552931, 3459069566                     -- CMND_UPDATE_CHARA_MODEL_POSE (dock pose)
-MV.EXIST_MENU = 264888438              -- CMND_IS_EXIST_MENU (menu crc)
+MV.POSE_UPD, MV.POSE_ARG = @crc:CMND_UPDATE_CHARA_MODEL_POSE@, 3459069566                     -- CMND_UPDATE_CHARA_MODEL_POSE (dock pose)
+MV.EXIST_MENU = @crc:CMND_IS_EXIST_MENU@              -- (menu crc)
 MV.RETAIL = {cam = {0, 0, 0}, rot_y = -7.5}
 
 local function MVCmd(...)
@@ -67,7 +67,7 @@ function MV.Offer(rules)
     return nil
   end
   local key = rules.view_key
-  if key ~= nil and MVLc(MV.PARAM_EXISTS, key) ~= true then
+  if key ~= nil and not VRFW_Param.Has(key) then
     return nil
   end
   for _, menu in ipairs(t) do
@@ -77,7 +77,6 @@ function MV.Offer(rules)
   end
   return nil
 end
-MV.PARAM_EXISTS = 2947612279
 
 -- ask that menu to open the retail view (it runs its own visual check mode); returns what the cross call answers
 MV.CROSS_CALL = 830228314              -- (menu crc, global function name, ...) in that menu's VM

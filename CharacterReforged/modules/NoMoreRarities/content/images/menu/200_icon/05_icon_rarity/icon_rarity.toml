@@ -3,9 +3,19 @@ schema = "VRFW.image/1"
 # position look the mod's Lua draws outside a reserved slot (assets/lua/_all/no_more_rarities_card_look.lua,
 # POSITION_LOOKS); the game's own rarity sprites stay untouched. Derived from the game's own pixels, the
 # same in every language file of the atlas. Do not edit.
+# In the mod's own atlas no_more_rarities_titles (never the game's icon_rarity: content\sprite_redirects\card_look.toml serves
+# them when the game asks it), one texture with every sprite at a fixed place.
+
+[[texture]]
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_titles.g4tx"
+name = "no_more_rarities_titles"
+size = [800, 128]
 
 # no_more_rarities_no_title (new): no rarity title, transparent (the size of the game's gtxt_rarity01_05)
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_titles.g4tx"
 name = "no_more_rarities_no_title"
+texture = "no_more_rarities_titles"
+x = 0
+y = 0
 png = "icon_rarity/transparent_800x128.png"

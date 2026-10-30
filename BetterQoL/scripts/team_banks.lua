@@ -46,9 +46,8 @@ local KEY_LOADS = "utilities.team_banks.loads"
 local REC_TEAM_FLAG = 0x1EC
 local TEXT_BANK = "evt_tb_bank"
 
-local function info(...) VRFW.log("team_banks:", ...) end
-local function warn(...) VRFW.warn("team_banks:", ...) end
-local function err(...) VRFW.error("team_banks:", ...) end
+require "VRFW/lib/basics"
+local info, warn, err = VRFW.logger("team_banks")
 
 local function rd(ty, at)
   if not at or at < 0x10000 then return nil end
@@ -64,11 +63,7 @@ local function global(name)
 end
 
 -- a command's number argument as an integer (truncated); `def` when it is not a number
-local function int(v, def)
-  if type(v) ~= "number" then return def end
-  if v >= 0 then return math.floor(v) end
-  return math.ceil(v)
-end
+local int = VRFW.value.int
 
 -- ---------------------------------------------------------------------------------------- settings
 
@@ -422,6 +417,7 @@ end
 
 -- the slot's sidecar, checked against the live docks (no sidecar = page 1 only). `unloaded`: no party Load seen yet
 -- (boot, title): the docks in memory are not the slot's, a mismatch is expected and the check is made again on load
+local NO_SIDECAR_LOGGED = {}  -- slots whose missing sidecar was already logged (logged once per slot)
 local function read_sidecar(slot, party, unloaded)
   SS.best[slot] = nil
   if slot < 2 then return S.fresh(slot, CFG.pages) end
@@ -435,7 +431,10 @@ local function read_sidecar(slot, party, unloaded)
     if why then
       err("cannot read the sidecar of slot " .. slot .. " (" .. tostring(why) .. "): starting with page 1 only; the sidecar is left as it is")
     else
-      info(string.format("slot %d has no sidecar yet: page 1 = the save's docks, pages 2-%d unused", slot, CFG.pages))
+      if not NO_SIDECAR_LOGGED[slot] then
+        NO_SIDECAR_LOGGED[slot] = true
+        info(string.format("slot %d has no sidecar yet: page 1 = the save's docks, pages 2-%d unused", slot, CFG.pages))
+      end
     end
     return S.fresh(slot, CFG.pages)
   end

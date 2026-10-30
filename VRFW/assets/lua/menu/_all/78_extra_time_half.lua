@@ -8,9 +8,9 @@
 -- retail one); no engine call at load time. One log line per change of what the label shows.
 do
   local C = {
-    BREAK = 2605035580,       -- CMND_VRFW_RULE_ENGINE_BREAK -> phase, number in the phase, periods of the phase
+    BREAK = VRFW_Cmd.VRFW_RULE_ENGINE_BREAK,       -- CMND_VRFW_RULE_ENGINE_BREAK -> phase, number in the phase, periods of the phase
     SET_SPRITE = 558735651,
-    LOG = 3661580131,         -- CMND_EVT_LOG
+    LOG = VRFW_Cmd.EVT_LOG,         -- CMND_EVT_LOG
   }
   local ATLAS = 4109108046          -- #/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx
   local DUMMY = 2834393702          -- gtxt_half01 (the label's mesh)

@@ -1,8 +1,7 @@
 schema = "VRFW.game/2"
 
 # Player Training › the classic training's commands, its match modifier and its save import (moved from Inazuma
-# Fantasy's content\game\training.toml + chara_records.toml on 2026-10-14; docs/game/mechanics/training-classic.md,
-# stat-training.md). The logic is scripts\player_training.lua (PlayerTraining.*, rules in scripts\lib\
+# Fantasy's content\game\training.toml + chara_records.toml on 2026-10-14; docs/game/mechanics/training-classic.md). The logic is scripts\player_training.lua (PlayerTraining.*, rules in scripts\lib\
 # training_rules.lua, the Suerte blob in scripts\lib\training_store.lua). The old command names CMND_EVT_TRAIN_* stay
 # as aliases: the training window evt_training_menu (graft player_training_menu) and Inazuma Fantasy's skill-table
 # training mode (its graft training_btn) call them by those names.

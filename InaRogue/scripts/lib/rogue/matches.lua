@@ -107,12 +107,16 @@ end
 
 -- target level of match column `col` (1-based of `cols`) of `phase`: the curve at the phase, rising to the next
 -- phase's value for the boss column
-function M.target_level(curve, phase, col, cols)
+function M.target_level_raw(curve, phase, col, cols)
   local a = curve_at(curve, phase)
   local b = math.max(curve_at(curve, phase + 1), a)
   local t
   if cols <= 1 then t = 1.0 else t = U.clamp((math.max(col, 1) - 1) / (cols - 1), 0, 1) end
-  return growth.clamp(math.max(U.round(a + (b - a) * t), 1))   -- InaRogue's LevelCap
+  return math.max(U.round(a + (b - a) * t), 1)
+end
+
+function M.target_level(curve, phase, col, cols)
+  return growth.clamp(M.target_level_raw(curve, phase, col, cols))   -- the level the game plays now
 end
 
 -- tier window (lo, hi) of the pool of `kind` in `phase`
@@ -205,8 +209,13 @@ end
 
 -- the phase boss level (the curve at the boss column + boss_bonus)
 function M.boss_level(c, phase, cols)
+  return growth.clamp(M.boss_level_raw(c, phase, cols))
+end
+
+-- the phase boss level before the cap (the levels above it become the rivals' stat multiplier, svc_run)
+function M.boss_level_raw(c, phase, cols)
   local n = math.max(cols, 1)
-  return growth.clamp(M.target_level(c.level_curve, phase, n, n) + c.boss_bonus)
+  return M.target_level_raw(c.level_curve, phase, n, n) + c.boss_bonus
 end
 
 -- the match of node `node` ({ kind }, match column `col` 1-based of `cols`) in `phase` of run `seed` under `rule`;
@@ -227,9 +236,9 @@ function M.pick(seed, phase, node, kind, col, cols, rule, ctx)
   local idx
   if rule >= 2 then idx = pool.variety_index(rows, seed, phase, node) else idx = s % #rows + 1 end
   local row = rows[idx]
-  local target = M.target_level(c.level_curve, phase, col, cols)
-  if kind == K.ELITE then target = target + c.elite_bonus elseif kind == K.BOSS then target = target + c.boss_bonus end
-  target = growth.clamp(target)
+  local nominal = M.target_level_raw(c.level_curve, phase, col, cols)
+  if kind == K.ELITE then nominal = nominal + c.elite_bonus elseif kind == K.BOSS then nominal = nominal + c.boss_bonus end
+  local target = growth.clamp(nominal)
   if rule >= 2 then
     local f = pool.ranks(c.rivals.ranks)
     if f then target = growth.clamp(target + pool.level_shift(f, row, kind, phase)) end
@@ -240,7 +249,7 @@ function M.pick(seed, phase, node, kind, col, cols, rule, ctx)
   if g and not M.card_served(g.chara) then g = nil end
   local guest = g and g.chara or 0
   local game = guest ~= 0 and M.guest_game(row.name, guest) or row.id
-  return { row = row, diff = diff, level = level, target = target, game = game, guest = guest }
+  return { row = row, diff = diff, level = level, target = target, game = game, guest = guest, nominal = nominal }
 end
 
 -- the row of a game id (own rows first, then the clones, then the special bosses), also a guest variant's row

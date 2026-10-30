@@ -1,0 +1,25 @@
+# «Impacto luminoso» (Luminous Orb, whs10200; wind shot, cut-in ev60_10200): the cut-in's last shot (c0400 of
+# ev60102001, frame 500): the ball is the white-hot orb with its spiky blue rim and its cloud of light specks
+# (camera-facing: round from every view, centred on the ball), and it ploughs the cut-in's furrow of green-white light
+# walls rising on both sides of its line (the cut-in's 28 m, low at the kick and up to 3.4 m tall, its tall end
+# repeated on to ~66 m as one seamless groove, so it reaches the orb all through the flight), laid fixed on the pitch from the kick point, faded
+# in at the kick and shown as the ball passes (distance clock); at the cut-in's size. The object is
+# ev6120lo00, built by research/scripts/luminous_orb_ball_fx.py from the cut-in's effect object ev60102001.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\luminous_orb_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "luminous_orb"
+from = "ega0075b"
+object = "effect/event/ev60/ev6120lo00/ev6120lo00.objbin"
+
+[[shot_aura]]
+name = "luminous_orb"
+when = { techniques = ["whs10200"] }
+aura = "luminous_orb"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

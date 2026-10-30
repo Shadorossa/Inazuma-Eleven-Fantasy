@@ -12,11 +12,11 @@
 -- No engine call at load time.
 
 local CL = {
-  INFO = 3141487640,        -- CMND_VRFW_COMMUNITY_INFO () -> url, creator, title, label crc, body crc
-  OPEN = 3569811179,        -- CMND_VRFW_COMMUNITY_OPEN () -> started
-  TEXT_GET = 4074371074,    -- CMND_TEXT_GET (id) -> string
-  SET_TEXT = 1083631230,    -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
-  SE = 1917805374,          -- play a system sound
+  INFO = VRFW_Cmd.VRFW_COMMUNITY_INFO,        -- CMND_VRFW_COMMUNITY_INFO () -> url, creator, title, label crc, body crc
+  OPEN = VRFW_Cmd.VRFW_COMMUNITY_OPEN,        -- CMND_VRFW_COMMUNITY_OPEN () -> started
+  TEXT_GET = VRFW_Cmd.TEXT_GET,    -- CMND_TEXT_GET (id) -> string
+  SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,    -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
+  SE = VRFW_Cmd.SND_PLAY_SE,          -- play a system sound
   SE_OK = 3848881948,       -- sy0000
   SE_NG = 2086672038,       -- sy0003
   FN_OPEN = 1801650413,     -- crc32("vrfw_community_open"): the CMD_FUNCTION of the declaring mod's menu patch

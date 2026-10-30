@@ -1,0 +1,25 @@
+# «Soy todopoderoso» (I Am the Almighty, whs02340, and its _mm variant whs02340_mm; mountain shot, cut-in ev60_02340):
+# the cut-in's last shot (c0040, frame 574: the drill fully grown): the ball is the tip of the orange wind drill, the
+# blue-white star with its blue halo round it (camera-facing: round from every view), the white-blue light cones at
+# the tip, the drill's spiral widening behind it (its wind texture flowing on) and the blue lightning round the tip;
+# turned along the flight (no cut-in tilt), x0.1 (the drill ~3.3 m long, ~1.5 m round at its back). The drill comes
+# out of the kick point as the ball moves away (distance clock) and fades out at its far end. The object is
+# ev6234ia00, built by research/scripts/i_am_the_almighty_ball_fx.py from the cut-in's effect object ev60023400.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\i_am_the_almighty_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "i_am_the_almighty_drill"
+from = "ega0075a"
+object = "effect/event/ev60/ev6234ia00/ev6234ia00.objbin"
+
+[[shot_aura]]
+name = "i_am_the_almighty_drill"
+when = { techniques = ["whs02340", "whs02340_mm"] }
+aura = "i_am_the_almighty_drill"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

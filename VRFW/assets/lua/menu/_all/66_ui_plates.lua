@@ -245,7 +245,8 @@ if VRFW_UI == nil then
   end
 
   -- the archetype glyph's slanted box on layer `tag` (a btl06_13 gauge copy, already open / set up by the caller),
-  -- for the row (layer, inst) of `hdl`. o.sprite / o.sprite_dual = the box sprites (btl06_13 atlas), o.dual_cmd = the
+  -- for the row (layer, inst) of `hdl`. o.sprite / o.sprite_dual = the box sprites, o.atlas = their atlas (default the
+  -- retail btl06_13), o.dual_cmd = the
   -- dual archetype pair command. st = the caller's cache table. Returns whether the box shows.
   function HR.ArchBox(tag, layer, inst, hdl, st, o)
     o = o or {}
@@ -259,7 +260,7 @@ if VRFW_UI == nil then
       local L = U.Layout("header_row").arch_box or {}
       local b = (dual and L.box_dual or L.box) or {1042, 175, 81, 40}
       local g = L.gauge or {94, 816, 476, 44}
-      M(C.SPRITE, tag, HR.TX_BTL0613, dual and o.sprite_dual or o.sprite, HR.SP_FRAME, 0, 0)
+      M(C.SPRITE, tag, o.atlas or HR.TX_BTL0613, dual and o.sprite_dual or o.sprite, HR.SP_FRAME, 0, 0)
       local sx, sy = b[3] / g[3], b[4] / g[4]
       M(C.SCALE, tag, sx, sy, 1, 0)
       M(C.POS, tag, b[1] - g[1] * sx, -b[2] + g[2] * sy, 0, 0)
@@ -273,7 +274,7 @@ if VRFW_UI == nil then
     for _, m in ipairs(HR.BOX_HIDE) do
       M(C.MESH, tag, m, false, 0)
     end
-    M(C.SPRITE, tag, HR.TX_BTL0613, (o or {}).sprite, HR.SP_FRAME, 0, 0)
+    M(C.SPRITE, tag, (o or {}).atlas or HR.TX_BTL0613, (o or {}).sprite, HR.SP_FRAME, 0, 0)
   end
 
   -- a status plate stripped to keep.band (its two band sprites) / keep.explain (the description box and text)

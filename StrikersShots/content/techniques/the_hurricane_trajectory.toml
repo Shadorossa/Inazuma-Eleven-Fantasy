@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Huracán (The Hurricane, whs01120 and whs01120_or, same cut-in ev60_01120;
+# whs01120_or covered by the base move's rule).
+#
+# In the cut-in's last shot (c0500) the ball flies low and almost level (1.94 m -> 1.32 m over 36 m). Flight: straight
+# and level at 2.2 m into the goal, under the bar, so the wind rings and ice grains round the flight stay clear of the
+# pitch (research/scripts/the_hurricane_ball_fx.py FLIGHT_HEIGHT). unblockable = false: the game's block rules (this
+# mod changes no block rule). Heights are the ball centre over the pitch (m); points count from the kick; one point =
+# a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Huracán (whs01120).
+[[edit]]
+target = "whs01120"
+trajectory = { points = [[0.0, 2.2]], straight = true, unblockable = false }

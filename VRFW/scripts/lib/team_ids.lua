@@ -11,11 +11,7 @@ local NEW_TEAM_DIGITS = 6
 
 local by_key = nil   -- "<mod>.<name>" -> { key = declared game key or nil }
 
-local function crc(s)
-  local ok, v = pcall(VRFW.crc32, s)
-  if ok and type(v) == "number" then return v % 4294967296 end
-  return VRFW.ui.crc32(s) % 4294967296
-end
+local crc = VRFW.crc32
 
 local function trim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
 

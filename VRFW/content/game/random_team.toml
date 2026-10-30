@@ -45,6 +45,10 @@ name = "CMND_VRFW_RANDOM_TEAM_LOOK"      # () -> name text, emblem, kit, formati
 handler = "RandomTeam.Look"
 
 [[VRFW.Command]]
+name = "CMND_VRFW_RANDOM_TEAM_LOOK_OF"   # (rule, seed, node, stage) -> name text, emblem, kit, name text key: what a build will show
+handler = "RandomTeam.LookOf"
+
+[[VRFW.Command]]
 name = "CMND_VRFW_RANDOM_TEAM_INFO"      # (rule) -> ok, version, slot teams, stage rows
 handler = "RandomTeam.Info"
 
@@ -71,6 +75,33 @@ needs = ["RandomTeamFind", "RandomTeamRecord"]
 [[VRFW.Command]]
 name = "CMND_VRFW_TEAM_LEVEL"
 handler = "TeamLineup.Level"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
+
+# (team id, slot, card, slot, card…) -> true, rows written | false, why: the member row in each roster slot plays that
+# card for the team's next matches (its own learn list; in memory, never saved); a career mode's squads
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_ROSTER"
+handler = "TeamLineup.Roster"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
+
+# (team id, 0 = every team) -> true, rows: the data's cards back in the rows CMND_VRFW_TEAM_ROSTER wrote
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_ROSTER_RESTORE"
+handler = "TeamLineup.RosterRestore"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
+
+# (slot team id, source team id, card...) -> true, players | false, why: the slot team (declared with player rows of its
+# own) plays as the source team in its next matches (its look, the cards in roster slots 0.., the member slice cut to
+# them and the staff rows; in memory, never saved): a squad larger than the source team's own rows
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_STAND_IN"
+handler = "TeamLineup.StandIn"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember", "RandomTeamConfig"]
+
+# (slot team id, 0 = every one) -> true, teams: the slot team's rows, slice and record back
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_STAND_IN_RESTORE"
+handler = "TeamLineup.StandInRestore"
 needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
 
 # (team id, roster slot) -> true, move1..move6, level1..level6 of that member row's loadout as the match plays it (auras

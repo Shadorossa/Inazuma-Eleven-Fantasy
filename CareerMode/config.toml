@@ -1,0 +1,298 @@
+# Career mode: default configuration shipped with the mod (the loader's config.toml [mods.CareerMode] overrides it key by
+# key). Read by scripts\career.lua with VRFW.files.config("<section>.<key>"). The mode is always on with the mod.
+
+# The clubs: every [[team]] of these mods' content\teams\ at this level that has a roster and every field of `require`
+# (the Battle Bay special tiles, as the Draft and the active team, have no series). Roster rows up to
+# player_slot_max (0-10 starters, 11-18 bench; 19 / 20 = coach and manager) are the club's players.
+[teams]
+sources = ["BattleBayDeluxe"]
+level = 40
+require = ["series"]
+player_slot_max = 18
+# the game's own Battle Bay teams are career clubs too (team_config keys matching this Lua pattern, at `level`)
+game_team_pattern = "^bb_%d+_team_"
+# The national sides: the team keys listed at `national_list` of mod `national_mod`'s config (Battle Bay Deluxe's
+# [league] national_teams: the team data has no national flag). A source team is national when its key, a key of its
+# `same_as` or its name text is one of theirs. National sides play no club competition (SuperLiga, leagues, Fútbol
+# Frontier) and own no player: the unique-player rule is among the clubs only, so a club may sign a national side's
+# player, who stays in his national side as well. They keep their whole rosters (the World Cup phase, the proposal's §12).
+national_mod = "BattleBayDeluxe"
+national_list = "league.national_teams"
+# only the teams of these series (the [[team]] `series`) are national sides (owner 2026-10-30: the FFI of IE3, the Asian
+# qualifiers of Galaxy (GO3), Orion); a listed team of another series is a club
+national_series = ["IE3", "GO3", "ORION"]
+# the game's team table: the teams of [[world_cup.countries]] no mod declares (story teams) are read from it
+game_table = "data/common/gamedata/team/team_config_*.cfg.bin"
+# listed teams that are not national teams (combined or legend squads: owner 2026-10-30): clubs
+national_exclude = [
+    "bbcr_legend_ie3_04_bb",    # Ases Internacionales
+    "bbcr_legend_orion_02_bb",  # Selección Mundial
+    "bbcr_legend_orion_08_bb",  # Neo Japón Implacable
+]
+
+# The club strength the draw's pots use: the Battle Bay rating table (any mod may ship it); a club it does not rate
+# gets the median. Without the table every club has the same rating.
+[ratings]
+table = "data/common/gamedata/team/evt_bb_team_rating.cfg.bin"
+rows = "EVT_BB_RATING"
+
+# Squads (docs/game/mods/career-mode-proposal.md §9): every player exists once in a career. A player shared by several
+# clubs belongs to the earliest one by order_file (generated from game data: research/scripts/
+# career_club_order_build.py). A club enters the career when it keeps min_players of its own. The roster rows its moved
+# players leave, and its squad up to fill_to, are signed from the free players: the same main position, the closest
+# strength (chara_param column strength_column, at most strength_reach apart), the club's own game first
+# (same_game_first); with free_need_team only characters of some belong team (chara_base), not townsfolk; drawn once
+# per career.
+[squads]
+order_file = "scripts/data/club_order.toml"
+min_players = 11
+fill_to = 16
+# the career's clubs (owner 2026-10-30): which teams are one club (versions merged) and which are no club
+clubs_file = "scripts/data/career_clubs.toml"
+strength_column = "rank"
+strength_reach = 5
+same_game_first = true
+free_need_team = true
+
+# The season (§8). SuperLiga: every club, a Swiss system of `rounds` rounds (no rival twice, home and away balanced);
+# the first `qualify` go on (a multiple of the league count; the rest of the season is simulated when the player's club
+# is out).
+[superliga]
+rounds = 12
+qualify = 56
+
+# The qualified clubs in pots of `count` (SuperLiga order), one club of each pot per league: `count` leagues. double =
+# home and away (26 matchdays with 14 clubs).
+[leagues]
+count = 4
+double = true
+
+# Fútbol Frontier: places 1..direct_places of each league go straight to the knockout rounds; places playoff_places
+# (first to last) play a single-match play-off (best against worst of another league). Every knockout match is single,
+# the final too (a draw goes to penalties). Direct clubs + play-off winners must be a power of two. The round after the
+# play-off is drawn when the Frontier starts: each direct club against the winner of a play-off match, never one with a
+# club of its own league when the draw allows it.
+[frontier]
+direct_places = 2
+playoff_places = [3, 6]
+
+# The season's days (the proposal's §11, «as in FIFA»): every fixture has a date. Season n starts on season_start of
+# first_year + n - 1 (calendar day 1; the calendar year rolls over with the season). The first matchday is the
+# first_match weekday of its month (nth 1 = the first, -1 = the last); the final is played on season_end at the latest.
+# Match days by phase: "weekend" (the weekend day, one round a week), "midweek" (the midweek day), "both"; the final has
+# its own mode. Two matches of a club are rest_days apart at least; the pots draw is draw_after_days after the last
+# SuperLiga round, the leagues start the first league day after it. When the final would come after season_end, the
+# phases of `compress` play on both days (one more phase each try), then the breaks are given up. Dates are "MM-DD" (a
+# month before the season_start month is the next calendar year's).
+[transfers]
+# A club sells one of its players only with min_squad_to_sell career players or more (owner 2026-10-30: a club of 11
+# refuses, a sale would leave it short). CareerMode.CanSell checks it for every sale between clubs.
+min_squad_to_sell = 12
+
+[calendar]
+first_year = 2026
+season_start = "08-01"
+first_match = { month = 8, weekday = "sat", nth = -1 }
+season_end = "06-01"
+weekend = "sat"
+midweek = "wed"
+rest_days = 3
+draw_after_days = 4
+superliga = "weekend"
+league = "weekend"
+frontier = "midweek"
+final = "weekend"
+compress = ["superliga", "frontier", "league"]
+# days without matches (if they fit)
+breaks = [{ from = "12-22", to = "01-03" }]
+# the transfer windows (shown on the calendar and on «Inicio»; scripts\career.lua CareerMode.WindowAt(day))
+transfer_windows = [{ from = "08-01", to = "08-31" }, { from = "01-01", to = "01-31" }]
+# the World Cup's days after the club season (reserved: the World Cup phase of the proposal's §12)
+world_cup = { from = "06-24", to = "07-15" }
+
+# The World Cup (the proposal's §12): after the Fútbol Frontier final, in the [calendar] world_cup days. One national
+# team per country plays; the player is offered one country at random and picks its squad (squad players, at least
+# `keepers` goalkeepers) among the players of that nationality. Every country plays: as few groups of group_size as
+# hold them (sizes differ by one at most), single round robin; the knockout is the power of two the first `advance` of
+# each group fill best (the next places complete a larger one when there are enough of them, else the best qualified
+# fill a smaller one); single matches (a draw goes to penalties), simulated with [sim]. It changes nothing in the
+# career (no growth, no trophy). enabled = false: the season ends at the final.
+[world_cup]
+enabled = true
+group_size = 4
+advance = 2
+squad = 16
+keepers = 2
+# every player's nationality: the country of the national team rosters that hold him, then this file's players
+# ([country] <id> = [cards or chara keys]) for players of no national roster or a different country
+nationality_file = "scripts/data/nationalities.toml"
+
+# The countries (owner 2026-10-30): a country's national teams by team key; the first one plays the World Cup (name,
+# crest, kit); the call-up pool is every player of that nationality. pool_teams: teams whose players also have the
+# country's nationality (no entrant). A key no mod declares is the game's own team ([teams] game_table). A club listed
+# in `teams` plays as that country's national team, out of the club competitions. A national team in no country is a
+# country alone.
+[[world_cup.countries]]
+id = "australia"
+teams = ["bbcr_ie3_0200_bb", "bbcr_go3_0300_bb", "bbcr_orion_0200_bb"]  # Big Waves IE3, GO3; Demonios Brillantes
+[[world_cup.countries]]
+id = "south_korea"
+teams = ["bbcr_ie3_0500_bb", "bbcr_go3_0200_bb", "bbcr_orion_0100_bb"]  # Dragones de Fuego IE3, GO3; Bisonte Rojo
+[[world_cup.countries]]
+id = "england"
+teams = ["bbcr_ie3_0600_bb"]  # Knights of Queen
+[[world_cup.countries]]
+id = "italy"
+teams = ["bbcr_ie3_1100_bb", "bbcr_orion_1000_bb"]  # Orfeo; Guardianes de la Reina
+[[world_cup.countries]]
+id = "united_states"
+teams = ["bbcr_ie3_0900_bb", "bbcr_orion_0700_bb", "bbcr_legend_orion_06_bb"]  # Unicorn; Navy Invader; Unicornios con Estrellas
+[[world_cup.countries]]
+id = "brazil"
+teams = ["bbcr_ie3_1500_bb", "bbcr_orion_0900_bb"]  # Os Reis; Olé de Samba
+[[world_cup.countries]]
+id = "spain"
+teams = ["bbcr_ie3_1000_bb", "bbcr_orion_0600_bb"]  # Los Rojos; Gigantes Invencibles
+[[world_cup.countries]]
+id = "china"
+teams = ["bbcr_orion_0500_bb"]  # Tropa Acrobática del Fútbol
+[[world_cup.countries]]
+id = "saudi_arabia"
+teams = ["bbcr_go3_0400_bb", "bbcr_orion_0400_bb"]  # Cimitarras; Ejército del Fénix Árabe
+[[world_cup.countries]]
+id = "uzbekistan"
+teams = ["bbcr_go3_0700_bb", "bbcr_orion_0300_bb"]  # Storm Wolves; Bailarines Eternos
+[[world_cup.countries]]
+id = "south_africa"
+teams = ["bbcr_legend_ie3_07_bb"]  # Caimanes del Cabo
+[[world_cup.countries]]
+id = "congo"
+teams = ["bbcr_ie3_1800_bb"]  # Pequeños Gigantes
+[[world_cup.countries]]
+id = "qatar"
+teams = ["bbcr_ie3_0300_bb"]  # Leones del Desierto
+[[world_cup.countries]]
+id = "france"
+teams = ["bbcr_legend_ie3_05_bb"]  # Grifos de Rosa
+[[world_cup.countries]]
+id = "germany"
+teams = ["bbcr_legend_ie3_06_bb"]  # Brocken Brigade
+[[world_cup.countries]]
+id = "argentina"
+teams = ["bbcr_ie3_0800_bb"]  # Los Emperadores
+[[world_cup.countries]]
+id = "thailand"
+teams = ["bbcr_go3_0500_bb"]  # Muay Tigers
+[[world_cup.countries]]
+id = "russia"
+teams = ["bbcr_orion_1200_bb"]  # Chispas Perfectas
+# Galaxy's planets (owner 2026-10-30): each a country of its own; a club listed here leaves the club competitions
+[[world_cup.countries]]
+id = "silica"
+teams = ["bbcr_go3_0800_bb"]  # Sílice
+[[world_cup.countries]]
+id = "naiadi"
+teams = ["bbcr_go3_0900_bb"]  # Naiadi
+[[world_cup.countries]]
+id = "magmavia"
+teams = ["bbcr_go3_1000_bb"]  # Magmavís
+[[world_cup.countries]]
+id = "fertilia"
+teams = ["bbcr_go3_1100_bb"]  # Fertilia
+[[world_cup.countries]]
+id = "falam_medius"
+teams = ["bb_19_team_faram_diete"]  # Falam Medius (the game's Battle Bay team)
+# Japan (owner 2026-10-30): Inazuma Japón plays (the game's Battle Bay team, not a mod's team); every other Japanese
+# team gives the pool its players (pool_teams: players only, no entrant), the story's Inazuma Japón of every chapter too
+[[world_cup.countries]]
+id = "japan"
+teams = ["bb_07_team_japan", "bbcr_ie3_0400_bb", "bbcr_go3_0600_bb"]  # Inazuma Japón; Neo Japón; Resistencia Japón
+pool_teams = [
+    "bb_13_team_newjapan",        # Earth Eleven (Galaxy's Inazuma Japón)
+    "bb_24_team_senshinjapan_a",  # Inazuma Japón Implacable A
+    "bb_25_team_senshinjapan_b",  # Inazuma Japón Implacable B
+    "tm_cro_go2_0400",            # Selección de Japón
+    "tm_cro_go2_2100",            # Inazuma Japón Legendario
+    "bbcr_legend_orion_08_bb",    # Neo Japón Implacable (a club, its players Japanese)
+    # Inazuma Japón in the story chapters (IE3, Chrono Stone, Galaxy, Orion)
+    "pltm_cro_ie3_02", "pltm_cro_ie3_03", "pltm_cro_ie3_04", "pltm_cro_ie3_05", "pltm_cro_ie3_06", "pltm_cro_ie3_08",
+    "pltm_cro_ie3_09", "pltm_cro_ie3_10", "pltm_cro_ie3_11", "pltm_cro_ie3_15", "pltm_cro_ie3_16", "pltm_cro_ie3_17",
+    "pltm_cro_ie3_18", "pltm_cro_ie5_26", "pltm_cro_ie5_27", "pltm_cro_ie6_01", "pltm_cro_ie6_02", "pltm_cro_ie6_03",
+    "pltm_cro_ie6_04", "pltm_cro_ie6_05", "pltm_cro_ie6_06", "pltm_cro_ie6_07", "pltm_cro_ie8_01", "pltm_cro_ie8_02",
+    "pltm_cro_ie8_03", "pltm_cro_ie8_04", "pltm_cro_ie8_05", "pltm_cro_ie8_06", "pltm_cro_ie8_07", "pltm_cro_ie8_08",
+    "pltm_cro_ie8_09", "pltm_cro_ie8_10", "pltm_cro_ie8_11",
+]
+
+# The simulated results: goals per side ~ Poisson(goals x (rating / rival rating) ^ power, x home_advantage at home),
+# at most max_goals; a knockout draw goes to penalties, won by the stronger club more often (rating ^ penalties_power);
+# the shoot-out's kicks: each one scored with penalty_kick, penalty_kicks a club before sudden death.
+# The ratings are the club ratings of [ratings].
+[sim]
+goals = 1.35
+power = 1.2
+home_advantage = 1.15
+max_goals = 9
+penalties_power = 0.5
+penalty_kick = 0.75
+penalty_kicks = 5
+
+# The player's matches: a friendly (content\friendlies\career.toml) on match row `game` at `difficulty`, the career
+# clubs on both sides; a won final sends the signal trophy_signal (Battle Bay Deluxe's trophy lift; "" = none).
+# user_team / rival_team: the slot teams (content\teams\stand_in.toml, team keys) that stand in for the
+# two clubs with their whole career squads (starters and bench, at most the slot team's player rows).
+[match]
+user_team = "evt_career_user"
+rival_team = "evt_career_rival"
+friendly = "career_match"
+game = "fbtl_bb_stadium_00"
+difficulty = 1
+trophy_signal = "BattleBayDeluxe.TrophyPlay"
+# a match takes squad_size players of each club (the slot teams' player rows): the player picks his club's on the
+# «Plantilla» tab, a rival plays its best squad_size by strength ([squads] strength_column), at least `keepers`
+# goalkeepers among them
+squad_size = 19
+keepers = 2
+
+# Club families: the team names of this language tell two versions of one club apart («… A» / «… B»)
+[family]
+language = "en"
+
+# League points
+[standings]
+win = 3
+draw = 1
+loss = 0
+
+# The club's card (club pick, «Inicio»): numbers the hub screen reads from the game's own stats at the club's level.
+# A player's rating = the mean of the game's shown stats `stats` (engine order: 0 Disparo, 1 Control, 2 Técnica,
+# 3 Presión, 4 Físico, 5 Inteligencia, 6 Agilidad). The starters = formation places below `starter_places`. The lines
+# (ATA / MED / DEF) = the mean rating of the starters of these main positions (1 GK, 2 FW, 3 MF, 4 DF); the formation
+# shape counts the starters of defence, midfield, attack (the goalkeeper apart). The stars = the club's place among the
+# clubs of its league by the starters' mean, from stars_min (last) to stars_max (first) in steps of stars_step.
+[rating]
+stats = [0, 1, 2, 3, 4, 5, 6]
+starter_places = 11
+attack = [2]
+midfield = [3]
+defence = [4]
+goalkeeper = [1]
+stars_min = 1.0
+stars_max = 5.0
+stars_step = 0.5
+best_players = 5
+
+# The hub: rows per page of the calendar and of a table, the last results shown as form chips, and its tabs in order
+# (L1 / R1). A tab is a page id the screen draws (home, calendar, competition, squad) with its label text
+# (text\rows\career.toml CareerMode.<text>), its icon (a sprite of the retail tab icon atlas icon_list_tab) and, when it
+# shows only in some phases of the season, `phases` (superliga, pots, league, frontier, worldcup, over). A page id the
+# screen does not know shows «coming soon».
+[hub]
+rows_per_page = 10
+table_rows = 18
+form_matches = 5
+tabs = [
+    { id = "home", text = "TabHome", icon = "icon_list_tab_town01" },
+    { id = "calendar", text = "TabCalendar", icon = "icon_list_tab_history01" },
+    { id = "competition", text = "TabCompetition", icon = "icon_list_tab_vroad01" },
+    { id = "squad", text = "TabSquad", icon = "icon_list_tab_uniform01" },
+]

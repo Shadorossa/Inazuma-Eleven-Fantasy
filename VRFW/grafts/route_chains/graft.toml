@@ -20,7 +20,6 @@ stem = "vs_route_town_menu"
   type = "insert_before"
   point = "vs_route_town_menu.OpenCommandSelect.RouteChains"
   src = "rch_common.lua"
-  crc = "none"
 
   # a chain node opens the chain board (its chain index handed over) instead of the command menu; the board is a full
   # screen: the board's own footer (button guides) and the piece's title banner are hidden under it (they showed

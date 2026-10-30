@@ -59,15 +59,8 @@ local KEY_PHASE = "BattleBayDeluxe.draft.phase"
 local FORMATION_STEM = "data/common/gamedata/formation/formation_config"
 local TEXT_ROOT = "data/common/text"
 
-local function info(...)
-  VRFW.log("draft:", ...)
-end
-local function warn(...)
-  VRFW.warn("draft:", ...)
-end
-local function err(...)
-  VRFW.error("draft:", ...)
-end
+require "VRFW/lib/basics"
+local info, warn, err = VRFW.logger("draft")
 
 local function fail(msg)
   error(msg, 0)

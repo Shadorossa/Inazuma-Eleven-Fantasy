@@ -33,7 +33,6 @@ stem = "title_menu_inc"
   [[files.ops]]
   type = "append_block"
   src = "save_slots_inc_1.lua"
-  crc = "none"
 
 [[files]]
 path = "common/script/lua/menu/evt_save_slot_menu.lua.bin"
@@ -41,7 +40,6 @@ path = "common/script/lua/menu/evt_save_slot_menu.lua.bin"
   [[files.ops]]
   type = "new_file"
   src = "evt_save_slot_menu.lua"
-  crc = "none"
   vars = { "@MENU_FILE@" = "evt_save_slot_menu" }   # --@lib evt_menu_kit.lua#StartCo
 
 # title_menu_2 ships as lua_patches; mm_entry's patch redefines OnInit after the chunk, which drops the include's

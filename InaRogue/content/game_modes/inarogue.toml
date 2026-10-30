@@ -10,3 +10,11 @@ key = "inarogue.run"
 order = 900
 state = "save.active_slot"
 state_is = 4
+
+# The INAROGUE save with config.toml [drops] retail = false: the state inarogue.no_retail_drops (content\game\rogue.toml)
+# is 1. Scope of content\items\no_retail_drops.toml. Order 901: never the detected key (is() answers all the same).
+[[rule]]
+key = "inarogue.no_retail_drops"
+order = 901
+state = "inarogue.no_retail_drops"
+state_is = 1

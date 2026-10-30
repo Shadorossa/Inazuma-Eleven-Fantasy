@@ -1,0 +1,74 @@
+# Character Reforged › the Equipamiento item card's own layers (graft plate_pages, host table item_card in
+# research/grafts/plate_pages/host_equip.lua): the card's body (a copy of the stats panel's body object evt_pp_band, so
+# no drop shadow; under the retail card) and the card pages' icons (16 copies of the retail item card object, each
+# showing one slot icon, badge or item icon; over the card; the list row object took the list's cursor). Opened, placed and filled by the Lua; closed with the host's
+# other layers.
+schema = "VRFW.menu/2"
+
+# the card's icon object: the retail item card object with the card's own atlas loaded too (evt_eq_fx: the «Efecto»
+# page's icons, chips and bars, content/images/menu/item_effect.toml), so no game atlas is changed
+[[object]]
+name = "evt_eq_fx"
+from = "team05_02_equip_info_easy"
+add = [
+    { block = "gmdMenuObj", param = "Texture", values = ["#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"], after = { param = "SkeletonAnime", match = { 1 = "common/menu/102_team/team05/team05_02/team05_02.g4pkm" } } },
+]
+
+[[patch]]
+menu = "equip_menu"
+add_layer = { name = "evt_eq_card_body", object = "evt_pp_band", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_pp_stat_bar", groups = [{ group = "common", flags = [0, 0, 0, 0, 1, 0], after = "evt_pp_stat_bar" }] }
+
+[[patch]]
+menu = "equip_menu"
+add_layer = { name = "evt_eq_set_icon", object = "evt_eq_fx", count = 52, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_eq_card_body", groups = [{ group = "common", flags = [0, 0, 0, 0, 1, 0], after = "evt_eq_card_body" }] }
+
+# the item card's pager under the stats panel: copies of the status base showing its page dots and button glyphs, as
+# the technique card's pager (Hissatsu Effects evt_skc_dots)
+[[object]]
+name = "evt_eq_dots"
+from = "soccer11_05_formation_status_base"
+remove = [
+    { param = "NullLayerName" },
+    { param = "_touch_arw01_l" },
+    { param = "_touch_arw01_r" },
+]
+
+[[patch]]
+menu = "equip_menu"
+add_layer = { name = "evt_eq_dots", object = "evt_eq_dots", count = 8, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_eq_set_icon", groups = [{ group = "common", flags = [0, 0, 0, 0, 1, 0], after = "evt_eq_set_icon" }] }
+
+# the same card pages on the screens that show an item without a player (host research/grafts/plate_pages/
+# host_item_detail.lua): the inventory «Objetos» (item_menu) and the shops (shop_menu, the buy list's group). The game's
+# card stays; the pages' icons and texts on evt_eq_set_icon, the page dots on evt_eq_dots and the «Y <next page>» pill
+# on evt_eq_ypage (one copy of the retail change-page plate, as the technique card's). Their draw priority comes from
+# the card's own (the Lua).
+[[object]]
+name = "evt_eq_ypage"
+from = "team00_40_change_page_guide"
+
+[[patch]]
+menu = "item_menu"
+add_layer = { name = "evt_eq_set_icon", object = "evt_eq_fx", count = 44, align = ["right", "middle"], scale = 0.20000000298023224, after = "mainmenu90_01_header", groups = [{ group = "item_menu", flags = [0, 1, 0, 0, 1, 0], after = "mainmenu90_01_header" }] }
+
+[[patch]]
+menu = "item_menu"
+add_layer = { name = "evt_eq_dots", object = "evt_eq_dots", count = 8, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_eq_set_icon", groups = [{ group = "item_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_eq_set_icon" }] }
+
+[[patch]]
+menu = "item_menu"
+add_layer = { name = "evt_eq_ypage", object = "evt_eq_ypage", count = 1, align = [0, 0], scale = 1, after = "evt_eq_dots", groups = [{ group = "item_menu", flags = [0, 1, 0, 0, 1, 0], after = "evt_eq_dots" }] }
+# the set page's slot icons (soccer11_08) and another mod's neutral element icon (icon_common): loaded, never changed
+res = ["#/menu/00_soccer/soccer11/soccer11_08/<LG>/soccer11_08.g4tx", "#/menu/200_icon/15_icon_common/icon_common.g4tx"]
+
+[[patch]]
+menu = "shop_menu"
+add_layer = { name = "evt_eq_set_icon", object = "evt_eq_fx", count = 44, align = ["right", "middle"], scale = 0.20000000298023224, after = "mainmenu90_01_header", groups = [{ group = "shop_menu_buy", flags = [0, 1, 0, 0, 1, 0], after = "mainmenu90_01_header" }] }
+
+[[patch]]
+menu = "shop_menu"
+add_layer = { name = "evt_eq_dots", object = "evt_eq_dots", count = 8, align = ["right", "middle"], scale = 0.20000000298023224, after = "evt_eq_set_icon", groups = [{ group = "shop_menu_buy", flags = [0, 1, 0, 0, 1, 0], after = "evt_eq_set_icon" }] }
+
+[[patch]]
+menu = "shop_menu"
+add_layer = { name = "evt_eq_ypage", object = "evt_eq_ypage", count = 1, align = [0, 0], scale = 1, after = "evt_eq_dots", groups = [{ group = "shop_menu_buy", flags = [0, 1, 0, 0, 1, 0], after = "evt_eq_dots" }] }
+res = ["#/menu/00_soccer/soccer11/soccer11_08/<LG>/soccer11_08.g4tx", "#/menu/200_icon/15_icon_common/icon_common.g4tx"]

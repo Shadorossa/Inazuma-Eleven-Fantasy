@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Impacto luminoso (Luminous Orb, whs10200), cut-in ev60_10200.
+#
+# In the cut-in's last shot (c0400) the orb skims the pitch at 1.74-1.9 m along its furrow of light walls. Flight:
+# straight and level at 1.8 m into the goal (research/scripts/luminous_orb_ball_fx.py FLIGHT_H: keep the two equal).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); points count from the kick; one point = a level flight; straight = true: one straight line from the kick
+# to the goal at that height.
+
+# Impacto luminoso (whs10200).
+[[edit]]
+target = "whs10200"
+trajectory = { points = [[0.0, 1.8]], straight = true, unblockable = false }

@@ -91,7 +91,7 @@ VRFW_RBC.GEOMETRY = {FIRST_ROW_MID_Y = 442, ROW_STEP = 70, ROW_HALF_HEIGHT = 30,
 function VRFW_RBC_ListLayer(layer, kind, rows)
   local p = VRFW_RBC.panel
   p.layer, p.kind, p.rows, p.extra, p.bands, p.reserved = layer, kind, rows, 0, {}, {}
-  local ok, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], layer, 0)
+  local ok, x, y = pcall(funcLuaMenuCommand, @crc:CMND_GET_LAYER_LOCAL_POS@, layer, 0)
   p.x = ok and type(x) == "number" and x or nil
   p.y = ok and type(y) == "number" and y or nil
 end
@@ -191,7 +191,7 @@ function VRFW_RBC_PanelShift()
   if p.layer == nil or p.x == nil or p.y == nil then
     return 0, 0
   end
-  local ok, x, y = pcall(funcLuaMenuCommand, 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], p.layer, 0)
+  local ok, x, y = pcall(funcLuaMenuCommand, @crc:CMND_GET_LAYER_LOCAL_POS@, p.layer, 0)
   if not ok or type(x) ~= "number" or type(y) ~= "number" then
     return 0, 0
   end

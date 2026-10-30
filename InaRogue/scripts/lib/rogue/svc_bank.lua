@@ -3,7 +3,8 @@
 -- | Command | Args | Returns |
 -- |---|---|---|
 -- | CMND_EVT_RL_BANK_COUNT | – | count, capacity, slot, budget (the slot's starter budget), rosterLimit (nil = the menu's own) |
--- | CMND_EVT_RL_BANK_GET | i (0-based), sort (0 added, 1 tier, 2 cost, 3 level) | ok, uid, param, level, tier, cost, runs, added, card, starterCost, frags, whatif |
+-- | CMND_EVT_RL_BANK_GET | i (0-based), sort (0 added, 1 tier, 2 cost, 3 level) | ok, uid, param, level, tier, cost, runs, added, card, starterCost, frags, whatif, spirits, spiritLevel |
+-- | CMND_INAROGUE_RL_SPIRITS | op, a | the «Espíritus» (S.Spirits below) |
 -- | CMND_EVT_RL_BANK_ADD | param[, level] (always 5) | code (0 ok, 1 bad args, 2 not a roguelite player, 3 owned, 4 full, 5 write failed), uid |
 -- | CMND_EVT_RL_CHARA | param | tier, cost, inPool, statTotal99, card, element, position, whatif |
 -- | CMND_EVT_RL_BUDGET | phase | budget |
@@ -114,8 +115,12 @@ local function valid(param)
   return i ~= nil and i.tier >= 1
 end
 
+-- the starter budget: the best phase reached (starter.lua) + the v2 runs won (lib/rogue/run_rules.lua budget_bonus),
+-- capped by [rogue] budget_max
 local function starter_budget(i)
-  return St.budget(cfg(), i.bank.best_phase)
+  local c = cfg()
+  local b = St.budget(c, i.bank.best_phase) + require("lib/rogue/run_rules").budget_bonus()
+  return math.min(b, math.max(c.budget_max, c.starter_budget))
 end
 
 -- never while debug_all_players is on (the gift would find every player owned and be spent for nothing)
@@ -127,7 +132,7 @@ local function entry_cost(i, uid)
   local e = i.bank.by_uid[uid]
   if not e then return nil end
   local tier = chara.tier_of(e.param)
-  return St.cost(cfg(), tier, e.frags), e.frags, tier
+  return St.cost(cfg(), tier, e.frags, e.spirit_level), e.frags, tier
 end
 
 -- ---------------------------------------------------------------------------------------- services for the run
@@ -146,15 +151,134 @@ function S.bank_params()
   end) or {}
 end
 
--- param, frags, tier of a bank entry
+-- param, frags, tier, spirit level of a bank entry
 function S.bank_entry(uid)
   local r = with_bank(function(i)
     local e = i.bank.by_uid[uid]
     if not e then return false end
-    return { e.param, e.frags, chara.tier_of(e.param) }
+    return { e.param, e.frags, chara.tier_of(e.param), e.spirit_level or 0 }
   end)
   if not r then return nil end
-  return r[1], r[2], r[3]
+  return r[1], r[2], r[3], r[4]
+end
+
+-- ---------------------------------------------------------------------------------------- «Espíritus»
+
+local Sp = require "lib/rogue/spirits"
+
+-- the collection uid of card `param` (nil = not in it)
+function S.bank_uid_of(param)
+  return with_bank(function(i)
+    local e = i.bank.by_param[param]
+    return e and not e.debug and e.uid or nil
+  end)
+end
+
+-- spirits of collection player `uid` added (a duplicate recruit): his total, nil when he is not in the collection
+function S.spirits_add(uid, n, why)
+  return with_bank(function(i)
+    local e = i.bank.by_uid[uid]
+    if not e or e.debug or n <= 0 then return e and e.spirits or nil end
+    local before = e.spirits or 0
+    e.spirits = math.min(before + n, 999999)
+    if not commit(i, why) then
+      e.spirits = before
+      return nil
+    end
+    return e.spirits
+  end)
+end
+
+-- spirits, spirit level, cost now, cost after the next level (nil = none), spirits the next level needs (nil = none)
+function S.spirits_of(uid)
+  local r = with_bank(function(i)
+    local e = i.bank.by_uid[uid]
+    if not e then return false end
+    local tier = chara.tier_of(e.param)
+    local c = cfg()
+    local lv = e.spirit_level or 0
+    local base = St.cost(c, tier, e.frags, 0)
+    local now = Sp.apply(base, lv)
+    local nxt = Sp.next_cost(lv)
+    local after = nxt and Sp.apply(base, lv + 1) or nil
+    if after and after >= now then after, nxt = nil, nil end
+    return { e.spirits or 0, lv, now, after, nxt }
+  end)
+  if not r then return nil end
+  return r[1], r[2], r[3], r[4], r[5]
+end
+
+local spirit_list = {}   -- the uids the last CMND_INAROGUE_RL_SPIRITS (0) listed, in card order
+
+-- CMND_INAROGUE_RL_SPIRITS (op, a):
+--   0     -> ok, count: the collection players whose spirits buy their next level, set as the framework's pick cards
+--            (most spirits first, at most 12); false = nobody can
+--   1, i  -> code (0 ok, 1 nothing, 5 write failed), result text ({name}), param: card i's next level bought
+--   2, uid -> spirits, level, cost now, cost after the next level (0 = none), spirits it needs (0 = none)
+function S.Spirits(op_arg, a_arg)
+  local op = U.int(op_arg, 0)
+  local T = require("lib/rogue/run_rules").text
+  if op == 2 then
+    local sp, lv, now, after, nxt = S.spirits_of(U.int(a_arg, 0))
+    if not sp then return 0, 0, 0, 0, 0 end
+    return sp, lv, now, after or 0, nxt or 0
+  end
+  if op == 1 then
+    local uid = spirit_list[U.int(a_arg, 0)]
+    if not uid then return 1, "", 0 end
+    local out = with_bank(function(i)
+      local e = i.bank.by_uid[uid]
+      if not e then return { 1 } end
+      local base = St.cost(cfg(), chara.tier_of(e.param), e.frags, 0)
+      local lv = e.spirit_level or 0
+      if not Sp.can_level(base, lv, e.spirits or 0) then return { 1 } end
+      local price = Sp.next_cost(lv)
+      e.spirits = e.spirits - price
+      e.spirit_level = lv + 1
+      if not commit(i, "spirits spent") then
+        e.spirits, e.spirit_level = e.spirits + price, lv
+        return { 5 }
+      end
+      return { 0, Sp.apply(base, lv + 1), e.param, e.spirits }
+    end) or { 5 }
+    if out[1] ~= 0 then return out[1], "", 0 end
+    info(string.format("spirits spent on %s: cost %d, %d spirits left", U.hex(out[3]), out[2], out[4]))
+    return 0, T("InaRogue.run_spirits_done", out[2], out[4]), out[3]
+  end
+  local PC = rawget(_G, "PickCards")
+  local list = with_bank(function(i)
+    local o = {}
+    for _, e in ipairs(i.bank.entries) do
+      if not e.debug and (e.spirits or 0) > 0 then
+        local base = St.cost(cfg(), chara.tier_of(e.param), e.frags, 0)
+        if Sp.can_level(base, e.spirit_level or 0, e.spirits) then o[#o + 1] = e end
+      end
+    end
+    table.sort(o, function(a, b)
+      if a.spirits ~= b.spirits then return a.spirits > b.spirits end
+      return a.uid < b.uid
+    end)
+    return o
+  end) or {}
+  spirit_list = {}
+  if not PC or not PC.Set or #list == 0 then return false, 0 end
+  local cards = {}
+  for k = 1, math.min(#list, 12) do
+    local e = list[k]
+    local x = chara.get(e.param) or {}
+    local tier = chara.tier_of(e.param)
+    local base = St.cost(cfg(), tier, e.frags, 0)
+    local lv = e.spirit_level or 0
+    spirit_list[k] = e.uid
+    cards[k] = { kind = "player", card = e.param,
+      subtitle = T("InaRogue.run_card_player_sub", string.rep("★", math.max(tier, 1)), T("InaRogue.run_pos_" .. U.int(x.position, 0)),
+        T("InaRogue.run_elem_" .. U.int(x.element, 0))),
+      lines = { T("InaRogue.run_spirits_count", e.spirits), T("InaRogue.run_spirits_cost", Sp.apply(base, lv), Sp.apply(base, lv + 1)) },
+      badge = T("InaRogue.run_spirits_price", Sp.next_cost(lv)), rarity = math.min(math.max(tier, 1), 5) }
+  end
+  local ok = PC.Set({ title = T("InaRogue.run_spirits_title"), subtitle = T("InaRogue.run_spirits_sub"), skip = true,
+    skip_text = T("InaRogue.run_spirits_done_skip"), cards = cards })
+  return ok == true, #cards
 end
 
 -- add a player (a Fichaje / reward): code, uid (code 3 = already owned, uid = his)
@@ -235,6 +359,7 @@ function S.record_phase(phase)
 end
 
 -- a run ended (result 1 abandoned, 2 lost, 3 won) in `phase`: the bank's counters, the unlocks, the run-end points
+-- (returned)
 function S.record_run_end(result, phase)
   with_bank(function(i)
     B.record_run_end(i.bank, result, phase)
@@ -242,8 +367,9 @@ function S.record_run_end(result, phase)
   end)
   if Core.meta then
     Core.meta.unlocks_on_run_end(result, phase)
-    Core.meta.earn_run_end(result, phase)
+    return Core.meta.earn_run_end(result, phase) or 0
   end
+  return 0
 end
 
 -- ---------------------------------------------------------------------------------------- commands
@@ -268,8 +394,8 @@ function S.Get(i_arg, sort_arg)
   if not e then return false end
   local tier, cost = tier_cost(e.param)
   local x = chara.get(e.param)
-  return true, e.uid, e.param, e.level, tier, cost, e.runs, e.added, x and x.card or 0, St.cost(cfg(), tier, e.frags), e.frags,
-    chara.is_whatif(e.param)
+  return true, e.uid, e.param, e.level, tier, cost, e.runs, e.added, x and x.card or 0,
+    St.cost(cfg(), tier, e.frags, e.spirit_level), e.frags, chara.is_whatif(e.param), e.spirits or 0, e.spirit_level or 0
 end
 
 function S.Add(param_arg)

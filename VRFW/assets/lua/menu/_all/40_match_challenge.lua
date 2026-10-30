@@ -39,32 +39,32 @@
 if VRFW_MC == nil then
   local MC = {
     CMD = {
-      OF = 721571515,         -- CMND_VRFW_TEAM_CHALLENGE_OF (game) -> i / -1
-      GET = 3349286993,       -- CMND_VRFW_TEAM_CHALLENGE_GET (i) -> name, mod, title, description, scope, conditions,
+      OF = VRFW_Cmd.VRFW_TEAM_CHALLENGE_OF,         -- CMND_VRFW_TEAM_CHALLENGE_OF (game) -> i / -1
+      GET = VRFW_Cmd.VRFW_TEAM_CHALLENGE_GET,       -- CMND_VRFW_TEAM_CHALLENGE_GET (i) -> name, mod, title, description, scope, conditions,
                               --   difficulties ("4", "1,4"; "" = every row), required starters, short (0 = the title)
-      REQ = 2904917317,       -- CMND_VRFW_TEAM_CHALLENGE_REQ (i, "2/1") -> kind, at least, at most, text, inner, filter
-      CHECK = 3751451304,     -- CMND_VRFW_TEAM_CHALLENGE_CHECK (i, "card:level:rarity[:place];...", cleared 0 / 1)
+      REQ = VRFW_Cmd.VRFW_TEAM_CHALLENGE_REQ,       -- CMND_VRFW_TEAM_CHALLENGE_REQ (i, "2/1") -> kind, at least, at most, text, inner, filter
+      CHECK = VRFW_Cmd.VRFW_TEAM_CHALLENGE_CHECK,     -- CMND_VRFW_TEAM_CHALLENGE_CHECK (i, "card:level:rarity[:place];...", cleared 0 / 1)
                               --   -> ok, failed, offenders
-      REQUIRED = 754037657,   -- CMND_VRFW_TEAM_CHALLENGE_REQUIRED (i, k) -> characters, places "2,3", until first
+      REQUIRED = VRFW_Cmd.VRFW_TEAM_CHALLENGE_REQUIRED,   -- CMND_VRFW_TEAM_CHALLENGE_REQUIRED (i, k) -> characters, places "2,3", until first
                               --   clear, own text id, label suffix text id
-      AURAS = 1058671019,     -- CMND_VRFW_TEAM_CHALLENGE_AURAS (i) -> ruled, allowed kinds "keshin,totem" ("" = none),
+      AURAS = VRFW_Cmd.VRFW_TEAM_CHALLENGE_AURAS,     -- CMND_VRFW_TEAM_CHALLENGE_AURAS (i) -> ruled, allowed kinds "keshin,totem" ("" = none),
                               --   sides, label suffix text id
     },
-    AURAS_ARM = 3967972526,   -- CMND_VRFW_MATCH_AURAS_ARM (allowed kinds, sides): the next match's aura rule
-    AURAS_DISARM = 1656817130, -- CMND_VRFW_MATCH_AURAS_DISARM (): the next match has none
-    VS_SET = 3713813716,      -- CMND_GET_VS_USE_TEAM_SET
+    AURAS_ARM = VRFW_Cmd.VRFW_MATCH_AURAS_ARM,   -- CMND_VRFW_MATCH_AURAS_ARM (allowed kinds, sides): the next match's aura rule
+    AURAS_DISARM = VRFW_Cmd.VRFW_MATCH_AURAS_DISARM, -- CMND_VRFW_MATCH_AURAS_DISARM (): the next match has none
+    VS_SET = VRFW_Cmd.GET_VS_USE_TEAM_SET,      -- CMND_GET_VS_USE_TEAM_SET
     MEMBER = 1720957768,      -- (set, team, i, 0 hdl / 1 position)
     STATUS = 1131797651,      -- (hdl, 0 level / 4 chara_param / 12 rarity)
-    TEAM_SET_INFO = 1033065575, -- CMND_GET_TEAM_SET_INFO (set, team, 4) -> ok, formation id
-    FORMATION_INFO = 2649030357, -- CMND_GET_SOCCER_FORMATION_INFO (6, formation, place) -> ok, scPosType bits
+    TEAM_SET_INFO = VRFW_Cmd.GET_TEAM_SET_INFO, -- CMND_GET_TEAM_SET_INFO (set, team, 4) -> ok, formation id
+    FORMATION_INFO = VRFW_Cmd.GET_SOCCER_FORMATION_INFO, -- CMND_GET_SOCCER_FORMATION_INFO (6, formation, place) -> ok, scPosType bits
     -- scPosType bit (16 GK, 32 DF, 64 MF, 128 FW) -> position code
     PLACE_BITS = {{16, 1}, {32, 4}, {64, 3}, {128, 2}},
-    NAME = 1915015278,        -- CMND_GET_CHARA_NAME_TEXT (hdl)
-    SERIES = 964991930,       -- CMND_GET_CHARA_SERIES_INFO (1, series) -> ok, name (menu VMs)
-    TEXT_GET = 4074371074,    -- CMND_TEXT_GET
+    NAME = VRFW_Cmd.GET_CHARA_NAME_TEXT,        -- CMND_GET_CHARA_NAME_TEXT (hdl)
+    SERIES = VRFW_Cmd.GET_CHARA_SERIES_INFO,       -- CMND_GET_CHARA_SERIES_INFO (1, series) -> ok, name (menu VMs)
+    TEXT_GET = VRFW_Cmd.TEXT_GET,    -- CMND_TEXT_GET
     MSG_OPEN = 2289627655,
-    SE = 1917805374, SE_NG = 2086672038 --[[sy0003]],
-    LOG = 3661580131,
+    SE = VRFW_Cmd.SND_PLAY_SE, SE_NG = 2086672038 --[[sy0003]],
+    LOG = VRFW_Cmd.EVT_LOG,
     -- the framework's menu_text rows (crc32 of the row id)
     T = {
       HEAD = 2317620035, REFUSED = 1303940226, EVERY = 3039376359, NONE = 1380443408, AT_LEAST = 2356225541,
@@ -93,12 +93,7 @@ if VRFW_MC == nil then
     return nil
   end
 
-  local function u32(v)
-    if type(v) ~= "number" then
-      return 0
-    end
-    return math.floor(v) % 4294967296
-  end
+  local function u32(v) return VRFW_Id.u32(v) end
 
   function MC.Log(...)
     local parts = {}

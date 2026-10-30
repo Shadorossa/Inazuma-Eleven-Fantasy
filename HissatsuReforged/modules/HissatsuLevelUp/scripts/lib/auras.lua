@@ -19,11 +19,7 @@ local spirit_moves = {}
 local armours = {}     -- keshin id -> { armour ids } (the reverse of spirit_of)
 local loaded = false
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return v
-end
+local u32 = require("VRFW/lib/ids").u32
 
 function M.load()
   if loaded then return true end

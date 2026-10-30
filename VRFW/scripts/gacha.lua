@@ -17,22 +17,17 @@ Gacha = Gacha or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("gacha:", ...) end
-local function warn(...) VRFW.warn("gacha:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("gacha")
 
 local POOLS = nil        -- { { key, mod, cost_item, cost_count, level, cards = { id … }, piece } … }
 local BY_PIECE = {}      -- pieceId -> pool index
 local BY_GAME = {}       -- the node's game id -> pool index
 
-local function u32(v)
-  v = tonumber(v) or 0
-  return math.floor(v) % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
 
-local function crc(s)
-  local f = VRFW.crc32 or (VRFW.ui and VRFW.ui.crc32)
-  return f(s) % 4294967296
-end
+local crc = VRFW.crc32
 
 -- a card: 0x… / decimal = that chara_param id; <mod>.<name> = that mod character's card (its id space number)
 local function card_of(text)

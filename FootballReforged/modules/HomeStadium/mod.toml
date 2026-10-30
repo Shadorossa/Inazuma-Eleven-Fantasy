@@ -3,13 +3,15 @@ former_ids = ["home_stadium"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Home Stadium"
-version = "1.4.0"
+version = "1.15.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Each of your teams gets a home stadium: Team Dock › «Home stadium» (a picture button under Tactics with BetterUI, a list row without it) lists the stadiums you own (bought or unlocked) and saves the pick for the team on screen. The team plays its home matches there: the friendlies that leave the stadium open (no stadium of their own and no rival's home). Competition, Chronicle and Battle Bay keep their stadiums."
 priority = 0
 tags = ["Teams", "Gameplay"]
-updated = "2026-10-23"
+updated = "2026-10-30"
+# 1.12.0 (owner 2026-10-29): stadium selector cleaned up: own pre-coloured sprites (the quads cannot be tinted: the window was white, hiding the Aceptar / Volver line), blue arrows dim only at the list's ends, the label's stray bar and line hidden, even 14 px margins
+# 1.11.0: a foreign team's dock (VRFW_TeamEditor.Foreign(), e.g. the League team) shows that team's own stadium and no pick
 # 1.2.4 (owner bug 2026-10-20): with BetterUI the dock list never gets the «Estadio local» row (the ESTADIO panel button replaces it; the check no longer depends on the button's layer existing yet)
 # 1.2.3 (owner test 2026-10-19): the ESTADIO box shows FORMACIÓN's own translucent plate (the copied object also
 # showed the flat grey «blank / stop» plate the retail SetupFormationStyle hides) at FORMACIÓN's draw priority
@@ -24,7 +26,8 @@ folder = "HomeStadium"
 #   content\game\home_stadium.toml                   the commands CMND_HOMESTADIUM_*
 #   content\menus\home_stadium_dock.toml             the team dock list's 9th row instance (without BetterUI)
 #   content\menus\home_stadium_button.toml           with BetterUI: the picture button (a focusable layer + the stadium picture layer)
-#   content\menus\home_stadium_picker.toml           the selector's stadium picture frame (win05_40_sub_image_frame)
+#   content\menus\home_stadium_picker.toml           the selector's layers: the stadium picture frame (win05_40_sub_image_frame),
+#                                                    its window, «‹ name ›» plate, arrows, check and texts
 #   assets\lua\_all\home_stadium.lua                 the provider of the framework's home matches (VRFW_HomeStadium)
 #                                                    and the owned stadiums, in every menu VM
 #   assets\lua\soccer_team_dock_menu\300_home_stadium.lua  the team dock entry «Estadio local» and its selector: with
@@ -32,7 +35,7 @@ folder = "HomeStadium"
 #                                                    reached and decided by BetterUI >= 1.22.10, BetterUI.AddDockButton), else a
 #                                                    row of the dock's list
 #   text\keys.toml                                   the row's texts, the mod's name / description
-requires = ["VRFW>=2.4.223", "FootballReforged>=1.2.17"]
+requires = ["VRFW>=2.260.0", "FootballReforged>=1.2.17"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

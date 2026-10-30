@@ -1,0 +1,25 @@
+# «Estocada samurái» (Bushin Blades, whs01865; mountain shot, cut-in ev60_01865): while the ball flies to the goal it
+# wears the cut-in's last shot (c0400, the ball diving at the cross of the keshin's blade slashes, held at frame 458
+# from the aura's first frame): the X of red-white slashes facing forward across the flight (a thin solid blade from the
+# side, soft tips curving back) with the white flash lines along it (white-hot where they cross) and the soft glow on
+# the ball, and the bursts sent out from the cross again and again (the white ring growing round the ball, facing along
+# the flight, and the red jagged speed lines), x0.40. The sky backdrop, the white-out flash, the keshin and the previous
+# shot's parts stay out.
+# The object is ev61865bb0 (effect/event/ev60/ev61865bb0/), built by research/scripts/bushin_blades_ball_fx.py from
+# ev60018650 (docs/game/media/bushin-blades-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\bushin_blades_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "bushin_blades"
+from = "ega0075a"
+object = "effect/event/ev60/ev61865bb0/ev61865bb0.objbin"
+
+[[shot_aura]]
+name = "bushin_blades"
+when = { techniques = ["whs01865"] }
+aura = "bushin_blades"
+like = "ega0075a"

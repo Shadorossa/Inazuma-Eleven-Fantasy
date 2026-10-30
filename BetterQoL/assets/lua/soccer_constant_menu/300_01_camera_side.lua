@@ -26,12 +26,12 @@ function UTIL_CamSideCall(cmd, ...)
   return table.unpack(r, 2, r.n)
 end
 function UTIL_CamSideLog(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], ...)
+  pcall(funcLuaCommand, 3661580131, ...)
 end
 function UTIL_CamSideDone()
   utilCsDone = true
-  local body = UTIL_CamSideCall(151747897 --[[CMND_GET_SOCCER_CAMERA_TYPE_INFO]], 0)
-  local off = UTIL_CamSideCall(151747897 --[[CMND_GET_SOCCER_CAMERA_TYPE_INFO]], 1)
+  local body = UTIL_CamSideCall(151747897, 0)
+  local off = UTIL_CamSideCall(151747897, 1)
   UTIL_CamSideLog("UTIL camera: side camera applied", "body V", tostring(body), "offence V", tostring(off),
     "tries", utilCsTries)
 end
@@ -40,15 +40,15 @@ function UTIL_CamSideInit()
   if funcLuaCommand(3959907440) == true or funcLuaCommand(1191545622) == true then
     return
   end
-  local v = UTIL_CamSideCall(4082322029 --[[CMND_VRFW_OPTION_GET]], UTIL_CS_OPTION)
+  local v = UTIL_CamSideCall(4082322029, UTIL_CS_OPTION)
   if v ~= 1 then
-    local code, mgr = UTIL_CamSideCall(3670384878 --[[CMND_VRFW_CAMERA_RELEASE]], UTIL_CS_OWNER)
+    local code, mgr = UTIL_CamSideCall(3670384878, UTIL_CS_OWNER)
     if code == 0 then
       UTIL_CamSideLog("UTIL camera: match start, Original: side camera released", "manager", tostring(mgr))
     end
     return
   end
-  local code, mgr = UTIL_CamSideCall(2132094060 --[[CMND_VRFW_CAMERA_REQUEST]], UTIL_CS_OWNER, UTIL_CS_PRESET,
+  local code, mgr = UTIL_CamSideCall(2132094060, UTIL_CS_OWNER, UTIL_CS_PRESET,
     UTIL_CS_PRIORITY)
   UTIL_CamSideLog("UTIL camera: match start, Lateral: request", UTIL_CS_PRESET, "code", tostring(code), "manager",
     tostring(mgr))
@@ -64,7 +64,7 @@ function UTIL_CamSideInit()
   utilCsDone = false
 end
 function UTIL_CamSideTry()
-  local mgr = UTIL_CamSideCall(3766293743 --[[CMND_VRFW_CAMERA_APPLY]])
+  local mgr = UTIL_CamSideCall(3766293743)
   utilCsTries = utilCsTries + 1
   if mgr == true then
     UTIL_CamSideDone()

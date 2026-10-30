@@ -1,0 +1,226 @@
+# Pachangas (module of Football Reforged): the two half-width plates of the Team Dock list's first row, «Partido» |
+# «Pachanga» (graft pachanga_dock, docs/game/ui/pachanga-templates.md §18), made at build from the player's own list row
+# plates (team01_02.g4tx list_base01_off / _on / _ok / _ol, 392 x 72): each half keeps the plate's two slanted end caps
+# (28 px) and a shorter flat middle, so the cells are drawn at the full rows' stretch (568 / 392) and their edges have
+# the full rows' angle. «left» keeps the row's left end (the «Partido» cell), «right» its right end («Pachanga»). The
+# mod ships no game pixel. The graft swaps each cell's plate quads to these sprites (558735651) and sizes the quads to
+# width x 568 / 392.
+schema = "VRFW.image/1"
+
+# ---- list_base01_off ----
+[[recipe]]
+name = "off_head"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_off"
+ops = [{ op = "crop", box = [0, 0, 28, 72] }]
+
+[[recipe]]
+name = "off_tail"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_off"
+ops = [{ op = "crop", box = [364, 0, 392, 72] }]
+
+[[recipe]]
+name = "off_left_body"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_off"
+ops = [{ op = "crop", box = [0, 0, 172, 72] }]
+
+[[recipe]]
+name = "off_right_body"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_off"
+ops = [{ op = "crop", box = [254, 0, 392, 72] }]
+
+[[recipe]]
+name = "off_left"
+canvas = [200, 72]
+ops = [{ op = "paste", image = "off_left_body", at = [0, 0] }, { op = "paste", image = "off_tail", at = [172, 0] }]
+
+[[recipe]]
+name = "off_right"
+canvas = [166, 72]
+ops = [{ op = "paste", image = "off_head", at = [0, 0] }, { op = "paste", image = "off_right_body", at = [28, 0] }]
+
+# ---- list_base01_on ----
+[[recipe]]
+name = "on_head"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_on"
+ops = [{ op = "crop", box = [0, 0, 28, 72] }]
+
+[[recipe]]
+name = "on_tail"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_on"
+ops = [{ op = "crop", box = [364, 0, 392, 72] }]
+
+[[recipe]]
+name = "on_left_body"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_on"
+ops = [{ op = "crop", box = [0, 0, 172, 72] }]
+
+[[recipe]]
+name = "on_right_body"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_on"
+ops = [{ op = "crop", box = [254, 0, 392, 72] }]
+
+[[recipe]]
+name = "on_left"
+canvas = [200, 72]
+ops = [{ op = "paste", image = "on_left_body", at = [0, 0] }, { op = "paste", image = "on_tail", at = [172, 0] }]
+
+[[recipe]]
+name = "on_right"
+canvas = [166, 72]
+ops = [{ op = "paste", image = "on_head", at = [0, 0] }, { op = "paste", image = "on_right_body", at = [28, 0] }]
+
+# ---- list_base01_ok ----
+[[recipe]]
+name = "ok_head"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_ok"
+ops = [{ op = "crop", box = [0, 0, 28, 72] }]
+
+[[recipe]]
+name = "ok_tail"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_ok"
+ops = [{ op = "crop", box = [364, 0, 392, 72] }]
+
+[[recipe]]
+name = "ok_left_body"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_ok"
+ops = [{ op = "crop", box = [0, 0, 172, 72] }]
+
+[[recipe]]
+name = "ok_right_body"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_ok"
+ops = [{ op = "crop", box = [254, 0, 392, 72] }]
+
+[[recipe]]
+name = "ok_left"
+canvas = [200, 72]
+ops = [{ op = "paste", image = "ok_left_body", at = [0, 0] }, { op = "paste", image = "ok_tail", at = [172, 0] }]
+
+[[recipe]]
+name = "ok_right"
+canvas = [166, 72]
+ops = [{ op = "paste", image = "ok_head", at = [0, 0] }, { op = "paste", image = "ok_right_body", at = [28, 0] }]
+
+# ---- list_base01_ol ----
+[[recipe]]
+name = "ol_head"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_ol"
+ops = [{ op = "crop", box = [0, 0, 28, 72] }]
+
+[[recipe]]
+name = "ol_tail"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_ol"
+ops = [{ op = "crop", box = [364, 0, 392, 72] }]
+
+[[recipe]]
+name = "ol_left_body"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_ol"
+ops = [{ op = "crop", box = [0, 0, 172, 72] }]
+
+[[recipe]]
+name = "ol_right_body"
+game = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+sprite = "list_base01_ol"
+ops = [{ op = "crop", box = [254, 0, 392, 72] }]
+
+[[recipe]]
+name = "ol_left"
+canvas = [200, 72]
+ops = [{ op = "paste", image = "ol_left_body", at = [0, 0] }, { op = "paste", image = "ol_tail", at = [172, 0] }]
+
+[[recipe]]
+name = "ol_right"
+canvas = [166, 72]
+ops = [{ op = "paste", image = "ol_head", at = [0, 0] }, { op = "paste", image = "ol_right_body", at = [28, 0] }]
+
+# ---- the sprites, in a texture of their own in the row's atlas ----
+[[texture]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_dock_cells"
+size = [372, 300]
+
+[[sprite]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_cell_left_off"
+texture = "pachangas_dock_cells"
+x = 0
+y = 0
+size = [200, 72]
+recipe = "off_left"
+
+[[sprite]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_cell_right_off"
+texture = "pachangas_dock_cells"
+x = 204
+y = 0
+size = [166, 72]
+recipe = "off_right"
+
+[[sprite]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_cell_left_on"
+texture = "pachangas_dock_cells"
+x = 0
+y = 76
+size = [200, 72]
+recipe = "on_left"
+
+[[sprite]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_cell_right_on"
+texture = "pachangas_dock_cells"
+x = 204
+y = 76
+size = [166, 72]
+recipe = "on_right"
+
+[[sprite]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_cell_left_ok"
+texture = "pachangas_dock_cells"
+x = 0
+y = 152
+size = [200, 72]
+recipe = "ok_left"
+
+[[sprite]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_cell_right_ok"
+texture = "pachangas_dock_cells"
+x = 204
+y = 152
+size = [166, 72]
+recipe = "ok_right"
+
+[[sprite]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_cell_left_ol"
+texture = "pachangas_dock_cells"
+x = 0
+y = 228
+size = [200, 72]
+recipe = "ol_left"
+
+[[sprite]]
+atlas = "#/menu/102_team/team01/team01_02/team01_02.g4tx"
+name = "pachangas_cell_right_ol"
+texture = "pachangas_dock_cells"
+x = 204
+y = 228
+size = [166, 72]
+recipe = "ol_right"

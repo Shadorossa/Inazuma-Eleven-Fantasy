@@ -3,6 +3,8 @@
 -- The 64-bit seeded generator is the framework's SplitMix64 stream (VRFW.rng.splitmix64), the generator
 -- bb_chronicle_teams.dll used.
 
+local Id = require "VRFW/lib/ids"
+
 local U = {}
 
 local band, bxor = bit32.band, bit32.bxor
@@ -13,13 +15,8 @@ U.TWO32 = TWO32
 
 -- ------------------------------------------------------------------------------------------------ numbers
 
--- a number as u32 (signed T2B ints, negative Lua numbers from the game's Lua); 0 for anything else
-function U.u32(v)
-  if type(v) ~= "number" then
-    return 0
-  end
-  return floor(v) % TWO32
-end
+-- a number as u32 (signed T2B ints, negative Lua numbers from the game's Lua): the framework's Id.u32
+U.u32 = Id.u32
 
 -- an integer argument of a command (nil = default)
 function U.int(v, default)
@@ -35,9 +32,7 @@ function U.int(v, default)
   return default
 end
 
-function U.hex(v)
-  return string.format("0x%08X", U.u32(v))
-end
+U.hex = Id.hex
 
 -- round half away from zero (Rust f32::round)
 function U.round(x)
@@ -179,11 +174,17 @@ function U.truthy(v)
   return type(v) == "number" and v % 256 ~= 0
 end
 
--- a value of the mod's merged config.toml (+ the loader's [bb_chronicle_teams] / [mods.bb_chronicle_teams])
+-- a value of the mod's merged config.toml (+ the loader's [bb_chronicle_teams] / [mods.bb_chronicle_teams]). The
+-- mod's config.toml holds every key the scripts read: a key it lacks answers `default` with one warning per key
+local CONFIG_MISSING = {}
 function U.config(path, default)
   local ok, v = pcall(VRFW.files.config, path)
   if ok and v ~= nil then
     return v
+  end
+  if default ~= nil and not CONFIG_MISSING[path] then
+    CONFIG_MISSING[path] = true
+    VRFW.warn("config: config.toml has no " .. path .. ": the scripts' default " .. tostring(default) .. " is used")
   end
   return default
 end

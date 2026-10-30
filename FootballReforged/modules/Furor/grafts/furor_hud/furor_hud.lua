@@ -126,15 +126,15 @@ local furor_hud = {
   TEXTURE_SLOT = 538967808 --[[hp_base01: the frame's texture slot]],
   DRAW_NODE = 1837325853 --[[_hp_base01: the frame quad that draws the sprite]],
   LOCATORS = {2302841237 --[[_pos_hp01]], 273399855 --[[_pos_hp02]]},
-  GLOBAL_POS = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]],
-  SET_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]],
-  SET_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]],
-  CHECK_INPUT = 4265778440 --[[CMND_CHECK_INPUT]],
-  LOAD_TEXTURE = 839427544 --[[CMND_LOAD_MENU_RES_TEXTURE]],
+  GLOBAL_POS = @crc:CMND_GET_MESH_GLOBAL_POSITION@,
+  SET_POS = @crc:CMND_SET_LAYER_LOCAL_POS@,
+  SET_SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@,
+  CHECK_INPUT = @crc:CMND_CHECK_INPUT_CMD@,
+  LOAD_TEXTURE = @crc:CMND_LOAD_MENU_RES_TEXTURE@,
   TEXTURE_LOADING = 1506186496 --[[the texture is still loading]],
-  PRIM_ALPHA = 2219773080 --[[CMND_SET_PRIM_ALPHA: (layer, instance, mesh, alpha)]],
-  MESH_VISIBLE = 3405944500 --[[CMND_SET_MESH_VISIBLE]],
-  LAYER_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]],
+  PRIM_ALPHA = @crc:CMND_SET_PRIM_ALPHA@ --[[CMND_SET_PRIM_ALPHA: (layer, instance, mesh, alpha)]],
+  MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@,
+  LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,
   -- the source gauge's frame quad _hp_base01: top-left (94, -816), 476 x 44 (layout units, y up)
   SOURCE_X = 94, SOURCE_Y = -816, SOURCE_W = 476, SOURCE_H = 44,
   slots = nil,                                -- built on the first step: {layer, instance, side, kind, index}
@@ -198,7 +198,7 @@ function FurorHud_Log(...)
     return
   end
   FUROR_HUD_LOGS = FUROR_HUD_LOGS + 1
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "FUROR", ...)
+  pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "FUROR", ...)
 end
 
 -- side 0 (own) / 1 (rival): ratio 0..1, phase, full; nil = nothing to show
@@ -611,7 +611,7 @@ function FurorHud_HideAll()
 end
 
 function FurorHud_Step()
-  if not FUROR_HUD or FUROR_HUD_SPRITES == nil or FurorHud_Menu(2640875187 --[[CMND_IS_OPEN_LAYER]], furor_hud.KEEPER_BARS, 0) ~= true then
+  if not FUROR_HUD or FUROR_HUD_SPRITES == nil or FurorHud_Menu(@crc:CMND_IS_OPEN_LAYER@, furor_hud.KEEPER_BARS, 0) ~= true then
     FurorHud_Why("keeper bar layer closed")
     FurorHud_HideAll()
     return
@@ -653,18 +653,18 @@ function FurorHud_Step()
     return
   end
   for index, layer in ipairs(furor_hud.LAYERS) do
-    if FurorHud_Menu(2640875187 --[[CMND_IS_OPEN_LAYER]], layer.id) ~= true then
+    if FurorHud_Menu(@crc:CMND_IS_OPEN_LAYER@, layer.id) ~= true then
       for slot = layer.first, layer.last do
         furor_hud.ready[slot], furor_hud.shown[slot], furor_hud.sprite[slot] = false, false, nil
         furor_hud.mapping[slot], furor_hud.probe[slot], furor_hud.place[slot] = nil, nil, nil
         furor_hud.tries[slot], furor_hud.lit[slot], furor_hud.alpha[slot] = nil, nil, nil
       end
       furor_hud.init[index] = false
-      FurorHud_Menu(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], layer.id)
+      FurorHud_Menu(@crc:CMND_OPEN_LAYER_ARRAY@, layer.id)
       FurorHud_Why("opening layer " .. index)
       return
     end
-    if FurorHud_Menu(3057768039 --[[CMND_IS_LOADING_LAYER]], layer.id) == true then
+    if FurorHud_Menu(@crc:CMND_IS_LOADING_LAYER@, layer.id) == true then
       FurorHud_Why("layer " .. index .. " loading")
       return
     end

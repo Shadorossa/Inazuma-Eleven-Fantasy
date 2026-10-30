@@ -10,19 +10,18 @@
     SLOT = @crc:CMND_EVT_SLOT_ROGUE@,         -- () -> rogueSlot, active, ...
     RUN_INFO = @crc:CMND_EVT_RL_RUN_INFO@,    -- () -> exists, phase, ...
     MATCH = @crc:CMND_EVT_RL_RUN_MATCH@,      -- (node) -> ok, game, diff, stadium, kind, level, rival, emblem
-    P_HAS = 2947612279, P_GET = 3522198769, P_SET = 3860611758, P_CLEAR = 3363400568,
-    LOG = 3661580131,                         -- CMND_EVT_LOG
-    TEXT_GET = 4074371074,                    -- CMND_TEXT_GET
+    LOG = @crc:CMND_EVT_LOG@,                         -- CMND_EVT_LOG
+    TEXT_GET = @crc:CMND_TEXT_GET@,                    -- CMND_TEXT_GET
     on = false, node = 0, game = 0, diff = 1, kind = 0, level = 0, rival = "", emblem = 0, phase = 0, team = 0,
-    -- texts: menu_text rows of the 9 languages (research/scripts/rogue_play_text_build.py); the literal is the fallback
+    -- texts: InaRogue text\rows\menu_text.toml / rogue_bosses.toml (9 languages)
     T = {
-      TITLE = {@crc:evt_ir_vs_title@, "INAROGUE · Fase {1} · {2}"},
-      K5 = {@crc:evt_ird_kind5@, "Pachanga 5 contra 5"},
-      K11 = {@crc:evt_ird_kind11@, "Partido 11 contra 11"},
-      KBOSS = {@crc:evt_ird_kindboss@, "JEFE de la fase"},
-      KELITE = {@crc:evt_ird_kindelite@, "ÉLITE"},
-      KEPIC = {@crc:evt_ird_kindepic@, "JEFE ÉPICO"},          -- §33 boss tiers (text/rows/rogue_bosses.toml)
-      KGATE = {@crc:evt_ird_kindgate@, "JEFE DE PUERTA"},
+      TITLE = {@crc:evt_ir_vs_title@},
+      K5 = {@crc:evt_ird_kind5@},
+      K11 = {@crc:evt_ird_kind11@},
+      KBOSS = {@crc:evt_ird_kindboss@},
+      KELITE = {@crc:evt_ird_kindelite@},
+      KEPIC = {@crc:evt_ird_kindepic@},          -- §33 boss tiers (text/rows/rogue_bosses.toml)
+      KGATE = {@crc:evt_ird_kindgate@},
     },
     -- the class plate over the VS banner (retail icon_class.g4tx of the game's language): INAZUMA for a pachanga /
     -- match, ZONA LETAL for the phase boss, RANGO DIVINO for an élite (instead of «BATALLA HEROICA»)
@@ -46,8 +45,8 @@
 
   function EVT_RV.tx(t, ...)
     local s = evt_rv_call(EVT_RV.TEXT_GET, t[1])
-    if type(s) ~= "string" or s == "" then
-      s = t[2]
+    if type(s) ~= "string" then
+      s = ""
     end
     local a = table.pack(...)
     return (s:gsub("{(%d)}", function(k)
@@ -60,10 +59,10 @@
   function EVT_RV.check()
     EVT_RV.on = false
     local rs, act = evt_rv_call(EVT_RV.SLOT)
-    if type(rs) ~= "number" or rs ~= act or evt_rv_call(EVT_RV.P_HAS, EVT_RV.KEY) ~= true then
+    if type(rs) ~= "number" or rs ~= act or not VRFW_Param.Has(EVT_RV.KEY) then
       return false
     end
-    local node = (evt_rv_call(EVT_RV.P_GET, EVT_RV.KEY) or 0) - 1
+    local node = (VRFW_Param.Get(EVT_RV.KEY) or 0) - 1
     local ok, game, diff, _, kind, level, rival, emblem = evt_rv_call(EVT_RV.MATCH, node)
     if ok ~= true or type(game) ~= "number" or game == 0 then
       EVT_RV.log("node", node, "has no match: retail screen")

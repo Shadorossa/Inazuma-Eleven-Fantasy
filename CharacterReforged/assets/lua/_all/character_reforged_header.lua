@@ -10,7 +10,7 @@
 -- * once or twice a frame (after the screen's PostStep / Step) f("step", ctx) with the ctx of the last fill.
 -- ctx = {key, layer, inst, hdl, x, top, height, room}: header layout units (the plate's _pos_base01 = the screen's
 -- top-left, y up), the same units as the attach rows of the pieces' layers.
--- For other mods' menu Lua: CharacterReforged.Header.SLOT (the strip), .Items() (the declared pieces), .IsHeader(layer).
+-- For other mods' menu Lua: CharacterReforged.Header.SLOT (the strip), .Items() (the declared pieces).
 -- The header BAND's colour (the slanted band under the row on the player page, VRFW_UI.HeaderRow.BandFill):
 -- .BandColour(layer, inst, hdl) asks the pieces of the host character_reforged.header_band in order (f(layer, inst,
 -- hdl) -> true = it painted the band; No More Rarities' position colour is one); none painted = .RarityBand: the
@@ -94,10 +94,6 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" an
 
   local function Pack(...)
     return {n = select("#", ...), ...}
-  end
-
-  function H.IsHeader(layer)
-    return H.LAYERS[layer] == true
   end
 
   -- the [[entry]] functions of a host, in its order (VRFW_Menu.entries: order, load order, file order; only the

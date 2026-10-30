@@ -55,11 +55,11 @@ if VRFW_Host ~= nil then
   VRFW_Host.on("team_dock_formation_menu", "OnInit", {id = "no_more_rarities.normalize_team", phase = "before",
     fn = function()
       local dock_number, dock_type = script_local("n"), script_local("n10")
-      if funcLuaCommand(2947612279, 3357163798) then
-        dock_number = funcLuaCommand(3522198769, 3357163798) or 0
+      if VRFW_Param.Has(3357163798) then
+        dock_number = VRFW_Param.Get(3357163798) or 0
       end
-      if funcLuaCommand(2947612279, 4081600465) then
-        dock_type = funcLuaCommand(3522198769, 4081600465) or 0
+      if VRFW_Param.Has(4081600465) then
+        dock_type = VRFW_Param.Get(4081600465) or 0
       end
       EVT_RarityNormalizeTeam(dock_number, dock_type)
     end})

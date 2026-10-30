@@ -948,10 +948,6 @@ do
   VRFW_Outfit.L_ROW = 4251697490                     -- soccer11_08_equip_list_item
   VRFW_Outfit.TYPE = 4                               -- equip slot / row type of the costume
   VRFW_Outfit.P_LIST_TABS = 363718978                -- list param: costume tab (retail flag6)
-  VRFW_Outfit.P_HAS = 2947612279
-  VRFW_Outfit.P_GET = 3522198769
-  VRFW_Outfit.P_DEL = 3363400568
-  VRFW_Outfit.P_SET = 3860611758
   VRFW_Outfit.CARD_LOOK = 2509564499   -- (hdl) -> uniform, state, switch bit, label text id
   VRFW_Outfit.TEXT_LOOK_ON = 1340653105   -- menu_text "{label}: Activada"
   VRFW_Outfit.TEXT_LOOK_OFF = 4019931500 -- menu_text "{label}: Desactivada"
@@ -963,7 +959,7 @@ do
   VRFW_Outfit.SOUND_REFUSED = 2086672038             -- sy0003
   VRFW_Outfit.FN_EYE = 1141890006                    -- the eye-toggle key (CMD_FUNC4)
   VRFW_Outfit.FOCUSED = 2603265800                   -- (layer) -> focused instance
-  VRFW_Outfit.CHANGE_GROUP = 2792424727              -- CMND_ON_CHANGE_LAYER_GROUP (group)
+  VRFW_Outfit.CHANGE_GROUP = 2792424727              -- (group)
   VRFW_Outfit.G_LIST = 530161788                     -- layer group equip_menu_list
   VRFW_Outfit.L_STATUS = 2917320188                  -- soccer11_05_equip_status_base (the 3D preview)
   VRFW_Outfit.SET_COUNT = 3252599449                 -- (layer, instance count)
@@ -1032,8 +1028,8 @@ do
     if type(VRFW_Outfit.want) == "number" then
       return VRFW_Outfit.want
     end
-    if funcLuaCommand(VRFW_Outfit.P_HAS, VRFW_Outfit.P_CHARA) then
-      return funcLuaCommand(VRFW_Outfit.P_GET, VRFW_Outfit.P_CHARA) or 0
+    if VRFW_Param.Has(VRFW_Outfit.P_CHARA) then
+      return VRFW_Param.Get(VRFW_Outfit.P_CHARA) or 0
     end
     return type(n) == "number" and n or 0
   end
@@ -1118,10 +1114,10 @@ do
 
   -- the list group's parameters (delete first: a second call never stacks them)
   function VRFW_Outfit.ListParams()
-    funcLuaCommand(VRFW_Outfit.P_DEL, VRFW_Outfit.P_FLAG5)
-    funcLuaCommand(VRFW_Outfit.P_SET, VRFW_Outfit.P_FLAG5, 0, flag5)
-    funcLuaCommand(VRFW_Outfit.P_DEL, VRFW_Outfit.P_LIST_TABS)
-    funcLuaCommand(VRFW_Outfit.P_SET, VRFW_Outfit.P_LIST_TABS, 0, flag6 or VRFW_Outfit.on)
+    VRFW_Param.Clear(VRFW_Outfit.P_FLAG5)
+    VRFW_Param.Set(VRFW_Outfit.P_FLAG5, flag5, "plain")
+    VRFW_Param.Clear(VRFW_Outfit.P_LIST_TABS)
+    VRFW_Param.Set(VRFW_Outfit.P_LIST_TABS, flag6 or VRFW_Outfit.on, "plain")
   end
 
   -- bones of a row instance for the type it shows now

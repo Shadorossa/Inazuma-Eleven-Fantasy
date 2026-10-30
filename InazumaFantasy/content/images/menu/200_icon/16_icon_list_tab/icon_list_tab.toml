@@ -1,0 +1,26 @@
+# Inazuma Fantasy: the «Inazuma Eleven Fantasy» section icon of the free-match section bar (the outlined F; lit and
+# unfocused), for content\teams\free_match_section.toml. The sprites live in the mod's own atlas; the game's tab atlas
+# asks for them by name through content\sprite_redirects\own_atlases.toml. Ported from the earlier Inazuma Fantasy
+# (research/mods/_aside/InazumaFantasy, same sprites).
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/200_icon/inazuma_fantasy_own/inazuma_fantasy_icon_list_tab.g4tx"
+name = "inazuma_fantasy_icon_list_tab"
+size = [292, 96]
+
+[[sprite]]
+atlas = "#/menu/200_icon/inazuma_fantasy_own/inazuma_fantasy_icon_list_tab.g4tx"
+name = "icon_list_tab_series11"
+texture = "inazuma_fantasy_icon_list_tab"
+x = 0
+y = 0
+png = "icon_list_tab/icon_list_tab_series11.png"
+
+[[sprite]]
+atlas = "#/menu/200_icon/inazuma_fantasy_own/inazuma_fantasy_icon_list_tab.g4tx"
+name = "icon_list_tab_series11_off"
+texture = "inazuma_fantasy_icon_list_tab"
+x = 148
+y = 0
+png = "icon_list_tab/icon_list_tab_series11_off.png"

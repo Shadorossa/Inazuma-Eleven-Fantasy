@@ -1,18 +1,20 @@
-# Battle Bay Deluxe's private online room mode (VR-Framework net service, docs/game/modes/bb-online-ownnet.md §10):
-# a 1 vs 1 Battle Bay match between two players with the same gameplay mod set, on the framework's Steam transport
-# (never the game's EOS rooms). The room screen is the graft research/grafts/bb_net_room («Multijugador» row of the
-# Battle Bay top menu -> «Sala privada»).
-#   key        the room mode (CMND_VRFW_NET_CREATE("bbd_1v1"))
-#   players    2 (the game's online match is 1 vs 1)
-#   game_mode  the game's online mode byte ([g_session]+0x26E2): 4 = Battle Bay (what retail network_menu sets)
-#   menu       the online screen the session opens once up: the Battle Bay team select
-#   team_pick  "hash": each player's team travels as its team_config hash on the room channel, so every Battle Bay
-#              Deluxe page / category can be picked (the retail slot byte only reaches the first 28 rows)
+# Battle Bay Deluxe's private online room mode (VR-Framework net service, docs/game/modes/bb-p2p-lockstep.md): a
+# 1 vs 1 Battle Bay match between two players with the same gameplay mod set. Each PC plays the match as a LOCAL
+# offline match (the host's team against the guest's, scripts/net_match.lua); the framework's input lockstep carries
+# the two players' inputs on its own Steam channel. The game's online stack (EOS rooms, GameNet) is never used. The
+# room screen is the game's own private-room screen as a UI shell (graft research/grafts/bb_net_room).
+#   key          the room mode (CMND_VRFW_NET_CREATE("bbd_1v1"))
+#   players      2 (1 vs 1)
+#   lockstep     true: the match runs in input lockstep
+#   input_delay  frames between a player's input and the frame it drives (1-15; more = smoother on a slow link)
+#   hash_every   the two PCs compare their match state every this many frames (60 frames = 1 second)
+#   timeout_ms   a PC that gets no input from the other for this long gives the lockstep up (the match goes on locally)
 # Draft and Torneo are not played online (owner scope 2026-10-11).
 
 [[VRFW.NetMode]]
 key = "bbd_1v1"
 players = 2
-game_mode = 4
-menu = "enjoy_team_select_menu"
-team_pick = "hash"
+lockstep = true
+input_delay = 3
+hash_every = 30
+timeout_ms = 10000

@@ -20,10 +20,6 @@ do
   local TEAM_AI_ROW = 101                 -- the row id of «Ajustes de la IA» in the COMANDOS window
   local SHIRT_NUMBERS_ROW = 100           -- BetterUI's «Ajustes de dorsales» (graft clean_hud_shirt_number)
   local PARAM_TEAM_TYPE = 4081600465      -- retail OnInit reads (and consumes) the dock's team type here
-  local CMND_PARAM_HAS = 2947612279
-  local CMND_PARAM_GET = 3522198769
-  local CMND_PARAM_DELETE = 3363400568
-  local CMND_PARAM_SET = 3860611758
 
   BetterUI_TeamAIDock = BetterUI_TeamAIDock or {}
   local D = BetterUI_TeamAIDock
@@ -31,8 +27,8 @@ do
   D.armed = false
 
   local function set_param(key, value)
-    funcLuaCommand(CMND_PARAM_DELETE, key)
-    funcLuaCommand(CMND_PARAM_SET, key, 0, value, 1)
+    VRFW_Param.Clear(key)
+    VRFW_Param.Set(key, value)
   end
 
   if VRFW_ListRows ~= nil then
@@ -51,8 +47,8 @@ do
   if VRFW_Host ~= nil then
     VRFW_Host.on(STEM, "OnInit", {id = "clean_hud.team_ai_team_type", phase = "before", fn = function()
       D.teamType = 0
-      if funcLuaCommand(CMND_PARAM_HAS, PARAM_TEAM_TYPE) then
-        D.teamType = funcLuaCommand(CMND_PARAM_GET, PARAM_TEAM_TYPE) or 0
+      if VRFW_Param.Has(PARAM_TEAM_TYPE) then
+        D.teamType = VRFW_Param.Get(PARAM_TEAM_TYPE) or 0
       end
     end})
     -- the retail case 4 runs coroutine.create(WaitExecPerfromanceChangeMenu) through the global: the menu's mode
@@ -62,7 +58,7 @@ do
           set_param(TEAM_AI_KEY, 1)
           set_param(TEAM_AI_KEY_TYPE, D.teamType or 0)
         else
-          funcLuaCommand(CMND_PARAM_DELETE, TEAM_AI_KEY)
+          VRFW_Param.Clear(TEAM_AI_KEY)
         end
         D.armed = false
         return next_handler(...)

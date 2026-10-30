@@ -16,9 +16,8 @@ local U = require "lib/rogue/util"
 
 InaRogue.Slot = InaRogue.Slot or {}
 
-local function info(...) VRFW.log("save_slots:", ...) end
-local function warn(...) VRFW.warn("save_slots:", ...) end
-local function err(...) VRFW.error("save_slots:", ...) end
+require "VRFW/lib/basics"
+local info, warn, err = VRFW.logger("save_slots")
 
 local ROGUE_SLOT = math.floor(U.ROGUE_SLOT)
 local NORMAL_SLOTS = 3
@@ -41,10 +40,7 @@ end
 
 local function wr(t, a, v) return (pcall(VRFW.mem.write, t, a, v)) end
 
-local function int(v)
-  if type(v) ~= "number" then return nil end
-  return v >= 0 and math.floor(v) or math.ceil(v)
-end
+local function int(v) return VRFW.value.int(v, nil) end
 
 local function ready()
   local ok, r = pcall(VRFW.slots.ready)

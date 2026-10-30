@@ -44,6 +44,7 @@ require = ["EVT_OpenOriginalBoard", "EVT_PickCoroutine"]
 [[hooks]]
 stem = "chara_bank_menu_for_search"
 src = "bank_create_moves_hooks.lua"
+include = { "@PAIR_HANDOFF_KEYS@" = "pair_handoff_keys.lua" }   # the pairing confirmation's keys, shared with the window
 
 # the plate's move rows during that move step: a decide (mouse click or Aceptar) picks the row for the bank, the
 # retail move-order drag never starts
@@ -63,6 +64,7 @@ src = "board_list_create_hooks.lua"
 [[hooks]]
 stem = "general_window"
 src = "pair_confirm_window_hooks.lua"
+include = { "@PAIR_HANDOFF_KEYS@" = "pair_handoff_keys.lua" }
 
 # the skill table's move picker: a picked «Crear …» row opens the partner bank at once (no skill table in between;
 # owner 2026-10-14)

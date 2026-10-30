@@ -17,7 +17,7 @@ if VRFW_Host ~= nil then
   local function Log(...)
     local t = {}
     for i = 1, select("#", ...) do t[#t + 1] = tostring((select(i, ...))) end
-    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "vrfw.ShopHubYield " .. table.concat(t, " "))
+    pcall(funcLuaCommand, VRFW_Cmd.EVT_LOG, "vrfw.ShopHubYield " .. table.concat(t, " "))
   end
 
   local function Yield(on)
@@ -32,7 +32,7 @@ if VRFW_Host ~= nil then
       end
       -- the retail rule of the shop's own header: hidden while the Mercado's background is open (the office and its
       -- team pages open over the Mercado and use its header): nothing to yield then
-      local okm, market = pcall(funcLuaCommand, 3693934564 --[[CMND_IS_OPEN_MENU_OBJECT]], MARKET, 717014739)
+      local okm, market = pcall(funcLuaCommand, VRFW_Cmd.IS_OPEN_MENU_OBJECT, MARKET, 717014739)
       if okm and market then
         Log("hub", parent, "not yielded (over the Mercado)")
         return

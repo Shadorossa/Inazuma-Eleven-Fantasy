@@ -10,13 +10,10 @@ BoardGroup = BoardGroup or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("board_group:", ...) end
-local function warn(...) VRFW.warn("board_group:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("board_group")
 
-local function crc(s)
-  local f = VRFW.crc32 or (VRFW.ui and VRFW.ui.crc32)
-  return f(s) % 4294967296
-end
+local crc = VRFW.crc32
 
 local PIECES = nil       -- { pieceId, … }
 local HIDDEN = false     -- the switch: this game session only

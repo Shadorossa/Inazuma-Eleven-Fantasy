@@ -1,0 +1,15 @@
+schema = "VRFW.game/1"
+
+# Menu events between menu scripts (docs/framework/menu-event.md; Lua side assets/lua/menu/_all/82_menu_event.lua).
+
+[[VRFW.Command]]
+name = "CMND_VRFW_MENU_EVENT"        # (name, ...) -> scripts reached: VRFW_MenuEventDeliver(name, ...) in every other subscriber
+builtin = "menu_event"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_MENU_EVENT_ON"     # (name, menu, owner) -> true: the calling script subscribes while menu `menu` is open
+builtin = "menu_event_on"
+
+[[VRFW.Command]]
+name = "CMND_VRFW_MENU_EVENT_OFF"    # (owner) -> removed: every subscription of owner ends
+builtin = "menu_event_off"

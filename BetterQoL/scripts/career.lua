@@ -16,26 +16,34 @@
 -- plugins called (utilities_career_on_match / _moves / _reload) are gone: the move-use groups answer zeros.
 
 local S = require "lib/career_store"
+local Actors = require "VRFW/lib/actors"
 
 BetterQoL = BetterQoL or {}
 BetterQoL.Career = BetterQoL.Career or {}
 
--- ---------------------------------------------------------------------------------------- data layout (v7.1.2)
+-- ---------------------------------------------------------------------------------------- data layout
 
-local MI_TYPE, MI_HALF_LEN, MI_TEAMS, TEAM_STRIDE, MI_SCORE, MI_USER_TEAM = 0x16, 0x1C, 0x60, 0x1130, 0x2C26, 0x2C29
--- goal list of a team: mi + 0x2368 + team * 0x2D4 + 4 + i * 12 = {u32 scorer actor, ...}; 60 entries
-local MI_GOALS, GOALS_TEAM_STRIDE, GOAL_FIRST, GOAL_ENTRY, GOALS_MAX = 0x2368, 0x2D4, 4, 12, 60
--- team record member slot k (0..0x1C) at + (k + 1) * 0x80
-local TEAM_MEMBER_STRIDE, MEMBER_SLOTS, TEAM_ON_PITCH = 0x80, 0x1D, 0x1050
-local MEM_CHARA, MEM_POSITION, MEM_FLAGS = 0x50, 0x71, 0x7A
--- soccer actors
-local ACTOR_STRIDE, ACTOR_MAX, ACTOR_HDL, ACTOR_TEAM = 0x570, 0x3A, 0x94, 0xD0
-local UNIT_CHARA = 0x370
--- per-actor match record mi + 0x2928 + actor * 12: +4 shots, +6 balls won, +7 keeper blocks, +0xA hissatsu uses
-local MI_ACTOR_RECORDS, ACTOR_RECORD = 0x2928, 12
-local RECORD_FIELDS = { 4, 6, 7, 0xA }
-local BALL_OWNER, BALL_OWNER_TEAM = 0x1494, 0x1498
-local PLAY_MODE = 0x2CAC6F
+-- The match data's offsets and record sizes, from the game profile (VRFW game\<build>\structs.toml, globals.toml):
+-- match info (team records, goal lists, per-actor records, score, user's team), the team members, the ball owner and
+-- the play mode. Read once; a name the running build's profile lacks turns the tracking off.
+local PROFILE_NAMES = {
+  info_type = "MatchInfo.MatchType", info_half_length = "MatchInfo.HalfLength", info_teams = "MatchInfo.Teams",
+  info_goal_lists = "MatchInfo.GoalLists", info_actor_records = "MatchInfo.ActorRecords",
+  info_score = "MatchInfo.Score", info_user_team = "MatchInfo.UserTeam",
+  team_size = "MatchTeam", team_members = "MatchTeam.Members", team_on_pitch = "MatchTeam.OnPitch",
+  member_slots = "Match.TeamMemberSlots", member_size = "MatchTeamMember", member_chara = "MatchTeamMember.Chara",
+  member_position = "MatchTeamMember.Position", member_flags = "MatchTeamMember.Flags",
+  goal_list_size = "MatchGoalList", goal_list_goals = "MatchGoalList.Goals", goals_max = "Match.GoalListMax",
+  goal_size = "MatchGoal", goal_actor = "MatchGoal.Actor",
+  record_size = "MatchActorRecord", record_shots = "MatchActorRecord.Shots",
+  record_balls_won = "MatchActorRecord.BallsWon", record_keeper_blocks = "MatchActorRecord.KeeperBlocks",
+  record_technique_uses = "MatchActorRecord.TechniqueUses",
+  ball_owner = "Ball.Owner", ball_owner_team = "Ball.OwnerTeam", play_mode = "Game.PlayMode",
+}
+local P = nil         -- the resolved numbers
+local P_MISSING = nil -- the first name that did not resolve
+-- the per-actor record fields the tracker samples, in its order: shots, balls won, keeper blocks, technique uses
+local RECORD_FIELDS = nil
 local STATE_RESULT_EVENT, STATE_RESULT_MENU = 6, 7
 local PITCH_EVERY = 30
 local SCAN_EVERY_MS = 60000
@@ -49,10 +57,29 @@ local function rd(ty, at)
   return nil
 end
 
-local function hex(h) return string.format("0x%08X", h or 0) end
+local hex = require("VRFW/lib/ids").hex
 
-local function info(...) VRFW.log("career:", ...) end
-local function warn(...) VRFW.warn("career:", ...) end
+require "VRFW/lib/basics"
+require "VRFW/lib/save_doc"
+local info, warn = VRFW.logger("career")
+
+-- the profile's numbers (nil when one is missing: warned once)
+local function profile()
+  if P ~= nil or P_MISSING ~= nil then return P end
+  local out = {}
+  for key, name in pairs(PROFILE_NAMES) do
+    local ok, v = pcall(VRFW.game.field, name)
+    if not ok or type(v) ~= "number" then
+      P_MISSING = name
+      warn("the game profile has no " .. name .. ": matches are not recorded")
+      return nil
+    end
+    out[key] = v
+  end
+  P = out
+  RECORD_FIELDS = { P.record_shots, P.record_balls_won, P.record_keeper_blocks, P.record_technique_uses }
+  return P
+end
 
 local function global(name)
   local ok, p = pcall(VRFW.game[name])
@@ -82,36 +109,11 @@ local function live_state(st)
   return (st >= 9 and st <= 17) or st == 20 or st == 26
 end
 
-local function actor_at(idx)
-  if idx >= ACTOR_MAX then return nil end
-  local base = global("soccer_actors")
-  if not base or base < 0x10000 then return nil end
-  return base + idx * ACTOR_STRIDE
-end
-
-local function actor_of_handle(hdl)
-  if not hdl or hdl == 0 then return nil end
-  local a = actor_at(bit32.band(hdl, 0xFF))
-  if a and rd("u32", a + ACTOR_HDL) == hdl then return a end
-  return nil
-end
-
-local function actor_unit(a)
-  local ok, u = pcall(VRFW.call, "Match.ActorUnit", a)
-  if ok and u and u >= 0x10000 then return u end
-  return nil
-end
-
 -- (character handle, team) an actor plays
 local function actor_chara(hdl)
-  local a = actor_of_handle(hdl)
-  if not a then return nil end
-  local team = rd("u8", a + ACTOR_TEAM)
-  local unit = actor_unit(a)
-  if not team or not unit then return nil end
-  local c = rd("u32", unit + UNIT_CHARA)
-  if not c or c == 0 then return nil end
-  return c, team
+  local a = Actors.of(hdl, { chara = true })
+  if not a or a.chara == 0 then return nil end
+  return a.chara, a.team
 end
 
 local function current_slot() return VRFW.slots.active() end
@@ -135,71 +137,46 @@ end
 
 -- ---------------------------------------------------------------------------------------- store
 
+-- the career file of a slot: read again after a load, copy, delete, new game or reset of that slot (the slot events,
+-- which drop the numbers the game never saved); staged with the game's next save of the slot
+local DOC = VRFW.save.doc(S.BLOB, {
+  text = true,
+  decode = S.decode,
+  encode = S.encode,
+  default = S.new_file,
+  stage = true,
+  log = "career",
+  loaded = function(f, slot, state)
+    if state == "bad" then return end
+    local n = 0
+    for _ in pairs(f.players) do n = n + 1 end
+    local wm = "not set yet"
+    if f.watermark then wm = "get_order " .. f.watermark .. " (since " .. f.since .. ")" end
+    info("slot " .. slot .. ": " .. n .. " players, " .. f.recorded .. " matches recorded, watermark " .. wm)
+    if f.club_reconciled then
+      local c = f.club
+      info("slot " .. slot .. ": club totals taken from the players' records (" .. c.matches .. " match(es), "
+        .. c.wins .. "-" .. c.draws .. "-" .. c.losses .. ", goals " .. c.goals_for .. "-" .. c.goals_against
+        .. ", since " .. c.since .. "); written with the next change")
+    end
+    if f.migrated_from then
+      info("slot " .. slot .. ": " .. S.BLOB .. " version " .. f.migrated_from .. " read as version " .. S.FILE_VERSION
+        .. " (first goal / first MVP dates and best matches derived where the numbers allow; written with the next change)")
+    end
+  end,
+})
+
 local store = nil -- the active slot's file
 local last_scan = nil -- VRFW.now() of the last signing-date scan of this store
-local event_seen = nil -- VRFW.slots.event_seq() last seen
-
--- The slot events since the last call: a load / copy / delete / new game / reset of the store's slot drops the
--- numbers the game never saved (the blob, with its staged version, is read again at the next use).
-local function check_events()
-  local seq = VRFW.slots.event_seq()
-  if event_seen == nil then event_seen = seq return end
-  if seq == event_seen then return end
-  local from = math.max(event_seen + 1, seq - 63)
-  for n = from, seq do
-    local kind, a, b = VRFW.slots.event(n)
-    if store and kind then
-      local slot = nil
-      if kind == "switched" or kind == "deleted" or kind == "new_game" or kind == "reset" then slot = a end
-      if kind == "copied" then slot = b end
-      if slot == store.slot then
-        info("slot " .. slot .. ": store will be read again (" .. kind .. ")")
-        store = nil
-      end
-    end
-  end
-  event_seen = seq
-end
-
-local function load_store(slot)
-  local text, err = VRFW.save.blob(S.BLOB, slot)
-  if err then
-    local kept = VRFW.save.blob_aside(S.BLOB, slot)
-    VRFW.error("career: " .. err .. "; " .. kept .. "; starting empty")
-    return S.new_file(slot)
-  end
-  local f, why = S.decode(text, slot)
-  if not f then
-    local kept = VRFW.save.blob_aside(S.BLOB, slot)
-    VRFW.error("career: slot " .. slot .. " " .. S.BLOB .. ": " .. tostring(why) .. "; " .. kept .. "; starting empty")
-    return S.new_file(slot)
-  end
-  local n = 0
-  for _ in pairs(f.players) do n = n + 1 end
-  local wm = "not set yet"
-  if f.watermark then wm = "get_order " .. f.watermark .. " (since " .. f.since .. ")" end
-  info("slot " .. slot .. ": " .. n .. " players, " .. f.recorded .. " matches recorded, watermark " .. wm)
-  if f.club_reconciled then
-    local c = f.club
-    info("slot " .. slot .. ": club totals taken from the players' records (" .. c.matches .. " match(es), "
-      .. c.wins .. "-" .. c.draws .. "-" .. c.losses .. ", goals " .. c.goals_for .. "-" .. c.goals_against
-      .. ", since " .. c.since .. "); written with the next change")
-  end
-  if f.migrated_from then
-    info("slot " .. slot .. ": " .. S.BLOB .. " version " .. f.migrated_from .. " read as version " .. S.FILE_VERSION
-      .. " (first goal / first MVP dates and best matches derived where the numbers allow; written with the next change)")
-  end
-  return f
-end
 
 -- The store of the active slot (nil in a mod's reserved slot); read again when the slot changed.
 local function ensure_store()
-  check_events()
   local slot = current_slot()
   if is_reserved(slot) then return nil end
-  if not store or store.slot ~= slot then
-    if store and store.dirty then warn("slot " .. store.slot .. " -> " .. slot .. ": dropping numbers not saved by the game") end
-    store = load_store(slot)
+  local f = DOC:get(slot)
+  if f ~= store then
+    if store and store.dirty and store.slot ~= slot then warn("slot " .. store.slot .. " -> " .. slot .. ": dropping numbers not saved by the game") end
+    store = f
     last_scan = nil
   end
   return store
@@ -208,13 +185,7 @@ end
 -- Stage the store with the game's next save of its slot (written at once without the slot service).
 local function commit(why)
   if not store or not store.dirty then return end
-  local text = S.encode(store)
-  local ok, where
-  if VRFW.slots.ready() then
-    ok, where = VRFW.save.blob_stage(S.BLOB, text, store.slot)
-  else
-    ok, where = VRFW.save.blob_write(S.BLOB, text, store.slot)
-  end
+  local ok, where = DOC:write(store, store.slot)
   if ok then
     store.dirty = false
   else
@@ -283,11 +254,11 @@ local function new_tracker(match_no)
   }
 end
 
-local function score(mi, team) return rd("u8", mi + MI_SCORE + team) or 0 end
+local function score(mi, team) return rd("u8", mi + P.info_score + team) or 0 end
 
 local function begin(why)
   local mi = match_info()
-  if not mi then
+  if not mi or not profile() then
     t.phase = "idle"
     return
   end
@@ -295,14 +266,14 @@ local function begin(why)
   t = new_tracker(t.match_no + 1)
   t.phase = "tracking"
   t.mi = mi
-  t.user = rd("u8", mi + MI_USER_TEAM) or 0xFF
-  local typ = rd("u8", mi + MI_TYPE) or 0
-  local half = rd("u16", mi + MI_HALF_LEN) or 0
+  t.user = rd("u8", mi + P.info_user_team) or 0xFF
+  local typ = rd("u8", mi + P.info_type) or 0
+  local half = rd("u16", mi + P.info_half_length) or 0
   local slot = current_slot()
   t.slot = slot
   t.excluded = S.exclusion(typ, half, t.user, is_reserved(slot))
   local pd = global("play_data")
-  local play_mode = (pd and rd("u8", pd + PLAY_MODE)) or 0xFF
+  local play_mode = (pd and rd("u8", pd + P.play_mode)) or 0xFF
   t.mode = S.mode_index(play_mode)
   if t.mode == S.MODE_FREE then
     local ok, bb = pcall(VRFW.mode_is, "battle_bay")
@@ -319,16 +290,16 @@ end
 -- on-pitch members of the user's team (the engine's test)
 local function sample_pitch()
   if t.user > 1 then return end
-  local team = t.mi + MI_TEAMS + t.user * TEAM_STRIDE
-  local on = rd("u32", team + TEAM_ON_PITCH) or 0
+  local team = t.mi + P.info_teams + t.user * P.team_size
+  local on = rd("u32", team + P.team_on_pitch) or 0
   local added = {}
   local keeper = 0
-  for k = 0, MEMBER_SLOTS - 1 do
-    local m = team + (k + 1) * TEAM_MEMBER_STRIDE
-    local pos = rd("u8", m + MEM_POSITION) or 0xFF
-    local flags = rd("u16", m + MEM_FLAGS) or 0x800
+  for k = 0, P.member_slots - 1 do
+    local m = team + P.team_members + k * P.member_size
+    local pos = rd("u8", m + P.member_position) or 0xFF
+    local flags = rd("u16", m + P.member_flags) or 0x800
     if S.member_on_pitch(pos, on, flags) then
-      local c = rd("u32", m + MEM_CHARA)
+      local c = rd("u32", m + P.member_chara)
       if c and c ~= 0 then
         if pos == 0 then
           keeper = c
@@ -362,8 +333,9 @@ local function check_goals()
       while t.seen[team + 1] < n do
         local i = t.seen[team + 1]
         t.seen[team + 1] = i + 1
-        local entry = t.mi + MI_GOALS + team * GOALS_TEAM_STRIDE + GOAL_FIRST + math.min(i, GOALS_MAX - 1) * GOAL_ENTRY
-        local actor = rd("u32", entry) or 0
+        local entry = t.mi + P.info_goal_lists + team * P.goal_list_size + P.goal_list_goals
+          + math.min(i, P.goals_max - 1) * P.goal_size
+        local actor = rd("u32", entry + P.goal_actor) or 0
         if team ~= t.user then
           if t.keeper_now ~= 0 then
             local e = S.per_of(t.rec, t.keeper_now)
@@ -398,14 +370,12 @@ end
 -- the per-actor match records of the user's actors into the tracker
 local function sample_records()
   if t.user > 1 then return end
-  for idx = 0, ACTOR_MAX - 1 do
-    local a = actor_at(idx)
-    if not a then return end
-    local hdl = rd("u32", a + ACTOR_HDL)
-    if hdl and hdl ~= 0 and bit32.band(hdl, 0xFF) == idx and rd("u8", a + ACTOR_TEAM) == t.user then
-      local chara = actor_chara(hdl)
+  for _, a in ipairs(Actors.list()) do
+    local idx = a.index
+    if bit32.band(a.handle, 0xFF) == idx and a.team == t.user then
+      local chara = actor_chara(a.handle)
       if chara then
-        local r = t.mi + MI_ACTOR_RECORDS + idx * ACTOR_RECORD
+        local r = t.mi + P.info_actor_records + idx * P.record_size
         local vals = {}
         for k, off in ipairs(RECORD_FIELDS) do vals[k] = rd("u8", r + off) or 0 end
         S.rec_sample(t.rec, idx, chara, vals)
@@ -418,10 +388,10 @@ end
 local function poll_owner()
   local ball = global("ball")
   if not ball or ball < 0x10000 then return end
-  local o = rd("u32", ball + BALL_OWNER) or 0
+  local o = rd("u32", ball + P.ball_owner) or 0
   if o == t.last_owner then return end
   t.last_owner = o
-  S.chain_push(t.chain, o, rd("u8", ball + BALL_OWNER_TEAM) or 0xFF)
+  S.chain_push(t.chain, o, rd("u8", ball + P.ball_owner_team) or 0xFF)
 end
 
 local function tick()
@@ -667,7 +637,7 @@ end
 local T = require "lib/original_names_tables"
 
 local club_rows = {}
-local club_names = { lang = nil, rows = {}, base = {}, text = {} }
+local club_names = { lang = nil, rows = {}, asked = {}, base = {}, text = {} }
 
 local function club_lang(code)
   local c = type(code) == "number" and math.floor(code) or nil
@@ -679,13 +649,26 @@ local function club_lang(code)
   return "en"
 end
 
-local function club_load_names(lang)
-  if club_names.lang == lang then return end
-  local ok, rows = pcall(VRFW.files.text_rows, T.text_key(lang, T.CHARA))
-  if (not ok or type(rows) ~= "table") and lang ~= "en" then
-    ok, rows = pcall(VRFW.files.text_rows, T.text_key("en", T.CHARA))
+-- the name rows `ids` of chara_text in `lang` not read yet (only those rows: the table has ~21k)
+local function club_load_names(lang, ids)
+  if club_names.lang ~= lang then
+    club_names = { lang = lang, rows = {}, asked = {}, base = club_names.base, text = club_names.text }
   end
-  club_names = { lang = lang, rows = (ok and type(rows) == "table") and rows or {}, base = {}, text = {} }
+  local missing = {}
+  for _, id in ipairs(ids) do
+    if not club_names.asked[id] then
+      club_names.asked[id] = true
+      missing[#missing + 1] = id
+    end
+  end
+  if #missing == 0 then return end
+  local ok, rows = pcall(VRFW.files.text_rows, T.text_key(lang, T.CHARA), missing)
+  if (not ok or type(rows) ~= "table") and lang ~= "en" then
+    ok, rows = pcall(VRFW.files.text_rows, T.text_key("en", T.CHARA), missing)
+  end
+  for id, r in pairs((ok and type(rows) == "table") and rows or {}) do
+    club_names.rows[id] = r
+  end
 end
 
 -- the character (chara_base) of a card, cached; nil = unknown
@@ -699,14 +682,20 @@ local function club_base_of(param)
   return b or nil
 end
 
-local function club_name_of(base)
-  if not base then return "" end
+-- the name text id of a character, cached; nil = unknown
+local function club_name_text_of(base)
+  if not base then return nil end
   local id = club_names.text[base]
   if id == nil then
     local ok, c = pcall(VRFW.chara.character, base)
     id = (ok and type(c) == "table" and type(c.name_text) == "number") and c.name_text or false
     club_names.text[base] = id
   end
+  return id or nil
+end
+
+local function club_name_of(base)
+  local id = club_name_text_of(base)
   local r = id and club_names.rows[id]
   local s = r and r[0]
   if type(s) == "string" and s ~= "" then return T.strip_furigana(s) end
@@ -723,16 +712,22 @@ function BetterQoL.Career.Club(code)
   scan_and_date(false)
   local st = ensure_store()
   if not st then return false, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, today end
-  club_load_names(club_lang(tonumber(code)))
+  local name_ids = {}
   for k, s in pairs(st.players) do
     local hdl = tonumber(k, 16)
     if hdl and s.matches > 0 then
       local param, order = ident(hdl)
       if param and param == s.param and order == s.order then
         local base = club_base_of(param)
-        club_rows[#club_rows + 1] = { base = base or 0, name = club_name_of(base), s = s }
+        club_rows[#club_rows + 1] = { base = base or 0, s = s }
+        local name_id = club_name_text_of(base)
+        if name_id then name_ids[#name_ids + 1] = name_id end
       end
     end
+  end
+  club_load_names(club_lang(tonumber(code)), name_ids)
+  for _, r in ipairs(club_rows) do
+    r.name = club_name_of(r.base ~= 0 and r.base or nil)
   end
   table.sort(club_rows, function(a, b)
     if a.s.goals ~= b.s.goals then return a.s.goals > b.s.goals end

@@ -10,8 +10,8 @@ CardTypes = CardTypes or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("card_types:", ...) end
-local function warn(...) VRFW.warn("card_types:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("card_types")
 
 -- the four tab loops (content\game\card_types.toml) and the profile site of each loop's end value
 local LISTS = {

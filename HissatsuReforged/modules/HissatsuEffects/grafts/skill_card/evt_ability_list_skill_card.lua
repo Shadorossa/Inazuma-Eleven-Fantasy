@@ -1,10 +1,12 @@
 -- ===== EVT skill_card BEGIN =====
 -- Mod Hissatsu Effects (hissatsu_effects; moved out of Inazuma Fantasy 2026-10-14 with the move effects it shows).
 -- EVT skill_card (Nacho 2026-10-06): the «Habilidades» move list (ability_list_menu), right-hand move card
--- (team02_02_skill_detail_info). Q / E (pad LT / RT, CMD_FUNCL2 / CMD_FUNCR2) turn the card body between the move's
--- DESCRIPTION and its ball MINI-EFFECT (technique type, `[technique.ball]` / `[edit.ball]`: docs/framework/technique.md
--- §4b), read at run time from the framework with CMND_VRFW_TECHNIQUE_BALL_EFFECT(move) -> present, metres, degrees,
--- direction, distance word, launch word (crates/vr-core/src/types/technique/ball_effect.rs), so any mod's rules show.
+-- (team02_02_skill_detail_info). Y (pad Y, CMD_FUNC3) turns the card body through the move's
+-- pages: its DESCRIPTION, its ball / shot / keeper MINI-EFFECT when it has one, and one FAMILY page per technique family
+-- the move belongs to (Hissatsu Effects 1.6.0). Y goes to the next page and wraps round; a move with one page does not turn (the retail keshin cards' paging: dots and a «Y <next page>» plate, VRFW_Pager style ycycle).
+-- The mini-effect page reads the framework at run time: CMND_VRFW_TECHNIQUE_BALL_EFFECT(move) -> present, metres,
+-- degrees, direction, distance word, launch word (technique type, `[technique.ball]` / `[edit.ball]`:
+-- docs/framework/technique.md §4b; crates/vr-core/src/types/technique/ball_effect.rs), so any mod's rules show.
 -- The mini-effect page is the title «Efecto especial» over ONE plain sentence («Despeja el balón muy lejos hacia
 -- delante.»), both centred: template evt_skc_sentence filled with a distance / height / direction piece chosen from
 -- the numbers (no metres, degrees or symbols). The move's shot / keeper mini-effects (distance_falloff,
@@ -16,15 +18,27 @@
 -- both. The card describes gameplay only: a flight gets a sentence only when it is unblockable on a long shot (its
 -- shape, like trails and auras, is a visual of the mod that declares it), and a move whose mini-effects are all
 -- visual has no effect page.
--- A move with a mini-effect shows the player page's «Q • • E» row at the bottom of the card (layer evt_skc_dots: four
--- copies of the retail status base, Hissatsu Effects content/menus/skill_card_dots.toml; Q glyph, dot 1, dot 2, E glyph, the
--- current page's dot lit) and the bottom guide gets «Q E Efecto» (on the effect page «Q E Descripción»; the game
--- draws the keys of the device in use). A move without one shows no row and does not turn. A new move always opens on
--- its description. Texts: menu_text evt_skc_* (9 languages, research/mods/HissatsuEffects/text/rows/skill_card.toml);
--- the Spanish fallback only shows without those rows. The row's instances are attached to the card's _pos_base01
--- (card copy evt_skc_card, traces evt_skc_dots0..3) and drawn above it (priority 580). EVT_SKC_DOTS_XY = {x, y}
--- moves the row: its centre in card px from the card's centre (x right, y up; default 0, -150 = 20 px above the
--- white area's bottom edge).
+-- The family pages: the families of the move come from Hissatsu Reforged's CMND_HISSATSUREFORGED_MOVE_FAMILIES(move)
+-- (every active mod's [[VRFW.TechniqueFamily]] and the moves' `families`); without that command (or for a move in no
+-- family) the card has no family page. A family page shows the family's name in the game's language (its `text` key;
+-- its `icon` when it names a text icon, gaiji_* / [$gaiji_*]) as a left-aligned text to the right of the type badge
+-- (layer evt_skc_fam, instance 2; the body text is empty), and every move of the family as the Plantilla's technique
+-- plates, 3 columns, ordered by power: the
+-- element plate, the category icon and the name (no AT); the move on the card with the plate's focus frame. Layer
+-- evt_skc_plate (6 copies of soccer11_09_formation_chara_skill attached to the card's _pos_base01; rows x 3 columns).
+-- A list longer than the rows scrolls with the right stick (commands CMD_HISSATSUEFFECTS_SCROLL_UP / DOWN of
+-- content/inputs/family_scroll.toml, checked only while a family page shows; held: repeated after 18 frames, every 5),
+-- with a thin scrollbar inside the card's right edge (layer evt_skc_fam: track and thumb, the row's dot sprites
+-- stretched; the thumb as tall as the part shown). EVT_SKC_FAMILY_LAYOUT = {key = value} overrides SKC.FAM_LAYOUT.
+-- A move with more than one page shows the player page's «Q • • E» row at the bottom of the card (layer evt_skc_dots:
+-- eight copies of the retail status base, Hissatsu Effects content/menus/skill_card_dots.toml; 0 = Q glyph, 1..6 = one
+-- dot per page, 7 = E glyph; the current page's dot lit; drawn by the framework's pager VRFW_Pager, shared with other
+-- paged cards); the bottom button guide gets no entry of its own (Hissatsu
+-- Effects 1.8.0, owner: the card's row is the pager). A move with one page shows no row and does not turn. A new move always opens on its description. Texts: menu_text evt_skc_* (9 languages,
+-- research/mods/HissatsuReforged/modules/HissatsuEffects/text/rows/skill_card.toml). The
+-- row's instances are attached to the card's _pos_base01 (card copy evt_skc_card, traces evt_skc_dots0..7) and drawn
+-- above it (priority 580). EVT_SKC_DOTS_XY = {x, y} moves the row: its centre in card px from the card's centre (x
+-- right, y up; default 0, -150 = 20 px above the white area's bottom edge).
 -- The card's drop shadow is gone in the atlas (images/menu/102_team/team02/team02_02/card_flat.toml), not here.
 -- No chunk local of the retail script is read (2026-10-14): a block that reads one makes the build re-declare the
 -- script's locals and REDEFINE every retail function using them (OnInit, OnBack, UpdateButtonGuide, ...), which threw
@@ -32,33 +46,39 @@
 -- pick mode never started, so a chosen move was never equipped). The move the card shows (the retail n2) is followed
 -- here instead (SKC.focus): set by UpdateSkillDetailWindow, cleared by an empty tab and a new filter, as the retail
 -- does. The row follows the card's own events (its fill, the page turn, the sort / filter windows, back), shown only
--- for a move with an effect page; every fill first hides the retail aura windows' page guide (team00_40), which the
--- retail shows again for a paged aura only (2026-10-21, owner: «se queda el R2 · · L2 en todas aunque no tengan»).
+-- for a move with more than one page; every fill first hides the retail aura windows' page guide (team00_40), which
+-- the retail shows again for a paged aura only (2026-10-21, owner: «se queda el R2 · · L2 en todas aunque no tengan»).
 -- Nothing calls the engine at chunk load; the wrappers forward every argument and return every result.
 do
   local SKC = {
     CMD = @crc:CMND_VRFW_TECHNIQUE_BALL_EFFECT@,
     MINI_CMD = @crc:CMND_VRFW_TECHNIQUE_MINI_FX@,
-    TEXT_GET = 4074371074,
-    SE = 1917805374,
+    FAM_CMD = @crc:CMND_HISSATSUREFORGED_MOVE_FAMILIES@,
+    RULE_CMD = @crc:CMND_HISSATSUEFFECTS_MOVE_RULE_TEXTS@,
+    TEXT_ID = @crc:CMND_VRFW_TEXT_ID@,
+    TEXT_GET = @crc:CMND_TEXT_GET@,
+    NAME_TEXT = 720417636,            -- (name text id) -> the move's name
+    SE = @crc:CMND_SND_PLAY_SE@,
     SE_PAGE = 1228648509,             -- sy0027 (the retail detail page switch)
-    CHECK = 4265778440,               -- CMND_CHECK_INPUT_CMD (ctrl, key)
+    SE_MOVE = 3848881948,             -- the retail cursor move
+    CHECK = @crc:CMND_CHECK_INPUT_CMD@,               -- CMND_CHECK_INPUT_CMD (ctrl, key)
     CTRLS = {1332654303 --[[MENU_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]]},
-    K_L2 = 1970176280,                -- CMD_FUNCL2
-    K_R2 = 2704260807,                -- CMD_FUNCR2
-    I_L2 = 619948187,                 -- <CMD_FUNCL2> glyph
-    I_R2 = 3487556099,                -- <CMD_FUNCR2> glyph
+    K_Y = @crc:CMD_FUNC3@,            -- the page key (Y): the next page, wrapping round; the pager's «Y <next page>» prompt
+    YPAGE = @crc:evt_skc_ypage@,      -- the retail change-page plate copy (layer evt_skc_ypage, one instance)
+    K_UP = @crc:CMD_HISSATSUEFFECTS_SCROLL_UP@,
+    K_DOWN = @crc:CMD_HISSATSUEFFECTS_SCROLL_DOWN@,
     GUIDE = 1138543975,               -- mainmenu01_06_base_button_guide
     GUIDE_SET = 2209673388,           -- (menu, layer, texts, icons, offsets, t, t)
     GUIDE_KEYS = 452337289,           -- (menu, layer, keys)
     CARD = 2628045944,                -- team02_02_skill_detail_info
     FLAVOR = 691026122,               -- _text_flavor01 (the card body)
-    SET_TEXT = 1083631230,            -- CMND_SET_MENU_TEXT_STRING (layer, node, text, instance)
+    SET_TEXT = @crc:CMND_SET_MENU_TEXT_STRING@,            -- CMND_SET_MENU_TEXT_STRING (layer, node, text, instance)
     CURSOR = 2296367164,              -- cmn05_01_cursor (hidden while the sort / filter windows are open)
-    VISIBLE = 1262717583,             -- CMND_IS_LAYER_VISIBLE
+    VISIBLE = @crc:CMND_IS_LAYER_VISIBLE@,             -- CMND_IS_LAYER_VISIBLE
     T = {
       guide_effect = @crc:evt_skc_guide_effect@,
       guide_desc = @crc:evt_skc_guide_desc@,
+      guide_family = @crc:evt_skc_guide_family@,
       sentence = @crc:evt_skc_sentence@,
       dist_short = @crc:evt_skc_dist_short@,
       dist_mid = @crc:evt_skc_dist_mid@,
@@ -80,30 +100,6 @@ do
       el_fire = @crc:evt_skc_elem_3@,
       el_mountain = @crc:evt_skc_elem_4@,
     },
-    FALLBACK = {
-      guide_effect = "Efecto",
-      guide_desc = "Descripción",
-      sentence = "Despeja el balón{dist}{height}{dir}.",
-      dist_short = " a poca distancia",
-      dist_mid = " a media distancia",
-      dist_long = " muy lejos",
-      height_high = " por alto",
-      height_low = " a ras de suelo",
-      dir_forward = " hacia delante",
-      generic = "Cambia la trayectoria del balón al despejar.",
-      title = "Efecto especial",
-      fx_distance = "Cuanto más lejos, más potente.",
-      fx_lock = "Bloquea la supertécnica del rival hasta que vuelvas a usarla.",
-      fx_pe = "Gasta un {pct} % de PE para aumentar su potencia.",
-      fx_participants = "+{pct} % de potencia por cada compañero de elemento {element} que la realiza.",
-      fx_participants_any = "+{pct} % de potencia por cada compañero que la realiza.",
-      fx_steal = "Si para el tiro, gana un {pct} % de la tensión que gastó el rival.",
-      fx_unblockable = "En un tiro lejano, los bloqueos no pueden pararlo.",
-      el_wind = "Viento",
-      el_forest = "Bosque",
-      el_fire = "Fuego",
-      el_mountain = "Montaña",
-    },
     -- page 2's body: the title «Efecto especial» (colour tag TITLE_TAG, EVT_SKC_TITLE_TAG overrides; "" = none) over the
     -- sentence, both CENTRED: the body node's retail style fs_32_k_lu_2d0_001 swapped for its centred twin
     -- fs_32_k_cu_2d0_001 (same size / grey) while page 2 shows, the retail one back on page 1
@@ -112,48 +108,90 @@ do
     STYLE_CENTRE = 3437796543,        -- fs_32_k_cu_2d0_001
     TITLE_TAG = "[CB]",
     centred = false,
-    -- the «Q • • E» row: layer evt_skc_dots, instances 0 = Q glyph, 1 / 2 = the page dots, 3 = E glyph
+    -- the «Q • • E» row: layer evt_skc_dots, instances 0 = Q glyph, 1..6 = the page dots, 7 = E glyph
     DOTS = @crc:evt_skc_dots@,
-    EXIST = 262659071,                -- CMND_IS_EXIST_LAYER
-    OPEN = 629267548,                 -- CMND_OPEN_LAYER
-    IS_OPEN = 2640875187,             -- CMND_IS_OPEN_LAYER
-    LOADING = 3057768039,
-    LVIS = 711242136,                 -- CMND_SET_LAYER_VISIBLE
-    POS = 1389957207,                 -- layer local position (layer, x, y, z, instance)
-    MESH = 3405944500,                -- CMND_SET_MESH_VISIBLE
+    DOT_N = 6,                        -- most pages a move shows (description, effect, families)
+    EXIST = @crc:CMND_IS_EXIST_LAYER@,                -- CMND_IS_EXIST_LAYER
+    OPEN = @crc:CMND_OPEN_LAYER@,                 -- CMND_OPEN_LAYER
+    IS_OPEN = @crc:CMND_IS_OPEN_LAYER@,             -- CMND_IS_OPEN_LAYER
+    LOADING = @crc:CMND_IS_LOADING_LAYER@,
+    LVIS = @crc:CMND_SET_LAYER_VISIBLE@,                 -- CMND_SET_LAYER_VISIBLE
+    POS = @crc:CMND_SET_LAYER_LOCAL_POS@,                 -- layer local position (layer, x, y, z, instance)
+    MESH = @crc:CMND_SET_MESH_VISIBLE@,                -- CMND_SET_MESH_VISIBLE
     NODE_VIS = 2158717427,
-    TEXT_VIS = 1505208242,
-    M_OFF = 3784855471,               -- _page01_off
-    M_ON = 2540064569,                -- _page01_on
-    M_HIDE = {2788701567, 2606243023, 695779551},               -- _page02..04_off
-    LOCS = {3407216458, 1377611504, 622567014, 3145665477, 1753514051, 790952595, 442049775, 1056264686,
-      2946906320, 1437140403},        -- every _pos_page* / _pos_equip* / arrow locator of the copy
-    N_BTN_L = 355816102,              -- _text_btn_l01
-    N_BTN_R = 59628764,               -- _text_btn_r01
-    -- layout places (soccer11_05, x right / y up, top-left of each part): dot (1362, -949), glyphs (1039 / 1811, -496)
-    AT_DOT = {1362, -949},
-    AT_L = 1039,
-    AT_R = 1811,
-    AT_GY = -496,
+    TEXT_VIS = @crc:CMND_SET_MENU_TEXT_VISIBLE@,
     CENTRE = {0, -150},               -- row centre in card px (card 920 x 380 centred on _pos_base01, white to y -170)
-    TRACE = 1774843228,               -- (host layer, host instance, trace name, on)
-    TRACES = {[0] = @crc:evt_skc_dots0@, @crc:evt_skc_dots1@, @crc:evt_skc_dots2@, @crc:evt_skc_dots3@},
-    PRIO_CMD = 1491630496,            -- CMND_SET_DRAW_PRIORITY (layer, instance, priority, children)
+    TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@,               -- (host layer, host instance, trace name, on)
+    TRACES = {[0] = @crc:evt_skc_dots0@, @crc:evt_skc_dots1@, @crc:evt_skc_dots2@, @crc:evt_skc_dots3@,
+      @crc:evt_skc_dots4@, @crc:evt_skc_dots5@, @crc:evt_skc_dots6@, @crc:evt_skc_dots7@},
+    PRIO_CMD = @crc:CMND_SET_DRAW_PRIORITY@,            -- CMND_SET_DRAW_PRIORITY (layer, instance, priority, children)
     PRIO = 580,                       -- the card object draws at 570, the status base copy at 301
-    GLYPHS = {[0] = "<CMD_FUNCL2>", [3] = "<CMD_FUNCR2>"},
-    SET_STR = 1083631230,
-    PITCH = 28,                       -- the player page's dot pitch (32 px sprites)
-    dots = {},                        -- instance -> set up
-    opened = {},                      -- instance -> we asked the engine to open it (once)
-    gone = false,                     -- the engine closed an instance: the row is off for this menu's life
-    LOG = 3661580131,                 -- CMND_EVT_LOG
-    shown = nil,                      -- last row state ("" hidden, else the page)
+    -- the family page: the family's name is the card body's title line (as the effect page's title); the moves are
+    -- retail technique plates (layer evt_skc_plate: copies of the Plantilla move row soccer11_09_formation_chara_skill,
+    -- rows x 2 columns, filled here: element plate, category icon, name; no AT), the card's move with the plate's own
+    -- focus frame; the scrollbar (layer evt_skc_fam: 0 = track, 1 = thumb, the row's dot sprites stretched) only when
+    -- the list is longer than the rows
+    PLATE = @crc:evt_skc_plate@,
+    PLATE_N = 13,                     -- 0..11 the members' plates (4 rows x 3), 12 = the family's name badge
+    NAME_K = 12,
+    GRID_N = 12,
+    PLATE_TRACES = {[0] = @crc:evt_skc_plate0@, @crc:evt_skc_plate1@, @crc:evt_skc_plate2@, @crc:evt_skc_plate3@,
+      @crc:evt_skc_plate4@, @crc:evt_skc_plate5@, @crc:evt_skc_plate6@,
+      @crc:evt_skc_plate7@, @crc:evt_skc_plate8@, @crc:evt_skc_plate9@, @crc:evt_skc_plate10@, @crc:evt_skc_plate11@,
+      @crc:evt_skc_plate12@},
+    FAM_ROWS_MAX = 4,
+    FAM_COLS = 3,
+    -- card px from the card's centre, x right / y up: plate centres (first row y, pitch, the two columns' x), plate
+    -- scale (the retail row is ~600 x 82, its origin 9 px right of its centre), the scrollbar's x / width
+    FAM_LAYOUT = {rows = 4, row_y = -2, pitch = 30, col_x = {-290, 0, 290}, scale = 0.42, plate_dx = -9, plate_dy = 18.6,
+      name_x = -335, name_cy = 46, name_scale = 0.44, name_max = 18},
+    -- the move row's parts (VRFW_UI.MovePlate's constants)
+    TX09 = 868271091,                 -- #/menu/00_soccer/soccer11/soccer11_09/<LG>/soccer11_09.g4tx
+    SP_SLOT = 1349513506,             -- cmd_base_sp01 (the plate's texture slot)
+    SP = {1349513506, 3378946200, 3194064910, 537200045, 1459762491, 3456853121},   -- cmd_base_sp01..06
+    ICON_ATLAS = 2320109963,          -- #/menu/200_icon/15_icon_common/icon_common.g4tx
+    AREA = 2164615260,                -- _icon_sp_area_dmy01 (the category icon)
+    AREA_SLOT = 566439826,            -- icon_sp_area_dmy01 (its texture slot)
+    CAT_ICON = {1801331933, 4065817959, 2236630513, 456446034},   -- icon_sp_area01..04 (shot, dribble, block, keeper)
+    SPRITE = 558735651,               -- CMND_SWAP_SPRITE (layer, atlas, sprite, slot, 0, instance)
+    SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@,               -- (layer, sx, sy, sz, instance)
+    PRIM_VIS = 1233047821,            -- (layer, instance, prim, on)
+    COMMON_SKILL = 800895612,
+    POS_BASE1 = 1517329426, POS_BASE2 = 3279539624,   -- _pos_base01 / _pos_base02 (plate / blank plate)
+    POS_AT = 4081284803, POS_LOCK = 2244819350,       -- _pos_at01 / _pos_lock01
+    PRIM_AT = 2467766246, PRIM_LOCK = 2330185550,
+    TEXT_SP = 3359986143,             -- _text_sp01 (the name)
+    FOCUS = 148027488,                -- _sp_list_focus01 (the plate's own focus frame)
+    ARMED = 1206374040,               -- _gtxt_cmd_armed01
+    SUB = 559600405,                  -- _icon_sp_sub_dmy01 (the property badge)
+    AT_DMY = 365666709,               -- _num_at_cmd_dmy01
+    VRFW_TEXT_GET = @crc:CMND_VRFW_TEXT_GET@,
+    -- the card's type badge («Tiro»): the retail pill sprite (area_base01..04, rounded ends) swapped on this card only
+    -- for the mod's square-ended twin of the same colour (images/menu/102_team/team02/team02_02/family_badge.toml)
+    TX_BADGES = 715273984,            -- #/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx (this mod's own atlas)
+    LINE = 656425078,                  -- the grey quote bar left of the description (not on a family page)
+    NAME_BASE = @crc:evt_area_pill05@, -- the family name badge's pill sprite: the type badge's shape in a neutral dark (own sprite, same atlas)
+    BADGE_SLOT = 1144424366,          -- area_base01_atl (the badge's texture slot)
+    BADGE = {[1] = @crc:evt_area_rect01@, @crc:evt_area_rect02@, @crc:evt_area_rect03@, @crc:evt_area_rect04@},
+    LOG = @crc:CMND_EVT_LOG@,                 -- CMND_EVT_LOG
     skill = nil,       -- the move of the last UpdateSkillDetailWindow
     args = nil,        -- its arguments (to refill the description)
-    page = 0,          -- 0 description, 1 mini-effect
+    want_page = 0,     -- the page index asked for (kept across moves; the shown page is clamped to the move's pages)
+    page = 0,          -- index (0-based) into the move's pages
     cache = {},        -- move -> effect table or false (the framework's answer does not change while the menu lives)
+    fams = {},         -- move -> its families (list) or false
+    fam_asked = {},    -- move -> {frame, tries} of a families command that answered nothing yet
+    pages = {},        -- move -> its pages
+    items = {},        -- family key -> its rows (move, name, element, power)
+    fam_at = nil,      -- the family page the scroll offset belongs to
+    fam_for = 0,       -- ... and its move
+    fam_off = 0,       -- first row shown of the family list
+    held = 0,          -- frames the scroll stick has been held
+    frame = 0,
+    npages = 1,        -- pages of the move the row and guide were last drawn for
+    ONE_PAGE = {{kind = "desc"}},
     focus = 0,         -- the move the card shows (0 = none): the retail's n2, followed by the wrappers below
-    SKILL_INFO = 2580586398,          -- CMND_GET_SOCCER_SKILL_INFO (move, 9) -> ok, category
+    SKILL_INFO = @crc:CMND_GET_SOCCER_SKILL_INFO@,          -- CMND_GET_SOCCER_SKILL_INFO (move, field) -> ok, value: 4 name id, 6 power, 7 element, 9 category
     LIST = 571205469,                 -- team05_03_ability_list
     TAB = 4044286600,                 -- cmn06_20_list_tab_item
     LIST_COUNT = 2389020234,          -- the list layer's item count
@@ -165,21 +203,29 @@ do
       576015315 --[[soul]], 3635526425 --[[kizuna trans]], 1305553269 --[[awakening power]], 3131422953 --[[mode change]]},
     F_SORT = 1361375778,              -- OnFunction: the sort window
     F_FILTER = 2143575837,            -- OnFunction: the filter window
-    pending = false,                  -- the row's state waits for its instances / the card to show (one-off, by Step)
+    pending = false,                  -- the layers' state waits for their instances / the card to show (one-off, by Step)
   }
+  -- the two attached layers: instances opened once, only when wanted; an instance the engine closed is never reopened
+  -- the page dots and the «Y <next page>» prompt: the framework's pager (VRFW_Pager, research/mods/VRFW/assets/lua/menu/_all/79_pager.lua) on
+  -- the layer evt_skc_dots, each instance traced to the card's _pos_base01; made at its first use
+  local ROW = nil
+  local PLATES = {id = SKC.PLATE, n = SKC.PLATE_N, name = "family plates", opened = {}, set = {}, gone = false,
+    shown = false, plate = true, move = {}, icon = {}, labels = {}}
 
   -- the card shows a move and it is the one of the last fill
   function SKC.Focused()
     return SKC.focus ~= 0 and SKC.focus == SKC.skill
   end
 
+  local function U32(v)
+    return VRFW_Id.u32(v)
+  end
+
   local function Text(key, subs)
-    local s = nil
-    local ok, r = pcall(funcLuaCommand, SKC.TEXT_GET, SKC.T[key])
-    if ok and type(r) == "string" and r ~= "" then
-      s = r
+    local ok, s = pcall(funcLuaCommand, SKC.TEXT_GET, SKC.T[key])
+    if not ok or type(s) ~= "string" then
+      s = ""
     end
-    s = s or SKC.FALLBACK[key] or ""
     for k, v in pairs(subs or {}) do
       s = string.gsub(s, "{" .. k .. "}", (string.gsub(tostring(v), "%%", "%%%%")))
     end
@@ -188,6 +234,22 @@ do
 
   -- the card's text for a move (defined below)
   local EffectText
+
+  -- the sentences of the behaviour rules that describe the move (their `text`, Hissatsu Effects'
+  -- CMND_HISSATSUEFFECTS_MOVE_RULE_TEXTS): the joined text, "" = none, nil = no answer (asked again later)
+  local function RuleText(skill)
+    local ok, r = pcall(funcLuaCommand, SKC.RULE_CMD, skill)
+    if not ok or type(r) ~= "table" then
+      return nil
+    end
+    local parts = {}
+    for i = 1, tonumber(r.count) or 0 do
+      if type(r[i]) == "string" and r[i] ~= "" then
+        parts[#parts + 1] = r[i]
+      end
+    end
+    return table.concat(parts, " ")
+  end
 
   -- the move's mini-effect, or false (also false when none of its mini-effects has a gameplay sentence)
   local function Effect(skill)
@@ -215,11 +277,96 @@ do
       e.spct = tonumber(spct) or 0
       e.dunb = tonumber(dunb) or 0
     end
+    -- the technique effects written as behaviour rules (Hissatsu Effects' technique_effects_*.toml, any mod's rule)
+    local rule = RuleText(skill)
+    if rule ~= nil and rule ~= "" then
+      e = e or {}
+      e.rule = rule
+    end
     if e and EffectText(e) == "" then
       e = false
     end
-    SKC.cache[skill] = e
+    if rule ~= nil then
+      SKC.cache[skill] = e
+    end
     return e
+  end
+
+  -- the move's technique families: a list of {key, text, icon, moves}, false = none, nil = not answered yet (the
+  -- command answers nothing while another thread runs a script: asked again on the next frames, 3 frames at most)
+  local function Families(skill)
+    if type(skill) ~= "number" or skill == 0 then
+      return false
+    end
+    local f = SKC.fams[skill]
+    if f ~= nil then
+      return f
+    end
+    local asked = SKC.fam_asked[skill]
+    if asked ~= nil and asked.frame == SKC.frame then
+      return nil
+    end
+    local ok, r = pcall(funcLuaCommand, SKC.FAM_CMD, skill)
+    if not ok or type(r) ~= "table" then
+      asked = asked or {tries = 0}
+      asked.frame, asked.tries = SKC.frame, asked.tries + 1
+      SKC.fam_asked[skill] = asked
+      if asked.tries >= 3 then
+        SKC.fams[skill] = false
+        return false
+      end
+      return nil
+    end
+    f = {}
+    for i = 1, tonumber(r.count) or 0 do
+      local e = r[i]
+      if type(e) == "table" and type(e.moves) == "table" then
+        local moves = {}
+        for k = 1, tonumber(e.count) or 0 do
+          if e.moves[k] ~= nil then
+            moves[#moves + 1] = U32(e.moves[k])
+          end
+        end
+        if #moves > 0 then
+          f[#f + 1] = {key = tostring(e.key or ""), text = tostring(e.text or ""), icon = tostring(e.icon or ""),
+            moves = moves}
+        end
+      end
+    end
+    if #f == 0 then
+      f = false
+    end
+    SKC.fams[skill] = f
+    return f
+  end
+
+  -- the move's pages: its description, its mini-effect (when it has one), one page per family (DOT_N pages at most)
+  local function Pages(skill)
+    if type(skill) ~= "number" or skill == 0 then
+      return SKC.ONE_PAGE
+    end
+    local p = SKC.pages[skill]
+    if p ~= nil then
+      return p
+    end
+    local fams = Families(skill)
+    p = {{kind = "desc"}}
+    if Effect(skill) then
+      p[#p + 1] = {kind = "effect"}
+    end
+    for _, fam in ipairs(fams or {}) do
+      if #p < SKC.DOT_N then
+        p[#p + 1] = {kind = "family", fam = fam}
+      end
+    end
+    if fams ~= nil and SKC.cache[skill] ~= nil then
+      SKC.pages[skill] = p
+    end
+    return p
+  end
+
+  local function FocusPages()
+    return SKC.Focused() and Pages(SKC.focus) or SKC.ONE_PAGE
   end
 
   -- one plain sentence: «Despeja el balón muy lejos hacia delante.»
@@ -240,7 +387,7 @@ do
       dir = Text("dir_forward")
     end
     if dist == "" and height == "" and dir == "" then
-      return Text("generic")
+      return ""                                   -- a rule with no part of its own is no effect: no second page
     end
     return Text("sentence", {dist = dist, height = height, dir = dir})
   end
@@ -250,7 +397,10 @@ do
   EffectText = function(e)
     local parts = {}
     if e.ball then
-      parts[#parts + 1] = BallText(e)
+      local ball = BallText(e)
+      if ball ~= "" then
+        parts[#parts + 1] = ball
+      end
     end
     local m = e.mini or 0
     local function Bit(b)
@@ -279,6 +429,9 @@ do
     if Bit(32) and e.dunb == 1 then
       parts[#parts + 1] = Text("fx_unblockable")
     end
+    if e.rule ~= nil and e.rule ~= "" then
+      parts[#parts + 1] = e.rule
+    end
     return table.concat(parts, " ")
   end
 
@@ -289,14 +442,130 @@ do
     end
   end
 
+  local function TitleTag()
+    return (type(EVT_SKC_TITLE_TAG) == "string") and EVT_SKC_TITLE_TAG or SKC.TITLE_TAG
+  end
+
   local function ShowEffect(e)
-    local tag = (type(EVT_SKC_TITLE_TAG) == "string") and EVT_SKC_TITLE_TAG or SKC.TITLE_TAG
+    local tag = TitleTag()
     local title = Text("title")
     if tag ~= "" then
       title = tag .. title .. "[C]"
     end
     SetStyle(true)
     funcLuaMenuCommand(SKC.SET_TEXT, SKC.CARD, SKC.FLAVOR, title .. "\n" .. EffectText(e), 0)
+  end
+
+  -- the family page's places: SKC.FAM_LAYOUT with the keys of EVT_SKC_FAMILY_LAYOUT over it
+  local function FamLayout()
+    local L = {}
+    for k, v in pairs(SKC.FAM_LAYOUT) do
+      L[k] = v
+    end
+    if type(EVT_SKC_FAMILY_LAYOUT) == "table" then
+      for k, v in pairs(EVT_SKC_FAMILY_LAYOUT) do
+        L[k] = v
+      end
+    end
+    L.rows = math.max(1, math.min(SKC.FAM_ROWS_MAX, math.floor(tonumber(L.rows) or SKC.FAM_ROWS_MAX)))
+    return L
+  end
+
+  -- the family's rows: every move with a name (element, category, a common move), by power then id
+  local function FamilyItems(fam)
+    local items = SKC.items[fam.key]
+    if items ~= nil then
+      return items
+    end
+    items = {}
+    local seen = {}
+    for _, m in ipairs(fam.moves) do
+      local okn, found, nameId = pcall(funcLuaCommand, SKC.SKILL_INFO, m, 4)
+      if okn and found and type(nameId) == "number" and nameId ~= 0 then
+        local okt, name = pcall(funcLuaCommand, SKC.NAME_TEXT, nameId)
+        if okt and type(name) == "string" and name ~= "" then
+          local oke, eok, el = pcall(funcLuaCommand, SKC.SKILL_INFO, m, 7)
+          local okc, cok, cat = pcall(funcLuaCommand, SKC.SKILL_INFO, m, 9)
+          local okp, pok, power = pcall(funcLuaCommand, SKC.SKILL_INFO, m, 6)
+          local okm, mok, common = pcall(funcLuaCommand, SKC.COMMON_SKILL, m)
+          local twin = seen[name]
+          if twin ~= nil then
+            twin.alt[m] = true                      -- a variant of the same move: shown once
+          else
+          seen[name] = {move = m, alt = {[m] = true}}
+          items[#items + 1] = {move = m, name = name, el = (oke and eok and tonumber(el)) or 0,
+            cat = (okc and cok and tonumber(cat)) or 0, power = (okp and pok and tonumber(power)) or 0,
+            common = okm and mok and common == true, alt = seen[name].alt}
+          end
+        end
+      end
+    end
+    table.sort(items, function(a, b)
+      if a.power ~= b.power then
+        return a.power < b.power
+      end
+      return a.move < b.move
+    end)
+    SKC.items[fam.key] = items
+    return items
+  end
+
+  -- the family's name in the game's language (its text key: CMND_VRFW_TEXT_ID + CMND_TEXT_GET, else
+  -- CMND_VRFW_TEXT_GET), else the id's last part; its text icon in front
+  local function FamilyTitle(fam)
+    if fam.title ~= nil then
+      return fam.title
+    end
+    local s = ""
+    if fam.text ~= "" then
+      local oki, id = pcall(funcLuaCommand, SKC.TEXT_ID, fam.text)
+      if oki and type(id) == "number" and id ~= 0 then
+        local okg, t = pcall(funcLuaCommand, SKC.TEXT_GET, id)
+        if okg and type(t) == "string" then
+          s = t
+        end
+      end
+      if s == "" then
+        local okv, t = pcall(funcLuaCommand, SKC.VRFW_TEXT_GET, fam.text)
+        if okv and type(t) == "string" then
+          s = t
+        end
+      end
+    end
+    if s == "" then
+      s = string.match(fam.key, "([^%.]+)$") or fam.key
+    end
+    if string.sub(fam.icon, 1, 6) == "gaiji_" then
+      s = "[$" .. fam.icon .. "] " .. s
+    elseif string.sub(fam.icon, 1, 2) == "[$" then
+      s = fam.icon .. " " .. s
+    end
+    fam.title = s
+    return s
+  end
+
+  local function FamilyMaxOffset(fam, L)
+    return math.max(0, math.ceil(#FamilyItems(fam) / SKC.FAM_COLS) - L.rows)
+  end
+
+  -- the family page's card body: the family's name as the body's centred title line (the effect page's title style;
+  -- the description's text replaced), the plates under it (layer evt_skc_plate); a new page opens with the card's
+  -- move in view
+  local function ShowFamily(fam)
+    SetStyle(false)
+    funcLuaMenuCommand(SKC.SET_TEXT, SKC.CARD, SKC.FLAVOR, "", 0)
+    if SKC.fam_at ~= fam or SKC.fam_for ~= SKC.focus then
+      SKC.fam_at, SKC.fam_for = fam, SKC.focus
+      local L = FamLayout()
+      local cur, row = U32(SKC.focus), 0
+      for i, it in ipairs(FamilyItems(fam)) do
+        if (it.move == cur or it.alt[cur] == true) then
+          row = math.floor((i - 1) / SKC.FAM_COLS)
+          break
+        end
+      end
+      SKC.fam_off = math.max(0, math.min(FamilyMaxOffset(fam, L), row - math.floor((L.rows - 1) / 2)))
+    end
   end
 
   -- a tab whose list is empty shows no move (retail OnChangeFocus); a new filter neither (OnAfterReceiveFilterParam)
@@ -315,7 +584,7 @@ do
   local SKC_RetailOnAfterReceiveFilterParam = OnAfterReceiveFilterParam
   function OnAfterReceiveFilterParam(...)
     SKC.focus = 0
-    SKC.page = 0
+    SKC.page, SKC.want_page = 0, 0
     local r = table.pack(SKC_RetailOnAfterReceiveFilterParam(...))
     if SKC.Apply then
       pcall(SKC.Apply)
@@ -326,9 +595,6 @@ do
   local SKC_RetailUpdateSkillDetailWindow = UpdateSkillDetailWindow
   function UpdateSkillDetailWindow(...)
     local skill = ...
-    if skill ~= SKC.skill then
-      SKC.page = 0
-    end
     SKC.skill, SKC.args = skill, table.pack(...)
     -- the move the card shows (the retail's own focus: a move with skill info, else none)
     local okInfo = type(skill) == "number" and funcLuaCommand(SKC.SKILL_INFO, skill, 9)
@@ -337,21 +603,31 @@ do
     -- for the focused aura only)
     pcall(SKC.ResetAuraGuide, skill)
     local r = table.pack(SKC_RetailUpdateSkillDetailWindow(...))
-    if SKC.page ~= 1 then
+    local okCat, cat = funcLuaCommand(SKC.SKILL_INFO, type(skill) == "number" and skill or 0, 9)
+    if okCat and SKC.BADGE[cat] ~= nil then
+      pcall(funcLuaMenuCommand, SKC.SPRITE, SKC.CARD, SKC.TX_BADGES, SKC.BADGE[cat], SKC.BADGE_SLOT, 0, 0)
+    end
+    -- the page shown: back to the description when the move has no such page (a move with one page only)
+    -- the page index stays when the focus moves to another move: that page of the new move, the last one it has when
+    -- it has fewer (SKC.want_page keeps the requested index for a move whose pages are answered a moment later)
+    local pages = FocusPages()
+    SKC.page = math.max(0, math.min(SKC.want_page, #pages - 1))
+    local page = pages[SKC.page + 1]
+    if page.kind ~= "effect" then
       pcall(SetStyle, false)
     end
-    if SKC.page == 1 then
+    if page.kind == "effect" then
       local e = Effect(skill)
       if e then
         pcall(ShowEffect, e)
       else
         SKC.page = 0
+        page = pages[1]
       end
+    elseif page.kind == "family" then
+      pcall(ShowFamily, page.fam)
     end
-    -- a move with one page only (no mini-effect): back to page 1; the «Q • • E» row follows the card at once
-    if not (SKC.focus ~= 0 and Effect(SKC.focus)) then
-      SKC.page = 0
-    end
+    SKC.npages = #pages
     if SKC.Apply then
       pcall(SKC.Apply)
     end
@@ -376,60 +652,6 @@ do
     end
   end
 
-  -- the guide: «Q E Efecto / Descripción» (the device's own key glyphs, pad LT / RT) added to whatever the retail (or
-  -- an earlier wrapper) shows, by catching its two guide calls while it runs (funcLuaMenuCommand is restored after)
-  local SKC_RetailUpdateButtonGuide = UpdateButtonGuide
-  function UpdateButtonGuide(...)
-    local e = SKC.Focused() and Effect(SKC.focus)
-    local real = funcLuaMenuCommand
-    if not e or type(real) ~= "function" then
-      return SKC_RetailUpdateButtonGuide(...)
-    end
-    local label = (SKC.page == 1) and SKC.T.guide_desc or SKC.T.guide_effect
-    local n = 0
-    funcLuaMenuCommand = function(...)
-      local c, m, layer, a4, a5, a6, a7, a8 = ...
-      if layer == SKC.GUIDE and c == SKC.GUIDE_SET and type(a4) == "table" and type(a5) == "table" then
-        n = #a4
-        local args = table.pack(...)
-        for k = 4, 8 do
-          if type(args[k]) == "table" then
-            local t = {}
-            for i = 1, n do
-              t[i] = args[k][i] or 0
-            end
-            args[k] = t
-          end
-        end
-        for _, add in ipairs({{0, SKC.I_L2}, {label, SKC.I_R2}}) do
-          args[4][#args[4] + 1] = add[1]
-          args[5][#args[5] + 1] = add[2]
-          if type(args[6]) == "table" then args[6][#args[6] + 1] = 18 end
-          if type(args[7]) == "table" then args[7][#args[7] + 1] = 0 end
-          if type(args[8]) == "table" then args[8][#args[8] + 1] = 0 end
-        end
-        return real(table.unpack(args, 1, args.n))
-      elseif layer == SKC.GUIDE and c == SKC.GUIDE_KEYS and type(a4) == "table" then
-        local t = {}
-        for i = 1, n do
-          t[i] = a4[i] or 0
-        end
-        t[#t + 1] = SKC.K_L2
-        t[#t + 1] = SKC.K_R2
-        local args = table.pack(...)
-        args[4] = t
-        return real(table.unpack(args, 1, args.n))
-      end
-      return real(...)
-    end
-    local r = table.pack(pcall(SKC_RetailUpdateButtonGuide, ...))
-    funcLuaMenuCommand = real
-    if not r[1] then
-      error(r[2], 0)
-    end
-    return table.unpack(r, 2, r.n)
-  end
-
   local function Pressed(k)
     for _, ctrl in ipairs(SKC.CTRLS) do
       local ok, hit = pcall(funcLuaCommand, SKC.CHECK, ctrl, k)
@@ -452,142 +674,285 @@ do
     pcall(funcLuaCommand, SKC.LOG, "EVT skill_card", ...)
   end
 
-  -- an instance of the row layer: true once open and loaded. Opened ONCE, only when the row is wanted; an instance the
+  -- an instance of an attached layer: true once open and loaded. Opened ONCE, only when wanted; an instance the
   -- engine closed (the menu leaving, a sub-menu) is never opened again (hang 2026-10-06: Step re-opened the instances
   -- the exit had closed, so the menu's close waited forever)
-  local function Ready(k, want)
-    if Cmd(SKC.IS_OPEN, SKC.DOTS, k) == true then
-      return Cmd(SKC.LOADING, SKC.DOTS) ~= true
+  local function Ready(Lo, k, want)
+    if Cmd(SKC.IS_OPEN, Lo.id, k) == true then
+      return Cmd(SKC.LOADING, Lo.id) ~= true
     end
-    if SKC.opened[k] then
-      if not SKC.gone then
-        SKC.gone = true
-        Log("row layer closed by the menu: not reopened", k)
+    if Lo.opened[k] then
+      if not Lo.gone then
+        Lo.gone = true
+        Log(Lo.name .. " layer closed by the menu: not reopened", k)
       end
       return false
     end
-    if want and not SKC.gone then
-      SKC.opened[k] = true
-      Cmd(SKC.OPEN, SKC.DOTS, k)
-      Log("row layer opened", k)
+    if want and not Lo.gone then
+      Lo.opened[k] = true
+      Cmd(SKC.OPEN, Lo.id, k)
     end
     return false
   end
 
-  -- instance k shows one part only (the player page's dots copy set-up, research/grafts/plate_pages G.Dots) and sits
-  -- on its place of the row
-  local function RowSetup(k)
-    Cmd(SKC.TRACE, SKC.CARD, 0, SKC.TRACES[k], true)  -- attached to the card's _pos_base01
-    for _, n in ipairs(SKC.LOCS) do
-      Cmd(SKC.NODE_VIS, SKC.DOTS, n, false, k)
-    end
-    for _, m in ipairs(SKC.M_HIDE) do
-      Cmd(SKC.MESH, SKC.DOTS, m, false, k)
-    end
-    Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_L, k == 0, k)
-    Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_R, k == 3, k)
-    if k == 0 then
-      Cmd(SKC.SET_STR, SKC.DOTS, SKC.N_BTN_L, SKC.GLYPHS[0], k)
-    elseif k == 3 then
-      Cmd(SKC.SET_STR, SKC.DOTS, SKC.N_BTN_R, SKC.GLYPHS[3], k)
-    end
-    -- world = card _pos_base01 + local position + the part's layout place, so local = target - layout place;
-    -- targets (top-left, card px, y up) as the player page's row: dots 28 px apart, Q 40 px left of dot 1, E 36 px
-    -- right of dot 2, the glyphs 8 px higher
-    local c = (type(EVT_SKC_DOTS_XY) == "table") and EVT_SKC_DOTS_XY or SKC.CENTRE
-    local cx, cy = tonumber(c[1]) or SKC.CENTRE[1], tonumber(c[2]) or SKC.CENTRE[2]
-    local x1 = cx - SKC.PITCH / 2 - 16
-    local top = cy + 16
-    local x, y
-    if k == 0 then
-      x, y = x1 - 40 - SKC.AT_L, top + 8 - SKC.AT_GY
-    elseif k == 3 then
-      x, y = x1 + SKC.PITCH + 36 - SKC.AT_R, top + 8 - SKC.AT_GY
-    else
-      x, y = x1 + (k - 1) * SKC.PITCH - SKC.AT_DOT[1], top - SKC.AT_DOT[2]
-    end
-    Cmd(SKC.POS, SKC.DOTS, x, y, 0, k)
-    Cmd(SKC.PRIO_CMD, SKC.DOTS, k, SKC.PRIO, true)
-    Log("row part set up", k, x, y)
-  end
-
-  -- the «Q • • E» row: shown for a move with a mini-effect while the card is up, the current page's dot lit
-  -- hides every instance of the row that is still open (a move with one page only, the menu leaving)
-  -- (the dots' meshes go too, so the row cannot stay lit if the engine re-shows the layer on its own)
-  -- (every part goes: the layer, the dots' meshes and the key glyphs' texts, so nothing of the row stays drawn if the
-  -- card's attachment shows the layer again on its own)
-  local function HideRow()
-    for k in pairs(SKC.opened) do
-      if Cmd(SKC.IS_OPEN, SKC.DOTS, k) == true then
-        Cmd(SKC.LVIS, SKC.DOTS, k, false)
-        Cmd(SKC.MESH, SKC.DOTS, SKC.M_OFF, false, k)
-        Cmd(SKC.MESH, SKC.DOTS, SKC.M_ON, false, k)
-        Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_L, false, k)
-        Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_R, false, k)
+  -- every instance of the layer open, loaded and set up once (setup(k)); false while one is not
+  local function EnsureLayer(Lo, setup)
+    local ready = true
+    for k = 0, Lo.n - 1 do
+      if not Ready(Lo, k, true) then
+        ready = false
+      elseif not Lo.set[k] then
+        Lo.set[k] = true
+        setup(k)
       end
     end
-    SKC.shown = ""
+    if ready and not Lo.logged_open then
+      Lo.logged_open = true
+      Log(Lo.name .. " layer opened", Lo.n)
+    end
+    return ready and not Lo.gone
   end
 
-  -- the move on the card has a second page (a mini-effect) and the card is up
-
-  local function WantRow()
-    return (SKC.Focused() and Effect(SKC.focus)
-      and Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false) and true or false
+  -- every instance of the plate layer that is still open hidden (the layer and its whole plate node), so nothing stays
+  -- drawn if the card's attachment shows the layer again on its own (the page row hides itself: VRFW_Pager Row:Hide)
+  local function HideLayer(Lo)
+    -- every instance that is open, whoever opened it: the menu opens the layer's instances with its group (an instance
+    -- this script never opened is not in Lo.opened, and a hide that only walked Lo.opened left those drawn)
+    for k = 0, Lo.n - 1 do
+      if Cmd(SKC.IS_OPEN, Lo.id, k) == true then
+        Cmd(SKC.LVIS, Lo.id, k, false)
+        Cmd(SKC.NODE_VIS, Lo.id, SKC.POS_BASE1, false, k)
+        Cmd(SKC.NODE_VIS, Lo.id, SKC.POS_BASE2, false, k)
+        Cmd(SKC.TEXT_VIS, Lo.id, SKC.TEXT_SP, false, k)
+        Cmd(SKC.MESH, Lo.id, SKC.AREA, false, k)
+        Cmd(SKC.MESH, Lo.id, SKC.FOCUS, false, k)
+        Lo.labels = {}
+        Lo.move[k] = nil                            -- refilled (and the texts shown again) on the next family page
+      end
+    end
+    Lo.shown = false
   end
 
-  -- the row's state for the card shown, applied on its events (a card fill, a page turn, the sort / filter windows,
-  -- back): shown with the current page's dot lit for a move with an effect page, every part hidden otherwise. The
-  -- instances open once, when the card first shows; until they are loaded (or the card shows) the state waits in
-  -- SKC.pending, which Step finishes once.
+  -- the row (nil without the framework's pager); its centre in card px from the card's centre, y up (EVT_SKC_DOTS_XY
+  -- moves it)
+  local function Row()
+    if ROW == nil and type(VRFW_Pager) == "table" and type(VRFW_Pager.New) == "function" then
+      ROW = VRFW_Pager.New({layer = SKC.DOTS, name = "skill card", prio = SKC.PRIO, style = "ycycle", guide = SKC.YPAGE,
+        key = "<CMD_FUNC3>", setup = function(k)
+        Cmd(SKC.TRACE, SKC.CARD, 0, SKC.TRACES[k], true)
+      end})
+    end
+    return ROW
+  end
+
+  local function RowCentre()
+    local c = (type(EVT_SKC_DOTS_XY) == "table") and EVT_SKC_DOTS_XY or SKC.CENTRE
+    return tonumber(c[1]) or SKC.CENTRE[1], tonumber(c[2]) or SKC.CENTRE[2]
+  end
+
+  local function HideRow()
+    if ROW ~= nil then
+      ROW:Hide()
+    end
+  end
+
+  -- the name text cut to `max` characters with an ellipsis
+  local function Ellipsize(s, max)
+    local n, i = 0, 1
+    while i <= #s do
+      local b = string.byte(s, i)
+      i = i + ((b >= 240 and 4) or (b >= 224 and 3) or (b >= 192 and 2) or 1)
+      n = n + 1
+      if n == max and i <= #s then
+        return string.sub(s, 1, i - 1) .. "..."
+      end
+    end
+    return s
+  end
+
+  -- plate instance k: attached to the card, above it, at its row / column place and scale
+  local function PlateSetup(k)
+    Cmd(SKC.TRACE, SKC.CARD, 0, SKC.PLATE_TRACES[k], true)
+    Cmd(SKC.PRIO_CMD, SKC.PLATE, k, SKC.PRIO, true)
+    local L = FamLayout()
+    -- the retail row's visual centre sits plate_dy layout px above its origin: positions below are of the visual centre
+    local dx, dy = tonumber(L.plate_dx) or 0, tonumber(L.plate_dy) or 0
+    if k == SKC.NAME_K then
+      -- the family's name badge (the plate's own text node and font, no squeeze) on the type badge's line
+      local s = tonumber(L.name_scale) or 0.44
+      local cx, cy = L.name_x + 300 * s, L.name_cy
+      Cmd(SKC.SCALE, SKC.PLATE, s, s, 1, k)
+      Cmd(SKC.POS, SKC.PLATE, cx - dx * s, cy - dy * s, 0, k)
+      Cmd(SKC.LVIS, SKC.PLATE, k, false)
+      return
+    end
+    local row, col = math.floor(k / SKC.FAM_COLS), k % SKC.FAM_COLS
+    local s = tonumber(L.scale) or 0.52
+    Cmd(SKC.SCALE, SKC.PLATE, s, s, 1, k)
+    Cmd(SKC.POS, SKC.PLATE, L.col_x[col + 1] - dx * s, L.row_y - row * L.pitch - dy * s, 0, k)
+    Cmd(SKC.LVIS, SKC.PLATE, k, false)
+  end
+
+  -- the plate of a move: element plate (personal_plate_inc's rule: element 1..5, a common move and no element the
+  -- neutral plate), category icon, name; no AT, lock or badges; the card's move with the plate's own focus frame
+  local function PlateFill(k, it, current)
+    local key = tostring(it.move) .. (current and "*" or "")
+    if PLATES.move[k] ~= key then
+      PLATES.move[k] = key
+      local el = it.el
+      if el == 5 and it.common then
+        el = 6
+      end
+      Cmd(SKC.SPRITE, SKC.PLATE, SKC.TX09, SKC.SP[el] or SKC.SP[6], SKC.SP_SLOT, 0, k)
+      local icon = SKC.CAT_ICON[it.cat]
+      if type(GetSkillCategoryIcon) == "function" then
+        local ok, i = pcall(GetSkillCategoryIcon, it.cat, it.move, 0)
+        if ok and type(i) == "number" and i ~= 0 then
+          icon = i
+        end
+      end
+      if icon ~= nil then
+        Cmd(SKC.SPRITE, SKC.PLATE, SKC.ICON_ATLAS, icon, SKC.AREA_SLOT, 0, k)
+      end
+      Cmd(SKC.SET_TEXT, SKC.PLATE, SKC.TEXT_SP, it.name, k)
+      PLATES.icon[k] = icon ~= nil
+    end
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_BASE1, true, k)
+    Cmd(SKC.TEXT_VIS, SKC.PLATE, SKC.TEXT_SP, true, k)
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_BASE2, false, k)
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_AT, false, k)
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_LOCK, false, k)
+    Cmd(SKC.PRIM_VIS, SKC.PLATE, k, SKC.PRIM_AT, false)
+    Cmd(SKC.PRIM_VIS, SKC.PLATE, k, SKC.PRIM_LOCK, false)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.ARMED, false, k)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.SUB, false, k)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.AT_DMY, false, k)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.AREA, PLATES.icon[k] == true, k)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.FOCUS, current, k)
+    Cmd(SKC.LVIS, SKC.PLATE, k, true)
+  end
+
+  -- the family's name on the name instance: the plate's sprite swapped for a transparent one, every other part off,
+  -- only its name text drawn
+  local function LabelShow(k, text)
+    if PLATES.labels[k] ~= text then
+      PLATES.labels[k] = text
+      Cmd(SKC.SPRITE, SKC.PLATE, SKC.TX_BADGES, SKC.NAME_BASE, SKC.SP_SLOT, 0, k)
+      Cmd(SKC.SET_TEXT, SKC.PLATE, SKC.TEXT_SP, text, k)
+      Log("family label", k, text)
+    end
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_BASE1, true, k)
+    Cmd(SKC.TEXT_VIS, SKC.PLATE, SKC.TEXT_SP, true, k)
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_BASE2, false, k)
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_AT, false, k)
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_LOCK, false, k)
+    Cmd(SKC.PRIM_VIS, SKC.PLATE, k, SKC.PRIM_AT, false)
+    Cmd(SKC.PRIM_VIS, SKC.PLATE, k, SKC.PRIM_LOCK, false)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.ARMED, false, k)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.SUB, false, k)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.AT_DMY, false, k)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.AREA, false, k)
+    Cmd(SKC.MESH, SKC.PLATE, SKC.FOCUS, false, k)
+    Cmd(SKC.LVIS, SKC.PLATE, k, true)
+  end
+
+  local function PlateOff(k)
+    Cmd(SKC.LVIS, SKC.PLATE, k, false)
+    Cmd(SKC.NODE_VIS, SKC.PLATE, SKC.POS_BASE1, false, k)
+  end
+
+  -- the family list from row SKC.fam_off: the plates of the rows shown; the scrollbar only when the list is longer (a
+  -- track over the rows, a thumb as tall as the part shown, at its place)
+  local function DrawFamily(fam)
+    local L = FamLayout()
+    local items = FamilyItems(fam)
+    local maxOff = FamilyMaxOffset(fam, L)
+    SKC.fam_off = math.max(0, math.min(maxOff, SKC.fam_off))
+    local cur = U32(SKC.focus)
+    for k = 0, SKC.GRID_N - 1 do
+      local r, c = math.floor(k / SKC.FAM_COLS), k % SKC.FAM_COLS
+      local it = (r < L.rows) and items[(SKC.fam_off + r) * SKC.FAM_COLS + c + 1] or nil
+      if it ~= nil then
+        PlateFill(k, it, (it.move == cur or it.alt[cur] == true))
+      else
+        PlateOff(k)
+      end
+    end
+    PLATES.shown = true
+    local icon, plain = string.match(FamilyTitle(fam), "^(%[%$[^%]]*%] )(.*)$")
+    local title = (icon or "") .. Ellipsize(plain or FamilyTitle(fam), tonumber(L.name_max) or 18)
+    LabelShow(SKC.NAME_K, title)
+  end
+
+  -- the move on the card has more than one page and the card is up
+  local function CardUp()
+    return Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false
+  end
+
+  -- one family layer brought to its state: opened once wanted, set up, hidden when not wanted; true = ready
+  local function FamilyLayer(Lo, setup, wantFam)
+    if not wantFam then
+      HideLayer(Lo)                               -- every page but a family's: no family part stays drawn
+      return false
+    end
+    if Lo.gone then
+      return false
+    end
+    if Cmd(SKC.EXIST, Lo.id) ~= true then
+      return false
+    end
+    if not EnsureLayer(Lo, setup) then
+      if not Lo.gone then
+        SKC.pending = true
+      end
+      return false
+    end
+    Lo.ready = true
+    return true
+  end
+
+  -- the layers' state for the card shown, applied on its events (a card fill, a page turn, a scroll, the sort / filter
+  -- windows, back): the row with the current page's dot lit for a move with more than one page, the family plates and
+  -- scrollbar on a family page, every part hidden otherwise. The instances open once, when first wanted (the row: when
+  -- the card first shows; the family layers: on the first family page); until they are loaded the state waits in
+  -- SKC.pending, which Step finishes.
   local function Apply()
     SKC.pending = false
-    local want = WantRow()
-    if SKC.gone then
-      if SKC.shown ~= "" then
-        HideRow()                                 -- the engine closed an instance: the row is never shown again
+    local pages = FocusPages()
+    local cardUp = CardUp()
+    local want = SKC.Focused() and #pages >= 2 and cardUp
+    local page = pages[SKC.page + 1]
+    local wantFam = want and page ~= nil and page.kind == "family"
+    -- the row
+    local R = Row()
+    if R == nil then
+      SKC.pending = false
+    elseif R.gone then
+      if R.shown then
+        R:Hide()
       end
-      return
-    end
-    if Cmd(SKC.EXIST, SKC.DOTS) ~= true then
-      return
-    end
-    local cardUp = Cmd(SKC.VISIBLE, SKC.CARD, 0) ~= false and Cmd(SKC.VISIBLE, SKC.CURSOR, 0) ~= false
-    if next(SKC.opened) == nil and not cardUp then
-      SKC.pending = true                          -- the instances open with the card (Hissatsu Effects 1.1.1)
-      return
-    end
-    local ready = true
-    for k = 0, 3 do
-      if not Ready(k, true) then
-        ready = false
-      elseif not SKC.dots[k] then
-        SKC.dots[k] = true
-        SKC.shown = nil
-        RowSetup(k)
+    elseif Cmd(SKC.EXIST, SKC.DOTS) == true then
+      if not R:Opened() and not cardUp then
+        SKC.pending = true                        -- the instances open with the card (Hissatsu Effects 1.1.1)
+      elseif R:Ready() then
+        if want then
+          local x, y = RowCentre()
+          local nextPage = pages[(SKC.page + 1) % #pages + 1]
+          R:Show(math.min(#pages, SKC.DOT_N), SKC.page + 1, x, y, Text("guide_" .. nextPage.kind))
+        else
+          R:Hide()
+        end
+      elseif not R.gone then
+        SKC.pending = true
       end
     end
-    if SKC.gone then
-      return
+    -- the description's grey quote bar belongs to the description / effect pages only
+    Cmd(SKC.MESH, SKC.CARD, SKC.LINE, not wantFam, 0)
+    -- the family plates and the family's name
+    if FamilyLayer(PLATES, PlateSetup, wantFam) and wantFam then
+      DrawFamily(page.fam)
     end
-    if not ready then
-      SKC.pending = true
-      return
-    end
-    local state = want and tostring(SKC.page) or ""
-    if state == "" then
-      HideRow()
-    else
-      for k = 0, 3 do
-        local dot = k == 1 or k == 2
-        Cmd(SKC.MESH, SKC.DOTS, SKC.M_OFF, dot, k)
-        Cmd(SKC.MESH, SKC.DOTS, SKC.M_ON, dot and SKC.page == k - 1, k)
-        Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_L, k == 0, k)
-        Cmd(SKC.TEXT_VIS, SKC.DOTS, SKC.N_BTN_R, k == 3, k)
-        Cmd(SKC.LVIS, SKC.DOTS, k, true)
-      end
-      SKC.shown = state
-    end
+    local state = want and (tostring(SKC.page) .. "/" .. tostring(#pages)) or ""
     if state ~= SKC.logged then
       SKC.logged = state
       Log("row", state == "" and "hidden" or ("page " .. state))
@@ -595,23 +960,25 @@ do
   end
   SKC.Apply = Apply
 
-  -- leaving / filter / sort: logged (original first, its results returned); the row hidden on back
+  -- leaving / filter / sort: logged (original first, its results returned); the layers hidden on back
   local SKC_RetailOnBack = OnBack
   function OnBack(...)
     local r = table.pack(SKC_RetailOnBack(...))
     Log("back")
     SKC.pending = false
     pcall(HideRow)
+    pcall(HideLayer, PLATES)
     return table.unpack(r, 1, r.n)
   end
 
-  -- the sort / filter windows: the row goes before they open (the retail hides the cursor with them) and follows the
+  -- the sort / filter windows: the layers go before they open (the retail hides the cursor with them) and follow the
   -- card again when the retail returns
   local SKC_RetailOnFunction = OnFunction
   function OnFunction(...)
     local f = ...
     if f == SKC.F_SORT or f == SKC.F_FILTER then
       pcall(HideRow)
+        pcall(HideLayer, PLATES)
     end
     local r = table.pack(SKC_RetailOnFunction(...))
     pcall(Apply)
@@ -625,31 +992,81 @@ do
     return table.unpack(r, 1, r.n)
   end
 
+  -- page p (0-based) of the move: the description through the retail fill, the others drawn here
+  local function TurnTo(p, pages)
+    local page = pages[p + 1]
+    SKC.page, SKC.want_page = p, p
+    if page.kind == "desc" then
+      local a = SKC.args
+      UpdateSkillDetailWindow(table.unpack(a, 1, a.n))   -- the retail fill (and its UpdateButtonGuide)
+      return
+    end
+    if page.kind == "effect" then
+      ShowEffect(Effect(SKC.focus))
+    else
+      ShowFamily(page.fam)
+    end
+    Apply()
+  end
+
+  -- the right stick on a family page whose list is longer than the card: one row a push, held = repeated after 18
+  -- frames every 5
+  local function Scroll(fam)
+    local dir = (Pressed(SKC.K_UP) and -1) or (Pressed(SKC.K_DOWN) and 1) or 0
+    if dir == 0 then
+      SKC.held = 0
+      return
+    end
+    SKC.held = SKC.held + 1
+    local h = SKC.held
+    if h ~= 1 and (h < 18 or (h - 18) % 5 ~= 0) then
+      return
+    end
+    local maxOff = FamilyMaxOffset(fam, FamLayout())
+    local off = math.max(0, math.min(maxOff, SKC.fam_off + dir))
+    if off == SKC.fam_off then
+      return
+    end
+    SKC.fam_off = off
+    funcLuaCommand(SKC.SE, SKC.SE_MOVE)
+    if PLATES.shown then
+      DrawFamily(fam)
+    else
+      Apply()
+    end
+  end
+
   local function Poll()
     if not SKC.Focused() then
       return
     end
-    local e = Effect(SKC.focus)
-    if not e then
+    local pages = Pages(SKC.focus)
+    if #pages ~= SKC.npages then
+      SKC.npages = #pages                         -- the families answered after the fill: the row follows
+      local p = math.max(0, math.min(SKC.want_page, #pages - 1))
+      if p ~= SKC.page then
+        TurnTo(p, pages)                          -- the page asked for exists now: drawn
+      else
+        Apply()
+      end
+    end
+    if #pages < 2 then
       return
     end
     if funcLuaMenuCommand(SKC.VISIBLE, SKC.CURSOR, 0) == false then
       return                                      -- the sort / filter window is open
     end
-    if not (Pressed(SKC.K_L2) or Pressed(SKC.K_R2)) then
+    local page = pages[SKC.page + 1]
+    if page ~= nil and page.kind == "family" then
+      Scroll(page.fam)
+    end
+    local dir = Pressed(SKC.K_Y) and 1 or 0
+    if dir == 0 then
       return
     end
     funcLuaCommand(SKC.SE, SKC.SE_PAGE)
-    if SKC.page == 0 then
-      SKC.page = 1
-      ShowEffect(e)
-      UpdateButtonGuide()
-      Apply()
-    else
-      SKC.page = 0
-      local a = SKC.args
-      UpdateSkillDetailWindow(table.unpack(a, 1, a.n))   -- the retail fill (and its UpdateButtonGuide)
-    end
+    SKC.held = 0
+    TurnTo((SKC.page + dir) % #pages, pages)
   end
 
   local SKC_RetailStep = Step
@@ -658,6 +1075,7 @@ do
     if SKC_RetailStep ~= nil then
       r = table.pack(SKC_RetailStep(...))
     end
+    SKC.frame = SKC.frame + 1
     pcall(Poll)
     if SKC.pending then
       pcall(Apply)

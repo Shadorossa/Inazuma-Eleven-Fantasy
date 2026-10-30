@@ -13,32 +13,26 @@ UTIL_XS.HOLD_CMD = 3211130387             -- CMND_BETTERQOL_XSKIP_COVER(on) -> 1
 UTIL_XS.JUMP = 3594158133                 -- param crc32("util_xskip_jump"): 1 = the direct jump ended the event (no cover)
 UTIL_XS.JUMP_CMD = 313471770             -- CMND_BETTERQOL_XSKIP_JUMP(on) -> 1 (Utilities content\game\prematch_skip.toml)
 UTIL_XS.BLACK0 = 2073416348                -- param crc32("util_xskip_black0"): 1 = fade layer 0 set black for the kick-off fade in
-UTIL_XS.PARAM_HAS = 2947612279
-UTIL_XS.PARAM_GET = 3522198769
-UTIL_XS.PARAM_DEL = 3363400568
-UTIL_XS.PARAM_SET = 3860611758
 UTIL_XS.LOG = 3661580131                  -- CMND_EVT_LOG (loader log; absent without the Lua bridge: pcall)
 function UTIL_XS.Log(...)
   pcall(funcLuaCommand, UTIL_XS.LOG, "utilities prematch skip:", ...)
 end
 function UTIL_XS.Get(key)
-  local ok, has = pcall(funcLuaCommand, UTIL_XS.PARAM_HAS, key)
-  if ok and has then
-    local ok2, v = pcall(funcLuaCommand, UTIL_XS.PARAM_GET, key)
-    if ok2 and type(v) == "number" then
+  if VRFW_Param.Has(key) then
+    local v = VRFW_Param.Get(key)
+    if type(v) == "number" then
       return v
     end
   end
   return 0
 end
 function UTIL_XS.Set(key, v)
-  pcall(funcLuaCommand, UTIL_XS.PARAM_DEL, key)
-  pcall(funcLuaCommand, UTIL_XS.PARAM_SET, key, 0, v, 1)
+  VRFW_Param.Clear(key)
+  VRFW_Param.Set(key, v)
 end
 function UTIL_XS.Del(key)
-  local ok, has = pcall(funcLuaCommand, UTIL_XS.PARAM_HAS, key)
-  if ok and has then
-    pcall(funcLuaCommand, UTIL_XS.PARAM_DEL, key)
+  if VRFW_Param.Has(key) then
+    VRFW_Param.Clear(key)
   end
 end
 function UTIL_XS.Online()                 -- network match / observer: retail only (same test as the pre-match lineups)
@@ -182,7 +176,7 @@ local function UtilXsLineupStep(prev)
       util_xs_close_now = false
       local ok, err = pcall(function()
         CloseCommonTimer()
-        funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 1853845420 --[[soccer_battle_setting_flow_vs_menu]])
+        funcLuaCommand(320421347, 1853845420 --[[soccer_battle_setting_flow_vs_menu]])
       end)
       UTIL_XS.Log("lineup group closed (direct jump)", tostring(ok), tostring(err))
       return

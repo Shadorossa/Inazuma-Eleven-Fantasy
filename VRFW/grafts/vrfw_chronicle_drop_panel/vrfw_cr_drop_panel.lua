@@ -16,19 +16,19 @@ do
   D.PITCH = 34
   D.T30 = 2815298114                                -- #/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx
   D.W38 = 2268931645                                -- #/menu/10_win/win05/win05_38/<LG>/win05_38.g4tx
-  D.SKILL = 2580586398                              -- CMND_GET_SOCCER_SKILL_INFO (item, n): 7 element, 13 aura type, 17 chara, 19 partner card
+  D.SKILL = @crc:CMND_GET_SOCCER_SKILL_INFO@                              -- (item, n): 7 element, 13 aura type, 17 chara, 19 partner card
   D.FACE = 346643487
-  D.ALPHA = 4231609516                              -- (layer, instance, 1, alpha, mesh)
-  D.ANALOG, D.CHECK, D.CTRL = 1440697067, 4265778440, 1332654303
+  D.ALPHA = @crc:CMND_SET_LAYER_MODEL_ALPHA@                              -- (layer, instance, 1, alpha, mesh)
+  D.ANALOG, D.CHECK, D.CTRL = @crc:CMND_GET_ANALOG_VALUE@, @crc:CMND_CHECK_INPUT_CMD@, 1332654303
   D.W_UP, D.W_DOWN = 1942756954 --[[CMD_EVT_WHEEL_UP]], 1623431741 --[[CMD_EVT_WHEEL_DOWN]]
   D.ART_SIZE = {[0] = 8, [1] = 8, [2] = 12, [3] = 14, [4] = 8, [5] = 8, [6] = 12}
   D.BANDS = {
-    [0] = {1716659057, 4284183243, 2287747677, 372824062, 1631577960},   -- fs_base01-05
-    [1] = {1742805750, 4276636492, 2314173402, 395046521, 1619844847},   -- fsa_base01-05
-    [2] = {3558327990, 1293850380, 974759834, 2759668281, 3547988655},   -- mixi_base01-05
-    [3] = {2619781135, 87024053, 1915277603, 3964421248, 2605413398},    -- soul_base01-05
-    [4] = {1514509020, 3276587878, 3024876528, 707749459, 1562924741},   -- kizuna_base01-05
-    [5] = {4250578944, 1683218874, 324325676, 2368750735, 4197938201},   -- power_base01-05
+    [0] = {@crc:fs_base01@, @crc:fs_base02@, @crc:fs_base03@, @crc:fs_base04@, @crc:fs_base05@},
+    [1] = {@crc:fsa_base01@, @crc:fsa_base02@, @crc:fsa_base03@, @crc:fsa_base04@, @crc:fsa_base05@},
+    [2] = {@crc:mixi_base01@, @crc:mixi_base02@, @crc:mixi_base03@, @crc:mixi_base04@, @crc:mixi_base05@},
+    [3] = {@crc:soul_base01@, @crc:soul_base02@, @crc:soul_base03@, @crc:soul_base04@, @crc:soul_base05@},
+    [4] = {@crc:kizuna_base01@, @crc:kizuna_base02@, @crc:kizuna_base03@, @crc:kizuna_base04@, @crc:kizuna_base05@},
+    [5] = {@crc:power_base01@, @crc:power_base02@, @crc:power_base03@, @crc:power_base04@, @crc:power_base05@},
     [6] = {3293713115, 1566262113, 710702071, 3023627860, 3275740866}    -- mode_base01-05
   }
   -- row nodes (win05_38 layout): {node, x, y, w, h}
@@ -85,7 +85,7 @@ do
 
   local function hide_rows()
     for k = 0, D.ROWS - 1 do
-      cmd(711242136 --[[CMND_SET_LAYER_VISIBLE]], D.LAYER, k, false)
+      cmd(@crc:CMND_SET_LAYER_VISIBLE@, D.LAYER, k, false)
     end
   end
 
@@ -98,8 +98,8 @@ do
     end
     for k = 0, D.ROWS - 1 do
       local cy = top + D.PITCH * k + 36 * D.SCALE
-      cmd(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], D.LAYER, D.X, -cy, 0, k)
-      cmd(3778714801 --[[layer scale]], D.LAYER, D.SCALE, D.SCALE, 1, k)
+      cmd(@crc:CMND_SET_LAYER_LOCAL_POS@, D.LAYER, D.X, -cy, 0, k)
+      cmd(@crc:CMND_SET_LAYER_LOCAL_SCALE@ --[[layer scale]], D.LAYER, D.SCALE, D.SCALE, 1, k)
     end
   end
 
@@ -135,25 +135,22 @@ do
       end
       cmd(4176779611 --[[ResetFaceIcon]], L, k, slot)
     end
-    pcall(SetDisableForceCharaInvalidUseTarget)
-    local ok, r = pcall(funcLuaMenuCommand, 552280324 --[[chara face icon]], L, k, false, mesh, slot, 0, 0, chara)
-    pcall(SetEnableForceCharaInvalidUseTarget)
-    return ok and r ~= false
+    return VRFW_FaceIcon.Request(L, k, chara, mesh, slot)
   end
 
   local function draw_row(k, item, pct)
     local L, N, A = D.LAYER, D.N, D.AURA
-    cmd(711242136, L, k, true)
+    cmd(@crc:CMND_SET_LAYER_VISIBLE@, L, k, true)
     cmd(2158717427 --[[locator visible]], L, N.drop, true, k)
-    cmd(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, N.drop, true, k)
+    cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.drop, true, k)
     cmd(2158717427, L, N.item, true, k)
     cmd(2158717427, L, N.part, false, k)
-    cmd(3405944500, L, N.part, false, k)
+    cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.part, false, k)
     cmd(2158717427, L, N.boost, false, k)
-    cmd(3405944500, L, N.boost, false, k)
-    local okn, name = pcall(funcLuaCommand, 1883585771 --[[CMND_GET_ITEM_PARAM]], item, 0)
-    cmd(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], L, N.name, (okn and type(name) == "string") and name or "", k)
-    cmd(1505208242 --[[text visible]], L, N.name, true, k)
+    cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.boost, false, k)
+    local okn, name = pcall(funcLuaCommand, @crc:CMND_GET_ITEM_PARAM@, item, 0)
+    cmd(@crc:CMND_SET_MENU_TEXT_STRING@, L, N.name, (okn and type(name) == "string") and name or "", k)
+    cmd(@crc:CMND_SET_MENU_TEXT_VISIBLE@ --[[text visible]], L, N.name, true, k)
     cmd(125897167, L, k)
     cmd(3508889864, L, k, N.icon, 1875672568 --[[icon_item_dmy01]], item)
     cmd(3508889864, L, k, N.icon2, 4140117058 --[[icon_item_dmy02]], item)
@@ -162,11 +159,11 @@ do
     -- the rate
     cmd(1233047821, L, k, 611782757, true)
     cmd(1233047821, L, k, 3396956489, false)
-    local okp, prim = pcall(funcLuaMenuCommand, 1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], L, k, 611782757)
+    local okp, prim = pcall(funcLuaMenuCommand, @crc:CMND_SEARCH_PRIM_INDEX@, L, k, 611782757)
     if okp and prim ~= nil then
       cmd(36541260, L, k, prim, pct)
     end
-    cmd(3405944500, L, N.dot, false, k)
+    cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.dot, false, k)
     -- an aura: its banner and portrait; another item: the plain row
     local _, oka, kind = pcall(funcLuaCommand, D.SKILL, item, 13)
     if oka and type(kind) == "number" then
@@ -174,10 +171,10 @@ do
       if not oke or type(elem) ~= "number" or elem < 1 then elem = 1 elseif elem > 5 then elem = 5 end
       local bands = D.BANDS[kind] or D.BANDS[0]
       cmd(2158717427, L, N.chr, true, k)
-      cmd(3405944500, L, N.base, false, k)
-      cmd(3405944500, L, N.plate, false, k)
+      cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.base, false, k)
+      cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.plate, false, k)
       cmd(558735651, L, D.T30, bands[elem], 94010567 --[[list_drop_chr_rarity01]], 0, k)
-      cmd(3405944500, L, N.band[1], true, k)
+      cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.band[1], true, k)
       pos(L, k, N.band, A.band[1], A.band[2])
       size(L, k, N.band, A.band[3], A.band[4])
       pos(L, k, N.percent, A.percent[1], A.percent[2])
@@ -196,23 +193,23 @@ do
         end
       end
       if chara ~= 0 then
-        cmd(3405944500, L, N.art[1], true, k)
+        cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.art[1], true, k)
         pos(L, k, N.art, A.art[1], A.art[2])
         size(L, k, N.art, A.art[3], A.art[4])
       else
-        cmd(3405944500, L, N.art[1], false, k)
+        cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.art[1], false, k)
         D.art_of[k] = nil
       end
     else
       cmd(2158717427, L, N.chr, false, k)
-      cmd(3405944500, L, N.base, true, k)
-      cmd(3405944500, L, N.plate, true, k)
+      cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.base, true, k)
+      cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.plate, true, k)
       cmd(558735651, L, D.W38, 1868240048 --[[item_base01]], 1868240048, 0, k)
       pos(L, k, N.band)
       size(L, k, N.band)
       pos(L, k, N.percent)
       pos(L, k, N.pos_icon)
-      cmd(3405944500, L, N.art[1], false, k)
+      cmd(@crc:CMND_SET_MESH_VISIBLE@, L, N.art[1], false, k)
       D.art_of[k] = nil
     end
   end
@@ -230,7 +227,7 @@ do
       if type(item) == "number" and item ~= 0 then
         pcall(draw_row, k, item, type(pct) == "number" and pct or 0)
       else
-        cmd(711242136, D.LAYER, k, false)
+        cmd(@crc:CMND_SET_LAYER_VISIBLE@, D.LAYER, k, false)
       end
     end
   end
@@ -245,7 +242,7 @@ do
       return false
     end
     for k = 0, 3 do
-      cmd(711242136, D.REWARD, k, false)
+      cmd(@crc:CMND_SET_LAYER_VISIBLE@, D.REWARD, k, false)
     end
     place()
     D.Draw()
@@ -315,7 +312,7 @@ function OpenCloseInfoWindow(a1, a2, ...)
   if not a2 then
     VRFW_CrDrops.art_of = {}
     for k = 0, VRFW_CrDrops.ROWS - 1 do
-      pcall(funcLuaMenuCommand, 711242136, VRFW_CrDrops.LAYER, k, false)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, VRFW_CrDrops.LAYER, k, false)
     end
   end
   return table.unpack(r)

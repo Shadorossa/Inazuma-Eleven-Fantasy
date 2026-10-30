@@ -23,36 +23,32 @@ do
   VRFW_Outfit.OF = @crc:CMND_VRFW_OUTFIT_OF@
   VRFW_Outfit.LOG = @crc:CMND_EVT_LOG@
   VRFW_Outfit.TEXT_SLOT = @crc:vrfw_outfit_slot@     -- menu_text "Atuendo"
-  VRFW_Outfit.TEXT_GET = 4074371074                  -- (textId) -> text
-  VRFW_Outfit.SET_TEXT = 1083631230                  -- (layer, text name, string, instance)
-  VRFW_Outfit.TEXT_ALPHA = 1126837159                -- (layer, instance, text name, alpha)
+  VRFW_Outfit.TEXT_GET = @crc:CMND_TEXT_GET@                  -- (textId) -> text
+  VRFW_Outfit.SET_TEXT = @crc:CMND_SET_MENU_TEXT_STRING@                  -- (layer, text name, string, instance)
+  VRFW_Outfit.TEXT_ALPHA = @crc:CMND_SET_MENU_TEXT_ALPHA@                -- (layer, instance, text name, alpha)
   VRFW_Outfit.L_ROW = 4251697490                     -- soccer11_08_equip_list_item
   VRFW_Outfit.TYPE = 4                               -- equip slot / row type of the costume
   VRFW_Outfit.P_LIST_TABS = 363718978                -- list param: costume tab (retail flag6)
-  VRFW_Outfit.P_HAS = 2947612279
-  VRFW_Outfit.P_GET = 3522198769
-  VRFW_Outfit.P_DEL = 3363400568
-  VRFW_Outfit.P_SET = 3860611758
   VRFW_Outfit.CARD_LOOK = @crc:CMND_VRFW_CARD_LOOK@   -- (hdl) -> uniform, state, switch bit, label text id
   VRFW_Outfit.TEXT_LOOK_ON = @crc:vrfw_card_look_on@   -- menu_text "{label}: Activada"
   VRFW_Outfit.TEXT_LOOK_OFF = @crc:vrfw_card_look_off@ -- menu_text "{label}: Desactivada"
   VRFW_Outfit.TEXT_LOOK_NAME = @crc:vrfw_card_look_name@ -- menu_text: the label of a rule without one
   VRFW_Outfit.ATTR_SET = 1525180681                  -- (hdl, attribute bit, set)
-  VRFW_Outfit.SOUND = 1917805374                     -- (sound)
+  VRFW_Outfit.SOUND = @crc:CMND_SND_PLAY_SE@                     -- (sound)
   VRFW_Outfit.SOUND_ON = 4235359837                  -- sy0010
   VRFW_Outfit.SOUND_OFF = 2339718859                 -- sy0011
   VRFW_Outfit.SOUND_REFUSED = 2086672038             -- sy0003
   VRFW_Outfit.FN_EYE = 1141890006                    -- the eye-toggle key (CMD_FUNC4)
   VRFW_Outfit.FOCUSED = 2603265800                   -- (layer) -> focused instance
-  VRFW_Outfit.CHANGE_GROUP = 2792424727              -- CMND_ON_CHANGE_LAYER_GROUP (group)
+  VRFW_Outfit.CHANGE_GROUP = @crc:CMND_ON_CHANGE_LAYER_GROUP@              -- (group)
   VRFW_Outfit.G_LIST = 530161788                     -- layer group equip_menu_list
   VRFW_Outfit.L_STATUS = 2917320188                  -- soccer11_05_equip_status_base (the 3D preview)
   VRFW_Outfit.SET_COUNT = 3252599449                 -- (layer, instance count)
-  VRFW_Outfit.SET_VISIBLE = 711242136                -- (layer, instance, visible)
+  VRFW_Outfit.SET_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@                -- (layer, instance, visible)
   VRFW_Outfit.SET_BONE = 2158717427                  -- (layer, bone, visible, instance)
   VRFW_Outfit.SET_FONT = 2333948100                  -- (layer, instance, text name, font style)
   VRFW_Outfit.SET_SKIN = 558735651                   -- (layer, texture file, sprite, slot, 0, instance)
-  VRFW_Outfit.SET_MESH = 3405944500                  -- (layer, mesh, visible, instance)
+  VRFW_Outfit.SET_MESH = @crc:CMND_SET_MESH_VISIBLE@                  -- (layer, mesh, visible, instance)
   VRFW_Outfit.P_FLAG5 = 2029825652                   -- list param: flag5
   VRFW_Outfit.P_CHARA = 1038144478                   -- the player the opener passes (read by the chara card)
   VRFW_Outfit.ROW_INSTANCES = 5                      -- instances of the row layer
@@ -113,8 +109,8 @@ do
     if type(VRFW_Outfit.want) == "number" then
       return VRFW_Outfit.want
     end
-    if funcLuaCommand(VRFW_Outfit.P_HAS, VRFW_Outfit.P_CHARA) then
-      return funcLuaCommand(VRFW_Outfit.P_GET, VRFW_Outfit.P_CHARA) or 0
+    if VRFW_Param.Has(VRFW_Outfit.P_CHARA) then
+      return VRFW_Param.Get(VRFW_Outfit.P_CHARA) or 0
     end
     return type(n) == "number" and n or 0
   end
@@ -199,10 +195,10 @@ do
 
   -- the list group's parameters (delete first: a second call never stacks them)
   function VRFW_Outfit.ListParams()
-    funcLuaCommand(VRFW_Outfit.P_DEL, VRFW_Outfit.P_FLAG5)
-    funcLuaCommand(VRFW_Outfit.P_SET, VRFW_Outfit.P_FLAG5, 0, flag5)
-    funcLuaCommand(VRFW_Outfit.P_DEL, VRFW_Outfit.P_LIST_TABS)
-    funcLuaCommand(VRFW_Outfit.P_SET, VRFW_Outfit.P_LIST_TABS, 0, flag6 or VRFW_Outfit.on)
+    VRFW_Param.Clear(VRFW_Outfit.P_FLAG5)
+    VRFW_Param.Set(VRFW_Outfit.P_FLAG5, flag5, "plain")
+    VRFW_Param.Clear(VRFW_Outfit.P_LIST_TABS)
+    VRFW_Param.Set(VRFW_Outfit.P_LIST_TABS, flag6 or VRFW_Outfit.on, "plain")
   end
 
   -- bones of a row instance for the type it shows now

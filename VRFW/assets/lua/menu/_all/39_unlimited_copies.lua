@@ -21,14 +21,14 @@
 --                                            (handleOf(item) = its handle on the player's board, or nil)
 if VRFW_Copies == nil then
   local M = {
-    RULES = 2374283232,        -- CMND_VRFW_UNLIMITED_COPIES_RULES ([item]) -> { flat rule, … }
-    SLOT = 1763633601,         -- CMND_VRFW_UNLIMITED_COPIES_SLOT () -> 1 / -1 / -2
-    CAP = 868327209,           -- CMND_VRFW_UNLIMITED_COPIES_CAP (invHdl, item, num, target) -> status, before, after
-    ITEM_NUM = 2011560392,     -- CMND_GET_ITEM_NUM (item) = the stock
-    CLEAR_GET = 4034518619,    -- CMND_GET_CHRONICLE_CLEAR_STATUS (statusFlagIndex, difficulty)
-    ADD = 1897915498,          -- CMND_ADD_ITEM_ONLY (item, count, window) -> the stack's handle
-    DEL = 425598937,           -- CMND_DELETE_ITEM (item, count)
-    LOG = 3661580131,          -- CMND_EVT_LOG
+    RULES = VRFW_Cmd.VRFW_UNLIMITED_COPIES_RULES,        -- CMND_VRFW_UNLIMITED_COPIES_RULES ([item]) -> { flat rule, … }
+    SLOT = VRFW_Cmd.VRFW_UNLIMITED_COPIES_SLOT,         -- CMND_VRFW_UNLIMITED_COPIES_SLOT () -> 1 / -1 / -2
+    CAP = VRFW_Cmd.VRFW_UNLIMITED_COPIES_CAP,           -- CMND_VRFW_UNLIMITED_COPIES_CAP (invHdl, item, num, target) -> status, before, after
+    ITEM_NUM = VRFW_Cmd.GET_ITEM_NUM,     -- CMND_GET_ITEM_NUM (item) = the stock
+    CLEAR_GET = VRFW_Cmd.GET_CHRONICLE_CLEAR_STATUS,    -- CMND_GET_CHRONICLE_CLEAR_STATUS (statusFlagIndex, difficulty)
+    ADD = VRFW_Cmd.ADD_ITEM_ONLY,          -- CMND_ADD_ITEM_ONLY (item, count, window) -> the stack's handle
+    DEL = VRFW_Cmd.DELETE_ITEM,           -- CMND_DELETE_ITEM (item, count)
+    LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
     rules = {},                -- item -> its rules (static per VM)
     all = nil,                 -- every declared rule (static per VM)
     state = {},                -- item -> unlimited now (until Reset)
@@ -36,10 +36,7 @@ if VRFW_Copies == nil then
   }
   VRFW_Copies = M
 
-  local function u32(v)
-    v = tonumber(v) or 0
-    return math.floor(v) % 4294967296
-  end
+  local function u32(v) return VRFW_Id.u32(v) end
 
   function M.Log(...)
     pcall(funcLuaCommand, M.LOG, "unlimited_copies", ...)
@@ -201,7 +198,7 @@ if VRFW_Copies == nil then
     funcLuaMenuCommand(2158717427, layer, 442049775 --[[_pos_equip01]], false, inst)
     funcLuaMenuCommand(2158717427, layer, 3426045766 --[[_pos_have01]], false, inst)
     for _, m in ipairs(M.STOCK_MESHES) do
-      pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, m, false, inst)
+      pcall(funcLuaMenuCommand, VRFW_Cmd.SET_MESH_VISIBLE, layer, m, false, inst)
     end
     funcLuaMenuCommand(1233047821 --[[number visible]], layer, inst, 3974820126 --[[num_equip01]], false)
     funcLuaMenuCommand(1233047821 --[[number visible]], layer, inst, 3334923667 --[[num_have01]], false)

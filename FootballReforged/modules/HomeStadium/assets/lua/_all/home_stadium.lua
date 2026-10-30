@@ -7,12 +7,12 @@ HomeStadium = type(HomeStadium) == "table" and HomeStadium or {}
 do
   local H = HomeStadium
   H.CMD = {
-    LIST = 1347405536,          -- CMND_HOMESTADIUM_LIST () -> { { map, item }, … }
-    GET = 2069469516,           -- CMND_HOMESTADIUM_GET (set) -> map
-    SET = 1618383584,           -- CMND_HOMESTADIUM_SET (set, map) -> ok
-    ITEM_NUM = 2011560392,      -- CMND_GET_ITEM_NUM (item) -> count (a key item: 1 while its condition holds)
-    MAP_NAME = 3763041341,      -- CMND_GET_MAP_NAME (map) -> name
-    LOG = 3661580131,           -- CMND_EVT_LOG
+    LIST = VRFW_Cmd.HOMESTADIUM_LIST,          -- CMND_HOMESTADIUM_LIST () -> { { map, item }, … }
+    GET = VRFW_Cmd.HOMESTADIUM_GET,           -- CMND_HOMESTADIUM_GET (set) -> map
+    SET = VRFW_Cmd.HOMESTADIUM_SET,           -- CMND_HOMESTADIUM_SET (set, map) -> ok
+    ITEM_NUM = VRFW_Cmd.GET_ITEM_NUM,      -- CMND_GET_ITEM_NUM (item) -> count (a key item: 1 while its condition holds)
+    MAP_NAME = VRFW_Cmd.GET_MAP_NAME,      -- CMND_GET_MAP_NAME (map) -> name
+    LOG = VRFW_Cmd.EVT_LOG,           -- CMND_EVT_LOG
   }
 
   function H.log(...)

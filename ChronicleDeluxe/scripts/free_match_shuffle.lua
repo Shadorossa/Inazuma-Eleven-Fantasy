@@ -16,16 +16,8 @@ ChronicleDeluxe.FreeMatchShuffle = ChronicleDeluxe.FreeMatchShuffle or {}
 local FmShuffle = ChronicleDeluxe.FreeMatchShuffle
 
 local POS_GK, POS_FW, POS_MF, POS_DF = 1, 2, 3, 4
-local TWO32 = 4294967296
-
-local function u32(v)
-  if type(v) ~= "number" or v ~= v then return 0 end
-  return math.floor(v) % TWO32
-end
-
-local function hex(v)
-  return string.format("0x%08X", u32(v))
-end
+local Id = require "VRFW/lib/ids"
+local u32, hex = Id.u32, Id.hex
 
 -- formation_config placement positionId -> position class
 local function placement_class(position_id)
@@ -55,8 +47,8 @@ local DEALS = 0
 local TRIES, MAX_TRIES = 0, 3
 local WARNED = {}         -- team key -> the last reason it was not dealt (logged once)
 
-local function info(...) VRFW.log("ChronicleDeluxe free_match_shuffle:", ...) end
-local function warn(...) VRFW.warn("ChronicleDeluxe free_match_shuffle:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("ChronicleDeluxe free_match_shuffle")
 
 local function rd(ty, at)
   if type(at) ~= "number" or at < 0x10000 then return nil end

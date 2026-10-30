@@ -1,0 +1,28 @@
+# «Huracán» (The Hurricane, whs01120 and whs01120_or, same cut-in; wind shot of two players, cut-in ev60_01120): while
+# the ball flies to the goal after the cut-in it keeps the look of the cut-in's last shot (c0500, the ball shot low and
+# almost level): the lacy cyan-white wind beam streaming ~20 m back from it with its wind sheaths, the ice block round
+# the ball and the ice grains whirling along the beam, and the wind rings it throws back one after another, instead of
+# the plain wind special-shot aura (ega0075b).
+# The object is ev6112hu00 (effect/event/ev60/ev6112hu00/), built by research/scripts/the_hurricane_ball_fx.py from
+# the cut-in's effect object ev60011200: c0500 held at frame 450 from the aura's first frame, ball at the origin flying
+# +Z along the beam, x1; the beam, sheaths and grains come out of the kick point as the ball flies and fade out at
+# their far end; a wind ring leaves the ball every 8 frames, growing and fading as in the cut-in (its radius eased
+# under the flight's height). docs/game/media/the-hurricane-ball-fx.md.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\the_hurricane_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "the_hurricane"
+from = "ega0075b"
+object = "effect/event/ev60/ev6112hu00/ev6112hu00.objbin"
+
+[[shot_aura]]
+name = "the_hurricane"
+when = { techniques = ["whs01120", "whs01120_or"] }
+aura = "the_hurricane"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

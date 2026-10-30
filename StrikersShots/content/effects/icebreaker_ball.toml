@@ -1,0 +1,40 @@
+# «Lanza gélida» (Icebreaker, whs03360 and whs03360_or, same cut-in; wind shot of two players, cut-in ev60_03360): the
+# end of the cut-in's last shot (c0500, frame 546: the ball at the tip of the beam). Two effects:
+# * icebreaker (object ev6336ib00, `aura`, on the distance clock): the cut-in's blue beam at one width (1.44 m) and
+#   its red spirals running along all of it, from the ball back to the kick point (one whole turn of each spiral
+#   repeated, turning about the flight as in the cut-in), the spirals narrowing onto the ball at the front; laid in
+#   copies that meet without seams, never stretched, crossed so the beam reads from the touchline; revealed as the
+#   ball moves away, fading in over its first 3 m from the kick point, x1, instead of the plain wind special-shot aura
+#   (ega0075b);
+# * icebreaker_root (object ev6336ir00, `ground_effect`): the beam's root flare left at the kick point, facing the
+#   camera, at the flight's height.
+# Both built by research/scripts/icebreaker_ball_fx.py from the cut-in's effect object ev60033600. Left out: the
+# backdrop, ice trees and shards, the snowflake, the kick impact rings, the ball's ice aura and shell (gone by the end
+# of the shot), the flat camera-facing discs and camera cards.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Flight: content\techniques\icebreaker_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "icebreaker"
+from = "ega0075b"
+object = "effect/event/ev60/ev6336ib00/ev6336ib00.objbin"
+
+[[effect]]
+name = "icebreaker_root"
+from = "ega0021"
+object = "effect/event/ev60/ev6336ir00/ev6336ir00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "icebreaker"
+when = { techniques = ["whs03360", "whs03360_or"] }
+aura = "icebreaker"
+like = "ega0075b"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the root flare stays where the shot was struck (docs/framework/types/effect.md «Ground effect»)
+ground_effect = { effect = "icebreaker_root" }

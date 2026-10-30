@@ -35,7 +35,7 @@ if BetterUI.PageKeys == nil then
     GAP_L = 40,                  -- Q: its left edge this far left of the first dot's
     GAP_R = 40,                  -- E: its left edge this far right of the last dot's (symmetric: the row stays centred)
     RAISE = 8,                   -- the glyphs this much higher than the dots
-    C = {IS_OPEN = 2640875187, VIS = 711242136, POS = 1389957207},
+    C = {IS_OPEN = VRFW_Cmd.IS_OPEN_LAYER, VIS = VRFW_Cmd.SET_LAYER_VISIBLE, POS = VRFW_Cmd.SET_LAYER_LOCAL_POS},
     drawn = nil,
   }
   BetterUI.PageKeys = K

@@ -13,15 +13,33 @@
 # 300_extra_time_telop.lua and assets\lua\menu\_all\78_extra_time_half.lua.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
+name = "vrfw_soccer00_01"
+size = [100, 28]
+lang = ["", "en", "es", "fr", "de", "it", "pt", "zh_hans", "zh_hant"]
+
+[[texture]]
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
+name = "vrfw_soccer05_02"
+size = [1544, 64]
+lang = ["", "en", "es", "fr", "de", "it", "pt", "zh_hans", "zh_hant"]
+
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/es/gtxt_timetelop_vrfw_reg_end.png"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/es/gtxt_timetelop_vrfw_et1_end.png"
 lang = "es"
 
@@ -37,33 +55,48 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_es", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_es"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/es/gtxt_half_vrfw_et1.png"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/es/gtxt_half_vrfw_et2.png"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/en/gtxt_timetelop_vrfw_reg_end.png"
 lang = "en"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/en/gtxt_timetelop_vrfw_et1_end.png"
 lang = "en"
 
@@ -79,33 +112,48 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_en", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_en"
 lang = "en"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/en/gtxt_half_vrfw_et1.png"
 lang = "en"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/en/gtxt_half_vrfw_et2.png"
 lang = "en"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/fr/gtxt_timetelop_vrfw_reg_end.png"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/fr/gtxt_timetelop_vrfw_et1_end.png"
 lang = "fr"
 
@@ -121,33 +169,48 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_fr", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_fr"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/fr/gtxt_half_vrfw_et1.png"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/fr/gtxt_half_vrfw_et2.png"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/de/gtxt_timetelop_vrfw_reg_end.png"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/de/gtxt_timetelop_vrfw_et1_end.png"
 lang = "de"
 
@@ -163,33 +226,48 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_de", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_de"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/de/gtxt_half_vrfw_et1.png"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/de/gtxt_half_vrfw_et2.png"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/it/gtxt_timetelop_vrfw_reg_end.png"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/it/gtxt_timetelop_vrfw_et1_end.png"
 lang = "it"
 
@@ -205,33 +283,48 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_it", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_it"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/it/gtxt_half_vrfw_et1.png"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/it/gtxt_half_vrfw_et2.png"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/pt/gtxt_timetelop_vrfw_reg_end.png"
 lang = "pt"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/pt/gtxt_timetelop_vrfw_et1_end.png"
 lang = "pt"
 
@@ -247,33 +340,48 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_pt", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_pt"
 lang = "pt"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/pt/gtxt_half_vrfw_et1.png"
 lang = "pt"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/pt/gtxt_half_vrfw_et2.png"
 lang = "pt"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/ja/gtxt_timetelop_vrfw_reg_end.png"
 lang = ""
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/ja/gtxt_timetelop_vrfw_et1_end.png"
 lang = ""
 
@@ -289,33 +397,48 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_ja", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_ja"
 lang = ""
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/ja/gtxt_half_vrfw_et1.png"
 lang = ""
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/ja/gtxt_half_vrfw_et2.png"
 lang = ""
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/zh_hans/gtxt_timetelop_vrfw_reg_end.png"
 lang = "zh_hans"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/zh_hans/gtxt_timetelop_vrfw_et1_end.png"
 lang = "zh_hans"
 
@@ -331,33 +454,48 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_zh_hans", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_zh_hans"
 lang = "zh_hans"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/zh_hans/gtxt_half_vrfw_et1.png"
 lang = "zh_hans"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/zh_hans/gtxt_half_vrfw_et2.png"
 lang = "zh_hans"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_reg_end"
+texture = "vrfw_soccer05_02"
+x = 1032
+y = 0
 png = "extra_time/zh_hant/gtxt_timetelop_vrfw_reg_end.png"
 lang = "zh_hant"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_et1_end"
+texture = "vrfw_soccer05_02"
+x = 0
+y = 0
 png = "extra_time/zh_hant/gtxt_timetelop_vrfw_et1_end.png"
 lang = "zh_hant"
 
@@ -373,20 +511,29 @@ canvas = [512, 64]
 ops = [{ op = "paste", image = "full_end_text_zh_hant", centre = [256, 32] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
 name = "gtxt_timetelop_vrfw_full_end"
+texture = "vrfw_soccer05_02"
+x = 516
+y = 0
 size = [512, 64]
 recipe = "full_end_zh_hant"
 lang = "zh_hant"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et1"
+texture = "vrfw_soccer00_01"
+x = 0
+y = 0
 png = "extra_time/zh_hant/gtxt_half_vrfw_et1.png"
 lang = "zh_hant"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
 name = "gtxt_half_vrfw_et2"
+texture = "vrfw_soccer00_01"
+x = 52
+y = 0
 png = "extra_time/zh_hant/gtxt_half_vrfw_et2.png"
 lang = "zh_hant"

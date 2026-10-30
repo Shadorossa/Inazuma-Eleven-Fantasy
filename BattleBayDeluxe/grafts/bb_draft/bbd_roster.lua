@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_draft, the «Plantilla» viewer of the Campaña grid (enjoy_team_select_menu_campaign; Battle Bay
+-- BattleBayDeluxe bb_draft, the «Plantilla» viewer of the Campaña grid (enjoy_team_select_menu_campaign; Battle Bay
 -- Deluxe 1.5.83; docs/game/modes/estadio-bb.md §14.18 and §14.21). Runs after bbd_campaign.lua in the same script and
 -- uses the Draft's anchor, cursor and card helpers (BBCR_DRAFT_*). Laid out like the team dock's «Formación»:
 --   * Y on a tile of the grid (the grid layer's retail CMD_FUNC3 row, function 756653130: no retail handler in the
@@ -45,6 +45,7 @@
 -- Refused (the retail NG sound): an empty tile, the Draft tile, a team without readable members, while a window,
 -- the difficulty window, the Torneo's grid flow, a page turn or another player page is busy. Globals only
 -- (BBD_ROSTER*); at chunk load only the footer prompt's declaration (pure Lua).
+BattleBayDeluxe = type(BattleBayDeluxe) == "table" and BattleBayDeluxe or {}
 BBD_ROSTER = {
   FN_GRID_Y = 756653130 --[[the grid's CMD_FUNC3 function (enjoy_team_select_menu_setting)]],
   FN_Y = @crc:evt_bbd_roster_y@,
@@ -83,9 +84,9 @@ BBD_ROSTER = {
   -- row's equipment and his team's kit
   MEMBER_TEAM = @crc:VRFW.plate_team@, MEMBER_SLOT = @crc:VRFW.plate_slot@,
   PLATE_PAGE_PREV = 567813453, PLATE_PAGE_NEXT = 2019940505, PLATE_PAGE_UPDATE = 3297841487,
-  CHARA_INFO = 4060384944 --[[CMND_GET_CHARA_INFO (param, 8) = chara_param rarity]],
+  CHARA_INFO = @crc:CMND_GET_CHARA_INFO@ --[[CMND_GET_CHARA_INFO (param, 8) = chara_param rarity]],
   RARITY_DEFAULT = 4, RARITY_MAX = 7,
-  FORM_INFO = 2649030357 --[[CMND_GET_SOCCER_FORMATION_INFO: (7, formation) -> ok, name text id]], TEXT_OF = 297699480,
+  FORM_INFO = @crc:CMND_GET_SOCCER_FORMATION_INFO@ --[[CMND_GET_SOCCER_FORMATION_INFO: (7, formation) -> ok, name text id]], TEXT_OF = 297699480,
   CARD_CMD = 2339877830 --[[the retail card draw]],
   SUB_WINDOW = 2941513916 --[[sub_window_group]],
   CLICK = 218912913 --[[CMD_EVT_MOUSE_LEFT]],
@@ -145,43 +146,45 @@ BBD_ROSTER = {
   prio = nil, title = nil, opened = false, cards_open = false, ready = {},
 }
 
+-- the logger (VRFW_Log), made at the first line: the framework's menu files load after the graft blocks
 function BBD_ROSTER_Log(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "bb_chronicle_teams roster", ...)
+  BBD_ROSTER.logger = BBD_ROSTER.logger or VRFW_Log.New("BattleBayDeluxe.roster")
+  BBD_ROSTER.logger(...)
 end
 
 local function ng()
-  funcLuaCommand(1917805374, BBD_ROSTER.SE_NG)
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, BBD_ROSTER.SE_NG)
 end
 
 local function param_set(k, v)
-  if funcLuaCommand(2947612279 --[[param exists]], k) == true then
-    funcLuaCommand(3363400568 --[[param delete]], k)
+  if VRFW_Param.Has(k) then
+    VRFW_Param.Clear(k)
   end
-  funcLuaCommand(3860611758 --[[param set]], k, 0, v, 1)
+  VRFW_Param.Set(k, v)
 end
 
 local function params_clear()
   local R = BBD_ROSTER
   for _, k in ipairs({R.P_PARAM, R.P_LEVEL, R.P_RARITY}) do
-    if funcLuaCommand(2947612279 --[[param exists]], k) == true then
-      funcLuaCommand(3363400568 --[[param delete]], k)
+    if VRFW_Param.Has(k) then
+      VRFW_Param.Clear(k)
     end
   end
 end
 
 local function param_clear(k)
-  if funcLuaCommand(2947612279 --[[param exists]], k) == true then
-    funcLuaCommand(3363400568 --[[param delete]], k)
+  if VRFW_Param.Has(k) then
+    VRFW_Param.Clear(k)
   end
 end
 
 local function plate_exists()
-  return funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], BBD_ROSTER.PLATE) == true
+  return funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, BBD_ROSTER.PLATE) == true
 end
 
 local function page_up()
   local R = BBD_ROSTER
-  return funcLuaCommand(3693934564 --[[CMND_IS_OPEN_MENU_OBJECT]], R.PLATE, R.PLATE_PAGE) == true
+  return funcLuaCommand(@crc:CMND_IS_OPEN_MENU_OBJECT@, R.PLATE, R.PLATE_PAGE) == true
 end
 
 local function closing(why)
@@ -217,7 +220,7 @@ end
 -- a frame node's pose in the frame's own space (x right, y up): the live pose, else the layout's bind pose
 local function frame_pose(node)
   local R = BBD_ROSTER
-  local x, y, _, ok = funcLuaMenuCommand(2373227714 --[[CMND_GET_MESH_POSE]], R.L_FRAME, 0, node)
+  local x, y, _, ok = funcLuaMenuCommand(@crc:CMND_GET_MESH_POSE@, R.L_FRAME, 0, node)
   if ok ~= false and type(x) == "number" and type(y) == "number" then
     return x, y
   end
@@ -402,8 +405,8 @@ local function empty_on(layer, i)
 end
 
 local function place(layer, i, x, y, scale, prio)
-  funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], layer, i, prio, true)
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], layer, x, -y, 0, i)
+  funcLuaMenuCommand(@crc:CMND_SET_DRAW_PRIORITY@, layer, i, prio, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, layer, x, -y, 0, i)
   funcLuaMenuCommand(3362798188, layer, i, scale, scale)
 end
 
@@ -412,14 +415,14 @@ end
 local function member_card(layer, i, m)
   local B, R = BBCR_DRAFT, BBD_ROSTER
   local sz = m.big and 1 or 2
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, layer, i, true)
   for _, mesh in ipairs(B.M_DEF) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, mesh, false, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, mesh, false, i)
   end
   for k = sz, #B.M_FACE, 2 do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_FACE[k], true, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_FACE[k], true, i)
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_BASE[sz], true, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_BASE[sz], true, i)
   funcLuaMenuCommand(R.CARD_CMD, layer, i, m.param, m.big == true, m.coach == true, m.kind or 0, 0, m.level, false,
                      false, 4, 0)
   if type(BetterUI) == "table" and type(BetterUI.CardHideLevel) == "function" then
@@ -430,18 +433,18 @@ local function member_card(layer, i, m)
     pcall(BetterUI.CardHideName, funcLuaMenuCommand, layer, i)
   end
   for _, mesh in ipairs(B.M_TAG) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, mesh, false, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, mesh, false, i)
   end
   for _, mesh in ipairs(B.M_FOCUS) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, mesh, false, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, mesh, false, i)
   end
   local other = 3 - sz
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_BASE[other], false, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_BASE[other], false, i)
   -- a card draw may hook the cursor labels again: only the focused card keeps the cursor
   local shown = R.shown
   if shown == nil or shown[1] ~= layer or shown[2] ~= i then
-    funcLuaMenuCommand(1774843228 --[[attach locator trace]], layer, i, B.CARD_CURSOR, false)
-    funcLuaMenuCommand(1774843228 --[[attach locator trace]], layer, i, B.CARD_CURSOR2, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[attach locator trace]], layer, i, B.CARD_CURSOR, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[attach locator trace]], layer, i, B.CARD_CURSOR2, false)
   end
 end
 
@@ -451,16 +454,16 @@ local function blank_card(layer, i, slot)
   local R = BBD_ROSTER
   local big = slot == R.STAFF_SLOT
   local manager = slot >= R.BENCH_END and not big
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, true)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, R.M_BLANK_LARGE, big, i)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, R.M_BLANK_SMALL, not big, i)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, layer, i, true)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, R.M_BLANK_LARGE, big, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, R.M_BLANK_SMALL, not big, i)
   for _, mesh in ipairs(R.M_BLANK_OFF) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, mesh, false, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, mesh, false, i)
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, R.M_BLANK_MARK, big, i)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, R.M_BLANK_MARK_SMALL, manager, i)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, R.M_BLANK_CHARA, big, i)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, R.M_BLANK_CHARA_SMALL, false, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, R.M_BLANK_MARK, big, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, R.M_BLANK_MARK_SMALL, manager, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, R.M_BLANK_CHARA, big, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, R.M_BLANK_CHARA_SMALL, false, i)
   if big then
     funcLuaMenuCommand(558735651, layer, R.TEX_BLANK, R.SPR_MARK_COACH, R.MAT_MARK, 0, i)
   elseif manager then
@@ -484,14 +487,14 @@ function BBD_ROSTER_DrawCard(layer, i)
     blank_card(layer, i, e.slot)
     place(layer, i, e.x, e.y, e.slot == R.STAFF_SLOT and R.COACH_SCALE or R.BENCH_SCALE, R.PRIO_BLANK)
   else
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, layer, i, false)
   end
 end
 
 local function each_instance(fn)
   local R = BBD_ROSTER
   for _, layer in ipairs({R.L_CARD, R.L_BLANK}) do
-    local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], layer)
+    local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, layer)
     if type(n) ~= "number" or n <= 0 then
       n = R.CARD_COUNT
     end
@@ -509,12 +512,12 @@ end
 local function cards_open(show)
   local R = BBD_ROSTER
   if show and not R.cards_open then
-    funcLuaMenuCommand(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], R.L_CARD)
-    funcLuaMenuCommand(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], R.L_BLANK)
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER_ARRAY@, R.L_CARD)
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER_ARRAY@, R.L_BLANK)
     R.cards_open = true
   elseif not show and R.cards_open then
-    pcall(funcLuaMenuCommand, 2323943931 --[[CMND_CLOSE_LAYER_ARRAY]], R.L_CARD)
-    pcall(funcLuaMenuCommand, 2323943931 --[[CMND_CLOSE_LAYER_ARRAY]], R.L_BLANK)
+    pcall(funcLuaMenuCommand, @crc:CMND_CLOSE_LAYER_ARRAY@, R.L_CARD)
+    pcall(funcLuaMenuCommand, @crc:CMND_CLOSE_LAYER_ARRAY@, R.L_BLANK)
     R.cards_open = false
     R.ready = {}
   end
@@ -531,33 +534,33 @@ function BBD_ROSTER_Cursor(show)
   if R.shown ~= nil then
     local l, i = R.shown[1], R.shown[2]
     -- both labels off (the cursor stayed on a card whose other label was hooked)
-    funcLuaMenuCommand(1774843228 --[[attach locator trace]], l, i, B.CARD_CURSOR, false)
-    funcLuaMenuCommand(1774843228 --[[attach locator trace]], l, i, B.CARD_CURSOR2, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[attach locator trace]], l, i, B.CARD_CURSOR, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[attach locator trace]], l, i, B.CARD_CURSOR2, false)
     for _, m in ipairs(B.M_FOCUS) do
-      funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], l, m, false, i)
+      funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, l, m, false, i)
     end
     R.shown = nil
   end
   if not show then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CURSOR, 0, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CURSOR, 0, false)
     return
   end
   local m = R.members[R.sel]
   if m == nil or not R.ready[m.layer .. ":" .. m.i] then
     return
   end
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CURSOR, 0, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CURSOR, 0, true)
   if B.curMoved then
-    funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], B.CURSOR, 0, 0, 0, 0)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, B.CURSOR, 0, 0, 0, 0)
     B.curMoved = false
   end
   local label = cursor_label(m.big)
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], m.layer)
-  funcLuaMenuCommand(1774843228 --[[attach locator trace]], m.layer, m.i, label, true)
-  funcLuaMenuCommand(381797568 --[[cursor locator]], m.layer, label, m.i, type(n) == "number" and n or 1)
+  local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, m.layer)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[attach locator trace]], m.layer, m.i, label, true)
+  funcLuaMenuCommand(@crc:CMND_SET_CURSOR_LOCATOR@ --[[cursor locator]], m.layer, label, m.i, type(n) == "number" and n or 1)
   local sz = m.big and 1 or 2
   for j = 1, 2 do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], m.layer, B.M_FOCUS[j], j == sz, m.i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, m.layer, B.M_FOCUS[j], j == sz, m.i)
   end
   R.shown = {m.layer, m.i, m.big}
 end
@@ -586,25 +589,25 @@ function BBD_ROSTER_LookLayer(layer)
   local R = BBD_ROSTER
   local base = R.prio or R.PRIO_LOOK
   if layer == R.L_BG then
-    funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], layer, 0, base, true)
-    funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], layer, R.BG_X, -R.BG_Y, 0, 0)
+    funcLuaMenuCommand(@crc:CMND_SET_DRAW_PRIORITY@, layer, 0, base, true)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, layer, R.BG_X, -R.BG_Y, 0, 0)
   elseif layer == R.L_FRAME then
-    funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], layer, 0, base + 1, true)
-    funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], layer, R.FRAME_X, -R.FRAME_Y, 0, 0)
+    funcLuaMenuCommand(@crc:CMND_SET_DRAW_PRIORITY@, layer, 0, base + 1, true)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, layer, R.FRAME_X, -R.FRAME_Y, 0, 0)
   elseif layer == R.L_TITLE then
-    funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], layer, 0, base + 2, true)
-    funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], layer, R.TITLE_X, -R.TITLE_Y, 0, 0)
+    funcLuaMenuCommand(@crc:CMND_SET_DRAW_PRIORITY@, layer, 0, base + 2, true)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, layer, R.TITLE_X, -R.TITLE_Y, 0, 0)
     for _, mesh in ipairs(R.M_TITLE_OFF) do
-      funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, mesh, false, 0)
+      funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, mesh, false, 0)
     end
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING]], layer, R.T_TITLE, R.title or "", 0)
+    funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, layer, R.T_TITLE, R.title or "", 0)
     -- the bar never holds the cursor or the focus (the green arrow follows the cards, as on the retail dock)
-    funcLuaMenuCommand(1774843228 --[[attach locator trace]], layer, 0, R.TITLE_CURSOR, false)
-    funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS]], layer, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[attach locator trace]], layer, 0, R.TITLE_CURSOR, false)
+    funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, layer, false)
   else
     return
   end
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, 0, R.state ~= nil and R.state ~= "closing")
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, layer, 0, R.state ~= nil and R.state ~= "closing")
 end
 
 -- the picker hidden and the formation screen's objects opened (show), or closed (not show; the picker comes back
@@ -615,7 +618,7 @@ function BBD_ROSTER_Look(show)
   if not show then
     if R.opened then
       for _, layer in ipairs(looks) do
-        pcall(funcLuaMenuCommand, 1273612389 --[[CMND_CLOSE_LAYER]], layer)
+        pcall(funcLuaMenuCommand, @crc:CMND_CLOSE_LAYER@, layer)
       end
       R.opened = false
     end
@@ -634,18 +637,18 @@ function BBD_ROSTER_Look(show)
   end
   -- the team panel (vs01_44_p1) holds the picker's own 3D character: closed (not only hidden) so its model component
   -- does not drive the shared menu camera under the player page's model; opened again by BBD_ROSTER_Finish
-  if not R.panel_closed and funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], B.TEAMINFO, 0) == true then
-    funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], B.TEAMINFO)
+  if not R.panel_closed and funcLuaMenuCommand(@crc:CMND_IS_OPEN_LAYER@, B.TEAMINFO, 0) == true then
+    funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER@, B.TEAMINFO)
     R.panel_closed = true
   end
   if R.prio == nil then
-    local p = funcLuaMenuCommand(1018283794 --[[draw priority]], R.PICKER_BG, 0)
+    local p = funcLuaMenuCommand(@crc:CMND_GET_DRAW_PRIORITY@ --[[draw priority]], R.PICKER_BG, 0)
     R.prio = (type(p) == "number" and p + 1 < R.PRIO_BLANK - 3) and (p + 1) or R.PRIO_LOOK
   end
   R.title = title_text()
   if not R.opened then
     for _, layer in ipairs(looks) do
-      funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], layer)
+      funcLuaMenuCommand(@crc:CMND_OPEN_LAYER@, layer)
     end
     R.opened = true
   end
@@ -660,14 +663,14 @@ function BBD_ROSTER_Probe()
   local parts = {}
   for _, node in ipairs({R.NODE_CC, R.NODE_LU, R.NODE_RU, R.NODE_LD, R.NODE_RD, R.NODE_BENCH[1], R.NODE_BENCH[5],
                          R.NODE_MANAGERS[1], R.NODE_LEADER}) do
-    local x, y, z, ok = funcLuaMenuCommand(2373227714 --[[CMND_GET_MESH_POSE]], R.L_FRAME, 0, node)
+    local x, y, z, ok = funcLuaMenuCommand(@crc:CMND_GET_MESH_POSE@, R.L_FRAME, 0, node)
     parts[#parts + 1] = string.format("%s(%s,%s)", tostring(ok), tostring(x), tostring(y))
   end
   local tx, ty = funcLuaMenuCommand(4002164178 --[[global position]], R.L_TITLE, 0)
   local cx, cy = funcLuaMenuCommand(4002164178 --[[global position]], R.L_CARD, 0)
   BBD_ROSTER_Log("layout probe: frame cc/lu/ru/ld/rd/sub1/sub5/support1/leader " .. table.concat(parts, " ")
     .. " title at " .. tostring(tx) .. "," .. tostring(ty) .. " card 0 at " .. tostring(cx) .. "," .. tostring(cy)
-    .. " formation " .. string.format("0x%08X", R.formation % 4294967296) .. " free places " .. #R.empties)
+    .. " formation " .. VRFW_Id.hex(R.formation) .. " free places " .. #R.empties)
 end
 
 -- the player page's model and the menu camera in the log, once per opening (MODEL_PROBE frames after the page is up)
@@ -675,7 +678,7 @@ function BBD_ROSTER_ModelProbe()
   local R = BBD_ROSTER
   local okc, has, ox, oy, oz = pcall(funcLuaCommand, R.CAM_GET, R.CAM)
   local okp, hp, px, py, pz = pcall(funcLuaCommand, R.CAM_POS, R.CAM)
-  local okm, mx, my, mz = pcall(funcLuaMenuCommand, 499270986 --[[mesh global position]], R.MODEL_LAYER, 0,
+  local okm, mx, my, mz = pcall(funcLuaMenuCommand, @crc:CMND_GET_MESH_GLOBAL_POSITION@ --[[mesh global position]], R.MODEL_LAYER, 0,
     R.MODEL_NODE, R.PLATE)
   BBD_ROSTER_Log("model probe: camera offset " .. tostring(has) .. " " .. tostring(ox) .. "," .. tostring(oy) .. ","
     .. tostring(oz) .. " camera position " .. tostring(hp) .. " " .. tostring(px) .. "," .. tostring(py) .. ","
@@ -694,10 +697,10 @@ end
 function BBD_ROSTER_Busy()
   local B, R = BBCR_DRAFT, BBD_ROSTER
   return B.mode ~= nil or B.pk ~= nil or B.quitCo ~= nil or B.refresh ~= nil or R.refresh ~= nil
-    or (type(BBT_G) == "table" and BBT_G.co ~= nil)
+    or (type(BattleBayDeluxe.TournamentGrid) == "table" and BattleBayDeluxe.TournamentGrid.co ~= nil)
     or (type(VRFW_BBP) == "table" and VRFW_BBP.pend ~= nil)
-    or funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], B.DIFFWIN) == true
-    or funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], R.SUB_WINDOW) == true
+    or funcLuaMenuCommand(@crc:CMND_IS_OPEN_LAYER@, B.DIFFWIN) == true
+    or funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, R.SUB_WINDOW) == true
     or plate_exists()
 end
 
@@ -777,8 +780,8 @@ function BBD_ROSTER_Open()
   R.plate = {at = R.frame, seen = false, param = m.param, asked = nil}
   R.cam_again, R.probe = nil, R.PROBE_FRAMES
   camera_keep()
-  funcLuaCommand(1917805374, R.SE_OPEN)
-  funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS]], B.GRID, false)
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, R.SE_OPEN)
+  funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, B.GRID, false)
   BBD_ROSTER_Look(true)
   BBD_ROSTER_Layout()
   BBCR_DRAFT_Open() -- the Draft's anchor takes the input (its own cards stay hidden outside the Draft)
@@ -793,7 +796,7 @@ function BBD_ROSTER_Open()
   param_set(R.LINEUP_FLAG, 1)
   param_set(R.MEMBER_TEAM, team >= 2147483648 and team - 4294967296 or team) -- the store keeps signed 32-bit numbers
   param_set(R.MEMBER_SLOT, m.slot)
-  funcLuaCommand(433545986 --[[CMND_OPEN_MENU_OBJECT]], R.PLATE)
+  funcLuaCommand(@crc:CMND_OPEN_MENU_OBJECT@, R.PLATE)
   BBD_ROSTER_Log("open: tile", tile, "team", team, "members", #R.members, "free places", #R.empties)
 end
 
@@ -803,7 +806,7 @@ function BBD_ROSTER_Close()
   if R.state == nil or R.state == "closing" then
     return
   end
-  funcLuaCommand(1917805374, R.SE_BACK)
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, R.SE_BACK)
   closing("asked")
   BBD_ROSTER_Cursor(false)
 end
@@ -822,10 +825,10 @@ function BBD_ROSTER_Finish(why)
   BBCR_DRAFT_CloseLayers() -- the Draft's layers closed, the page line back
   BBCR_DRAFT_Unstash()
   if R.panel_closed then
-    funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], B.TEAMINFO) -- the picker's team panel and its character
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER@, B.TEAMINFO) -- the picker's team panel and its character
     R.panel_closed = false
   end
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CURSOR, 0, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CURSOR, 0, true)
   -- the grid back as after the difficulty window (the Draft's own refresh request of that wrapper undone: the
   -- refresh below is this screen's)
   -- the grid's layers were only hidden: its crests stay loaded and are kept by the redraws of the way back (no white
@@ -854,7 +857,7 @@ function BBD_ROSTER_ClosingStep()
   if plate_exists() then
     P.seen = true
     if P.asked == nil or R.frame - P.asked >= R.CLOSE_AGAIN then
-      funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], R.PLATE)
+      funcLuaCommand(@crc:CMND_CLOSE_MENU_OBJECT@, R.PLATE)
       P.asked = R.frame
     end
   elseif P.seen or R.frame - P.at > R.PLATE_WAIT then
@@ -928,7 +931,7 @@ function BBD_ROSTER_Move(dx, dy)
     R.sel = best
     BBD_ROSTER_Cursor(true)
     BBD_ROSTER_Show()
-    funcLuaCommand(1917805374, R.SE_MOVE)
+    funcLuaCommand(@crc:CMND_SND_PLAY_SE@, R.SE_MOVE)
   end
 end
 
@@ -962,7 +965,7 @@ end
 
 function BBD_ROSTER_Mouse()
   local R = BBD_ROSTER
-  local click = funcLuaCommand(4265778440 --[[CMND_CHECK_INPUT]], 1332654303 --[[MENU_CTRL]], R.CLICK) == true
+  local click = funcLuaCommand(@crc:CMND_CHECK_INPUT_CMD@, 1332654303 --[[MENU_CTRL]], R.CLICK) == true
   local edge = click and not R.prev_click
   R.prev_click = click
   if not edge or R.state ~= "view" then
@@ -973,7 +976,7 @@ function BBD_ROSTER_Mouse()
     R.sel = k
     BBD_ROSTER_Cursor(true)
     BBD_ROSTER_Show()
-    funcLuaCommand(1917805374, R.SE_MOVE)
+    funcLuaCommand(@crc:CMND_SND_PLAY_SE@, R.SE_MOVE)
   end
 end
 
@@ -991,7 +994,7 @@ end
 function BBD_ROSTER_Step()
   local R = BBD_ROSTER
   R.frame = R.frame + 1
-  if R.ylock and funcLuaCommand(4265778440 --[[CMND_CHECK_INPUT]], 1332654303 --[[MENU_CTRL]], R.K_FUNC3) ~= true then
+  if R.ylock and funcLuaCommand(@crc:CMND_CHECK_INPUT_CMD@, 1332654303 --[[MENU_CTRL]], R.K_FUNC3) ~= true then
     R.ylock = false
   end
   if R.cam_again ~= nil then
@@ -1086,7 +1089,7 @@ do
       if a1 == B.GRID and R.state == nil and B.mode == nil then
         pcall(function()
           local can = BBD_ROSTER_TileOk()
-          if can ~= R.tile_ok and funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], B.DIFFWIN) ~= true then
+          if can ~= R.tile_ok and funcLuaMenuCommand(@crc:CMND_IS_OPEN_LAYER@, B.DIFFWIN) ~= true then
             UpdateButtonGuide(B.MENU, R.GUIDE_LAYER, false)
           end
         end)
@@ -1121,10 +1124,10 @@ do
       local ok, err = pcall(function()
         if a1 == R.L_CARD then
           BBCR_DRAFT_Name(a1, a2)
-          funcLuaMenuCommand(1774843228 --[[attach locator trace]], a1, a2, BBCR_DRAFT.CARD_CURSOR, false)
-          funcLuaMenuCommand(1774843228 --[[attach locator trace]], a1, a2, BBCR_DRAFT.CARD_CURSOR2, false)
+          funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[attach locator trace]], a1, a2, BBCR_DRAFT.CARD_CURSOR, false)
+          funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[attach locator trace]], a1, a2, BBCR_DRAFT.CARD_CURSOR2, false)
         end
-        funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], a1, a2,
+        funcLuaMenuCommand(@crc:CMND_SET_DRAW_PRIORITY@, a1, a2,
                            a1 == R.L_CARD and R.PRIO_CARDS or R.PRIO_BLANK, true)
       end)
       if not ok then

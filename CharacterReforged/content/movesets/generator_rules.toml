@@ -18,6 +18,10 @@ Sources = ["game", "wiki"]
 VictoryRoadSeries = ["VR", "Ares", "Orion"]
 # special cards (chara_param rarity column, not 0) keep the set they have
 KeepSpecialCards = true
+# a special card with no list of its own in CR's character files (no `[[edit.cards]]` `moves`, no root `moves` of its
+# character) takes the list CR gives its character's base card: research/scripts/cr_movesets_special.py writes
+# content\characters\movesets\special_cards.generated.toml (an explicit list always wins)
+SpecialCardsInheritBase = true
 # learn level = source level × LevelScale. 1.0: the stats curve (config.toml [stats]) keeps Lv 1-99 as the original
 # games' range (Lv 99 values = the games' top) and Lv 100+ as growth past them, so the games' levels stay as they were
 LevelScale = 1.0

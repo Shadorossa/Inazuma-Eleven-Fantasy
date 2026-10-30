@@ -1,0 +1,43 @@
+# «Embate de lobo» (Wolf Strike, whs02700, fire; with the same cut-in «Embate de lobo plateado» / Silver Wolf Strike
+# whs02701, forest, and «Embate de Dragnova» / Dragnova Strike whs02702, void; cut-in ev60_02700): while the ball runs
+# low to the goal it wears the cut-in's last shot (c0300, held at its end, frame 444, from the aura's first frame): the
+# blue / purple wolf vortex turning round it in the cut-in's plane (facing the touchline), its black disc, ball lights
+# and winds, and under it the groove it ploughs into the pitch, coming out of the kick point as the ball passes, fixed
+# on the pitch, never stretched, drawn under the vortex, x1. The crater and smokes at the kick point and the earlier
+# cuts' parts (the wolf's run) stay out.
+# The object is ev6270ws00 (effect/event/ev60/ev6270ws00/), built by research/scripts/wolf_strike_ball_fx.py from
+# ev60027000 (docs/game/media/wolf-strike-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# One aura, one trigger per element: each copies its element's special-shot aura row (like). Flight:
+# content\techniques\wolf_strike_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "wolf_strike"
+from = "ega0075c"
+object = "effect/event/ev60/ev6270ws00/ev6270ws00.objbin"
+
+[[shot_aura]]
+name = "wolf_strike"
+when = { techniques = ["whs02700"] }
+aura = "wolf_strike"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "wolf_strike_forest"
+when = { techniques = ["whs02701"] }
+aura = "wolf_strike"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "wolf_strike_void"
+when = { techniques = ["whs02702"] }
+aura = "wolf_strike"
+like = "ega0075e"
+anchor = "kick"
+drift = 0.75

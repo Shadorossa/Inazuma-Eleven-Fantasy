@@ -1,0 +1,1506 @@
+schema = "BetterEquipment.items/1"
+# Better Equipment › the reviewed per-item data (docs/game/mods/better-equipment-proposal.md §2.4-§2.7, §7): the
+# theme element of the affinity («team» = the element of the boots' team, found in the game files), the passive
+# (one per item, by identity: T theme, N name, D description, U unique, L legendary), the aliases of the true clones,
+# the raised pair of the 3-stat items and the keeper gloves' position. The profiles themselves are generated from
+# rules.toml by research/scripts/better_equipment.py (never listed here).
+
+[[item]]  # Botas de champon con tacos / Champon Spikes
+item = "eq_sh1105601"
+passive = { kind = "tension_on", event = "duel_won", value = 3, why = "U: Champon spikes" }
+
+[[item]]  # Botas de la victoria / Victory Boots
+item = "eq_sh1106001"
+element = "fire"
+
+[[item]]  # Botas de la valentía / Valiance Boots
+item = "eq_sh1106301"
+passive = { kind = "stat_when", stats = ["kick", "technique"], score = "trailing", value = 4, why = "N: de la valentía (valiance)" }
+
+[[item]]  # Botas luz de la luna / Moonlight Boots
+item = "eq_sh1106601"
+element = "void"
+passive = { kind = "element_power", element = "void", value = 4, why = "N: themed on moon (no technique family since families v2)" }
+
+[[item]]  # Zapatillas regias / Regal Shoes
+item = "eq_sh1106701"
+passive = { kind = "family_power", family = "Shields", value = 5, why = "T: themed on king (Shields)" }
+
+[[item]]  # Botas del crepúsculo / Demonic Twilight Boots
+item = "eq_sh1106801"
+element = "void"
+
+[[item]]  # Botas Shinobi / Shinobi Boots
+item = "eq_sh1104401"
+passive = { kind = "recast", move_kind = "dribble", value = -8, why = "N: Shinobi" }
+
+[[item]]  # Botas tortuga / Turtle Boots
+item = "eq_sh1105201"
+element = "mountain"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: tortuga (slow, enduring)" }
+
+[[item]]  # Zapatillas de Aquiles / Achilles Shoes
+item = "eq_sh1104201"
+passive = { kind = "move_speed", value = 3, why = "N: de Aquiles" }
+
+[[item]]  # Botas de héroe / Hero Boots
+item = "eq_sh1104301"
+element = "fire"
+
+[[item]]  # Botas adamantinas / Adamant Boots
+item = "eq_sh1104501"
+element = "mountain"
+passive = { kind = "technique_power", move_kind = "block", value = 4, why = "N: adamantinas" }
+
+[[item]]  # Botas de Pegaso / Pegasus Boots
+item = "eq_sh1104701"
+element = "wind"
+passive = { kind = "family_power", family = "Pegasus", value = 5, why = "T: themed on pegasus (Pegasus)" }
+
+[[item]]  # Tacos para esprintar / Dashing Cleats
+item = "eq_sh1104901"
+passive = { kind = "move_speed", when = "dash", value = 4, why = "N: para esprintar (dashing)" }
+
+[[item]]  # Botas reales / Imperial Boots
+item = "eq_sh1105701"
+passive = { kind = "family_power", family = "Shields", value = 5, why = "T: themed on king (Shields)" }
+
+[[item]]  # Zapatillas de la disciplina / Orderly Shoes
+item = "eq_sh1105901"
+passive = { kind = "engine_passive", effect = "fouls", value = -8, why = "N: de la disciplina (orderly)" }
+
+[[item]]  # Zapatillas de fútbol CHAMP-ON / CHAMP-ON Shoes
+item = "eq_sh1106501"
+passive = { kind = "move_speed", value = 3, why = "D: «serie centrada en la movilidad»" }
+
+[[item]]  # Botas del valiente / Fiery Boots
+item = "eq_sh1102101"
+element = "fire"
+passive = { kind = "stat_when", stats = ["kick", "technique"], score = "trailing", value = 4, why = "N: del valiente" }
+
+[[item]]  # Nuevo modelo CHAMP-ON / New CHAMP-ON Kicks
+item = "eq_sh1102501"
+passive = { kind = "move_speed", when = "ball", value = 4, why = "D: newest CHAMP-ON model" }
+
+[[item]]  # Botas de la suerte / Lucky Boots
+item = "eq_sh1102601"
+passive = { kind = "engine_passive", effect = "drop_rate", value = 5, why = "N: de la suerte (lucky)" }
+
+[[item]]  # Botas desafiantes / Challenger Boots
+item = "eq_sh1102801"
+passive = { kind = "engine_passive", effect = "duel", value = 4, why = "N: desafiantes (challenger)" }
+
+[[item]]  # Botas firmes / Steadfast Boots
+item = "eq_sh1103101"
+element = "mountain"
+
+[[item]]  # Zapatillas de seguridad / Safety Shoes
+item = "eq_sh1103401"
+passive = { kind = "engine_passive", effect = "fouls", value = -8, why = "N: de seguridad (safety)" }
+
+[[item]]  # Botas glaciar / Glacier Boots
+item = "eq_sh1103501"
+element = "mountain"
+passive = { kind = "family_power", family = "NorthernIce", value = 5, why = "T: themed on ice (Northern Ice)" }
+
+[[item]]  # Botas abrasadoras / Scorching Boots
+item = "eq_sh1103601"
+element = "fire"
+passive = { kind = "element_power", element = "fire", value = 4, why = "N: abrasadoras (scorching)" }
+
+[[item]]  # Botas del corcel / Stallion Boots
+item = "eq_sh1103701"
+passive = { kind = "move_speed", value = 3, why = "N: del corcel (stallion)" }
+
+[[item]]  # Botas de EXP / EXP Boots
+item = "eq_sh110000"
+passive = { kind = "match_exp", value = 10, why = "N: «Botas de EXP»" }
+
+[[item]]  # Botas CHAMP-ON / CHAMP-ON Kicks
+item = "eq_sh110002"
+passive = { kind = "move_speed", value = 3, why = "D: «ligero… moverte con facilidad»" }
+
+[[item]]  # Zapatillas de ninja / Ninja Shoes
+item = "eq_sh1100101"
+passive = { kind = "move_speed", when = "dash", value = 4, why = "N: ninja" }
+
+[[item]]  # Botas resistentes / Stalwart Boots
+item = "eq_sh1100201"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: resistentes (stalwart)" }
+
+[[item]]  # Modelo CHAMP-ON / CHAMP-ON Kicks
+item = "eq_sh1100401"
+alias = "eq_sh110002"
+
+[[item]]  # Zapatillas para correr / Running Shoes
+item = "eq_sh1100501"
+passive = { kind = "move_speed", value = 3, why = "N: para correr (running)" }
+
+[[item]]  # Tacos homerun / Homerun Cleats
+item = "eq_sh1100701"
+passive = { kind = "technique_power", move_kind = "long_shoot", value = 4, why = "N: homerun" }
+
+[[item]]  # Botas verdes / Green Boots
+item = "eq_sh1101001"
+element = "forest"
+
+[[item]]  # Zapatillas de aeróbic / Aerobics Boots
+item = "eq_sh1101101"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: aeróbic" }
+
+[[item]]  # Botas de la calle comercial / Arcade Boots
+item = "eq_sh1101501"
+passive = { kind = "match_money", value = 10, why = "U: shopping-street boots" }
+
+[[item]]  # Zapatillas ardilla voladora / Flying Squirrel Shoes
+item = "eq_sh1101701"
+element = "wind"
+
+[[item]]  # Zapatillas del orden / Discipline Shoes
+item = "eq_sh1101801"
+passive = { kind = "engine_passive", effect = "fouls", value = -8, why = "N: del orden (discipline)" }
+
+[[item]]  # Botas Oscuridad Ancestral / Ancient Darkness Boots
+item = "eq_sh042001"
+element = "team"
+passive = { kind = "family_power", family = "Occult", value = 5, why = "T: themed on shadow (Occult)" }
+
+[[item]]  # Botas Equipo Zero / Team Zero Boots
+item = "eq_sh042101"
+element = "team"
+
+[[item]]  # Botas Luz Eterna / Eternal Light Boots
+item = "eq_sh041901"
+element = "team"
+
+[[item]]  # Botas Kirkwood (GO) / Kirkwood Boots (GO)
+item = "eq_sh041401"
+element = "team"
+
+[[item]]  # Botas Monte Olimpo / Mount Olympus Boots
+item = "eq_sh041701"
+element = "team"
+passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+
+[[item]]  # Botas Cuerno Demoníaco / Demon's Horn Boots
+item = "eq_sh042401"
+element = "team"
+passive = { kind = "family_power", family = "MajinGiant", value = 5, why = "T: themed on devil (Majin Giant)" }
+
+[[item]]  # Botas Colmillo del Norte / Northern Fang Boots
+item = "eq_sh042301"
+element = "team"
+passive = { kind = "family_power", family = "Beasts", value = 5, why = "T: themed on wolf (Wild Beasts)" }
+
+[[item]]  # Zapatillas Alpino (GO) / Alpine Boots (GO)
+item = "eq_sh041301"
+element = "team"
+
+[[item]]  # Botas Revolucionarios / Revolutionaries Boots
+item = "eq_sh041401_20"
+element = "team"
+
+[[item]]  # Botas Garra del Sur / Southern Claw Boots
+item = "eq_sh042201"
+element = "team"
+
+[[item]]  # Botas Mar de Luna / Lunar Sea Boots
+item = "eq_sh041201"
+element = "team"
+passive = { kind = "element_power", element = "void", value = 4, why = "N: themed on moon (no technique family since families v2)" }
+
+[[item]]  # Botas Dragon Link / Dragon Link Boots
+item = "eq_sh041801"
+element = "team"
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+
+[[item]]  # Botas Espejismo / Mirage Boots
+item = "eq_sh041501"
+element = "team"
+
+[[item]]  # Botas Raimon revolucionario / Revolutionary Raimon Boots
+item = "eq_sh040101"
+element = "team"
+
+[[item]]  # Botas Royal Academy mejoradas / Reformed Royal Boots
+item = "eq_sh040801"
+element = "team"
+
+[[item]]  # Botas Edad Dorada / Golden Oldies Boots
+item = "eq_sh041101"
+element = "team"
+
+[[item]]  # Botas Vía Láctea / Milky Way Boots
+item = "eq_sh040601"
+element = "team"
+
+[[item]]  # Botas Poderosa Fe / Almighty Faith Boots
+item = "eq_sh040701"
+element = "team"
+
+[[item]]  # Botas Segundo equipo del Raimon / Raimon Second Squad Boots
+item = "eq_sh040901"
+element = "team"
+
+[[item]]  # Botas Cala Pirata / Pirates Cove Boots
+item = "eq_sh041001"
+element = "team"
+
+[[item]]  # Botas Empollones / Prodigy Boots
+item = "eq_sh040501"
+element = "team"
+
+[[item]]  # Botas Inazuma Kids FC (GO) / Inazuma Kids FC Boots (GO)
+item = "eq_sh040401"
+element = "team"
+
+[[item]]  # Botas Caballeros Templarios / Black Templars Boots
+item = "eq_sh040201"
+element = "team"
+
+[[item]]  # Botas Universal / Universal Boots
+item = "eq_sh040301"
+element = "team"
+
+[[item]]  # Botas Ángel Oscuro / Dark Angels Boots
+item = "eq_sh031701"
+element = "team"
+passive = { kind = "family_power", family = "Occult", value = 5, why = "T: themed on shadow (Occult)" }
+
+[[item]]  # Botas Equipo Ogro / Team Ogre Boots
+item = "eq_sh031001"
+element = "team"
+
+[[item]]  # Botas <FST:GARCILDO> Team / Team <FST:GARCILDO> Boots
+item = "eq_sh031301"
+element = "team"
+
+[[item]]  # Botas Orfeo / Orpheus Boots
+item = "eq_sh031101"
+element = "team"
+
+[[item]]  # Botas Pequeños Gigantes / Little Gigantes Boots
+item = "eq_sh031401"
+element = "team"
+
+[[item]]  # Botas Dark Team / Devil Army Z Boots
+item = "eq_sh031601"
+element = "team"
+passive = { kind = "family_power", family = "MajinGiant", value = 5, why = "T: themed on devil (Majin Giant)" }
+
+[[item]]  # Zapatillas Sky Team / Apostles from the Sky Greaves
+item = "eq_sh031501"
+element = "team"
+passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+
+[[item]]  # Botas Knights of Queen / Queen's Knights Boots
+item = "eq_sh030601"
+element = "team"
+
+[[item]]  # Botas Unicorn / Unicorn Boots
+item = "eq_sh030901"
+element = "team"
+
+[[item]]  # Botas Los Rojos / Red Matador Boots
+item = "eq_sh031901"
+element = "team"
+
+[[item]]  # Botas Inazuma Japón / Inazuma National Boots
+item = "eq_sh030101"
+element = "team"
+
+[[item]]  # Botas Emperadores / Empire Boots
+item = "eq_sh030801"
+element = "team"
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on king (Penguins)" }
+
+[[item]]  # Botas Brocken Brigade / Brocken Brigade Boots
+item = "eq_sh032201"
+element = "team"
+
+[[item]]  # Botas Os Reis / Kingdom Boots
+item = "eq_sh031201"
+element = "team"
+
+[[item]]  # Botas Caimanes del Cabo / Cape Crusaders Boots
+item = "eq_sh032101"
+element = "team"
+
+[[item]]  # Botas Grifos de la Rosa / Rose Griffons Boots
+item = "eq_sh032301"
+element = "team"
+
+[[item]]  # Botas <MNT:TEAMK> / <MNT:TEAMK> Boots
+item = "eq_sh030701"
+element = "team"
+
+[[item]]  # Botas leoninas / Desert Lions Boots
+item = "eq_sh030401"
+element = "team"
+
+[[item]]  # Botas dragontinas / Fire Dragon Boots
+item = "eq_sh030501"
+element = "team"
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+
+[[item]]  # Botas Neo Japón / Neo National Boots
+item = "eq_sh030201"
+element = "team"
+
+[[item]]  # Botas Big Waves / Big Waves Boots
+item = "eq_sh030301"
+element = "team"
+
+[[item]]  # Botas Solaria-Zeus / Solaria-Zeus Boots
+item = "eq_sh111501"
+element = "team"
+
+[[item]]  # Botas Campeones Raimon / Raimon King Boots
+item = "eq_sh110201"
+element = "team"
+
+[[item]]  # Botas tácticas Royal Academy / Tactical Royal Boots
+item = "eq_sh110801"
+element = "team"
+
+[[item]]  # Botas Academia Orchid / Orchid Academy Boots
+item = "eq_sh111101"
+element = "team"
+
+[[item]]  # Botas Lawcrest / Lawcrest Boots
+item = "eq_sh111701"
+element = "team"
+
+[[item]]  # Botas Academia IA / AI Academy Boots
+item = "eq_sh111801"
+element = "team"
+
+[[item]]  # Botas Stormridge / Stormridge Boots
+item = "eq_sh110701"
+element = "team"
+
+[[item]]  # Botas Instituto Visión Noble / Noble Insight Institute Boots
+item = "eq_sh111601"
+element = "team"
+
+[[item]]  # Botas Alpino (V) / Alpine Boots (V)
+item = "eq_sh111901"
+element = "team"
+
+[[item]]  # Botas West Manor / West Manor Boots
+item = "eq_sh110501"
+element = "team"
+
+[[item]]  # Botas Eastwind / Eastwind International Boots
+item = "eq_sh110601"
+element = "team"
+
+[[item]]  # Botas Crosswind-Fauxshore / Crosswind-Fauxshore Boots
+item = "eq_sh111001"
+element = "team"
+
+[[item]]  # Botas Northbright / Northbright Boots
+item = "eq_sh110301"
+element = "team"
+
+[[item]]  # Botas de los vendedores / Shopkeeper's Shoes
+item = "eq_sh111201"
+element = "team"
+
+[[item]]  # Deportivas Goleadores del Callejón / Back Alley Kickers Boots
+item = "eq_sh111301"
+element = "team"
+
+[[item]]  # Botas <MNT:NAGUMOHARA> / <MNT:NAGUMOHARA> Boots
+item = "eq_sh110101"
+element = "team"
+
+[[item]]  # Botas Club de béisbol de <MNT:NAGUMOHARA> / <MNT:NAGUMOHARA> Baseball Club Boots
+item = "eq_sh110401"
+element = "team"
+
+[[item]]  # Botas Gaviotas FC / Seagull FC Boots
+item = "eq_sh111401"
+element = "team"
+passive = { kind = "family_power", family = "LegendaryBirds", value = 5, why = "T: themed on bird (Legendary Birds)" }
+
+[[item]]  # Botas Twinford / Twinford Boots
+item = "eq_sh110901"
+element = "team"
+
+[[item]]  # Zapatillas Aullido Lunar / Lunar Howl Shoes
+item = "eq_sh051701"
+element = "team"
+passive = { kind = "family_power", family = "Beasts", value = 5, why = "T: themed on wolf (Wild Beasts)" }
+
+[[item]]  # Zapatillas Nosfanáticos / Nosfanatica Shoes
+item = "eq_sh051801"
+element = "team"
+
+[[item]]  # Zapatillas Criaturas de la Noche / Children of the Night Shoes
+item = "eq_sh051901"
+element = "team"
+
+[[item]]  # Zapatillas Protocolo Omega 3.0 / Protocol 3.0 Shoes
+item = "eq_sh052001"
+element = "team"
+
+[[item]]  # Zapatillas Gir / Gihl Boots
+item = "eq_sh051101"
+element = "team"
+
+[[item]]  # Zapatillas Gar / Gahl Boots
+item = "eq_sh051201"
+element = "team"
+
+[[item]]  # Zapatillas Desesperdidos / The Despairadoes Shoes
+item = "eq_sh051601"
+element = "team"
+
+[[item]]  # Zapatillas Ragnah / Ragnah Shoes
+item = "eq_sh051301"
+element = "team"
+
+[[item]]  # Zapatillas Omega / Omega Boots
+item = "eq_sh050101"
+element = "team"
+
+[[item]]  # Botas Inazuma Japón Legendario / Inazuma National Legend Boots
+item = "eq_sh051401"
+element = "team"
+
+[[item]]  # Zapatillas <FST:ZANARK> Domain / <FST:ZANARK>'s Domain Shoes
+item = "eq_sh050601"
+element = "team"
+
+[[item]]  # Botas Cascada Perfecta / Perfect Cascade Boots
+item = "eq_sh050701"
+element = "team"
+
+[[item]]  # Zapatillas Zan / Zan Boots
+item = "eq_sh050901"
+element = "team"
+
+[[item]]  # Botas Inazuma Japón Alterno / Inazuma Another National Boots
+item = "eq_sh051501"
+element = "team"
+
+[[item]]  # Botas <MNT:TENMAS> / <MNT:TENMAS> Boots
+item = "eq_sh050201"
+element = "team"
+
+[[item]]  # Botas <MNT:SHIROSHIKA> / <MNT:SHIROSHIKA> Boots
+item = "eq_sh050401"
+element = "team"
+
+[[item]]  # Botas Falam Medius / Falam Medius Boots
+item = "eq_sh061201"
+element = "team"
+
+[[item]]  # Botas Supernova / Supernova Shoes
+item = "eq_sh061501"
+element = "team"
+passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on star (Alius Power)" }
+
+[[item]]  # Botas Dinastía Galáctica / Space Rankers Shoes
+item = "eq_sh061601"
+element = "team"
+
+[[item]]  # Botas Big Bang / Big Bang Shoes
+item = "eq_sh061401"
+element = "team"
+
+[[item]]  # Botas Flota Ixar / Ixar Fleet Shoes
+item = "eq_sh061301"
+element = "team"
+
+[[item]]  # Botas Resistencia Japón / Japanese Resistance Boots
+item = "eq_sh060501"
+element = "team"
+
+[[item]]  # Botas Naiadi / Naiadi Eleven Shoes
+item = "eq_sh060801"
+element = "team"
+
+[[item]]  # Botas Magmavís / Magmavia Eleven Shoes
+item = "eq_sh060901"
+element = "team"
+
+[[item]]  # Botas Fertilia / Fertilia Eleven Shoes
+item = "eq_sh061101"
+element = "team"
+
+[[item]]  # Botas Sílice / Silica Eleven Shoes
+item = "eq_sh060701"
+element = "team"
+
+[[item]]  # Botas Dragones de Fuego (GO 3) / Fire Dragon Boots (GO 3)
+item = "eq_sh060101"
+element = "team"
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+
+[[item]]  # Botas Muay Tigers / Muay Tigers Boots
+item = "eq_sh060401"
+element = "team"
+passive = { kind = "family_power", family = "Beasts", value = 5, why = "T: themed on tiger (Wild Beasts)" }
+
+[[item]]  # Botas Storm Wolves / Storm Wolves Boots
+item = "eq_sh060601"
+element = "team"
+passive = { kind = "family_power", family = "Beasts", value = 5, why = "T: themed on wolf (Wild Beasts)" }
+
+[[item]]  # Botas Big Waves (GO 3) / Big Waves Boots (GO 3)
+item = "eq_sh060201"
+element = "team"
+
+[[item]]  # Botas Cimitarras / Shamshir Boots
+item = "eq_sh060301"
+element = "team"
+passive = { kind = "family_power", family = "LegendaryWeapons", value = 5, why = "T: themed on sword (Legendary Weapons)" }
+
+[[item]]  # Botas Earth Eleven / Earth Eleven Boots
+item = "eq_sh061701"
+element = "team"
+
+[[item]]  # Botas <MNT:KINUNS> / <MNT:KINUNS> Boots
+item = "eq_sh081401"
+element = "team"
+
+[[item]]  # Botas Eclipse de Orión / Orion Eclipse Boots
+item = "eq_sh081201"
+element = "team"
+
+[[item]]  # Botas Chispas Perfectas / Pitch Perfectionists Boots
+item = "eq_sh080901"
+element = "team"
+
+[[item]]  # Botas Olé de Samba / The Sambassadors Boots
+item = "eq_sh081001"
+element = "team"
+
+[[item]]  # Botas Guardianes la Reina / Guardians of the Queen Boots
+item = "eq_sh081101"
+element = "team"
+
+[[item]]  # Botas Gigantes Invencibles / Los Invencibles Boots
+item = "eq_sh080701"
+element = "team"
+
+[[item]]  # Botas Unicornios con Estrellas / Star-Spangled Unicorns Boots
+item = "eq_sh081301"
+element = "team"
+
+[[item]]  # Botas Orión Juvenil / Orion Juniors Boots
+item = "eq_sh081501"
+element = "team"
+
+[[item]]  # Botas Tropa Acrobática del Fútbol / Avenging Acrobats Boots
+item = "eq_sh080601"
+element = "team"
+
+[[item]]  # Botas Navy Invader / Ace Invaders Boots
+item = "eq_sh080801"
+element = "team"
+
+[[item]]  # Botas Bisonte Rojo / Raging Bulls Boots
+item = "eq_sh080201"
+element = "team"
+
+[[item]]  # Botas Inazuma Japón Implacable / Inazuma National War God Boots
+item = "eq_sh080101"
+element = "team"
+
+[[item]]  # Botas Demonios Brillantes / Fallen Angels Boots
+item = "eq_sh080301"
+element = "team"
+passive = { kind = "family_power", family = "MajinGiant", value = 5, why = "T: themed on devil (Majin Giant)" }
+
+[[item]]  # Botas Bailarines Eternos / Eternal Dancers Boots
+item = "eq_sh080401"
+element = "team"
+
+[[item]]  # Botas Ejército del Fénix Árabe / Arabian Firebirds Boots
+item = "eq_sh080501"
+element = "team"
+passive = { kind = "family_power", family = "LegendaryBirds", value = 5, why = "T: themed on phoenix (Legendary Birds)" }
+
+[[item]]  # Botas Emperadores Oscuros / Dark Emperors Boots
+item = "eq_sh021301"
+element = "team"
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on shadow (Penguins)" }
+
+[[item]]  # Botas Génesis / Genesis Boots
+item = "eq_sh021201"
+element = "team"
+
+[[item]]  # Botas Prominence / Prominence Boots
+item = "eq_sh021401"
+element = "team"
+
+[[item]]  # Botas Fauxshore / Fauxshore Boots
+item = "eq_sh020801"
+element = "team"
+
+[[item]]  # Botas Mar de Árboles / Forest Team Boots
+item = "eq_sh021801"
+element = "team"
+
+[[item]]  # Zapatillas Caos / Chaos Shoes
+item = "eq_sh021601"
+element = "team"
+
+[[item]]  # Zapatillas Polvo de Diamantes / Diamond Dust Shoes
+item = "eq_sh021501"
+element = "team"
+passive = { kind = "family_power", family = "NorthernIce", value = 5, why = "T: themed on ice (Northern Ice)" }
+
+[[item]]  # Botas Mary Times / Mary Times Boots
+item = "eq_sh020901"
+element = "team"
+
+[[item]]  # Botas Triple C / Triple C Boots
+item = "eq_sh020601"
+element = "team"
+
+[[item]]  # Botas Royal Academy Redux / Royal Academy Redux Boots
+item = "eq_sh020501"
+element = "team"
+
+[[item]]  # Botas Épsilon / Epsilon Boots
+item = "eq_sh020701"
+element = "team"
+
+[[item]]  # Botas Claustro Sagrado / Cloister Divinity Boots
+item = "eq_sh020401"
+element = "team"
+passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+
+[[item]]  # Botas Alpino / Alpine Boots
+item = "eq_sh020201"
+element = "team"
+
+[[item]]  # Zapatillas Servicio Secreto / Secret Service Shoes
+item = "eq_sh020101"
+element = "team"
+
+[[item]]  # Botas Tormenta de Géminis / Gemini Storm Boots
+item = "eq_sh020301"
+element = "team"
+
+[[item]]  # Botas Zeus / Zeus Boots
+item = "eq_sh011001"
+element = "team"
+passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+
+[[item]]  # Botas Kirkwood / Kirkwood Boots
+item = "eq_sh010901"
+element = "team"
+
+[[item]]  # Botas campesinas / Farm Boots
+item = "eq_sh010801"
+element = "team"
+
+[[item]]  # Botas Veteranos Inazuma / Raimon Veterans Boots
+item = "eq_sh011401"
+element = "team"
+
+[[item]]  # Botas Shuriken / Shuriken Boots
+item = "eq_sh010701"
+element = "team"
+
+[[item]]  # Botas Otaku / Otaku Boots
+item = "eq_sh010601"
+element = "team"
+
+[[item]]  # Botas Umbrella / Umbrella Boots
+item = "eq_sh011201"
+element = "team"
+
+[[item]]  # Botas Sallys / Street Sally's Boots
+item = "eq_sh011301"
+element = "team"
+
+[[item]]  # Botas Royal Academy / Royal Boots
+item = "eq_sh010201"
+element = "team"
+
+[[item]]  # Botas Raimon / Raimon Boots
+item = "eq_sh010101"
+element = "team"
+
+[[item]]  # Botas Occult / Occult Boots
+item = "eq_sh010301"
+element = "team"
+
+[[item]]  # Botas Wild / Wild Boots
+item = "eq_sh010401"
+element = "team"
+
+[[item]]  # Botas Inazuma Kids FC / Inazuma Kids FC Boots
+item = "eq_sh011101"
+element = "team"
+
+[[item]]  # Botas mentales / Hypno Boots
+item = "eq_sh010501"
+element = "team"
+
+[[item]]  # Botas Plenilunio / Lunar Prime Boots
+item = "eq_sh070301"
+element = "team"
+passive = { kind = "element_power", element = "void", value = 4, why = "N: themed on moon (no technique family since families v2)" }
+
+[[item]]  # Botas Alpino (Ares) / Alpine Boots (Ares)
+item = "eq_sh070901"
+element = "team"
+
+[[item]]  # Botas Instituto Ribera / Everytown Boots
+item = "eq_sh071101"
+element = "team"
+
+[[item]]  # Botas Academia Alia / Alia Boots
+item = "eq_sh071001"
+element = "team"
+
+[[item]]  # Zapatillas Zeus (Ares) / Zeus Shoes (Ares)
+item = "eq_sh070801"
+element = "team"
+passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+
+[[item]]  # Botas Polaris / Polestar Boots
+item = "eq_sh070201"
+element = "team"
+
+[[item]]  # Botas Kirkwood (Ares) / Kirkwood Boots (Ares)
+item = "eq_sh070501"
+element = "team"
+
+[[item]]  # Botas mentales (Ares) / Hypno Boots (Ares)
+item = "eq_sh070601"
+element = "team"
+
+[[item]]  # Botas Royal Academy (Ares) / Royal Boots (Ares)
+item = "eq_sh070701"
+element = "team"
+
+[[item]]  # Botas Colina Verde / Green Hill Boots
+item = "eq_sh071701"
+element = "team"
+
+[[item]]  # Botas Isla Remota / Backwater Boots
+item = "eq_sh071201"
+element = "team"
+
+[[item]]  # Botas Raimon Isla Remota / Backwater Raimon Boots
+item = "eq_sh070101"
+element = "team"
+
+[[item]]  # Botas Bastión / Rampart Boots
+item = "eq_sh070401"
+element = "team"
+passive = { kind = "family_power", family = "GreatWalls", value = 5, why = "T: themed on wall (Great Walls)" }
+
+[[item]]  # Botas Barcelona Orb / Barcelona Orb Boots
+item = "eq_sh071601"
+element = "team"
+
+[[item]]  # Zapatillas Plathos / Platos Shoes
+item = "eq_sh112101"
+passive = { kind = "tension_cost", move_kind = "block", value = -8, why = "L: VR elite boots" }
+
+[[item]]  # Zapatillas Destructores / Destroyers Shoes
+item = "eq_sh112201"
+passive = { kind = "engine_passive", effect = "breach", value = 3, why = "L + N: Destructores (breach)" }
+
+[[item]]  # Zapatillas Tormenta cortante / Tearing Tempest Shoes
+item = "eq_sh112901"
+element = "wind"
+passive = { kind = "element_power", element = "wind", value = 4, why = "L + N: tormenta" }
+
+[[item]]  # Zapatillas Hojas espinosas / Leaf Lacerators Shoes
+item = "eq_sh113001"
+element = "forest"
+passive = { kind = "element_power", element = "forest", value = 4, why = "L + N: hojas" }
+
+[[item]]  # Zapatillas Aplastarocas / Stone Smashers Shoes
+item = "eq_sh113101"
+element = "mountain"
+passive = { kind = "element_power", element = "mountain", value = 4, why = "L + N: rocas" }
+
+[[item]]  # Zapatillas Llamarada volcánica / Molten Maelstrom Shoes
+item = "eq_sh113201"
+element = "fire"
+passive = { kind = "element_power", element = "fire", value = 4, why = "L + N: llamarada" }
+
+[[item]]  # Zapatillas Guardianas / Gatekeepers Shoes
+item = "eq_sh112301"
+element = "mountain"
+passive = { kind = "tension_cost", move_kind = "catch", value = -8, why = "L + N: Guardianas (keeper)" }
+
+[[item]]  # Botas Zanark Outsiders / Zanark's Outsiders Boots
+item = "eq_sh112501"
+passive = { kind = "recast", move_kind = "shoot", value = -8, why = "L: VR elite boots" }
+
+[[item]]  # Botas Panda / Panda Boots
+item = "eq_sh045501"
+element = "forest"
+
+[[item]]  # Botas vendaval / Gale Boots
+item = "eq_sh045301"
+element = "wind"
+passive = { kind = "element_power", element = "wind", value = 4, why = "N: vendaval (gale)" }
+
+[[item]]  # Botas verdor / Verdant Boots
+item = "eq_sh045401"
+element = "forest"
+passive = { kind = "element_power", element = "forest", value = 4, why = "N: verdor" }
+
+[[item]]  # Botas Ultramegahiedra / Ivy Selective Boots
+item = "eq_sh045601"
+element = "forest"
+
+[[item]]  # Pulsera del rayo de esperanza / Ray of Hope Bracelet
+item = "eq_mi0108101"
+raise = ["physical", "agility"]
+passive = { kind = "tension_on", event = "duel_won", value = 3, why = "U: Ray of Hope" }
+
+[[item]]  # Pulsera del abismo / Abyss Bracelet
+item = "eq_mi0107201"
+element = "void"
+passive = { kind = "family_power", family = "Occult", value = 5, why = "T: themed on shadow (Occult)" }
+
+[[item]]  # Brazalete de las sombras / Umbra Bangle
+item = "eq_mi0107401"
+element = "void"
+passive = { kind = "family_power", family = "NinjaArts", value = 5, why = "T: themed on shadow (Ninja Arts)" }
+
+[[item]]  # Pulsera luz de luna / Moonlight Bracelet
+item = "eq_mi0107701"
+element = "void"
+passive = { kind = "element_power", element = "void", value = 4, why = "N: themed on moon (no technique family since families v2)" }
+
+[[item]]  # Brazalete llameante / Blazing Bangle
+item = "eq_mi0105001"
+element = "fire"
+passive = { kind = "element_power", element = "fire", value = 4, why = "N: llameante (blazing)" }
+
+[[item]]  # Pulsera de la esperanza / Bracelet of Hope
+item = "eq_mi0106001"
+passive = { kind = "stat_when", stats = ["kick", "technique"], score = "trailing", value = 4, why = "N: de la esperanza (hope)" }
+
+[[item]]  # Brazalete sombrío / Shadow Bangle
+item = "eq_mi0106101"
+element = "void"
+passive = { kind = "family_power", family = "NinjaArts", value = 5, why = "T: themed on shadow (Ninja Arts)" }
+
+[[item]]  # Pulsera cósmica / Cosmic Bracelet
+item = "eq_mi0106601"
+passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on star (Alius Power)" }
+
+[[item]]  # Pulsera de la victoria / Bracelet of Victory
+item = "eq_mi0103001"
+element = "fire"
+
+[[item]]  # Brazalete Génesis / Genesis Bangle
+item = "eq_mi0103101"
+element = "void"
+passive = { kind = "element_power", element = "void", value = 4, why = "U: Genesis (Aliea)" }
+
+[[item]]  # Brazalete Solaria-Zeus / Solaria-Zeus Bangle
+item = "eq_mi0107501"
+element = "mountain"
+passive = { kind = "technique_power", move_kind = "block", value = 4, why = "U: Solaria-Zeus" }
+
+[[item]]  # Pulsera del valiente / Fiery Bracelet
+item = "eq_mi0102901"
+element = "fire"
+
+[[item]]  # Pulsera del sol / Sun Bracelet
+item = "eq_mi0107101"
+element = "fire"
+passive = { kind = "element_power", element = "fire", value = 4, why = "N: themed on sun (no technique family since families v2)" }
+
+[[item]]  # Pulsera de nube de trueno / Thundercloud Bracelet
+item = "eq_mi0107301"
+element = "wind"
+passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+
+[[item]]  # Pulsera del relámpago / Lightning Bracelet
+item = "eq_mi0105101"
+element = "wind"
+passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+
+[[item]]  # Brazalete del héroe / Hero Bangle
+item = "eq_mi0105201"
+element = "fire"
+
+[[item]]  # Pulsera de la fortuna / Fortune Bracelet
+item = "eq_mi0105401"
+passive = { kind = "match_money", value = 10, why = "N: de la fortuna" }
+
+[[item]]  # Brazalete de la jungla / Jungle Bangle
+item = "eq_mi0105601"
+element = "forest"
+
+[[item]]  # Pulsera de la pasión / Bracelet of Passion
+item = "eq_mi0105901"
+passive = { kind = "tension_on", event = "duel_won", value = 3, why = "N: de la pasión" }
+
+[[item]]  # Brazalete ventisca / Gale Bangle
+item = "eq_mi0106301"
+element = "wind"
+
+[[item]]  # Brazalete Nimbus / Nimbus Bangle
+item = "eq_mi0106401"
+element = "wind"
+
+[[item]]  # Pulsera verde / Verdant Bracelet
+item = "eq_mi0103301"
+element = "forest"
+
+[[item]]  # Brazalete nube de tormenta / Stormcloud Bangle
+item = "eq_mi0103801"
+element = "wind"
+
+[[item]]  # Brazalete tormenta de carbón / Coalstrom Bangle
+item = "eq_mi0104101"
+element = "wind"
+
+[[item]]  # Brazalete de la montaña / Mountain Bangle
+item = "eq_mi0100701"
+element = "mountain"
+passive = { kind = "element_power", element = "mountain", value = 4, why = "N: de la montaña" }
+
+[[item]]  # Pulsera de la suerte / Lucky Bracelet
+item = "eq_mi0101501"
+passive = { kind = "engine_passive", effect = "drop_rate", value = 5, why = "N: de la suerte (lucky)" }
+
+[[item]]  # Brazalete de viento / Wind Bangle
+item = "eq_mi0101701"
+element = "wind"
+passive = { kind = "element_power", element = "wind", value = 4, why = "N: de viento" }
+
+[[item]]  # Brazalete de fuego / Fire Bangle
+item = "eq_mi0100401"
+element = "fire"
+passive = { kind = "element_power", element = "fire", value = 4, why = "N: de fuego" }
+
+[[item]]  # Brazalete del bosque / Forest Bangle
+item = "eq_mi0100801"
+element = "forest"
+passive = { kind = "element_power", element = "forest", value = 4, why = "N: del bosque" }
+
+[[item]]  # Brazalete de nubes errantes / Cloudbound Bangle
+item = "eq_mi0101901"
+element = "wind"
+
+[[item]]  # Guantes legendarios / Legendary Gloves
+item = "eq_mi0108001"
+position = "GK"
+element = "mountain"
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on hand (God Hand)" }
+
+[[item]]  # Guantes del héroe / Hero Gloves
+item = "eq_mi0106901"
+element = "fire"
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on hand (God Hand)" }
+
+[[item]]  # Guantes del abuelo / Grandpa's Gloves
+item = "cro_eq_mi110004"
+alias = "eq_mi0107001"
+
+[[item]]  # Guantes del abuelo / Grandpa's Gloves
+item = "eq_mi0107001"
+element = "mountain"
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on hand (God Hand)" }
+
+[[item]]  # Guantes del maestro / Master Gloves
+item = "eq_mi0107901"
+element = "mountain"
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on hand (God Hand)" }
+
+[[item]]  # Guantes de ataque / Striker Gloves
+item = "eq_mi0104801"
+position = "GK"
+element = "mountain"
+passive = { kind = "technique_power", move_kind = "punch", value = 4, why = "N: de ataque (striker gloves)" }
+
+[[item]]  # Guantes del meteorito / Meteor Gloves
+item = "eq_mi0104501"
+position = "GK"
+element = "wind"
+passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on rock (Alius Power)" }
+
+[[item]]  # Guantes potentes / Power Gloves
+item = "eq_mi0104701"
+position = "GK"
+element = "mountain"
+passive = { kind = "technique_power", move_kind = "catch", value = 4, why = "N: potentes (power gloves)" }
+
+[[item]]  # Guantes pastel / Pastel Gloves
+item = "eq_mi0102401"
+element = "mountain"
+
+[[item]]  # Guantes militares / Military Gloves
+item = "eq_mi0104601"
+position = "GK"
+
+[[item]]  # Guantes paragoles / Goal Saver
+item = "eq_mi0104901"
+element = "mountain"
+passive = { kind = "tension_on", event = "keeper_save", value = 4, why = "N + D: paragoles (goal saver)" }
+
+[[item]]  # Guantes de cuero / Leather Gloves
+item = "eq_mi0102001"
+position = "GK"
+element = "mountain"
+
+[[item]]  # Guantes sin dedos / Fingerless Gloves
+item = "eq_mi0102101"
+position = "GK"
+element = "mountain"
+
+[[item]]  # Guantes del club de béisbol del <MNT:NAGUMOHARA> / <MNT:NAGUMOHARA> Baseball Gloves
+item = "eq_mi0102201"
+passive = { kind = "tension_on", event = "keeper_save", value = 4, why = "U: baseball gloves" }
+
+[[item]]  # Guantes esponjosos / Fluffy Gloves
+item = "eq_mi0102301"
+element = "mountain"
+
+[[item]]  # Reloj fantasmal / Phantasm Watch
+item = "eq_mi0103201"
+passive = { kind = "engine_passive", effect = "fouls", value = -8, why = "U: phantasm watch" }
+
+[[item]]  # Reloj del estudioso / Scholar's Watch
+item = "eq_mi0103701"
+passive = { kind = "match_exp", value = 10, why = "N: del estudioso (scholar)" }
+
+[[item]]  # Lágrima del rival llorón / The Crybaby Rival's Tear
+item = "eq_ac0108101"
+raise = ["control", "agility"]
+passive = { kind = "tension_on", event = "duel_won", value = 3, why = "U: Crybaby Rival's Tear" }
+
+[[item]]  # Piedra Alius / Alius Crystal
+item = "eq_ac0107101"
+element = "void"
+passive = { kind = "aura_points", effect = "pool", value = 10, why = "U: Alius Crystal" }
+
+[[item]]  # Colgante del guardián / Guardian Necklace
+item = "eq_ac0108001"
+element = "mountain"
+passive = { kind = "engine_passive", effect = "wall", value = 4, why = "N: del guardián" }
+
+[[item]]  # Colgante del portero / Gatekeeper's Necklace
+item = "eq_ac0107701"
+element = "mountain"
+passive = { kind = "tension_on", event = "keeper_save", value = 4, why = "N: del portero (gatekeeper)" }
+
+[[item]]  # Colgante del infinito / Pendant of Infinity
+item = "eq_ac0107901"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: del infinito" }
+
+[[item]]  # Colgante de cometa / Comet Pendant
+item = "eq_ac0107601"
+element = "wind"
+passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on star (Alius Power)" }
+
+[[item]]  # Collar Chrono Stone / Chrono Stone Necklace
+item = "eq_ac0104701"
+passive = { kind = "recast", move_kind = "block", value = -8, why = "U: Chrono Stone" }
+
+[[item]]  # Collar meteoro / Meteor Necklace
+item = "eq_ac0104901"
+element = "wind"
+passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on rock (Alius Power)" }
+
+[[item]]  # Collar carmesí / Crimson Necklace
+item = "eq_ac0105301"
+element = "fire"
+
+[[item]]  # Collar esmeralda / Emerald Necklace
+item = "eq_ac0105701"
+element = "forest"
+
+[[item]]  # Collar de protección / Necklace of Protection
+item = "eq_ac0106901"
+element = "mountain"
+passive = { kind = "engine_passive", effect = "wall", value = 4, why = "N: de protección" }
+
+[[item]]  # Collar azul celeste / Azure Necklace
+item = "eq_ac0106501"
+element = "wind"
+
+[[item]]  # Colgante de la victoria / Victory Pendant
+item = "eq_ac0102401"
+element = "fire"
+
+[[item]]  # Colgante de poder / Power Pendant
+item = "eq_ac0103401"
+passive = { kind = "technique_power", move_kind = "shoot", value = 4, why = "N: de poder (power)" }
+
+[[item]]  # Colgante del sol / Sun Pendant
+item = "eq_ac0107201"
+element = "fire"
+passive = { kind = "element_power", element = "fire", value = 4, why = "N: themed on sun (no technique family since families v2)" }
+
+[[item]]  # Collar de Kerauno / Keraunos Necklace
+item = "eq_ac0107301"
+element = "wind"
+passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+
+[[item]]  # Colgante de halcón / Hawk Pendant
+item = "eq_ac0102601"
+passive = { kind = "family_power", family = "LegendaryBirds", value = 5, why = "T: themed on bird (Legendary Birds)" }
+
+[[item]]  # Colgante fraterno / Promise Pendant
+item = "eq_ac0103801"
+passive = { kind = "tension_on", event = "duel_won", value = 3, why = "U: Promise pendant" }
+
+[[item]]  # Colgante del valiente / Fiery Pendant
+item = "eq_ac0104301"
+element = "fire"
+
+[[item]]  # Collar de nube de trueno / Thundercloud Necklace
+item = "eq_ac0107501"
+element = "wind"
+passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+
+[[item]]  # Collar del atleta Neo / Neo Athlete's Necklace
+item = "eq_ac0105201"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: del atleta Neo" }
+
+[[item]]  # Collar Nimbus / Nimbus Necklace
+item = "eq_ac0105401"
+element = "wind"
+
+[[item]]  # Colgante del trueno / Lightning Pendant
+item = "eq_ac0105501"
+element = "wind"
+passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+
+[[item]]  # Collar de la paz / Peace Necklace
+item = "eq_ac0106801"
+passive = { kind = "engine_passive", effect = "fouls", value = -8, why = "N: de la paz (peace)" }
+
+[[item]]  # Collar dorado / Golden Necklace
+item = "eq_ac0107001"
+passive = { kind = "match_money", value = 10, why = "N: dorado (golden)" }
+
+[[item]]  # Collar huracán / Hurricane Necklace
+item = "eq_ac0103001"
+element = "wind"
+passive = { kind = "element_power", element = "wind", value = 4, why = "N: huracán" }
+
+[[item]]  # Collar nube de tormenta / Stormcloud Necklace
+item = "eq_ac0103201"
+element = "wind"
+
+[[item]]  # Collar del atleta / Athlete's Necklace
+item = "eq_ac0103601"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: del atleta" }
+
+[[item]]  # Colgante del entreno con neumáticos / Training Tire Pendant
+item = "eq_ac0104401"
+passive = { kind = "match_exp", value = 10, why = "N + D: entreno con neumáticos (training)" }
+
+[[item]]  # Colgante protector / Protective Pendant
+item = "eq_ac0100401"
+passive = { kind = "engine_passive", effect = "wall", value = 4, why = "N: protector" }
+
+[[item]]  # Collar del desafiante / Challenger's Necklace
+item = "eq_ac0100501"
+passive = { kind = "engine_passive", effect = "duel", value = 4, why = "N: del desafiante" }
+
+[[item]]  # Colgante oxidado / Rusty Pendant
+item = "eq_ac0100701"
+element = "mountain"
+
+[[item]]  # Colgante de protección / Ward Pendant
+item = "eq_ac0101901"
+passive = { kind = "engine_passive", effect = "wall", value = 4, why = "N: de protección (ward)" }
+
+[[item]]  # Collar de nubes errantes / Cloudbound Necklace
+item = "eq_ac0101001"
+element = "wind"
+
+[[item]]  # Colgante Umibozu / <FUL:UMIBOZU> Pendant
+item = "eq_ac0101501"
+passive = { kind = "stat_when", stats = ["pressure", "physical"], score = "leading", value = 4, why = "U: Umibozu" }
+
+[[item]]  # Colgante de castella / Castella Pendant
+item = "eq_ac0101701"
+passive = { kind = "move_speed", value = 3, why = "U: castella" }
+
+[[item]]  # Gargantilla Wildwood / Wildwood Choker
+item = "eq_ac0106001"
+element = "forest"
+
+[[item]]  # Gargantilla de la jungla / Jungle Choker
+item = "eq_ac0103301"
+element = "forest"
+
+[[item]]  # Gargantilla del sol radiante / Blazing Sun Choker
+item = "eq_ac0102701"
+element = "fire"
+passive = { kind = "element_power", element = "fire", value = 4, why = "N: themed on sun (no technique family since families v2)" }
+
+[[item]]  # Gargantilla de hierro / Steel Choker
+item = "eq_ac0102201"
+element = "mountain"
+
+[[item]]  # Bufanda del campeón / Champion's Scarf
+item = "eq_ac0104801"
+passive = { kind = "tension_on", event = "goal", value = 6, why = "U: Champion's scarf" }
+
+[[item]]  # Capa de <FLC:YUTO> / <FLC:YUTO>'s Mantle
+item = "eq_ac0107401"
+element = "wind"
+passive = { kind = "engine_passive", effect = "focus", value = 3, why = "U: Kidou's mantle" }
+
+[[item]]  # Capa de ídolo / Hero Mantle
+item = "eq_ac0103501"
+element = "fire"
+
+[[item]]  # Capa de la victoria / Victory Mantle
+item = "eq_ac0105001"
+element = "fire"
+
+[[item]]  # Capa de rey / King's Mantle
+item = "eq_ac0105101"
+passive = { kind = "family_power", family = "Shields", value = 5, why = "T: themed on king (Shields)" }
+
+[[item]]  # Brazalete Omega / Omega Bangle
+item = "eq_sp0105201"
+passive = { kind = "tension_cost", move_kind = "block", value = -8, why = "U: Omega" }
+
+[[item]]  # Diadema energética / Energizing Headband
+item = "eq_sp0106101"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: energética" }
+
+[[item]]  # Bandana de <FLC:ENDO> / <FLC:ENDO>'s Headband
+item = "eq_sp0107301"
+element = "mountain"
+passive = { kind = "tension_on", event = "keeper_save", value = 4, why = "U: Endou's headband" }
+
+[[item]]  # Calcetines atléticos / Athletic Socks
+item = "eq_sp0105701"
+passive = { kind = "move_speed", value = 3, why = "N: atléticos" }
+
+[[item]]  # Diadema del valiente / Gutsy Headband
+item = "eq_sp0106201"
+element = "fire"
+passive = { kind = "stat_when", stats = ["kick", "technique"], score = "trailing", value = 4, why = "N: del valiente" }
+
+[[item]]  # Calcetines cómodos / Comfy Socks
+item = "eq_sp0102401"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: cómodos (comfy)" }
+
+[[item]]  # Muñequera de la victoria / Wristband of Victory
+item = "eq_sp0104201"
+element = "fire"
+
+[[item]]  # Férula múscular / Muscle Weights
+item = "eq_sp0104901"
+passive = { kind = "match_exp", value = 10, why = "N: férula muscular (muscle weights)" }
+
+[[item]]  # Capucha del restaurante de fideos / Noodle Shop Hood
+item = "eq_sp0105001"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "U: noodle-shop hood" }
+
+[[item]]  # Vendaje oscuro / Shroud of Darkness
+item = "eq_sp0105401"
+element = "void"
+passive = { kind = "family_power", family = "Occult", value = 5, why = "T: themed on shadow (Occult)" }
+
+[[item]]  # Delantal de la tienda de ramen / Ramen Shop Apron
+item = "eq_sp0106301"
+passive = { kind = "match_money", value = 10, why = "U: shop apron" }
+
+[[item]]  # Delantal de la tienda de champon / Champon Shop Apron
+item = "eq_sp0103501"
+passive = { kind = "match_money", value = 10, why = "U: shop apron" }
+
+[[item]]  # Férula de entrenamiento / Training Weights
+item = "eq_sp0103601"
+passive = { kind = "match_exp", value = 10, why = "N: férula de entrenamiento (training weights)" }
+
+[[item]]  # Tobilleras refrescantes / Cooling Braces
+item = "eq_sp0101601"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: refrescantes (cooling)" }
+
+[[item]]  # Diadema de la motivación / Headband of Motivation
+item = "eq_sp0102301"
+passive = { kind = "tension_on", event = "duel_won", value = 3, why = "N: de la motivación" }
+
+[[item]]  # Tobilleras pesadas / Heavy Braces
+item = "eq_sp0101401"
+passive = { kind = "match_exp", value = 10, why = "N: tobilleras pesadas (heavy braces)" }
+
+[[item]]  # Gafas de <FLC:YUTO> / <FLC:YUTO>'s Goggles
+item = "eq_sp0107501"
+element = "wind"
+passive = { kind = "recast", move_kind = "dribble", value = -8, why = "U: Kidou's goggles" }
+
+[[item]]  # Parche demoníaco / Demonbind Eyepatch
+item = "eq_sp0105301"
+element = "void"
+passive = { kind = "family_power", family = "MajinGiant", value = 5, why = "T: themed on devil (Majin Giant)" }
+
+[[item]]  # Gafas de velocidad / Speed Glasses
+item = "eq_sp0106801"
+passive = { kind = "move_speed", value = 3, why = "N: de velocidad (speed)" }
+
+[[item]]  # Gafas de estudioso / Scholar's Glasses
+item = "eq_sp0103301"
+passive = { kind = "match_exp", value = 10, why = "N: de estudioso (scholar)" }
+
+[[item]]  # Gafas de sol del callejón / Back-Alley Shades
+item = "eq_sp0106001"
+element = "fire"
+passive = { kind = "recast", move_kind = "dribble", value = -8, why = "U: back-alley shades" }
+
+[[item]]  # Gafas celestiales / Celestial Glasses
+item = "eq_sp0104001"
+element = "wind"
+passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+
+[[item]]  # Gafas de sol de rebelde / Rebel Sunglasses
+item = "eq_sp0100701"
+element = "fire"
+
+[[item]]  # Amuleto de cumulonimbo / Charged Cloud Charm
+item = "eq_sp0108101"
+raise = ["kick", "technique"]
+element = "wind"
+passive = { kind = "element_power", element = "wind", value = 4, why = "U + N: cumulonimbo" }
+
+[[item]]  # Talismán de <FLC:ENDO> / <FLC:ENDO> Talisman
+item = "eq_sp0108001"
+element = "mountain"
+passive = { kind = "tension_cost", move_kind = "catch", value = -8, why = "U: Endou's talisman" }
+
+[[item]]  # Accesorio de profesor Layton / Professor Layton Accessory
+item = "eq_sp0107801"
+passive = { kind = "engine_passive", effect = "focus", value = 3, why = "U: Layton (puzzles)" }
+
+[[item]]  # Amuleto oden deluxe / Deluxe Oden Charm
+item = "eq_sp0105501"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "U: oden charm" }
+
+[[item]]  # Réplica de néctar / Ambrosia Replica
+item = "eq_sp0105801"
+element = "mountain"
+passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+
+[[item]]  # Cúpula de nieve del pingüino / Penguin Snow Dome
+item = "eq_sp0107201"
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on penguin (Penguins)" }
+
+[[item]]  # Amuleto de gaviota / Seagull Charm
+item = "eq_sp0106501"
+element = "wind"
+passive = { kind = "family_power", family = "LegendaryBirds", value = 5, why = "T: themed on bird (Legendary Birds)" }
+
+[[item]]  # Amuleto relámpago / Lightning Charm
+item = "eq_sp0107101"
+element = "wind"
+passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+
+[[item]]  # Amuleto estelar / Cloudbound Charm
+item = "eq_sp0103101"
+element = "wind"
+
+[[item]]  # Pendientes de castella / Castella Earrings
+item = "eq_sp0103801"
+passive = { kind = "move_speed", when = "ball", value = 4, why = "U: castella earrings" }
+
+[[item]]  # Peluche del umibozu / <FUL:UMIBOZU> Plushie
+item = "eq_sp0104501"
+passive = { kind = "stat_when", stats = ["pressure", "physical"], score = "leading", value = 4, why = "U: Umibozu plush" }
+
+[[item]]  # Amuleto de pingüino / Penguin Charm
+item = "eq_sp0101001"
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on penguin (Penguins)" }
+
+[[item]]  # Almohada de castella / Castella Cushion
+item = "eq_sp0101801"
+passive = { kind = "tension_on", event = "duel_won", value = 3, why = "U: castella cushion" }
+
+[[item]]  # Accesorio bola de arroz / Rice Ball Accessory
+item = "eq_sp0100301"
+passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "U: rice ball" }
+
+[[item]]  # Amuleto de las nubes / Cloud Charm
+item = "eq_sp0100901"
+element = "wind"
+
+[[item]]  # Amuleto de la abuela / Grandma's Talisman
+item = "eq_sp0102101"
+passive = { kind = "stat_when", stats = ["kick", "technique"], score = "trailing", value = 4, why = "U: Grandma's talisman" }
+
+[[item]]  # Anillo estelar / Starlit Ring
+item = "eq_sp0107901"
+passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on star (Alius Power)" }
+
+[[item]]  # Anillo de metal / Metal Ring
+item = "eq_sp0103901"
+element = "mountain"
+
+[[item]]  # Anillo de sol / Sun Ring
+item = "eq_sp0107401"
+element = "fire"
+passive = { kind = "element_power", element = "fire", value = 4, why = "N: themed on sun (no technique family since families v2)" }
+
+[[item]]  # Anillo de nube de truenos / Thundercloud Ring
+item = "eq_sp0107701"
+element = "wind"
+passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+
+[[item]]  # Anillo lirio del valle / Lily of the Valley Ring
+item = "eq_sp0106601"
+element = "forest"
+
+[[item]]  # Anillo de trueno / Thunderbolt Ring
+item = "eq_sp0106901"
+element = "wind"
+passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+
+[[item]]  # Anillo oxidado / Rusted Ring
+item = "eq_sp0101501"
+element = "mountain"
+
+[[item]]  # Llavero de conejito / Bunny's Keychain
+item = "eq_sp0108201"
+raise = ["pressure", "intelligence"]
+passive = { kind = "stat_when", stats = ["pressure", "physical"], score = "leading", value = 4, why = "U: bunny keychain" }
+
+[[item]]  # Llavero de <FUL:WANDABA> / <FUL:WANDABA> Keychain
+item = "eq_sp0105101"
+passive = { kind = "engine_passive", effect = "drop_rate", value = 5, why = "U: Wandaba keychain" }
+
+[[item]]  # Llavero de caravana / Caravan Keychain
+item = "eq_sp0107001"
+passive = { kind = "move_speed", value = 3, why = "U: caravan" }
+
+[[item]]  # Llavero de dragón / Dragon Keychain
+item = "eq_sp0102801"
+element = "fire"
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+
+[[item]]  # Llavero del valiente / Fiery Keychain
+item = "eq_sp0102001"
+element = "fire"
+
+[[item]]  # Pegatina de Pegaso / Pegasus Sticker
+item = "eq_sp0107601"
+element = "wind"
+passive = { kind = "family_power", family = "Pegasus", value = 5, why = "T: themed on pegasus (Pegasus)" }
+
+[[item]]  # Pegatina de dragón / Dragon Sticker
+item = "eq_sp0102501"
+element = "fire"
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+
+[[item]]  # Pegatina de la compra / Shopping Sticker
+item = "eq_sp0104801"
+passive = { kind = "match_money", value = 10, why = "U + N: de la compra (shopping)" }

@@ -64,15 +64,9 @@ table = "item/win_treasure_lot_table"
   [[keyed.add]]                       # manuals
   key = 0x09BD3137
   cells = { REF_ITEMS = { set = [ { item = 0x029E7B25, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x09C23C18, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x3B8D915B, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x46FA651E, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x50880BAF, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x5E5AF1A9, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x5FE1545F, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xABA58912, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xAE2B3429, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xEF5D458A, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
-  [[keyed.add]]                       # books
-  key = 0x09CD36A3
-  cells = { REF_ITEMS = { set = [ { item = 0x6417CBCD, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xA1B0F543, count = 1, weight = 40, condition = 0, reserved_4 = 0 } ] } }
   [[keyed.add]]                       # manuals
   key = 0x09F16E9D
   cells = { REF_ITEMS = { set = [ { item = 0x029E7B25, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x3B8D915B, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xABA58912, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xAE2B3429, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xEF5D458A, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
-  [[keyed.add]]                       # books
-  key = 0x0B05BCA9
-  cells = { REF_ITEMS = { set = [ { item = 0xA1B0F543, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
   [[keyed.add]]                       # manuals
   key = 0x0B762DCB
   cells = { REF_ITEMS = { set = [ { item = 0x17A96A44, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x1ECA5CE1, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x4890FB67, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x6ADE9E01, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x73C5AF40, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
@@ -640,6 +634,9 @@ table = "item/win_treasure_lot_table"
   [[keyed.add]]                       # manuals
   key = 0x6C939611
   cells = { REF_ITEMS = { set = [ { item = 0x05124F07, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x4B3099D5, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x5739C70C, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x650FA58E, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x828A53C8, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xB0BC314A, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xDCC9CCA3, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xF14FDC17, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xFB8202AD, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
+  [[keyed.add]]                       # books
+  key = 0x6C9AE3C3
+  cells = { REF_ITEMS = { set = [ { item = 0x02601663, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
   [[keyed.add]]                       # boots
   key = 0x6CFBCAE7
   cells = { REF_ITEMS = { set = [ { item = 0xE4EC382F, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
@@ -1081,6 +1078,9 @@ table = "item/win_treasure_lot_table"
   [[keyed.add]]                       # boots
   key = 0xAFD6AACF
   cells = { REF_ITEMS = { set = [ { item = 0xEFB07F12, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
+  [[keyed.add]]                       # books
+  key = 0xB00CEA62
+  cells = { REF_ITEMS = { set = [ { item = 0x02601663, count = 1, weight = 40, condition = 0, reserved_4 = 0 }, { item = 0x6417CBCD, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }
   [[keyed.add]]                       # manuals
   key = 0xB0C51095
   cells = { REF_ITEMS = { set = [ { item = 0x05124F07, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x06B22DB5, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x17110E3B, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x2D9F7E76, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x414BA9BD, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x4B3099D5, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x650FA58E, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x828A53C8, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0x8B31808E, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xB0BC314A, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xBBE07677, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xC324C788, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xDCC9CCA3, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xF14FDC17, count = 1, weight = 10, condition = 0, reserved_4 = 0 }, { item = 0xF6E75EE9, count = 1, weight = 10, condition = 0, reserved_4 = 0 } ] } }

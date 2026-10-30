@@ -1,0 +1,15 @@
+schema = "VRFW.sprite_redirect/1"
+# Signature Passives: the game and the Lua ask these game atlases for the mod's sprites by name; they live in the mod's own
+# atlases (content\images\..., one per game atlas), so the game atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "signature_passives_icon_teambuff"
+atlas = "#/menu/200_icon/08_icon_teambuff/<LG>/icon_teambuff.g4tx"
+own_atlas = "#/menu/200_icon/signature_passives_own/signature_passives_icon_teambuff.g4tx"
+sprites = [
+    "evt_icon_teambuff_aire_plus",
+    "evt_icon_teambuff_bosque_plus",
+    "evt_icon_teambuff_fuego_plus",
+    "evt_icon_teambuff_montana_plus",
+    "evt_icon_teambuff_neutro_plus",
+]

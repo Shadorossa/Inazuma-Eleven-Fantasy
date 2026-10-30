@@ -8,11 +8,11 @@
 -- load time.
 do
   local C = {
-    BREAK = 2605035580,      -- CMND_VRFW_RULE_ENGINE_BREAK
-    TEXT = 459261927,        -- CMND_VRFW_TEXT_GET (id)
-    TEXT_GAME = 4074371074,  -- CMND_TEXT_GET (the merged menu_text)
-    SET_TEXT = 1083631230,   -- CMND_SET_MENU_TEXT_STRING
-    LOG = 3661580131,        -- CMND_EVT_LOG
+    BREAK = VRFW_Cmd.VRFW_RULE_ENGINE_BREAK,      -- CMND_VRFW_RULE_ENGINE_BREAK
+    TEXT = VRFW_Cmd.VRFW_TEXT_GET,        -- CMND_VRFW_TEXT_GET (id)
+    TEXT_GAME = VRFW_Cmd.TEXT_GET,  -- CMND_TEXT_GET (the merged menu_text)
+    SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,   -- CMND_SET_MENU_TEXT_STRING
+    LOG = VRFW_Cmd.EVT_LOG,        -- CMND_EVT_LOG
   }
   local L_TITLE, M_TITLE = 1867151190, 1778263274   -- soccer22_03_result_title, _text_results01
   local L_BACK, M_BACK = 4198875882, 378327766       -- cmn03_01_cmd_back, _text_cmd_back01

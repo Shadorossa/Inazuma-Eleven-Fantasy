@@ -1,0 +1,43 @@
+# Better Equipment: a mod in the standard layout (docs/framework/mod-layout.md).
+#   content\better_equipment\   the rules (rules.toml), the reviewed per-item data (items.toml), the sets (sets.toml) and
+#                               the generated affinity table (affinity.toml)
+#   content\items\              GENERATED: the items' profiles ([edit.scale_stats] of VRFW) and the sets
+#                               ([[VRFW.EquipmentSet]])
+#   content\passive_blocks\, content\special_passives\   GENERATED: the item and set passives (the framework's passive engine
+#                               blocks carried by Wears / WearsSet)
+#   content\game\               the match modifier (affinity and set stats) and the equip command filters
+#   scripts\                    better_equipment.lua: the affinity and set stats table
+#   text\                       the mod's name, description and set names
+# The generated files come from research/scripts/better_equipment.py. Docs: docs/game/mods/better-equipment.md.
+id = "BetterEquipment"
+# the English fallback; the Mods screen shows the text keys mod_name / mod_description (text\keys.toml)
+name = "Better Equipment"
+version = "1.17.0"
+author = "Shadorossa"
+author_steam = "76561199013321372"
+description = "Every equipment item is worth the same: its two raises add up to the strongest bonus of the game's equipment (70 with Inazuma Fantasy, 40 without) and it lowers one stat by a seventh of that, so items differ by shape, not power. A player whose position or element matches the item gets +15 % of its raises (+25 % with both). 67 sets give stats and effects for 2 to 4 pieces worn (an item may be in several sets; a worn piece counts for one). Themed and named items have one passive: their family of special moves +5 % power, their element's moves, tension cost, recharge, move speed, tension per duel, save or goal, stats while trailing or leading. Needs Character Reforged; the passives need Signature Passives and the move families Hissatsu Reforged."
+# this mod's own names: TOML keys [[BetterEquipment.X]], Lua BetterEquipment.X, its native table BetterEquipment.StatAdd
+prefix = "BetterEquipment"
+folder = "BetterEquipment"
+priority = 0
+tags = ["Gameplay", "Characters"]
+updated = "2026-10-30"
+# VRFW 2.171.0: [edit.scale_stats], [[VRFW.EquipmentSet]], VRFW.item.equipped / set_members / equipment_scale, Wears /
+# WearsSet / MoveFamily of Signature Passives (Character Reforged 1.43.0)
+# VRFW 2.195.0: the passive engine (kinds VRFW.passive_block/1, VRFW.passive/1) runs the item and set passives
+# VRFW 2.219.0: VRFW.item.resolve_sets / sets_of and [[VRFW.EquipmentSet]] slots (a worn piece counts for one set only)
+requires = ["VRFW>=2.219.0", "CharacterReforged>=1.43.0"]
+conflicts = []
+# memory: the equipment and character reads; command: the equip command filters; hook: the match-copy modifier
+permissions = ["memory", "command", "hook"]
+
+[exports]
+functions = []
+keys = []
+tables = ["StatAdd"]
+
+# A MODULE of Character Reforged (docs/framework/mod-families.md §1.3): shipped in CharacterReforged\modules\BetterEquipment\;
+# the Mods screen shows it inside Character Reforged's entry («Módulos y ajustes»: on / off).
+[module]
+of = "CharacterReforged"
+order = 90

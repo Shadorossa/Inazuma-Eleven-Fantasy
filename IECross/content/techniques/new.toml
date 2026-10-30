@@ -19,7 +19,7 @@ manual = { icon = [161, 246] }
 event = "ev60_95000"
 power_min = 90
 power_max = 520
-tp = 80
+tp = 90
 cells = { telopInfoId = 0x27A8DFF7 }
   [technique.text.ja]
   name = "インフェルノペンギン"
@@ -60,7 +60,7 @@ manual = true
 event = "ev60_95010"
 power_min = 95
 power_max = 600
-tp = 90
+tp = 95
 element = "wind"
 color = 1
   [technique.text.ja]
@@ -181,7 +181,7 @@ manual = { icon = [161, 21] }
 event = "ev60_95100"
 power_min = 95
 power_max = 600
-tp = 85
+tp = 95
 cells = { partnerType = 3, telopInfoId = 0x45789D74 }
   [technique.text.ja]
   name = "サムライペンギン2号"
@@ -341,7 +341,7 @@ manual = true
 event = "ev61_95100"
 power_min = 60
 power_max = 360
-tp = 55
+tp = 60
   [technique.text.ja]
   name = "サムライフェイント"
   description = "Split into three swift samurai\nand leave the opponent behind."

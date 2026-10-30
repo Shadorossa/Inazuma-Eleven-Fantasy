@@ -5,12 +5,12 @@
 -- changes while the scene is up: lua/menu/title_menu_2/151_menu_scene_npc_reload.lua).
 if VRFW_MenuSceneTeam == nil then
   local T = {
-    VS_SET = 3713813716,       -- CMND_GET_VS_USE_TEAM_SET () -> the active team set
+    VS_SET = VRFW_Cmd.GET_VS_USE_TEAM_SET,       -- CMND_GET_VS_USE_TEAM_SET () -> the active team set
     MEMBER = 1720957768,       -- team set member (set, team type, i, 0 handle | 1 position) -> has, value
     STATUS = 1131797651,       -- character status (handle, 4) -> chara_param card
-    SET_INFO = 1033065575,     -- CMND_GET_TEAM_SET_INFO (set, team type, field, …) -> has, value
-    CHARA_BASE = 413729894,    -- CMND_VRFW_CHARA_BASE (card) -> chara_base
-    MOTION_SET = 1229214512,   -- CMND_VRFW_CHARA_MOTION_SET (chara_base) -> motion set (c000101 …)
+    SET_INFO = VRFW_Cmd.GET_TEAM_SET_INFO,     -- CMND_GET_TEAM_SET_INFO (set, team type, field, …) -> has, value
+    CHARA_BASE = VRFW_Cmd.VRFW_CHARA_BASE,    -- CMND_VRFW_CHARA_BASE (card) -> chara_base
+    MOTION_SET = VRFW_Cmd.VRFW_CHARA_MOTION_SET,   -- CMND_VRFW_CHARA_MOTION_SET (chara_base) -> motion set (c000101 …)
     MEMBER_SLOTS = 29,         -- the slots a team set holds
     LAST_POSITION = 19,        -- positions 0..15 players, 16..18 managers, 19 coach
     LAST_PLAYER = 15, LAST_MANAGER = 18,

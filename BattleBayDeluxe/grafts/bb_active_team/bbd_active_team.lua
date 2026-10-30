@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_active_team (enjoy_team_select_menu_campaign / _offline; docs/game/modes/estadio-bb.md §16).
+-- BattleBayDeluxe bb_active_team (enjoy_team_select_menu_campaign / _offline; docs/game/modes/estadio-bb.md §16).
 -- The «Active team» tile (evt_bbd_active_team) plays the player's active team. 1.5.64 (owner 2026-10-14): its panel
 -- previews that team, read from the active team set every time the panel draws the tile (bbd_active_team_common.lua):
 --   * the pitch: the active team's players (the tile's member rows, mirrored first by BBD_ACTIVE_TEAM_Sync) on the
@@ -29,13 +29,13 @@ do
   B.CARDS = 11
   B.TEAM_INFO = 2151743654
   B.MEMBER_INFO = 34355761
-  B.FORMATION_INFO = 2649030357 --[[CMND_GET_SOCCER_FORMATION_INFO]]
+  B.FORMATION_INFO = @crc:CMND_GET_SOCCER_FORMATION_INFO@
   B.CARD_SETUP = 2339877830
-  B.VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]]
-  B.MESH_VISIBLE = 3405944500 --[[CMND_SET_MESH_VISIBLE]]
-  B.LAYER_NUM = 1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]]
+  B.VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@
+  B.MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@
+  B.LAYER_NUM = @crc:CMND_GET_CREATE_LAYER_NUM@
   B.ICON_REQUEST = 3190452549
-  B.TEXT = 1083631230 --[[CMND_SET_MENU_TEXT_STRING?]]
+  B.TEXT = @crc:CMND_SET_MENU_TEXT_STRING@
 end
 
 -- the panel side that shows the tile (true / nil = the left one, the player's): its player cards hidden
@@ -94,13 +94,8 @@ function BBD_ACTIVE_TEAM_DrawFormation(team, left, d)
   end
   if B.logged_panel ~= d.text then
     B.logged_panel = d.text
-    -- hex in two halves: the game's %X stops at 2^31
-    local function hex(v)
-      v = math.floor(v) % 4294967296
-      return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
-    end
     BBD_ACTIVE_TEAM_Log(string.format("panel: team set %d, formation %s, %d of 11 starters drawn, captain %s",
-      d.set, hex(d.formation), shown, hex(d.captain)))
+      d.set, VRFW_Id.hex(d.formation), shown, VRFW_Id.hex(d.captain)))
   end
 end
 

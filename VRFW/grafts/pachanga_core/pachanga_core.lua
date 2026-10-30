@@ -10,10 +10,10 @@ VRFW_PACHANGA = VRFW_PACHANGA or {}
 do
   local P = VRFW_PACHANGA
   P.CMD = {
-    START = 2490728909, STEP = 2494733779, REPORT = 1738046244, ABORT = 4055457894, BACK = 3133514456,
+    START = @crc:CMND_EVT_PACHANGA_START@, STEP = 2494733779, REPORT = 1738046244, ABORT = 4055457894, BACK = @crc:CMND_EVT_PACHANGA_BACK@,
     STATE = 2828994233, ACK = 609614192, AUX = 3161656697, PASSED = 3228376551, PASSED_SET = 700047444,
-    MAP = 2501684090, RULES = 2190888318, ROLL = 3055137984 --[[CMND_EVT_ITEM_REWARD_ROLL]],
-    LOG = 3661580131,
+    MAP = 2501684090, RULES = 2190888318, ROLL = @crc:CMND_EVT_ITEM_REWARD_ROLL@,
+    LOG = @crc:CMND_EVT_LOG@,
   }
   P.FADE_ENCOUNT = 2721617045 --[[fade_menu_encount]]
   -- op codes of crate::pachanga::Step::encode
@@ -38,11 +38,11 @@ do
 
   -- the active pachanga dock (2..12) or nil (loader team_banks bit 21, "Establecer como equipo activo", complete five)
   function P.pachanga_set()
-    local ok, _, mods = pcall(funcLuaCommand, 2217361807 --[[CMND_EVT_LOADER_VERSION]])
+    local ok, _, mods = pcall(funcLuaCommand, @crc:CMND_EVT_LOADER_VERSION@)
     if not ok or type(mods) ~= "number" or math.floor(mods / 2097152) % 2 ~= 1 then
       return nil
     end
-    local ok2, has, set = pcall(funcLuaCommand, 334218736 --[[CMND_EVT_PACHANGA_TEAM]])
+    local ok2, has, set = pcall(funcLuaCommand, @crc:CMND_EVT_PACHANGA_TEAM@)
     if not ok2 or has ~= true or type(set) ~= "number" or set < 2 or set > 12 then
       return nil
     end
@@ -55,21 +55,21 @@ do
 
   -- a five WITHOUT a kit of its own wears its dock's 11v11 kit (street battles dress kit-less fives in gym clothes)
   function P.kit(set)
-    local a = table.pack(pcall(funcLuaCommand, 1598711521 --[[CMND_EVT_TEAM_UNIFORM]], set, 0))
-    local b = table.pack(pcall(funcLuaCommand, 1598711521, set, 1))
+    local a = table.pack(pcall(funcLuaCommand, @crc:CMND_EVT_TEAM_UNIFORM@, set, 0))
+    local b = table.pack(pcall(funcLuaCommand, @crc:CMND_EVT_TEAM_UNIFORM@, set, 1))
     if a[1] ~= true or a[2] ~= true or type(a[3]) ~= "number" or a[3] == 0 or b[1] ~= true or b[2] ~= true then
       return
     end
     if b[3] == a[3] or b[3] ~= 0 then
       return
     end
-    pcall(funcLuaCommand, 1598711521, set, 1, a[3], 0)
+    pcall(funcLuaCommand, @crc:CMND_EVT_TEAM_UNIFORM@, set, 1, a[3], 0)
   end
 
   function P.vs_restore()
-    local ok, had, vs = pcall(funcLuaCommand, 4127470188 --[[CMND_EVT_PACHANGA_VS]], 0)
+    local ok, had, vs = pcall(funcLuaCommand, @crc:CMND_EVT_PACHANGA_VS@, 0)
     if ok and had == true and type(vs) == "number" and vs >= 0 then
-      funcLuaCommand(662075964 --[[CMND_SET_VS_USE_TEAM_SET]], vs)
+      funcLuaCommand(@crc:CMND_SET_VS_USE_TEAM_SET@, vs)
       P.log("VS team restored", vs)
     end
   end
@@ -78,14 +78,14 @@ do
   local function exec(op, a, b, c)
     local O = P.OP
     if op == O.VS_SWAP then
-      pcall(funcLuaCommand, 4127470188 --[[CMND_EVT_PACHANGA_VS]], 1, funcLuaCommand(3713813716 --[[GET_VS_USE_TEAM_SET]]))
-      funcLuaCommand(662075964 --[[CMND_SET_VS_USE_TEAM_SET]], a)
+      pcall(funcLuaCommand, @crc:CMND_EVT_PACHANGA_VS@, 1, funcLuaCommand(@crc:CMND_GET_VS_USE_TEAM_SET@ --[[GET_VS_USE_TEAM_SET]]))
+      funcLuaCommand(@crc:CMND_SET_VS_USE_TEAM_SET@, a)
     elseif op == O.KIT then
       pcall(P.kit, a)
     elseif op == O.VS_RESTORE then
       P.vs_restore()
     elseif op == O.RETURN then
-      local okt, live, armed = call(3094129190 --[[CMND_EVT_TRIAL_RETURN]], a)
+      local okt, live, armed = call(@crc:CMND_EVT_TRIAL_RETURN@, a)
       P.log("way-back route", a, tostring(okt), tostring(live), tostring(armed))
     elseif op == O.DEACTIVATE then
       funcLuaMenuCommand(1558704558, a, false)
@@ -116,13 +116,13 @@ do
         end
       end
     elseif op == O.BYTE then
-      call(187123515 --[[CMND_SET_GLOBAL_BYTE_FLAG]], a, b)
+      call(@crc:CMND_SET_GLOBAL_BYTE_FLAG@, a, b)
     elseif op == O.WAIT then
       for _ = 1, a do
         coroutine.yield()
       end
     elseif op == O.PRE_MATCH then
-      call(3014583614 --[[CMND_SET_PRE_MATCH_SOCCER_GAME_ID]], a)
+      call(@crc:CMND_SET_PRE_MATCH_SOCCER_GAME_ID@, a)
     elseif op == O.DIFFICULTY then
       call(1104380539 --[[difficulty helper]], a)
     elseif op == O.RESERVE then
@@ -136,7 +136,7 @@ do
         end
       end
       P.home_open = false
-      local ok, r = pcall(funcLuaCommand, 1620561217 --[[CMND_RESERVE_SOCCER]], a, b, c)
+      local ok, r = pcall(funcLuaCommand, @crc:CMND_RESERVE_SOCCER@, a, b, c)
       P.log("reserve", a, b, c, tostring(ok), tostring(r))
       return ok and r ~= false and r ~= nil
     elseif op == O.KEY then
@@ -147,10 +147,10 @@ do
         funcLuaCommand(3860611758, a, 0, b, 1)
       end
     elseif op == O.CLOSE then
-      funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], a)
+      funcLuaCommand(@crc:CMND_CLOSE_MENU_OBJECT@, a)
     elseif op == O.WAIT_GONE then
       local n = 0
-      while n < b and funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], a) do
+      while n < b and funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, a) do
         n = n + 1
         coroutine.yield()
       end
@@ -181,7 +181,7 @@ do
       return 0, set
     end
     if type(set) ~= "number" then
-      local ok, vs = pcall(funcLuaCommand, 3713813716 --[[CMND_GET_VS_USE_TEAM_SET]])
+      local ok, vs = pcall(funcLuaCommand, @crc:CMND_GET_VS_USE_TEAM_SET@)
       set = (ok and type(vs) == "number") and vs or -1
     end
     local ok, map = pcall(M.Of, set)
@@ -297,18 +297,6 @@ do
     return call(P.CMD.PASSED_SET, id, tag or 0, sub or 0, on and 1 or 0) == true
   end
 
-  -- return = "map": black at once and the jump to the spot given at the launch. true = reserved
-  function P.map_jump()
-    local ok, map, x, y, z, rot = call(P.CMD.MAP)
-    if ok ~= true then
-      return false
-    end
-    pcall(funcLuaCommand, 609722083, 1, 0) -- black at once: no frame of the battle field
-    local okj, res = pcall(funcLuaCommand, 664962748 --[[CMND_RESERVE_MAP_JUMP]], map, x, y, z, rot, false, true, false,
-      false, false, true)
-    return okj and res ~= false
-  end
-
   -- an item_engine reward table: rolled and given (CMND_ADD_ITEM_ONLY)
   function P.give(key)
     local ok, n, list = pcall(funcLuaCommand, P.CMD.ROLL, key, math.random(1, 2147483646), false)
@@ -316,7 +304,7 @@ do
       return
     end
     for item, count in string.gmatch(list, "(%d+):(%d+)") do
-      pcall(funcLuaCommand, 1897915498 --[[CMND_ADD_ITEM_ONLY]], tonumber(item), tonumber(count))
+      pcall(funcLuaCommand, @crc:CMND_ADD_ITEM_ONLY@, tonumber(item), tonumber(count))
     end
   end
 end

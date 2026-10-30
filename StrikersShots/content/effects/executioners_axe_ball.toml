@@ -1,0 +1,27 @@
+# «Hacha del Azote negro» (Executioner's Axe, whs01880; forest shot, cut-in ev60_01880): while the ball flies to the goal
+# it wears the cut-in's last shot (c0400, the ball struck by the keshin's axe, skimming the pitch), held from the aura's
+# first frame: the crown of dark magenta flame fins standing up from the ball (its full shape of frame 398), its smokes,
+# faint light and ground mark, and the earth thrown up on both sides behind it, coming out of the kick point as the
+# ball moves away and fading at its tail; fixed on the pitch from the kick point, as in the cut-in: the furrow dug
+# along the way (shown as the ball passes), the dust drifting along it and the white smokes of the strike. Nothing
+# under the grass; texture flow in whole periods over the loop. x1.
+# The object is ev6188ax00 (effect/event/ev60/ev6188ax00/), built by research/scripts/executioners_axe_ball_fx.py from
+# ev60018800 (docs/game/media/executioners-axe-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\executioners_axe_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "executioners_axe"
+from = "ega0075d"
+object = "effect/event/ev60/ev6188ax00/ev6188ax00.objbin"
+
+[[shot_aura]]
+name = "executioners_axe"
+when = { techniques = ["whs01880"] }
+aura = "executioners_axe"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

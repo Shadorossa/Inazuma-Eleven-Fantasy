@@ -13,11 +13,8 @@
 
 local M = {}
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v ~= v then return 0 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 local function scalar(v)
   if type(v) == "table" then return v[1] end
@@ -366,8 +363,8 @@ local function term_reqs(D, set, card, term, trials, warn)
         for _, d in ipairs(D.games[t.game] or {}) do
           if diff == nil or d[1] < diff then diff = d[1] end
         end
-        out[#out + 1] = { kind = "trial", friendly = set.trial_friendly, tag = card, sub = t.id, game = t.game,
-          difficulty = diff or 1, objective = t.objective, part = t.part, of = t.of, count = 1 }
+        out[#out + 1] = { kind = "trial", friendly = set.trial_friendly, friendly_team = set.trial_friendly_team, tag = card,
+          sub = t.id, game = t.game, difficulty = diff or 1, objective = t.objective, part = t.part, of = t.of, count = 1 }
       else
         warn(string.format("%s: terms of 0x%08X: requirement %d: trial %s unknown or no TrialFriendly (left out)",
           set.where, card, k, tostring(r.Trial)))
@@ -822,6 +819,13 @@ function M.build(set, decls, ctx)
     char_clears[b] = out
     return out
   end
+  -- each page's map: a ghost names his home page's map and team (the screen's «Go» opens it)
+  local map_of_page = {}
+  for _, mp in ipairs(maps) do
+    for _, pg in ipairs(mp.pages) do
+      map_of_page[pg] = map_of_page[pg] or mp.key
+    end
+  end
   -- 3. the nodes: one per character on his home page, the card that plays for that team; the starters sold on
   -- another page stay on the pitch as «ghosts» (drawn, never signed here)
   local placed = {}
@@ -917,7 +921,8 @@ function M.build(set, decls, ctx)
         if c and not here[c.base] and ctx.own_face(card, c.base) ~= false then
           M2.nodes[#M2.nodes + 1] = { kind = "ghost", zone = z, card = card, base = c.base, face = "", level = 0, main = true,
             price = 0, x = 0, y = 0, links = {}, story = false, notes = {}, reqs = {}, slot = spot.slot,
-            px = spot.x, py = spot.y, sold_at = home[c.base] and home[c.base].name_text or 0 }
+            px = spot.x, py = spot.y, sold_at = home[c.base] and home[c.base].name_text or 0,
+            sold_team = home[c.base] and home[c.base].team or 0, sold_map = home[c.base] and map_of_page[home[c.base]] or nil }
         end
       end
       if zone.count > 0 then

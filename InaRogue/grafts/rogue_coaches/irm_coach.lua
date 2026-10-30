@@ -7,11 +7,11 @@ do
   local CO = {
     MENU = 3869270721,           -- evt_rogue_coach_menu (research/grafts/rogue_coaches/evt_rogue_coach_menu.lua)
     KEY = 123230196,             -- parameter: 1 picked, 0 back (9 = the screen never opened)
-    LIST = 4087234124,           -- CMND_EVT_RL_COACH_LIST (-1) -> count, runIndex, pickIndex, enabled
-    ITEMS = 3066104494,          -- CMND_EVT_RL_COACH_ITEMS () -> n, key1, id1, count1, ...
-    REG_FIND = 2175579023,       -- CMND_VRFW_REG_FIND ("item", key) -> id
-    ADD_ITEM = 1897915498,       -- CMND_ADD_ITEM_ONLY (item, n, window)
-    MISSING = "Falta la pantalla de entrenadores (evt_rogue_coach_menu). Reinstala Inazuma Fantasy.\nLa partida empieza con el entrenador por defecto.",
+    LIST = @crc:CMND_EVT_RL_COACH_LIST@,           -- CMND_EVT_RL_COACH_LIST (-1) -> count, runIndex, pickIndex, enabled
+    ITEMS = @crc:CMND_EVT_RL_COACH_ITEMS@,          -- CMND_EVT_RL_COACH_ITEMS () -> n, key1, id1, count1, ...
+    REG_FIND = @crc:CMND_VRFW_REG_FIND@,       -- CMND_VRFW_REG_FIND ("item", key) -> id
+    ADD_ITEM = @crc:CMND_ADD_ITEM_ONLY@,       -- CMND_ADD_ITEM_ONLY (item, n, window)
+    MISSING = {2821920169 --[[InaRogue.coach.missing]]},   -- the screen evt_rogue_coach_menu is not installed
   }
 
   -- the run coach's start items (once per run; the loader marks them given)
@@ -45,7 +45,7 @@ do
       if enabled == true and Int(n) > 0 then
         funcLuaCommand(C.P_CLEAR, CO.KEY)
         funcLuaCommand(C.P_SET, CO.KEY, 0, 9, 1)
-        OpenChild(CO.MENU, CO.MISSING)
+        OpenChild(CO.MENU, T(CO.MISSING))
         local r = Int(Call(P_GET, CO.KEY))
         funcLuaCommand(C.P_CLEAR, CO.KEY)
         Log("coach selector result", r)

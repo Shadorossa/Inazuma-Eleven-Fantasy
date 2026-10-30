@@ -36,7 +36,48 @@ function R.new(slot, seed)
     phases_done = 0, squad = {}, slots = {}, formation = 0, pending = nil, hdls = {}, won = 0, lost = 0,
     rivals_rule = R.RIVALS_RULE, coach = "", coach_since = 0, coach_items_given = true, beaten = {}, beaten_phase = {},
     items = {}, talents = {},
+    -- v2 (docs/game/mods/inarogue-loop-v2.md §4.6): the board rule, the stages, the run currency, the modifiers, the
+    -- run's counters
+    board_rule = 0, stages = 0, endless = false, coins = 0, ascension = 0, challenges = {}, weekly = 0,
+    stats = R.new_stats(), offer = nil, outro = false, victory = false, talent_of = {},
   }
+end
+
+-- the counters a run keeps for its summary
+function R.new_stats()
+  return { wins = 0, elites = 0, bosses = 0, recruits = 0, coins_earned = 0, items = 0, events = 0, goals = 0 }
+end
+
+local function stats_of(v)
+  local o = R.new_stats()
+  if type(v) ~= "table" then return o end
+  for k in pairs(o) do o[k] = math.max(U.int(v[k], 0), 0) end
+  return o
+end
+
+-- the open offer of the node in progress (lib/rogue/offers.lua): { kind, node, choices = { { what, id, price, tier } } }
+local function offer_of(v)
+  if type(v) ~= "table" or type(v.kind) ~= "string" then return nil end
+  local o = { kind = v.kind, node = U.int(v.node, -1), key = type(v.key) == "string" and v.key or "", choices = {},
+    queue = strs(v.queue), gain = math.max(U.int(v.gain, 0), 0), exclusive = U.val(v.exclusive) ~= false }
+  for _, c in ipairs(type(v.choices) == "table" and v.choices or {}) do
+    if type(c) == "table" then
+      o.choices[#o.choices + 1] = { what = tostring(c.what or ""), id = type(c.id) == "string" and c.id or U.int(c.id, 0),
+        price = U.int(c.price, 0), tier = U.int(c.tier, 0), taken = c.taken == true, uid = U.int(c.uid, 0) }
+    end
+  end
+  return o
+end
+
+local function offer_json(o)
+  if not o then return nil end
+  local list = {}
+  for _, c in ipairs(o.choices) do
+    list[#list + 1] = J.obj({ { "what", c.what }, { "id", c.id }, { "price", c.price }, { "tier", c.tier },
+      { "taken", c.taken == true }, { "uid", c.uid or 0 } })
+  end
+  return J.obj({ { "kind", o.kind }, { "node", o.node }, { "key", o.key or "" }, { "choices", J.arr(list) },
+    { "queue", J.arr(o.queue or {}) }, { "gain", o.gain or 0 }, { "exclusive", o.exclusive ~= false } })
 end
 
 -- the blocks' saved counts of an item: { [name] = number } (lib/rogue/svc_blocks.lua)
@@ -73,6 +114,17 @@ local function talents_of(v)
   return o
 end
 
+-- the run talents: { [bank uid] = talent key } (lib/rogue/talent_pool.lua)
+local function talent_of_json(v)
+  local o = {}
+  if type(v) ~= "table" then return o end
+  for k, x in pairs(v) do
+    local uid = tonumber(k)
+    if uid and type(x) == "string" and x ~= "" then o[uid] = x end
+  end
+  return o
+end
+
 -- a parsed file -> run | nil, why (the DLL's serde rules: the first seven fields are required)
 function R.from_json(j, slot)
   if type(j) ~= "table" then return nil, "not an object" end
@@ -85,7 +137,8 @@ function R.from_json(j, slot)
   local pending = nil
   if type(p) == "table" then
     pending = { node = U.int(p.node, 0), stage = U.int(p.stage, 0), game = U.int(p.game, 0), diff = U.int(p.diff, 0),
-      stadium = U.int(p.stadium, 0), level = U.int(p.level, 0) }
+      stadium = U.int(p.stadium, 0), level = U.int(p.level, 0), result = U.int(p.result, 0), gf = U.int(p.gf, 0),
+      ga = U.int(p.ga, 0) }
   end
   local items = U.val(j.coach_items_given)
   return {
@@ -95,7 +148,29 @@ function R.from_json(j, slot)
     lost = U.int(j.lost, 0), rivals_rule = U.int(j.rivals_rule, 0), coach = type(j.coach) == "string" and j.coach or "",
     coach_since = U.int(j.coach_since, 0), coach_items_given = (items == nil) and true or (items == true),
     beaten = strs(j.beaten), beaten_phase = strs(j.beaten_phase), items = items_of(j.items), talents = talents_of(j.talents),
+    board_rule = U.int(j.board_rule, 0), stages = U.int(j.stages, 0), endless = U.val(j.endless) == true,
+    coins = math.max(U.int(j.coins, 0), 0), ascension = math.max(U.int(j.ascension, 0), 0), challenges = strs(j.challenges),
+    weekly = U.int(j.weekly, 0), stats = stats_of(U.val(j.stats)), offer = offer_of(U.val(j.offer)),
+    outro = U.val(j.outro) == true, victory = U.val(j.victory) == true, talent_of = talent_of_json(U.val(j.talent_of)),
   }
+end
+
+local function talent_pairs(t)
+  local uids = {}
+  for uid in pairs(t or {}) do uids[#uids + 1] = uid end
+  table.sort(uids)
+  local o = {}
+  for _, uid in ipairs(uids) do o[#o + 1] = { string.format("%.0f", uid), t[uid] } end
+  return o
+end
+
+local function stats_pairs(st)
+  local o = {}
+  local names = {}
+  for k in pairs(st or {}) do names[#names + 1] = k end
+  table.sort(names)
+  for _, k in ipairs(names) do o[#o + 1] = { k, st[k] } end
+  return o
 end
 
 function R.to_json(r)
@@ -116,7 +191,8 @@ function R.to_json(r)
   if r.pending then
     local p = r.pending
     pend = J.obj({ { "node", p.node }, { "stage", p.stage }, { "game", p.game }, { "diff", p.diff },
-      { "stadium", p.stadium }, { "level", p.level } })
+      { "stadium", p.stadium }, { "level", p.level }, { "result", p.result or 0 }, { "gf", p.gf or 0 },
+      { "ga", p.ga or 0 } })
   end
   return J.pretty(J.obj({
     { "version", r.version }, { "slot", r.slot }, { "seed", r.seed }, { "phase", r.phase }, { "cur", r.cur },
@@ -126,6 +202,10 @@ function R.to_json(r)
     { "coach", r.coach }, { "coach_since", r.coach_since }, { "coach_items_given", r.coach_items_given },
     { "beaten", J.arr(r.beaten) }, { "beaten_phase", J.arr(r.beaten_phase) },
     { "items", J.arr(items) }, { "talents", J.obj(talents) },
+    { "board_rule", r.board_rule or 0 }, { "stages", r.stages or 0 }, { "endless", r.endless == true },
+    { "coins", r.coins or 0 }, { "ascension", r.ascension or 0 }, { "challenges", J.arr(r.challenges or {}) },
+    { "weekly", r.weekly or 0 }, { "stats", J.obj(stats_pairs(r.stats)) }, { "offer", offer_json(r.offer) },
+    { "outro", r.outro == true }, { "victory", r.victory == true }, { "talent_of", J.obj(talent_pairs(r.talent_of)) },
   }))
 end
 

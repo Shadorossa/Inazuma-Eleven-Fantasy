@@ -41,8 +41,8 @@ local NAME_MAX = 40
 local SAVE_FULL_VALUES = 6 + 1 + 5 + 1 + PASSIVE_SLOTS * 2 + 1
 local TWO32 = 4294967296
 
-local function info(...) VRFW.log("player sets:", ...) end
-local function err(...) VRFW.error("player sets:", ...) end
+require "VRFW/lib/basics"
+local info, _, err = VRFW.logger("player sets")
 
 -- ---------------------------------------------------------------------------------------------- helpers
 
@@ -53,24 +53,14 @@ local function read_memory(kind, address)
 end
 
 -- a command argument as a number (numbers and numeric strings)
-local function number_of(value)
-  if type(value) == "number" then return value end
-  if type(value) == "string" then return tonumber(value) end
-  return nil
-end
+local function number_of(value) return VRFW.value.num(value, nil) end
 
 -- an integer toward zero, nil when not a number
-local function integer_of(value)
-  value = number_of(value)
-  if not value or value ~= value then return nil end
-  return value >= 0 and math.floor(value) or math.ceil(value)
-end
+local function integer_of(value) return VRFW.value.int(value, nil) end
 
+local Id = require "VRFW/lib/ids"
 -- the unsigned 32-bit value the game stores (T2B ints arrive signed)
-local function u32(value)
-  value = integer_of(value) or 0
-  return value % TWO32
-end
+local u32 = Id.u32
 
 local function hex8(value)
   value = u32(value)

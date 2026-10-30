@@ -27,3 +27,23 @@ function BetterUI.PositionLook(positionType)
   end
   return positionType
 end
+
+-- CMND_BETTERUI_FORMATION_CARD_SPREAD() -> the tunables of config.toml [formation_card_spread] for
+-- assets\lua\_all\formation_card_spread.lua, or nil when the section is missing or enabled = false.
+local CARD_SPREAD_KEYS = { "card_width", "card_height", "gap", "smallest_scale", "scale_step",
+                           "pitch_side", "pitch_top", "pitch_bottom" }
+
+function BetterUI.FormationCardSpread()
+  if VRFW.files.config("formation_card_spread.enabled") ~= true then
+    return nil
+  end
+  local settings = {}
+  for _, key in ipairs(CARD_SPREAD_KEYS) do
+    local value = VRFW.files.config("formation_card_spread." .. key)
+    if type(value) ~= "number" then
+      return nil
+    end
+    settings[key] = value
+  end
+  return settings
+end

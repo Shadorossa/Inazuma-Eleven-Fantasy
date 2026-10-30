@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Hacha del Azote negro (Executioner's Axe, whs01880, cut-in ev60_01880).
+#
+# In the cut-in's last shot (c0400) the ball is struck at 2.46 m, drops to 0.55 m within 3 m and skims the pitch at
+# 0.35 m. Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level skim from the kick
+# point to the goal at 0.35 m (research/scripts/executioners_axe_ball_fx.py FLIGHT_H: keep the two equal).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Hacha del Azote negro (whs01880).
+[[edit]]
+target = "whs01880"
+trajectory = { points = [[0.0, 0.35]], straight = true, unblockable = false }

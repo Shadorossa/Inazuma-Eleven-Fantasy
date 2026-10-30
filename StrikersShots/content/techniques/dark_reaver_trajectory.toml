@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Desolación eterna (Dark Reaver, whs01930, cut-in ev60_01930).
+#
+# Measured: in the last cut (c0500) the event ball is kicked 12.8 m up (~412) and dives along a gently curving path to
+# 3.8 m, 33.5 m on, where the cut-in ends (488). Flight (owner's rule 2026-10-24: every aura shot a straight level
+# line): one straight level line from the kick point to the goal, the ball centre at 2.0 m the whole way, so the dark
+# whips (reaching ~1.7 m under the ball at x0.45) and the breath rings (~0.7 m round the axis) stay clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Desolación eterna (whs01930).
+[[edit]]
+target = "whs01930"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

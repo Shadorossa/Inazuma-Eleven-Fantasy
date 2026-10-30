@@ -1,8 +1,9 @@
 -- Derives the uniform of a card's own team from game data (mod overlays included); names no character, team or kit.
--- Kit.of(card) -> uniform, flags, source   (card = chara_param id; uniform 0 = none found; flags = the model's look
---   bits: 2 a goalkeeper, 16 a coach card, 32 a manager card (their own clothes, as the retail team dock asks);
---   source = "belong" | "roster" | "none")
+-- Kit.of(card[, team]) -> uniform, flags, source   (card = chara_param id; uniform 0 = none found; flags = the model's
+--   look bits: 2 a goalkeeper, 16 a coach card, 32 a manager card (their own clothes, as the retail team dock asks);
+--   source = "team" | "belong" | "roster" | "none")
 -- Lookup chain, first hit wins:
+--   0. team: the caller names the team that dresses the card (team_config id), its `uniform`;
 --   1. belong: the character's teams in belong_team_config, kit column of the series era, then the team's other eras;
 --   2. roster: the first team_config team listing the card, its `uniform`;
 --   3. none: 0 (caller keeps its default).
@@ -10,11 +11,8 @@
 
 local M = {}
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v ~= v then return 0 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 local function col(row, ...)
   for i = 1, select("#", ...) do
@@ -154,11 +152,12 @@ end
 local function roster_kit(card)
   if D.roster == nil then
     D.roster = {}
+    D.team_uniform = {}
     local t0 = VRFW.now()
     local ok, err = pcall(function()
       local key = key_of("team/team", "data/common/gamedata/team/team_config_*.cfg.bin")
       local pu = pos_of("team/team", "uniform") or 6
-      local teams = VRFW.table.raw(key, "SOCCER_TEAM_INFO", { pu })
+      local teams = VRFW.table.raw(key, "SOCCER_TEAM_INFO", { 1, pu })
       local refs = VRFW.table.raw(key, "SOCCER_TEAM_INFO_REF_MEMBER", { 1, 2 })
       local members = VRFW.table.raw(key, "SOCCER_TEAM_MEMBER", { 1 })
       if type(teams) ~= "table" or type(refs) ~= "table" or type(members) ~= "table" or #refs ~= #teams then
@@ -166,6 +165,8 @@ local function roster_kit(card)
       end
       for i, t in ipairs(teams) do
         local u = resolve(t[pu])
+        local team_id = u32(t[1])
+        if u and team_id ~= 0 and D.team_uniform[team_id] == nil then D.team_uniform[team_id] = u end
         local a, n = tonumber(refs[i][1]), tonumber(refs[i][2])
         if u and a and n then
           for k = a + 1, a + n do
@@ -181,21 +182,34 @@ local function roster_kit(card)
   return D.roster[card]
 end
 
+-- team_config id -> its uniform (read with the rosters)
+local function team_kit(team)
+  roster_kit(0)
+  return D.team_uniform[team]
+end
+
 -- Reads the tables now (script load, off the game thread); team rosters wait for first use.
 function M.prepare()
   read_all()
 end
 
-function M.of(card)
-  card = u32(card)
-  local c = CACHE[card]
+function M.of(card, team)
+  card, team = u32(card), u32(team)
+  local cache_key = team ~= 0 and (card .. ":" .. team) or card
+  local c = CACHE[cache_key]
   if c ~= nil then return c[1], c[2], c[3] end
   read_all()
   local u, src, flags = nil, "none", 0
+  if team ~= 0 then
+    u = team_kit(team)
+    if u then src = "team" end
+  end
   local p = D.card[card]
   if p ~= nil then
-    u = belong_kit(p[1])
-    if u then src = "belong" end
+    if u == nil then
+      u = belong_kit(p[1])
+      if u then src = "belong" end
+    end
     if p[2] == 1 then flags = 2 end        -- main position 1 = goalkeeper
   end
   if u == nil and card ~= 0 then
@@ -209,7 +223,7 @@ function M.of(card)
   elseif p ~= nil and p[4] then
     flags = 32
   end
-  CACHE[card] = { u or 0, flags, src }
+  CACHE[cache_key] = { u or 0, flags, src }
   return u or 0, flags, src
 end
 

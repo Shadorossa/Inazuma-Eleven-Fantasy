@@ -1,23 +1,39 @@
--- Battle Bay Deluxe: the Torneo's rules, pure (no game access, no VRFW): the draw, the group stage, the knockout tree,
--- the simulated matches and the player's progress (docs/game/modes/bb-tournament.md §4). scripts\tournament.lua owns
--- the run (save blob, the campaign session block, the commands); this file only turns numbers into numbers, so the
--- same code runs in the game and in the offline harness (research/scripts/bb_tournament_preview.py).
+-- Battle Bay Deluxe: the Torneo's rules, pure (no game access): the draw, the group stage, the knockout tree, the
+-- simulated matches and the player's progress (docs/game/modes/bb-tournament.md §4). scripts\tournament.lua owns the
+-- run (save blob, the campaign session block, the commands); this file only turns numbers into numbers. The round
+-- robin, the standings, the goal draws and the seed order are the framework's (VRFW/lib/competition); the rules
+-- (3 / 1 / 0 points, the tie-breaks, the match model) are this file's.
 --
 -- A run is one plain table (JSON in the save blob, arrays dense, no nil holes):
---   v, fmt ("knockout" | "groups"), size (a power of two, T.sizes), seed { hi, lo }, player (the player's entrant id),
+--   v, fmt ("knockout" | "groups" | "league"), size (a power of two, T.sizes; a league: an even count), seed { hi, lo },
+--   player (the player's entrant id), double (league: every pairing twice, home and away),
 --   teams[e] (team hash of entrant e), str[e] (strength), lot[e] (tie-break lot),
 --   groups[g] = { e1, e2, e3, e4 } (groups only), gm[g] = { match × 6 } (groups only),
 --   ko[r] = { match … } (round r of the knockout tree; built when its entrants are known),
---   stage ("groups" | "ko" | "over"), md (group matchday 1..3), kr (knockout round), k (player matches played),
+--   stage ("groups" | "league" | "ko" | "over"), md (matchday 1..mds), mds (the round robin's matchdays: 3 in a group,
+--   size - 1 in a league, twice that with double), kr (knockout round), k (player matches played),
 --   outcome (false | "champion" | "out"), place { stage, round, pos }, last { stage, round } (the round just played).
 -- A match: { a, b, ga, gb, pa, pb, et, w, done, md } (a / b entrant ids or 0 = not known yet; pa / pb the shoot-out;
 -- et = extra time played; w = the winner's entrant id, 0 = draw / not played).
 
+local Competition = require "VRFW/lib/competition"
+
 local T = {}
+
+-- the round-robin stages: their matches live in run.gm[g] by matchday (a league is ONE group of every entrant)
+local function round_robin(stage)
+  return stage == "groups" or stage == "league"
+end
+T.round_robin = round_robin
 
 local floor, exp, min, max = math.floor, math.exp, math.min, math.max
 
-T.FORMATS = { knockout = true, groups = true }
+T.FORMATS = { knockout = true, groups = true, league = true }
+-- the format numbers of the commands (CMND_BBD_TOURN_ARM / INFO): 0 knockout, 1 groups, 2 league
+T.FORMAT_IDS = { knockout = 0, groups = 1, league = 2 }
+T.FORMAT_OF = { [0] = "knockout", [1] = "groups", [2] = "league" }
+-- the league: an even number of teams (every matchday pairs them all), MIN .. MAX in steps of STEP
+T.LEAGUE = { MIN = 4, MAX = 36, STEP = 2 }
 -- 1.5.15 (owner: no byes, ever): the number of teams is always a power of two, from MIN_SIZE to MAX_SIZE (the
 -- bracket screen shows every team at once: 64 = 32 rows per side, 1.5.44: 4 .. 64); a group stage needs at least 2
 -- groups of 4. 1.5.47 (owner 2026-10-13): no cap from the campaign block's 7 rivals any more (a tournament match is
@@ -41,27 +57,15 @@ local function isize(n)
   if type(n) ~= "number" or n < T.MIN_SIZE or n > T.MAX_SIZE or n ~= floor(n) then
     return false
   end
-  while n > 1 and n % 2 == 0 do
-    n = n / 2
-  end
-  return n == 1
+  return Competition.is_power_of_two(n)
 end
 T.is_size = isize
 
--- the largest power of two <= n (0 below 1)
-function T.pow2_floor(n)
-  if type(n) ~= "number" or n < 1 then
-    return 0
+-- player matches of a format / size (the champion's path); a league: every other team once (twice with double)
+function T.player_matches(fmt, size, double)
+  if fmt == "league" then
+    return (size - 1) * (double and 2 or 1)
   end
-  local p = 1
-  while p * 2 <= n do
-    p = p * 2
-  end
-  return p
-end
-
--- player matches of a format / size (the champion's path)
-function T.player_matches(fmt, size)
   local ko = size
   local n = 0
   if fmt == "groups" then
@@ -75,10 +79,25 @@ function T.player_matches(fmt, size)
   return n
 end
 
--- the most matches a player can play in any tournament this file builds (the loading telop's widest path)
+-- the player matches of a run
+function T.run_matches(run)
+  return T.player_matches(run.fmt, run.size, run.double)
+end
+
+-- the most matches a player can play in any knockout / group tournament this file builds (a league's path is shown
+-- through a window of it: scripts/tournament.lua Tn.path_window)
 T.MAX_PLAYER_MATCHES = math.max(T.player_matches("knockout", T.MAX_SIZE), T.player_matches("groups", T.MAX_SIZE))
 
+local function league_size(n)
+  local L = T.LEAGUE
+  return type(n) == "number" and n == floor(n) and n >= L.MIN and n <= L.MAX and (n - L.MIN) % L.STEP == 0
+    and n % 2 == 0
+end
+
 function T.valid(fmt, size)
+  if fmt == "league" then
+    return league_size(size)
+  end
   return T.FORMATS[fmt] == true and isize(size) and (fmt ~= "groups" or size >= T.MIN_GROUPS_SIZE)
     and T.player_matches(fmt, size) <= T.MAX_PLAYER_MATCHES
 end
@@ -87,6 +106,14 @@ end
 -- pool can field, the player's included; nil = no cap)
 function T.sizes(fmt, cap)
   local out = {}
+  if fmt == "league" then
+    for n = T.LEAGUE.MIN, T.LEAGUE.MAX, T.LEAGUE.STEP do
+      if T.valid(fmt, n) and (cap == nil or n <= cap) then
+        out[#out + 1] = n
+      end
+    end
+    return out
+  end
   local n = T.MIN_SIZE
   while n <= T.MAX_SIZE do
     if T.valid(fmt, n) and (cap == nil or n <= cap) then
@@ -114,31 +141,17 @@ local function unit(r)
   return r:below(2147483648) / 2147483648
 end
 
+-- a goal count of mean lambda (at most 13 draws)
 local function poisson(r, lambda)
-  local L, k, p = exp(-lambda), 0, 1
-  repeat
-    k = k + 1
-    p = p * unit(r)
-  until p <= L or k > 12
-  return k - 1
+  return Competition.poisson(function()
+    return unit(r)
+  end, lambda, 12)
 end
 
 -- ------------------------------------------------------------------------------------------------ the draw
 
 -- standard knockout seed order of n leaves (1 = best seed): 1 n/2+1 … so seeds 1 and 2 meet only in the final
-local function seed_order(n)
-  local o = { 1 }
-  while #o < n do
-    local m = #o * 2
-    local nx = {}
-    for _, s in ipairs(o) do
-      nx[#nx + 1] = s
-      nx[#nx + 1] = m + 1 - s
-    end
-    o = nx
-  end
-  return o
-end
+local seed_order = Competition.seed_order
 T.seed_order = seed_order
 
 -- entrants sorted strongest first (ties: lot)
@@ -156,8 +169,23 @@ local function by_strength(run, ids)
   return v
 end
 
+-- the league's schedule (circle method): entrant order `ids` (n even), the first fixed and the others turning one
+-- place a matchday; n - 1 matchdays, each team once per matchday; the fixed team's side alternates by matchday and
+-- every other pair by its place, so home and away even out. double: the same matchdays again with the sides swapped.
+local function league_schedule(ids, double)
+  local out = {}
+  for md, day in ipairs(Competition.round_robin(ids, { double = double, rotate = "left" })) do
+    for _, m in ipairs(day) do
+      out[#out + 1] = { a = m[1], b = m[2], md = md }
+    end
+  end
+  return out
+end
+T.league_schedule = league_schedule
+
 -- a new run. opts: fmt, size, seed { hi, lo }, player (team hash), player_str, opponents { { team, str } … } (at
--- least size - 1, already drawn in random order by the caller), seeded, mk (generator factory). nil, why on bad input.
+-- least size - 1, already drawn in random order by the caller), seeded, double (league), mk (generator factory).
+-- nil, why on bad input.
 function T.new(opts)
   local fmt, size = opts.fmt, opts.size
   if not T.valid(fmt, size) then
@@ -169,8 +197,8 @@ function T.new(opts)
   local run = {
     v = 1, fmt = fmt, size = size, seed = { opts.seed[1], opts.seed[2] }, player = 1,
     teams = { opts.player }, str = { opts.player_str or 0 }, lot = {},
-    stage = fmt == "groups" and "groups" or "ko", md = 1, kr = 1, k = 0, outcome = false,
-    place = false, last = false, ko = {}, seeded = opts.seeded ~= false,
+    stage = fmt == "knockout" and "ko" or fmt, md = 1, mds = 3, kr = 1, k = 0, outcome = false,
+    place = false, last = false, ko = {}, seeded = opts.seeded ~= false, double = fmt == "league" and opts.double == true,
   }
   for i = 1, size - 1 do
     run.teams[i + 1] = opts.opponents[i].team
@@ -185,7 +213,18 @@ function T.new(opts)
   for i, e in ipairs(ids) do
     run.lot[e] = i
   end
-  if fmt == "groups" then
+  if fmt == "league" then
+    -- one group of every entrant (the lot's order: the player's place in the schedule is random)
+    local order = {}
+    for i, e in ipairs(ids) do
+      order[i] = e
+    end
+    run.groups, run.gm = { order }, { {} }
+    for i, m in ipairs(league_schedule(order, run.double)) do
+      run.gm[1][i] = { a = m.a, b = m.b, md = m.md, ga = 0, gb = 0, pa = 0, pb = 0, et = false, w = 0, done = false }
+    end
+    run.mds = (size - 1) * (run.double and 2 or 1)
+  elseif fmt == "groups" then
     local G = size / 4
     run.groups, run.gm = {}, {}
     local order
@@ -288,60 +327,23 @@ end
 
 -- ------------------------------------------------------------------------------------------------ group tables
 
--- the table of group g, best first: { { e, pl, w, d, l, gf, ga, gd, pts } … }
+-- the table of group g, best first: { { e, pl, w, d, l, gf, ga, gd, pts } … }; 3 points a win, 1 a draw; level teams by
+-- goal difference, goals, head to head (the points of their matches, then their goal difference; a league with double
+-- plays two), then the lot
+local TABLE_TIEBREAKS = { "points", "goal_diff", "goals_for", "head_to_head", "lot" }
+
 function T.table(run, g)
-  local rows, by = {}, {}
-  for _, e in ipairs(run.groups[g]) do
-    local x = { e = e, pl = 0, w = 0, d = 0, l = 0, gf = 0, ga = 0, gd = 0, pts = 0 }
-    rows[#rows + 1] = x
-    by[e] = x
-  end
+  local results = {}
   for _, m in ipairs(run.gm[g]) do
     if m.done then
-      local A, B = by[m.a], by[m.b]
-      A.pl, B.pl = A.pl + 1, B.pl + 1
-      A.gf, A.ga, B.gf, B.ga = A.gf + m.ga, A.ga + m.gb, B.gf + m.gb, B.ga + m.ga
-      if m.ga > m.gb then
-        A.w, B.l, A.pts = A.w + 1, B.l + 1, A.pts + 3
-      elseif m.gb > m.ga then
-        B.w, A.l, B.pts = B.w + 1, A.l + 1, B.pts + 3
-      else
-        A.d, B.d, A.pts, B.pts = A.d + 1, B.d + 1, A.pts + 1, B.pts + 1
-      end
+      results[#results + 1] = { m.a, m.b, m.ga, m.gb }
     end
   end
-  for _, x in ipairs(rows) do
-    x.gd = x.gf - x.ga
+  local rows = {}
+  for i, x in ipairs(Competition.standings(run.groups[g], results, { tiebreaks = TABLE_TIEBREAKS, lot = run.lot })) do
+    rows[i] = { e = x.team, pl = x.played, w = x.won, d = x.drawn, l = x.lost, gf = x.goals_for, ga = x.goals_against,
+      gd = x.goal_diff, pts = x.points }
   end
-  -- head to head between two teams level on points, goal difference and goals
-  local function h2h(x, y)
-    for _, m in ipairs(run.gm[g]) do
-      if m.done and ((m.a == x.e and m.b == y.e) or (m.a == y.e and m.b == x.e)) then
-        local gx = m.a == x.e and m.ga or m.gb
-        local gy = m.a == x.e and m.gb or m.ga
-        if gx ~= gy then
-          return gx > gy
-        end
-      end
-    end
-    return nil
-  end
-  table.sort(rows, function(x, y)
-    if x.pts ~= y.pts then
-      return x.pts > y.pts
-    end
-    if x.gd ~= y.gd then
-      return x.gd > y.gd
-    end
-    if x.gf ~= y.gf then
-      return x.gf > y.gf
-    end
-    local h = h2h(x, y)
-    if h ~= nil then
-      return h
-    end
-    return run.lot[x.e] < run.lot[y.e]
-  end)
   return rows
 end
 
@@ -372,11 +374,11 @@ function T.pending(run)
     return nil
   end
   local p = run.player
-  if run.stage == "groups" then
+  if round_robin(run.stage) then
     for g, gm in ipairs(run.gm) do
       for _, m in ipairs(gm) do
         if m.md == run.md and not m.done and (m.a == p or m.b == p) then
-          return m, "groups", run.md, g
+          return m, run.stage, run.md, g
         end
       end
     end
@@ -420,7 +422,7 @@ end
 
 -- simulate every match of the current round that is still open (the player's own excluded unless `all`)
 local function sim_round(run, cfg, mk, all)
-  if run.stage == "groups" then
+  if round_robin(run.stage) then
     for g, gm in ipairs(run.gm) do
       for i, m in ipairs(gm) do
         if m.md == run.md and not m.done and (all or (m.a ~= run.player and m.b ~= run.player)) then
@@ -446,8 +448,24 @@ end
 -- after the current round is complete: next matchday / the knockout / the next knockout round; sets the outcome
 local function advance(run)
   local p = run.player
+  if run.stage == "league" then
+    if run.md < run.mds then
+      run.md = run.md + 1
+      return
+    end
+    -- the last matchday played: the first of the table is the champion, the player's place is his result
+    local pos = 0
+    for i, x in ipairs(T.table(run, 1)) do
+      if x.e == p then
+        pos = i
+      end
+    end
+    run.stage = "over"
+    finish(run, pos == 1 and "champion" or "out", "league", run.md, pos)
+    return
+  end
   if run.stage == "groups" then
-    if run.md < 3 then
+    if run.md < (run.mds or 3) then
       run.md = run.md + 1
       return
     end
@@ -487,8 +505,10 @@ end
 
 -- the player's result of the pending match (goals for / against; shoot-out; extra time): records it, simulates the
 -- rest of the round and moves on. A knockout draw without a shoot-out winner is a defeat (it cannot happen with the
--- tournament's rulebook; logged by the caller). Returns the round just completed { stage, round } or nil, why.
-function T.record(run, cfg, mk, gf, ga, pf, pa, et)
+-- tournament's rulebook; logged by the caller). outcome = the game's own result ("win" / "loss" / "draw", optional): it
+-- names the winner of a level score the shoot-out goals do not. Returns the round just completed { stage, round } or
+-- nil, why.
+function T.record(run, cfg, mk, gf, ga, pf, pa, et, outcome)
   local m, stage, round = T.pending(run)
   if not m then
     return nil, "no pending match"
@@ -501,6 +521,8 @@ function T.record(run, cfg, mk, gf, ga, pf, pa, et)
     w = m.a
   elseif kb > ka or (ka == kb and qb > qa) then
     w = m.b
+  elseif outcome == "win" or outcome == "loss" then
+    w = ((outcome == "win") == mine_a) and m.a or m.b
   end
   if stage == "ko" and w == 0 then
     w = mine_a and m.b or m.a
@@ -513,26 +535,6 @@ function T.record(run, cfg, mk, gf, ga, pf, pa, et)
   return run.last
 end
 
--- after an elimination: simulate every remaining match (the tree up to its champion)
-function T.sim_rest(run, cfg, mk)
-  local guard = 0
-  while run.stage ~= "over" and guard < 64 do
-    guard = guard + 1
-    sim_round(run, cfg, mk, true)
-    if run.stage == "groups" then
-      local md = run.md
-      advance(run)
-      if run.stage == "groups" and run.md == md then
-        break
-      end
-    else
-      if not next_round(run) then
-        run.stage = "over"
-      end
-    end
-  end
-end
-
 -- after an elimination, one round at a time (the player watches each): simulates the next open round (a group
 -- matchday or a knockout round) and moves on. Returns the round just simulated { stage, round }, nil when the
 -- tournament is over.
@@ -541,10 +543,10 @@ function T.sim_step(run, cfg, mk)
     return nil
   end
   local st = run.stage
-  local rd = st == "groups" and run.md or run.kr
+  local rd = round_robin(st) and run.md or run.kr
   sim_round(run, cfg, mk, true)
   run.last = { stage = st, round = rd }
-  if st == "groups" then
+  if round_robin(st) then
     advance(run)
   elseif not next_round(run) then
     run.stage = "over"
@@ -552,8 +554,15 @@ function T.sim_step(run, cfg, mk)
   return run.last
 end
 
--- the champion's entrant id (0 = not decided)
+-- the champion's entrant id (0 = not decided): a league's first place once every matchday is played
 function T.champion(run)
+  if run.fmt == "league" then
+    if run.stage ~= "over" then
+      return 0
+    end
+    local t = T.table(run, 1)
+    return t[1] and t[1].e or 0
+  end
   local last = run.ko[#run.ko]
   if last and #last == 1 and last[1].done then
     return last[1].w

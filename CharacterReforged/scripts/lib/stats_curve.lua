@@ -40,13 +40,8 @@ local COL_VERSION, COL_GROWTH, COL_STATS, COL_LIBERTAD = 43, 44, 45, 54
 -- "character_reforged/<name>")
 M.T_ROW, M.T_VAL, M.T_CONST = "CharacterReforged.StatRow", "CharacterReforged.StatVal", "CharacterReforged.StatConst"
 
-local TWO32 = 4294967296
-
-function M.u32(v)
-  if type(v) ~= "number" then return 0 end
-  local n = v >= 0 and math.floor(v) or math.ceil(v)
-  return n % TWO32
-end
+local Id = require "VRFW/lib/ids"
+M.u32 = Id.u32
 
 local function round(x)
   if x >= 0 then return math.floor(x + 0.5) end

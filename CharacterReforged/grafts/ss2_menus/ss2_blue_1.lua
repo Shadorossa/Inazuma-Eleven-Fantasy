@@ -25,8 +25,8 @@ local evt_focus = 0                         -- focused item id (SendSkillIdToLua
 --@lib evt_menu_kit.lua#EVT_U32
 
 local function EVT_PSet(key, v)
-  funcLuaCommand(3363400568, key)
-  funcLuaCommand(3860611758, key, 0, v, 1)
+  VRFW_Param.Clear(key)
+  VRFW_Param.Set(key, v)
 end
 
 local EVT_RetailOnInit = OnInit
@@ -34,7 +34,7 @@ function OnInit()
   if EVT_SS2_BLUE_GEN ~= EVT_BLUE_GEN then -- an earlier copy of this block: pass through (see the top)
     return EVT_RetailOnInit()
   end
-  evt_pick = funcLuaCommand(2947612279, EVT_KEY_PICK) and (tonumber(funcLuaCommand(3522198769, EVT_KEY_PICK)) == 3)
+  evt_pick = VRFW_Param.Has(EVT_KEY_PICK) and (tonumber(VRFW_Param.Get(EVT_KEY_PICK)) == 3)
   EVT_RetailOnInit()
 end
 

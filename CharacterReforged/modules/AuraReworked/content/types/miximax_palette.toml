@@ -15,3 +15,4 @@ face = { type = "string", doc = "face skin colour \"#RRGGBB\" (the face atlas); 
 iris = { type = "string", doc = "eye colour \"#RRGGBB\"; \"\" = the eyes keep their colour" }
 skin = { type = "string", doc = "body skin colour \"#RRGGBB\" (multiplied into the body's skin part)" }
 accessories = { type = "list", doc = "pieces his miximax look carries as a partner: \"exmesh_1\"..\"exmesh_3\" (his chara_model extra mesh: put on the base in a free extra-mesh slot) or a head mesh name (editor only); an item may be { piece, color = \"#RRGGBB\" } (the colour is stored, not applied yet)" }
+zones = { type = "table", doc = "the painted zones of his head, used when he is the base: { face = \"<png>\", hair = \"<png>\" } (mod-relative paths); over the face atlas (_10) red = eyebrows, green = face skin, blue = eyes; over the hair swatch (_20) red = hair. Only the painted pixels are recoloured; left out = the colour keys decide" }

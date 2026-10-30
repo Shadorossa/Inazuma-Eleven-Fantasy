@@ -1,0 +1,29 @@
+# «Desfile de pingüinos» (Royal Penguin Parade, whs10100, forest; cut-in ev60_10100): while the ball flies to the goal
+# it wears the end of the cut-in's last shot (c0400, frame 551) instead of the plain forest special-shot aura
+# (ega0075d): the ball inside the king penguin's rainbow burst (rays, ring and glow, camera-facing) with its own light,
+# the crowned king penguin flying 2 m behind it and the four little penguins with their lights 5-9 m behind (brought
+# nearer than in the cut-in), all at their own size with the cut-in's look, each swaying gently; the white wind and the
+# penguins' coloured tails streaming back, never stretched, their ends fading. The wind, the tails and the penguins
+# behind the ball come out of the kick point as the ball flies (distance clock).
+# The object is ev6101pp00 (effect/event/ev60/ev6101pp00/), built by research/scripts/penguin_parade_ball_fx.py from
+# the cut-in's effect object ev60101000 and the penguin models (ev60_10100 / ev60_10101 / ev60_10102); x1.
+# docs/game/media/penguin-parade-ball-fx.md.
+# The trigger copies the forest special-shot aura row (like): CB_SkillShootBallAura turns +Z along the ball's velocity
+# every frame. Its flight: content\techniques\penguin_parade_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from the game's
+# own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "penguin_parade"
+from = "ega0075d"
+object = "effect/event/ev60/ev6101pp00/ev6101pp00.objbin"
+
+[[shot_aura]]
+name = "penguin_parade"
+when = { techniques = ["whs10100"] }
+aura = "penguin_parade"
+like = "ega0075d"
+# the wind, tails and penguins behind come out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

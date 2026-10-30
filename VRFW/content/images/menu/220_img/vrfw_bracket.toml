@@ -1,0 +1,397 @@
+# VR-Framework: the knockout bracket screen's drawings (#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx): the white
+# quad, the connector looks and their lit halos, the rounded turns of the generic tree, the star, the crown, the
+# player's frame and the team strips. Read by assets\lua\screens\vrfw_bracket_menu.lua (sprites bound by the crc32 of
+# their names).
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket"
+size = [1024, 1024]
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_line"
+texture = "vrfw_bracket"
+x = 0
+y = 0
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_line.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_crown"
+texture = "vrfw_bracket"
+x = 24
+y = 0
+size = [72, 56]
+png = "vrfw_bracket/vrfw_bracket_crown.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_line_plain"
+texture = "vrfw_bracket"
+x = 100
+y = 0
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_line_plain.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_line_lit"
+texture = "vrfw_bracket"
+x = 124
+y = 0
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_line_lit.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_line_me"
+texture = "vrfw_bracket"
+x = 100
+y = 20
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_line_me.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_line_out"
+texture = "vrfw_bracket"
+x = 124
+y = 20
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_line_out.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_line_out_me"
+texture = "vrfw_bracket"
+x = 100
+y = 40
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_line_out_me.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_lit_h"
+texture = "vrfw_bracket"
+x = 264
+y = 168
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_lit_h.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_lit_v"
+texture = "vrfw_bracket"
+x = 288
+y = 168
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_lit_v.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_me_h"
+texture = "vrfw_bracket"
+x = 312
+y = 168
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_me_h.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_me_v"
+texture = "vrfw_bracket"
+x = 336
+y = 168
+size = [16, 16]
+png = "vrfw_bracket/vrfw_bracket_me_v.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_star"
+texture = "vrfw_bracket"
+x = 420
+y = 340
+size = [64, 64]
+png = "vrfw_bracket/vrfw_bracket_star.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_red"
+texture = "vrfw_bracket"
+x = 560
+y = 8
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_red.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_orange"
+texture = "vrfw_bracket"
+x = 560
+y = 88
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_orange.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_yellow"
+texture = "vrfw_bracket"
+x = 560
+y = 168
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_yellow.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_green"
+texture = "vrfw_bracket"
+x = 560
+y = 248
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_green.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_cyan"
+texture = "vrfw_bracket"
+x = 560
+y = 328
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_cyan.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_blue"
+texture = "vrfw_bracket"
+x = 560
+y = 408
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_blue.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_purple"
+texture = "vrfw_bracket"
+x = 560
+y = 488
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_purple.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_pink"
+texture = "vrfw_bracket"
+x = 560
+y = 568
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_pink.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_black"
+texture = "vrfw_bracket"
+x = 560
+y = 648
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_black.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_strip_silver"
+texture = "vrfw_bracket"
+x = 560
+y = 728
+size = [392, 72]
+png = "vrfw_bracket/vrfw_bracket_strip_silver.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_frame_l"
+texture = "vrfw_bracket"
+x = 560
+y = 808
+size = [408, 88]
+png = "vrfw_bracket/vrfw_bracket_frame_l.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_plain_down_left"
+texture = "vrfw_bracket"
+x = 0
+y = 520
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_plain_down_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_plain_down_right"
+texture = "vrfw_bracket"
+x = 128
+y = 520
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_plain_down_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_plain_up_left"
+texture = "vrfw_bracket"
+x = 256
+y = 520
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_plain_up_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_plain_up_right"
+texture = "vrfw_bracket"
+x = 384
+y = 520
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_plain_up_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_out_down_left"
+texture = "vrfw_bracket"
+x = 0
+y = 536
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_out_down_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_out_down_right"
+texture = "vrfw_bracket"
+x = 128
+y = 536
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_out_down_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_out_up_left"
+texture = "vrfw_bracket"
+x = 256
+y = 536
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_out_up_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_out_up_right"
+texture = "vrfw_bracket"
+x = 384
+y = 536
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_out_up_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_out_me_down_left"
+texture = "vrfw_bracket"
+x = 0
+y = 552
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_out_me_down_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_out_me_down_right"
+texture = "vrfw_bracket"
+x = 128
+y = 552
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_out_me_down_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_out_me_up_left"
+texture = "vrfw_bracket"
+x = 256
+y = 552
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_out_me_up_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_out_me_up_right"
+texture = "vrfw_bracket"
+x = 384
+y = 552
+size = [123, 11]
+png = "vrfw_bracket/vrfw_bracket_turn_out_me_up_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_lit_down_left"
+texture = "vrfw_bracket"
+x = 0
+y = 568
+size = [125, 13]
+png = "vrfw_bracket/vrfw_bracket_turn_lit_down_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_lit_down_right"
+texture = "vrfw_bracket"
+x = 128
+y = 568
+size = [125, 13]
+png = "vrfw_bracket/vrfw_bracket_turn_lit_down_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_lit_up_left"
+texture = "vrfw_bracket"
+x = 256
+y = 568
+size = [125, 13]
+png = "vrfw_bracket/vrfw_bracket_turn_lit_up_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_lit_up_right"
+texture = "vrfw_bracket"
+x = 384
+y = 568
+size = [125, 13]
+png = "vrfw_bracket/vrfw_bracket_turn_lit_up_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_me_down_left"
+texture = "vrfw_bracket"
+x = 0
+y = 584
+size = [125, 13]
+png = "vrfw_bracket/vrfw_bracket_turn_me_down_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_me_down_right"
+texture = "vrfw_bracket"
+x = 128
+y = 584
+size = [125, 13]
+png = "vrfw_bracket/vrfw_bracket_turn_me_down_right.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_me_up_left"
+texture = "vrfw_bracket"
+x = 256
+y = 584
+size = [125, 13]
+png = "vrfw_bracket/vrfw_bracket_turn_me_up_left.png"
+
+[[sprite]]
+atlas = "#/menu/220_img/vrfw_bracket/vrfw_bracket.g4tx"
+name = "vrfw_bracket_turn_me_up_right"
+texture = "vrfw_bracket"
+x = 384
+y = 584
+size = [125, 13]
+png = "vrfw_bracket/vrfw_bracket_turn_me_up_right.png"

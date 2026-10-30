@@ -1,11 +1,8 @@
 # Character Reforged: the player page's shared header row / white card on the skill table (evt_skill_slot_menu, the new
 # file of ss2_menus): the block of research/grafts/plate_pages with the host table host_skill.lua (no pages, fixed type
-# 9, no chart). Split out of plate_pages on 2026-10-14 (docs/refactor/aura-mods-split.md «Player page»): Inazuma Fantasy
-# ships its own merged evt_skill_slot_menu (it rebuilds ss2_menus with its blocks), which replaces this mod's while IF
-# is on, so IF rebuilds this graft too (`rebuilt_by`); the screen's file is one copy per VM either way.
+# 9, no chart). Split out of plate_pages on 2026-10-14 (docs/refactor/aura-mods-split.md «Player page»).
 name = "plate_pages_skill_host"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF's merged evt_skill_slot_menu carries it too (it replaces this mod's file)
 order = 975
 module = "lua_bridge"
 requires = ["ss2_menus"]   # the screen (its new file); the plate_hiper blocks never reach this file
@@ -24,4 +21,23 @@ path = "common/script/lua/menu/evt_skill_slot_menu.lua.bin"
   type = "append_block"
   src = "../plate_pages/plate_pages.lua"
   marker = "plate_pages plate"
-  include = { "@COMMON@" = "../plate_pages/plate_pages_common.lua", "@HOST@" = "../plate_pages/host_skill.lua" }
+
+    [files.ops.include]   # the block's own pieces (parts\*.lua) after the host's
+    "@COMMON@" = "../plate_pages/plate_pages_common.lua"
+    "@HOST@" = "../plate_pages/host_skill.lua"
+    "@PP_BAND@" = "../plate_pages/parts/band.lua"
+    "@PP_DOTS@" = "../plate_pages/parts/dots.lua"
+    "@PP_MOVES@" = "../plate_pages/parts/moves.lua"
+    "@PP_PASSIVES@" = "../plate_pages/parts/passives.lua"
+    "@PP_CAREER@" = "../plate_pages/parts/career.lua"
+    "@PP_HOST_CHART@" = "../plate_pages/parts/host_chart.lua"
+    "@PP_EMPTY_EQUIPMENT_HIPER@" = "../plate_pages/parts/empty_equipment_hiper.lua"
+    "@PP_STAT_ROWS@" = "../plate_pages/parts/stat_rows.lua"
+    "@PP_FORMS@" = "../plate_pages/parts/forms.lua"
+    "@PP_GAUGE_COPIES@" = "../plate_pages/parts/gauge_copies.lua"
+    "@PP_POINTER@" = "../plate_pages/parts/pointer.lua"
+    "@PP_ITEM_CARD@" = "../plate_pages/parts/item_card.lua"
+    "@PP_ITEM_CARD_LAYERS@" = "../plate_pages/parts/item_card_layers.lua"
+    "@PP_ITEM_CARD_EFFECT@" = "../plate_pages/parts/item_card_effect.lua"
+    "@PP_ITEM_CARD_STAT_ROWS@" = "../plate_pages/parts/item_card_stat_rows.lua"
+    "@PP_ITEM_CARD_SHOW@" = "../plate_pages/parts/item_card_show.lua"

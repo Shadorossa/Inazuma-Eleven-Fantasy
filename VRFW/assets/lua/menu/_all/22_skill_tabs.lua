@@ -19,17 +19,17 @@
 -- No engine call at load time.
 if VRFW_SkillTabs == nil then
   local ST = {
-    CMD_TABS = 2356136113,     -- CMND_VRFW_SKILL_TABS() -> n, category 1 … n (0 = off)
-    CMD_WINDOW = 1059402324,   -- CMND_VRFW_SKILL_TAB_WINDOW() -> start, count of the window in force
-    CMD_INFO = 83191686,       -- CMND_VRFW_SKILL_TAB_INFO(category) -> game index, icon, atlas, sprite, sprite off,
+    CMD_TABS = VRFW_Cmd.VRFW_SKILL_TABS,     -- CMND_VRFW_SKILL_TABS() -> n, category 1 … n (0 = off)
+    CMD_WINDOW = VRFW_Cmd.VRFW_SKILL_TAB_WINDOW,   -- CMND_VRFW_SKILL_TAB_WINDOW() -> start, count of the window in force
+    CMD_INFO = VRFW_Cmd.VRFW_SKILL_TAB_INFO,       -- CMND_VRFW_SKILL_TAB_INFO(category) -> game index, icon, atlas, sprite, sprite off,
                                --   text id, text, filter, filter group
-    TEXT_GET = 4074371074,     -- CMND_TEXT_GET(text id) -> the text in the game's language
-    LOG = 3661580131,          -- CMND_EVT_LOG
-    SET_TEXT = 1083631230,     -- CMND_SET_MENU_TEXT_STRING
-    VISIBLE = 711242136,       -- CMND_SET_LAYER_VISIBLE
+    TEXT_GET = VRFW_Cmd.TEXT_GET,     -- CMND_TEXT_GET(text id) -> the text in the game's language
+    LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
+    SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,     -- CMND_SET_MENU_TEXT_STRING
+    VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,       -- CMND_SET_LAYER_VISIBLE
     SET_SPRITE = 558735651,
     COLLISION = 855005857,     -- a layer instance's click zone on / off
-    HOVER = 2206938151,        -- a layer instance's hover focus on / off
+    HOVER = VRFW_Cmd.SET_ON_CHANGE_FOCUS_MOUSE,        -- a layer instance's hover focus on / off
     TAB_ITEM = 4044286600,     -- cmn06_20_list_tab_item (one plate instance per tab)
     TAB_NEW = 2834115499,      -- cmn01_10_new_icon_tab (the «!» badge, one instance per plate)
     TAB_BAR = 1887158505,      -- the tab bar layer (its title text)

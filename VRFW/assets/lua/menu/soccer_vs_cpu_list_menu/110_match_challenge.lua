@@ -15,8 +15,8 @@ if VRFW_Host ~= nil then
     GUIDE = 3078308064,       -- mainmenu90_05_content_guide_line01
     GUIDE_MESH = 378156699,   -- _text_guide01
     GUIDE_RETAIL = 3822200449, -- the retail guide text
-    SET_TEXT = 1083631230,    -- CMND_SET_MENU_TEXT_STRING
-    TEXT_GET = 4074371074,
+    SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,    -- CMND_SET_MENU_TEXT_STRING
+    TEXT_GET = VRFW_Cmd.TEXT_GET,
     HEAD = 2317620035,        -- vrfw_mc_head «Desafío: %s»
     shown = false,
   }

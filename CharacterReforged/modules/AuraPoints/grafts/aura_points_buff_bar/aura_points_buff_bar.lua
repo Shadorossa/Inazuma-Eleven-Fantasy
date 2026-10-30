@@ -59,7 +59,7 @@ local CMD_LOG = @crc:CMND_EVT_LOG@ --[[the loader's log line]]
 local LAYER = @crc:aura_points_buff_bar@
 local PORTRAIT = 1535165083 --[[soccer00_53_aura_buff_chara_icon]]
 local GAUGE = 698939060 --[[soccer00_54_aura_recast_gauge]]
-local ATLAS = 1191797350 --[[#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx]]
+local ATLAS = 1191797350 --[[#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx: the retail gauge's own sprites (hp_bar02)]]
 local FILL_SLOT = 1460691304 --[[hp_bar02]]
 local FILL_PEG = 351956081 --[[evt_peg_fill01]]
 local FILL_SP = 2515711484 --[[evt_sp_fill01]]
@@ -76,6 +76,7 @@ K.LEVEL_LAYER = @crc:aura_points_buff_level@
 K.SLOTS = 7 --[[glyph slots per bar: 3 digits, slash, 3 digits]]
 K.FRAME_SPRITE = 538967808 --[[hp_base01: the gauge frame's sprite the glyphs replace]]
 K.MESH_FILL = 2043683848 --[[_hp_bar02]]
+K.OWN_ATLAS = 641552684 --[[#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx: the mod's own atlas]]
 K.ATLAS_GLYPHS = {[0] = @crc:aura_points_buff_num0@, @crc:aura_points_buff_num1@, @crc:aura_points_buff_num2@,
   @crc:aura_points_buff_num3@, @crc:aura_points_buff_num4@, @crc:aura_points_buff_num5@, @crc:aura_points_buff_num6@,
   @crc:aura_points_buff_num7@, @crc:aura_points_buff_num8@, @crc:aura_points_buff_num9@}
@@ -84,21 +85,21 @@ K.LEVEL_QUAD = @crc:_camera_telop01@ --[[the telop's quad (hidden: the label is 
 K.LEVEL_TEXT = @crc:_text_telop01@
 K.LEVEL_TEXT_W = 334 --[[the text node's box at scale 1]]
 K.LEVEL_TEXT_H = 70
-K.CMND_GLOBAL_POS = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION]]
+K.CMND_GLOBAL_POS = @crc:CMND_GET_MESH_GLOBAL_POSITION@
 K.CMND_LAYER_GLOBAL_POS = 4002164178 --[[a layer instance's global position (layer, instance)]]
 K.PROBE_TRIES = 6 --[[level label probe: measurements before it gives up on steady units]]
-K.CMND_SET_TEXT = 1083631230 --[[CMND_SET_MENU_TEXT_STRING]]
-local CMND_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]]
-local CMND_IS_VISIBLE = 1262717583 --[[CMND_IS_LAYER_VISIBLE]]
-local CMND_OPEN = 629267548 --[[CMND_OPEN_LAYER]]
-local CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
-local CMND_IS_LOADING = 3057768039 --[[CMND_IS_LOADING_LAYER]]
-local CMND_LOCAL_POS = 2834507455 --[[CMND_GET_LAYER_LOCAL_POS]]
-local CMND_SET_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]]
-local CMND_SET_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]]
+K.CMND_SET_TEXT = @crc:CMND_SET_MENU_TEXT_STRING@
+local CMND_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@
+local CMND_IS_VISIBLE = @crc:CMND_IS_LAYER_VISIBLE@
+local CMND_OPEN = @crc:CMND_OPEN_LAYER@
+local CMND_IS_OPEN = @crc:CMND_IS_OPEN_LAYER@
+local CMND_IS_LOADING = @crc:CMND_IS_LOADING_LAYER@
+local CMND_LOCAL_POS = @crc:CMND_GET_LAYER_LOCAL_POS@
+local CMND_SET_POS = @crc:CMND_SET_LAYER_LOCAL_POS@
+local CMND_SET_SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@
 local CMND_RATE_INIT = 541357333
 local CMND_RATE = 1595998683
-local CMND_MESH_VISIBLE = 3405944500 --[[CMND_SET_MESH_VISIBLE]]
+local CMND_MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@
 local CMND_SWAP_TEX = 558735651 --[[swap a mesh texture: (layer, atlas, new sprite, old sprite, 0, instance)]]
 local CMND_MEMBER = 66484325 --[[(team, member, true) -> ok, soccer handle]]
 local ATTR_KESHIN, ATTR_ARMOUR, ATTR_MIXIMAX, ATTR_TOTEM = 1, 2, 4, 8
@@ -323,7 +324,7 @@ function B.DrawNumber(k, cur, max, cx, cy, scale)
     end
     if D.glyph[inst] ~= g then
       D.glyph[inst] = g
-      Menu(CMND_SWAP_TEX, K.DIGIT_LAYER, ATLAS, g == "/" and K.GLYPH_SLASH or K.ATLAS_GLYPHS[g], K.FRAME_SPRITE, 0, inst)
+      Menu(CMND_SWAP_TEX, K.DIGIT_LAYER, K.OWN_ATLAS, g == "/" and K.GLYPH_SLASH or K.ATLAS_GLYPHS[g], K.FRAME_SPRITE, 0, inst)
     end
     -- the cell is centred on its advance
     local px = x + adv / 2 - FRAME_CX * sx
@@ -387,7 +388,7 @@ function B.Draw(e)
   end
   if B.fill[e.k] ~= soul then
     B.fill[e.k] = soul
-    Menu(CMND_SWAP_TEX, LAYER, ATLAS, soul == "pe" and FILL_SLOT or (soul == "change" and FILL_CHANGE or (soul == "sp" and FILL_SP or FILL_PEG)), FILL_SLOT, 0, e.k)
+    Menu(CMND_SWAP_TEX, LAYER, soul == "pe" and ATLAS or K.OWN_ATLAS, soul == "pe" and FILL_SLOT or (soul == "change" and FILL_CHANGE or (soul == "sp" and FILL_SP or FILL_PEG)), FILL_SLOT, 0, e.k)
   end
   -- the entry's stopwatch off, the bar on its place
   Menu(CMND_VISIBLE, GAUGE, e.face, false)

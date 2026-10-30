@@ -1,0 +1,19 @@
+schema = "VRFW.game/2"
+
+# Match roles (docs/framework/match-role.md): the commands the game Lua asks to show and change a player's role in a
+# team set. The logic is scripts\match_roles.lua (MatchRoles.*); the roles are the mods' VRFW.match_role/1 files.
+
+# (character handle) -> { { name, text, help }, … }: the roles of the player's position (text / help = text key crc32)
+[[VRFW.Command]]
+name = "CMND_VRFW_MATCH_ROLE_LIST"
+handler = "MatchRoles.List"
+
+# (team set, team type, character handle) -> role name ("" = none), its text key crc32 (0 = none)
+[[VRFW.Command]]
+name = "CMND_VRFW_MATCH_ROLE_GET"
+handler = "MatchRoles.Get"
+
+# (team set, team type, character handle, role name) -> ok: the player's role in that team set ("" clears it)
+[[VRFW.Command]]
+name = "CMND_VRFW_MATCH_ROLE_SET"
+handler = "MatchRoles.Set"

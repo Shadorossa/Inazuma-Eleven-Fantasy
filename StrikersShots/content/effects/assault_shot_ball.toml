@@ -1,0 +1,28 @@
+# «Remate asalto» (Assault Shot, whs00890, fire, cut-in ev60_00890): while the ball flies to the goal it wears the
+# cut-in's last shot (c0400, held at its last frame 399 from the aura's first frame): the rain of seven burning balls
+# with their fire wraps, glows and white-gold streaks, the ball inside the front one (the match ball is hidden:
+# content\techniques\assault_shot_trajectory.toml) and the other six behind it at their cut-in places (up to 11.8 m
+# back, 3.5 m across, 1 m lower), x1. The balls spin and the glows flicker as in the cut-in, the streaks' textures flow
+# on. The six balls behind and every streak come out of the kick point as the ball flies (distance clock, never
+# stretched, a soft tail fade over the first 3 m); each streak fades out at its far end.
+# The object ev6089as_7 (effect/event/ev60/ev6089as_7/) is built by research/scripts/assault_shot_ball_fx.py from the
+# cut-in's effect object ev60008900 (the same joints and formation as Doom Rain's, doom_rain_ball_fx.py);
+# docs/game/media/assault-shot-ball-fx.md.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-move aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame; the distance clock (anchor = "kick", drift 0.75 m a frame) reveals the rain from the kick
+# point. Flight: content\techniques\assault_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "assault_shot"
+from = "ega0075c"
+object = "effect/event/ev60/ev6089as_7/ev6089as_7.objbin"
+
+[[shot_aura]]
+name = "assault_shot"
+when = { techniques = "whs00890" }
+aura = "assault_shot"
+like = "ega0075c"
+anchor = "kick"

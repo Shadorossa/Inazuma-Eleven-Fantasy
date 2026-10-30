@@ -3,6 +3,7 @@
 # abl_000001 («Nueva posibilidad», which keeps its own yellow icon) with the hue turned half a turn (yellow -> blue), so
 # the book reads as a different item and the mod ships no Level-5 pixel (docs/framework/types/image.md §2.1). Owner
 # 2026-10-14: the book is its own item, the retail one is back to retail (docs/game/mechanics/move-rank-items.md).
+# In the mod's own atlas hissatsu_level_up_item_icons (never the game's icon_item01): the game asks icon_item01 for it by the item key; content\sprite_redirects\item_icons.toml serves it from here.
 schema = "VRFW.image/1"
 
 [[recipe]]
@@ -12,7 +13,7 @@ texture = "abl_000001"
 ops = [{ op = "hue", turns = 0.5 }]
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item01.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/hissatsu_level_up_item_icons.g4tx"
 name = "abl_ub000001"
 recipe = "technique_upgrade_book"
 size = [256, 256]

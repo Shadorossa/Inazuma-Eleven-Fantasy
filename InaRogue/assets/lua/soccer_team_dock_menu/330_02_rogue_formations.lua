@@ -28,9 +28,23 @@ do
     GET_SET = 1033065575,               -- CMND_GET_TEAM_SET_INFO (set, team, 4) -> ok, formId
     SET_SET = 1506470613,               -- CMND_SET_TEAM_SET_INFO (set, team, 3, formId)
     DEFAULT = 2484170522,               -- 4-4-2 Diamante (retail, always owned)
-    LOCKED_DESC = "Formación bloqueada (rareza %d de 4).\nSe gana en INAROGUE: partidos, Élite y jefes (las mejores).\nTienes %d de %d formaciones.",
+    LOCKED_DESC = 386665276,   -- text row: rarity, owned, total
+    TEXT_GET = 4074371074,              -- CMND_TEXT_GET (text id) -> the text in the game's language
     on = nil, idx = {}, tint = {}, focus = nil, logs = 0,
   }
+
+  -- a text row in the game's language ("" when missing); {1}.. = values
+  function RF.text(id, ...)
+    local ok, s = pcall(funcLuaCommand, RF.TEXT_GET, id)
+    if not ok or type(s) ~= "string" then
+      return ""
+    end
+    local a = table.pack(...)
+    return (s:gsub("{(%d)}", function(k)
+      local v = a[tonumber(k)]
+      return v == nil and "" or tostring(v)
+    end))
+  end
 
   function RF.log(...)
     if RF.logs < 40 then
@@ -137,7 +151,7 @@ do
         RF.focus = id
         local lk, rar, n, tot = RF.locked(id)
         if lk then
-          local s = string.format(RF.LOCKED_DESC, tonumber(rar) or 0, tonumber(n) or 0, tonumber(tot) or 0)
+          local s = RF.text(RF.LOCKED_DESC, tonumber(rar) or 0, tonumber(n) or 0, tonumber(tot) or 0)
           pcall(funcLuaMenuCommand, RF.TEXT, RF.INFO, RF.INFO_DESC, s, 0)
         end
       end

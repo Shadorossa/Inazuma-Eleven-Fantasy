@@ -4,7 +4,7 @@
 # glyphs are the game's own monochrome tab icons (icon_list_tab.g4tx: the skill list's aura tabs
 # icon_list_tab_sp_area06 armour / 07 Mix-Max, and the player bust icon_list_tab_datafile05), each on a near-black
 # square with a slight corner radius.
-# No Level-5 pixel ships. Added to the btl06_13 atlas, so the page's gauge copies (layer evt_pp_fbadge, IF
+# No Level-5 pixel ships. In Character Reforged's own atlas evt_cr_page (loaded by the page's menus), so the page's gauge copies (layer evt_pp_fbadge, IF
 # menus/102_team/plate_row.toml) can swap them into their frame quad. Which glyphs a form shows: research/grafts/
 # plate_pages G.FORM_GLYPHS (form ids of the VR-Framework's form viewer: 0 Normal, 1 Miximax, 2 Armour, 3 the
 # miximax's own armour + Miximax (its armour glyph carries a small Mix-Max mark), 4 the aura slot's armour +
@@ -107,33 +107,53 @@ ops = [
 ]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_key"
 recipe = "fb_key"
+texture = "evt_cr_page"
+x = 1672
+y = 800
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_player"
 recipe = "fb_player"
+texture = "evt_cr_page"
+x = 72
+y = 916
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_miximax"
 recipe = "fb_miximax"
+texture = "evt_cr_page"
+x = 1744
+y = 800
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_armour"
 recipe = "fb_armour"
+texture = "evt_cr_page"
+x = 1384
+y = 800
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_mxarmour"
 recipe = "fb_mxarmour"
 
 # 2026-10-13 (owner: a DOUBLE hyper, mix slot + aura slot, RS alternates the Hiper page between them): the Hiper page's
 # badge shows BOTH slots' glyphs by the move's aura type (research/grafts/plate_pages G.SLOT_GLYPH), the shown slot lit,
 # the other dimmed (its glyph faded on the same plate): keshin 05, armour 06, Mix-Max 07, totem 08, «Modo cambio» 11.
+texture = "evt_cr_page"
+x = 0
+y = 916
+size = [64, 64]
 
 [[recipe]]
 name = "fb_g_keshin"
@@ -228,41 +248,73 @@ from = "fb_plate"
 ops = [{ op = "paste", image = "fb_g_mode_dim", centre = [32, 32] }]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_keshin"
 recipe = "fb_keshin"
+texture = "evt_cr_page"
+x = 1528
+y = 800
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_totem"
 recipe = "fb_totem"
+texture = "evt_cr_page"
+x = 144
+y = 916
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_mode"
 recipe = "fb_mode"
+texture = "evt_cr_page"
+x = 1888
+y = 800
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_keshin_dim"
 recipe = "fb_keshin_dim"
+texture = "evt_cr_page"
+x = 1600
+y = 800
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_armour_dim"
 recipe = "fb_armour_dim"
+texture = "evt_cr_page"
+x = 1456
+y = 800
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_miximax_dim"
 recipe = "fb_miximax_dim"
+texture = "evt_cr_page"
+x = 1816
+y = 800
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_totem_dim"
 recipe = "fb_totem_dim"
+texture = "evt_cr_page"
+x = 216
+y = 916
+size = [64, 64]
 
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
 name = "evt_pp_fb_mode_dim"
 recipe = "fb_mode_dim"
+texture = "evt_cr_page"
+x = 1960
+y = 800
+size = [64, 64]

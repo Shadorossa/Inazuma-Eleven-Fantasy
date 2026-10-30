@@ -5,11 +5,10 @@
 -- game). Wraps the submenu's Step (no host for this script). No engine call at load time.
 
 local MSP = {
-  LOG = 3661580131,          -- CMND_EVT_LOG
+  LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
   PICK = 1790329263,         -- param vrfw_menu_scene_story_pick
-  PARAM_HAS = 2947612279, PARAM_GET = 3522198769, PARAM_CLEAR = 3363400568,
   LIST = 1903952903,         -- the submenu's entry list layer
-  FOCUS_ACTIVE = 102308320,  -- (layer) -> the layer holds the control focus
+  FOCUS_ACTIVE = VRFW_Cmd.IS_CTRL_FOCUS_ACTIVE,  -- (layer) -> the layer holds the control focus
   FOCUS_INDEX = 2603265800,  -- (layer) -> its focused instance
   FOCUS_MARK = 1778826357,   -- (layer, instance, true): the focus moves there
   READY_FRAMES = 15,         -- frames the list holds the focus before the pick
@@ -42,11 +41,9 @@ local function MSP_Step()
     return
   end
   if msp.row == nil then
-    local okh, has = pcall(funcLuaCommand, MSP.PARAM_HAS, MSP.PICK)
-    if not okh or has ~= true then return end
-    local okg, v = pcall(funcLuaCommand, MSP.PARAM_GET, MSP.PICK)
-    pcall(funcLuaCommand, MSP.PARAM_CLEAR, MSP.PICK)
-    v = okg and tonumber(v) or 0
+    local v = VRFW_Param.Take(MSP.PICK)
+    if v == nil then return end
+    v = tonumber(v) or 0
     if v < 1 or v > 4 then return end
     msp.row, msp.frames, msp.ready, msp.marked = v - 1, 0, 0, false
     MSP_Log("entry", msp.row, "asked by the menu scene")

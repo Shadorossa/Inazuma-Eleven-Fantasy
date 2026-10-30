@@ -3,56 +3,89 @@
 # research/scripts/vrfw_action_label_build.py: do not edit by hand. «ja» = the atlases' default file.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
+name = "pressing_soccer08_17"
+size = [164, 48]
+lang = ["", "en", "es", "fr", "de", "it", "pt", "zh_hans", "zh_hant"]
+
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/ja/pressing_gtxt_action_press01.png"
 lang = ""
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/de/pressing_gtxt_action_press01.png"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/en/pressing_gtxt_action_press01.png"
 lang = "en"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/es/pressing_gtxt_action_press01.png"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/fr/pressing_gtxt_action_press01.png"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/it/pressing_gtxt_action_press01.png"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/pt/pressing_gtxt_action_press01.png"
 lang = "pt"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/zh_hans/pressing_gtxt_action_press01.png"
 lang = "zh_hans"
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer08/soccer08_17/<LG>/soccer08_17.g4tx"
+atlas = "#/menu/00_soccer/pressing_own/<LG>/pressing_soccer08_17.g4tx"
 name = "pressing_gtxt_action_press01"
+texture = "pressing_soccer08_17"
+x = 0
+y = 0
 png = "go_ahead_guide/zh_hant/pressing_gtxt_action_press01.png"
 lang = "zh_hant"

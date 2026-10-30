@@ -1,0 +1,1734 @@
+schema = "VRFW.behaviour/1"
+# Hissatsu Effects › technique effects of the blocks: each rule acts only on the move being used (its
+# `technique` list: the move, its same-name versions and its _or / _mm / _cro variants), for any player, the CPU
+# included. `text` = the sentence the move card shows (text\en.toml, text\es.toml). Family rules: one rule per
+# teammate count (`team_family`), the multipliers multiply. Values are starting values: tune them here or in
+# ModManager. docs/game/mods/technique-passives-proposal.md.
+
+# Corro de la patata (whd00170)
+[[rule]]
+id = "te_whd00170"
+on = "move_power"
+text = "HissatsuEffects.te_whd00170"
+when = { technique = ["whd00170", "whd00170_or"], near = { who = "teammates", radius_m = 15.0, count = { min = 2 } } }
+do = { power_mult = 1.15 }
+
+# Sentencia final (whd00940)
+[[rule]]
+id = "te_whd00940"
+on = "move_power"
+text = "HissatsuEffects.te_whd00940"
+when = { technique = ["whd00940"], half = 2, half_fraction_from = "2/3" }
+do = { power_mult = 1.18 }
+
+# Fortaleza desesperada (whd10050)
+[[rule]]
+id = "te_whd10050"
+on = "move_power"
+text = "HissatsuEffects.te_whd10050"
+when = { technique = ["whd10050"], half = 2, score = "trailing" }
+do = { power_mult = 1.18 }
+
+# Jugarreta (rhd10040)
+[[rule]]
+id = "te_rhd10040"
+on = "move_power"
+text = "HissatsuEffects.te_rhd10040"
+when = { technique = ["rhd10040"], score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Regate disimulado (rhd10010)
+[[rule]]
+id = "te_rhd10010"
+on = "move_power"
+text = "HissatsuEffects.te_rhd10010"
+when = { technique = ["rhd10010"], near = { who = "opponents", radius_m = 8.0, count = { min = 2 } } }
+do = { power_mult = 1.15 }
+
+# Robo rodante (rhd10050)
+[[rule]]
+id = "te_rhd10050"
+on = "move_power"
+text = "HissatsuEffects.te_rhd10050"
+when = { technique = ["rhd10050"], zone = { z = [0.0, 55.0], frame = "team" } }
+do = { power_mult = 1.12 }
+
+# Muralla de Atlantis (whd00910)
+[[rule]]
+id = "te_whd00910_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00910"
+when = { technique = ["whd00910"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00910_family_2"
+on = "move_power"
+when = { technique = ["whd00910"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00910_family_3"
+on = "move_power"
+when = { technique = ["whd00910"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Corte diabólico (whd00540)
+[[rule]]
+id = "te_whd00540"
+on = "move_power"
+text = "HissatsuEffects.te_whd00540"
+when = { technique = ["whd00540"], half = 2 }
+do = { power_mult = 1.12 }
+
+# Parada en arco (rhd10030)
+[[rule]]
+id = "te_rhd10030"
+on = "move_power"
+text = "HissatsuEffects.te_rhd10030"
+when = { technique = ["rhd10030"], rival = { special = true } }
+do = { power_mult = 1.12 }
+
+# Carga de hombro (rhd10020)
+[[rule]]
+id = "te_rhd10020"
+on = "move_power"
+text = "HissatsuEffects.te_rhd10020"
+when = { technique = ["rhd10020"], half = 1 }
+do = { power_mult = 1.12 }
+
+# Salto dimensional (whd00880)
+[[rule]]
+id = "te_whd00880"
+on = "move_power"
+text = "HissatsuEffects.te_whd00880"
+when = { technique = ["whd00880"], chance = 0.25 }
+do = { power_mult = 1.2 }
+
+# Torre perfecta (whd00530)
+[[rule]]
+id = "te_whd00530"
+on = "move_power"
+text = "HissatsuEffects.te_whd00530"
+when = { technique = ["whd00530"], score_margin = { min = 2 } }
+do = { power_mult = 1.15 }
+
+# Megaterremoto (whd00200)
+[[rule]]
+id = "te_whd00200"
+on = "move_power"
+text = "HissatsuEffects.te_whd00200"
+when = { technique = ["whd00200"], zone = { x = [-20.0, 20.0], z = [-55.0, -38.0], frame = "team" } }
+do = { power_mult = 1.15 }
+
+# Ataque sombrío (whd00090)
+[[rule]]
+id = "te_whd00090_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00090"
+when = { technique = ["whd00090"], team_family = { family = "HissatsuReforged.NinjaArts", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00090_family_2"
+on = "move_power"
+when = { technique = ["whd00090"], team_family = { family = "HissatsuReforged.NinjaArts", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00090_family_3"
+on = "move_power"
+when = { technique = ["whd00090"], team_family = { family = "HissatsuReforged.NinjaArts", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Proyectil de ozono (whd00790)
+[[rule]]
+id = "te_whd00790"
+on = "shot_through"
+text = "HissatsuEffects.te_whd00790"
+when = { technique = ["whd00790"] }
+do = { power_mult = 0.9 }
+
+# Gran torbellino (whd00750)
+[[rule]]
+id = "te_whd00750"
+on = "move_power"
+text = "HissatsuEffects.te_whd00750"
+when = { technique = ["whd00750"], uses = { scope = "half", result = "won", count = { min = 1 } } }
+do = { power_mult = 1.04 }
+
+[[rule]]
+id = "te_whd00750_2"
+on = "move_power"
+when = { technique = ["whd00750"], uses = { scope = "half", result = "won", count = { min = 2 } } }
+do = { power_mult = 1.04 }
+
+[[rule]]
+id = "te_whd00750_3"
+on = "move_power"
+when = { technique = ["whd00750"], uses = { scope = "half", result = "won", count = { min = 3 } } }
+do = { power_mult = 1.04 }
+
+# La montaña (whd00680)
+[[rule]]
+id = "te_whd00680_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00680"
+when = { technique = ["whd00680"], team_family = { family = "HissatsuReforged.Fortresses", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00680_family_2"
+on = "move_power"
+when = { technique = ["whd00680"], team_family = { family = "HissatsuReforged.Fortresses", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00680_family_3"
+on = "move_power"
+when = { technique = ["whd00680"], team_family = { family = "HissatsuReforged.Fortresses", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Telaraña (whd00060)
+[[rule]]
+id = "te_whd00060"
+on = "move_power"
+text = "HissatsuEffects.te_whd00060"
+when = { technique = ["whd00060"], element = "forest" }
+do = { power_mult = 1.12 }
+
+# Barrido defensivo (whd00020)
+[[rule]]
+id = "te_whd00020"
+on = "move_power"
+text = "HissatsuEffects.te_whd00020"
+when = { technique = ["whd00020"], near = { who = "teammates", radius_m = 8.0, count = { min = 1 } } }
+do = { power_mult = 1.12 }
+
+# Segadora (whd00180)
+[[rule]]
+id = "te_whd00180"
+on = "move_power"
+text = "HissatsuEffects.te_whd00180"
+when = { technique = ["whd00180"], partners = { count = 1, radius_m = 15.0 } }
+do = { power_mult = 1.05 }
+
+# Ciclón (whd00070)
+[[rule]]
+id = "te_whd00070_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00070"
+when = { technique = ["whd00070"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00070_family_2"
+on = "move_power"
+when = { technique = ["whd00070"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00070_family_3"
+on = "move_power"
+when = { technique = ["whd00070"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Defensa múltiple (whd00250)
+[[rule]]
+id = "te_whd00250"
+on = "move_power"
+text = "HissatsuEffects.te_whd00250"
+when = { technique = ["whd00250"], half_fraction_from = "2/3" }
+do = { power_mult = 1.12 }
+
+# Escudo corporal (whd00430)
+[[rule]]
+id = "te_whd00430"
+on = "move_power"
+text = "HissatsuEffects.te_whd00430"
+when = { technique = ["whd00430"], zone = { z = [-55.0, 0.0], frame = "team" } }
+do = { power_mult = 1.12 }
+
+# Corte giratorio (whd00130)
+[[rule]]
+id = "te_whd00130"
+on = "move_power"
+text = "HissatsuEffects.te_whd00130"
+when = { technique = ["whd00130"], rival = { long = true } }
+do = { power_mult = 1.12 }
+
+# Portal dimensional (whd00840)
+[[rule]]
+id = "te_whd00840"
+on = "move_power"
+text = "HissatsuEffects.te_whd00840"
+when = { technique = ["whd00840", "whd00840_mm"], near = { who = "teammates", radius_m = 12.0, count = 0 } }
+do = { power_mult = 1.15 }
+
+# Jaula de piedra (whd00670)
+[[rule]]
+id = "te_whd00670_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00670"
+when = { technique = ["whd00670"], team_family = { family = "HissatsuReforged.Traps", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00670_family_2"
+on = "move_power"
+when = { technique = ["whd00670"], team_family = { family = "HissatsuReforged.Traps", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00670_family_3"
+on = "move_power"
+when = { technique = ["whd00670"], team_family = { family = "HissatsuReforged.Traps", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Entrada rodante (whd00660)
+[[rule]]
+id = "te_whd00660"
+on = "move_power"
+text = "HissatsuEffects.te_whd00660"
+when = { technique = ["whd00660"], half = 2, half_fraction_from = "2/3" }
+do = { power_mult = 1.12 }
+
+# Voltereta circense (whd00260)
+[[rule]]
+id = "te_whd00260"
+on = "move_power"
+text = "HissatsuEffects.te_whd00260"
+when = { technique = ["whd00260"], zone = { z = [-20.0, 20.0], frame = "team" } }
+do = { power_mult = 1.12 }
+
+# Picadora (whd00820)
+[[rule]]
+id = "te_whd00820"
+on = "move_power"
+text = "HissatsuEffects.te_whd00820"
+when = { technique = ["whd00820"], partners = { count = 1 } }
+do = { power_mult = 1.12 }
+
+# Emboscada defensiva (whd00400)
+[[rule]]
+id = "te_whd00400"
+on = "move_power"
+text = "HissatsuEffects.te_whd00400"
+when = { technique = ["whd00400"], score_margin = { min = 2 } }
+do = { power_mult = 1.12 }
+
+# Niebla mística (whd00900)
+[[rule]]
+id = "te_whd00900"
+on = "move_power"
+text = "HissatsuEffects.te_whd00900"
+when = { technique = ["whd00900", "whd00900_mm"], score_margin = { max = -2 } }
+do = { power_mult = 1.12 }
+
+# Robo rápido (whd00050)
+[[rule]]
+id = "te_whd00050"
+on = "move_power"
+text = "HissatsuEffects.te_whd00050"
+when = { technique = ["whd00050"], half = 2, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Muro de hierro (whd00620)
+[[rule]]
+id = "te_whd00620"
+on = "shot_through"
+text = "HissatsuEffects.te_whd00620"
+when = { technique = ["whd00620"] }
+do = { power_mult = 0.92 }
+
+# Ciclón doble (whd00390)
+[[rule]]
+id = "te_whd00390_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00390"
+when = { technique = ["whd00390", "whd00390_or"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00390_family_2"
+on = "move_power"
+when = { technique = ["whd00390", "whd00390_or"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00390_family_3"
+on = "move_power"
+when = { technique = ["whd00390", "whd00390_or"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Acrobacia robótica (whd01110)
+[[rule]]
+id = "te_whd01110"
+on = "move_power"
+text = "HissatsuEffects.te_whd01110"
+when = { technique = ["whd01110"], half = 2, score = "level" }
+do = { power_mult = 1.12 }
+
+# Red de caza (whd00730)
+[[rule]]
+id = "te_whd00730"
+on = "move_power"
+text = "HissatsuEffects.te_whd00730"
+when = { technique = ["whd00730", "whd00730_mm"], half = 1, score = "level" }
+do = { power_mult = 1.12 }
+
+# Campo torbellino (whd00500)
+[[rule]]
+id = "te_whd00500_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00500"
+when = { technique = ["whd00500"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00500_family_2"
+on = "move_power"
+when = { technique = ["whd00500"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00500_family_3"
+on = "move_power"
+when = { technique = ["whd00500"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Mirada ladrona (whd00770)
+[[rule]]
+id = "te_whd00770"
+on = "move_power"
+text = "HissatsuEffects.te_whd00770"
+when = { technique = ["whd00770"], score_margin = { max = -2 } }
+do = { power_mult = 1.15 }
+
+# Zona de seguridad (whd00440)
+[[rule]]
+id = "te_whd00440"
+on = "move_power"
+text = "HissatsuEffects.te_whd00440"
+when = { technique = ["whd00440"], zone = { x = [-40.0, -20.0], both_sides = true, frame = "team" } }
+do = { power_mult = 1.12 }
+
+# Baile de llamas (whd00410)
+[[rule]]
+id = "te_whd00410_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00410"
+when = { technique = ["whd00410"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00410_family_2"
+on = "move_power"
+when = { technique = ["whd00410"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00410_family_3"
+on = "move_power"
+when = { technique = ["whd00410"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Flash de fotones (whd00290)
+[[rule]]
+id = "te_whd00290"
+on = "move_power"
+text = "HissatsuEffects.te_whd00290"
+when = { technique = ["whd00290"], half = 1, score = "leading" }
+do = { power_mult = 1.15 }
+
+# Torre inexpugnable (whd00280)
+[[rule]]
+id = "te_whd00280"
+on = "move_power"
+text = "HissatsuEffects.te_whd00280"
+when = { technique = ["whd00280"], half = 1, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Defensa propulsada (whd00810)
+[[rule]]
+id = "te_whd00810"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00810"
+when = { technique = ["whd00810"], partners = { count = 1 } }
+do = { cost_mult = 0.8 }
+
+# Pinzas cortantes (whd00830)
+[[rule]]
+id = "te_whd00830"
+on = "move_power"
+text = "HissatsuEffects.te_whd00830"
+when = { technique = ["whd00830"], zone = { x = [-20.0, 20.0], z = [-55.0, -38.0], frame = "team" } }
+do = { power_mult = 1.12 }
+
+# Bola falsa (whd00080)
+[[rule]]
+id = "te_whd00080"
+on = "move_power"
+text = "HissatsuEffects.te_whd00080"
+when = { technique = ["whd00080"], half = 2, score = "level" }
+do = { power_mult = 1.15 }
+
+# Golpe de vacío (whd00640)
+[[rule]]
+id = "te_whd00640"
+on = "move_power"
+text = "HissatsuEffects.te_whd00640"
+when = { technique = ["whd00640"], zone = { x = [-10.0, 10.0], frame = "team" } }
+do = { power_mult = 1.12 }
+
+# Carga de elefantes (whd00850)
+[[rule]]
+id = "te_whd00850"
+on = "knockdown"
+text = "HissatsuEffects.te_whd00850"
+when = { technique = ["whd00850"] }
+do = { down_mult = 1.2 }
+
+# Muralla de las montañas (whd01100)
+[[rule]]
+id = "te_whd01100"
+on = "move_power"
+text = "HissatsuEffects.te_whd01100"
+when = { technique = ["whd01100"], rival = { element = "fire" } }
+do = { power_mult = 1.12 }
+
+# Gravitación (whd00300)
+[[rule]]
+id = "te_whd00300"
+on = "move_power"
+text = "HissatsuEffects.te_whd00300"
+when = { technique = ["whd00300"], rival = { zone = { z = [-55.0, 37.9], frame = "team" } } }
+do = { power_mult = 1.12 }
+
+# Ángel de nieve (whd00550)
+[[rule]]
+id = "te_whd00550_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00550"
+when = { technique = ["whd00550"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00550_family_2"
+on = "move_power"
+when = { technique = ["whd00550"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00550_family_3"
+on = "move_power"
+when = { technique = ["whd00550"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Sismo (whd00040)
+[[rule]]
+id = "te_whd00040"
+on = "move_power"
+text = "HissatsuEffects.te_whd00040"
+when = { technique = ["whd00040"], near = { who = "teammates", radius_m = 12.0, count = 0 } }
+do = { power_mult = 1.12 }
+
+# El muro (whd00010)
+[[rule]]
+id = "te_whd00010_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00010"
+when = { technique = ["whd00010"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00010_family_2"
+on = "move_power"
+when = { technique = ["whd00010"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00010_family_3"
+on = "move_power"
+when = { technique = ["whd00010"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Barreno de fuego (whd01070)
+[[rule]]
+id = "te_whd01070_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd01070"
+when = { technique = ["whd01070"], team_family = { family = "HissatsuReforged.Machines", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd01070_family_2"
+on = "move_power"
+when = { technique = ["whd01070"], team_family = { family = "HissatsuReforged.Machines", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd01070_family_3"
+on = "move_power"
+when = { technique = ["whd01070"], team_family = { family = "HissatsuReforged.Machines", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Pisotón de sumo (whd00100)
+[[rule]]
+id = "te_whd00100"
+on = "move_power"
+text = "HissatsuEffects.te_whd00100"
+when = { technique = ["whd00100"], chance = 0.25 }
+do = { power_mult = 1.12 }
+
+# Manos fantasmagóricas (whd00150)
+[[rule]]
+id = "te_whd00150_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00150"
+when = { technique = ["whd00150"], team_family = { family = "HissatsuReforged.Occult", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00150_family_2"
+on = "move_power"
+when = { technique = ["whd00150"], team_family = { family = "HissatsuReforged.Occult", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00150_family_3"
+on = "move_power"
+when = { technique = ["whd00150"], team_family = { family = "HissatsuReforged.Occult", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# La niebla (whd00720)
+[[rule]]
+id = "te_whd00720"
+on = "move_power"
+text = "HissatsuEffects.te_whd00720"
+when = { rival = { technique = ["whd00720"] } }
+do = { power_mult = 0.92 }
+
+# Giro bobina (whd00030)
+[[rule]]
+id = "te_whd00030"
+on = "move_power"
+text = "HissatsuEffects.te_whd00030"
+when = { technique = ["whd00030"], element = "forest" }
+do = { power_mult = 1.12 }
+
+# Rompehielos (whd00520)
+[[rule]]
+id = "te_whd00520_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00520"
+when = { technique = ["whd00520"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00520_family_2"
+on = "move_power"
+when = { technique = ["whd00520"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00520_family_3"
+on = "move_power"
+when = { technique = ["whd00520"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# A todo vapor (whd00740)
+[[rule]]
+id = "te_whd00740"
+on = "move_power"
+text = "HissatsuEffects.te_whd00740"
+when = { technique = ["whd00740"], element = "wind" }
+do = { power_mult = 1.12 }
+
+# Zona sigma (whd00380)
+[[rule]]
+id = "te_whd00380"
+on = "move_power"
+text = "HissatsuEffects.te_whd00380"
+when = { technique = ["whd00380"], element = "fire" }
+do = { power_mult = 1.12 }
+
+# Grumo pegapasta (whd01060)
+[[rule]]
+id = "te_whd01060"
+on = "move_power"
+text = "HissatsuEffects.te_whd01060"
+when = { technique = ["whd01060"], element = "mountain" }
+do = { power_mult = 1.12 }
+
+# Robo fantástico (whd00980)
+[[rule]]
+id = "te_whd00980"
+on = "move_power"
+text = "HissatsuEffects.te_whd00980"
+when = { technique = ["whd00980"], element = "void" }
+do = { power_mult = 1.12 }
+
+# Cinto astral (whd00420)
+[[rule]]
+id = "te_whd00420"
+on = "move_power"
+text = "HissatsuEffects.te_whd00420"
+when = { technique = ["whd00420"], half = 2, half_fraction_from = "2/3" }
+do = { power_mult = 1.15 }
+
+# Presa fractal (whd00970)
+[[rule]]
+id = "te_whd00970"
+on = "move_power"
+text = "HissatsuEffects.te_whd00970"
+when = { technique = ["whd00970"], half = 1, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Superpisotón de sumo (whd00360)
+[[rule]]
+id = "te_whd00360"
+on = "move_power"
+text = "HissatsuEffects.te_whd00360"
+when = { technique = ["whd00360"], half = 2, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Gran catarata (whd01310)
+[[rule]]
+id = "te_whd01310"
+on = "move_power"
+text = "HissatsuEffects.te_whd01310"
+when = { technique = ["whd01310"], half_fraction_to = "1/3", score = "leading" }
+do = { power_mult = 1.12 }
+
+# Sorpresa (whd00220)
+[[rule]]
+id = "te_whd00220"
+on = "move_power"
+text = "HissatsuEffects.te_whd00220"
+when = { technique = ["whd00220"], chance = 0.35 }
+do = { power_mult = 1.18 }
+
+# Magnetismo (whd01030)
+[[rule]]
+id = "te_whd01030"
+on = "move_power"
+text = "HissatsuEffects.te_whd01030"
+when = { technique = ["whd01030"], half_fraction_from = "2/3", score = "leading" }
+do = { power_mult = 1.12 }
+
+# Escáner defensa (whd00140)
+[[rule]]
+id = "te_whd00140"
+on = "move_power"
+text = "HissatsuEffects.te_whd00140"
+when = { technique = ["whd00140"], half = 2, half_fraction_from = "2/3", score = "leading" }
+do = { power_mult = 1.12 }
+
+# Caída prehistórica (whd00990)
+[[rule]]
+id = "te_whd00990"
+on = "move_power"
+text = "HissatsuEffects.te_whd00990"
+when = { technique = ["whd00990", "whd00990_mm"], rival = { element = "wind" } }
+do = { power_mult = 1.12 }
+
+# Fiesta floral (whd01090)
+[[rule]]
+id = "te_whd01090"
+on = "move_power"
+text = "HissatsuEffects.te_whd01090"
+when = { technique = ["whd01090"], zone = { z = [0.0, 55.0], frame = "team" }, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Embestida (whd00110)
+[[rule]]
+id = "te_whd00110"
+on = "move_power"
+text = "HissatsuEffects.te_whd00110"
+when = { technique = ["whd00110"], zone = { x = [-10.0, 10.0], frame = "team" }, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Ilusión deslumbrante (whd01010)
+[[rule]]
+id = "te_whd01010"
+on = "move_power"
+text = "HissatsuEffects.te_whd01010"
+when = { technique = ["whd01010", "whd01010_mm"], half = 2, score = "trailing" }
+do = { power_mult = 1.15 }
+
+# La flamme (whd01050)
+[[rule]]
+id = "te_whd01050"
+on = "move_power"
+text = "HissatsuEffects.te_whd01050"
+when = { technique = ["whd01050", "whd01050_mm"], zone = { x = [-40.0, -20.0], both_sides = true, frame = "team" }, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Robo sigiloso (whd01340)
+[[rule]]
+id = "te_whd01340"
+on = "move_power"
+text = "HissatsuEffects.te_whd01340"
+when = { technique = ["whd01340"], near = { who = "opponents", radius_m = 8.0, count = { min = 2 } }, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Campo minado (whd01140)
+[[rule]]
+id = "te_whd01140"
+on = "move_power"
+text = "HissatsuEffects.te_whd01140"
+when = { technique = ["whd01140"], near = { who = "teammates", radius_m = 8.0, count = { min = 1 } }, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Tuneladora (whd01300)
+[[rule]]
+id = "te_whd01300"
+on = "move_power"
+text = "HissatsuEffects.te_whd01300"
+when = { technique = ["whd01300"], near = { who = "teammates", radius_m = 15.0, count = { min = 2 } }, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Engaño yoyó (whd00650)
+[[rule]]
+id = "te_whd00650"
+on = "move_power"
+text = "HissatsuEffects.te_whd00650"
+when = { technique = ["whd00650"], near = { who = "teammates", radius_m = 12.0, count = 0 }, score = "leading" }
+do = { power_mult = 1.12 }
+
+# La gran muralla (whd00890)
+[[rule]]
+id = "te_whd00890_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00890"
+when = { technique = ["whd00890"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00890_family_2"
+on = "move_power"
+when = { technique = ["whd00890"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00890_family_3"
+on = "move_power"
+when = { technique = ["whd00890"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Defensa radial (whd01290)
+[[rule]]
+id = "te_whd01290"
+on = "move_power"
+text = "HissatsuEffects.te_whd01290"
+when = { technique = ["whd01290"], half_fraction_to = "1/3", score = "level" }
+do = { power_mult = 1.12 }
+
+# Zona de contención (whd01490)
+[[rule]]
+id = "te_whd01490"
+on = "move_power"
+text = "HissatsuEffects.te_whd01490"
+when = { technique = ["whd01490"], half_fraction_from = "2/3", score = "level" }
+do = { power_mult = 1.12 }
+
+# Fórmula matemática (whd10030)
+[[rule]]
+id = "te_whd10030"
+on = "move_power"
+text = "HissatsuEffects.te_whd10030"
+when = { technique = ["whd10030"], half = 2, half_fraction_from = "2/3", score = "level" }
+do = { power_mult = 1.12 }
+
+# Fortaleza nocturna (whd01080)
+[[rule]]
+id = "te_whd01080"
+on = "move_power"
+text = "HissatsuEffects.te_whd01080"
+when = { technique = ["whd01080"], half = 2, half_fraction_from = "2/3" }
+do = { power_mult = 1.15 }
+
+# Presa de zarcillo (whd01330)
+[[rule]]
+id = "te_whd01330"
+on = "move_power"
+text = "HissatsuEffects.te_whd01330"
+when = { technique = ["whd01330"], zone = { z = [-55.0, 0.0], frame = "team" }, score = "level" }
+do = { power_mult = 1.12 }
+
+# Olor embriagador (whd00470)
+[[rule]]
+id = "te_whd00470"
+on = "move_power"
+text = "HissatsuEffects.te_whd00470"
+when = { technique = ["whd00470"], zone = { z = [0.0, 55.0], frame = "team" }, score = "level" }
+do = { power_mult = 1.12 }
+
+# Remolino polvoriento (whd01260)
+[[rule]]
+id = "te_whd01260"
+on = "move_power"
+text = "HissatsuEffects.te_whd01260"
+when = { technique = ["whd01260"], zone = { x = [-10.0, 10.0], frame = "team" }, score = "level" }
+do = { power_mult = 1.12 }
+
+# Bloqueo ballena (whd00490)
+[[rule]]
+id = "te_whd00490"
+on = "move_power"
+text = "HissatsuEffects.te_whd00490"
+when = { technique = ["whd00490"], zone = { x = [-40.0, -20.0], both_sides = true, frame = "team" }, score = "level" }
+do = { power_mult = 1.12 }
+
+# Robo mimético (whd01250)
+[[rule]]
+id = "te_whd01250"
+on = "move_power"
+text = "HissatsuEffects.te_whd01250"
+when = { technique = ["whd01250"], near = { who = "opponents", radius_m = 8.0, count = { min = 2 } }, score = "level" }
+do = { power_mult = 1.12 }
+
+# Siega central (whd01280)
+[[rule]]
+id = "te_whd01280"
+on = "move_power"
+text = "HissatsuEffects.te_whd01280"
+when = { technique = ["whd01280"], partners = { count = 1, distinct_elements = true } }
+do = { power_mult = 1.12 }
+
+# Bombazo (whd00330)
+[[rule]]
+id = "te_whd00330"
+on = "move_power"
+text = "HissatsuEffects.te_whd00330"
+when = { technique = ["whd00330"], near = { who = "teammates", radius_m = 15.0, count = { min = 2 } }, score = "level" }
+do = { power_mult = 1.12 }
+
+# Formación defensiva (whd01370)
+[[rule]]
+id = "te_whd01370"
+on = "move_power"
+text = "HissatsuEffects.te_whd01370"
+when = { technique = ["whd01370"], near = { who = "teammates", radius_m = 12.0, count = 0 }, score = "level" }
+do = { power_mult = 1.12 }
+
+# Bloqueo telequinético (whd01380)
+[[rule]]
+id = "te_whd01380"
+on = "move_power"
+text = "HissatsuEffects.te_whd01380"
+when = { technique = ["whd01380"], half = 1, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Búnker (whd01560)
+[[rule]]
+id = "te_whd01560"
+on = "move_power"
+text = "HissatsuEffects.te_whd01560"
+when = { technique = ["whd01560"], half = 2, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Escudo bárbaro (whd00560)
+[[rule]]
+id = "te_whd00560"
+on = "move_power"
+text = "HissatsuEffects.te_whd00560"
+when = { technique = ["whd00560"], half_fraction_to = "1/3", score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Lógica ganadora (whd01390)
+[[rule]]
+id = "te_whd01390"
+on = "move_power"
+text = "HissatsuEffects.te_whd01390"
+when = { technique = ["whd01390"], half_fraction_from = "2/3", score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Pisotón de justicia (whd00190)
+[[rule]]
+id = "te_whd00190_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00190"
+when = { technique = ["whd00190"], team_family = { family = "HissatsuReforged.DivinePower", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00190_family_2"
+on = "move_power"
+when = { technique = ["whd00190"], team_family = { family = "HissatsuReforged.DivinePower", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00190_family_3"
+on = "move_power"
+when = { technique = ["whd00190"], team_family = { family = "HissatsuReforged.DivinePower", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Jungla profunda (whd01020)
+[[rule]]
+id = "te_whd01020"
+on = "move_power"
+text = "HissatsuEffects.te_whd01020"
+when = { technique = ["whd01020"], half = 2, half_fraction_from = "2/3", score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Bola de hojas (whd01240)
+[[rule]]
+id = "te_whd01240"
+on = "move_power"
+text = "HissatsuEffects.te_whd01240"
+when = { technique = ["whd01240"], zone = { z = [-55.0, 0.0], frame = "team" }, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# El fuerte (whd10060)
+[[rule]]
+id = "te_whd10060"
+on = "move_power"
+text = "HissatsuEffects.te_whd10060"
+when = { technique = ["whd10060"], rival = { special = true } }
+do = { power_mult = 1.12 }
+
+# Orca peligrosa (whd00800)
+[[rule]]
+id = "te_whd00800"
+on = "move_power"
+text = "HissatsuEffects.te_whd00800"
+when = { technique = ["whd00800"], zone = { x = [-10.0, 10.0], frame = "team" }, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Juego de piernas (whd01230)
+[[rule]]
+id = "te_whd01230"
+on = "move_power"
+text = "HissatsuEffects.te_whd01230"
+when = { technique = ["whd01230"], zone = { x = [-40.0, -20.0], both_sides = true, frame = "team" }, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Clave de sol (whd01270)
+[[rule]]
+id = "te_whd01270"
+on = "move_power"
+text = "HissatsuEffects.te_whd01270"
+when = { technique = ["whd01270"], near = { who = "opponents", radius_m = 8.0, count = { min = 2 } }, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Tortuga danzarina (whd10010)
+[[rule]]
+id = "te_whd10010"
+on = "move_power"
+text = "HissatsuEffects.te_whd10010"
+when = { technique = ["whd10010"], near = { who = "teammates", radius_m = 8.0, count = { min = 1 } }, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Gravedad grave (whd00270)
+[[rule]]
+id = "te_whd00270"
+on = "shot_through"
+text = "HissatsuEffects.te_whd00270"
+when = { technique = ["whd00270"] }
+do = { power_mult = 0.92 }
+
+# Placaje extremo (whd00630)
+[[rule]]
+id = "te_whd00630"
+on = "move_power"
+text = "HissatsuEffects.te_whd00630"
+when = { technique = ["whd00630"], near = { who = "teammates", radius_m = 15.0, count = { min = 2 } }, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Maremoto umibozu (whd10080)
+[[rule]]
+id = "te_whd10080"
+on = "move_power"
+text = "HissatsuEffects.te_whd10080"
+when = { technique = ["whd10080"], near = { who = "teammates", radius_m = 12.0, count = 0 }, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Gran seísmo (whd00570)
+[[rule]]
+id = "te_whd00570"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00570"
+when = { technique = ["whd00570"], score = "level" }
+do = { cost_mult = 0.8 }
+
+# Ecuación defensiva (whd01220)
+[[rule]]
+id = "te_whd01220"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01220"
+when = { technique = ["whd01220"], score = "leading" }
+do = { cost_mult = 0.8 }
+
+# Nudo atrapaosos (whd01540)
+[[rule]]
+id = "te_whd01540"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01540"
+when = { technique = ["whd01540"], score = "trailing" }
+do = { cost_mult = 0.8 }
+
+# Submarinismo salvaje (whd10040)
+[[rule]]
+id = "te_whd10040"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd10040"
+when = { technique = ["whd10040"], half = 1 }
+do = { cost_mult = 0.8 }
+
+# Robo planetario (whd00370)
+[[rule]]
+id = "te_whd00370"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00370"
+when = { technique = ["whd00370"], half = 2 }
+do = { cost_mult = 0.8 }
+
+# Emboscada (whd00590)
+[[rule]]
+id = "te_whd00590"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00590"
+when = { technique = ["whd00590"], half_fraction_to = "1/3" }
+do = { cost_mult = 0.8 }
+
+# Jaula gravitatoria (whd01470)
+[[rule]]
+id = "te_whd01470"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01470"
+when = { technique = ["whd01470"], half_fraction_from = "2/3" }
+do = { cost_mult = 0.8 }
+
+# Doppelgänger (whd00160)
+[[rule]]
+id = "te_whd00160"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00160"
+when = { technique = ["whd00160"], half = 2, half_fraction_from = "2/3" }
+do = { cost_mult = 0.8 }
+
+# Presa (whd00350)
+[[rule]]
+id = "te_whd00350_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00350"
+when = { technique = ["whd00350", "whd00350_or"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00350_family_2"
+on = "move_power"
+when = { technique = ["whd00350", "whd00350_or"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00350_family_3"
+on = "move_power"
+when = { technique = ["whd00350", "whd00350_or"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Gran sabio (whd00450)
+[[rule]]
+id = "te_whd00450_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00450"
+when = { technique = ["whd00450"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00450_family_2"
+on = "move_power"
+when = { technique = ["whd00450"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00450_family_3"
+on = "move_power"
+when = { technique = ["whd00450"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Aplanadora (whd00460)
+[[rule]]
+id = "te_whd00460"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00460"
+when = { technique = ["whd00460"], half = 2, half_fraction_from = "2/3" }
+do = { cost_mult = 0.8 }
+
+# Cabezazo moái (whd01520)
+[[rule]]
+id = "te_whd01520"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01520"
+when = { technique = ["whd01520"], score_margin = { min = 2 } }
+do = { cost_mult = 0.8 }
+
+# Superpeonza (whd00320)
+[[rule]]
+id = "te_whd00320"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00320"
+when = { technique = ["whd00320"], score_margin = { max = -2 } }
+do = { cost_mult = 0.8 }
+
+# Coleccionista de cartas (whd00760)
+[[rule]]
+id = "te_whd00760"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00760"
+when = { technique = ["whd00760"], half = 2, score = "trailing" }
+do = { cost_mult = 0.8 }
+
+# Frankendefensa (whd01510)
+[[rule]]
+id = "te_whd01510"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01510"
+when = { technique = ["whd01510"], half = 2, score = "level" }
+do = { cost_mult = 0.8 }
+
+# León devorador (whd01590)
+[[rule]]
+id = "te_whd01590"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01590"
+when = { technique = ["whd01590"], half = 1, score = "level" }
+do = { cost_mult = 0.8 }
+
+# Pisotón vigoroso (whd10090)
+[[rule]]
+id = "te_whd10090"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd10090"
+when = { technique = ["whd10090"], half = 1, score = "leading" }
+do = { cost_mult = 0.8 }
+
+# Toro a la fuga (whd10100)
+[[rule]]
+id = "te_whd10100"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd10100"
+when = { technique = ["whd10100"], half = 2, half_fraction_from = "2/3", score = "trailing" }
+do = { cost_mult = 0.8 }
+
+# Maza metálica (whd10110)
+[[rule]]
+id = "te_whd10110"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd10110"
+when = { technique = ["whd10110"], element = "mountain" }
+do = { cost_mult = 0.8 }
+
+# Niebla sombría (whd10120)
+[[rule]]
+id = "te_whd10120_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd10120"
+when = { technique = ["whd10120"], team_family = { family = "HissatsuReforged.NinjaArts", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd10120_family_2"
+on = "move_power"
+when = { technique = ["whd10120"], team_family = { family = "HissatsuReforged.NinjaArts", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd10120_family_3"
+on = "move_power"
+when = { technique = ["whd10120"], team_family = { family = "HissatsuReforged.NinjaArts", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Robo teatral (whd10130)
+[[rule]]
+id = "te_whd10130"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd10130"
+when = { technique = ["whd10130"], zone = { z = [-55.0, 0.0], frame = "team" } }
+do = { cost_mult = 0.8 }
+
+# Tren loco (whd00510)
+[[rule]]
+id = "te_whd00510"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00510"
+when = { technique = ["whd00510"], zone = { z = [0.0, 55.0], frame = "team" } }
+do = { cost_mult = 0.8 }
+
+# Espectro oscuro (whd00860)
+[[rule]]
+id = "te_whd00860_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00860"
+when = { technique = ["whd00860"], team_family = { family = "HissatsuReforged.Occult", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00860_family_2"
+on = "move_power"
+when = { technique = ["whd00860"], team_family = { family = "HissatsuReforged.Occult", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd00860_family_3"
+on = "move_power"
+when = { technique = ["whd00860"], team_family = { family = "HissatsuReforged.Occult", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Lanza tornado (whd00920)
+[[rule]]
+id = "te_whd00920_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00920"
+when = { technique = ["whd00920"], team_family = { family = "HissatsuReforged.Dragon", count = { min = 1 } } }
+do = { power_mult = 1.04 }
+
+[[rule]]
+id = "te_whd00920_family_2"
+on = "move_power"
+when = { technique = ["whd00920"], team_family = { family = "HissatsuReforged.Dragon", count = { min = 2 } } }
+do = { power_mult = 1.04 }
+
+[[rule]]
+id = "te_whd00920_family_3"
+on = "move_power"
+when = { technique = ["whd00920"], team_family = { family = "HissatsuReforged.Dragon", count = { min = 3 } } }
+do = { power_mult = 1.04 }
+
+# Golpe titánico (whd00930)
+[[rule]]
+id = "te_whd00930"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00930"
+when = { technique = ["whd00930"], zone = { x = [-20.0, 20.0], z = [-55.0, -38.0], frame = "team" } }
+do = { cost_mult = 0.8 }
+
+# Ráfaga de tiros (whd00950)
+[[rule]]
+id = "te_whd00950"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00950"
+when = { technique = ["whd00950"], zone = { x = [-10.0, 10.0], frame = "team" } }
+do = { cost_mult = 0.8 }
+
+# Pirueta rascacielos (whd01120)
+[[rule]]
+id = "te_whd01120"
+on = "move_power"
+text = "HissatsuEffects.te_whd01120"
+when = { technique = ["whd01120"], uses = { scope = "half", count = 0 } }
+do = { power_mult = 1.12 }
+
+# Estandarte de valquiria (whd01150)
+[[rule]]
+id = "te_whd01150"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01150"
+when = { technique = ["whd01150"], zone = { x = [-40.0, -20.0], both_sides = true, frame = "team" } }
+do = { cost_mult = 0.8 }
+
+# Escudo caparazón (whd01160)
+[[rule]]
+id = "te_whd01160"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01160"
+when = { technique = ["whd01160"], zone = { z = [-20.0, 20.0], frame = "team" } }
+do = { cost_mult = 0.8 }
+
+# Flecha del alba (whd01170)
+[[rule]]
+id = "te_whd01170"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01170"
+when = { technique = ["whd01170"], near = { who = "opponents", radius_m = 8.0, count = { min = 2 } } }
+do = { cost_mult = 0.8 }
+
+# Lanza de cazador (whd01180)
+[[rule]]
+id = "te_whd01180"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01180"
+when = { technique = ["whd01180"], near = { who = "teammates", radius_m = 8.0, count = { min = 1 } } }
+do = { cost_mult = 0.8 }
+
+# Danza de plumas (whd01200)
+[[rule]]
+id = "te_whd01200"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01200"
+when = { technique = ["whd01200"], near = { who = "teammates", radius_m = 15.0, count = { min = 2 } } }
+do = { cost_mult = 0.8 }
+
+# Espinas insidiosas (whd01210)
+[[rule]]
+id = "te_whd01210"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01210"
+when = { technique = ["whd01210"], near = { who = "teammates", radius_m = 12.0, count = 0 } }
+do = { cost_mult = 0.8 }
+
+# Espejismo de zorro (whd01400)
+[[rule]]
+id = "te_whd01400"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01400"
+when = { technique = ["whd01400"], chance = 0.25 }
+do = { cost_mult = 0.8 }
+
+# Espejismo de Flami (whd01401)
+[[rule]]
+id = "te_whd01401_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd01401"
+when = { technique = ["whd01401"], team_family = { family = "HissatsuReforged.Beasts", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd01401_family_2"
+on = "move_power"
+when = { technique = ["whd01401"], team_family = { family = "HissatsuReforged.Beasts", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd01401_family_3"
+on = "move_power"
+when = { technique = ["whd01401"], team_family = { family = "HissatsuReforged.Beasts", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Entrada de búho (whd01410)
+[[rule]]
+id = "te_whd01410"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01410"
+when = { technique = ["whd01410"], chance = 0.35 }
+do = { cost_mult = 0.8 }
+
+# Entrada de búho encornado (whd01411)
+[[rule]]
+id = "te_whd01411"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01411"
+when = { technique = ["whd01411"], element = "forest" }
+do = { cost_mult = 0.8 }
+
+# Garra de tejón (whd01420)
+[[rule]]
+id = "te_whd01420"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01420"
+when = { technique = ["whd01420"], element = "fire" }
+do = { cost_mult = 0.8 }
+
+# Garra de Kúlupe (whd01421)
+[[rule]]
+id = "te_whd01421"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01421"
+when = { technique = ["whd01421"], element = "wind" }
+do = { cost_mult = 0.8 }
+
+# Garra de Giorom (whd01422)
+[[rule]]
+id = "te_whd01422"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01422"
+when = { technique = ["whd01422"], element = "mountain" }
+do = { cost_mult = 0.8 }
+
+# Cornada de búfalo (whd01430)
+[[rule]]
+id = "te_whd01430"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01430"
+when = { technique = ["whd01430"], element = "void" }
+do = { cost_mult = 0.8 }
+
+# Cornada de Gandoran (whd01431)
+[[rule]]
+id = "te_whd01431"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01431"
+when = { technique = ["whd01431"], half = 1, score = "leading" }
+do = { cost_mult = 0.8 }
+
+# Cornada de Dandor (whd01432)
+[[rule]]
+id = "te_whd01432"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01432"
+when = { technique = ["whd01432"], half = 2, score = "leading" }
+do = { cost_mult = 0.8 }
+
+# Zambullida de Dolfinus (whd01440)
+[[rule]]
+id = "te_whd01440"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01440"
+when = { technique = ["whd01440"], half_fraction_to = "1/3", score = "leading" }
+do = { cost_mult = 0.8 }
+
+# Rebote de Garius (whd01450)
+[[rule]]
+id = "te_whd01450"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01450"
+when = { technique = ["whd01450"], half_fraction_from = "2/3", score = "leading" }
+do = { cost_mult = 0.8 }
+
+# Rebote de Guirius (whd01451)
+[[rule]]
+id = "te_whd01451"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01451"
+when = { technique = ["whd01451"], half = 2, half_fraction_from = "2/3", score = "leading" }
+do = { cost_mult = 0.8 }
+
+# Entrada deslumbrante (whd01500)
+[[rule]]
+id = "te_whd01500"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01500"
+when = { technique = ["whd01500"], zone = { z = [-55.0, 0.0], frame = "team" }, score = "leading" }
+do = { cost_mult = 0.8 }
+
+# Muro colectivo (whd01530)
+[[rule]]
+id = "te_whd01530_family_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd01530"
+when = { technique = ["whd01530", "whd01530_or"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd01530_family_2"
+on = "move_power"
+when = { technique = ["whd01530", "whd01530_or"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+
+[[rule]]
+id = "te_whd01530_family_3"
+on = "move_power"
+when = { technique = ["whd01530", "whd01530_or"], team_family = { family = "HissatsuReforged.GreatWalls", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# ---- Hissatsu Effects 1.13.0: own effects of the moves whose v1 family line was removed by families v2
+
+# Flecha huracán (whd00120)
+[[rule]]
+id = "te_whd00120"
+on = "move_power"
+text = "HissatsuEffects.te_whd00120"
+when = { technique = ["whd00120"], rival = { special = true } }
+do = { power_mult = 1.12 }
+
+# Ataque afilado (whd00210)
+[[rule]]
+id = "te_whd00210"
+on = "move_power"
+text = "HissatsuEffects.te_whd00210"
+when = { technique = ["whd00210"], rival = { special = true } }
+do = { power_mult = 1.12 }
+
+# Estrella fugaz (whd00230)
+[[rule]]
+id = "te_whd00230"
+on = "shot_through"
+text = "HissatsuEffects.te_whd00230"
+when = { technique = ["whd00230"] }
+do = { power_mult = 0.88 }
+
+# Paisaje helado (whd00240)
+[[rule]]
+id = "te_whd00240"
+on = "move_power"
+text = "HissatsuEffects.te_whd00240"
+when = { technique = ["whd00240"], rival = { special = true } }
+do = { power_mult = 1.12 }
+
+# Dúo magma (whd00310)
+[[rule]]
+id = "te_whd00310"
+on = "move_power"
+text = "HissatsuEffects.te_whd00310"
+when = { technique = ["whd00310"], element = "forest" }
+do = { power_mult = 1.1 }
+
+# Corte volcánico (whd00340)
+[[rule]]
+id = "te_whd00340"
+on = "shot_through"
+text = "HissatsuEffects.te_whd00340"
+when = { technique = ["whd00340"] }
+do = { power_mult = 0.85 }
+
+# Cortafuegos (whd00480)
+[[rule]]
+id = "te_whd00480"
+on = "move_power"
+text = "HissatsuEffects.te_whd00480"
+when = { technique = ["whd00480"], half_fraction_to = "1/3", half = 1, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Tormenta de arena (whd00580)
+[[rule]]
+id = "te_whd00580_1"
+on = "move_power"
+text = "HissatsuEffects.te_whd00580"
+when = { technique = ["whd00580"], uses = { scope = "half", result = "any", count = { min = 1 } } }
+do = { power_mult = 1.03 }
+[[rule]]
+id = "te_whd00580_2"
+on = "move_power"
+when = { technique = ["whd00580"], uses = { scope = "half", result = "any", count = { min = 2 } } }
+do = { power_mult = 1.03 }
+[[rule]]
+id = "te_whd00580_3"
+on = "move_power"
+when = { technique = ["whd00580"], uses = { scope = "half", result = "any", count = { min = 3 } } }
+do = { power_mult = 1.03 }
+
+# Dientes de roca (whd00600)
+[[rule]]
+id = "te_whd00600"
+on = "move_power"
+text = "HissatsuEffects.te_whd00600"
+when = { technique = ["whd00600"], rival = { special = false } }
+do = { power_mult = 1.12 }
+
+# Estela ígnea (whd00610)
+[[rule]]
+id = "te_whd00610"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd00610"
+when = { technique = ["whd00610"], half_fraction_to = "1/3", half = 1, score = "leading" }
+do = { cost_mult = 0.85 }
+
+# Zigzag de fuego (whd00690)
+[[rule]]
+id = "te_whd00690"
+on = "move_power"
+text = "HissatsuEffects.te_whd00690"
+when = { technique = ["whd00690"], half_fraction_from = "2/3", score = "leading" }
+do = { power_mult = 1.12 }
+
+# Subida a los cielos (whd00700)
+[[rule]]
+id = "te_whd00700"
+on = "move_power"
+text = "HissatsuEffects.te_whd00700"
+when = { technique = ["whd00700"], uses = { scope = "match", count = 0 } }
+do = { power_mult = 1.15 }
+
+# Caída a los infiernos (whd00710)
+[[rule]]
+id = "te_whd00710"
+on = "move_power"
+text = "HissatsuEffects.te_whd00710"
+when = { technique = ["whd00710"], uses = { scope = "match", result = "lost", count = { min = 1 } } }
+do = { power_mult = 1.12 }
+
+# Fuerza centrífuga (whd00780)
+[[rule]]
+id = "te_whd00780"
+on = "move_power"
+text = "HissatsuEffects.te_whd00780"
+when = { technique = ["whd00780"], half_fraction_from = "2/3", score = "level" }
+do = { power_mult = 1.12 }
+
+# Luz cegadora (whd00870)
+[[rule]]
+id = "te_whd00870"
+on = "move_power"
+text = "HissatsuEffects.te_whd00870"
+when = { technique = ["whd00870"], half_fraction_to = "1/3", half = 1 }
+do = { power_mult = 1.12 }
+
+# Espacio oscuro (whd00960)
+[[rule]]
+id = "te_whd00960"
+on = "move_power"
+text = "HissatsuEffects.te_whd00960"
+when = { technique = ["whd00960"], uses = { scope = "half", result = "lost", count = { min = 1 } } }
+do = { power_mult = 1.1 }
+
+# Bobina eléctrica (whd01000)
+[[rule]]
+id = "te_whd01000"
+on = "move_power"
+text = "HissatsuEffects.te_whd01000"
+when = { technique = ["whd01000"], half_fraction_to = "1/3" }
+do = { power_mult = 1.12 }
+
+# Estrella de roca (whd01040)
+[[rule]]
+id = "te_whd01040"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01040"
+when = { technique = ["whd01040"], uses = { scope = "match", result = "won", count = { min = 2 } } }
+do = { cost_mult = 0.8 }
+
+# Obstrucción eléctrica (whd01130)
+[[rule]]
+id = "te_whd01130"
+on = "move_power"
+text = "HissatsuEffects.te_whd01130"
+when = { technique = ["whd01130"], half_fraction_to = "1/3", score = "leading" }
+do = { power_mult = 1.12 }
+
+# Guardia sombría (whd01190)
+[[rule]]
+id = "te_whd01190"
+on = "move_power"
+text = "HissatsuEffects.te_whd01190"
+when = { technique = ["whd01190"], half_fraction_from = "2/3", half = 2, score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Vuelo volcánico (whd01320)
+[[rule]]
+id = "te_whd01320"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01320"
+when = { technique = ["whd01320"], half_fraction_from = "2/3", score = "leading" }
+do = { cost_mult = 0.85 }
+
+# Maza rocosa (whd01350)
+[[rule]]
+id = "te_whd01350"
+on = "move_power"
+text = "HissatsuEffects.te_whd01350"
+when = { technique = ["whd01350"], half_fraction_to = "1/3", half = 2, score = "leading" }
+do = { power_mult = 1.12 }
+
+# Rayos del juicio (whd01360)
+[[rule]]
+id = "te_whd01360"
+on = "move_power"
+text = "HissatsuEffects.te_whd01360"
+when = { technique = ["whd01360"], half_fraction_to = "1/3", score = "level" }
+do = { power_mult = 1.12 }
+
+# Torbellino interceptor (whd01460)
+[[rule]]
+id = "te_whd01460"
+on = "move_power"
+text = "HissatsuEffects.te_whd01460"
+when = { technique = ["whd01460"], half_fraction_from = "2/3", score = "trailing" }
+do = { power_mult = 1.12 }
+
+# Huracán múltiple (whd01570)
+[[rule]]
+id = "te_whd01570"
+on = "tension_pay"
+text = "HissatsuEffects.te_whd01570"
+when = { technique = ["whd01570"], half_fraction_from = "2/3" }
+do = { cost_mult = 0.85 }
+
+# Meteorito ardiente (whd01580)
+[[rule]]
+id = "te_whd01580"
+on = "knockdown"
+text = "HissatsuEffects.te_whd01580"
+when = { technique = ["whd01580"], score = "trailing" }
+do = { down_mult = 1.25 }

@@ -3,13 +3,13 @@ former_ids = ["iecross"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\keys.toml)
 # «IECross» since 1.3.0 (2026-10-10; «Inazuma Eleven Cross» before): the same name in every language; the id stays.
 name = "IECross"
-version = "1.8.0"
+version = "1.14.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Inazuma Eleven Cross in Victory Road. Teams: the 11 Cross teams (Shin Zeus, Shin Brain, KFC Pierrot, Chaos Circus, the Inazuma Japan, Wild and Occult pirates, the Kirkwood, Otaku and Raimon Veterans Ramen teams, Japan 2026) with their crests and kits, and their CPU movesets. Characters: the Cross cards (Byron Love (Cross), Axel Blaze of Royal Academy, pirate Shawn Froste and Xavier Foster, Celia Hills with Jude's cape, clown Gazelle and Torch) with their Cross heads and outfits. Special moves: the 12 Cross moves (Inferno Penguin, Ocean Birth, God Knows Machina, Chaos Illusion and eight Cross versions of Victory Road moves) with their scenes, effects and manuals. Stadiums: the eight Cross stadiums (Inazuma Big Ferry and its summer and festival skins, the seaside deck, the ghost pirate ship, the ramen ship, the cyber field, the ferry's bow deck) as match maps, listed in every stadium picker of the game (free match, Battle Bay and VS rooms) once their ticket from the general shop is owned. «Competir contra bots»: the «Inazuma Eleven Cross» tab's matches with their prizes, Royal Academy (Cross) and the unlock chain, in its own «Inazuma Eleven Cross» tab (the X icon, after Victory Road). Bahía Batalla: the Cross teams of the grid under their own Cross season (the X icon). Player bank: an «Inazuma Eleven Cross» tab (the X icon) listing the Cross cards (only there and in «TODO», never under a retail series tab), and the Cross series in the bank filter. Celebrations: the Inazuma Eleven Cross intros as goal celebrations, each preselected for its own characters (Mark Evans, Axel Blaze, Arion Sherwind…) and selectable by every player, plus four open poses. Always on: the mod has no options."
 priority = 0
 tags = ["Teams", "Characters", "Techniques"]
-updated = "2026-10-22"
+updated = "2026-10-30"
 # This mod's own names (TOML keys [[IECross.X]], Lua IECross.X, any later text, command or key; older texts keep
 # their iecross_ ids); never VRFW.
 prefix = "IECross"
@@ -87,7 +87,7 @@ folder = "IECross"
 # if_mod bb_chronicle_teams) declares one Battle Bay team per Cross club on the grid (evt_ct_cx_<club>_bb, Battle Bay
 # format, its row plays it: no framework copy), replacing content/teams/90_estadio_bb.toml's appends; the free match
 # keeps its own Cross teams. Same team ids as before.
-requires = ["VRFW>=2.45.0"]
+requires = ["VRFW>=2.251.0"]
 conflicts = []
 
 # What other mods may use under the prefix (docs/framework/native.md §5): nothing yet (no Lua functions, no

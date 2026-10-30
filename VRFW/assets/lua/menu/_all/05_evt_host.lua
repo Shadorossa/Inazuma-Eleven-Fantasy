@@ -47,7 +47,7 @@ end
 H.version = VERSION
 
 local D = EVT_DEBUG
-local LOG = 3661580131          -- crc32("CMND_EVT_LOG")
+local LOG = VRFW_Cmd.EVT_LOG          -- crc32("CMND_EVT_LOG")
 local pack, unpack = table.pack, table.unpack
 
 H.HALT = H.HALT or setmetatable({}, { __tostring = function() return "VRFW_Host.HALT" end })

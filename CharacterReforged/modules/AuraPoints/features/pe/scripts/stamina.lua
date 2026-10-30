@@ -33,8 +33,8 @@ local C = require "lib/stamina/cfg"
 local A = require "lib/stamina/auras"
 local T = require "lib/stamina/tired"
 
-local function info(...) VRFW.log("aura_points stamina:", ...) end
-local function warn(...) VRFW.warn("aura_points stamina:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("aura_points stamina")
 
 local RAW = VRFW.files.config("pe") or {}
 local AC = C.pe(RAW)
@@ -56,13 +56,14 @@ local PEG_ON, SP_ON = option_on("peg"), option_on("sp")
 local KP_DEFAULT = tonumber(RAW.kp_default) or 200
 
 -- game layout (docs/game/mechanics/match-stamina.md §6 / §10, aura-costs.md)
-local ACTOR_MAX, ACTOR_STRIDE = 0x3A, 0x570
+local Actors = require "VRFW/lib/actors"
 local MI_TEAMS, TEAM_STRIDE, TEAM_ON_PITCH = 0x60, 0x1130, 0x1050
 local MI_HALF_LEN, MI_HALF, MI_USER_TEAM = 0x1C, 0x2BFB, 0x2C29
 local MEM_LINK_SLOT, MEM_POSITION, MEM_FLAGS, MEM_SENT_OFF = 0x68, 0x71, 0x7A, 0x08
 local CTRL_BY_TEAM = 0x60
 local PEND_FLAG_NO_COST, PEND_FLAG_HYPER_GAUGE = 0x08, 0x10
-local IN_PLAY = 9
+local Live = require "VRFW/lib/match_live"
+local IN_PLAY = Live.states().in_play
 local MIN_LEFT_S = 0.5
 local REREAD_MS = 10000
 
@@ -91,7 +92,8 @@ local function flag(name) return VRFW.flag(name) or 0 end
 -- the match clock: frame-based while a synced match runs (docs/game/modes/bb-p2p-lockstep.md)
 local function now_ms() return VRFW.match.clock() end
 
-local function hex(v) return string.format("0x%X", v or 0) end
+local Id = require "VRFW/lib/ids"
+local hex = Id.hex
 local function key_of(id) return A.key(id) end
 local function clock_text(c)
   local s = math.max(math.floor(c or 0), 0)
@@ -103,7 +105,7 @@ local function restarts_play(s) return s == 9 or s == 10 end
 
 -- ---------------------------------------------------------------------------------------------- the PE declaration
 
-local DECL = { max = 134, live = { [9] = true, [14] = true, [15] = true, [16] = true }, duel = { [14] = true, [15] = true },
+local DECL = { max = 134, live = Live.states().live, duel = Live.states().duel,
   exhausted_bit = nil, speed = 1.0, speed_duel = 1.0 }
 do
   local t = VRFW.files.toml("features/pe/content/match_resources/pe.toml")
@@ -685,14 +687,14 @@ end
 function R.battery_frame(in_match)
   if not in_match then return end
   local now = now_ms()
-  local base = global("Match.SoccerActors.ViaSkillUsed")
   for _, p in pairs(players) do
     local b = p.battery
     if b and b.phase == "out" then
-      local actor = base and (base + band(p.hdl, 0xFF) * ACTOR_STRIDE)
+      local entry = Actors.of(p.hdl)
+      local actor = entry and entry.address
       if not member_on_pitch_ignoring_bit(p.team, b.member) then
         release(p, "his member left the pitch")
-      elseif not actor or rd("u32", actor + 0x94) ~= p.hdl then
+      elseif not actor then
         release(p, "his match actor is gone")
       else
         if not b.hold_started and now - b.since >= b.hold_after_ms then
@@ -916,15 +918,14 @@ VRFW.on("tick", function(ev)
   if not mi or frame.scene == 0 then return nil end
   frame_update()
   if not seen.in_match then return nil end
-  local base = global("Match.SoccerActors.ViaSkillUsed")
-  if not base then return nil end
+  if not Actors.base() then return nil end
   local okp, sl = pcall(VRFW.extra_slot.players)
   slots = (okp and type(sl) == "table") and sl or {}
   local live_now = {}
-  for i = 0, ACTOR_MAX - 1 do
-    local actor = base + i * ACTOR_STRIDE
+  for _, entry in ipairs(Actors.list()) do
+    local actor = entry.address
     local a = VRFW.mem.read_struct("SpActor", actor)
-    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == i and a.team <= 1 then
+    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == entry.index and a.team <= 1 then
       local p = players[a.hdl]
       if not p then
         p = new_player(a.hdl)

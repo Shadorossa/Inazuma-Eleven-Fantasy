@@ -81,10 +81,10 @@ function UTIL_SF_Flat(params)
 end
 
 function UTIL_SF_Param(key, v)
-  if funcLuaCommand(2947612279, key) then
-    funcLuaCommand(3363400568, key)
+  if VRFW_Param.Has(key) then
+    VRFW_Param.Clear(key)
   end
-  funcLuaCommand(3860611758, key, 0, v, 1)
+  VRFW_Param.Set(key, v)
 end
 
 -- filter icon + key glyph in the grey end of the tab bar (retail meshes of cmn06_01_list_tab_attach that

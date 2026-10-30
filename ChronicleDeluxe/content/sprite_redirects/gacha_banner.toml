@@ -1,0 +1,11 @@
+schema = "VRFW.sprite_redirect/1"
+# Chronicle Deluxe: the gacha panel's banner picture (content\gacha\kizuna_coin_gacha.toml `banner`) is asked from the
+# game's vsroute01_17 by name; it lives in the mod's own atlas (content\images\menu\30_vsroute\gacha_banner.toml).
+
+[[VRFW.SpriteRedirect]]
+name = "gacha_banner"
+atlas = "#/menu/30_vsroute/vsroute01/vsroute01_17/<LG>/vsroute01_17.g4tx"
+own_atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_gacha_banner.g4tx"
+sprites = [
+    "chronicle_deluxe_gacha_banner01",
+]

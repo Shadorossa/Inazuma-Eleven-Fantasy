@@ -12,8 +12,8 @@ local HOOK = "CoachLooks.CostumeLookup"
 local FLAG_COACH, FLAG_STAFF = 0x10, 0x30
 local MAX_FIX_LINES = 60
 
-local function info(...) VRFW.log("coach_looks:", ...) end
-local function warn(...) VRFW.warn("coach_looks:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("coach_looks")
 
 local RULES = {}         -- { key, states, flags, values (set | nil), always }
 local LIVE = false

@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Pingüino emperador n.º 2 + Tiburón (Emperor Penguin No. 2 feat. Shark, whs03330 and
+# whs03330_or, same cut-in ev60_03330).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 3.00 m the whole way (the shark's belly and the lowest penguins' sprays stay above the
+# grass). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); the height is held.
+
+# Pingüino emperador n.º 2 + Tiburón (whs03330).
+[[edit]]
+target = "whs03330"
+trajectory = { points = [[0.0, 3.00]], straight = true, unblockable = false }
+
+# Pingüino emperador n.º 2 + Tiburón (whs03330_or).
+[[edit]]
+target = "whs03330_or"
+trajectory = { points = [[0.0, 3.00]], straight = true, unblockable = false }

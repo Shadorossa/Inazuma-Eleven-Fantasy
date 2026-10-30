@@ -61,7 +61,7 @@ local function VRFW_DualElementTable(skill)
   if skill == nil or skill == 0 or type(funcLuaCommand) ~= "function" then
     return {}
   end
-  local ok, _, e = pcall(funcLuaCommand, 2580586398 --[[CMND_GET_SOCCER_SKILL_INFO?]], skill, 7)
+  local ok, _, e = pcall(funcLuaCommand, 2580586398, skill, 7)
   if ok and type(e) == "number" and e > 0 then
     return {e}
   end
@@ -89,11 +89,11 @@ local function VRFW_DualElementPlace(layer, index, k, n)
   if layer ~= VRFW_DualElementEnemyLayer then
     x = k * VRFW_DualElementPitch
   end
-  VRFW_DualElementMenu(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], layer, x, 0, 0, index)
+  VRFW_DualElementMenu(1389957207, layer, x, 0, 0, index)
 end
 
 local function VRFW_DualElementReset(layer, index)
-  VRFW_DualElementMenu(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], layer, 0, 0, 0, index)
+  VRFW_DualElementMenu(1389957207, layer, 0, 0, 0, index)
 end
 
 local VRFW_DualElementPrevIcon = SetupVsElementIconLayerMenu
@@ -118,7 +118,7 @@ function SetupVsElementIconLayerMenu(a1, a2, a3, a4, a5, ...)
   pcall(function()
     if extra then
       if l == nil or a2 > #l then
-        VRFW_DualElementMenu(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+        VRFW_DualElementMenu(711242136, a1, a2, false)
         return
       end
       -- instances 2..n = row positions 0..n-2 (elements 1..n-1)
@@ -148,7 +148,7 @@ function UpdateVsElementIconCompatibilityArrow(a1, a2, a3, a4, a5, a6, a7, ...)
   end
   pcall(function()
     if type(a2) == "number" and a2 >= 2 then
-      VRFW_DualElementMenu(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+      VRFW_DualElementMenu(711242136, a1, a2, false)
       return -- the extra icons' arrows: never shown
     end
     if a3 ~= 1 then
@@ -163,7 +163,7 @@ function UpdateVsElementIconCompatibilityArrow(a1, a2, a3, a4, a5, a6, a7, ...)
     theirs = theirs or VRFW_DualElementTable(a7)
     local ok, flag = pcall(funcLuaCommand, VRFW_DualElementWheelCmd, mine[1] or 0, mine[2] or 0, mine[3] or 0, mine[4] or 0, theirs[1] or 0, theirs[2] or 0, theirs[3] or 0, theirs[4] or 0)
     if ok and type(flag) == "number" then
-      VRFW_DualElementMenu(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, flag == 1)
+      VRFW_DualElementMenu(711242136, a1, a2, flag == 1)
     end
   end)
   return table.unpack(r, 1, r.n)

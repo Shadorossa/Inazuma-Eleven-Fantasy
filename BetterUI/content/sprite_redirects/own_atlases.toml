@@ -1,0 +1,13 @@
+schema = "VRFW.sprite_redirect/1"
+# BetterUI: the game and the Lua ask these game atlases for the mod's sprites by name; they live in the mod's own
+# atlases (content\images\..., one per game atlas), so the game atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "better_ui_icon_tactics"
+atlas = "#/menu/200_icon/13_icon_tactics/icon_tactics.g4tx"
+own_atlas = "#/menu/200_icon/better_ui_own/better_ui_icon_tactics.g4tx"
+sprites = [
+    "chd_tactic_row_l",
+    "chd_tactic_row_m",
+    "chd_tactic_row_r",
+]

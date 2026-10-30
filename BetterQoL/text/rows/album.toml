@@ -57,6 +57,44 @@ zh_hant = "作品"
 
 # the «Nombre» groups of the language: the first letters of each group, groups split by «,» (a name whose first
 # letter is in no group goes to «#»); empty = one group with every name
+# the game bar's last group: every special card (rarity above the album's display rarity)
+[[row]]
+id = "BetterQoL.Album.Specials"
+es = "Especiales"
+en = "Specials"
+fr = "Spéciaux"
+de = "Spezial"
+it = "Speciali"
+pt = "Especiais"
+ja = "スペシャル"
+zh_hans = "特别"
+zh_hant = "特別"
+
+[[row]]
+id = "BetterQoL.Album.TypeTeam"
+es = "Equipo"
+en = "Team"
+fr = "Équipe"
+de = "Team"
+it = "Squadra"
+pt = "Equipa"
+ja = "チーム"
+zh_hans = "队伍"
+zh_hant = "隊伍"
+
+# the «Equipo» group tab: the team's name and its place among the teams
+[[row]]
+id = "BetterQoL.Album.TeamTab"
+es = "{1}  ({2})"
+en = "{1}  ({2})"
+fr = "{1}  ({2})"
+de = "{1}  ({2})"
+it = "{1}  ({2})"
+pt = "{1}  ({2})"
+ja = "{1}  ({2})"
+zh_hans = "{1}  ({2})"
+zh_hant = "{1}  ({2})"
+
 [[row]]
 id = "BetterQoL.Album.NameGroups"
 es = "ABCD,EFGH,IJKL,MNÑOP,QRST,UVWXYZ"
@@ -144,18 +182,18 @@ ja = "ページ"
 zh_hans = "翻页"
 zh_hant = "翻頁"
 
-# the content guide line: the selected player's team and game
+# the content guide line: the page's description (fixed)
 [[row]]
 id = "BetterQoL.Album.Line"
-es = "{1} · {2}"
-en = "{1} · {2}"
-fr = "{1} · {2}"
-de = "{1} · {2}"
-it = "{1} · {2}"
-pt = "{1} · {2}"
-ja = "{1}・{2}"
-zh_hans = "{1} · {2}"
-zh_hant = "{1} · {2}"
+es = "Consulta a todos los jugadores de la saga y los que ya tienes."
+en = "Browse every player in the saga and the ones you own."
+fr = "Consulte tous les joueurs de la saga et ceux que tu possèdes déjà."
+de = "Sieh dir alle Spieler der Saga und die, die du schon hast, an."
+it = "Consulta tutti i giocatori della saga e quelli che possiedi già."
+pt = "Consulta todos os jogadores da saga e os que já tens."
+ja = "シリーズの全選手と、すでに持っている選手を確認できる。"
+zh_hans = "查看系列中的所有球员以及你已拥有的球员。"
+zh_hant = "查看系列中的所有球員以及你已擁有的球員。"
 
 [[row]]
 id = "BetterQoL.Album.Empty"
@@ -184,12 +222,12 @@ zh_hant = "讀取存檔後即可查看圖鑑。"
 # the badge under the player plate of a player the club does not have
 [[row]]
 id = "BetterQoL.Album.NotOwned"
-es = "No lo tienes"
-en = "Not in your club"
-fr = "Pas dans ton club"
-de = "Nicht in deinem Verein"
-it = "Non è nel tuo club"
-pt = "Não o tens"
+es = "No obtenido"
+en = "Not obtained"
+fr = "Non obtenu"
+de = "Nicht erhalten"
+it = "Non ottenuto"
+pt = "Não obtido"
 ja = "未所持"
 zh_hans = "未拥有"
 zh_hant = "未擁有"

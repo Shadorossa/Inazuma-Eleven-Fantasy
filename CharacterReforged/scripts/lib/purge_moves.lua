@@ -72,7 +72,8 @@ local function teams(tree)
   return out
 end
 
-local function hex(v) return string.format("0x%08X", v) end
+local Id = require "VRFW/lib/ids"
+local hex = Id.hex
 
 -- The pass on `tree` for the moves of `moves` ([move id] = true). Returns the report: players, board, list,
 -- team_auras, stacks (entries emptied), removed (board + list + team auras), bytes_patched, lines.

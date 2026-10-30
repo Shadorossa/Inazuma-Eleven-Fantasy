@@ -1,0 +1,18 @@
+# The match's soccer states (`ev.match.soccer_state`, the game's g_soccerState) that scripts group by name.
+# Read by VRFW/lib/match_live (Live.is_live, Live.in_play, Live.live_dt). A mod's own content\defaults\match_states.toml
+# loaded later replaces these lists.
+
+# Open play: the ball is live (InPlay, FocusBtl, Scramble, Zone). Match timers count only here.
+live = [9, 14, 15, 16]
+
+# Plain open play (InPlay): no duel, no zone.
+in_play = 9
+
+# Duels (FocusBtl, Scramble).
+duel = [14, 15]
+
+# A goal was scored (the celebration).
+goal = 13
+
+# The kick-off after a goal or at a half's start.
+restart = 10

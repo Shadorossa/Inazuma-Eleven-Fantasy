@@ -34,9 +34,19 @@ hint = "SynergiesReworked.HintDarkLineage"
 
 # ------------------------------------------------------------------------------------------------ Líderes del Protocolo Omega
 
-# Owner 2026-10-20 (option B): the NEXUS is any one of Alfa (Alpha), Beta or Gamma (the retail synergy's own condition
-# characters); the other 2 are players of the three Protocolo Omega belong teams (Protocolo Omega 1.0, 2.0 and 3.0, both
-# may come from the same team). Belong team keys and names checked in belong_team_config + team_text (v7.1.2).
+# Owner 2026-10-28: NEXUS = one of the leaders Alfa (Alpha), Beta or Gamma (all their versions); slots 2 and 3 = two other
+# players of the rosters of Protocolo Omega 1.0, 2.0 and 3.0 (the leaders count there too when they are not the nexus),
+# distinct from the nexus and from each other. Leaders (chara_base v7.2.1): Alfa c05020500 + c05020500_5000; Beta c05020700
+# + c05020700_5000 + c11905050; Gamma c05020800 + c05020800_5000. c05028300 is left out: it is another character named
+# Gamma (own name and description text), a roster player of Protocolo Omega 3.0 only.
+[[VRFW.SynergyPool]]
+name = "omega_leaders"
+charas = [
+    "c05020500", "c05020500_5000",               # Alfa
+    "c05020700", "c05020700_5000", "c11905050",  # Beta
+    "c05020800", "c05020800_5000",               # Gamma
+]
+
 [[VRFW.SynergyPool]]
 name = "omega_protocol"
 teams = [
@@ -44,19 +54,15 @@ teams = [
     "0x3B24FCDA",   # Protocolo Omega 2.0
     "0x4C23CC4C",   # Protocolo Omega 3.0
 ]
+# team pool: its empty rows draw the three teams' crests (no show_candidates: that switch is for person pools)
 
 [[VRFW.Synergy]]
 key = "sf05001"                                  # Líderes del Protocolo Omega (retail: Alfa + Beta + Gamma; Foco AT +10 % en campo propio, afinidad elemental +5 %)
-nexus = [
-    "c05020500", "c05020500_5000",               # Alfa (every card of the character in chara_base, v7.1.2)
-    "c05020700", "c05020700_5000", "c11905050",  # Beta
-    "c05020800", "c05020800_5000", "c05028300",  # Gamma
-]
+nexus_pool = "omega_leaders"
 pool = "omega_protocol"
 count = 2
 rule = "min"
-distinct = "person"                              # the nexus person never counts again as one of the 2
-hint = "SynergiesReworked.HintOmegaProtocol"
+distinct = "person"
 
 # ------------------------------------------------------------------------------------------------ the managers
 # Every female manager of the game (a manager card: chara_param manager flag; chara_base gender female), split by the
@@ -142,3 +148,292 @@ hint = "SynergiesReworked.HintPlayerOfTeam"
 key = "sf04002"                                  # Los guerreros de Santuario (retail: Bai Long + Tezcat; AT de tiro +4 %, velocidad +5 %)
 slots = ["ancient_dark", "eternal_light"]        # one player of each team (two different persons)
 slot_members = true
+
+# ------------------------------------------------------------------------------------------------ Marcados por Orion
+
+# Owner 2026-10-28: the players «marked by Orion»; ANY 3 of these 8 people activate the synergy (no nexus: pool + count = 3).
+# Characters of v7.2.1 chara_base (every card of each person, Orion era): Procyon c08120110, Betelgeuse c08120010, Jade Beor
+# c08120020, Tango Ahmedov c08040110, Seth Bael c08030030-32, Baek Bull-wo c08020010, Lucas Star c08010020 + c11908130 +
+# c11908320, Dani Ramos c08070060. The «_notplayer» cards are left out.
+[[VRFW.SynergyPool]]
+name = "marked_by_orion"
+charas = [
+    "c08120110", "c08120010", "c08120020", "c08040110", "c08030030", "c08030031", "c08030032",
+    "c08020010", "c08010020", "c11908130", "c11908320", "c08070060",
+]
+
+[[VRFW.Synergy]]
+key = "sf08002"                                  # Marcados por Orion (retail «La reina y su arma viviente»: Jade Beor + Yekaterina Stronov; AT de tiro +3 % en campo propio, Foco AT +3 %, resistencia al esprintar -10 %); the name is the text row of text/rows/synergy_names.toml
+pool = "marked_by_orion"
+count = 3                                        # any 3 players of the pool (two cards of one person count once)
+rule = "min"
+distinct = "person"
+hint = "SynergiesReworked.HintMarkedByOrion"
+
+# ------------------------------------------------------------------------------------------------ El alma de los Campeones Raimon
+
+# Owner 2026-10-28: NEXUS = the captain of one of the four Raimons (IE1, GO «Revolución», Ares Isla Remota, Victory
+# Road), read from team_config (captain column) of the game's team records below; slots 2 and 3 = two other players of
+# those Raimon rosters (crests of the four clubs in the empty rows), distinct from the nexus and from each other.
+# Rosters from the team data: Raimon F01BB293 (IE / GO / Ares / VR), Primer equipo del Raimon 4B51EDE4 (GO «Revolución»),
+# Isla Remota 1FBFA767 (Ares). Percival Travis (a coach card of the Raimon rosters) never counts.
+[[VRFW.SynergyPool]]
+name = "raimon_captains"
+captains_of_teams = [
+    "bb_01_team_raimon",          # Raimon (IE1)
+    "bb_08_team_raimon_go",       # Raimon revolucionario (GO)
+    "bb_17_team_inakuniraimon",   # Raimon Isla Remota A (Ares)
+    "bb_18_team_inakuniraimon",   # Raimon Isla Remota B (Ares)
+    "tm_cro_victory_0600",        # Raimon (Victory Road)
+]
+exclude = ["c05026550", "c03039500", "c11807140"]   # Percival Travis
+
+[[VRFW.SynergyPool]]
+name = "raimon_rosters"
+teams = ["0xF01BB293", "0x4B51EDE4", "0x1FBFA767"]   # Raimon, Primer equipo del Raimon, Isla Remota
+exclude = ["c05026550", "c03039500", "c11807140"]    # Percival Travis
+hint = "SynergiesReworked.HintPlayerOfTeam"          # an empty slot's label: «Un jugador de Raimon» (the first team), left of the crests
+# exactly four crests: the Ares Raimon IS the Isla Remota team (its crest stands for the Ares-series Raimon records too)
+crests = [
+    { team = "0xF01BB293", era = "ie" },     # Raimon (IE1)
+    { team = "0x4B51EDE4", era = "go" },     # Raimon revolucionario (GO)
+    { game_team = "bb_17_team_inakuniraimon" },   # Raimon Isla Remota (Ares): the emblem its team screens show (the belong team's own Ares emblem 0x86D317FE is not an item)
+    { team = "0xF01BB293", era = "vr" },     # Raimon (Victory Road)
+]
+
+[[VRFW.Synergy]]
+key = "sf09001"                                  # El alma de los Campeones Raimon (retail: Harper Evans + Darian Moonward; AT del equipo +2 %, supertécnicas combinadas +5 %)
+nexus_pool = "raimon_captains"
+pool = "raimon_rosters"
+count = 2
+rule = "min"
+distinct = "person"
+
+# ------------------------------------------------------------------------------------------------ Los cuatro magníficos
+
+# Owner 2026-10-28: the four seasons players of IE2; all four must be in the team. chara_base v7.2.1 (one card each):
+# Ted Autumn c02028510, Alan Sumner c02027650, Verne Spring c02028970, George Winters c01003050.
+# A NEW synergy (not a retail one): item content/items/four_magnificent.toml (category synergy), effects and conditions content/tables/common/gamedata/skill/synergy_flag_config.toml, shop content/shops/four_magnificent.toml.
+[[VRFW.SynergyPool]]
+name = "season_autumn"
+charas = ["c02028510"]
+
+[[VRFW.SynergyPool]]
+name = "season_summer"
+charas = ["c02027650"]
+
+[[VRFW.SynergyPool]]
+name = "season_spring"
+charas = ["c02028970"]
+
+[[VRFW.SynergyPool]]
+name = "season_winter"
+charas = ["c01003050"]
+
+[[VRFW.Synergy]]
+key = "sf11001"                                  # Los cuatro magníficos (the new synergy's key string = icon_key of its item)
+slots = ["season_autumn", "season_summer", "season_spring", "season_winter"]   # all four persons; the panel draws the first 3 rows
+hint = "SynergiesReworked.HintSeasons"
+
+# ------------------------------------------------------------------------------------------------ Soberanía imperial
+
+# Owner 2026-10-28 (retail «Cicatrices de la Royal Redux»: Caleb Stonewall + Joseph King + David Samford; the effects stay).
+# NEXUS: the captain of a Royal Academy team, read from the game's team_config (captain column of the teams named like
+# these belong teams: IE1, Redux, GO, Ares, Victory Road); no ids written here. Slots 2 and 3: any two other players of
+# the Royal Academy belong teams (0x699E68EC is shared by every era, the Redux has its own), distinct from the nexus and
+# from each other.
+[[VRFW.SynergyPool]]
+name = "royal_academy_captains"
+captains_of = ["0x699E68EC", "0xF1E3E365"]       # Royal Academy, Royal Academy Redux
+captains_of_teams = ["tm_cro_victory_0500"]    # the Victory Road Royal Academy team names its team with another text id: listed by its game key
+# the game's Ares Royal Academy teams list Grotley Bogwash as captain; the owner wants Joseph King (Ares, c07070010)
+captain_overrides = [
+    { team = "tm_cro_ares_0500", captain = "c07070010" },
+    { team = "tm_cro_ares_0520", captain = "c07070010" },
+]
+
+[[VRFW.SynergyPool]]
+name = "royal_academy"
+teams = [
+    "0x699E68EC",   # Royal Academy (IE1, GO, Ares, Victory Road)
+    "0xF1E3E365",   # Royal Academy Redux
+]
+crest_eras = true                                # the crests of every era of its teams (IE1, Redux, GO, Ares, Victory Road)
+
+[[VRFW.Synergy]]
+key = "sp03001"                                  # Soberanía imperial (retail «Cicatrices de la Royal Redux»; DF del equipo +4 %, AT y DF en la primera mitad +2 %)
+nexus_pool = "royal_academy_captains"
+pool = "royal_academy"
+count = 2
+rule = "min"
+distinct = "person"
+
+# ------------------------------------------------------------------------------------------------ Aprendiz de la Leyenda
+
+# Owner 2026-10-29 (retail «El mejor aprendiz de la Leyenda»: Hector Helio + David Arrows; PP +5 %, mountain moves +5 %).
+# NEXUS: the old David Evans (Mark's grandfather, 円堂 大介): chara_base age_group 60 with a card, c06039010 (Chrono Storm).
+# The other versions are left out: c11801010 is the age 50 one (younger), c06039011 and c11905010 have no card (no face).
+# «David Arrows» (c11803100, 荒矢 大介, the Pequeños Gigantes coach) is another character, so he is not the nexus.
+# Slot 2: Hector Helio (c03030100, c03032210), Mark Evans (every card, chara_text name «Mark Evans») or any player of Chrono
+# Storm (belong team E7EAEBA2, all its versions); the empty row lists the named characters as faces and the team's crest.
+[[VRFW.SynergyPool]]
+name = "legend_apprentice"
+teams = ["0xE7EAEBA2"]                           # Chrono Storm
+charas = [
+    "c03030100", "c03032210",                    # Hector Helio
+    "c01000010", "c01000010_5000", "c05024610", "c05029460", "c07110020",
+    "c11500500", "c11500501", "c11901150", "c11905020",   # Mark Evans
+]
+
+[[VRFW.Synergy]]
+key = "sp03003"                                  # Aprendiz de la Leyenda (the name is the text row of text/rows/synergy_names.toml)
+nexus = ["c06039010"]                           # David Evans, the old one
+pool = "legend_apprentice"
+count = 1
+rule = "min"
+distinct = "person"
+
+# ------------------------------------------------------------------------------------------------ Estrellas asiáticas
+
+# Owner 2026-10-29 (retail «Las estrellas de China»: Jackie Tan + Jimmy Wongfu, both of Tropa Acrobática del Fútbol).
+# ANY 3 players of the national teams of the Asian qualifying stage of the IE3, Orion and Galaxy world tournaments
+# (belong teams of chara_base v7.2.1; 259 characters with a card, 238 persons). Inazuma Japón (0x6E8EFF55) holds every
+# Inazuma Japan of IE3 and of Ares / Orion; Earth Eleven is the Galaxy one. Big Waves and Dragones de Fuego are one
+# belong team each for IE3 and Galaxy. Orion's Asian teams are the ones the game's own «Orion Asia Brigade» team
+# (tm_cro_legend_ORION_07) is made of; Galaxy's are the wiki's Galactic route teams before the space stage (Fire
+# Dragon, Big Waves, Shamshir, Mach Tiger, Storm Wolf). Jackie Tan and Jimmy Wongfu count through Tropa Acrobática.
+# Left out (owner 2026-10-29): Neo Japón, Navy Invader, Chispas Perfectas.
+# A wide pool: 3 players (instead of the retail 2 named ones) and lower values (synergy_flag_config.toml).
+[[VRFW.SynergyPool]]
+name = "asian_stars"
+teams = [
+    "0x6E8EFF55",   # Inazuma Japón (IE3, Ares, Orion)
+    "0x3B68D406",   # Earth Eleven (Galaxy's Inazuma Japan)
+    "0x38D92EF6",   # Tropa Acrobática del Fútbol (Orion, China)
+    "0x1F3FF22B",   # Dragones de Fuego (IE3, Galaxy)
+    "0xB3233931",   # Big Waves (IE3, Galaxy)
+    "0x260DFB82",   # Leones del Desierto (IE3)
+    "0x8B320237",   # Bisonte Rojo (Orion)
+    "0x65E98C32",   # Demonios Brillantes (Orion)
+    "0x07C063E6",   # Bailarines Eternos (Orion)
+    "0xDEA9DE01",   # Ejército del Fénix Árabe (Orion)
+    "0xFB135973",   # Cimitarras (Galaxy)
+    "0xCAA009F4",   # Muay Tigers (Galaxy)
+    "0x0BFFCFCD",   # Storm Wolves (Galaxy)
+]
+
+[[VRFW.Synergy]]
+key = "sf08001"                                  # Estrellas asiáticas (retail «Las estrellas de China»); the name is the text row of text/rows/synergy_names.toml
+pool = "asian_stars"
+count = 3                                        # any 3 players of the pool
+rule = "min"
+distinct = "person"
+
+# ------------------------------------------------------------------------------------------------ El emperador y sus vasallos
+
+# Owner 2026-10-29 (retail «El emperador y su vasallo»: Heath Moore + Duske Grayling). NEXUS: Heath Moore, c07030010 (his
+# only card in chara_base v7.2.1; c11907100_notplayer has none). Slot 2: any player of Academia Plenilunio, his club
+# (owner 2026-10-29: only this team; 17 characters with a card, 17 persons, Duske Grayling among them).
+[[VRFW.SynergyPool]]
+name = "emperor_vassals"
+teams = [
+    "0x27CAEF44",   # Academia Plenilunio
+]
+
+[[VRFW.Synergy]]
+key = "sp07001"                                  # El emperador y sus vasallos (retail «El emperador y su vasallo»); the name is the text row of text/rows/synergy_names.toml
+nexus = ["c07030010"]                            # Heath Moore
+pool = "emperor_vassals"
+count = 1
+rule = "min"
+distinct = "person"
+
+# ------------------------------------------------------------------------------------------------ Japón en la sombra
+
+# Owner 2026-10-29: a NEW synergy (item content/items/shadow_japan.toml, key sf11002) for the players of Neo Japón (IE3)
+# and Resistencia Japón (Galaxy): one player of each team. Belong teams of chara_base v7.2.1: Neo Japón 16 characters
+# with a card (16 persons: Dave Quagmire, Joseph King…). Resistencia Japón: its belong team holds only Caleb Stonewall
+# (Galaxy c06039230); the squad that plays as Resistencia Japón is the roster of the game's teams tm_cro_go3_0600 and
+# tm_cro_go3_0620 (team_config v7.2.1, the same 12 cards: captain Bai Long, Caleb Stonewall on the coach slot), GO cards
+# whose belong teams are their own clubs: `rosters` reads them from the game's team data (12 persons).
+[[VRFW.SynergyPool]]
+name = "neo_japan"
+teams = ["0xAAC01751"]   # Neo Japón
+hint = "SynergiesReworked.HintPlayerOfTeam"
+
+[[VRFW.SynergyPool]]
+name = "japan_resistance"
+teams = ["0x5393BB30"]   # Resistencia Japón (Caleb Stonewall)
+rosters = ["tm_cro_go3_0600", "tm_cro_go3_0620"]   # the squad the game plays as Resistencia Japón
+crests = [{ game_team = "tm_cro_go3_0600" }]   # the emblem the team's screens show
+hint = "SynergiesReworked.HintPlayerOfTeam"
+
+[[VRFW.Synergy]]
+key = "sf11002"                                  # Japón en la sombra (the new synergy's key string = icon_key of its item)
+slots = ["neo_japan", "japan_resistance"]        # one player of each team (two different persons)
+slot_members = true
+
+# ------------------------------------------------------------------------------------------------ Los chicos de la Segunda Fase
+
+# Owner 2026-10-30 (Second Stage Children of Chrono Stone): any 3 persons of the belong teams Ragnah, Gir, Gar, Zan, Aullido
+# Lunar and Nosfanáticos (belong_team_config / team_text v7.2.1: 16 + 16 + 16 + 17 + 12 + 12 characters with a card), with
+# the young Zanark (his cards belong to Zan: c05021500, c05028150, c05028160) and the young Fei Rune (his cards belong to
+# Gar: c05020110, c05028010, c05028090). 88 persons in all.
+# `charas` names the two of them, so the empty rows draw their faces (the main cards). Owner 2026-10-30: only the young
+# ones (the adult Fei c11600020, the adult Zanark c11600030 and the miximax with him c11250010 are left out), and none of
+# their armour cards without a face icon of their own (chara_base names with no menu face icon: the game draws Mark
+# Evans' face for them), so no row shows Mark's face as Zanark or Fei.
+[[VRFW.SynergyPool]]
+name = "second_stage"
+teams = [
+    "0x3CDF7869",   # Ragnah
+    "0x1ABB067A",   # Gir
+    "0x85423719",   # Gar
+    "0x2892DD7D",   # Zan
+    "0xE34B936A",   # Aullido Lunar
+    "0x7479FCE3",   # Nosfanáticos
+]
+charas = ["c05021500", "c05020110"]                                         # Zanark, Fei Rune (young)
+exclude = ["c05021500_5000", "c05021500_5100", "c05020110_5000", "c05028090_5000"]   # their armour cards: Mark's face
+hint = "SynergiesReworked.HintPlayerOfTeam"
+
+[[VRFW.Synergy]]
+key = "sf11003"                                  # Los chicos de la Segunda Fase (the new synergy's key string = icon_key of its item)
+pool = "second_stage"
+count = 3                                        # any 3 persons of the pool
+rule = "min"
+distinct = "person"
+# one person although their name texts differ: Zanark and his Cao Cao miximax card
+same_person = [["c05021500", "c05028150"]]
+
+# ------------------------------------------------------------------------------------------------ Los cinco hermanos Blackley
+
+# Owner 2026-10-30 (idea 1 of the teamless groups): any 3 of the five Blackley brothers, named with the Italian numbers.
+# chara_base v7.2.1, every character whose name text ends in «Blackley» (one card each, belong team only «No afiliados»
+# GO): Uno c04015030, Due c04015040, Tre c04011140, Quattro c04015050, Cinque c04015060.
+[[VRFW.SynergyPool]]
+name = "blackley_brothers"
+charas = ["c04015030", "c04015040", "c04011140", "c04015050", "c04015060"]   # Uno, Due, Tre, Quattro, Cinque
+
+[[VRFW.Synergy]]
+key = "sf11004"                                  # Los cinco hermanos Blackley (the new synergy's key string = icon_key of its item)
+pool = "blackley_brothers"
+count = 3                                        # any 3 of the 5
+rule = "min"
+distinct = "person"
+
+# ------------------------------------------------------------------------------------------------ Los cinco hermanos Whitely
+
+# Owner 2026-10-30 (idea 2 of the teamless groups): any 3 of the five Whitely brothers, named with the German numbers.
+# chara_base v7.2.1, every character whose name text ends in «Whitely» (one card each, belong team only «No afiliados»
+# GO): Eins c04015070, Zwei c04015080, Drei c04010960, Vier c04015090, Fünf c04015100.
+[[VRFW.SynergyPool]]
+name = "whitely_brothers"
+charas = ["c04015070", "c04015080", "c04010960", "c04015090", "c04015100"]   # Eins, Zwei, Drei, Vier, Fünf
+
+[[VRFW.Synergy]]
+key = "sp11001"                                  # Los cinco hermanos Whitely (the new synergy's key string = icon_key of its item)
+pool = "whitely_brothers"
+count = 3                                        # any 3 of the 5
+rule = "min"
+distinct = "person"

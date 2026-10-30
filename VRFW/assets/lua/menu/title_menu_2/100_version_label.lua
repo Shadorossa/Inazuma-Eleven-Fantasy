@@ -1,4 +1,4 @@
--- version_label (VR-Framework base feature): the title screen's version label reads «ver.7.1.2  Framework 2.00».
+-- version_label (VR-Framework base feature): the title screen's version label reads «ver.7.2.1  Framework 2.00».
 -- (handler of the title_menu_2 host).
 --
 -- Retail label (layer title02_04_version / _ps, opened by OnOpenLayer): «ver.A.B.C  X.YY ZZZ», six bitmap-number
@@ -13,7 +13,7 @@
 -- Without the framework DLL (command fails / no version) the getters answer as retail. No engine call at load time.
 
 local VL = {
-  VERSION = 1448104276,   -- CMND_VRFW_VERSION () -> "2.0.0"
+  VERSION = VRFW_Cmd.VRFW_VERSION,   -- CMND_VRFW_VERSION () -> "2.0.0"
   GET_XY = 1619246457,    -- retail getter of the X.YY pair (OnOpenLayer of the version layer)
   GET_Z = 1691080945,     -- retail getter of ZZZ (off screen; answered with the patch number)
   parts = nil,            -- {x, yy, z} once read; false = no framework version (retail)

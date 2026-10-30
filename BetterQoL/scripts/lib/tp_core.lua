@@ -9,12 +9,13 @@ M.FILE_VERSION = 1
 M.LEADER_SLOT = 19
 M.MAX_SLOT = 19
 
+local Id = require "VRFW/lib/ids"
+
 local function u32(v)
   if type(v) ~= "number" then
     return 0
   end
-  local n = v >= 0 and math.floor(v) or math.ceil(v)
-  return n % 4294967296
+  return Id.u32(v)
 end
 M.u32 = u32
 

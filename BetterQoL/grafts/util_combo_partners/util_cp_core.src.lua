@@ -95,10 +95,7 @@
     if type(v) ~= "number" then
       return 0
     end
-    if v < 0 then
-      v = v + 4294967296
-    end
-    return v
+    return VRFW_Id.u32(v)
   end
 
   function UTIL_CP.Text(id, value)
@@ -204,6 +201,27 @@
     pcall(funcLuaMenuCommand, R.NODE_SCALE, L, k, node, g[3], g[4])
   end
 
+  -- the miniface of instance k, drawn again (the framework's VRFW_FaceIcon: hidden while it loads, shown by
+  -- VRFW_FaceIcon.Settle in the screen's Step); no character / not drawn = the «?» sprite. true = the face is drawn or
+  -- loading
+  function UTIL_CP.Face(L, k, chara, mesh, slot)
+    VRFW_FaceIcon.Forget(L, k)
+    if chara ~= nil and chara ~= 0 and VRFW_FaceIcon.Face(L, k, chara, mesh, slot) ~= false then
+      return true
+    end
+    pcall(funcLuaMenuCommand, UTIL_CP.R.RESET_FACE, L, k, slot)
+    pcall(funcLuaMenuCommand, 558735651, L, UTIL_CP.ICON_TEX, UTIL_CP.UNKNOWN_SPR, slot, 0, k)
+    pcall(funcLuaMenuCommand, 3405944500, L, mesh, true, k)
+    return false
+  end
+
+  -- the faces still loading shown (from the screens' Step)
+  function UTIL_CP.FacesSettle()
+    if VRFW_FaceIcon.Pending() then
+      VRFW_FaceIcon.Settle()
+    end
+  end
+
   -- one row: miniface (or «?»), element, position badge, name; check on the current pick; grey when taken
   function UTIL_CP.Row(k, e, focused, current)
     local L, R = UTIL_CP.ITEM, UTIL_CP.R
@@ -228,19 +246,7 @@
     UTIL_CP.Place(L, k, R.FACE, R.FACE_AT)
     UTIL_CP.Place(L, k, R.ELEM, R.ELEM_AT)
     UTIL_CP.Place(L, k, R.POS, R.POS_AT)
-    -- face: a bound face outlives sprite swaps, so it is released first
-    pcall(funcLuaMenuCommand, R.RESET_FACE, L, k, R.FACE_SLOT)
-    local face = false
-    if e.chara ~= nil and e.chara ~= 0 then
-      pcall(SetDisableForceCharaInvalidUseTarget)
-      local okf, fr = pcall(funcLuaMenuCommand, 552280324, L, k, false, R.FACE, R.FACE_SLOT, 0, 0, e.chara)
-      pcall(SetEnableForceCharaInvalidUseTarget)
-      face = okf and fr ~= false
-    end
-    if not face then
-      pcall(funcLuaMenuCommand, 558735651, L, UTIL_CP.ICON_TEX, UTIL_CP.UNKNOWN_SPR, R.FACE_SLOT, 0, k)
-    end
-    funcLuaMenuCommand(3405944500, L, R.FACE, true, k)
+    UTIL_CP.Face(L, k, e.chara, R.FACE, R.FACE_SLOT)
     local elem = false
     if e.chara ~= nil and e.chara ~= 0 and type(e.element) == "number" then
       local own = UTIL_CP.ELEM_SPR[e.element]
@@ -438,10 +444,10 @@
   -- ---- confirm popup: the retail card window with the performers' cards (util_cp_gw.lua in general_window) --------
   function UTIL_CP.GwClear()
     local G = UTIL_CP.GW
-    pcall(funcLuaCommand, 3363400568, G.N)
+    VRFW_Param.Clear(G.N)
     for i = 1, 4 do
-      pcall(funcLuaCommand, 3363400568, G.H[i])
-      pcall(funcLuaCommand, 3363400568, G.I[i])
+      VRFW_Param.Clear(G.H[i])
+      VRFW_Param.Clear(G.I[i])
     end
   end
 
@@ -494,11 +500,11 @@
       local e = perf[i]
       local el = (e.chara ~= nil and e.chara ~= 0 and type(e.element) == "number" and UTIL_CP.ELEM_SPR[e.element] ~= nil) and e.element or 0
       local ps = (type(e.pos) == "number" and e.pos >= 0 and e.pos <= 3) and e.pos + 1 or 0
-      funcLuaCommand(3860611758, G.H[i], 0, e.hdl or 0, 1)
-      funcLuaCommand(3860611758, G.I[i], 0, el * 10 + ps, 1)
+      VRFW_Param.Set(G.H[i], e.hdl or 0)
+      VRFW_Param.Set(G.I[i], el * 10 + ps)
       names[#names + 1] = string.format("%08X", UTIL_CP.U32(e.hdl or 0))
     end
-    funcLuaCommand(3860611758, G.N, 0, m, 1)
+    VRFW_Param.Set(G.N, m)
     UTIL_CP.Log("confirm", m, "cards", table.concat(names, " "))
     UTIL_CP.Help(screen, UTIL_CP.TX_HELP_CONFIRM)
     UTIL_CP.Guide(screen, {{UTIL_CP.TX_ACCEPT, UTIL_CP.GL_ENTER, UTIL_CP.K_ENTER}, {UTIL_CP.TX_BACK, UTIL_CP.GL_BACK, UTIL_CP.K_BACK}})
@@ -514,8 +520,7 @@
     while not funcLuaCommand(682363669) do
       coroutine.yield()
     end
-    local okh, left = pcall(funcLuaCommand, 2947612279, G.N)
-    if okh and left == true then
+    if VRFW_Param.Has(G.N) then
       UTIL_CP.Log("confirm: general_window did not take the cards (Utilities' util_cp_gw hook missing)")
     end
     UTIL_CP.GwClear()

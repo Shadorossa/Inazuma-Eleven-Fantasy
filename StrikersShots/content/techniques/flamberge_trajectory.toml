@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Flamberge (Flamberge, whs01900, cut-in ev60_01900).
+#
+# Measured: in the last cut (c0400) the event ball is volleyed from 5.5 m (414) and comes down to the goal mouth at
+# 1.1 m, 41.9 m on (498). Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level
+# line from the kick point to the goal, the ball centre at 2.7 m the whole way, so the fire rings (~2.2 m round the
+# flight axis at x1) stay 0.5 m over the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Flamberge (whs01900).
+[[edit]]
+target = "whs01900"
+trajectory = { points = [[0.0, 2.7]], straight = true, unblockable = false }

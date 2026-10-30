@@ -4,15 +4,15 @@
 # the value that drives the check), nothing when not. Never focusable (keys, mouse, Accept); a focus the retail focus
 # graph still sends there goes back to the selected item. Snippet = menu_generators.ui_clean_plain(part =
 # "evt_ui_deluxe_badge.lua") of research/grafts/_src/ui_clean; `menu_assemble.py regen ui_clean_deluxe_badge --write`
-# rebuilds it. Wraps SetupDlcBuyBtn_Coroutine / OnChangeFocus / OnEnter by rawset (pre-empting), OnOpenLayer / Step
-# after the retail ones. Part of the standalone mod clean_hud.
+# rebuilds it. Wraps SetupDlcBuyBtn_Coroutine / OnChangeFocus / OnEnter by rawset (pre-empting), OnOpenLayer /
+# OnChangeFocus after the retail ones (a pass on open and after every focus change). Part of the standalone mod clean_hud.
 name = "ui_clean_deluxe_badge"
 order = 912
 module = "lua_bridge"
 mod = "BetterUI"
 requires = []
 conflicts = []
-wraps = ["SetupDlcBuyBtn_Coroutine", "OnChangeFocus", "OnEnter", "OnOpenLayer", "Step"]
+wraps = ["SetupDlcBuyBtn_Coroutine", "OnChangeFocus", "OnEnter", "OnOpenLayer"]
 description = "ui_clean: title «Deluxe Edition» button as a plain unfocusable badge (logo when owned, hidden when not)"
 
 [[files]]

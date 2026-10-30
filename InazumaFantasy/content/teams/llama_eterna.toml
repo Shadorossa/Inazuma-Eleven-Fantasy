@@ -1,0 +1,50 @@
+schema = "VRFW.team/2"
+# «Llama Eterna»: ported from the earlier Inazuma Fantasy (research/mods/_aside/InazumaFantasy/teams/20_ief/0002_llama_eterna.toml).
+# Same key, so the team id stays crc32 of it. Members keep their cards, slots, numbers and rarity steps; the
+# earlier mod's own technique loadouts are left out (each member plays its card's own learn list).
+# The match level and classes come from the free-match section that lists the team (content/teams/free_match_section.toml).
+
+[[team]]
+name = "ct_ft_llama_eterna"               # Eternal Flame
+key = "evt_ct_ft_llama_eterna"
+level = 1
+formation = 0x7A1F0E36
+kit = 0x252CE113
+emblem = 0xD5ABE1F0
+roster = "exact"
+member = [
+  { card = 0x67DB7889, slot = 0, rarity_step = 1 },  # Darren LaChance · GK
+  { card = 0x8968E5CD, slot = 1, number = 4 },  # Hurley Kane · DF
+  { card = 0x0263ADA0, slot = 2 },  # Jack Wallside · DF
+  { card = 0x442EB819, slot = 3, number = 6, rarity_step = 1 },  # Scott Banyan · DF
+  { card = 0x3055CF22, slot = 4, number = 15, captain = true, rarity_step = 2 },  # Mark Evans · GK
+  { card = 0x71117247, slot = 5, number = 8, rarity_step = 1 },  # Victoria Vanguard · MF
+  { card = 0x29C98EDE, slot = 6, number = 13, rarity_step = 1 },  # Bobby Shearer · DF
+  { card = 0x2B08403A, slot = 7, number = 14, rarity_step = 2 },  # Jude Sharp · MF
+  { card = 0x02E4DD1D, slot = 8, number = 16, rarity_step = 1 },  # Erik Eagle · MF
+  { card = 0xBA4C2C21, slot = 9, number = 9, rarity_step = 1 },  # Shawn Froste · FW
+  { card = 0x288C9454, slot = 10, number = 10, rarity_step = -4 },  # Axel Blaze (c01000100): the earlier mod's own card replaced by the game card
+  { card = 0x1ABAF6D6, slot = 11 },  # William Glass · FW
+  { card = 0x3197A515, slot = 12, number = 17, rarity_step = 2 },  # Kevin Dragonfly · FW
+  { card = 0x840661DF, slot = 13, number = 18, rarity_step = 2 },  # Caleb Stonewall · MF
+  { card = 0x9D1D509E, slot = 14, number = 19, rarity_step = 2 },  # Xavier Foster · FW
+  { card = 0x9ED17B1B, slot = 19, number = 0, rarity_step = 1 },  # Seymour Hillman · GK
+]
+  [team.text.en]
+  name = "Llama Eterna"
+  [team.text.es]
+  name = "Llama Eterna"
+  [team.text.fr]
+  name = "Llama Eterna"
+  [team.text.de]
+  name = "Llama Eterna"
+  [team.text.it]
+  name = "Llama Eterna"
+  [team.text.pt]
+  name = "Llama Eterna"
+  [team.text.ja]
+  name = "Llama Eterna"
+  [team.text.zh_hans]
+  name = "Llama Eterna"
+  [team.text.zh_hant]
+  name = "Llama Eterna"

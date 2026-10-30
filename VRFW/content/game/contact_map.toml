@@ -23,7 +23,7 @@ name = "CMND_VRFW_CONTACT_MAP"  # (map crc / key, lang code) -> zones, items for
 handler = "ContactMap.Map"
 
 [[VRFW.Command]]
-name = "CMND_VRFW_CONTACT_KIT"  # (card) -> { uniform, flags, source }: kit of the card's own team
+name = "CMND_VRFW_CONTACT_KIT"  # (card[, team]) -> { uniform, flags, source }: kit of the named team, else of the card's own team
 handler = "ContactMap.Kit"
 
 [[VRFW.Command]]

@@ -8,11 +8,11 @@
 local CLB = {
   LAYER = 399128006,        -- title00_10_inazuma_post
   NODE = 2199506815,        -- _text_inazumapost01
-  INFO = 3141487640,        -- CMND_VRFW_COMMUNITY_INFO () -> url, creator, title, label crc, body crc
-  TEXT_GET = 4074371074,    -- CMND_TEXT_GET (id) -> string
-  SET_TEXT = 1083631230,    -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
-  TEXT_PLATE = 1172899594,  -- refit the text plate (layer, idx, node)
-  UPDATE = 1526988990,      -- CMND_VRFW_GAME_UPDATE () -> unknown build, features + mod declarations off
+  INFO = VRFW_Cmd.VRFW_COMMUNITY_INFO,        -- CMND_VRFW_COMMUNITY_INFO () -> url, creator, title, label crc, body crc
+  TEXT_GET = VRFW_Cmd.TEXT_GET,    -- CMND_TEXT_GET (id) -> string
+  SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,    -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
+  TEXT_PLATE = VRFW_Cmd.UPDATE_TEXT_PLATE,  -- refit the text plate (layer, idx, node)
+  UPDATE = VRFW_Cmd.VRFW_GAME_UPDATE,      -- CMND_VRFW_GAME_UPDATE () -> unknown build, features + mod declarations off
   TX_UPDATE = 2082649789,   -- crc32("vrfw_game_update_notice") («Unknown game version ({n} off)»)
 }
 

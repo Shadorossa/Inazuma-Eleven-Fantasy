@@ -2,14 +2,10 @@
 # soccer_formation_menu): the page declarations (CharacterReforged.Profile / .Stats to the VR-Framework's registry),
 # the start on PERFIL, the Pasivas cursor mode's left / right / back swallow, the pointer page steps and the dock lineup
 # hide (off by default). Split out of plate_pages on 2026-10-14 (docs/refactor/aura-mods-split.md «Player page»):
-# Inazuma Fantasy's merged scripts of these screens (outfit_dock / prime_dock / ss2_dock on the team dock, pachanga_dock
-# on soccer_team_dock_menu) REDEFINE functions this block wraps (PostStep, FinalizeMenu, FuncOnBack ...) after this
-# mod's patch ran, so IF rebuilds this graft (`rebuilt_by`): its copy runs after its merged file and wraps the fresh
-# definitions; a function nobody redefined keeps the first copy's wrapper (EVT_PPG_Wrap: one wrapper per function).
+# every wrapper goes through EVT_PPG_Wrap (one wrapper per function).
 # Sources: the files of research/grafts/plate_pages.
 name = "plate_pages_dock"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own scripts too (its merged files redefine what this wraps)
 order = 975
 module = "lua_bridge"
 requires = ["plate_hiper_common"]

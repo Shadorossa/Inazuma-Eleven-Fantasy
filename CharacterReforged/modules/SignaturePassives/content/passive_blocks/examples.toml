@@ -1,19 +1,19 @@
-schema = "SignaturePassives.passive_block/1"
+schema = "VRFW.passive_block/1"
 # Signature Passives › the blocks of the example special passives (content\special_passives\examples.toml).
 
 # each time a team member stops an opponent's shot (his keeper saves it)
-[[SignaturePassives.Trigger]]
+[[VRFW.Trigger]]
 name = "team_saves_shot"
 on = "keeper_save"
 by = "team"
 
-[[SignaturePassives.TechniquePower]]
+[[VRFW.TechniquePower]]
 name = "own_shoot_block_plus_10"
 kinds = ["shoot_block"]
 mode = "flat"
 value = 10
 
-[[SignaturePassives.Stat]]
+[[VRFW.Stat]]
 name = "mf_technique_plus_5"
 stats = ["technique"]
 mode = "flat"
@@ -22,16 +22,16 @@ target = "team"
 positions = ["mf"]
 
 # each time an opponent scores, at most 3 times; the team's kick +5 %
-[[SignaturePassives.Trigger]]
+[[VRFW.Trigger]]
 name = "opponent_scores"
 on = "goal"
 by = "opponent"
 
-[[SignaturePassives.Stack]]
+[[VRFW.Stack]]
 name = "stack_max_3"
 max = 3
 
-[[SignaturePassives.Stat]]
+[[VRFW.Stat]]
 name = "team_kick_plus_5pct"
 stats = ["kick"]
 mode = "percent"
@@ -39,21 +39,21 @@ value = 5
 target = "team"
 
 # each duel he wins, at most 5 times, each for 60 s: his move speed +2 %; back to 0 when he loses one
-[[SignaturePassives.Trigger]]
+[[VRFW.Trigger]]
 name = "self_wins_duel"
 on = "duel_won"
 by = "self"
 
-[[SignaturePassives.Stack]]
+[[VRFW.Stack]]
 name = "stack_5_for_60s"
 max = 5
 duration_s = 60
 
-[[SignaturePassives.MoveSpeed]]
+[[VRFW.MoveSpeed]]
 name = "own_speed_plus_2pct"
 percent = 2
 
-[[SignaturePassives.Reset]]
+[[VRFW.Reset]]
 name = "self_loses_duel"
 on = "duel_lost"
 by = "self"

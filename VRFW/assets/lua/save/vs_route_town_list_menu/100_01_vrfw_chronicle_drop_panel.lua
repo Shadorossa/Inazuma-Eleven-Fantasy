@@ -18,19 +18,19 @@ do
   D.PITCH = 34
   D.T30 = 2815298114                                -- #/menu/102_team/team00/team00_30/<LG>/team00_30.g4tx
   D.W38 = 2268931645                                -- #/menu/10_win/win05/win05_38/<LG>/win05_38.g4tx
-  D.SKILL = 2580586398                              -- CMND_GET_SOCCER_SKILL_INFO (item, n): 7 element, 13 aura type, 17 chara, 19 partner card
+  D.SKILL = 2580586398                              -- (item, n): 7 element, 13 aura type, 17 chara, 19 partner card
   D.FACE = 346643487
   D.ALPHA = 4231609516                              -- (layer, instance, 1, alpha, mesh)
   D.ANALOG, D.CHECK, D.CTRL = 1440697067, 4265778440, 1332654303
   D.W_UP, D.W_DOWN = 1942756954 --[[CMD_EVT_WHEEL_UP]], 1623431741 --[[CMD_EVT_WHEEL_DOWN]]
   D.ART_SIZE = {[0] = 8, [1] = 8, [2] = 12, [3] = 14, [4] = 8, [5] = 8, [6] = 12}
   D.BANDS = {
-    [0] = {1716659057, 4284183243, 2287747677, 372824062, 1631577960},   -- fs_base01-05
-    [1] = {1742805750, 4276636492, 2314173402, 395046521, 1619844847},   -- fsa_base01-05
-    [2] = {3558327990, 1293850380, 974759834, 2759668281, 3547988655},   -- mixi_base01-05
-    [3] = {2619781135, 87024053, 1915277603, 3964421248, 2605413398},    -- soul_base01-05
-    [4] = {1514509020, 3276587878, 3024876528, 707749459, 1562924741},   -- kizuna_base01-05
-    [5] = {4250578944, 1683218874, 324325676, 2368750735, 4197938201},   -- power_base01-05
+    [0] = {1716659057, 4284183243, 2287747677, 372824062, 1631577960},
+    [1] = {1742805750, 4276636492, 2314173402, 395046521, 1619844847},
+    [2] = {3558327990, 1293850380, 974759834, 2759668281, 3547988655},
+    [3] = {2619781135, 87024053, 1915277603, 3964421248, 2605413398},
+    [4] = {1514509020, 3276587878, 3024876528, 707749459, 1562924741},
+    [5] = {4250578944, 1683218874, 324325676, 2368750735, 4197938201},
     [6] = {3293713115, 1566262113, 710702071, 3023627860, 3275740866}    -- mode_base01-05
   }
   -- row nodes (win05_38 layout): {node, x, y, w, h}
@@ -87,7 +87,7 @@ do
 
   local function hide_rows()
     for k = 0, D.ROWS - 1 do
-      cmd(711242136 --[[CMND_SET_LAYER_VISIBLE]], D.LAYER, k, false)
+      cmd(711242136, D.LAYER, k, false)
     end
   end
 
@@ -100,7 +100,7 @@ do
     end
     for k = 0, D.ROWS - 1 do
       local cy = top + D.PITCH * k + 36 * D.SCALE
-      cmd(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], D.LAYER, D.X, -cy, 0, k)
+      cmd(1389957207, D.LAYER, D.X, -cy, 0, k)
       cmd(3778714801 --[[layer scale]], D.LAYER, D.SCALE, D.SCALE, 1, k)
     end
   end
@@ -137,24 +137,21 @@ do
       end
       cmd(4176779611 --[[ResetFaceIcon]], L, k, slot)
     end
-    pcall(SetDisableForceCharaInvalidUseTarget)
-    local ok, r = pcall(funcLuaMenuCommand, 552280324 --[[chara face icon]], L, k, false, mesh, slot, 0, 0, chara)
-    pcall(SetEnableForceCharaInvalidUseTarget)
-    return ok and r ~= false
+    return VRFW_FaceIcon.Request(L, k, chara, mesh, slot)
   end
 
   local function draw_row(k, item, pct)
     local L, N, A = D.LAYER, D.N, D.AURA
     cmd(711242136, L, k, true)
     cmd(2158717427 --[[locator visible]], L, N.drop, true, k)
-    cmd(3405944500 --[[CMND_SET_MESH_VISIBLE]], L, N.drop, true, k)
+    cmd(3405944500, L, N.drop, true, k)
     cmd(2158717427, L, N.item, true, k)
     cmd(2158717427, L, N.part, false, k)
     cmd(3405944500, L, N.part, false, k)
     cmd(2158717427, L, N.boost, false, k)
     cmd(3405944500, L, N.boost, false, k)
-    local okn, name = pcall(funcLuaCommand, 1883585771 --[[CMND_GET_ITEM_PARAM]], item, 0)
-    cmd(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], L, N.name, (okn and type(name) == "string") and name or "", k)
+    local okn, name = pcall(funcLuaCommand, 1883585771, item, 0)
+    cmd(1083631230, L, N.name, (okn and type(name) == "string") and name or "", k)
     cmd(1505208242 --[[text visible]], L, N.name, true, k)
     cmd(125897167, L, k)
     cmd(3508889864, L, k, N.icon, 1875672568 --[[icon_item_dmy01]], item)
@@ -164,7 +161,7 @@ do
     -- the rate
     cmd(1233047821, L, k, 611782757, true)
     cmd(1233047821, L, k, 3396956489, false)
-    local okp, prim = pcall(funcLuaMenuCommand, 1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], L, k, 611782757)
+    local okp, prim = pcall(funcLuaMenuCommand, 1927054058, L, k, 611782757)
     if okp and prim ~= nil then
       cmd(36541260, L, k, prim, pct)
     end

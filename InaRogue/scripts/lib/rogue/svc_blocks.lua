@@ -21,8 +21,8 @@ local info, warn = U.logger("rogue blocks")
 
 local S = {}
 
--- the live match states (InPlay, focus battle, scramble, zone): the timers count only there
-local LIVE = { [9] = true, [14] = true, [15] = true, [16] = true }
+-- the match's live states, period timers and minute / score / half changes (the timers count only in live play)
+local Live = require "VRFW/lib/match_live"
 -- a move's charge is spent once per player and move within this window (move_power is asked more than once)
 local CHARGE_WINDOW_MS = 8000
 
@@ -501,13 +501,8 @@ end
 
 local function match_state(m)
   if type(m) ~= "table" then return nil end
-  local sc = type(m.score) == "table" and m.score or {}
-  local us = m.user_team
-  local f, a = nil, nil
-  if us == 0 or us == 1 then
-    f, a = sc["team" .. us], sc["team" .. (1 - us)]
-  end
-  return { half = m.half, minute = m.clock and math.floor(m.clock / 60) or nil, score_for = f, score_against = a }
+  local f, a = Live.score(m)
+  return { half = m.half, minute = Live.minute(m), score_for = f, score_against = a }
 end
 
 local function on_match_start()
@@ -529,7 +524,8 @@ local function on_match_start()
     if h ~= 0 and uid and uid ~= 0 then roster[h] = S.player_of(k, uid) end
   end
   M = { effects = effects, roster = roster, rc = S.run_ctx(r), counts = {}, charges = {}, timers = {}, applied = {},
-    charge_used = {}, broken = {}, rolls = 0, last_owner = nil, match = nil, dirty = true, has_live_stats = false }
+    charge_used = {}, broken = {}, rolls = 0, last_owner = nil, match = nil, dirty = true, has_live_stats = false,
+    watch = Live.watch() }
   for _, e in ipairs(effects) do
     if e.live and (e.kind == "stat_multiplier" or e.kind == "stat_bonus") then M.has_live_stats = true end
     if e.count and e.count.kind == "count_timer" then M.has_timer = true end
@@ -549,25 +545,23 @@ local function on_tick(ev)
   if not M or not (M.has_timer or M.has_match_state) then return nil end
   local m = ev.match or {}
   if M.has_match_state then
-    local st = match_state(m)
-    local sig = st and string.format("%s/%s/%s/%s", tostring(st.half), tostring(st.minute), tostring(st.score_for),
-      tostring(st.score_against)) or ""
-    if sig ~= M.state_sig then
-      M.state_sig = sig
-      M.match = st
+    local changed = M.watch:step(m)
+    if changed.half or changed.minute or changed.score then
+      M.match = match_state(m)
       M.dirty = true
     end
   end
-  local dt = tonumber(m.dt) or tonumber(ev.dt) or 0
-  if M.has_timer and LIVE[m.soccer_state or 0] and dt > 0 and dt < 1 then
+  local live_dt = M.has_timer and Live.live_dt(m) or 0
+  if live_dt > 0 then
     for _, e in ipairs(M.effects) do
       if e.count and e.count.kind == "count_timer" then
         local id = id_of(e)
-        M.timers[id] = (M.timers[id] or 0) + dt
-        while M.timers[id] >= e.count.seconds do
-          M.timers[id] = M.timers[id] - e.count.seconds
-          step_match(e, {}, 0)
+        local t = M.timers[id]
+        if not t then
+          t = Live.timer(e.count.seconds)
+          M.timers[id] = t
         end
+        for _ = 1, t:step(live_dt) do step_match(e, {}, 0) end
       end
     end
   end

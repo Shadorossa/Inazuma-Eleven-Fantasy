@@ -1,0 +1,47 @@
+schema = "VRFW.item/2"
+default_lang = "en"
+
+# Synergies Reworked › «Los chicos de la Segunda Fase» (Second Stage Children): a NEW team synergy (owner 2026-10-30:
+# any three players of Ragnah, Gir, Gar, Zan, Aullido Lunar, Nosfanáticos, plus the young Zanark and Fei Rune). Category
+# synergy, cloned from the offensive retail synergy sf10001 (so it keeps its slot); key string and id `sf11003` / crc32
+# of it. Its icon is the double helix of Ragnah's emblem (game emblem em050213, the emblem item of its belong team)
+# alone, with a white rim and a dark outline: sprite sf11003
+# (content/images/menu/200_icon/30_icon_synergy/icon_synergy.toml). Effects and conditions: the sf11003 row of
+# content/tables/common/gamedata/skill/synergy_flag_config.toml; who counts: the pool second_stage of
+# content/synergies/reworked_synergies.toml. Sold in the retail synergy shop for the cards of Fei and Zanark
+# (content/shops/second_stage_children.toml).
+
+[[item]]
+name = "second_stage_children"
+base = "sf10001"
+category = "synergy"
+icon_key = "sf11003"
+key_id = true
+  [item.text.es]
+  name = "Los chicos de la Segunda Fase"
+  [item.text.en]
+  name = "Second Stage Children"
+  [item.text.fr]
+  name = "Les enfants de la seconde phase"
+  [item.text.de]
+  name = "Die Kinder der Zweiten Stufe"
+  [item.text.it]
+  name = "I ragazzi della Seconda Fase"
+  [item.text.pt]
+  name = "As crianças da Segunda Fase"
+  [item.text.ja]
+  name = "セカンドステージ・チルドレン"
+  [item.text.zh_hans]
+  name = "第二阶段儿童"
+  [item.text.zh_hant]
+  name = "第二階段兒童"
+
+[[currency]]
+name = "fei_card"
+spirit = 0xBF18D266                      # chara_param of Fei c05020110 (the main card)
+rarity = 4
+
+[[currency]]
+name = "zanark_card"
+spirit = 0x19B62C9E                      # chara_param of Zanark c05021500 (the main card)
+rarity = 4

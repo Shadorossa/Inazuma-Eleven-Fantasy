@@ -1,0 +1,27 @@
+# The title row's group button «Modos de juego» (content\menus\title_row.toml): its label and its balloon.
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "VRFW.GameModes"
+es = "Modos de juego"
+en = "Game modes"
+fr = "Modes de jeu"
+de = "Spielmodi"
+it = "Modalità di gioco"
+pt = "Modos de jogo"
+ja = "ゲームモード"
+zh_hans = "游戏模式"
+zh_hant = "遊戲模式"
+
+[[row]]
+id = "VRFW.GameModesFlavor"
+es = "Los modos de juego que añaden tus mods."
+en = "The game modes your mods add."
+fr = "Les modes de jeu ajoutés par tes mods."
+de = "Die Spielmodi, die deine Mods hinzufügen."
+it = "Le modalità di gioco aggiunte dalle tue mod."
+pt = "Os modos de jogo que os teus mods adicionam."
+ja = "MODで追加されたゲームモード。"
+zh_hans = "你的模组添加的游戏模式。"
+zh_hant = "你的模組新增的遊戲模式。"

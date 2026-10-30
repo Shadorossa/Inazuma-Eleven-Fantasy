@@ -23,8 +23,9 @@
 -- Without Utilities' script (CMND_BETTERQOL_TP_INFO unanswered) nothing changes.
 do
   -- ---- shared by both hook files (gen_hooks.py puts it in place of @COMMON@) -------------------------------------
-  UTIL_TP = UTIL_TP or {}
-  local TP = UTIL_TP
+  BetterQoL = BetterQoL or {}
+  BetterQoL.TeamPlanner = BetterQoL.TeamPlanner or {}
+  local TP = BetterQoL.TeamPlanner
   TP.C = {
     INFO = 2781696587,
     LIST = 713857796,
@@ -57,7 +58,6 @@ do
     PLACE_CHECK = 1730898405,    -- (hdl, set, pos, from set, type) -> ok, code: the check of SwapChara (writes nothing)
     PLACE = 193693077,           -- (set, pos, from set, hdl, type): the bank -> slot placement
     PLACE_PREP = 2379170951,     -- funcLuaMenuCommand(hdl): what SwapChara / the bank call before placing
-    PARAM_HAS = 2947612279, PARAM_GET = 3522198769, PARAM_DEL = 3363400568, PARAM_SET = 3860611758,
     VS_TEAM = 3713813716,        -- CMND_GET_VS_USE_TEAM_SET
   }
   TP.CARD = 1973487846           -- team00_01_chara_card_for_soccer
@@ -551,10 +551,9 @@ do
     end
     local set, ty = F.Squad()
     if c.act == "bank" then
-      funcLuaCommand(TP.C.PARAM_DEL, TP.KEY_BANK)
-      funcLuaCommand(TP.C.PARAM_SET, TP.KEY_BANK, 0, set, 1)
-      local okh, has = pcall(funcLuaCommand, TP.C.PARAM_HAS, TP.KEY_BANK)
-      TP.Log("«Añadir del banco»: squad", set, "request stored", tostring(okh and has))
+      VRFW_Param.Clear(TP.KEY_BANK)
+      VRFW_Param.Set(TP.KEY_BANK, set)
+      TP.Log("«Añadir del banco»: squad", set, "request stored", tostring(VRFW_Param.Has(TP.KEY_BANK)))
       pcall(FuncCloseFormationMenu)
     elseif c.act == "plan" then
       if not F.PickerOpen() then
@@ -1206,15 +1205,13 @@ do
       F.eg = nil                        -- a new menu: new layer instances
       F.tab_open, F.list, F.tabs = {}, nil, {}
       F.set, F.type = nil, 0
-      local okA, hasA = pcall(funcLuaCommand, TP.C.PARAM_HAS, F.PARAM_DOCK)
-      if okA and hasA then
-        F.set = funcLuaCommand(TP.C.PARAM_GET, F.PARAM_DOCK)
+      if VRFW_Param.Has(F.PARAM_DOCK) then
+        F.set = VRFW_Param.Get(F.PARAM_DOCK)
       end
-      local okB, hasB = pcall(funcLuaCommand, TP.C.PARAM_HAS, F.PARAM_TYPE)
-      if okB and hasB then
-        F.type = funcLuaCommand(TP.C.PARAM_GET, F.PARAM_TYPE) or 0
+      if VRFW_Param.Has(F.PARAM_TYPE) then
+        F.type = VRFW_Param.Get(F.PARAM_TYPE) or 0
       end
-      pcall(funcLuaCommand, TP.C.PARAM_DEL, TP.KEY_BANK)  -- a request nobody took
+      VRFW_Param.Clear(TP.KEY_BANK)  -- a request nobody took
       return orig(...)
     end
   end)

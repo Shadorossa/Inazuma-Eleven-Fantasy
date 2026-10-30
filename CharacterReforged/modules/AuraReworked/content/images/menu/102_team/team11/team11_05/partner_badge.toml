@@ -3,14 +3,25 @@
 # «kizuna / mode» plate's atlas). 160 x 52 px, drawn at 80 x 26; research/scripts/partner_badge_sprite.py.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/102_team/aura_reworked_own/aura_reworked_team11_05.g4tx"
+name = "aura_reworked_team11_05"
+size = [324, 52]
+
 # Custom Change Mode: the blue-red plate
 [[sprite]]
-atlas = "#/menu/102_team/team11/team11_05/team11_05.g4tx"
+atlas = "#/menu/102_team/aura_reworked_own/aura_reworked_team11_05.g4tx"
 name = "custom_change_mode_partner_badge"
+texture = "aura_reworked_team11_05"
+x = 164
+y = 0
 png = "partner_badge/custom_change_mode_partner_badge.png"
 
 # All Miximaxed: the purple plate
 [[sprite]]
-atlas = "#/menu/102_team/team11/team11_05/team11_05.g4tx"
+atlas = "#/menu/102_team/aura_reworked_own/aura_reworked_team11_05.g4tx"
 name = "all_miximaxed_partner_badge"
+texture = "aura_reworked_team11_05"
+x = 0
+y = 0
 png = "partner_badge/all_miximaxed_partner_badge.png"

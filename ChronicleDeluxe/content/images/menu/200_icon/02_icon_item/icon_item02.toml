@@ -1,9 +1,10 @@
 # Chronicle Deluxe: #/menu/200_icon/02_icon_item/icon_item02.g4tx, the key-item icon sheet. The Master's Seal's icon
 # (content\items\master_seal.toml icon_key): a new 256 x 256 texture named by the item's key string, which must start
 # with «ke» (the icon manager maps that prefix to this sheet; docs/game/mechanics/unlimited-moves.md §3).
+# In the mod's own atlas chronicle_deluxe_item_icons (never the game's icon_item02): the game asks icon_item02 for it by the item key; content\sprite_redirects\item_icons.toml serves it from here.
 schema = "VRFW.image/1"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item02.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/chronicle_deluxe_item_icons.g4tx"
 name = "ke000900"
 png = "icon_item02/ke000900.png"

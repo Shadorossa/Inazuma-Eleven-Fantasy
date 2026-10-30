@@ -8,7 +8,7 @@ if VRFW_Host ~= nil then
     id = "clean_hud.free_match_class_plate", phase = "after",
     fn = function(r, a1)
       if a1 ~= nil and a1 ~= 0 then
-        pcall(funcLuaMenuCommand, 3405944500 --[[CMND_SET_MESH_VISIBLE]], 1835074715 --[[mainmenu90_34_cpu_team_formation]],
+        pcall(funcLuaMenuCommand, VRFW_Cmd.SET_MESH_VISIBLE, 1835074715 --[[mainmenu90_34_cpu_team_formation]],
           126765991 --[[_cpu_icon_class_dmy01]], false, 0)
       end
     end,

@@ -8,3 +8,19 @@ target = "title_menu_2.upper/victory_road_mode"
 
 [[hide]]
 target = "title_menu_2.upper/save"
+
+# «Modos de juego»: a group button (title-row.md §7). The modes mods add join it with `group = "game_modes"` on their
+# own title row entry; A turns the row into the group's sub-row in place, B turns it back. Not shown without members.
+# Its art is the Victory Road button's, which never shows on the title (above).
+[[entry]]
+host = "title_menu_2.upper"
+id = "game_modes"
+text = "VRFW.GameModes"
+icon = "title00_07:icon_btn04"
+order = 600
+action = { group = "game_modes" }
+
+[entry.title]
+plate = ["btn_base04_on", "btn_base04_off"]
+flavor = "VRFW.GameModesFlavor"
+players = 1

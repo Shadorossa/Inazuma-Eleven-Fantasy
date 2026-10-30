@@ -1,0 +1,45 @@
+schema = "VRFW.item/2"
+default_lang = "en"
+
+# Synergies Reworked › «Japón en la sombra»: a NEW team synergy (owner 2026-10-29: one player of Neo Japón and one of
+# Resistencia Japón). Category synergy, cloned from the offensive retail synergy sf10001 (so it keeps its slot); key
+# string and id `sf11002` / crc32 of it. Its icon is an original eclipsed rising sun PNG, the sprite sf11002
+# (content/images/menu/200_icon/30_icon_synergy/icon_synergy.toml). Effects and conditions: the sf11002 row of
+# content/tables/common/gamedata/skill/synergy_flag_config.toml; who counts: the pools of
+# content/synergies/reworked_synergies.toml. Sold in the retail synergy shop for the members' cards
+# (content/shops/shadow_japan.toml).
+
+[[item]]
+name = "shadow_japan"
+base = "sf10001"
+category = "synergy"
+icon_key = "sf11002"
+key_id = true
+  [item.text.es]
+  name = "Japón en la sombra"
+  [item.text.en]
+  name = "Japan in the Shadows"
+  [item.text.fr]
+  name = "Le Japon de l'ombre"
+  [item.text.de]
+  name = "Japan im Schatten"
+  [item.text.it]
+  name = "Il Giappone nell'ombra"
+  [item.text.pt]
+  name = "Japão nas sombras"
+  [item.text.ja]
+  name = "影の日本代表"
+  [item.text.zh_hans]
+  name = "暗影中的日本队"
+  [item.text.zh_hant]
+  name = "暗影中的日本隊"
+
+[[currency]]
+name = "neo_japan_captain_card"
+spirit = 0xB630035D                      # chara_param of Dave Quagmire c03030070 (Neo Japón's captain)
+rarity = 4
+
+[[currency]]
+name = "japan_resistance_card"
+spirit = 0xFEE8721A                      # chara_param of Caleb Stonewall c06039230 (Resistencia Japón)
+rarity = 4

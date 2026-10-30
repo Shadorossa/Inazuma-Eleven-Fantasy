@@ -17,8 +17,8 @@ UnlimitedCopies = UnlimitedCopies or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("unlimited_copies:", ...) end
-local function warn(...) VRFW.warn("unlimited_copies:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("unlimited_copies")
 
 local SLOT_OK, SLOT_RESERVED, SLOT_UNKNOWN = 1, -1, -2
 local CAP_OK, CAP_OFF, CAP_BAD_ARGS, CAP_MISMATCH, CAP_WRITE_FAILED = 1, -1, -2, -3, -4
@@ -38,19 +38,12 @@ local KIND_OF = nil      -- item id -> its sub-category (only the sub-categories
 local SFI = nil          -- pieceId -> statusFlagIndex
 local BY_ITEM = {}       -- item id -> the command's answer (cached)
 
-local function int(v)
-  if type(v) ~= "number" or v ~= v then return 0 end
-  return v >= 0 and math.floor(v) or math.ceil(v)
-end
+local function int(v) return VRFW.value.int(v, 0) end
 
-local function u32(v)
-  return int(tonumber(v) or 0) % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
 
-local function hex(v)
-  v = u32(v)
-  return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536)
-end
+local hex = Id.hex
 
 local function rd(ty, addr)
   local ok, v = pcall(VRFW.mem.read, ty, addr)

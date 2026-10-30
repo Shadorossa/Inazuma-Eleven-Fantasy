@@ -38,22 +38,23 @@ VRFW_MATCH = VRFW_MATCH or {}
 do
   local M = VRFW_MATCH
   local C = {
-    LOG = 3661580131,          -- CMND_EVT_LOG
-    CALLER = 1365773455,       -- CMND_VRFW_FRIENDLY_CALLER
-    OVERRIDE = 3098579726,     -- CMND_VRFW_RULE_ENGINE_OVERRIDE
-    EXIT = 746783004,          -- CMND_VRFW_MATCH_EXIT
-    PAUSE = 4196529456,        -- CMND_VRFW_GAME_PAUSE([0 / 1]) -> ok, paused
+    LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
+    CALLER = VRFW_Cmd.VRFW_FRIENDLY_CALLER,       -- CMND_VRFW_FRIENDLY_CALLER
+    OVERRIDE = VRFW_Cmd.VRFW_RULE_ENGINE_OVERRIDE,     -- CMND_VRFW_RULE_ENGINE_OVERRIDE
+    EXIT = VRFW_Cmd.VRFW_MATCH_EXIT,          -- CMND_VRFW_MATCH_EXIT
+    PAUSE = VRFW_Cmd.VRFW_GAME_PAUSE,        -- CMND_VRFW_GAME_PAUSE([0 / 1]) -> ok, paused
     PLAY_MODE = 3718253404,    -- set play mode
     FADE = 609722083,          -- (on, seconds) screen fade to black
-    CLOSE = 320421347,         -- CMND_CLOSE_MENU_OBJECT
-    SE = 1917805374, SE_NO = 2086672038,
+    CLOSE = VRFW_Cmd.CLOSE_MENU_OBJECT,         -- CMND_CLOSE_MENU_OBJECT
+    SE = VRFW_Cmd.SND_PLAY_SE, SE_NO = 2086672038,
     MSG_BUSY = 898725220,      -- a message window is up
     IS_SCENE_ROOT = 2119959601, -- (funcLuaMenuCommand) this menu was opened as the menu scene's root
-    EXISTS = 2231168902,       -- CMND_IS_EXIST_MENU_OBJECT (funcLuaMenuCommand)
+    EXISTS = VRFW_Cmd.IS_EXIST_MENU_OBJECT,       -- CMND_IS_EXIST_MENU_OBJECT (funcLuaMenuCommand)
     SETTLED = 3050482496,      -- (funcLuaMenuCommand) no menu is opening / closing
     FADE_BUSY = 2736534827,    -- a fade is running
     SCENE_END_WAIT = 769636339, -- (seconds) the retail wait before a root closes for a reserved match
-    PARAM_HAS = 2947612279, PARAM_GET = 3522198769, PARAM_SET = 3860611758, PARAM_CLEAR = 3363400568,
+    VS_SET = VRFW_Cmd.GET_VS_USE_TEAM_SET,       -- CMND_GET_VS_USE_TEAM_SET -> the active match team's set
+    FIVE_CHECK = 1538643580,   -- (set, 1, false) the retail member check of a set's 5v5 team: 1..10 = incomplete
   }
   local PARAM_SCENE_ROOT = 2082985882 -- crc32("vrfw_match_start_scene_root"): menu id of the scene's root
   local PARAM_HAND_OVER = 3190064600  -- crc32("vrfw_match_start_hand_over"): menu id of the caller to close
@@ -70,22 +71,15 @@ do
   end
   M.log = log
 
-  local function unsigned(v)
-    if type(v) == "number" and v < 0 then return v + 4294967296 end
-    return v
-  end
+  local function unsigned(v) return VRFW_Id.u32_or(v, v) end
 
   local function param_get(key)
-    local ok, has = pcall(funcLuaCommand, C.PARAM_HAS, key)
-    if not ok or has ~= true then return nil end
-    local okg, v = pcall(funcLuaCommand, C.PARAM_GET, key)
-    return okg and unsigned(v) or nil
+    return unsigned(VRFW_Param.Get(key))
   end
 
   local function param_set(key, value)
-    local ok, has = pcall(funcLuaCommand, C.PARAM_HAS, key)
-    if ok and has == true then pcall(funcLuaCommand, C.PARAM_CLEAR, key) end
-    if value ~= nil then pcall(funcLuaCommand, C.PARAM_SET, key, 0, value, 1) end
+    if VRFW_Param.Has(key) then VRFW_Param.Clear(key) end
+    if value ~= nil then VRFW_Param.Set(key, value) end
   end
 
   local function menu_exists(menu)
@@ -260,6 +254,32 @@ do
     M.is_root, M.self_menu = true, unsigned(CRC32(M.stem))
     param_set(PARAM_SCENE_ROOT, M.self_menu)
     wrap_step()
+  end
+
+  -- The team policy of a pachanga-style friendly (team = "active_friendly"), for the `set` function of M.start: the
+  -- active pachanga team when one is set; none set: the active match team's five, played with `current_friendly` (the
+  -- same friendly declared with team = "current"); neither has a complete five, or no such friendly: -1 (the friendly
+  -- refuses, the caller explains). Returns set[, friendly id].
+  function M.pachanga_team(current_friendly)
+    local P = VRFW_PACHANGA
+    local set = type(P) == "table" and type(P.pachanga_set) == "function" and P.pachanga_set() or nil
+    if type(set) == "number" then
+      return set
+    end
+    if type(current_friendly) ~= "string" or current_friendly == "" then
+      log("no active pachanga team")
+      return -1
+    end
+    local okv, vs = pcall(funcLuaCommand, C.VS_SET)
+    if okv and type(vs) == "number" and vs >= 0 then
+      local okc, code = pcall(funcLuaCommand, C.FIVE_CHECK, vs, 1, false)
+      if okc and not (type(code) == "number" and code > 0 and code < 11) then
+        log("no active pachanga team: the active match team plays", vs, current_friendly)
+        return vs, current_friendly
+      end
+      log("no active pachanga team and the active match team", vs, "has no complete five", tostring(code))
+    end
+    return -1
   end
 
   -- the launch from this menu (see the header). true, or false + why.

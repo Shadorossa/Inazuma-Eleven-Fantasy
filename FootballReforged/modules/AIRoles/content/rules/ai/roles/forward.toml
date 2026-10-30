@@ -1,0 +1,66 @@
+schema = "VRFW.match_role/1"
+
+# AI roles of the forwards (docs/game/mods/ai-roles.md; the mechanism: docs/framework/match-role.md). Each role moves
+# the player's off-ball spot in his team's attack frame: depth -1 = own goal line, 0 = halfway line, 1 = the rival's
+# goal line; side -1..1 across the pitch. The framework never lets a role put him past the rival's offside line.
+# Effects apply in order while their When / BallDepth condition holds; Rates change the AI rates the game asks
+# (catalogue knobs with rate_kinds: attention = how much teammates look for him).
+# A new role of this position = a new [[VRFW.MatchRole]] here; a new position = a new file with its Positions.
+
+# Cazagoles: stays up front on the rival's last line (level with the last defender, never offside) and never drops
+# back into his own half, with the ball or without it.
+[[VRFW.MatchRole]]
+Name = "AIRoles.Poacher"
+Text = "ai_roles_poacher"
+Help = "ai_roles_poacher_help"
+Positions = ["forward"]
+Order = 10
+
+[[VRFW.MatchRole.Effect]]
+When = "always"
+HoldLine = true
+LineGap = 0.02
+DepthMin = 0.0
+
+# Falso 9: while his team builds up (ball short of the last 30 % of the pitch) he drops into midfield, in the middle,
+# to offer himself for the ball, and his teammates look for him; once the ball is up there he plays centrally.
+[[VRFW.MatchRole]]
+Name = "AIRoles.FalseNine"
+Text = "ai_roles_false_nine"
+Help = "ai_roles_false_nine_help"
+Positions = ["forward"]
+Order = 20
+
+[[VRFW.MatchRole.Effect]]
+When = "own_ball"
+BallDepthMax = 0.4
+DepthMin = -0.35
+DepthMax = 0.05
+Inward = 0.6
+Rates = { attention = { add = 35.0 } }
+
+[[VRFW.MatchRole.Effect]]
+When = "own_ball"
+BallDepthMin = 0.4
+Inward = 0.5
+Rates = { attention = { add = 20.0 } }
+
+# Extremo interior: wide on his wing while his team builds up; once the ball reaches the last third he cuts inside
+# into the box.
+[[VRFW.MatchRole]]
+Name = "AIRoles.InsideForward"
+Text = "ai_roles_inside_forward"
+Help = "ai_roles_inside_forward_help"
+Positions = ["forward"]
+Order = 30
+
+[[VRFW.MatchRole.Effect]]
+When = "own_ball"
+BallDepthMax = 0.3
+Inward = -0.5
+
+[[VRFW.MatchRole.Effect]]
+When = "own_ball"
+BallDepthMin = 0.3
+Inward = 0.7
+Depth = 0.3

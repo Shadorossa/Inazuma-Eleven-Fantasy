@@ -1,0 +1,24 @@
+# «Fiebre de luna llena» (Full Moon Fever, whs02400; forest shot, cut-in ev60_02400): while the ball flies to the goal it
+# wears the cut-in's last shot (c0400, the ball turned into a blue full moon, held at frame 474 from the aura's first
+# frame): the moon round the ball, turning slowly as a whole (one turn every 300 frames), with its ring, glow discs
+# (facing along the flight), inner shells and craters (two of them also turning on the moon), and its soft blue last
+# auras, x1. The night sky, the keshin's hand auras, the orange
+# kick flash and ring at the kick point and the keshins stay out.
+# The object is ev6240fm00 (effect/event/ev60/ev6240fm00/), built by research/scripts/full_moon_fever_ball_fx.py from
+# ev60024000 (docs/game/media/full-moon-fever-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\full_moon_fever_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "full_moon_fever"
+from = "ega0075d"
+object = "effect/event/ev60/ev6240fm00/ev6240fm00.objbin"
+
+[[shot_aura]]
+name = "full_moon_fever"
+when = { techniques = ["whs02400"] }
+aura = "full_moon_fever"
+like = "ega0075d"

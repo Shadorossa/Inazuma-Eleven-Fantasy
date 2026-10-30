@@ -1,0 +1,49 @@
+schema = "VRFW.item/2"
+default_lang = "en"
+
+# Synergies Reworked › «Los cuatro magníficos»: a NEW team synergy (category synergy, cloned from the offensive retail
+# synergy sf10001, so it keeps its slot; its icon sf11001 is its four members' heads over the menu's flag base:
+# content/images/menu/200_icon/30_icon_synergy/icon_synergy.toml). Its key string and id are `sf11001` / crc32 of it, as every retail
+# synergy; the item row points at the synergy_flag_config row of the same id (effects and the four conditions:
+# content/tables/common/gamedata/skill/synergy_flag_config.toml); who counts is decided by the pools of
+# content/synergies/reworked_synergies.toml. Sold in the retail synergy shop for the members' cards (retail cost rule:
+# cards of the members), see content/shops/four_magnificent.toml. docs/framework/types/synergy.md.
+
+[[item]]
+name = "four_magnificent"
+base = "sf10001"
+category = "synergy"
+icon_key = "sf11001"
+key_id = true
+  [item.text.es]
+  name = "Los cuatro magníficos"
+  [item.text.en]
+  name = "The Magnificent Four"
+  [item.text.fr]
+  name = "Les quatre magnifiques"
+  [item.text.de]
+  name = "Die vier Großartigen"
+  [item.text.it]
+  name = "I quattro magnifici"
+  [item.text.pt]
+  name = "Os quatro magníficos"
+
+[[currency]]
+name = "season_autumn_card"
+spirit = 0xB8026CDB                      # chara_param of Ted Autumn c02028510
+rarity = 4
+
+[[currency]]
+name = "season_summer_card"
+spirit = 0x864B07D0                      # chara_param of Alan Sumner c02027650
+rarity = 4
+
+[[currency]]
+name = "season_spring_card"
+spirit = 0xE7423239                      # chara_param of Verne Spring c02028970
+rarity = 4
+
+[[currency]]
+name = "season_winter_card"
+spirit = 0x468CA5C8                      # chara_param of George Winters c01003050
+rarity = 4

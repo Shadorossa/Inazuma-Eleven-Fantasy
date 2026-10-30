@@ -19,6 +19,19 @@ name = "football_match"
 base = "game_root"
 chain = ["ROOT_MATCH"]
 
+# The fields of the match info block (football_match) the script reads: each team's tension (x 10000; team block
+# 0x60 + team x 0x1130, +0x1058) and the user's team.
+[[VRFW.Struct]]
+name = "FootballMatchInfo"
+size = 0x2C2A
+fields = { tension0 = { at = 0x10B8, type = "i32" }, tension1 = { at = 0x21E8, type = "i32" }, user_team = { at = 0x2C29, type = "u8" } }
+
+# A team member (FootballUnit.member): his formation position.
+[[VRFW.Struct]]
+name = "FootballMember"
+size = 0x72
+fields = { position = { at = 0x71, type = "u8" } }
+
 # A soccer actor ([g_soccerActors] + index x 0x570): its handle, team, the in-play byte.
 [[VRFW.Struct]]
 name = "FootballActor"

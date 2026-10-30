@@ -13,24 +13,22 @@
 -- No engine call at load time.
 
 local MO = {
-  LOG = 3661580131,          -- CMND_EVT_LOG
-  STATE = 2588710643,        -- CMND_VRFW_MENU_SCENE_STATE () -> state, key, …
-  SCENE = 1465766639,        -- CMND_VRFW_MENU_SCENE (key) -> table | ""
-  SET = 3352504786,          -- CMND_VRFW_MENU_SCENE_SET (state, arg) -> 1 | 0, state
-  PEOPLE = 496639384,        -- CMND_VRFW_MENU_SCENE_PEOPLE (key, members, uniform, avatar) -> placed, text
-  AVATAR = 603653521,        -- CMND_VRFW_MENU_SCENE_AVATAR () -> chara_base, card, handle of the save's avatar
-  MOTION_SET = 1229214512,   -- CMND_VRFW_CHARA_MOTION_SET (chara_base) -> motion set (c000101 …)
-  FIELD_ENTER = 3839029809,  -- CMND_VRFW_FIELD_ENTER (key, walker, map) -> ok, code
-  FIELD_LEAVE = 3323114127,  -- CMND_VRFW_FIELD_LEAVE ()
-  MAP_JUMP = 664962748,      -- CMND_RESERVE_MAP_JUMP (map, x, y, z, rot, event, overwrite, …, force reload)
-  CLOSE = 320421347,         -- CMND_CLOSE_MENU_OBJECT (menu, now)
+  LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
+  STATE = VRFW_Cmd.VRFW_MENU_SCENE_STATE,        -- CMND_VRFW_MENU_SCENE_STATE () -> state, key, …
+  SCENE = VRFW_Cmd.VRFW_MENU_SCENE,        -- CMND_VRFW_MENU_SCENE (key) -> table | ""
+  SET = VRFW_Cmd.VRFW_MENU_SCENE_SET,          -- CMND_VRFW_MENU_SCENE_SET (state, arg) -> 1 | 0, state
+  PEOPLE = VRFW_Cmd.VRFW_MENU_SCENE_PEOPLE,        -- CMND_VRFW_MENU_SCENE_PEOPLE (key, members, uniform, avatar) -> placed, text
+  AVATAR = VRFW_Cmd.VRFW_MENU_SCENE_AVATAR,        -- CMND_VRFW_MENU_SCENE_AVATAR () -> chara_base, card, handle of the save's avatar
+  MOTION_SET = VRFW_Cmd.VRFW_CHARA_MOTION_SET,   -- CMND_VRFW_CHARA_MOTION_SET (chara_base) -> motion set (c000101 …)
+  FIELD_ENTER = VRFW_Cmd.VRFW_FIELD_ENTER,  -- CMND_VRFW_FIELD_ENTER (key, walker, map) -> ok, code
+  FIELD_LEAVE = VRFW_Cmd.VRFW_FIELD_LEAVE,  -- CMND_VRFW_FIELD_LEAVE ()
+  MAP_JUMP = VRFW_Cmd.RESERVE_MAP_JUMP,      -- CMND_RESERVE_MAP_JUMP (map, x, y, z, rot, event, overwrite, …, force reload)
+  CLOSE = VRFW_Cmd.CLOSE_MENU_OBJECT,         -- CMND_CLOSE_MENU_OBJECT (menu, now)
   FIELD_START = 769636339,   -- (seconds) the field start of the Kizuna dock list
-  CURSOR_RPG = 419086457,    -- CMND_START_ARRAY_CURSOR_RPG (on)
-  PARAM_HAS = 2947612279, PARAM_CLEAR = 3363400568,
+  CURSOR_RPG = VRFW_Cmd.START_ARRAY_CURSOR_RPG,    -- CMND_START_ARRAY_CURSOR_RPG (on)
   OPTIONS = 1432246941,      -- param vrfw_menu_scene_options
   HUD_OFF = 3499142076,      -- param vrfw_menu_scene_hud_off: the field HUD menus hide their layers (lua/menu/<hud>/150_menu_scene.lua)
   NPCS = 1730437307,         -- param vrfw_menu_scene_npcs: the field HUD's menu runs the NPC update (rpg_info_window 151_menu_scene_npcs.lua)
-  PARAM_SET = 3860611758,
   FADE = 609722083,          -- (1 to black | 0 in, seconds)
   FADE_DONE = 2259183189,
   MENU = 1936716961,         -- setting_top_menu
@@ -52,8 +50,8 @@ end
 
 -- a param cleared only when it is set (the retail way)
 local function MO_Clear(k)
-  if MO_Call(MO.PARAM_HAS, k) == true then
-    MO_Call(MO.PARAM_CLEAR, k)
+  if VRFW_Param.Has(k) then
+    VRFW_Param.Clear(k)
   end
 end
 
@@ -151,9 +149,9 @@ local function MO_Enter()
     (type(sc.entry_point) == "number" and sc.entry_point ~= 0) and string.format("layout point 0x%08X", sc.entry_point) or
     string.format("(%s, %s, %s) rot %s", tostring(sc.x), tostring(sc.y), tostring(sc.z), tostring(sc.rot)))
   MO_Call(MO.FADE, 1, 0)                 -- already black (the title's fade): no wait
-  MO_Call(MO.PARAM_SET, MO.HUD_OFF, 0, 1, 1)
+  VRFW_Param.Set(MO.HUD_OFF, 1)
   if tonumber(placed) and tonumber(placed) > 0 then
-    MO_Call(MO.PARAM_SET, MO.NPCS, 0, 1, 1)
+    VRFW_Param.Set(MO.NPCS, 1)
   else
     MO_Clear(MO.NPCS)
   end
@@ -180,7 +178,7 @@ if VRFW_Host ~= nil then
     phase = "after",
     fn = function()
       mo.ours, mo.co, mo.bg_ready, mo.bg_idx, mo.open_end, mo.entered = false, nil, false, 0, nil, false
-      local marked = MO_Call(MO.PARAM_HAS, MO.OPTIONS) == true
+      local marked = VRFW_Param.Has(MO.OPTIONS)
       local status = MO_Call(MO.STATE)
       if marked or status == "options" or status == nil then
         MO_Clear(MO.OPTIONS)

@@ -12,10 +12,10 @@ do
   if type(wait) == "function" then
     function SwitchCaseTitleInputWait(...)
       pcall(function()
-        if funcLuaCommand(2947612279, BetterQoL.TopBar.READY_KEY) then
-          funcLuaCommand(3363400568, BetterQoL.TopBar.READY_KEY)
+        if VRFW_Param.Has(BetterQoL.TopBar.READY_KEY) then
+          VRFW_Param.Clear(BetterQoL.TopBar.READY_KEY)
         end
-        funcLuaCommand(3860611758, BetterQoL.TopBar.READY_KEY, 0, 1, 1)
+        VRFW_Param.Set(BetterQoL.TopBar.READY_KEY, 1)
       end)
       return wait(...)
     end
@@ -78,13 +78,13 @@ end
 BetterQoL.TopBar.FAST = {BUSY = 1149663763 --[[crc32 evt_top_bar_busy]], noted = false}
 
 function BetterQoL.TopBar.FastLog(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "utilities top_bar fast title", ...)
+  pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "utilities top_bar fast title", ...)
 end
 
 -- the main-chunk locals of title_main, or nil (logged once)
 function BetterQoL.TopBar.FastL()
   local F = BetterQoL.TopBar.FAST
-  if funcLuaCommand(2947612279, F.BUSY) ~= true then
+  if not VRFW_Param.Has(F.BUSY) then
     return nil
   end
   local h = type(VRFW_Host) == "table" and type(VRFW_Host.hosts) == "table" and VRFW_Host.hosts.title_main or nil

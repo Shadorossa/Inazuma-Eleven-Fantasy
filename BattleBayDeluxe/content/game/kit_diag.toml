@@ -1,0 +1,8 @@
+# Kit diagnostic (scripts\kit_diag.lua): the match info block, read once per match team when its first player is dressed.
+schema = "VRFW.game/1"
+
+[[VRFW.Global]]
+# [[g_gameRoot]+Game.RootMatch]: the two match teams at +0x60 (stride 0x1130), the user's side at +0x2C29
+name = "kit_diag_match"
+base = "game_root"
+chain = ["Game.RootMatch"]

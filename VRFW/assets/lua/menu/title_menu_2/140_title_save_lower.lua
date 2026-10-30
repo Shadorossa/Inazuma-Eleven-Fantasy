@@ -29,7 +29,7 @@ local SV = {
   L_LOWER = 3873872512,     -- title00_07_item_button_lower
   SAVE = SV_Crc("save"),    -- the retail «Guardar» title item
   IDX = 41,                 -- its item list index on the lower row (the game uses 1..11, «Mods» 40)
-  LOG = 3661580131,         -- CMND_EVT_LOG
+  LOG = VRFW_Cmd.EVT_LOG,         -- CMND_EVT_LOG
 }
 
 local sv = {
@@ -248,7 +248,7 @@ if VRFW_Host ~= nil and type(GetItemListIdx) == "function" and type(OnEnter) == 
     if a1 == SV.L_LOWER and SV_IsOurs(a2, false) then
       local pos = SV_RetailPos()
       if pos == nil then
-        funcLuaCommand(1917805374, 2086672038)     -- sy0003: buzzer
+        funcLuaCommand(VRFW_Cmd.SND_PLAY_SE, 2086672038)     -- sy0003: buzzer
         return 1
       end
       return SV_Retail(nxt, SV.UPPER, pos)

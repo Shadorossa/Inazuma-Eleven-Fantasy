@@ -1,0 +1,1009 @@
+# Aura Reworked › the spirit passives: the warrior spirits (keshin) and their passives (kind VRFW.passive/1).
+# [[VRFW.Spirit]]: a player carries `passive` (and `synergy`) while that keshin is his running summon
+# WITHOUT armour, the rival's players too. [[VRFW.SpiritFamily]]: a named set of spirits the SpiritsOut
+# block counts (a family bonus). Design: docs/game/mods/keshin-passives-proposal.md. Edited in ModManager or by hand.
+schema = "VRFW.passive/1"
+
+# ---- families
+
+# White and Black chess pieces
+[[VRFW.SpiritFamily]]
+name = "chess"
+auras = ["wko00180", "wko00340", "wks00190", "wks00350", "wkd00200", "wkd00360", "wkd00210", "wkd00370", "wks00220", "wks00380", "wkk00230", "wkk00390"]
+
+# the Four Symbols
+[[VRFW.SpiritFamily]]
+name = "four_symbols"
+auras = ["wko00900", "wko00910", "wkd00670", "wkd00890"]
+
+# the four Plasma Shadows
+[[VRFW.SpiritFamily]]
+name = "plasma_shadow"
+auras = ["wks00720", "wko00721", "wkd00722", "wkk00723"]
+
+# The Lovers
+[[VRFW.SpiritFamily]]
+name = "lovers"
+auras = ["wks00780", "wks00980"]
+
+# ---- passives
+
+[[VRFW.Passive]]
+name = "knights_resolve"
+blocks = ["power_dribble_12"]
+
+[[VRFW.Passive]]
+name = "conductors_harmony"
+blocks = ["tension_cost_m8_teammates"]
+
+[[VRFW.Passive]]
+name = "sunshine_force"
+blocks = ["power_shoot_6_team_fire"]
+
+[[VRFW.Passive]]
+name = "two_sword_style"
+blocks = ["power_chain_shoot_15"]
+
+[[VRFW.Passive]]
+name = "frostbite"
+blocks = ["near_10m", "speed_m8_opponents"]
+
+[[VRFW.Passive]]
+name = "muspell_fire"
+blocks = ["stat_kick_10"]
+
+[[VRFW.Passive]]
+name = "thunder_flight"
+blocks = ["power_long_shoot_15"]
+
+[[VRFW.Passive]]
+name = "tidal_surge"
+blocks = ["score_trailing", "power_shoot_12"]
+
+[[VRFW.Passive]]
+name = "sleight_of_hand"
+blocks = ["on_technique_result", "kind_dribble", "outcome_succeeds", "stack_1_8s", "tension_cost_m40"]
+
+[[VRFW.Passive]]
+name = "white_gallop"
+blocks = ["has_ball", "speed_10"]
+
+[[VRFW.Passive]]
+name = "chess_speed"
+blocks = ["out_chess_max3", "speed_2"]
+
+[[VRFW.Passive]]
+name = "royal_enchantment"
+blocks = ["power_shoot_8"]
+
+[[VRFW.Passive]]
+name = "chess_shoot"
+blocks = ["out_chess_max3", "power_shoot_4"]
+
+[[VRFW.Passive]]
+name = "excalibur_oath"
+blocks = ["power_all_5_team"]
+
+[[VRFW.Passive]]
+name = "demon_axe"
+blocks = ["power_shoot_18", "tension_cost_15"]
+
+[[VRFW.Passive]]
+name = "holy_breath"
+blocks = ["keeper_shot_shooter_12"]
+
+[[VRFW.Passive]]
+name = "three_hearts_as_one"
+blocks = ["power_shoot_12"]
+
+[[VRFW.Passive]]
+name = "ill_omen"
+blocks = ["on_goal", "tension_max_m20_opponent"]
+
+[[VRFW.Passive]]
+name = "heavenly_charge"
+blocks = ["on_dash", "stack_1_3s", "power_shoot_12"]
+
+[[VRFW.Passive]]
+name = "rising_flames"
+blocks = ["on_duel_won", "stack_4_per_half", "power_shoot_4"]
+
+[[VRFW.Passive]]
+name = "fabled_wingspan"
+blocks = ["stat_pressure_10"]
+
+[[VRFW.Passive]]
+name = "lord_of_all_waters"
+blocks = ["tension_cost_m6_team_wind"]
+
+[[VRFW.Passive]]
+name = "sweet_dreams"
+blocks = ["stat_agility_m5_opponents"]
+
+[[VRFW.Passive]]
+name = "war_chief"
+blocks = ["power_shoot_6_team_fw"]
+
+[[VRFW.Passive]]
+name = "rebirth"
+blocks = ["on_goal_opponent", "pool_plus_20"]
+
+[[VRFW.Passive]]
+name = "just_warfare"
+blocks = ["on_block_won_team", "tension_2_actor"]
+
+[[VRFW.Passive]]
+name = "astral_prison"
+blocks = ["recast_15_opponents"]
+
+[[VRFW.Passive]]
+name = "synthetic_link_shoot"
+blocks = ["power_shoot_6"]
+
+[[VRFW.Passive]]
+name = "plasma_shoot"
+blocks = ["out_plasma_shadow_max3", "power_shoot_4"]
+
+[[VRFW.Passive]]
+name = "lunar_rush"
+blocks = ["kind_dribble", "tension_cost_m20"]
+
+[[VRFW.Passive]]
+name = "chained_souls"
+blocks = ["power_all_4"]
+
+[[VRFW.Passive]]
+name = "lovers_bond"
+blocks = ["out_lovers_max1", "power_all_8"]
+
+[[VRFW.Passive]]
+name = "daemon_hour"
+blocks = ["clock_last_third", "power_shoot_15"]
+
+[[VRFW.Passive]]
+name = "glory_hunt"
+blocks = ["on_goal", "stack_3", "power_shoot_6"]
+
+[[VRFW.Passive]]
+name = "artifice"
+blocks = ["recast_m25"]
+
+[[VRFW.Passive]]
+name = "silver_temper"
+blocks = ["stat_control_10"]
+
+[[VRFW.Passive]]
+name = "crown_of_chaos"
+blocks = ["tension_cost_10_opponents"]
+
+[[VRFW.Passive]]
+name = "scarlet_wings"
+blocks = ["score_level", "power_shoot_12"]
+
+[[VRFW.Passive]]
+name = "triumph"
+blocks = ["on_goal_team", "stack_3_per_half", "power_all_3_team"]
+
+[[VRFW.Passive]]
+name = "sacred_lance"
+blocks = ["power_shoot_12"]
+
+[[VRFW.Passive]]
+name = "full_moon_paladin"
+blocks = ["kind_dribble", "power_dribble_12", "tension_cost_m10"]
+
+[[VRFW.Passive]]
+name = "victory_flame"
+blocks = ["power_shoot_10"]
+
+[[VRFW.Passive]]
+name = "genie_bond"
+blocks = ["out_wkk00510_max1", "power_shoot_10"]
+
+[[VRFW.Passive]]
+name = "practical_joke"
+blocks = ["on_duel_lost", "chance_30", "tension_3_actor"]
+
+[[VRFW.Passive]]
+name = "black_gallop"
+blocks = ["without_ball", "speed_10"]
+
+[[VRFW.Passive]]
+name = "black_enchantment"
+blocks = ["power_dribble_m6_opponents"]
+
+[[VRFW.Passive]]
+name = "chess_rival_dribble"
+blocks = ["out_chess_max3", "power_dribble_m2_opponents"]
+
+[[VRFW.Passive]]
+name = "winged_steed"
+blocks = ["on_dash", "stack_1_2s", "speed_15"]
+
+[[VRFW.Passive]]
+name = "king_of_beasts"
+blocks = ["stat_physical_12"]
+
+[[VRFW.Passive]]
+name = "supersonic"
+blocks = ["speed_10"]
+
+[[VRFW.Passive]]
+name = "living_nightmare"
+blocks = ["power_block_m5_opponents"]
+
+[[VRFW.Passive]]
+name = "promotion"
+blocks = ["on_technique_result", "kind_dribble", "outcome_succeeds", "stack_3_per_half", "power_all_5"]
+
+[[VRFW.Passive]]
+name = "chess_power"
+blocks = ["out_chess_max3", "power_all_1"]
+
+[[VRFW.Passive]]
+name = "black_promotion"
+blocks = ["on_duel_won", "stack_3_per_half", "power_all_5"]
+
+[[VRFW.Passive]]
+name = "fatal_charm"
+blocks = ["near_8m", "stat_pressure_m10_opponents"]
+
+[[VRFW.Passive]]
+name = "light_barrier"
+blocks = ["on_carried", "stack_1_10s", "speed_25"]
+
+[[VRFW.Passive]]
+name = "whirlwind_blade"
+blocks = ["stat_technique_10"]
+
+[[VRFW.Passive]]
+name = "cursed_moon"
+blocks = ["half_2_4", "power_dribble_12"]
+
+[[VRFW.Passive]]
+name = "synthetic_link_dribble"
+blocks = ["power_dribble_6"]
+
+[[VRFW.Passive]]
+name = "plasma_dribble"
+blocks = ["out_plasma_shadow_max3", "power_dribble_4"]
+
+[[VRFW.Passive]]
+name = "burning_pursuit"
+blocks = ["on_technique_result", "kind_dribble", "outcome_succeeds", "stack_1_8s", "power_shoot_15"]
+
+[[VRFW.Passive]]
+name = "midnight_sun"
+blocks = ["on_technique_result", "kind_dribble", "outcome_succeeds", "tension_2_actor"]
+
+[[VRFW.Passive]]
+name = "azure_dragon"
+blocks = ["stat_control_8"]
+
+[[VRFW.Passive]]
+name = "four_symbols_bond"
+blocks = ["out_four_symbols_max3", "power_all_2_team"]
+
+[[VRFW.Passive]]
+name = "white_tiger"
+blocks = ["stat_agility_8"]
+
+[[VRFW.Passive]]
+name = "pride_leader"
+blocks = ["power_dribble_6_team_mf"]
+
+[[VRFW.Passive]]
+name = "sunrise_carnival"
+blocks = ["speed_4_team"]
+
+[[VRFW.Passive]]
+name = "verdict"
+blocks = ["on_foul_opponent", "tension_max_m5_actor"]
+
+[[VRFW.Passive]]
+name = "divine_blessing"
+blocks = ["tension_cost_m8_team_df"]
+
+[[VRFW.Passive]]
+name = "chess_df_tension"
+blocks = ["out_chess_max3", "tension_cost_m2_team_df"]
+
+[[VRFW.Passive]]
+name = "watchtower"
+blocks = ["own_half", "power_block_12"]
+
+[[VRFW.Passive]]
+name = "chess_block"
+blocks = ["out_chess_max3", "power_block_2"]
+
+[[VRFW.Passive]]
+name = "dragon_lance"
+blocks = ["power_block_10"]
+
+[[VRFW.Passive]]
+name = "castle_the_king"
+blocks = ["power_catch_punch_8_team_gk"]
+
+[[VRFW.Passive]]
+name = "chess_keeper"
+blocks = ["out_chess_max3", "power_catch_punch_2_team_gk"]
+
+[[VRFW.Passive]]
+name = "frenzy"
+blocks = ["on_duel_lost", "stack_4", "reset_block_won_self", "power_block_5"]
+
+[[VRFW.Passive]]
+name = "standard_bearer"
+blocks = ["stat_physical_6_team_df"]
+
+[[VRFW.Passive]]
+name = "black_tortoise"
+blocks = ["kind_block", "tension_cost_m25"]
+
+[[VRFW.Passive]]
+name = "light_of_dawn"
+blocks = ["clock_first_third", "power_block_5_team"]
+
+[[VRFW.Passive]]
+name = "hunting_party"
+blocks = ["on_block_won", "stack_1_5s", "speed_15"]
+
+[[VRFW.Passive]]
+name = "synthetic_link_block"
+blocks = ["power_block_6"]
+
+[[VRFW.Passive]]
+name = "plasma_block"
+blocks = ["out_plasma_shadow_max3", "power_block_4"]
+
+[[VRFW.Passive]]
+name = "feathered_serpent"
+blocks = ["power_block_6_team_wind"]
+
+[[VRFW.Passive]]
+name = "discord"
+blocks = ["stat_intelligence_m6_opponents"]
+
+[[VRFW.Passive]]
+name = "vermilion_bird"
+blocks = ["power_shoot_block_12"]
+
+[[VRFW.Passive]]
+name = "destruction_barrage"
+blocks = ["on_block_won", "stack_1_10s", "power_shoot_15"]
+
+[[VRFW.Passive]]
+name = "dark_space"
+blocks = ["stat_control_m5_opponents"]
+
+[[VRFW.Passive]]
+name = "chess_rival_control"
+blocks = ["out_chess_max3", "stat_control_m1_opponents"]
+
+[[VRFW.Passive]]
+name = "storm_build_up"
+blocks = ["on_block_won", "stack_3_per_half", "power_block_6"]
+
+[[VRFW.Passive]]
+name = "despair_fortress"
+blocks = ["power_shoot_m6_opponents"]
+
+[[VRFW.Passive]]
+name = "usurpers_resolve"
+blocks = ["power_catch_8"]
+
+[[VRFW.Passive]]
+name = "usurpers_comeback"
+blocks = ["on_goal_opponent", "stack_3", "power_catch_4"]
+
+[[VRFW.Passive]]
+name = "tin_wall"
+blocks = ["keeper_shot_keeper_m8"]
+
+[[VRFW.Passive]]
+name = "loaded_dice"
+blocks = ["on_ball_stopped", "chance_33", "tension_90_actor"]
+
+[[VRFW.Passive]]
+name = "royal_guard"
+blocks = ["power_catch_6"]
+
+[[VRFW.Passive]]
+name = "chess_catch"
+blocks = ["out_chess_max3", "power_catch_3"]
+
+[[VRFW.Passive]]
+name = "earth_defender"
+blocks = ["power_punch_15"]
+
+[[VRFW.Passive]]
+name = "duke_of_doom"
+blocks = ["on_ball_stopped", "tension_max_m15_opponent"]
+
+[[VRFW.Passive]]
+name = "tusk_guard"
+blocks = ["power_catch_6", "stat_physical_4_team_df"]
+
+[[VRFW.Passive]]
+name = "gigantic_garrison"
+blocks = ["power_block_5_team_df"]
+
+[[VRFW.Passive]]
+name = "jackpot"
+blocks = ["on_keeper_save", "chance_25", "stack_3", "power_catch_10"]
+
+[[VRFW.Passive]]
+name = "dragons_hoard"
+blocks = ["on_keeper_save", "pool_plus_15"]
+
+[[VRFW.Passive]]
+name = "the_great_genie"
+blocks = ["power_catch_punch_12"]
+
+[[VRFW.Passive]]
+name = "trap_master"
+blocks = ["keeper_shot_keeper_m25_chance20"]
+
+[[VRFW.Passive]]
+name = "strategist"
+blocks = ["stat_intelligence_6_team"]
+
+[[VRFW.Passive]]
+name = "synthetic_link_catch"
+blocks = ["power_catch_6"]
+
+[[VRFW.Passive]]
+name = "plasma_catch"
+blocks = ["out_plasma_shadow_max3", "power_catch_4"]
+
+[[VRFW.Passive]]
+name = "abyssal_maw"
+blocks = ["power_long_shoot_m10_opponents"]
+
+[[VRFW.Passive]]
+name = "shikigami_lines"
+blocks = ["speed_6_team_df"]
+
+[[VRFW.Passive]]
+name = "cram_session"
+blocks = ["tension_cost_m25"]
+
+[[VRFW.Passive]]
+name = "undying_warden"
+blocks = ["on_carried", "summon_time_15", "pool_cost_m25"]
+
+[[VRFW.Passive]]
+name = "foxfire_trick"
+blocks = ["stat_control_m8_opponents_fw"]
+
+[[VRFW.Passive]]
+name = "volcanic_wrath"
+blocks = ["on_keeper_save", "stack_4_per_half", "power_catch_4"]
+
+[[VRFW.Passive]]
+name = "black_monarch"
+blocks = ["power_shoot_m5_opponents_fw"]
+
+[[VRFW.Passive]]
+name = "chess_rival_fw_shoot"
+blocks = ["out_chess_max3", "power_shoot_m1_opponents_fw"]
+
+# ---- spirits
+
+# Lancelot
+[[VRFW.Spirit]]
+aura = "wks00020"
+passive = "knights_resolve"
+
+# Maestro
+[[VRFW.Spirit]]
+aura = "wks00030"
+passive = "conductors_harmony"
+
+# Apollo
+[[VRFW.Spirit]]
+aura = "wks00040"
+passive = "sunshine_force"
+
+# Musashi
+[[VRFW.Spirit]]
+aura = "wks00050"
+passive = "two_sword_style"
+
+# Chione
+[[VRFW.Spirit]]
+aura = "wks00080"
+passive = "frostbite"
+
+# Surtur
+[[VRFW.Spirit]]
+aura = "wks00100"
+passive = "muspell_fire"
+
+# Thunderbird
+[[VRFW.Spirit]]
+aura = "wks00120"
+passive = "thunder_flight"
+
+# Poseidon
+[[VRFW.Spirit]]
+aura = "wks00130"
+passive = "tidal_surge"
+
+# Trickster
+[[VRFW.Spirit]]
+aura = "wks00140"
+passive = "sleight_of_hand"
+
+# White Knight
+[[VRFW.Spirit]]
+aura = "wks00190"
+passive = "white_gallop"
+synergy = "chess_speed"
+
+# White Queen
+[[VRFW.Spirit]]
+aura = "wks00220"
+passive = "royal_enchantment"
+synergy = "chess_shoot"
+
+# Arthur
+[[VRFW.Spirit]]
+aura = "wks00240"
+passive = "excalibur_oath"
+
+# Black Butcher
+[[VRFW.Spirit]]
+aura = "wks00280"
+passive = "demon_axe"
+
+# White Wyvern
+[[VRFW.Spirit]]
+aura = "wks00290"
+passive = "holy_breath"
+
+# Griffin
+[[VRFW.Spirit]]
+aura = "wks00300"
+passive = "three_hearts_as_one"
+
+# Raven
+[[VRFW.Spirit]]
+aura = "wks00310"
+passive = "ill_omen"
+
+# Arch Pegasus
+[[VRFW.Spirit]]
+aura = "wks00330"
+passive = "heavenly_charge"
+
+# Firebird
+[[VRFW.Spirit]]
+aura = "wks00400"
+passive = "rising_flames"
+
+# Roc
+[[VRFW.Spirit]]
+aura = "wks00410"
+passive = "fabled_wingspan"
+
+# Neptune
+[[VRFW.Spirit]]
+aura = "wks00450"
+passive = "lord_of_all_waters"
+
+# Sandman
+[[VRFW.Spirit]]
+aura = "wks00530"
+passive = "sweet_dreams"
+
+# Pendragon
+[[VRFW.Spirit]]
+aura = "wks00540"
+passive = "war_chief"
+
+# Feng-Huang
+[[VRFW.Spirit]]
+aura = "wks00610"
+passive = "rebirth"
+
+# Athena
+[[VRFW.Spirit]]
+aura = "wks00630"
+passive = "just_warfare"
+
+# Zodiac
+[[VRFW.Spirit]]
+aura = "wks00690"
+passive = "astral_prison"
+
+# Plasma Shadow SH
+[[VRFW.Spirit]]
+aura = "wks00720"
+passive = "synthetic_link_shoot"
+synergy = "plasma_shoot"
+
+# Sir Rabby
+[[VRFW.Spirit]]
+aura = "wks00760"
+passive = "lunar_rush"
+
+# The Lovers F
+[[VRFW.Spirit]]
+aura = "wks00780"
+passive = "chained_souls"
+synergy = "lovers_bond"
+
+# Evera
+[[VRFW.Spirit]]
+aura = "wks00800"
+passive = "daemon_hour"
+
+# Asura
+[[VRFW.Spirit]]
+aura = "wks00860"
+passive = "glory_hunt"
+
+# Metis
+[[VRFW.Spirit]]
+aura = "wks00870"
+passive = "artifice"
+
+# Argentia
+[[VRFW.Spirit]]
+aura = "wks00880"
+passive = "silver_temper"
+
+# Astaroth
+[[VRFW.Spirit]]
+aura = "wks00970"
+passive = "crown_of_chaos"
+
+# The Lovers M
+[[VRFW.Spirit]]
+aura = "wks00980"
+passive = "chained_souls"
+synergy = "lovers_bond"
+
+# Arch Pegasus Red
+[[VRFW.Spirit]]
+aura = "wks00990"
+passive = "scarlet_wings"
+
+# Victoria
+[[VRFW.Spirit]]
+aura = "wks02010"
+passive = "triumph"
+
+# Clearbunny (interim: ShotPierce needs a hook)
+[[VRFW.Spirit]]
+aura = "wks02020"
+aliases = ["wks02020_st0701"]
+passive = "sacred_lance"
+
+# Sir Rabby paladin
+[[VRFW.Spirit]]
+aura = "wks02050"
+passive = "full_moon_paladin"
+
+# Majin Victory (Nike)
+[[VRFW.Spirit]]
+aura = "wks02060"
+aliases = ["wks02060_st0901"]
+passive = "victory_flame"
+synergy = "genie_bond"
+
+# Jester
+[[VRFW.Spirit]]
+aura = "wks00440"
+passive = "practical_joke"
+
+# Black Knight
+[[VRFW.Spirit]]
+aura = "wks00350"
+passive = "black_gallop"
+synergy = "chess_speed"
+
+# Black Queen
+[[VRFW.Spirit]]
+aura = "wks00380"
+passive = "black_enchantment"
+synergy = "chess_rival_dribble"
+
+# Pegasus
+[[VRFW.Spirit]]
+aura = "wko00010"
+passive = "winged_steed"
+
+# Leon (interim: DuelValue needs a hook)
+[[VRFW.Spirit]]
+aura = "wko00070"
+passive = "king_of_beasts"
+
+# Scramjet
+[[VRFW.Spirit]]
+aura = "wko00090"
+passive = "supersonic"
+
+# Phantasma
+[[VRFW.Spirit]]
+aura = "wko00150"
+passive = "living_nightmare"
+
+# White Pawn
+[[VRFW.Spirit]]
+aura = "wko00180"
+passive = "promotion"
+synergy = "chess_power"
+
+# Black Pawn
+[[VRFW.Spirit]]
+aura = "wko00340"
+passive = "black_promotion"
+synergy = "chess_power"
+
+# Sirena
+[[VRFW.Spirit]]
+aura = "wko00470"
+passive = "fatal_charm"
+
+# Tachyon
+[[VRFW.Spirit]]
+aura = "wko00480"
+passive = "light_barrier"
+
+# Sickle Weasel
+[[VRFW.Spirit]]
+aura = "wko00640"
+passive = "whirlwind_blade"
+
+# Lycaon
+[[VRFW.Spirit]]
+aura = "wko00680"
+passive = "cursed_moon"
+
+# Plasma Shadow OF
+[[VRFW.Spirit]]
+aura = "wko00721"
+passive = "synthetic_link_dribble"
+synergy = "plasma_dribble"
+
+# Dire Wolf
+[[VRFW.Spirit]]
+aura = "wko00810"
+passive = "burning_pursuit"
+
+# Glenr
+[[VRFW.Spirit]]
+aura = "wko00820"
+passive = "midnight_sun"
+
+# Qinglong
+[[VRFW.Spirit]]
+aura = "wko00900"
+passive = "azure_dragon"
+synergy = "four_symbols_bond"
+
+# Baihu
+[[VRFW.Spirit]]
+aura = "wko00910"
+passive = "white_tiger"
+synergy = "four_symbols_bond"
+
+# Khmet
+[[VRFW.Spirit]]
+aura = "wko00930"
+passive = "pride_leader"
+
+# Entertainer
+[[VRFW.Spirit]]
+aura = "wko02030"
+aliases = ["wko02030_st0701", "wko02025"]
+passive = "sunrise_carnival"
+
+# Judge
+[[VRFW.Spirit]]
+aura = "wkd00060"
+passive = "verdict"
+
+# White Bishop
+[[VRFW.Spirit]]
+aura = "wkd00200"
+passive = "divine_blessing"
+synergy = "chess_df_tension"
+
+# White Rook
+[[VRFW.Spirit]]
+aura = "wkd00210"
+passive = "watchtower"
+synergy = "chess_block"
+
+# Dragoon
+[[VRFW.Spirit]]
+aura = "wkd00320"
+passive = "dragon_lance"
+
+# Black Rook
+[[VRFW.Spirit]]
+aura = "wkd00370"
+passive = "castle_the_king"
+synergy = "chess_keeper"
+
+# Berserker
+[[VRFW.Spirit]]
+aura = "wkd00420"
+passive = "frenzy"
+
+# Brynhildr
+[[VRFW.Spirit]]
+aura = "wkd00650"
+passive = "standard_bearer"
+
+# Xuanwu
+[[VRFW.Spirit]]
+aura = "wkd00670"
+passive = "black_tortoise"
+synergy = "four_symbols_bond"
+
+# Amaterasu
+[[VRFW.Spirit]]
+aura = "wkd00700"
+passive = "light_of_dawn"
+
+# Jagwarrior
+[[VRFW.Spirit]]
+aura = "wkd00710"
+passive = "hunting_party"
+
+# Plasma Shadow DF
+[[VRFW.Spirit]]
+aura = "wkd00722"
+passive = "synthetic_link_block"
+synergy = "plasma_block"
+
+# Kukulkan
+[[VRFW.Spirit]]
+aura = "wkd00830"
+passive = "feathered_serpent"
+
+# Eris
+[[VRFW.Spirit]]
+aura = "wkd00840"
+passive = "discord"
+
+# Zhuque
+[[VRFW.Spirit]]
+aura = "wkd00890"
+passive = "vermilion_bird"
+synergy = "four_symbols_bond"
+
+# Deathroth
+[[VRFW.Spirit]]
+aura = "wkd00270"
+passive = "destruction_barrage"
+
+# Black Bishop
+[[VRFW.Spirit]]
+aura = "wkd00360"
+passive = "dark_space"
+synergy = "chess_rival_control"
+
+# Raiden
+[[VRFW.Spirit]]
+aura = "wkd00920"
+passive = "storm_build_up"
+
+# Warborg
+[[VRFW.Spirit]]
+aura = "wkd02040"
+aliases = ["wkd02040_st0701"]
+passive = "despair_fortress"
+
+# Gigante
+[[VRFW.Spirit]]
+aura = "wkk00110"
+passive = "usurpers_resolve"
+synergy = "usurpers_comeback"
+
+# Goliath
+[[VRFW.Spirit]]
+aura = "wkk00160"
+passive = "tin_wall"
+
+# Lot
+[[VRFW.Spirit]]
+aura = "wkk00170"
+passive = "loaded_dice"
+
+# White King
+[[VRFW.Spirit]]
+aura = "wkk00230"
+passive = "royal_guard"
+synergy = "chess_catch"
+
+# Atlas
+[[VRFW.Spirit]]
+aura = "wkk00250"
+passive = "earth_defender"
+
+# Demogorgon
+[[VRFW.Spirit]]
+aura = "wkk00260"
+passive = "duke_of_doom"
+
+# Behemoth
+[[VRFW.Spirit]]
+aura = "wkk00430"
+passive = "tusk_guard"
+
+# Gargantua
+[[VRFW.Spirit]]
+aura = "wkk00460"
+passive = "gigantic_garrison"
+
+# Las Vega
+[[VRFW.Spirit]]
+aura = "wkk00490"
+passive = "jackpot"
+
+# Koro-Koro-Gon
+[[VRFW.Spirit]]
+aura = "wkk00500"
+passive = "dragons_hoard"
+
+# Majin
+[[VRFW.Spirit]]
+aura = "wkk00510"
+passive = "the_great_genie"
+
+# Serendipity
+[[VRFW.Spirit]]
+aura = "wkk00520"
+passive = "trap_master"
+
+# Cychr
+[[VRFW.Spirit]]
+aura = "wkk00660"
+passive = "strategist"
+
+# Plasma Shadow GK
+[[VRFW.Spirit]]
+aura = "wkk00723"
+passive = "synthetic_link_catch"
+synergy = "plasma_catch"
+
+# Atlanticus
+[[VRFW.Spirit]]
+aura = "wkk00770"
+passive = "abyssal_maw"
+
+# Loverette
+[[VRFW.Spirit]]
+aura = "wkk00790"
+passive = "shikigami_lines"
+
+# The Stationer
+[[VRFW.Spirit]]
+aura = "wkk00850"
+passive = "cram_session"
+
+# Arges
+[[VRFW.Spirit]]
+aura = "wkk00940"
+passive = "undying_warden"
+
+# Daji
+[[VRFW.Spirit]]
+aura = "wkk00950"
+passive = "foxfire_trick"
+
+# Vritra
+[[VRFW.Spirit]]
+aura = "wkk00960"
+passive = "volcanic_wrath"
+
+# Black King
+[[VRFW.Spirit]]
+aura = "wkk00390"
+passive = "black_monarch"
+synergy = "chess_rival_fw_shoot"

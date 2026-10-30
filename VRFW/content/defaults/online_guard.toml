@@ -8,7 +8,8 @@
 #   title_silence      title_menu_2 global functions that only serve the mode; they do not run
 #   title_hide_layers  title_menu_2 layers that only serve the mode; kept hidden
 #   title_functions    title_menu_2 OnFunction ids that only serve the mode; swallowed
-#   when               "always" (default) or "gameplay_mods": blocked only while a mod with [VRFW.Mod] AffectsMatch (default true) is enabled and no private room session is up. For such a mode, list only `menus` (title_items is refused with this value).
+#   when               "always" (default) or "gameplay_mods": blocked only while a mod with [VRFW.Mod] AffectsMatch (default true) is enabled. For such a mode, list only `menus` (title_items is refused with this value).
+#   own_room           true (only with when = "gameplay_mods"): open while the player is in one of the framework's own private rooms (the menu is then the room screen's UI shell, docs/game/modes/bb-p2p-lockstep.md §6).
 
 [[VRFW.BlockedMode]]
 key = "victory_road"
@@ -47,6 +48,7 @@ key = "battle_bay_online"
 label = "Battle Bay online rooms (EOS)"
 when = "gameplay_mods"
 menus = ["network_menu"]
+own_room = true                                # the private-room screen of our own Battle Bay rooms
 
 [[VRFW.BlockedMode]]
 key = "kizuna_online"

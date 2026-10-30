@@ -1,12 +1,13 @@
 # BetterQoL's «Álbum de jugadores» (docs/game/ui/album.md): a page of its own, util_album_menu, opened from «Caseta del
 # club» (play_guide_top_menu) the way that menu opens its «Archivo de escenas» (scene_archive_menu): the Caseta keeps its
-# background, header (title swapped), button guide and return arrow; this menu draws the album list on the left half,
-# opens the game's player plate (personal_plate_menu) on the right half and closes with B / Esc / right click.
-# Layers: the retail content guide line of the archive (the selected player's team and game), one retail list row of
-# «Guardar» kept off screen as the input anchor (every key of the page comes to it: MENU_CMD_INFO rows -> OnFunction /
-# OnBack), and the page's drawing pools: quads of cmn01_10_new_icon for the game's list plates, list cursor, check box
-# (team16_03) and series tab icons (icon_list_tab), the retail list character card for the kit minifaces, the retail
-# back-button text for the texts.
+# header (title swapped), button guide and return arrow; this menu draws its own background (the Caseta's is hidden by the
+# opener), the album list on the left half, opens the game's player plate (personal_plate_menu) on the right half and
+# closes with B / Esc / right click.
+# Layers: the page's background (util_alb_backdrop, drawn before the 3D pass), the retail content guide line of the
+# archive (the selected player's team and game), one retail list row of «Guardar» kept off screen as the input anchor
+# (every key of the page comes to it: MENU_CMD_INFO rows -> OnFunction / OnBack), and the page's drawing pools: quads of
+# cmn01_10_new_icon for the game's list plates, list cursor, check box (team16_03) and series tab icons (icon_list_tab),
+# the retail list character card for the kit minifaces, the retail back-button text for the texts.
 # Script: assets/lua/screens/util_album_menu.lua.
 schema = "VRFW.menu/2"
 
@@ -37,6 +38,27 @@ set = [
     { param = "m_drawPriority", match = { 1 = 301 }, values = { 1 = 1005 } },
 ]
 
+# a team crest: the game's emblem list row (team06_02), only its emblem quad shown (the Lua hides the rest); no hit
+# zone, no attach to the emblem list's locators; its atlas named
+[[object]]
+name = "util_alb_crest"
+from = "team06_02_emblem_list_item"
+remove_block = ["MenuCollisionSetting", "CMenuAttachLocator"]
+priority = 1004
+add = [{ block = "gmdMenuObj", param = "Texture", values = ["#/menu/102_team/team06/team06_02/team06_02.g4tx"] }]
+
+# the page's background in the BACKGROUND pass (m_drawType 1, as the office's shop01_00_background): the game's menu
+# background drawn before the 3D pass, so the player plate's 3D model (Character Reforged's plate model, on its normal
+# menu-camera layer) is drawn over it and every normal 2D layer over the model. Priority 200: under the player plate's
+# own page body (its background-pass copy, 300). Shown only while the plate is up, in the same step as the Caseta's
+# normal-pass background is hidden (util_album_menu.lua Cover); both swapped back when the page closes.
+[[object]]
+name = "util_alb_backdrop"
+from = "mainmenu90_00_background_draw_type_before"
+set = [
+    { param = "m_drawPriority", match = { 1 = 450 }, values = { 1 = 200 } },
+]
+
 [[screen]]
 name = "util_album_menu"
 like = "scene_archive_menu"                # registry row: a child page of «Caseta del club», as the archive
@@ -51,6 +73,8 @@ layer = [
     { layer = "util_alb_icon", object = "util_alb_icon", count = 64, scale = 0.01 },
     { layer = "util_alb_face", object = "util_alb_face", count = 20, scale = 0.01 },
     { layer = "util_alb_text", object = "util_alb_text", count = 48, scale = 0.01 },
+    { layer = "util_alb_crest", object = "util_alb_crest", count = 2, scale = 0.01 },
+    { layer = "util_alb_backdrop", object = "util_alb_backdrop", count = 1 },
 ]
 # the anchor takes every key: B / Esc / right click close the page (CMD_BACK), up / down move, left / right the other
 # column (a page at the list's edge), Y the type, LB / RB the group, L2 / R2 the player plate's pages, A the
@@ -75,6 +99,9 @@ res = [
     "#/menu/20_cmn/cmn05/cmn05_01/cmn05_01.g4tx",
     "#/menu/102_team/team16/team16_03/team16_03.g4tx",
     "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx",
+    "#/menu/102_team/team06/team06_02/team06_02.g4tx",
+    "#/menu/20_cmn/cmn06/cmn06_01/cmn06_01.g4tx",
+    "#/menu/20_cmn/cmn06/cmn06_20/cmn06_20.g4tx",
 ]
 group_base = [
     { layer = "save01_02_list_item", flags = [1, 1, 0, 0, 1, 0] },
@@ -83,9 +110,11 @@ group_base = [
     { layer = "util_alb_icon", flags = [0, 1, 0, 0, 1, 0] },
     { layer = "util_alb_face", flags = [0, 1, 0, 0, 1, 0] },
     { layer = "util_alb_text", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "util_alb_crest", flags = [0, 1, 0, 0, 1, 0] },
+    { layer = "util_alb_backdrop", flags = [0, 1, 1, 0, 1, 0] },
 ]
 group = [
-    { group = "util_album_menu", flags = [1], slice = [0, 6] },
+    { group = "util_album_menu", flags = [1], slice = [0, 8] },
 ]
 focus_base = [[0x3A06AC3D, 0, 0]]
 focus_group = [

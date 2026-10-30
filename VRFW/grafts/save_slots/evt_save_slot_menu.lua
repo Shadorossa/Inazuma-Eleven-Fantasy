@@ -25,7 +25,7 @@
 -- Load marker: funcLuaCommand is registered only AFTER the chunk ran, so at load time this
 -- normally logs nothing; OnInit logs "slot_menu OnInit" as the first sign that the script loaded.
 if funcLuaCommand ~= nil then
-  pcall(funcLuaCommand, 3661580131, "slot_menu chunk loaded (early)")
+  pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "slot_menu chunk loaded (early)")
 end
 EVT_SLOT_MENU_BUILD = "2026-10-08 v4.3"
 INCLUDE("LUA_PROG_BASE")
@@ -35,24 +35,24 @@ INCLUDE("LUA_MENU_DEF")                       -- MENU_DEF.OpenSubWindow (options
 -- ---- vr-loader commands (API 1). Filled by slot_build.py from LOADER_CMDS. -------------
 -- Loader absent / module off: the engine does not know the hash and the call returns a single false.
 local EVT_LOADER = {
-  VERSION = 2217361807,         -- () -> api, modules (bit1 = save_slots)
-  GET_SLOT = 4245285902,              -- () -> active slot 1..3
-  SLOT_INFO = 1195222835,            -- (n) -> exists, chapter, avgLevel, playSeconds, year, month, day,
+  VERSION = @crc:CMND_EVT_LOADER_VERSION@,         -- () -> api, modules (bit1 = save_slots)
+  GET_SLOT = @crc:CMND_VRFW_SLOT_ACTIVE@,              -- () -> active slot 1..3
+  SLOT_INFO = 1195222835,            -- (n) -> exists, chapter, teamLevel, playSeconds, year, month, day,
                                                    --        hour, minute, victories, maxLevel, storyPhase, gameClear,
                                                    --        leaderCharaId, memberCount
   SLOT_INFO_TEXT = 4119688835,  -- (n) -> playTime "387:15:24", date "24/09/2026 01:26"
   SLOT_INFO_EXT = 1726369109,   -- (n) -> exists, storyMembers, chronicleBattles, chronicleHistory,
                                                    --        playerKinds, matches, chronicleRoute, clearBits, futureCleared
-  TEAM = 1213476987,             -- (n) -> ok, teamName, emblem "em050243", teamSet (v4 loader; older: false)
+  TEAM = @crc:CMND_VRFW_SLOT_TEAM@,             -- (n) -> ok, teamName, emblem "em050243", teamSet (v4 loader; older: false)
   FLAGS = 2050519205,               -- (n) -> locked, isActive, hasFile
   COPY = 3238931942,                 -- (src, dst) -> ok, code (dst must be empty, 2/3)
   DELETE = 2349165707,             -- (n) -> ok, code (2/3; backed up first)
   NAME_GET = 1190421685,         -- (n) -> name, default (true: the unnamed locked slot, shown with TXT.ORIGINAL)
   NAME_SET = 1574661913,         -- (n, name) -> ok
-  LOG = 3661580131,                        -- (...) -> evt_loader\loader.log
-  LAYOUT = 2351791086,          -- CMND_VRFW_SLOT_LAYOUT () -> playerCount, lockedSlot, active, slot1, slot2, ...
-  STORY_GET = 1176769167,       -- CMND_VRFW_STORY_START_GET (n) -> state (a number while the save part has it)
-  STORY_SET = 1561008419,       -- CMND_VRFW_STORY_START_SET (n, 0|1) -> ok
+  LOG = @crc:CMND_EVT_LOG@,                        -- (...) -> evt_loader\loader.log
+  LAYOUT = @crc:CMND_VRFW_SLOT_LAYOUT@,          -- CMND_VRFW_SLOT_LAYOUT () -> playerCount, lockedSlot, active, slot1, slot2, ...
+  STORY_GET = @crc:CMND_VRFW_STORY_START_GET@,       -- CMND_VRFW_STORY_START_GET (n) -> state (a number while the save part has it)
+  STORY_SET = @crc:CMND_VRFW_STORY_START_SET@,       -- CMND_VRFW_STORY_START_SET (n, 0|1) -> ok
 }
 
 -- ---- texts --------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ local TXT = {
   HINT_EMPTY = "Accept: new game · X: duplicate here",
   HINT_LOCKED = "Read only · X: duplicate to play",
   NO_TEAM = "No team",
-  LEVEL_LINE = "Max Lv. %d · avg. %d",
+  LEVEL_LINE = "Lv. %d",
   T_STORY = "Story",
   T_CHRON = "Chronicle",
   MATCHES = "%d matches",
@@ -192,7 +192,7 @@ local RES_CARD = 3        -- 0-based card index of the reserved card
 -- evt_save01_04_card: the portrait body). Window i shows SlotAt(i) (the page's slots); window 3 = the reserved card.
 local WINDOWS = 4
 local RES_WIN = 3
-local SLOT_RESERVED = 1380583127 --[[crc32("CMND_VRFW_SLOT_RESERVED")]]   -- (n) -> reserved, owner, enterable
+local SLOT_RESERVED = @crc:CMND_VRFW_SLOT_RESERVED@ --[[crc32("CMND_VRFW_SLOT_RESERVED")]]   -- (n) -> reserved, owner, enterable
 local MAX_SLOT = 99       -- save engine MAX_SLOT
 local RES_LAST = 12       -- reserved slots looked at for the card: 2 .. RES_LAST (OnInit: past the last player slot)
 local res = nil           -- the card's slot while it is on (OnInit): {slot, owner, p = the owner's provider or {}}
@@ -219,7 +219,7 @@ local RETAIL_ICONS = {
   row_tex = 1253411383, row_on = 3989988929, row_off = 3208381064,   -- save_icon_list_s01_on / _off
 }
 local ROW_OK = 3292070381      -- _list_base_s01_ok: the row of the slot being played ("current")
-local ROW_ALPHA = 4231609516   -- CMND_SET_LAYER_MODEL_ALPHA (layer, idx, 0, alpha): locked / empty cards dimmed
+local ROW_ALPHA = @crc:CMND_SET_LAYER_MODEL_ALPHA@   -- (layer, idx, 0, alpha): locked / empty cards dimmed
 local MENU = 3561559540
 local KEY_RESULT = 2449975398
 
@@ -235,35 +235,34 @@ local L_BTN_GUIDE = 1138543975  -- mainmenu01_06_base_button_guide
 local WIN_LABELS = {2244889632, 482811290, 1807756556, 4121213103}   -- attach labels evt_slot_win01..04 (objbin)
 
 local C = {
-  TEXT = 1083631230,          -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
-  TEXT_GET = 4074371074,      -- CMND_TEXT_GET (text id) -> string
+  TEXT = @crc:CMND_SET_MENU_TEXT_STRING@,          -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
+  TEXT_GET = @crc:CMND_TEXT_GET@,      -- CMND_TEXT_GET (text id) -> string
   TEXT_NUM = 1583337767,      -- (string, "NUM", n) -> string (retail "Chapter <NUM>")
-  MESH_VISIBLE = 3405944500,  -- (layer, mesh, bool, idx)
-  LAYER_VISIBLE = 711242136,  -- (layer, idx, bool)
+  MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@,  -- (layer, mesh, bool, idx)
+  LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,  -- (layer, idx, bool)
   SPRITE = 558735651,         -- (layer, textureCrc, spriteCrc, nodeCrc, 0, idx)
-  LOAD_TEX = 839427544,       -- CMND_LOAD_MENU_RES_TEXTURE (path)
+  LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@,       -- CMND_LOAD_MENU_RES_TEXTURE (path)
   TEX_LOADING = 1506186496,   -- (textureCrc) -> true while still loading (kizuna_town_menu_inc)
-  PRIM_INDEX = 1927054058,    -- CMND_SEARCH_PRIM_INDEX (layer, idx, primName) -> prim
+  PRIM_INDEX = @crc:CMND_SEARCH_PRIM_INDEX@,    -- CMND_SEARCH_PRIM_INDEX (layer, idx, primName) -> prim
   PRIM_VALUE = 3609943765,    -- (layer, idx, prim, value)
   PRIM_VISIBLE = 1233047821,  -- (layer, idx, primName, bool)
-  ATTACH_TRACE = 1774843228,  -- CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, label, bool)
-  OPEN_LAYER = 629267548,
-  ANIME = 3781155141,         -- CMND_PLAY_ANIME_TYPE (layer, idx, type, event 0 in / 2 out, set)
-  FOCUS_ENABLE = 3518307824,  -- CMND_SET_ENABLE_CTRL_FOCUS (layer, bool)
-  FOCUS_ACTIVE = 102308320,   -- CMND_IS_CTRL_FOCUS_ACTIVE (layer)
+  ATTACH_TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@,  -- CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, label, bool)
+  OPEN_LAYER = @crc:CMND_OPEN_LAYER@,
+  ANIME = @crc:CMND_PLAY_ANIME_TYPE@,         -- CMND_PLAY_ANIME_TYPE (layer, idx, type, event 0 in / 2 out, set)
+  FOCUS_ENABLE = @crc:CMND_SET_ENABLE_CTRL_FOCUS@,  -- CMND_SET_ENABLE_CTRL_FOCUS (layer, bool)
+  FOCUS_ACTIVE = @crc:CMND_IS_CTRL_FOCUS_ACTIVE@,   -- CMND_IS_CTRL_FOCUS_ACTIVE (layer)
   FOCUS_IDX = 2603265800,     -- (layer) -> focused instance
   FOCUS_SET = 3466097042,     -- (layer, idx) set the focused instance (retail OnChangeLayerGroup)
   FOCUS_MARK = 1778826357,    -- (layer, idx, bool) (retail OnChangeFocus)
   LIST_NUM = 3252599449,      -- (layer, count) (retail OnOpenLayer of the list)
-  CURSOR_LOC = 381797568,     -- CMND_SET_CURSOR_LOCATOR (layer, crc32("cursor"), idx, instanceCount)
+  CURSOR_LOC = @crc:CMND_SET_CURSOR_LOCATOR@,     -- CMND_SET_CURSOR_LOCATOR (layer, crc32("cursor"), idx, instanceCount)
   GUIDE_SET = 2209673388,     -- button guide (menu, layer, texts, icons, a, b, c)
   GUIDE_CMD = 452337289,      -- button guide commands (menu, layer, cmds)
-  SE = 1917805374,
+  SE = @crc:CMND_SND_PLAY_SE@,
   MENU_ACTIVE = 1558704558,   -- (menu, bool)
-  CLOSE_MENU = 320421347,     -- CMND_CLOSE_MENU_OBJECT
+  CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@,     -- CMND_CLOSE_MENU_OBJECT
   FADE = 609722083,           -- (1 out / 0 in, seconds)
   FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568, P_HAS = 2947612279,   -- parameter store
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669,
   MSG_BUSY = 898725220,
   MSG_DEFAULT_NO = 3125954271,   -- (true, false) after MSG_KIND(2, 15): retail "Reiniciar datos" confirm [inferred: cursor on No]
@@ -273,8 +272,8 @@ local C = {
   -- generic sub_window list (research/test-mods/skill_slots/evt_skill_slots.lua EVT_Pick, worked in game)
   SUBWIN_TEXT = 2315959435,      -- 0x8A0ABC8B (row 0.., string)
   SUBWIN_POS = 63483614,         -- 0x03C8AEDE (x, y)
-  IS_OPEN_MENU = 3693934564,     -- CMND_IS_OPEN_MENU_OBJECT (menu, layer)
-  EXIST_MENU = 2231168902,       -- CMND_IS_EXIST_MENU_OBJECT (menu)
+  IS_OPEN_MENU = @crc:CMND_IS_OPEN_MENU_OBJECT@,     -- CMND_IS_OPEN_MENU_OBJECT (menu, layer)
+  EXIST_MENU = @crc:CMND_IS_EXIST_MENU_OBJECT@,       -- CMND_IS_EXIST_MENU_OBJECT (menu)
 }
 -- TXT from the text rows (OnInit, first thing: every later text use reads TXT). A row the game does not answer keeps
 -- the fallback literal.
@@ -321,7 +320,7 @@ local G_DUP = 3316700371   -- menu_text row evt_slot_dup_text (text/rows/save_sl
 -- the guide shows the retail "Change page" with the R1 glyph
 local K_PAGE_PREV, K_PAGE_NEXT = 3559725168, 2955903379
 local G_PAGE, I_R1, K_R1 = 884337385 --[[Change page]], 1596629152 --[[<CMD_FUNCR1>]], 942075773 --[[CMD_FUNCR1]]
-local MENU_CTRL, CHECK_INPUT = 1332654303, 4265778440   -- CMND_CHECK_INPUT_CMD(MENU_CTRL, cmd)
+local MENU_CTRL, CHECK_INPUT = 1332654303, @crc:CMND_CHECK_INPUT_CMD@   -- (MENU_CTRL, cmd)
 local SE_OK, SE_DECIDE, SE_BACK = 3848881948, 4235359837, 202039849
 
 -- card nodes (evt_save01_04_card.g4pkm = save01_04 with the v4.1 geometry; the hashes are the retail node names).
@@ -766,7 +765,7 @@ local function FillWindow(idx)
   Mesh(idx, N.CH_IMG, true)
   local team = s.teamName ~= "" and s.teamName or TXT.NO_TEAM
   Text(idx, N.CAT[6], team)
-  Text(idx, N.SUB[1], string.format(TXT.LEVEL_LINE, Int(s.maxLevel), Int(s.avgLevel)))
+  Text(idx, N.SUB[1], string.format(TXT.LEVEL_LINE, Int(s.avgLevel)))
   local function Num(textId, v)
     return funcLuaCommand(C.TEXT_NUM, funcLuaCommand(C.TEXT_GET, textId), "NUM", v)
   end
@@ -960,7 +959,7 @@ end
 local P_YES = 1449645767
 local function AskDanger(text)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
-  funcLuaCommand(C.P_CLEAR, P_YES)
+  VRFW_Param.Clear(P_YES)
   funcLuaCommand(C.MSG_OPEN, text, 0, 0, 0, 0, 0, false)
   funcLuaCommand(C.MSG_KIND, 2, 15)
   funcLuaCommand(C.MSG_DEFAULT_NO, true, false)
@@ -969,14 +968,14 @@ local function AskDanger(text)
   end
   local yes = false
   while not funcLuaCommand(C.MSG_DONE) and not yes do
-    yes = funcLuaCommand(C.P_HAS, P_YES) == true
+    yes = VRFW_Param.Has(P_YES)
     coroutine.yield()
   end
   if not yes then
-    yes = funcLuaCommand(C.P_HAS, P_YES) == true
+    yes = VRFW_Param.Has(P_YES)
   end
   local r = funcLuaCommand(C.MSG_RESULT)
-  funcLuaCommand(C.P_CLEAR, P_YES)
+  VRFW_Param.Clear(P_YES)
   while not funcLuaCommand(C.MSG_DONE) do
     coroutine.yield()
   end
@@ -1599,7 +1598,7 @@ function OnInit()
   if res ~= nil then
     info[res.slot] = ReadInfo(res.slot)
   end
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
 end
 
 -- ---- card layout: N cards spread evenly over the screen width ------------------------------------------------------
@@ -1613,8 +1612,8 @@ end
 -- zone follows). Never node writes: the old runtime locator moves failed per card ("no effect of the move") and dropped one group back to the retail x while the other kept
 -- its move (headers and bodies apart). One log line per pass: bodies x, headers x (left edges), applied / fallback.
 local SCREEN_W, CARD_W = 1920, 424
-local GPOS = 499270986         -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, node) -> x, y, z
-local LAYER_GET, LAYER_SET = 2834507455, 1389957207   -- layer local position (layer, idx) / (layer, x, y, z, idx)
+local GPOS = @crc:CMND_GET_MESH_GLOBAL_POSITION@         -- (layer, idx, node) -> x, y, z
+local LAYER_GET, LAYER_SET = @crc:CMND_GET_LAYER_LOCAL_POS@, @crc:CMND_SET_LAYER_LOCAL_POS@   -- layer local position (layer, idx) / (layer, x, y, z, idx)
 local N_ROW_EDGE, N_WIN_EDGE = 3025401186, 1215790087 -- _list_base_s01_on / _save_info_base01 (left-edge nodes)
 local layout_done, layout_co, rows_open = false, nil, false
 

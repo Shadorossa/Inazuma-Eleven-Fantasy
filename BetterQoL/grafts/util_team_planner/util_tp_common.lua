@@ -1,6 +1,7 @@
   -- ---- shared by both hook files (gen_hooks.py puts it in place of @COMMON@) -------------------------------------
-  UTIL_TP = UTIL_TP or {}
-  local TP = UTIL_TP
+  BetterQoL = BetterQoL or {}
+  BetterQoL.TeamPlanner = BetterQoL.TeamPlanner or {}
+  local TP = BetterQoL.TeamPlanner
   TP.C = {
     INFO = @crc:CMND_BETTERQOL_TP_INFO@,
     LIST = @crc:CMND_BETTERQOL_TP_LIST@,
@@ -33,7 +34,6 @@
     PLACE_CHECK = 1730898405,    -- (hdl, set, pos, from set, type) -> ok, code: the check of SwapChara (writes nothing)
     PLACE = 193693077,           -- (set, pos, from set, hdl, type): the bank -> slot placement
     PLACE_PREP = 2379170951,     -- funcLuaMenuCommand(hdl): what SwapChara / the bank call before placing
-    PARAM_HAS = 2947612279, PARAM_GET = 3522198769, PARAM_DEL = 3363400568, PARAM_SET = 3860611758,
     VS_TEAM = 3713813716,        -- CMND_GET_VS_USE_TEAM_SET
   }
   TP.CARD = 1973487846           -- team00_01_chara_card_for_soccer

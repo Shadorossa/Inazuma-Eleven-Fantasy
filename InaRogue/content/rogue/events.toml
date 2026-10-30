@@ -1,0 +1,89 @@
+schema = "InaRogue.events/1"
+# InaRogue › the Evento nodes of the v2 runs (docs/game/mods/inarogue-loop-v2.md §4.2): one event per node, drawn by
+# weight among those open in the phase (seeded by the run). Read by scripts/lib/rogue/offers.lua. Texts (9 languages,
+# text/rows/rogue_events.toml): InaRogue.run_event_<key>_title / _text / _c<n> (the choice n question).
+#
+# [[event]]   key (a-z 0-9 _), weight, from_stage (default 1)
+#   [[event.choice]]  in order; declining every choice leaves the event with nothing
+#     cost   { coins = n }: paid when the choice is taken (refused without the coins)
+#     chance 1-100 (default 100): the gives happen this often, else the `fail` list
+#     give / fail   lists of { kind, … }:
+#       coins   value (negative = lost; a gain × the run's coin modifier)
+#       recruit tier = [lo, hi]: a player of the pool joins (collection + bench)
+#       item    a relic of `source` (items.toml sources, default "chest") at the event rarity weights
+#       frags   value: fragments to every player of the run's team
+#       points  value: Rogue points
+#       talent  a talent of content/rogue/talent_pool.toml for a player of the team who has none
+
+[[event]]
+key = "old_coach"
+weight = 10
+  [[event.choice]]
+  cost = { coins = 15 }
+  give = [{ kind = "recruit", tier = [2, 3] }]
+  [[event.choice]]
+  give = [{ kind = "frags", value = 2 }]
+
+[[event]]
+key = "training_camp"
+weight = 10
+  [[event.choice]]
+  give = [{ kind = "frags", value = 3 }]
+  [[event.choice]]
+  give = [{ kind = "coins", value = 12 }]
+
+[[event]]
+key = "street_match"
+weight = 10
+  [[event.choice]]
+  chance = 60
+  give = [{ kind = "coins", value = 25 }]
+  fail = [{ kind = "coins", value = -10 }]
+
+[[event]]
+key = "scout"
+weight = 8
+  [[event.choice]]
+  cost = { coins = 20 }
+  give = [{ kind = "item" }]
+
+[[event]]
+key = "fan_gift"
+weight = 10
+  [[event.choice]]
+  give = [{ kind = "coins", value = 15 }]
+  [[event.choice]]
+  give = [{ kind = "points", value = 8 }]
+
+[[event]]
+key = "mysterious_player"
+weight = 8
+  [[event.choice]]
+  give = [{ kind = "recruit", tier = [1, 2] }]
+  [[event.choice]]
+  cost = { coins = 30 }
+  give = [{ kind = "recruit", tier = [3, 4] }]
+
+[[event]]
+key = "lucky_charm"
+weight = 6
+  [[event.choice]]
+  chance = 50
+  give = [{ kind = "item" }]
+
+[[event]]
+key = "sponsor"
+weight = 8
+from_stage = 2
+  [[event.choice]]
+  give = [{ kind = "coins", value = 30 }]
+  [[event.choice]]
+  cost = { coins = 10 }
+  give = [{ kind = "frags", value = 4 }]
+
+[[event]]
+key = "mentor"
+weight = 9
+  [[event.choice]]
+  cost = { coins = 15 }
+  give = [{ kind = "talent" }]

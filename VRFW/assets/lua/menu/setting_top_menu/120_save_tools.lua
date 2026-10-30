@@ -2,8 +2,11 @@
 -- below «Licencias» while some enabled mod declares a save adjust action (content\save_adjust\*.toml, [[VRFW.SaveAdjust]];
 -- CMND_VRFW_SAVE_TOOLS_*). Aceptar on it:
 --
---   1. one confirmation (the game's yes / no window): the label of every available action, then «this changes your
---      current save: saved and backed up first, then the title loads it»;
+--   1. one confirmation (the game's yes / no window): the label of every available action, one per line in a
+--      left-aligned column (more than S.LIST_LINES actions: two per line), then one line «backed up first, then the
+--      title loads it. Apply?» above the buttons. The message keeps to the retail window's 7 lines (larger messages have
+--      no window size there and run under the buttons); while it is up the parameter vrfw_save_tools_window tells the
+--      general window to draw it left-aligned (general_window\120_save_tools_window.lua);
 --   2. Sí: CMND_VRFW_SAVE_TOOLS_REQUEST("") = every available action (refused on the locked retail save, a reserved slot,
 --      an empty slot, an overlay session: a message, nothing changed), the game's auto-save (wait for its job), then
 --      CMND_VRFW_SLOT_RELOAD(the active slot): the save engine's load hooks run the actions in order on the slot's FILE
@@ -26,27 +29,31 @@ S.ROW_TYPE = 40                       -- t2[40]: an index no other entry uses (r
 S.LICENSES_TYPE = 3                   -- t2[3] «Licencias»
 S.SMALL_LIST = 530619243              -- mainmenu90_12_list_item_small
 S.LINE_PREFIX = "· "                  -- before each action label in the confirmation
+S.COLUMN_GAP = "      "               -- between the two labels of a line (more actions than list lines)
+S.WINDOW_LINES = 7                    -- the retail general window's largest size by line count (getInfoWinLayer)
+S.LIST_LINES = S.WINDOW_LINES - 2     -- the confirmation's header and footer lines take the rest
+S.WINDOW_PARAM = 401310444            -- crc32 vrfw_save_tools_window: the general window draws the question left-aligned
 S.SAVE_WAIT_FRAMES = 600              -- the auto-save's job: 10 s at most
 S.C = {
-  COUNT = 4046583974,                 -- CMND_VRFW_SAVE_TOOLS_COUNT () -> n
-  GET = 542677548,                    -- CMND_VRFW_SAVE_TOOLS_GET (i) -> key, labelId, descriptionId, available, mod, resultId
-  REQUEST = 4164686576,               -- CMND_VRFW_SAVE_TOOLS_REQUEST (key, "" = every available action) -> ok, why
-  RESULT = 3027832782,                -- CMND_VRFW_SAVE_TOOLS_RESULT () -> state, count, written, resultId, text, loadRulesWrote, items
-  RESULT_ITEM = 2707736126,           -- CMND_VRFW_SAVE_TOOLS_RESULT_ITEM (i) -> key, labelId, count, resultId
-  CANCEL = 4043639727,                -- CMND_VRFW_SAVE_TOOLS_CANCEL ()
-  SLOT_ACTIVE = 4245285902,           -- CMND_VRFW_SLOT_ACTIVE () -> slot
-  SLOT_RELOAD = 347070041,            -- CMND_VRFW_SLOT_RELOAD (slot) -> ok
-  SLOT_ABORT = 2340980027,            -- CMND_VRFW_SLOT_ABORT ()
-  LOG = 3661580131,                   -- CMND_EVT_LOG
-  TEXT_GET = 4074371074,              -- CMND_TEXT_GET (menu_text id) -> string
-  AUTO_SAVE = 3673719958,             -- CMND_SYSTEM_AUTO_SAVE
+  COUNT = VRFW_Cmd.VRFW_SAVE_TOOLS_COUNT,                 -- CMND_VRFW_SAVE_TOOLS_COUNT () -> n
+  GET = VRFW_Cmd.VRFW_SAVE_TOOLS_GET,                    -- CMND_VRFW_SAVE_TOOLS_GET (i) -> key, labelId, descriptionId, available, mod, resultId
+  REQUEST = VRFW_Cmd.VRFW_SAVE_TOOLS_REQUEST,               -- CMND_VRFW_SAVE_TOOLS_REQUEST (key, "" = every available action) -> ok, why
+  RESULT = VRFW_Cmd.VRFW_SAVE_TOOLS_RESULT,                -- CMND_VRFW_SAVE_TOOLS_RESULT () -> state, count, written, resultId, text, loadRulesWrote, items
+  RESULT_ITEM = VRFW_Cmd.VRFW_SAVE_TOOLS_RESULT_ITEM,           -- CMND_VRFW_SAVE_TOOLS_RESULT_ITEM (i) -> key, labelId, count, resultId
+  CANCEL = VRFW_Cmd.VRFW_SAVE_TOOLS_CANCEL,                -- CMND_VRFW_SAVE_TOOLS_CANCEL ()
+  SLOT_ACTIVE = VRFW_Cmd.VRFW_SLOT_ACTIVE,           -- CMND_VRFW_SLOT_ACTIVE () -> slot
+  SLOT_RELOAD = VRFW_Cmd.VRFW_SLOT_RELOAD,            -- CMND_VRFW_SLOT_RELOAD (slot) -> ok
+  SLOT_ABORT = VRFW_Cmd.VRFW_SLOT_ABORT,            -- CMND_VRFW_SLOT_ABORT ()
+  LOG = VRFW_Cmd.EVT_LOG,                   -- CMND_EVT_LOG
+  TEXT_GET = VRFW_Cmd.TEXT_GET,              -- CMND_TEXT_GET (menu_text id) -> string
+  AUTO_SAVE = VRFW_Cmd.SYSTEM_AUTO_SAVE,             -- CMND_SYSTEM_AUTO_SAVE
   SAVE_WORKING = 1979970074,          -- a save / load job is running
   MSG_OPEN = 2289627655,              -- general window (text, kind, 0, 0, 0, 0, false)
   MSG_BUTTONS = 2351835063,           -- (2, 0) = yes / no
   MSG_ANSWER = 1523741473,            -- -1 while open, then the button (0 = Sí)
   MSG_DONE = 682363669,               -- true = no general window up
   MSG_BUSY = 898725220,               -- a general window is busy
-  SE = 1917805374,
+  SE = VRFW_Cmd.SND_PLAY_SE,
 }
 S.SE_DECIDE = 3848881948              -- sy0000
 S.SE_ERROR = 2086672038               -- sy0003
@@ -69,7 +76,7 @@ S.T = {
 }
 S.FALLBACK = {
   [S.T.CONFIRM_ALL] = "This will be applied to your current save:",
-  [S.T.CONFIRM] = "%s\n\nA backup is made first, then you return to the title screen.\nApply?",
+  [S.T.CONFIRM] = "%s\nA backup is made first, then you return to the title. Apply?",
   [S.T.DONE] = "Done: %d change(s).",
   [S.T.TO_TITLE] = "The game goes back to the title screen to load the adjusted save.",
   [S.T.NOTHING] = "There was nothing to change: the save stays as it was.",
@@ -181,14 +188,46 @@ function S.SummaryLines(items)
   return lines
 end
 
--- every available action, after one confirmation
-function S.Run(actions)
+-- the confirmation: the header, the action labels (one per line; two per line past S.LIST_LINES), an empty line when
+-- the window has room, then the footer (vrfw_save_tools_confirm: %s = what comes before it)
+function S.Question(actions)
   local labels = {}
   for _, a in ipairs(actions) do
     labels[#labels + 1] = S.LINE_PREFIX .. S.Text(a.label)
   end
-  local question = S.Text(S.T.CONFIRM_ALL) .. "\n" .. table.concat(labels, "\n")
-  if not S.Ask(string.format(S.Text(S.T.CONFIRM), question)) then
+  local lines = {S.Text(S.T.CONFIRM_ALL)}
+  if #labels <= S.LIST_LINES then
+    for _, label in ipairs(labels) do
+      lines[#lines + 1] = label
+    end
+  else
+    for i = 1, #labels, 2 do
+      lines[#lines + 1] = labels[i + 1] and (labels[i] .. S.COLUMN_GAP .. labels[i + 1]) or labels[i]
+    end
+  end
+  if #lines + 1 < S.WINDOW_LINES then
+    lines[#lines + 1] = ""
+  end
+  local ok, text = pcall(string.format, S.Text(S.T.CONFIRM), table.concat(lines, "\n"))
+  return ok and text or table.concat(lines, "\n")
+end
+
+-- the general window's left-aligned look off (only while the question is up)
+function S.WindowLookOff()
+  if VRFW_Param.Has(S.WINDOW_PARAM) then
+    VRFW_Param.Clear(S.WINDOW_PARAM)
+  end
+end
+
+-- every available action, after one confirmation
+function S.Run(actions)
+  VRFW_Param.Set(S.WINDOW_PARAM, 1)
+  local asked, yes = pcall(S.Ask, S.Question(actions))
+  S.WindowLookOff()
+  if not asked then
+    error(yes, 0)
+  end
+  if not yes then
     return
   end
   local ok, why = S.Call(S.C.REQUEST, "")

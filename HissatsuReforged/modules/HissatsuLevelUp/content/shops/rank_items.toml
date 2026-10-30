@@ -2,22 +2,17 @@ schema = "VRFW.shop/2"
 # Hissatsu Level Up › the move-rank items (docs/game/mechanics/move-rank-items.md §2):
 # * with Inazuma Fantasy (inazuma_fantasy_2): its «Tienda general» (inazuma_fantasy_2.general_store), whose only currency
 #   is Puntos de pasión (tk_bb000001, the retail Medalla rara BB that Inazuma Fantasy renames). Prices by the store's
-#   rule (_general_store.toml [price]: 10 Puntos de amistad = 1 Punto de pasión, rounded up): 2 and 20.
+#   rule (_general_store.toml [price]: 10 Puntos de amistad = 1 Punto de pasión, rounded up): 20.
 # * without it: the retail Tienda Vs (0x9BE09172), whose token group holds the Puntos de amistad (tk_hr000008, the
 #   retail «Estrella de la victoria», named Puntos de amistad by Inazuma Fantasy).
-# * Libro de mejora de supertécnica (technique_upgrade_book): 15 Puntos de amistad, the price the retail «Nueva
-#   posibilidad» row (abl_000001) had when this mod renamed it; that row stays retail.
+# * the +1 level item is the retail abl_000001 («Mejora de supertécnica» while this module is on, owner 2026-10-28): its
+#   retail sources only; the old own book (technique_upgrade_book) is sold nowhere.
 # * Cuaderno de evolución definitiva (ultimate_evolution_manual): the only way to a move's last level, so the rare one:
 #   200 Puntos de amistad (the large EXP orb costs 81).
 
 [[edit]]
 target = "inazuma_fantasy_2.general_store"   # Tienda general (Inazuma Fantasy)
 if_mod = "inazuma_fantasy_2"
-
-  [[edit.entry]]
-  item = "technique_upgrade_book"
-  price = 2
-  currency = "tk_bb000001"
 
   [[edit.entry]]
   item = "ultimate_evolution_manual"
@@ -28,11 +23,6 @@ if_mod = "inazuma_fantasy_2"
 [[edit]]
 target = "0x9BE09172"           # Tienda Vs (retail)
 if_not_mod = "inazuma_fantasy_2"
-
-  [[edit.entry]]
-  item = "technique_upgrade_book"
-  price = 15
-  currency = "tk_hr000008"
 
   [[edit.entry]]
   item = "ultimate_evolution_manual"

@@ -5,7 +5,7 @@ do
   local CHD_BBT = {
     HEADER = 575058101,            -- mainmenu90_01_header
     TITLE = 1220590795,            -- _text_sub_title02
-    CMD_TEXT = 1083631230,         -- CMND_SET_MENU_TEXT_STRING (layer, text, string, idx)
+    CMD_TEXT = @crc:CMND_SET_MENU_TEXT_STRING@,         -- CMND_SET_MENU_TEXT_STRING (layer, text, string, idx)
   }
 
   if EVT_CHD_BBT_WRAPPED == nil then

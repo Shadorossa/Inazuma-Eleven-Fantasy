@@ -42,8 +42,8 @@ pre_when = { value = "args[3]", in_table = "Synergy.Answers" }
 name = "CMND_VRFW_SYNERGY_PANEL"    # (item id, language code) -> nil, or { active, extra, team, rows = { { kind, name, hint, team_name, crests, faces } } }
 handler = "Synergy.CmdPanel"
 
-# Used by the shop's synergy panel (lua\synergy\shop_menu_buy\310_synergy_shop.lua): config.toml [synergy]
-# shop_conditions (default on); false = the game's shop panel.
+# Used by the shop's synergy panel (lua\synergy\shop_menu_buy\310_synergy_shop.lua): config.toml [shop]
+# synergy_conditions (default on); false = the game's shop panel.
 [[VRFW.Command]]
 name = "CMND_VRFW_SYNERGY_SHOP_CONDITIONS"   # () -> bool
 handler = "Synergy.ShopConditions"

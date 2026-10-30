@@ -16,9 +16,9 @@
 --
 -- Nothing runs at chunk load but the handler registration (every engine call is inside it).
 
-VRFW_TITLE_OPENING_CMD = 4231948064   -- crc32("CMND_VRFW_OPTION_HOOK")
-VRFW_TITLE_OPENING_INFO = 10117594    -- crc32("CMND_GET_MOVIE_INFO") (retail; false = no such movie)
-VRFW_TITLE_OPENING_LANG = 477234096   -- crc32("CMND_GET_LANGUAGE_CODE") (retail)
+VRFW_TITLE_OPENING_CMD = VRFW_Cmd.VRFW_OPTION_HOOK   -- crc32("CMND_VRFW_OPTION_HOOK")
+VRFW_TITLE_OPENING_INFO = VRFW_Cmd.GET_MOVIE_INFO    -- crc32("CMND_GET_MOVIE_INFO") (retail; false = no such movie)
+VRFW_TITLE_OPENING_LANG = VRFW_Cmd.GET_LANGUAGE_CODE   -- crc32("CMND_GET_LANGUAGE_CODE") (retail)
 
 -- The movie id chosen by the option row, or nil (no row / «as the game» / unknown movie).
 function VRFW_TitleOpeningChoice()

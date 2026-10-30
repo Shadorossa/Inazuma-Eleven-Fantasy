@@ -1,0 +1,26 @@
+# «Ataque Omega» (Omega Assault, whs02280; void shot, cut-in ev60_02280): while the ball flies to the goal it keeps
+# the look of the cut-in's last shot (c0030, held at frame 480 from the first frame): the ball inside the cyan comet
+# fired out of the prism, and the prism's rainbow laid straight behind it, its seven coloured beams (violet to red,
+# each with its white core) side by side at one constant width (8 m across, 20 m long), coming out of the kick point
+# as the ball flies (never stretched, a smooth soft rear end on the kick point) and fading out at its far end; instead
+# of the plain void special-shot aura (ega0075e).
+# Object ev6228om00, built by research/scripts/omega_assault_ball_fx.py from the cut-in's effect object ev60022800
+# (docs/game/media/omega-assault-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the void special-shot aura's row (like = "ega0075e"). Flight:
+# content\techniques\omega_assault_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "omega_assault"
+from = "ega0075e"
+object = "effect/event/ev60/ev6228om00/ev6228om00.objbin"
+
+[[shot_aura]]
+name = "omega_assault"
+when = { techniques = ["whs02280"] }
+aura = "omega_assault"
+like = "ega0075e"
+anchor = "kick"
+drift = 0.75

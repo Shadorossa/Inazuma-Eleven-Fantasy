@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_draft, free-match grid (enjoy_team_select_menu_offline; docs/game/modes/estadio-bb.md §14).
+-- BattleBayDeluxe bb_draft, free-match grid (enjoy_team_select_menu_offline; docs/game/modes/estadio-bb.md §14).
 -- 1.5.42 (owner: «el Draft no funciona en el 1 vs 1»): the Draft is played here as in the Campaña. This block only
 -- names the host; the screen is the same block as the Campaña's (bbd_campaign.lua, appended after this one), which
 -- reads BBCR_DRAFT_HOST for the free match's differences (the side being chosen, the hidden panels put back, the

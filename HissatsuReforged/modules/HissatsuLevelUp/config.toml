@@ -19,11 +19,12 @@ popup = true
 # one log line per counted use (loader.log)
 log_uses = true
 # The move-rank items (item keys = the item's key string, crc32 = its id; "" = none). raise_item: +1 level, up to the
-# second-to-last: the «Libro de mejora de supertécnica» (HissatsuLevelUp.technique_upgrade_book, key abl_ub000001; its own
-# item since 2026-10-14, the retail abl_000001 «Nueva posibilidad» is no longer a book); last_grade_item: second-to-last
+# second-to-last: the retail abl_000001 «Nuevas posibilidades», renamed «Mejora de supertécnica» while this module is on
+# (owner 2026-10-28; content/items/rank_items.toml [[edit]]; the old own book abl_ub000001 is no longer given and a save's
+# stock of it becomes abl_000001, CMND_HISSATSULEVELUP_RETAIL_STOCK); last_grade_item: second-to-last
 # -> last level (G5 -> GO, 超 -> 神, Z -> ∞), the «Cuaderno de evolución definitiva» (Galaxy's 究極進化の書). Both in
 # content\items\rank_items.toml.
-raise_item = "abl_ub000001"
+raise_item = "abl_000001"
 last_grade_item = "abl_ue000001"
 # true: use stops at the second-to-last level, only last_grade_item reaches the last one (moves already at the last
 # level keep it); false: use reaches the last level too

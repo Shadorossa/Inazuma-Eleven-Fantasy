@@ -11,9 +11,9 @@
 
 HomeStadium = HomeStadium or {}
 
-local function info(...) VRFW.log("home_stadium:", ...) end
-local function warn(...) VRFW.warn("home_stadium:", ...) end
-local function crc32(s) return bit32.band(VRFW.crc32(s), 0xFFFFFFFF) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("home_stadium")
+local crc32 = VRFW.crc32
 
 local TABLE = "soccer/soccer_option_field_info"
 local ITEM_FLAG = crc32("GetGlobalItemGetBitFlag")

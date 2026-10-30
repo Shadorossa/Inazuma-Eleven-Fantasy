@@ -1,0 +1,7 @@
+# Hissatsu Reforged › the «Crítico» archetype replaces the game's «Brecha» (docs/game/mods/hissatsu-critical.md): the
+# breach roll at the keeper (force-win shot: the remaining tension shaves the keeper's KP) never happens. Its base chance
+# is 0, so every breach-rate passive / tactic term multiplies 0. The critical catch («Parada») stays the game's.
+schema = "VRFW.param/1"
+
+[game_param.SoccerBattleGlobalParam]
+forceWinShootPercentage = 0

@@ -1,0 +1,110 @@
+# Career mode commands (schema VRFW.game/1, docs/framework/native.md), handled by scripts\career.lua and called by the
+# hub screen evt_career_menu (assets\lua\screens\evt_career_menu.lua).
+schema = "VRFW.game/1"
+
+[[VRFW.Command]]
+# -> table { ok, why, clubs, career = { team, season, phase, out } or nil }
+name = "CMND_CAREERMODE_STATE"
+handler = "CareerMode.State"
+
+[[VRFW.Command]]
+# -> table { ok, why, leagues = { { team ids } } (the clubs of a career by game), groups = { game }, clubs, rating }
+name = "CMND_CAREERMODE_DRAW"
+handler = "CareerMode.Draw"
+
+[[VRFW.Command]]
+# team -> table { ok, why }: a new career with that club (the slot's old career put aside)
+name = "CMND_CAREERMODE_START"
+handler = "CareerMode.Start"
+
+[[VRFW.Command]]
+# -> table { ok }: the slot's career put aside
+name = "CMND_CAREERMODE_ABANDON"
+handler = "CareerMode.Abandon"
+
+[[VRFW.Command]]
+# language code -> table { ok, why, team, season, phase, out, next, calendar, table, tables, squad, form, tabs,
+# bracket, history, … }: the hub of the season's phase
+name = "CMND_CAREERMODE_HUB"
+handler = "CareerMode.Hub"
+
+[[VRFW.Command]]
+# table index (1 = the SuperLiga, 1 + l = league l) -> table { ok, index, tables, table = { kind, rows, cut, … } }
+name = "CMND_CAREERMODE_STANDINGS"
+handler = "CareerMode.Standings"
+
+[[VRFW.Command]]
+# (team, lang) -> { ok, team, players = { { card, number, slot, position, name, signed } }, rows = { slot, card, … } }
+name = "CMND_CAREERMODE_CLUB"
+handler = "CareerMode.Club"
+
+[[VRFW.Command]]
+# -> { ok, teams = { { team, rows = { slot, card, … } } } }: the clubs whose roster rows the career changes
+name = "CMND_CAREERMODE_ROSTERS"
+handler = "CareerMode.Rosters"
+
+[[VRFW.Command]]
+# -> { ok, why, home, away, rival, host, friendly, game, difficulty }: the club's match armed before it starts
+name = "CMND_CAREERMODE_PLAY"
+handler = "CareerMode.Play"
+
+[[VRFW.Command]]
+# -> { ok }: the armed match given up (its start failed)
+name = "CMND_CAREERMODE_DISARM"
+handler = "CareerMode.Disarm"
+
+[[VRFW.Command]]
+# -> { ok, why, result }: the round played with the club's match simulated (or a round the club has no match in)
+name = "CMND_CAREERMODE_SIM"
+handler = "CareerMode.Sim"
+
+[[VRFW.Command]]
+# -> { ok, why, pots = { { team ids } }, leagues = { { team ids } }, team }: the draw of the leagues
+name = "CMND_CAREERMODE_POTS"
+handler = "CareerMode.Pots"
+
+[[VRFW.Command]]
+# -> { ok, why }: the leagues start after the draw, or the next season starts after the season is over
+name = "CMND_CAREERMODE_ADVANCE"
+handler = "CareerMode.Advance"
+
+# the Fútbol Frontier as a knockout tree for the framework's bracket screen VRFW_Bracket (the «Competición» tab)
+[[VRFW.Command]]
+name = "CMND_CAREERMODE_TREE"
+handler = "CareerMode.Tree"
+
+# the World Cup's knockout as a tree for the framework's bracket screen VRFW_Bracket (the «Competición» tab)
+[[VRFW.Command]]
+name = "CMND_CAREERMODE_WC_TREE"
+handler = "CareerMode.WorldCupTree"
+
+[[VRFW.Command]]
+# language code -> { ok, why, side, size, keepers, picked, goalkeepers, players }: the World Cup call-up
+name = "CMND_CAREERMODE_WC_POOL"
+handler = "CareerMode.WorldCupPool"
+
+[[VRFW.Command]]
+# (card, language code) -> the call-up with that player called up or left out
+name = "CMND_CAREERMODE_WC_PICK"
+handler = "CareerMode.WorldCupPick"
+
+[[VRFW.Command]]
+# -> { ok, why }: the call-up confirmed, the World Cup's group stage starts
+name = "CMND_CAREERMODE_WC_CONFIRM"
+handler = "CareerMode.WorldCupConfirm"
+
+[[VRFW.Command]]
+# language code -> { ok, why, kind = "club", side, size, keepers, picked, goalkeepers, players }: the player's club's
+# call-up (the players its matches take when its squad is larger than config [match] squad_size)
+name = "CMND_CAREERMODE_CLUB_CALLUP"
+handler = "CareerMode.ClubCallUp"
+
+[[VRFW.Command]]
+# (card, language code) -> the club's call-up with that player called up or left out
+name = "CMND_CAREERMODE_CLUB_CALLUP_PICK"
+handler = "CareerMode.ClubCallUpPick"
+
+[[VRFW.Command]]
+# -> { ok, why }: the club's call-up kept (full, with its goalkeepers)
+name = "CMND_CAREERMODE_CLUB_CALLUP_CONFIRM"
+handler = "CareerMode.ClubCallUpConfirm"

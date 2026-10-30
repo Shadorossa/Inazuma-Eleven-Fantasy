@@ -40,38 +40,35 @@
 -- No engine call at load time.
 
 local MS = {
-  LOG = 3661580131,          -- CMND_EVT_LOG
-  FOR = 3467773430,          -- CMND_VRFW_MENU_SCENE_FOR (menu) -> key | ""
-  SCENE = 1465766639,        -- CMND_VRFW_MENU_SCENE (key) -> table | ""
-  STATE = 2588710643,        -- CMND_VRFW_MENU_SCENE_STATE () -> state, key, ms in state, ms since the request, failed
-  SET = 3352504786,          -- CMND_VRFW_MENU_SCENE_SET (state, arg) -> 1 | 0, state
+  LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
+  FOR = VRFW_Cmd.VRFW_MENU_SCENE_FOR,          -- CMND_VRFW_MENU_SCENE_FOR (menu) -> key | ""
+  SCENE = VRFW_Cmd.VRFW_MENU_SCENE,        -- CMND_VRFW_MENU_SCENE (key) -> table | ""
+  STATE = VRFW_Cmd.VRFW_MENU_SCENE_STATE,        -- CMND_VRFW_MENU_SCENE_STATE () -> state, key, ms in state, ms since the request, failed
+  SET = VRFW_Cmd.VRFW_MENU_SCENE_SET,          -- CMND_VRFW_MENU_SCENE_SET (state, arg) -> 1 | 0, state
   HAS_SAVE = 8577266,        -- (1) -> a save exists (the title's own test)
-  PARAM_SET = 3860611758,    -- (key, 0, value, 1)
-  PARAM_HAS = 2947612279,    -- (key) -> set
-  PARAM_CLEAR = 3363400568,  -- (key)
   FADE = 609722083,          -- (1 to black | 0 in, seconds)
-  VISIBLE = 711242136,       -- CMND_SET_LAYER_VISIBLE (layer, index, on)
-  LAYER_EXISTS = 262659071,  -- CMND_IS_EXIST_LAYER (layer, index)
-  MENU_EXISTS = 2231168902,  -- (menu) -> the menu object exists
-  IS_MENU_OPEN = 264888438,  -- CMND_IS_EXIST_MENU (menu) -> the menu is open
-  CLOSE = 320421347,         -- CMND_CLOSE_MENU_OBJECT (menu)
+  VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,       -- CMND_SET_LAYER_VISIBLE (layer, index, on)
+  LAYER_EXISTS = VRFW_Cmd.IS_EXIST_LAYER,  -- CMND_IS_EXIST_LAYER (layer, index)
+  MENU_EXISTS = VRFW_Cmd.IS_EXIST_MENU_OBJECT,  -- (menu) -> the menu object exists
+  IS_MENU_OPEN = VRFW_Cmd.IS_EXIST_MENU,  -- CMND_IS_EXIST_MENU (menu) -> the menu is open
+  CLOSE = VRFW_Cmd.CLOSE_MENU_OBJECT,         -- CMND_CLOSE_MENU_OBJECT (menu)
   MINIMAP = 1868910795,      -- (on) the field's minimap shown / hidden (0x6F6550CB)
-  IS_MENU = 264888438,       -- CMND_IS_EXIST_MENU (menu)
+  IS_MENU = VRFW_Cmd.IS_EXIST_MENU,       -- CMND_IS_EXIST_MENU (menu)
   MSG_BUSY = 898725220,      -- a message window is open
   SHEET = 3492314538,        -- title_tutorial_menu (the welcome / «Novedades de mods» sheets)
   GO = 2860602156,           -- param vrfw_menu_scene_go: title_main presses Options
   OPTIONS = 1432246941,      -- param vrfw_menu_scene_options: an opening of setting_top_menu for the scene
   HUD_OFF = 3499142076,      -- param vrfw_menu_scene_hud_off: the field HUD hidden (kept while the scene is up)
   TITLE_READY = 358816896,   -- param vrfw_menu_scene_title_ready: title_main reads requests (the menu fully open)
-  CAMERA_POS = 1820518686,   -- CMND_VRFW_FIELD_CAMERA_POS () -> ok, x, y, z: the field camera's anchor (the walker)
-  SHOT = 2012234360,         -- CMND_VRFW_MENU_SCENE_SHOT (key, tile id) -> the shot now running
-  SHOT_STEP = 84722890,      -- CMND_VRFW_MENU_SCENE_SHOT_STEP (key, -1 | 1) -> the shot now running
+  CAMERA_POS = VRFW_Cmd.VRFW_FIELD_CAMERA_POS,   -- CMND_VRFW_FIELD_CAMERA_POS () -> ok, x, y, z: the field camera's anchor (the walker)
+  SHOT = VRFW_Cmd.VRFW_MENU_SCENE_SHOT,         -- CMND_VRFW_MENU_SCENE_SHOT (key, tile id) -> the shot now running
+  SHOT_STEP = VRFW_Cmd.VRFW_MENU_SCENE_SHOT_STEP,      -- CMND_VRFW_MENU_SCENE_SHOT_STEP (key, -1 | 1) -> the shot now running
   STORY_GO = 4275168888,     -- param vrfw_menu_scene_story_continue (value = ms of the push-in): title_main skips the story submenu
   STORY_INFO = 3984017190,   -- () -> ok, story saves (> 0 = «Continuar» exists), … (the title's own test after the story submenu)
   SHOT_PREV = 2155540576,    -- CMD_FUNCTION arg crc32 vrfw_menu_scene_shot_prev (a mod binds a key to it: content\menus\)
   SHOT_NEXT = 951543817,     -- CMD_FUNCTION arg crc32 vrfw_menu_scene_shot_next
   UPPER = 2250456639,        -- title00_07_item_button_upper: the mode row (its tiles call the shots)
-  FOCUS_ACTIVE = 102308320,  -- (layer) -> the layer holds the control focus
+  FOCUS_ACTIVE = VRFW_Cmd.IS_CTRL_FOCUS_ACTIVE,  -- (layer) -> the layer holds the control focus
   FOCUS_INDEX = 2603265800,  -- (layer) -> its focused instance
   LOWER = 3873872512,        -- title00_07_item_button_lower: the lower row
   CURSOR = 24113234,         -- cmn05_01_coursor: the focus cursor
@@ -80,11 +77,11 @@ local MS = {
   DIR_LOW = 2458417313,
   KEY_HELD = 2620918304,     -- (key) -> the key is repeating (the title ignores held up / down)
   KEY_UP = 1197218715,       -- CMD_UP
-  CTRL_FOCUS = 3518307824,   -- (layer, on): the layer takes the control focus
+  CTRL_FOCUS = VRFW_Cmd.SET_ENABLE_CTRL_FOCUS,   -- (layer, on): the layer takes the control focus
   FOCUS_MARK = 1778826357,   -- (layer, instance, true): the focus moves there (OnChangeFocus follows)
-  TRACE = 1774843228,        -- (layer, instance, locator, on): the cursor follows that instance
+  TRACE = VRFW_Cmd.SET_LAYER_ATTACH_LOCATOR_TRACE,        -- (layer, instance, locator, on): the cursor follows that instance
   CURSOR_LOCATOR = 282284405, -- _pos_atc_cur01
-  SOUND = 1917805374,
+  SOUND = VRFW_Cmd.SND_PLAY_SE,
   SOUND_MOVE = 3284053048,   -- sy0082: the title's focus move sound
   -- the mode's name: layer vrfw_ms_label (object vrfw_mp_label: the corner button's text node, its plates hidden)
   LABEL = 2134430854,        -- vrfw_ms_label
@@ -92,25 +89,25 @@ local MS = {
   LABEL_MESHES = { 298211823, 2853207670 },   -- _cmd_back_base01, _cmd_back_base01_add
   LABEL_LEFT = -384,         -- the text node's left edge in its object (px)
   LABEL_MID_Y = 144,         -- its centre line
-  OPEN_LAYER = 629267548,    -- (layer, instance)
-  LAYER_NUM = 1175615627,    -- (layer) -> instances
-  POS = 1389957207,          -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, instance): y up
-  SCALE = 3778714801,        -- CMND_SET_LAYER_LOCAL_SCALE (layer, sx, sy, sz, instance)
-  TEXT = 1083631230,         -- CMND_SET_MENU_TEXT_STRING (layer, node, text, instance)
-  TEXT_ALPHA = 1126837159,   -- CMND_SET_MENU_TEXT_ALPHA (layer, instance, node, alpha)
-  MESH_VISIBLE = 3405944500, -- (layer, mesh, on, instance)
-  HOTSPOTS = 2234870553,     -- CMND_VRFW_MENU_SCENE_HOTSPOTS (key) -> "" | { shot, settled, n, [i] = { … } }
-  SCREENS = 713720306,       -- CMND_VRFW_MENU_SCENE_SCREENS (key) -> "" | { n, [i] = { name, on, fade_ms, seen, x0, y0, x1, y1, layers, design } }
-  SHOT_TAGS = 688500432,     -- CMND_VRFW_MENU_SCENE_SHOT_TAGS (key) -> "" | { shot, on = { tag ids }, off = { tag ids } }
-  LAYER_ALPHA = 4231609516,  -- CMND_SET_LAYER_MODEL_ALPHA (layer, instance, 0, alpha)
+  OPEN_LAYER = VRFW_Cmd.OPEN_LAYER,    -- (layer, instance)
+  LAYER_NUM = VRFW_Cmd.GET_CREATE_LAYER_NUM,    -- (layer) -> instances
+  POS = VRFW_Cmd.SET_LAYER_LOCAL_POS,          -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, instance): y up
+  SCALE = VRFW_Cmd.SET_LAYER_LOCAL_SCALE,        -- CMND_SET_LAYER_LOCAL_SCALE (layer, sx, sy, sz, instance)
+  TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,         -- CMND_SET_MENU_TEXT_STRING (layer, node, text, instance)
+  TEXT_ALPHA = VRFW_Cmd.SET_MENU_TEXT_ALPHA,   -- CMND_SET_MENU_TEXT_ALPHA (layer, instance, node, alpha)
+  MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE, -- (layer, mesh, on, instance)
+  HOTSPOTS = VRFW_Cmd.VRFW_MENU_SCENE_HOTSPOTS,     -- CMND_VRFW_MENU_SCENE_HOTSPOTS (key) -> "" | { shot, settled, n, [i] = { … } }
+  SCREENS = VRFW_Cmd.VRFW_MENU_SCENE_SCREENS,       -- CMND_VRFW_MENU_SCENE_SCREENS (key) -> "" | { n, [i] = { name, on, fade_ms, seen, x0, y0, x1, y1, layers, design } }
+  SHOT_TAGS = VRFW_Cmd.VRFW_MENU_SCENE_SHOT_TAGS,     -- CMND_VRFW_MENU_SCENE_SHOT_TAGS (key) -> "" | { shot, on = { tag ids }, off = { tag ids } }
+  LAYER_ALPHA = VRFW_Cmd.SET_LAYER_MODEL_ALPHA,  -- CMND_SET_LAYER_MODEL_ALPHA (layer, instance, 0, alpha)
   STORY_KIND = 3368022765,   -- param vrfw_menu_scene_story_kind: 1 continue, 2 new game (with STORY_GO)
   STORY_PICK = 1790329263,   -- param vrfw_menu_scene_story_pick: the story submenu's entry + 1 it picks itself
   STORY_WAIT = 2392182225,   -- param vrfw_menu_scene_story_wait: ms title_main waits before the story submenu opens
-  BIT = 941426960,           -- (global bit) -> set
+  BIT = VRFW_Cmd.GET_GLOBAL_BIT_FLAG,           -- (global bit) -> set
   STORY_MODES_BIT = 750283301, -- Historia+ / Historia extendida are open (the submenu's IsEnableListItem)
-  TEXT_GET = 4074371074,     -- CMND_TEXT_GET (id) -> text
-  TEXT_GET_KEY = 459261927,  -- CMND_VRFW_TEXT_GET (key) -> text
-  TEXT_SIZE = 3549540977,    -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, instance, node) -> width, height
+  TEXT_GET = VRFW_Cmd.TEXT_GET,     -- CMND_TEXT_GET (id) -> text
+  TEXT_GET_KEY = VRFW_Cmd.VRFW_TEXT_GET,  -- CMND_VRFW_TEXT_GET (key) -> text
+  TEXT_SIZE = VRFW_Cmd.GET_MENU_TEXT_RECT_SIZE,    -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, instance, node) -> width, height
   NODE_SCALE = 2885415772,   -- (layer, instance, node, width, height): the text node's box
   BUZZER = 2086672038,       -- sy0003
   SELECTED_GROW = 1.15,      -- the selected hotspot's text, larger
@@ -129,21 +126,21 @@ local MS = {
   FLOOD_COLOUR = { 1.0, 0.96, 0.86 },   -- warm daylight
   SPRITE = 558735651,        -- (layer, texture, sprite, old sprite, 0, instance)
   ROTATE = 3476640154,       -- (layer, x, y, z radians, instance)
-  PRIM_COLOR = 855211291,    -- (layer, instance, mesh, r, g, b)
-  MAP_TAG = 2126261144,      -- CMND_SET_MAP_TAG (tag, on): the map's meshes of that tag shown / hidden (the map is up)
-  DOOR_OPEN = 1748651598,    -- CMND_DOOR_OPEN (door id, play the clip, reverse clips): a registered map door opens
-  DOOR_TYPE = 247525952,     -- CMND_GET_DOOR_TYPE (door id) -> registered, door type, a float of the door
+  PRIM_COLOR = VRFW_Cmd.SET_PRIM_COLOR,    -- (layer, instance, mesh, r, g, b)
+  MAP_TAG = VRFW_Cmd.SET_MAP_TAG,      -- CMND_SET_MAP_TAG (tag, on): the map's meshes of that tag shown / hidden (the map is up)
+  DOOR_OPEN = VRFW_Cmd.DOOR_OPEN,    -- CMND_DOOR_OPEN (door id, play the clip, reverse clips): a registered map door opens
+  DOOR_TYPE = VRFW_Cmd.GET_DOOR_TYPE,     -- CMND_GET_DOOR_TYPE (door id) -> registered, door type, a float of the door
   CHRONICLE_WAIT = 53570903, -- param vrfw_menu_scene_chronicle_wait (value = ms of the push-in): title_main ends the title
                              -- after it and the Chronicle top menu goes straight to the map (action chronicle_map)
-  PENDING = 3277277325,      -- CMND_VRFW_MENU_SCENE_PENDING (action | "")
+  PENDING = VRFW_Cmd.VRFW_MENU_SCENE_PENDING,      -- CMND_VRFW_MENU_SCENE_PENDING (action | "")
   LEAVE_WHITE = 2048703318,  -- param vrfw_menu_scene_leave_white: title_main leaves with the white fade (leave_fade)
   PICK_LAYER = 2283875177, -- param vrfw_menu_scene_pick_layer: the next menu holding this layer presses an entry of it
   PICK_INDEX = 3968429426, -- param vrfw_menu_scene_pick_index: that entry + 1
   PICK_OPTION = 2481379900, -- param vrfw_menu_scene_pick_option: the option of the entry's own choice + 1 (pick_option)
-  BB_CAMPAIGN_SAVE = 1267047957, -- (0) -> a Battle Bay campaign save exists (the BB top menu's own check)
+  BB_CAMPAIGN_SAVE = VRFW_Cmd.GET_BB_STADIUM_CAMPAIGN_INFO, -- (0) -> a Battle Bay campaign save exists (the BB top menu's own check)
   PICK_WAIT = 2171674033,  -- param vrfw_menu_scene_pick_wait: ms title_main waits (the push-in) before it ends
-  HOME = 2904671763,         -- CMND_VRFW_MENU_SCENE_HOME (key[, on]) -> 1 on the home entry
-  COME_BACK = 3530256574,    -- CMND_VRFW_MENU_SCENE_COME_BACK (key[, mode]) -> mode: the mode a return to the title opens on
+  HOME = VRFW_Cmd.VRFW_MENU_SCENE_HOME,         -- CMND_VRFW_MENU_SCENE_HOME (key[, on]) -> 1 on the home entry
+  COME_BACK = VRFW_Cmd.VRFW_MENU_SCENE_COME_BACK,    -- CMND_VRFW_MENU_SCENE_COME_BACK (key[, mode]) -> mode: the mode a return to the title opens on
   PICK_RETURN = 1862198659,  -- param vrfw_menu_scene_pick_return: the picked entry's menu goes back to the title (return)
   FOCUS_WAIT_FRAMES = 10,    -- after a move out of the home entry: frames the old tile's focus is not reported
   MENU = "title_menu_2",
@@ -199,8 +196,8 @@ end
 
 -- a param cleared only when it is set (the retail way)
 local function MS_Clear(k)
-  if MS_Call(MS.PARAM_HAS, k) == true then
-    MS_Call(MS.PARAM_CLEAR, k)
+  if VRFW_Param.Has(k) then
+    VRFW_Param.Clear(k)
   end
 end
 
@@ -1012,27 +1009,27 @@ local function MS_HotEnter()
     MS_Clear(k)
   end
   if e.leave_white then
-    MS_Call(MS.PARAM_SET, MS.LEAVE_WHITE, 0, 1, 1)
+    VRFW_Param.Set(MS.LEAVE_WHITE, 1)
   end
   -- Back from what the action opens comes to the title: it opens again on this mode
   if e.back_to == "title" and ms.mode_idx ~= nil then MS_Call(MS.COME_BACK, ms.key, ms.mode_idx) end
   if e.action == "chronicle_map" then
     -- the press is the title's «Modo Crónica» (the shot's tile): title_main ends after the push-in, the Chronicle top
     -- menu then goes straight to the map
-    MS_Call(MS.PARAM_SET, MS.CHRONICLE_WAIT, 0, e.ms, 1)
+    VRFW_Param.Set(MS.CHRONICLE_WAIT, e.ms)
   elseif e.action == "menu_pick" then
     -- the press is the tile's own; title_main ends after the push-in, the next menu holding pick_layer presses the entry
-    MS_Call(MS.PARAM_SET, MS.PICK_LAYER, 0, e.pick_layer, 1)
-    MS_Call(MS.PARAM_SET, MS.PICK_INDEX, 0, e.pick_index + 1, 1)
-    if (e.pick_option or -1) >= 0 then MS_Call(MS.PARAM_SET, MS.PICK_OPTION, 0, e.pick_option + 1, 1) end
-    if e.back_to == "title" then MS_Call(MS.PARAM_SET, MS.PICK_RETURN, 0, 1, 1) end
-    MS_Call(MS.PARAM_SET, MS.PICK_WAIT, 0, e.ms, 1)
+    VRFW_Param.Set(MS.PICK_LAYER, e.pick_layer)
+    VRFW_Param.Set(MS.PICK_INDEX, e.pick_index + 1)
+    if (e.pick_option or -1) >= 0 then VRFW_Param.Set(MS.PICK_OPTION, e.pick_option + 1) end
+    if e.back_to == "title" then VRFW_Param.Set(MS.PICK_RETURN, 1) end
+    VRFW_Param.Set(MS.PICK_WAIT, e.ms)
   elseif e.action == "story_continue" or e.action == "story_new_game" then
-    MS_Call(MS.PARAM_SET, MS.STORY_GO, 0, e.ms, 1)
-    MS_Call(MS.PARAM_SET, MS.STORY_KIND, 0, e.action == "story_new_game" and 2 or 1, 1)
+    VRFW_Param.Set(MS.STORY_GO, e.ms)
+    VRFW_Param.Set(MS.STORY_KIND, e.action == "story_new_game" and 2 or 1)
   else
-    MS_Call(MS.PARAM_SET, MS.STORY_PICK, 0, STORY_ROW[e.action] + 1, 1)
-    MS_Call(MS.PARAM_SET, MS.STORY_WAIT, 0, e.ms, 1)
+    VRFW_Param.Set(MS.STORY_PICK, STORY_ROW[e.action] + 1)
+    VRFW_Param.Set(MS.STORY_WAIT, e.ms)
   end
   if type(e.push_shot) == "string" and e.push_shot ~= "" then
     MS_Call(MS.SHOT, ms.key, e.push_shot)
@@ -1183,7 +1180,7 @@ local function MS_Step()
       local ok = MS_Call(MS.SET, "requested", ms.key)
       if ok == 1 then
         MS_Call(MS.FADE, 1, 0)
-        MS_Call(MS.PARAM_SET, MS.GO, 0, 1, 1)
+        VRFW_Param.Set(MS.GO, 1)
         ms.phase, ms.frames = "requested", 0
         MS_Log("black: Options requested from the title (it loads the save, then the map of", ms.key, "loads)")
       elseif ok == 0 then
@@ -1196,7 +1193,7 @@ local function MS_Step()
     end
   elseif ms.phase == "requested" then
     MS_Call(MS.FADE, 1, 0)    -- stay black until the title leaves
-    if MS_Call(MS.PARAM_HAS, MS.GO) ~= true then
+    if not VRFW_Param.Has(MS.GO) then
       ms.phase = "handed"
       MS_Log("title_main took the request after", ms.frames, "frame(s)")
     elseif ms.frames > ms.timeout then
@@ -1212,7 +1209,7 @@ local function MS_Step()
     ms.wait_up = (ms.wait_up or 0) + 1
     -- the title reads requests only once its menu is fully open (fade-in, start, input on): the room and the menu then
     -- appear together
-    if (not MS_Ready() or MS_Call(MS.PARAM_HAS, MS.TITLE_READY) ~= true) and ms.wait_up < 300 then
+    if (not MS_Ready() or not VRFW_Param.Has(MS.TITLE_READY)) and ms.wait_up < 300 then
       return
     end
     if ms.wait_up >= 300 then MS_Log("the title did not report ready within 300 frames: up anyway") end
@@ -1334,11 +1331,11 @@ if VRFW_Host ~= nil then
         local act = ok and type(item) == "number" and ms.actions[item % 4294967296] or nil
         MS_Clear(MS.LEAVE_WHITE)
         if act and act.leave_white == 1 then
-          MS_Call(MS.PARAM_SET, MS.LEAVE_WHITE, 0, 1, 1)
+          VRFW_Param.Set(MS.LEAVE_WHITE, 1)
         end
         if act and act.action == "chronicle_map" then
           MS_Clear(MS.CHRONICLE_WAIT)
-          MS_Call(MS.PARAM_SET, MS.CHRONICLE_WAIT, 0, tonumber(act.ms) or 800, 1)
+          VRFW_Param.Set(MS.CHRONICLE_WAIT, tonumber(act.ms) or 800)
           if type(act.shot) == "string" and act.shot ~= "" then
             MS_Call(MS.SHOT, ms.key, act.shot)
           end
@@ -1347,7 +1344,7 @@ if VRFW_Host ~= nil then
           local okc, has, saves = pcall(funcLuaCommand, MS.STORY_INFO)
           if okc and type(saves) == "number" and saves > 0 then
             MS_Clear(MS.STORY_GO)
-            MS_Call(MS.PARAM_SET, MS.STORY_GO, 0, tonumber(act.ms) or 800, 1)
+            VRFW_Param.Set(MS.STORY_GO, tonumber(act.ms) or 800)
             if type(act.shot) == "string" and act.shot ~= "" then
               MS_Call(MS.SHOT, ms.key, act.shot)
             end

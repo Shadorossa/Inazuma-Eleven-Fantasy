@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_draft, Campaña grid (enjoy_team_select_menu_campaign; docs/game/modes/estadio-bb.md §14).
+-- BattleBayDeluxe bb_draft, Campaña grid (enjoy_team_select_menu_campaign; docs/game/modes/estadio-bb.md §14).
 -- The first tile of «Equipos principales» is the team evt_bbd_draft (the mod's teams/50_draft.toml). Deciding it
 -- (instead of the retail difficulty window) opens the Draft screen, laid out like «Plantilla de equipo» (v4, 2026-10-02, §14.11):
 --   * RIGHT: the 16 slots on the 16 cards evt_bb_draft_slot (the formation panel's card objbin), placed by the graft:
@@ -58,7 +58,6 @@ BBCR_DRAFT = {
   DECIDE = @crc:CMND_BBD_DRAFT_DECIDE@,
   PAGE_SLOT = @crc:CMND_VRFW_BB_PAGE_SLOT@,
   PAGE_REFRESH = @crc:CMND_VRFW_BB_PAGE_REFRESH@,
-  LOG = 3661580131 --[[CMND_EVT_LOG]],
   TEAM = @crc:evt_bbd_draft@,
   MENU = 786045682 --[[enjoy_team_select_menu]],
   GRID = 106197494 --[[vs01_43_enjoy_team_select_emblem_icon]],
@@ -244,9 +243,9 @@ BBCR_DRAFT_PK = {
   STYLE = 187454762 --[[fs_28_w_cc_2d2_001: centred white, outlined]],
   TXT_TITLE = @crc:evt_bbd_pack_title@, TXT_SKIP = @crc:evt_bbd_pack_skip@, TXT_PICK = @crc:evt_bbd_pack_pick@,
   -- commands (the Torneo's quads: research/grafts/bb_tournament)
-  VISIBLE = 711242136, POS = 1389957207, SCALE = 3778714801, SPRITE = 558735651, PRIM_COLOR = 855211291,
-  PRIM_ALPHA = 2219773080, TEXT = 1083631230, TEXT_VISIBLE = 1505208242, TEXT_STYLE = 2333948100,
-  TEXT_ALPHA = 1126837159, MODEL_ALPHA = 4231609516, PRIO = 1491630496, CHARA_INFO = 4060384944, SE = 1917805374,
+  VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@, POS = @crc:CMND_SET_LAYER_LOCAL_POS@, SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@, SPRITE = 558735651, PRIM_COLOR = @crc:CMND_SET_PRIM_COLOR@,
+  PRIM_ALPHA = @crc:CMND_SET_PRIM_ALPHA@, TEXT = @crc:CMND_SET_MENU_TEXT_STRING@, TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@, TEXT_STYLE = 2333948100,
+  TEXT_ALPHA = @crc:CMND_SET_MENU_TEXT_ALPHA@, MODEL_ALPHA = @crc:CMND_SET_LAYER_MODEL_ALPHA@, PRIO = @crc:CMND_SET_DRAW_PRIORITY@, CHARA_INFO = @crc:CMND_GET_CHARA_INFO@, SE = @crc:CMND_SND_PLAY_SE@,
   Q = 36, -- the quad's size in px at scale 1
   -- quad instances and their draw priorities (the pitch cards: 700; the 5 cards: CARD_PRIO; the cursor: 999)
   I_DIM = 0, I_BAND = 1, I_EDGE = 2, I_GLOW = 4, I_FLASH = 9, I_SCREEN = 14, N_QUAD = 16, N_TXT = 7,
@@ -282,12 +281,18 @@ EVT_FC_EXTRA = EVT_FC_EXTRA or {}
 EVT_FC_EXTRA[BBCR_DRAFT.SLOT] = true
 EVT_FC_EXTRA[BBCR_DRAFT.CARD] = true
 
+-- the logger (VRFW_Log), made at the first line: the framework's menu files load after the graft blocks
+function BBCR_DRAFT_Logger()
+  BBCR_DRAFT.logger = BBCR_DRAFT.logger or VRFW_Log.New("BattleBayDeluxe.draft")
+  return BBCR_DRAFT.logger
+end
+
 function BBCR_DRAFT_Log(...)
-  pcall(funcLuaCommand, BBCR_DRAFT.LOG, "bb_chronicle_teams draft", ...)
+  BBCR_DRAFT_Logger()(...)
 end
 
 function BBCR_DRAFT_Text(id, fallback)
-  local s = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], id)
+  local s = funcLuaCommand(@crc:CMND_TEXT_GET@, id)
   if type(s) ~= "string" or s == "" then
     return fallback or ""
   end
@@ -336,7 +341,7 @@ function BBCR_DRAFT_Name(layer, i)
 end
 
 function BBCR_DRAFT_Guide(s)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], BBCR_DRAFT.GUIDE, BBCR_DRAFT.GUIDE_TEXT, s, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, BBCR_DRAFT.GUIDE, BBCR_DRAFT.GUIDE_TEXT, s, 0)
   funcLuaMenuCommand(2735666188, BBCR_DRAFT.GUIDE, BBCR_DRAFT.GUIDE_TEXT, true, 0)
 end
 
@@ -414,12 +419,12 @@ function BBCR_DRAFT_CardMeshes(layer, i)
   local B = BBCR_DRAFT
   local sz = BBCR_DRAFT_Sz(layer)
   for _, m in ipairs(B.M_FOCUS) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, m, false, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, m, false, i)
   end
   for j = 1, 2 do
     if j ~= sz then
-      funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_BASE[j], false, i)
-      funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_DEF[j], false, i)
+      funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_BASE[j], false, i)
+      funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_DEF[j], false, i)
     end
   end
 end
@@ -430,17 +435,17 @@ end
 function BBCR_DRAFT_Filled_Card(layer, i, param)
   local B = BBCR_DRAFT
   local sz = BBCR_DRAFT_Sz(layer)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, layer, i, true)
   for _, m in ipairs(B.M_DEF) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, m, false, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, m, false, i)
   end
   for k = sz, #B.M_FACE, 2 do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_FACE[k], true, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_FACE[k], true, i)
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_BASE[sz], true, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_BASE[sz], true, i)
   funcLuaMenuCommand(2339877830, layer, i, param, sz == 1, false, 0, 0, B.LEVEL, false, false, 4, 0)
   for _, m in ipairs(B.M_TAG) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, m, false, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, m, false, i)
   end
   BBCR_DRAFT_CardMeshes(layer, i)
 end
@@ -454,7 +459,7 @@ end
 function BBCR_DRAFT_Empty_Card(layer, i, ph, grey, kind)
   local B = BBCR_DRAFT
   local sz = BBCR_DRAFT_Sz(layer)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, layer, i, true)
   if type(ph) == "number" and ph ~= 0 then
     funcLuaMenuCommand(2339877830, layer, i, ph, sz == 1, false, type(kind) == "number" and kind or 0, 0, B.LEVEL, false,
                        false, 4, 0)
@@ -463,7 +468,7 @@ function BBCR_DRAFT_Empty_Card(layer, i, ph, grey, kind)
   end
   for _, list in ipairs({B.M_FACE, B.M_EMPTY, B.M_TAG, B.M_STAFF}) do
     for _, m in ipairs(list) do
-      funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, m, false, i)
+      funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, m, false, i)
     end
   end
   for _, n in ipairs(B.N_STAFF) do
@@ -473,22 +478,22 @@ function BBCR_DRAFT_Empty_Card(layer, i, ph, grey, kind)
   if grey then
     funcLuaMenuCommand(558735651, layer, B.TEX_CARD, j == 1 and B.SPR_GREY_L or B.SPR_GREY, B.SLOT_BASE[j], 0, i)
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_BASE[j], true, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_BASE[j], true, i)
   local qs = j == 1 and B.Q_SCALE_L or B.Q_SCALE
   local qw, qh = B.Q_W * qs, B.Q_H * qs
   funcLuaMenuCommand(B.NODE_SCALE, layer, i, B.M_DEF[j], qw, qh)
   funcLuaMenuCommand(B.NODE_POS, layer, i, B.M_DEF[j], 0, -qw / 2)
   funcLuaMenuCommand(B.NODE_POS, layer, i, B.M_DEF[j], 1, qh / 2)
   funcLuaMenuCommand(558735651, layer, B.TEX_NUM, B.SPR_Q, B.SLOT_DEF[j], 0, i)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_DEF[j], true, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_DEF[j], true, i)
   BBCR_DRAFT_CardMeshes(layer, i)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], layer, B.T_NAME, "", i)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, layer, B.T_NAME, "", i)
 end
 
 -- the empty look again (a late face / icon load can switch a mesh back on)
 function BBCR_DRAFT_Rehide(layer, i)
   for _, m in ipairs(BBCR_DRAFT.M_FACE) do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, m, false, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, m, false, i)
   end
 end
 
@@ -507,13 +512,13 @@ function BBCR_DRAFT_DrawSlot(k)
   else
     local kind = 0
     if rec.field and B.formation ~= 0 then
-      local okk, kk = funcLuaCommand(2649030357 --[[formation info]], 6, B.formation, rec.slot)
+      local okk, kk = funcLuaCommand(@crc:CMND_GET_SOCCER_FORMATION_INFO@ --[[formation info]], 6, B.formation, rec.slot)
       kind = (okk == true and type(kk) == "number") and kk or 0
     end
     BBCR_DRAFT_Empty_Card(layer, i, rec.ph, B.BENCH_GREY and not rec.field, kind)
     B.reapply = B.REAPPLY_FRAMES
   end
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], layer, B.pos[k][1], B.pos[k][2], 0, i)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, layer, B.pos[k][1], B.pos[k][2], 0, i)
   funcLuaMenuCommand(3362798188, layer, i, B.SLOT_SCALE, B.SLOT_SCALE)
 end
 
@@ -531,12 +536,12 @@ function BBCR_DRAFT_DrawCand(i)
     return -- 1.5.26: while a pack is up (or flying out) it draws the 5 cards itself (BBCR_DRAFT_PackRender)
   end
   if p == nil or B.mode ~= "cands" then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CARD, i, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CARD, i, false)
     return
   end
   BBCR_DRAFT_Filled_Card(B.CARD, i, p.param)
   local s = i == B.csel and B.CARD_SCALE_ON or B.CARD_SCALE
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], B.CARD, B.CAND_X, B.CAND_Y + i * B.CAND_DY, 0, i)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, B.CARD, B.CAND_X, B.CAND_Y + i * B.CAND_DY, 0, i)
   funcLuaMenuCommand(3362798188, B.CARD, i, s, s)
 end
 
@@ -554,10 +559,10 @@ end
 function BBCR_DRAFT_Cursor()
   local B = BBCR_DRAFT
   if B.shown ~= nil then
-    funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], B.shown[1], B.shown[2],
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, B.shown[1], B.shown[2],
                        BBCR_DRAFT_CursorLabel(B.shown[1]), false)
     for _, m in ipairs(B.M_FOCUS) do
-      funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.shown[1], m, false, B.shown[2])
+      funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.shown[1], m, false, B.shown[2])
     end
     B.shown = nil
   end
@@ -565,7 +570,7 @@ function BBCR_DRAFT_Cursor()
   if B.mode == "cands" then
     if BBCR_DRAFT_PackBusy() then
       -- no cursor while the pack's cards are dealt and turned (BBCR_DRAFT_PackDone puts it back)
-      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CURSOR, 0, false)
+      funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CURSOR, 0, false)
       return
     end
     layer, i, n = B.CARD, B.csel, 5
@@ -579,7 +584,7 @@ function BBCR_DRAFT_Cursor()
     return
   end
   local sz = BBCR_DRAFT_Sz(layer)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CURSOR, 0, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CURSOR, 0, true)
   if layer == B.CARD and B.pk ~= nil then
     -- the pack's band: the arrow at the focused card's left edge (BBCR_DRAFT_PkCursor, again every frame of the pick)
     B.pk.cur = nil
@@ -587,15 +592,15 @@ function BBCR_DRAFT_Cursor()
   else
     if B.curMoved then
       -- the pack moved the arrow itself: its own offset back to 0 before it is attached again
-      funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], B.CURSOR, 0, 0, 0, 0)
+      funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, B.CURSOR, 0, 0, 0, 0)
       B.curMoved = false
     end
     local label = BBCR_DRAFT_CursorLabel(layer)
-    funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], layer, i, label, true)
-    funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], layer, label, i, n)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, layer, i, label, true)
+    funcLuaMenuCommand(@crc:CMND_SET_CURSOR_LOCATOR@, layer, label, i, n)
   end
   for j = 1, 2 do
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, B.M_FOCUS[j], j == sz, i)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, layer, B.M_FOCUS[j], j == sz, i)
   end
   B.shown = {layer, i}
 end
@@ -606,30 +611,30 @@ end
 function BBCR_DRAFT_PanelHold()
   local B = BBCR_DRAFT
   for i = 0, 10 do
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.LEFT, i, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.LEFT, i, false)
   end
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], B.FRAME, B.FRAME_DX, B.FRAME_DY, 0, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, B.FRAME, B.FRAME_DX, B.FRAME_DY, 0, 0)
   funcLuaMenuCommand(3362798188, B.FRAME, 0, B.FRAME_SX, B.FRAME_SY)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.FRAME, 0, true)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.FRAME, B.M_FIELD, true, 0)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.TACTICS_BASE, 0, false)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.FRAME, 0, true)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.FRAME, B.M_FIELD, true, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.TACTICS_BASE, 0, false)
   for i = 0, 2 do
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.TACTICS_CMD, i, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.TACTICS_CMD, i, false)
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.TEAMINFO, B.M_TACTICS_LABEL, false, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.TEAMINFO, B.M_TACTICS_LABEL, false, 0)
 end
 
 -- the Draft screen on: crest grid, lock icons, «Página» line hidden, the panel held (BBCR_DRAFT_PanelHold)
 -- free match: every visible instance of a layer hidden and remembered (BBCR_DRAFT_Unstash puts them back)
 function BBCR_DRAFT_Stash(layer)
   local B = BBCR_DRAFT
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], layer)
+  local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, layer)
   if type(n) ~= "number" or n <= 0 then
     n = 1
   end
   for i = 0, n - 1 do
-    if funcLuaMenuCommand(1262717583 --[[CMND_IS_LAYER_VISIBLE]], layer, i) == true then
-      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, false)
+    if funcLuaMenuCommand(@crc:CMND_IS_LAYER_VISIBLE@, layer, i) == true then
+      funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, layer, i, false)
       B.stash[#B.stash + 1] = {layer, i}
     end
   end
@@ -640,7 +645,7 @@ function BBCR_DRAFT_Unstash()
   local list = B.stash
   B.stash = {}
   for _, e in ipairs(list) do
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], e[1], e[2], true)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, e[1], e[2], true)
   end
 end
 
@@ -655,23 +660,23 @@ function BBCR_DRAFT_ScreenOn()
         BBCR_DRAFT_Stash(layer)
       end
     end
-    funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], B.GRID, false)
+    funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, B.GRID, false)
     if VRFW_BBP_Hide ~= nil then
       pcall(VRFW_BBP_Hide)
     end
     BBCR_DRAFT_PanelHold()
     return
   end
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], B.GRID) or 0
+  local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, B.GRID) or 0
   for i = 0, n - 1 do
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.GRID, i, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.GRID, i, false)
   end
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.ATTACH, 0, false)
-  local m = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], B.LOCK) or 0
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.ATTACH, 0, false)
+  local m = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, B.LOCK) or 0
   for i = 0, m - 1 do
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.LOCK, i, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.LOCK, i, false)
   end
-  funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], B.GRID, false)
+  funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, B.GRID, false)
   -- the framework's page / category / season line over the grid (graft vrfw_bb_pages): hidden until BBCR_DRAFT_ScreenOff
   if VRFW_BBP_Hide ~= nil then
     pcall(VRFW_BBP_Hide)
@@ -683,13 +688,13 @@ end
 -- line (vrfw_bb_pages); its cards come back with the retail UpdateFormation of the tile (BBCR_DRAFT_Panel)
 function BBCR_DRAFT_ScreenOff()
   local B = BBCR_DRAFT
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], B.FRAME, 0, 0, 0, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, B.FRAME, 0, 0, 0, 0)
   funcLuaMenuCommand(3362798188, B.FRAME, 0, 1, 1)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.TACTICS_BASE, 0, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.TACTICS_BASE, 0, true)
   for i = 0, 2 do
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.TACTICS_CMD, i, true)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.TACTICS_CMD, i, true)
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.TEAMINFO, B.M_TACTICS_LABEL, true, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.TEAMINFO, B.M_TACTICS_LABEL, true, 0)
   if BBCR_DRAFT_Free() then
     BBCR_DRAFT_Unstash()
   end
@@ -703,11 +708,11 @@ function BBCR_DRAFT_Probe()
   local B = BBCR_DRAFT
   local parts = {}
   for _, node in ipairs(B.FRAME_NODES) do
-    local x, y, z, ok = funcLuaMenuCommand(2373227714 --[[CMND_GET_MESH_POSE?]], B.FRAME, 0, node)
+    local x, y, z, ok = funcLuaMenuCommand(@crc:CMND_GET_MESH_POSE@, B.FRAME, 0, node)
     parts[#parts + 1] = string.format("%s(%s,%s,%s)", tostring(ok), tostring(x), tostring(y), tostring(z))
   end
-  local fx, fy = funcLuaMenuCommand(2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], B.FRAME, 0)
-  local sx, sy = funcLuaMenuCommand(2834507455 --[[CMND_GET_LAYER_LOCAL_POS]], B.SLOT, 0)
+  local fx, fy = funcLuaMenuCommand(@crc:CMND_GET_LAYER_LOCAL_POS@, B.FRAME, 0)
+  local sx, sy = funcLuaMenuCommand(@crc:CMND_GET_LAYER_LOCAL_POS@, B.SLOT, 0)
   BBCR_DRAFT_Log("layout probe: frame nodes cc/ld/ru", table.concat(parts, " "), "frame at", tostring(fx), tostring(fy),
               "slot 0 at", tostring(sx), tostring(sy))
   pcall(BBCR_DRAFT_StrayScan)
@@ -719,9 +724,9 @@ function BBCR_DRAFT_StrayScan()
   local B = BBCR_DRAFT
   local hits = {}
   for _, e in ipairs(B.STRAY_LAYERS) do
-    local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], e[2])
+    local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, e[2])
     for i = 0, (type(n) == "number" and n or 0) - 1 do
-      local okv, vis = pcall(funcLuaMenuCommand, 1262717583 --[[is visible]], e[2], i)
+      local okv, vis = pcall(funcLuaMenuCommand, @crc:CMND_IS_LAYER_VISIBLE@ --[[is visible]], e[2], i)
       local okp, gx, gy = pcall(funcLuaMenuCommand, 4002164178 --[[global position]], e[2], i)
       if okv and vis == true and okp and type(gx) == "number" and gx >= -B.STRAY_X and gx <= B.STRAY_X then
         hits[#hits + 1] = string.format("%s[%d] at %d,%d", e[1], i, math.floor(gx), math.floor(-(gy or 0)))
@@ -735,17 +740,17 @@ end
 function BBCR_DRAFT_Open()
   local B = BBCR_DRAFT
   if not B.opened then
-    funcLuaMenuCommand(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], B.SLOT)
-    funcLuaMenuCommand(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], B.CARD)
-    funcLuaMenuCommand(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], BBCR_DRAFT_PK.QUAD)
-    funcLuaMenuCommand(2152386330 --[[CMND_OPEN_LAYER_ARRAY]], BBCR_DRAFT_PK.TXT)
-    funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], B.ANCHOR)
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER_ARRAY@, B.SLOT)
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER_ARRAY@, B.CARD)
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER_ARRAY@, BBCR_DRAFT_PK.QUAD)
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER_ARRAY@, BBCR_DRAFT_PK.TXT)
+    funcLuaMenuCommand(@crc:CMND_OPEN_LAYER@, B.ANCHOR)
     B.opened = true
   end
   -- 1.5.89: the anchor (a button object) off screen AND invisible, as the Torneo's anchor (it keeps the keys)
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], B.ANCHOR, B.ANCHOR_X, B.ANCHOR_Y, 0, 0)
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.ANCHOR, 0, false)
-  funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], B.ANCHOR, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, B.ANCHOR, B.ANCHOR_X, B.ANCHOR_Y, 0, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.ANCHOR, 0, false)
+  funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, B.ANCHOR, true)
   funcLuaMenuCommand(1778826357, B.ANCHOR, 0, true)
 end
 
@@ -753,7 +758,7 @@ end
 function BBCR_DRAFT_CloseLayers()
   local B = BBCR_DRAFT
   if B.shown ~= nil then
-    funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], B.shown[1], B.shown[2], BBCR_DRAFT_CursorLabel(), false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, B.shown[1], B.shown[2], BBCR_DRAFT_CursorLabel(), false)
     B.shown = nil
   end
   pcall(BBCR_DRAFT_PackEnd)
@@ -761,13 +766,13 @@ function BBCR_DRAFT_CloseLayers()
   B.mode = nil
   B.reapply = nil
   B.probe = nil
-  funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], B.ANCHOR, false)
+  funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, B.ANCHOR, false)
   if B.opened then
-    funcLuaMenuCommand(2323943931 --[[CMND_CLOSE_LAYER_ARRAY?]], B.SLOT)
-    funcLuaMenuCommand(2323943931 --[[CMND_CLOSE_LAYER_ARRAY?]], B.CARD)
-    funcLuaMenuCommand(2323943931 --[[CMND_CLOSE_LAYER_ARRAY?]], BBCR_DRAFT_PK.QUAD)
-    funcLuaMenuCommand(2323943931 --[[CMND_CLOSE_LAYER_ARRAY?]], BBCR_DRAFT_PK.TXT)
-    funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], B.ANCHOR)
+    funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER_ARRAY@, B.SLOT)
+    funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER_ARRAY@, B.CARD)
+    funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER_ARRAY@, BBCR_DRAFT_PK.QUAD)
+    funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER_ARRAY@, BBCR_DRAFT_PK.TXT)
+    funcLuaMenuCommand(@crc:CMND_CLOSE_LAYER@, B.ANCHOR)
     B.opened = false
   end
   B.ready = {}
@@ -781,10 +786,10 @@ end
 -- later, the page rebuilt like a page turn with the focus on the Draft tile (BBCR_DRAFT_Refresh)
 function BBCR_DRAFT_GridBack()
   local B = BBCR_DRAFT
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CURSOR, 0, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CURSOR, 0, true)
   if BBCR_DRAFT_Free() then
     -- the grid itself came back with the stash (BBCR_DRAFT_ScreenOff); its focus and the retail guide line
-    funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], B.GRID, true)
+    funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, B.GRID, true)
     local cur = funcLuaMenuCommand(2603265800, B.GRID)
     if type(cur) == "number" then
       funcLuaMenuCommand(4233535095, B.GRID, cur, true)
@@ -800,6 +805,69 @@ function BBCR_DRAFT_GridBack()
     BBCR_DRAFT_Log("grid back error", tostring(err))
   end
   B.refresh = B.REFRESH_FRAMES
+end
+
+-- 1.39.0 (owner): the Draft tile shows the text «DRAFT» (centred, text row evt_bbd_draft_tag) instead of the player's
+-- crest. 1.44.0: the retail SetupEmblemIcon gets team 0 for that slot (no emblem is requested, so no crest can load
+-- in later), then BBCR_DRAFT_TagSlot gives the slot back its plain tile (the pages service hides a team-0 slot) and
+-- the text layer evt_bb_draft_tag is put on it once the grid has laid the tile out (OnOpenEndLayer of the slot)
+BBCR_DRAFT_TAG = { LAYER = @crc:evt_bb_draft_tag@, KEY = @crc:evt_bbd_draft_tag@, slot = nil, opened = false,
+  CREST_MESH = 1926542734 --[[_enjoy_list_icon_dmy01]], LOCK_MESH = 1763834249 --[[_enjoy_list_base_lock01]],
+  OUTLINE_MESH = 1751802610 --[[_enjoy_list_base01_ol]], TEXT_ALPHA = 0.9,
+  STYLE = 1061373625 --[[fs_32_k_cc_2d0_010_at2_sclw: slate 48,67,104, centred, no outline]] }
+
+-- the Draft slot after the retail setup of team 0: shown, kept as a team slot for the pages service, no crest (icon
+-- released, crest mesh hidden), no lock hexagon, the outline of a team tile
+function BBCR_DRAFT_TagSlot(slot)
+  local B, G = BBCR_DRAFT, BBCR_DRAFT_TAG
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.GRID, slot, true)
+  if type(VRFW_BBP) == "table" and type(VRFW_BBP.hidden_slots) == "table" then
+    VRFW_BBP.hidden_slots[slot] = false
+    VRFW_BBP.drawn[slot] = B.TEAM
+  end
+  pcall(funcLuaMenuCommand, 4176779611 --[[reset icon]], B.GRID, slot, B.EMBLEM_TEX)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.GRID, G.CREST_MESH, false, slot)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.GRID, G.LOCK_MESH, false, slot)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.GRID, G.OUTLINE_MESH, true, slot)
+end
+
+function BBCR_DRAFT_TagUpdate()
+  local B, G = BBCR_DRAFT, BBCR_DRAFT_TAG
+  local L = G.LAYER
+  local slot = G.slot
+  if slot ~= nil then
+    pcall(funcLuaMenuCommand, @crc:CMND_SET_MESH_VISIBLE@, B.GRID, G.CREST_MESH, false, slot)
+  end
+  if slot == nil or B.mode ~= nil then
+    pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, L, 0, false)
+    return
+  end
+  if not G.opened then
+    pcall(funcLuaMenuCommand, @crc:CMND_OPEN_LAYER@, L, 0)
+    G.opened = true
+  end
+  local ok, gx, gy = pcall(funcLuaMenuCommand, 4002164178 --[[global position]], B.GRID, slot)
+  -- (0, 0) = the grid has not laid the tile out yet: placed again at the slot's OnOpenEndLayer
+  if not ok or type(gx) ~= "number" or type(gy) ~= "number" or (gx == 0 and gy == 0) then
+    pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, L, 0, false)
+    return
+  end
+  local okn, nx, ny, _, nok = pcall(funcLuaMenuCommand, @crc:CMND_GET_MESH_POSE@, B.GRID, slot, B.EMBLEM_NODE)
+  if okn and nok ~= false and type(nx) == "number" and type(ny) == "number" then
+    gx, gy = gx + nx, gy + ny
+  end
+  local P = BBCR_DRAFT_PK
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, L, 0, true)
+  funcLuaMenuCommand(P.POS, L, gx, gy, 0, 0)
+  funcLuaMenuCommand(P.SCALE, L, 1, 1, 1, 0)
+  pcall(funcLuaMenuCommand, P.PRIO, L, 0, 701, true)
+  -- centred dark slate text without outline (the hexagon's blue, darker)
+  funcLuaMenuCommand(P.TEXT_STYLE, L, 0, P.TXT_ON, G.STYLE)
+  funcLuaMenuCommand(P.TEXT, L, P.TXT_ON, BBCR_DRAFT_Text(G.KEY, "DRAFT"), 0)
+  funcLuaMenuCommand(P.TEXT, L, P.TXT_OFF, "", 0)
+  funcLuaMenuCommand(P.TEXT_VISIBLE, L, P.TXT_ON, true, 0)
+  funcLuaMenuCommand(P.TEXT_VISIBLE, L, P.TXT_OFF, false, 0)
+  pcall(funcLuaMenuCommand, P.TEXT_ALPHA, L, 0, P.TXT_ON, G.TEXT_ALPHA)
 end
 
 -- tile / panel: the tile the focus goes back to and the panel's redraw (default: the Draft tile, BBCR_DRAFT_PanelBack;
@@ -822,26 +890,27 @@ function BBCR_DRAFT_Refresh(tile, panel, keep)
       args[#args + 1] = {i, rec}
     end
     for _, a in ipairs(args) do
-      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.GRID, a[1], a[2][1] ~= 0)
+      funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.GRID, a[1], a[2][1] ~= 0)
       if not keep then
         funcLuaMenuCommand(4176779611 --[[reset icon]], B.GRID, a[1], B.EMBLEM_TEX)
       end
       pcall(SetupEmblemIcon, a[1], a[2][1], a[2][2], a[2][3])
-      funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, B.EMBLEM_NODE, a[2][1] ~= 0, a[1])
+      funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, B.EMBLEM_NODE, a[2][1] ~= 0 and a[1] ~= BBCR_DRAFT_TAG.slot, a[1])
     end
   end
   -- focus and cursor on the tile; its panel
   if tile >= 0 then
-    local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], B.GRID) or 0
-    funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], B.GRID, true)
+    local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, B.GRID) or 0
+    funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, B.GRID, true)
     funcLuaMenuCommand(1778826357, B.GRID, tile, true)
-    funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], B.GRID, B.GRID_CURSOR, tile, n)
+    funcLuaMenuCommand(@crc:CMND_SET_CURSOR_LOCATOR@, B.GRID, B.GRID_CURSOR, tile, n)
   end
   if panel ~= nil then
     panel()
   else
     BBCR_DRAFT_PanelBack()
   end
+  pcall(BBCR_DRAFT_TagUpdate)
   BBCR_DRAFT_Log("grid refreshed", page, redrawn, tile)
 end
 
@@ -889,6 +958,7 @@ function BBCR_DRAFT_Start(tile)
   end
   B.tile = tile
   B.used = true
+  pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, BBCR_DRAFT_TAG.LAYER, 0, false)
   if phase >= 2 and BBCR_DRAFT_Free() then
     -- free match: the retail decide of the tile (scripts\campaign.lua lets it through itself when it sees the draft
     -- complete; this is the fallback): a frame later, outside this decide
@@ -953,7 +1023,7 @@ function BBCR_DRAFT_Move(dx, dy)
         BBCR_DRAFT_DrawCand(old)
         BBCR_DRAFT_DrawCand(to)
         BBCR_DRAFT_Cursor()
-        funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+        funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2500047763 --[[sy0005]])
       end
     end
     return
@@ -986,7 +1056,7 @@ function BBCR_DRAFT_Move(dx, dy)
   if best ~= nil then
     B.sel = best
     BBCR_DRAFT_Cursor()
-    funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+    funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2500047763 --[[sy0005]])
   end
 end
 
@@ -1051,7 +1121,7 @@ function BBCR_DRAFT_Decide()
   elseif B.mode == "quit" then
     return -- the Sí / No window has the input
   end
-  funcLuaCommand(1917805374, 4235359837 --[[decide]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 4235359837 --[[decide]])
   BBCR_DRAFT_Cursor()
   BBCR_DRAFT_ShowGuide()
 end
@@ -1065,7 +1135,7 @@ function BBCR_DRAFT_Back()
       return
     end
     -- the 5 of a slot cannot be left without a pick (no reroll by backing out)
-    funcLuaCommand(1917805374, B.SE_NG)
+    funcLuaCommand(@crc:CMND_SND_PLAY_SE@, B.SE_NG)
     local rec = B.slots[B.k + 1]
     BBCR_DRAFT_Guide(BBCR_DRAFT_Text(B.TXT_POS[rec and rec.pos or 0]) .. ": " .. BBCR_DRAFT_Text(B.TXT_PICK_ONE, "Elige uno de los 5"))
     BBCR_DRAFT_Log("pick open: back refused", B.k)
@@ -1074,14 +1144,14 @@ function BBCR_DRAFT_Back()
     return -- the Sí / No window has the input
   elseif B.mode == "pitch" then
     B.mode = "quit"
-    funcLuaCommand(1917805374, 202039849 --[[back]])
+    funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 202039849 --[[back]])
     B.quitCo = coroutine.create(BBCR_DRAFT_QuitAsk)
     BBCR_DRAFT_QuitStep()
     return
   elseif B.mode == "start" then
     B.mode = "pitch"
   end
-  funcLuaCommand(1917805374, 202039849 --[[back]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 202039849 --[[back]])
   BBCR_DRAFT_Cursor()
   BBCR_DRAFT_ShowGuide()
 end
@@ -1179,7 +1249,7 @@ function BBCR_DRAFT_Step()
   if B.pk ~= nil then
     local ok, err = pcall(BBCR_DRAFT_PackStep)
     if not ok then
-      BBCR_DRAFT_Log("pack error", tostring(err))
+      BBCR_DRAFT_Logger().once("pack_error", "pack error", tostring(err))
       pcall(BBCR_DRAFT_PackEnd)
       if B.mode == "cands" then
         for i = 0, 4 do
@@ -1195,7 +1265,7 @@ function BBCR_DRAFT_Step()
   local okm, errm = pcall(BBCR_DRAFT_Mouse)
   if not okm then
     B.polled = false
-    BBCR_DRAFT_Log("mouse error", tostring(errm))
+    BBCR_DRAFT_Logger().once("mouse_error", "mouse error", tostring(errm))
   end
   if B.refresh ~= nil then
     B.refresh = B.refresh - 1
@@ -1203,7 +1273,7 @@ function BBCR_DRAFT_Step()
       B.refresh = nil
       local ok, err = pcall(BBCR_DRAFT_Refresh)
       if not ok then
-        BBCR_DRAFT_Log("refresh error", tostring(err))
+        BBCR_DRAFT_Logger().once("refresh_error", "refresh error", tostring(err))
       end
       if B.autoDecide then
         -- free match: the drafted Draft team decided as 1P / CPU (the retail decide of its tile)
@@ -1231,7 +1301,7 @@ function BBCR_DRAFT_Step()
       B.probe = nil
       local ok, err = pcall(BBCR_DRAFT_Probe)
       if not ok then
-        BBCR_DRAFT_Log("probe error", tostring(err))
+        BBCR_DRAFT_Logger().once("probe_error", "probe error", tostring(err))
       end
     end
   end
@@ -1263,7 +1333,7 @@ function BBCR_DRAFT_SelectSlot(k)
   end
   B.sel = k
   BBCR_DRAFT_Cursor()
-  funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2500047763 --[[sy0005]])
 end
 
 function BBCR_DRAFT_SelectCand(i)
@@ -1276,7 +1346,7 @@ function BBCR_DRAFT_SelectCand(i)
   BBCR_DRAFT_DrawCand(old)
   BBCR_DRAFT_DrawCand(i)
   BBCR_DRAFT_Cursor()
-  funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2500047763 --[[sy0005]])
 end
 
 -- the zones of what is drawn now: the 16 slots (pitch, the start question), or the 5 candidates (on the pack's band
@@ -1505,7 +1575,7 @@ end
 -- a candidate card at (x, y) screen px (y down), scale sx x sy
 function BBCR_DRAFT_PkCard(i, x, y, sx, sy)
   local B = BBCR_DRAFT
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], B.CARD, x, -y, 0, i)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, B.CARD, x, -y, 0, i)
   funcLuaMenuCommand(3362798188, B.CARD, i, math.max(0.001, sx), math.max(0.001, sy))
 end
 
@@ -1518,13 +1588,13 @@ function BBCR_DRAFT_PkFace(c, state)
   end
   c.state = state
   if state == "none" then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CARD, i, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CARD, i, false)
   elseif state == "back" then
     BBCR_DRAFT_Empty_Card(B.CARD, i, nil, true)
   else
     BBCR_DRAFT_Filled_Card(B.CARD, i, c.param)
   end
-  funcLuaMenuCommand(4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA?]], B.CARD, i, 0, 1)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_MODEL_ALPHA@, B.CARD, i, 0, 1)
 end
 
 -- a new pack for the current candidates (B.cands): rarity order, the best card, the frame plan
@@ -1588,11 +1658,11 @@ function BBCR_DRAFT_PackStart()
     pcall(BBCR_DRAFT_PkPrio, P.QUAD, i)
   end
   for i = 0, n - 1 do
-    funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], B.CARD, i, P.CARD_PRIO, true)
+    funcLuaMenuCommand(@crc:CMND_SET_DRAW_PRIORITY@, B.CARD, i, P.CARD_PRIO, true)
     BBCR_DRAFT_PkFace(pk.cards[i + 1], "none")
   end
   for i = n, 4 do
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CARD, i, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.CARD, i, false)
   end
   BBCR_DRAFT_PkSE(P.se_open)
   BBCR_DRAFT_Log("pack", B.k, "cards", n, "best", tostring(pk.best and pk.cards[pk.best].param), "frames", pk.done)
@@ -1739,7 +1809,7 @@ function BBCR_DRAFT_PkCursor()
   end
   pk.cur = key
   B.curMoved = true
-  funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], B.CURSOR, x, -y, 0, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, B.CURSOR, x, -y, 0, 0)
 end
 
 -- the animation over (its end or a skip): the 5 on the band to pick, the cursor on the chosen one
@@ -1803,7 +1873,7 @@ function BBCR_DRAFT_PackOutroRender()
     else
       local s = P.scale * (1 - 0.3 * e)
       BBCR_DRAFT_PkCard(c.i, x, y, s, s)
-      pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA?]], B.CARD, c.i, 0, a)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_MODEL_ALPHA@, B.CARD, c.i, 0, a)
       BBCR_DRAFT_PkQuad(P.I_GLOW + c.i, 0, 0, 0, 0, P.COL_GLOW, 0)
     end
   end
@@ -1818,9 +1888,9 @@ function BBCR_DRAFT_PackEnd()
   if pk ~= nil then
     for k = 1, pk.n do
       local i = pk.cards[k].i
-      pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA?]], B.CARD, i, 0, 1)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_MODEL_ALPHA@, B.CARD, i, 0, 1)
       if B.mode ~= "cands" then
-        pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], B.CARD, i, false)
+        pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, B.CARD, i, false)
       end
     end
   end
@@ -1875,16 +1945,16 @@ do
     if a1 == BBCR_DRAFT.SLOT or a1 == BBCR_DRAFT.CARD then
       local ok, err = pcall(function()
         BBCR_DRAFT_Name(a1, a2)
-        funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], a1, a2, BBCR_DRAFT.CARD_CURSOR, false)
-        funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], a1, a2, BBCR_DRAFT.CARD_CURSOR2, false)
-        funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], a1, a2, BBCR_DRAFT.PRIO, true)
+        funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, a1, a2, BBCR_DRAFT.CARD_CURSOR, false)
+        funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, a1, a2, BBCR_DRAFT.CARD_CURSOR2, false)
+        funcLuaMenuCommand(@crc:CMND_SET_DRAW_PRIORITY@, a1, a2, BBCR_DRAFT.PRIO, true)
       end)
       if not ok then
         BBCR_DRAFT_Log("card setup error", tostring(err))
       end
     elseif a1 == BBCR_DRAFT.ANCHOR then
-      pcall(funcLuaMenuCommand, 1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], a1, BBCR_DRAFT.ANCHOR_X, BBCR_DRAFT.ANCHOR_Y, 0, a2)
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false) -- 1.5.89: never drawn
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_LOCAL_POS@, a1, BBCR_DRAFT.ANCHOR_X, BBCR_DRAFT.ANCHOR_Y, 0, a2)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, a1, a2 or 0, false) -- 1.5.89: never drawn
     elseif a1 == BBCR_DRAFT_PK.QUAD or a1 == BBCR_DRAFT_PK.TXT then
       pcall(BBCR_DRAFT_PkPrio, a1, a2)
     end
@@ -1903,7 +1973,7 @@ do
           if B.slots[a2 + 1] ~= nil and B.mode ~= nil then
             BBCR_DRAFT_DrawSlot(a2)
           else
-            funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+            funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, a1, a2, false)
           end
         else
           BBCR_DRAFT_DrawCand(a2)
@@ -1916,8 +1986,8 @@ do
         BBCR_DRAFT_Log("card open error", tostring(err))
       end
     elseif a1 == BBCR_DRAFT.ANCHOR then
-      pcall(funcLuaMenuCommand, 1389957207 --[[CMND_SET_LAYER_LOCAL_POS?]], a1, BBCR_DRAFT.ANCHOR_X, BBCR_DRAFT.ANCHOR_Y, 0, a2)
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false) -- 1.5.89: never drawn
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_LOCAL_POS@, a1, BBCR_DRAFT.ANCHOR_X, BBCR_DRAFT.ANCHOR_Y, 0, a2)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, a1, a2 or 0, false) -- 1.5.89: never drawn
     elseif (a1 == BBCR_DRAFT_PK.QUAD or a1 == BBCR_DRAFT_PK.TXT) and BBCR_DRAFT.pk == nil then
       pcall(BBCR_DRAFT_PkPrio, a1, a2) -- hidden until a pack opens
     end
@@ -2000,10 +2070,38 @@ do
     end
   end
 
+  -- the Draft tile's text placed once the grid has laid that tile out
+  local openEnd = OnOpenEndLayer
+  function OnOpenEndLayer(a1, a2, ...)
+    local r = {n = 0}
+    if openEnd ~= nil then
+      r = table.pack(openEnd(a1, a2, ...))
+    end
+    if a1 == BBCR_DRAFT.GRID and a2 ~= nil and a2 == BBCR_DRAFT_TAG.slot then
+      pcall(BBCR_DRAFT_TagUpdate)
+    end
+    return table.unpack(r, 1, r.n)
+  end
+
   local setupIcon = SetupEmblemIcon
   function SetupEmblemIcon(a1, a2, a3, a4, ...)
     if type(a1) == "number" then
       BBCR_DRAFT.slotArgs[a1] = {a2 or 0, a3, a4}
+      local G = BBCR_DRAFT_TAG
+      if a2 == BBCR_DRAFT.TEAM then
+        -- the Draft tile: no emblem requested (team 0), the slot given back its tile (TagSlot), the text tag on it
+        local r = table.pack(setupIcon(a1, 0, a3, a4, ...))
+        local ok, err = pcall(BBCR_DRAFT_TagSlot, a1)
+        if not ok then
+          BBCR_DRAFT_Log("draft tile error", tostring(err))
+        end
+        G.slot = a1
+        pcall(BBCR_DRAFT_TagUpdate)
+        return table.unpack(r, 1, r.n)
+      elseif G.slot == a1 then
+        G.slot = nil
+        pcall(BBCR_DRAFT_TagUpdate)
+      end
     end
     return setupIcon(a1, a2, a3, a4, ...)
   end
@@ -2036,7 +2134,7 @@ do
         if not (ok and phase >= 2) then
           local layer = (a2 ~= false) and B.LEFT or B.RIGHT
           for i = 0, 10 do
-            funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], layer, i, false)
+            funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, layer, i, false)
           end
         end
       end)

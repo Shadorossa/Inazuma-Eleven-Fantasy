@@ -1,0 +1,27 @@
+# «Orbe de Perseo» (Perseus Strike, whs03240; forest shot of three players, cut-in ev60_03240): while the ball flies
+# to the goal it keeps the look of the cut-in's last shot (c0500, held at frame 408 from the first frame): the sword of
+# light of Perseus that struck it, the ball inside its hilt (the spiky cyan-white star and its white glow, facing the
+# camera) and the blade laid straight behind it (the white core and the cyan flames, 18.4 m long, 4.9 m wide all
+# along, turned about the flight to face the camera), coming out of the kick point as the ball flies (never stretched,
+# a smooth soft rear end on the kick point) and fading out at its far end; instead of the plain forest special-shot
+# aura (ega0075d).
+# Object ev6324ps00, built by research/scripts/perseus_strike_ball_fx.py from the cut-in's effect object ev60032400
+# (docs/game/media/perseus-strike-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"). Flight:
+# content\techniques\perseus_strike_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "perseus_strike"
+from = "ega0075d"
+object = "effect/event/ev60/ev6324ps00/ev6324ps00.objbin"
+
+[[shot_aura]]
+name = "perseus_strike"
+when = { techniques = ["whs03240"] }
+aura = "perseus_strike"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Mordisco de vampiro (Bloodsucker Bite, whs02300, cut-in ev60_02300).
+#
+# Measured: in the last cut (c0200) the event ball is kicked ~10.2 m up in front of the moon (300) and flies down a long
+# curved line, levelling off ~5.6 m up where the cut-in ends (380). Flight (owner's rule 2026-10-24: every aura shot a
+# straight level line): one straight level line from the kick point to the goal, the ball centre at 2.0 m the whole
+# way, so the spiked blood aura (~0.55 m round the ball at x0.4) and the streaks' crossed copies stay clear of the
+# grass. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); the height is held.
+
+# Mordisco de vampiro (whs02300).
+[[edit]]
+target = "whs02300"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

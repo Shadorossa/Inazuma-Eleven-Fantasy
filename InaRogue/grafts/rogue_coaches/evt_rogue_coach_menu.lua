@@ -12,23 +12,24 @@
 INCLUDE("LUA_PROG_BASE")
 INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc) + general window inc
 
+-- texts: InaRogue text\rows\rogue_screens.toml (read with Text); GUIDE / GUIDE_TAG are the same in every language
 local TXT = {
-  TITLE = "Elige entrenador",
+  TITLE = {3709542452 --[[InaRogue.coach.title]]},
   GUIDE = "%s",
   GUIDE_TAG = "%s   ·   %s",
-  LOCKED = "%s   ·   Bloqueado: %s",
-  LOCKED_MSG = "%s está bloqueado.\n%s.",
-  ERROR = "No se pudo elegir el entrenador (código %d).\nMira evt_loader\\loader.log.",
+  LOCKED = {300984748 --[[InaRogue.coach.locked]]},
+  LOCKED_MSG = {2331592520 --[[InaRogue.coach.locked_msg]]},
+  ERROR = {2884690990 --[[InaRogue.coach.error]]},
 }
 
 local MENU = 3869270721           -- crc32("evt_rogue_coach_menu")
 local KEY_RESULT = 123230196      -- crc32("evt_rogue_coach"): 1 picked, 0 back
 
 local RL = {
-  LOG = 3661580131,          -- CMND_EVT_LOG
-  LIST = 4087234124,         -- CMND_EVT_RL_COACH_LIST (-1) -> count, runIndex, pickIndex, enabled
+  LOG = @crc:CMND_EVT_LOG@,          -- CMND_EVT_LOG
+  LIST = @crc:CMND_EVT_RL_COACH_LIST@,         -- CMND_EVT_RL_COACH_LIST (-1) -> count, runIndex, pickIndex, enabled
                              --   (i) -> ok, id, name, tagline, face, unlocked, hint, param
-  PICK = 781961679,          -- CMND_EVT_RL_COACH_PICK (i) -> code
+  PICK = @crc:CMND_EVT_RL_COACH_PICK@,          -- CMND_EVT_RL_COACH_PICK (i) -> code
 }
 
 -- ---- layers ---------------------------------------------------------------------------------------------------------
@@ -48,21 +49,20 @@ local L_UI = 3745054265         -- evt_rogue_map_hint   x 2          (459) 0 cur
 local N_PER_CARD = 2
 
 local C = {
-  TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
+  TEXT = @crc:CMND_SET_MENU_TEXT_STRING@, MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@, LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,
   SPRITE = 558735651,         -- (layer, textureCrc, spriteCrc, nodeCrc, 0, idx)
-  LOAD_TEX = 839427544,
-  SCALE = 3778714801,
-  POS = 1389957207,
-  ATTACH_TRACE = 1774843228,
-  OPEN_LAYER = 629267548,
-  FOCUS_ENABLE = 3518307824, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
+  LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@,
+  SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@,
+  POS = @crc:CMND_SET_LAYER_LOCAL_POS@,
+  ATTACH_TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@,
+  OPEN_LAYER = @crc:CMND_OPEN_LAYER@,
+  FOCUS_ENABLE = @crc:CMND_SET_ENABLE_CTRL_FOCUS@, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
-  SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
+  SE = @crc:CMND_SND_PLAY_SE@, MENU_ACTIVE = 1558704558, CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@,
   FADE = 609722083, FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568,
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
-  TEXT_VISIBLE = 1505208242,
-  PRIM_COLOR = 855211291,     -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b)
+  TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@,
+  PRIM_COLOR = @crc:CMND_SET_PRIM_COLOR@,     -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b)
 }
 local MESH_QUAD = 312193881     -- the cmn01_10 quad's mesh
 local NODE_QUAD = 1909474081    -- icon_new01 (the cmn01_10 quad's sprite node)
@@ -101,6 +101,19 @@ local function Log(...)
 end
 
 --@lib evt_menu_kit.lua#Call,Int,Hide
+
+-- a text row in the game's language with {1}.. filled ("" when missing)
+local function Text(key, ...)
+  local s = Call(@crc:CMND_TEXT_GET@, key[1])
+  if type(s) ~= "string" then
+    return ""
+  end
+  local a = table.pack(...)
+  return (s:gsub("{(%d)}", function(k)
+    local v = a[tonumber(k)]
+    return v == nil and "" or tostring(v)
+  end))
+end
 
 -- pointer (mouse / free cursor): hover = the keys' selection, click = pick
 --@lib evt_menu_kit.lua#Pointer
@@ -179,7 +192,7 @@ local function UpdateGuideLine()
   local s = ""
   if a ~= nil then
     if not a.open then
-      s = string.format(TXT.LOCKED, a.name, a.hint)
+      s = Text(TXT.LOCKED, a.name, a.hint)
     elseif a.tagline ~= "" then
       s = string.format(TXT.GUIDE_TAG, a.name, a.tagline)
     else
@@ -191,7 +204,7 @@ local function UpdateGuideLine()
 end
 
 local function UpdateTitle()
-  funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], TXT.TITLE, 0)
+  funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], Text(TXT.TITLE), 0)
   funcLuaMenuCommand(C.SPRITE, L_HEADER, 3139293835 --[[#/menu/220_img/evt_rogue/evt_rogue_mode.g4tx]], 2610480106 --[[evt_rogue_mode_plate: INAROGUE's phoenix plate]], MODE_ICON_NODE, 0, 0)
 end
 
@@ -230,14 +243,14 @@ local function Decide()
   end
   if not a.open then
     funcLuaCommand(C.SE, SE_NG)
-    Message(string.format(TXT.LOCKED_MSG, a.name, a.hint))
+    Message(Text(TXT.LOCKED_MSG, a.name, a.hint))
     return
   end
   local code = Int(Call(RL.PICK, a.i))
   Log("pick", a.id, "code", code)
   if code ~= 0 then
     funcLuaCommand(C.SE, SE_NG)
-    Message(string.format(TXT.ERROR, code))
+    Message(Text(TXT.ERROR, code))
     return
   end
   funcLuaCommand(C.SE, SE_DECIDE)
@@ -303,7 +316,7 @@ end
 
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------
 function OnInit()
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_UI)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_MAP)
   ready = false

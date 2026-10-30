@@ -18,6 +18,12 @@ game = "Item.TestSeriesStat"
 name = "ItemTestSkill"
 game = "Transform.AbilityItemFilterPass"
 
+# void ItemFilterBlockFill(u8* block, const u8* params, u32 count) 0xD93330: fills the 0x38-byte block of ItemTestSkill
+# from 12-byte params (u8 list item type, u32 value at +4, u32 option at +8), with any framework patch of its rows
+[[VRFW.Function]]
+name = "ItemFilterBlockFill"
+game = "Technique.FilterBlockFill"
+
 # The shop tab builder 0x118A100 (CMenuListViewShop, 320 rows a tab): `test rbx,rbx; je; movzx r8d,word [rbx+3Eh];
 # movzx edx,word [rbx+3Ch]; call 0x118BCA0 (category, sub -> tab); cmp r9d,eax; je`. Live there: r13 = list view
 # (shop id +0x2040, slot type +0x2048, the «new» list +0x2054), rsi = row (item +4), r9d = the slot type being built

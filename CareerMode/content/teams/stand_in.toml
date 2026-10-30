@@ -1,0 +1,17 @@
+schema = "VRFW.team/2"
+# Career Mode › the two SLOT TEAMS of the career's matches (docs/framework/team-lineup.md «Stand-in team»): ordinary
+# teams with 19 player rows and the staff rows of their base. Right before a match the hub screen makes them stand in
+# for the two career clubs (CMND_VRFW_TEAM_STAND_IN: the club's name, crest, kit, formation, level and its WHOLE career
+# squad, signings included, starters and bench) and passes them to the match (teams.user.team / teams.rival.team), so
+# a squad larger than the club's own data rows plays complete. Listed nowhere: no free-match or Battle Bay row.
+default_lang = "en"
+
+[[team]]
+name = "career_user"
+key = "evt_career_user"
+based_on = "bbcr_legend_original_05_bb"   # a Battle Bay Deluxe club with 19 player rows (its players are placeholders)
+
+[[team]]
+name = "career_rival"
+key = "evt_career_rival"
+based_on = "bbcr_legend_original_05_bb"

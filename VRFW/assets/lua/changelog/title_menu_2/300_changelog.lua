@@ -28,7 +28,7 @@ local CLT = {
   PENDING = CLT_Crc("CMND_VRFW_CHANGELOG_PENDING"),   -- () -> the automatic sheet is due
   OPEN = CLT_Crc("CMND_VRFW_CHANGELOG_OPEN"),         -- (0 auto, languageCode) -> pages
   CLOSE = CLT_Crc("CMND_VRFW_CHANGELOG_CLOSE"),       -- () -> marks the versions seen
-  LANG = 477234096,                                  -- CMND_GET_LANGUAGE_CODE
+  LANG = VRFW_Cmd.GET_LANGUAGE_CODE,                                  -- CMND_GET_LANGUAGE_CODE
   TITLE = 3874253475,                                -- title_menu_2
   SHEET = 3492314538,                                -- title_tutorial_menu
   CURSOR = 24113234,                                 -- cmn05_01_coursor
@@ -58,15 +58,15 @@ local function CLT_Sheet()
   if type(pages) ~= "number" or pages < 1 then
     return
   end
-  CLT_WaitWhile(function() return funcLuaMenuCommand(2640875187, CLT.CURSOR) == false end)   -- cursor open
-  funcLuaMenuCommand(711242136, CLT.CURSOR, 0, false)
+  CLT_WaitWhile(function() return funcLuaMenuCommand(VRFW_Cmd.IS_OPEN_LAYER, CLT.CURSOR) == false end)   -- cursor open
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, CLT.CURSOR, 0, false)
   CLT_WaitWhile(function() return funcLuaCommand(667479479, CLT.TITLE) end)                 -- title loading
   funcLuaMenuCommand(1558704558, CLT.TITLE, false)                                          -- title input off
   funcLuaMenuCommand(1951894516, false)
-  funcLuaCommand(433545986, CLT.SHEET)                                                      -- CMND_OPEN_MENU_OBJECT
-  CLT_WaitWhile(function() return funcLuaMenuCommand(2231168902, CLT.SHEET) end)             -- until it is closed
+  funcLuaCommand(VRFW_Cmd.OPEN_MENU_OBJECT, CLT.SHEET)                                                      -- CMND_OPEN_MENU_OBJECT
+  CLT_WaitWhile(function() return funcLuaMenuCommand(VRFW_Cmd.IS_EXIST_MENU_OBJECT, CLT.SHEET) end)             -- until it is closed
   CLT_Call(CLT.CLOSE)
-  funcLuaMenuCommand(711242136, CLT.CURSOR, 0, true)
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, CLT.CURSOR, 0, true)
   funcLuaMenuCommand(1951894516, true)
   -- the title's input comes back right after this (StartTitleMenu2_Coroutine: menu active title_menu_2)
 end

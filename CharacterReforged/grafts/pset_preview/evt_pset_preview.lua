@@ -58,6 +58,9 @@ do
     P.S_TITLE = @crc:gtxt_sixthsense01@            -- the title mesh's texture slot (= its retail sprite)
     P.TITLE_SPR = {@crc:gtxt_parameters01@, @crc:evt_gtxt_hiper01@, @crc:evt_gtxt_psequip01@,
       @crc:gtxt_teampassives01@, @crc:gtxt_sixthsense01@}
+    -- the atlas of each title: the game's soccer11_05, or Character Reforged's own titles (evt_gtxt_hiper01 / _psequip01)
+    P.TX_OWN_TITLES = 3705043947                       -- #/menu/00_soccer/soccer11/character_reforged_titles/<LG>/character_reforged_titles.g4tx
+    P.TITLE_ATLAS = {P.TX_S1105, P.TX_OWN_TITLES, P.TX_OWN_TITLES, P.TX_S1105, P.TX_S1105}
     P.M_TITLES_OFF = {@crc:_gtxt_parameters01@, @crc:_gtxt_parameters02@, @crc:_gtxt_parameters01_rpg@,
       @crc:_gtxt_parameters02_rpg@, @crc:_gtxt_teampassives01@, @crc:_cmd_slot01_rpg@, @crc:_cmd_slot02_rpg@,
       @crc:_cmd_slot03_rpg@}
@@ -74,7 +77,7 @@ do
     P.RADAR_SCREEN_A = {162250999, 2091397827}
     P.RADAR_SCREEN_B = {2810680323, 1707903547}
     P.RADAR_MINE = {@crc:evt_psp_graph_base@, @crc:evt_psp_graph@}
-    P.ATTACH = 1774843228                          -- CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, name, on)
+    P.ATTACH = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@                          -- (layer, idx, name, on)
     P.radar_mine = false
     P.M_ARROWS = {@crc:_arrow01_l@, @crc:_arrow01_r@}
     P.T_KEYS = {@crc:_text_btn_l01@, @crc:_text_btn_r01@}
@@ -85,7 +88,7 @@ do
     P.K_RIGHT = 2075023265                         -- CMD_RIGHT
     -- the set's stats on the radar (v4): the screen's radar layers (soccer11_07 radar, its numbers, soccer11_06 base)
     P.GRAPH = {2334590304, 732343773, 32151736}
-    P.EQUIP_PARAM = 2207870782                     -- CMND_GET_EQUIP_PARAM (item, stat type 0..6) -> ok, value
+    P.EQUIP_PARAM = @crc:CMND_GET_EQUIP_PARAM@                     -- (item, stat type 0..6) -> ok, value
     -- equipment plates (soccer11_08): retail personal_plate_inc table t5
     P.TX_S1108 = 1676671618                        -- #/menu/00_soccer/soccer11/soccer11_08/<LG>/soccer11_08.g4tx
     P.S_EQ_CAT = 2346103015                        -- icon_equip01 (slot)
@@ -124,7 +127,7 @@ do
     end
 
     function P.Exists()
-      local ok, e = pcall(funcLuaMenuCommand, 262659071 --[[CMND_IS_EXIST_LAYER]], P.L_BASE)
+      local ok, e = pcall(funcLuaMenuCommand, @crc:CMND_IS_EXIST_LAYER@, P.L_BASE)
       return ok and e == true
     end
 
@@ -387,7 +390,7 @@ do
       for _, t in ipairs(P.T_KEYS) do
         funcLuaMenuCommand(2735666188 --[[text visible]], L, t, show_title, 0)
       end
-      funcLuaMenuCommand(C.SPRITE, L, P.TX_S1105, P.TITLE_SPR[P.page], P.S_TITLE, 0, 0)
+      funcLuaMenuCommand(C.SPRITE, L, P.TITLE_ATLAS[P.page], P.TITLE_SPR[P.page], P.S_TITLE, 0, 0)
       funcLuaMenuCommand(C.MESH_VISIBLE, L, P.M_TITLE, show_title, 0)
       funcLuaMenuCommand(C.MESH_VISIBLE, L, P.M_SIXTH_BASE, show_title and P.page == 5, 0)
       funcLuaMenuCommand(C.LAYER_VISIBLE, L, 0, true)
@@ -482,8 +485,8 @@ do
         t = P.GREY_ON .. t .. P.GREY_OFF
       end
       funcLuaMenuCommand(C.TEXT, L, P.T_PASSIVE, t, k)
-      funcLuaMenuCommand(1505208242 --[[text visible]], L, P.T_PASSIVE, true, k)
-      funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], L, k, 2274335502 --[[lock]], 0)
+      funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_VISIBLE@ --[[text visible]], L, P.T_PASSIVE, true, k)
+      funcLuaMenuCommand(@crc:CMND_PLAY_ANIME_TYPE@, L, k, 2274335502 --[[lock]], 0)
       funcLuaMenuCommand(C.LAYER_VISIBLE, L, k, true)
     end
 

@@ -1,0 +1,10 @@
+schema = "VRFW.sprite_redirect/1"
+# Synergies Reworked › the symbols of its new synergies live in its own atlas (content/images/menu/200_icon/
+# 30_icon_synergy/icon_synergy.toml); the game asks for them in icon_synergy.g4tx by the synergy's key.
+
+[[VRFW.SpriteRedirect]]
+name = "synergy_icons"
+atlas = "#/menu/200_icon/30_icon_synergy/icon_synergy.g4tx"
+own_atlas = "#/menu/200_icon/30_icon_synergy/synergies_reworked_icons.g4tx"
+sprites = ["sf11001", "sf11002", "sf11003", "sf11004", "sp11001"]   # Los cuatro magníficos, Japón en la sombra, Los chicos de la
+# Segunda Fase, Los cinco hermanos Blackley, Los cinco hermanos Whitely

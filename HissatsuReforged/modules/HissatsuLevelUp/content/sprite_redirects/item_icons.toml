@@ -1,0 +1,12 @@
+schema = "VRFW.sprite_redirect/1"
+# Hissatsu Level Up: the game draws an item's icon from its key prefix's sheet (`abl` -> icon_item01) by the key;
+# the two books' icons live in the mod's own atlas (content\images\menu\200_icon\02_icon_item\*.toml).
+
+[[VRFW.SpriteRedirect]]
+name = "book_icons"
+atlas = "#/menu/200_icon/02_icon_item/icon_item01.g4tx"
+own_atlas = "#/menu/200_icon/02_icon_item/hissatsu_level_up_item_icons.g4tx"
+sprites = [
+    "abl_ub000001",
+    "abl_ue000001",
+]

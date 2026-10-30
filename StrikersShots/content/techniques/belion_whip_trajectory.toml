@@ -1,0 +1,23 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Coletazo de Belion (Belion Whip, whs02720) and of the moves with the same cut-in,
+# Coletazo de Begiran (Begiran Whip, whs02721) and Coletazo de Pelion (Pelion Whip, whs02722), cut-in ev60_02720
+# (docs/framework/types/technique.md `trajectory`): one level line at 1.6 m from the kick point into the goal point
+# (owner 2026-10-24: horizontal, never rising or falling; never the game's own curved / arched path), whatever the
+# shot's length. The X blades reach ~1.3 m round the ball, so they stay over the pitch.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); straight = true: one straight line from the kick to the goal at that height.
+
+# Coletazo de Belion (whs02720).
+[[edit]]
+target = "whs02720"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }
+
+# Coletazo de Begiran (whs02721).
+[[edit]]
+target = "whs02721"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }
+
+# Coletazo de Pelion (whs02722).
+[[edit]]
+target = "whs02722"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }

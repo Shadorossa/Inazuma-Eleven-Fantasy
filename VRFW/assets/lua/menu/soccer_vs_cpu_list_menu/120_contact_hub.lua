@@ -11,9 +11,9 @@ if VRFW_Host ~= nil then
     KEY_SET = 1128821923,       -- crc32("vrfw_contact_set")
     KEY_PARENT = 2740862541,    -- crc32("vrfw_contact_parent")
     KEY_GAME = 3811836272,      -- crc32("vrfw_contact_game")
-    HUB = 1691394521,           -- CMND_VRFW_CONTACT_HUB (set) -> { menu, title }
-    FIND = 93238014,            -- CMND_VRFW_CONTACT_FIND (set, game) -> { map, zone }
-    FILTER = 2812667080,        -- CMND_VRFW_CONTACT_HUB_FILTER (set / 0): the list keeps only the teams with a page
+    HUB = VRFW_Cmd.VRFW_CONTACT_HUB,           -- CMND_VRFW_CONTACT_HUB (set) -> { menu, title }
+    FIND = VRFW_Cmd.VRFW_CONTACT_FIND,            -- CMND_VRFW_CONTACT_FIND (set, game) -> { map, zone }
+    FILTER = VRFW_Cmd.VRFW_CONTACT_HUB_FILTER,        -- CMND_VRFW_CONTACT_HUB_FILTER (set / 0): the list keeps only the teams with a page
     ORB = 4088477286,           -- vsroute01_06b_town_map_piece_clear_icon (a row's difficulty / clear capsule)
     YIELD_CALL = 830228314,     -- (menu, "global function", args...) in another menu's VM
     LIST = 1107559438,          -- team05_03_soccer_cpu_opponent_list
@@ -25,10 +25,9 @@ if VRFW_Host ~= nil then
     GUIDE = 3078308064, GUIDE_MESH = 378156699,      -- mainmenu90_05_content_guide_line01, _text_guide01
     HELP = 415711628,           -- vrfw_cm_hub_help «Elige un equipo para ver los jugadores que puedes fichar.»
     EMPTY = 1404656913,         -- vrfw_cm_hub_empty «Este equipo no tiene jugadores que fichar.»
-    P_HAS = 2947612279, P_GET = 3522198769, P_SET = 3860611758, P_CLEAR = 3363400568,
-    OPEN = 433545986, EXISTS = 2231168902, ACTIVE = 1558704558, VISIBLE = 2171393651, HIDE = 369172623,
-    SHOW = 66378409, SET_TEXT = 1083631230, TEXT_GET = 4074371074, FOCUS_DATA = 1666448199, LOG = 3661580131,
-    SE = 1917805374, SE_NG = 2086672038, MSG = 2289627655, MSG_WAIT = 2351835063,
+    OPEN = VRFW_Cmd.OPEN_MENU_OBJECT, EXISTS = VRFW_Cmd.IS_EXIST_MENU_OBJECT, ACTIVE = 1558704558, VISIBLE = 2171393651, HIDE = 369172623,
+    SHOW = 66378409, SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING, TEXT_GET = VRFW_Cmd.TEXT_GET, FOCUS_DATA = 1666448199, LOG = VRFW_Cmd.EVT_LOG,
+    SE = VRFW_Cmd.SND_PLAY_SE, SE_NG = 2086672038, MSG = 2289627655, MSG_WAIT = 2351835063,
     set = nil, title = "",
   }
   VRFW_ContactHub = CH
@@ -70,11 +69,11 @@ if VRFW_Host ~= nil then
     end
     log("open", game, tostring(found.map), tostring(found.zone))
     for _, k in ipairs({CH.KEY_SET, CH.KEY_PARENT, CH.KEY_GAME}) do
-      funcLuaCommand(CH.P_CLEAR, k)
+      VRFW_Param.Clear(k)
     end
-    funcLuaCommand(CH.P_SET, CH.KEY_SET, 0, CH.set, 1)
-    funcLuaCommand(CH.P_SET, CH.KEY_PARENT, 0, CH.MENU, 1)
-    funcLuaCommand(CH.P_SET, CH.KEY_GAME, 0, game, 1)
+    VRFW_Param.Set(CH.KEY_SET, CH.set)
+    VRFW_Param.Set(CH.KEY_PARENT, CH.MENU)
+    VRFW_Param.Set(CH.KEY_GAME, game)
     funcLuaMenuCommand(CH.ACTIVE, CH.MENU, false)
     funcLuaMenuCommand(CH.VISIBLE, CH.CURSOR, false)
     -- one title and one button guide on the page: this list's chrome and its opener's (the Mercado) are hidden while
@@ -112,9 +111,9 @@ if VRFW_Host ~= nil then
     id = "menu_engine.contact_hub", phase = "before",
     fn = function()
       CH.set, CH.title = nil, ""
-      if funcLuaCommand(CH.P_HAS, CH.KEY_HUB) == true then
-        CH.set = funcLuaCommand(CH.P_GET, CH.KEY_HUB)
-        funcLuaCommand(CH.P_CLEAR, CH.KEY_HUB)
+      if VRFW_Param.Has(CH.KEY_HUB) then
+        CH.set = VRFW_Param.Get(CH.KEY_HUB)
+        VRFW_Param.Clear(CH.KEY_HUB)
         if type(CH.set) ~= "number" or CH.set == 0 then
           CH.set = nil
         end
@@ -165,7 +164,7 @@ if VRFW_Host ~= nil then
     id = "menu_engine.contact_hub", phase = "after", priority = 300,
     fn = function(r, a1, a2)
       if CH.set ~= nil and type(a2) == "number" then
-        pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], CH.ORB, a2, false)
+        pcall(funcLuaMenuCommand, VRFW_Cmd.SET_LAYER_VISIBLE, CH.ORB, a2, false)
       end
     end,
   })

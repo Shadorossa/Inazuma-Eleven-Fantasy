@@ -6,6 +6,11 @@
 # strip keeps the retail white plate.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/00_soccer/character_reforged_own/character_reforged_soccer11_20.g4tx"
+name = "character_reforged_soccer11_20"
+size = [72, 92]
+
 [[recipe]]
 name = "pp_card"
 game = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"
@@ -18,7 +23,10 @@ from = "pp_card"
 ops = [{ op = "affine", mul = [0.78, 0.89, 1.0], add = [0, 0, 0] }]
 
 [[sprite]]
-atlas = "#/menu/00_soccer/soccer11/soccer11_20/soccer11_20.g4tx"
+atlas = "#/menu/00_soccer/character_reforged_own/character_reforged_soccer11_20.g4tx"
 name = "evt_pp_card_blue"
+texture = "character_reforged_soccer11_20"
+x = 0
+y = 0
 size = [72, 92]
 recipe = "pp_card_blue"

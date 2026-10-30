@@ -1,0 +1,27 @@
+schema = "VRFW.game/2"
+
+# Sprite redirects (scripts/sprite_redirects.lua; declarations: content/sprite_redirects/*.toml, VRFW.sprite_redirect/1).
+# A mod keeps sprites a game atlas is asked for in an atlas of its own; the game's sprite setter is pointed at that atlas
+# for those sprite names, natively, so code that names the game atlas (CMND_UPDATE_SYNERGY_ICON's widget, the Lua
+# sprite command) finds them without any entry added to the game atlas. Installed only when a mod declares one.
+
+# bool SetLayerSprite(menu, u32 atlas texture id, u32 sprite crc, u32 texture slot crc, u32 instance, u8 flag):
+# atlas (args[2]) rewritten to the mod's own atlas when (atlas, sprite) is declared.
+[[VRFW.Hook]]
+name = "SpriteRedirects.SetLayerSprite"
+game = "Menu.SetLayerSprite"
+kind = "function"
+args = ["ptr", "u32", "u32", "u32", "u32", "u8"]
+ret = "u64"
+apply = "script"
+
+[[VRFW.Hook.answer]]
+phase = "pre"
+table = "VRFW.SpriteRedirect"
+key = ["args[2]", "args[3]"]
+write = "args[2]"
+
+# (0) -> n; (i) -> path of the i-th own atlas: menu scripts load them (assets/lua/menu/_all/09_image_spill.lua).
+[[VRFW.Command]]
+name = "CMND_VRFW_SPRITE_REDIRECT_ATLASES"
+handler = "SpriteRedirects.Atlases"

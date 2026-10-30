@@ -22,7 +22,7 @@ local R = AuraPoints_BuffRow
 local CMD_TEAM_MAX = @crc:CMND_VRFW_FORM_TEAM_MAX@
 local CMD_PARTS = @crc:CMND_AURAPOINTS_ACTIVE_PARTS@ --[[the mod's parts this start: ok, peg, sp, pe]]
 local PORTRAIT = 1535165083 --[[soccer00_53_aura_buff_chara_icon]]
-local CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
+local CMND_IS_OPEN = @crc:CMND_IS_OPEN_LAYER@
 local MEMBERS = 29 --[[the retail member loop of UpdateAuraBuffCharaIcon (0..28)]]
 R.RESWAP_FRAMES = 30 --[[a second face swap of one instance within this many frames is redone this many frames later]]
 R.frame = R.frame or 0
@@ -150,8 +150,8 @@ if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrappe
       local l2 = IsInvalidSoccerCharaHdl(aura_chara_hdl) == false
       local flag = false
       if t5[i2 + 1].auraCharaHdl ~= aura_chara_hdl or t5[i2 + 1].auraAttr ~= aura_attr then
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], n7, i2, l2)
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], n8, i2, l2)
+        funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, n7, i2, l2)
+        funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, n8, i2, l2)
         flag = true
       end
       t5[i2 + 1].auraCharaHdl = aura_chara_hdl
@@ -169,7 +169,7 @@ if t5 ~= nil and type(retail_update) == "function" and retail_update ~= R.wrappe
         AuraPoints_BuffRow.SwapFace(aura_chara_hdl, n7, i2, is_aura_skill_metamorphosed)
       end
       local l3 = 68 * n6
-      funcLuaMenuCommand(1389957207 --[[CMND_SET_LAYER_LOCAL_POS]], n7, l3, 0, 0, i2)
+      funcLuaMenuCommand(@crc:CMND_SET_LAYER_LOCAL_POS@, n7, l3, 0, 0, i2)
       n6 = n6 + 1
     end
   end

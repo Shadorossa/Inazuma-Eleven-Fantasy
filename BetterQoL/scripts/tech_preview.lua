@@ -21,12 +21,11 @@ BetterQoL = BetterQoL or {}
 BetterQoL.TechPreview = BetterQoL.TechPreview or {}
 local TP = BetterQoL.TechPreview
 
-local function info(...) VRFW.log("tech_preview:", ...) end
-local function warn(...) VRFW.warn("tech_preview:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("tech_preview")
 
-local band = bit32.band
-local function u32(v) return band(tonumber(v) or 0, 0xFFFFFFFF) end
-local function hex(v) v = u32(v); return string.format("0x%04X%04X", math.floor(v / 65536), v % 65536) end
+local Id = require "VRFW/lib/ids"
+local u32, hex = Id.u32, Id.hex
 
 -- ---------------------------------------------------------------------------------------- settings
 

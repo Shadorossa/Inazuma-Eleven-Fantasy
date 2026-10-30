@@ -6,7 +6,7 @@
 -- cannot tell (no slot service): the clause is not checked, as the mode engine did when it asked the command itself.
 -- Only a definition: nothing runs at chunk load.
 function VRFW_STORY_PROVIDER()
-  local ok, _, _, cleared = pcall(funcLuaCommand, 1176769167 --[[CMND_VRFW_STORY_START_GET]])
+  local ok, _, _, cleared = pcall(funcLuaCommand, 1176769167)
   if not ok or cleared == nil then
     return nil
   end

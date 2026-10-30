@@ -1,0 +1,46 @@
+schema = "VRFW.team/2"
+# «Punishment»: ported from the earlier Inazuma Fantasy (research/mods/_aside/InazumaFantasy/teams/20_ief/0004_punishment.toml).
+# Same key, so the team id stays crc32 of it. Members keep their cards, slots, numbers and rarity steps; the
+# earlier mod's own technique loadouts are left out (each member plays its card's own learn list).
+# The match level and classes come from the free-match section that lists the team (content/teams/free_match_section.toml).
+
+[[team]]
+name = "ct_ft_punishment"                 # Punishment
+key = "evt_ct_ft_punishment"
+based_on = "pltm_cro_ie3_18"              # Fantasy Eleven frame, kit, emblem and tactics
+level = 1
+formation = 0x0A75FAB9                    # 4-5-1 Equilibrio
+roster = "exact"
+card_moves = 6
+member = [
+  { card = 0x7AA4042A, slot = 0, number = 1 },                                      # Sylvester Bullet · GK
+  { card = 0x7DA55255, slot = 1, number = 2 },                                      # Ough Cee · DF
+  { card = 0x1B024B55, slot = 2, number = 3 },                                      # Zetoh · DF
+  { card = 0xADAD7D88, slot = 3, number = 4 },                                      # Yuh · DF
+  { card = 0xC2D4BBF7, slot = 4, number = 5 },                                      # Hugo Severian · DF
+  { card = 0x9AED3C5A, slot = 5, number = 6 },                                      # Cate Heckel · MF
+  { card = 0xC19CB721, slot = 6, number = 7 },                                      # Rodh · MF
+  { card = 0xB913E140, slot = 7, number = 8 },                                      # Mystral Callous · MF
+  { card = 0x603BE105, slot = 8, number = 9 },                                      # Drakul Desmodus · FW, 4-5-1 midfield line
+  { card = 0x9E23A289, slot = 9, number = 10, captain = true },                     # Byron Love · FW, 4-5-1 midfield line
+  { card = 0xE0AA5516, slot = 10, number = 11 },                                     # Katya Felis · FW
+  { card = 0xD35F77D7, slot = 20, number = 0 },                                      # Alice Rendell · manager
+]
+  [team.text.en]
+  name = "Punishment"
+  [team.text.es]
+  name = "Punishment"
+  [team.text.fr]
+  name = "Punishment"
+  [team.text.de]
+  name = "Punishment"
+  [team.text.it]
+  name = "Punishment"
+  [team.text.pt]
+  name = "Punishment"
+  [team.text.ja]
+  name = "Punishment"
+  [team.text.zh_hans]
+  name = "Punishment"
+  [team.text.zh_hant]
+  name = "Punishment"

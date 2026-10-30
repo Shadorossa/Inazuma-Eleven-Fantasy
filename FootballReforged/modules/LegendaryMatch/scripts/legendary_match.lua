@@ -20,18 +20,18 @@ local SETTINGS = {
 }
 LegendaryMatch.settings = SETTINGS
 
--- game layout: soccer actors, the match info, the focus manager (docs/game/mechanics/cards.md §2.2)
-local ACTOR_COUNT, ACTOR_STRIDE, ACTOR_HANDLE, ACTOR_TEAM = 0x3A, 0x570, 0x94, 0xD0
-local MATCH_USER_TEAM = 0x2C29
-local DUEL_RESULT_KIND, DUEL_KIND_POWER = 0xB08, 6
-local REQUEST_OFFENDER = 4
+-- game layout (docs/game/mechanics/cards.md §2.2): the actor table through the framework (VRFW/lib/actors); the match
+-- info, the focus manager and the foul request as structs of content\game\legendary_match.toml
+local Actors = require "VRFW/lib/actors"
+local DUEL_KIND_POWER = 6
 
-local band = bit32.band
-
-local function read(kind, at)
+-- one field of a [[VRFW.Struct]] of content\game\legendary_match.toml at `at`; nil when not readable
+local function struct_field(struct, at, name)
   if not at or at < 0x10000 then return nil end
-  local ok, v = pcall(VRFW.mem.read, kind, at)
-  if ok then return v end
+  local ok, s = pcall(VRFW.mem.struct, struct, at)
+  if not ok then return nil end
+  local ok_value, v = pcall(function() return s[name] end)
+  if ok_value then return v end
   return nil
 end
 
@@ -42,21 +42,17 @@ local function game_global(name)
 end
 
 local function team_of(handle)
-  local index = band(handle or 0, 0xFF)
-  local actors = game_global("Match.SoccerActors.ViaSkillUsed")
-  if handle == 0 or index >= ACTOR_COUNT or not actors then return nil end
-  local actor = actors + index * ACTOR_STRIDE
-  if read("u32", actor + ACTOR_HANDLE) ~= handle then return nil end
-  return read("u8", actor + ACTOR_TEAM)
+  local a = Actors.of(handle)
+  return a and a.team or nil
 end
 
 VRFW.on("hook:LegendaryMatch.FoulRate:post", function(ev)
   local duel = game_global("legendary_duel")
-  if not duel or read("u8", duel + DUEL_RESULT_KIND) ~= DUEL_KIND_POWER then return nil end
+  if not duel or struct_field("LegendaryDuel", duel, "result_kind") ~= DUEL_KIND_POWER then return nil end
   local match = game_global("legendary_match_info")
-  local user = match and read("u8", match + MATCH_USER_TEAM)
+  local user = match and struct_field("LegendaryMatchInfo", match, "user_team")
   if user ~= 0 and user ~= 1 then return nil end
-  local offender = read("u32", ev.args[1] + REQUEST_OFFENDER)
+  local offender = struct_field("LegendaryFoulRequest", ev.args[1], "offender")
   local team = team_of(offender)
   if team == nil or team == user then return nil end
   local rate = SETTINGS.rival_power_action_foul_rate

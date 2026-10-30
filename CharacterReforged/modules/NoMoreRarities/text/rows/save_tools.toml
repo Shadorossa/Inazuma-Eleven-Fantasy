@@ -1,33 +1,71 @@
 # No More Rarities › its action of the VR-Framework's save adjust (Options › «Ajustar save», content\save_adjust\
 # no_more_rarities.toml, run by Character Reforged's scripts\save_tools.lua; docs/framework/save-adjust.md): title,
-# description (shown in the question before the action) and result (%d = the count the action answers). Rows of
+# description and result (%d = the count the action answers). The title is the confirmation line: one per value of
+# the option «Cartas sin aspecto de rareza» (content\duplicate_rules\no_more_rarities.toml `save_adjust_label`; the
+# first row = «Solo las normales» and the fallback). Rows of
 # menu_text, read by id = crc32(row id).
 schema = "VRFW.text/2"
 table = "menu_text"
 
 [[row]]
 id = "no_more_rarities_save_tools_normal_rarity"
-es = "Igualar la rareza de los jugadores"
-en = "Same rarity for every player"
-fr = "Même rareté pour tous les joueurs"
-de = "Gleiche Seltenheit für alle Spieler"
-it = "Stessa rarità per tutti i giocatori"
-pt = "Mesma raridade para todos os jogadores"
-ja = "選手のレア度をそろえる"
-zh_hans = "统一球员稀有度"
-zh_hant = "統一球員稀有度"
+es = "Pasar a 5★ las cartas normales"
+en = "Turn the normal cards into 5★ cards"
+fr = "Passer les cartes normales en 5★"
+de = "Normale Karten zu 5★-Karten machen"
+it = "Portare a 5★ le carte normali"
+pt = "Passar a 5★ as cartas normais"
+ja = "通常カードを★5にする"
+zh_hans = "将普通卡变为5★"
+zh_hant = "將普通卡變為5★"
+
+[[row]]
+id = "no_more_rarities_save_tools_normal_rarity_idol"
+es = "Pasar a 5★ las cartas normales e Ídolo"
+en = "Turn the normal and Idol cards into 5★ cards"
+fr = "Passer les cartes normales et Idole en 5★"
+de = "Normale und Idol-Karten zu 5★-Karten machen"
+it = "Portare a 5★ le carte normali e Idolo"
+pt = "Passar a 5★ as cartas normais e Ídolo"
+ja = "通常カードとアイドルカードを★5にする"
+zh_hans = "将普通卡和偶像卡变为5★"
+zh_hant = "將普通卡和偶像卡變為5★"
+
+[[row]]
+id = "no_more_rarities_save_tools_normal_rarity_diamond"
+es = "Pasar a 5★ las cartas normales y Diamante"
+en = "Turn the normal and Diamond cards into 5★ cards"
+fr = "Passer les cartes normales et Diamant en 5★"
+de = "Normale und Diamantkarten zu 5★-Karten machen"
+it = "Portare a 5★ le carte normali e Diamante"
+pt = "Passar a 5★ as cartas normais e Diamante"
+ja = "通常カードとダイヤモンドカードを★5にする"
+zh_hans = "将普通卡和钻石卡变为5★"
+zh_hant = "將普通卡和鑽石卡變為5★"
+
+[[row]]
+id = "no_more_rarities_save_tools_normal_rarity_all"
+es = "Pasar a 5★ las cartas normales, Ídolo y Diamante"
+en = "Turn the normal, Idol and Diamond cards into 5★ cards"
+fr = "Passer les cartes normales, Idole et Diamant en 5★"
+de = "Normale, Idol- und Diamantkarten zu 5★-Karten machen"
+it = "Portare a 5★ le carte normali, Idolo e Diamante"
+pt = "Passar a 5★ as cartas normais, Ídolo e Diamante"
+ja = "通常・アイドル・ダイヤモンドのカードを★5にする"
+zh_hans = "将普通卡、偶像卡和钻石卡变为5★"
+zh_hant = "將普通卡、偶像卡和鑽石卡變為5★"
 
 [[row]]
 id = "no_more_rarities_save_tools_normal_rarity_desc"
-es = "Todas las cartas normales pasan a 5★ Leyenda. Las cartas Ídolo (Héroe) y Diamante solo cambian si el ajuste «Rarezas eliminadas» de No More Rarities también elimina su rareza."
-en = "Every normal card becomes a 5★ Legend. Idol (Hero) and Diamond cards change only if No More Rarities' «Rarities removed» setting removes their rarity too."
-fr = "Toutes les cartes normales deviennent Légende 5★. Les cartes Idole (Héros) et Diamant ne changent que si le réglage « Raretés supprimées » de No More Rarities supprime aussi leur rareté."
-de = "Alle normalen Karten werden zur 5★-Legende. Idol- (Helden-) und Diamantkarten ändern sich nur, wenn die Einstellung „Entfernte Seltenheiten“ von No More Rarities auch ihre Seltenheit entfernt."
-it = "Tutte le carte normali diventano Leggenda 5★. Le carte Idolo (Eroe) e Diamante cambiano solo se l'impostazione «Rarità rimosse» di No More Rarities rimuove anche la loro rarità."
-pt = "Todas as cartas normais passam a Lenda 5★. As cartas Ídolo (Herói) e Diamante só mudam se a definição «Raridades removidas» do No More Rarities também remover a sua raridade."
-ja = "通常カードをすべて★5レジェンドにします。アイドル（ヒーロー）とダイヤモンドのカードは、No More Raritiesの「削除するレアリティ」でそれらも外す場合だけ変わります。"
-zh_hans = "所有普通卡变为5★传奇。偶像（英雄）卡和钻石卡只有在No More Rarities的「移除的稀有度」也移除其稀有度时才会改变。"
-zh_hant = "所有普通卡變為5★傳奇。偶像（英雄）卡和鑽石卡只有在No More Rarities的「移除的稀有度」也移除其稀有度時才會改變。"
+es = "Las cartas normales pasan a 5★. Las cartas Ídolo y Diamante cuya rareza quita el ajuste «Cartas sin aspecto de rareza» pasan a la carta 5★ de su personaje; si el club ya lo tiene, se juntan en la mejor copia."
+en = "Normal cards become 5★. Idol and Diamond cards whose rarity the «Cards without rarity look» setting removes become their character's 5★ card; if the club already has him, they are merged into the best copy."
+fr = "Les cartes normales passent en 5★. Les cartes Idole et Diamant dont le réglage « Raretés supprimées » retire la rareté deviennent la carte 5★ de leur personnage ; si le club l'a déjà, elles sont fusionnées dans la meilleure copie."
+de = "Normale Karten werden zu 5★. Idol- und Diamantkarten, deren Seltenheit die Einstellung „Entfernte Seltenheiten“ entfernt, werden zur 5★-Karte ihres Charakters; hat der Klub ihn schon, werden sie in die beste Kopie zusammengeführt."
+it = "Le carte normali diventano 5★. Le carte Idolo e Diamante la cui rarità è rimossa dall'impostazione «Rarità rimosse» diventano la carta 5★ del loro personaggio; se il club lo ha già, vengono unite nella copia migliore."
+pt = "As cartas normais passam a 5★. As cartas Ídolo e Diamante cuja raridade a definição «Raridades removidas» retira passam à carta 5★ do seu personagem; se o clube já o tiver, juntam-se na melhor cópia."
+ja = "通常カードは★5になります。「削除するレアリティ」で外されたアイドル・ダイヤモンドのカードはそのキャラの★5カードになり、クラブに同じキャラがいれば一番良いカードにまとめます。"
+zh_hans = "普通卡变为5★。被「移除的稀有度」移除稀有度的偶像卡和钻石卡变为该角色的5★卡；若俱乐部已有该角色，则合并到最好的那张。"
+zh_hant = "普通卡變為5★。被「移除的稀有度」移除稀有度的偶像卡和鑽石卡變為該角色的5★卡；若俱樂部已有該角色，則合併到最好的那張。"
 
 [[row]]
 id = "no_more_rarities_save_tools_normal_rarity_done"

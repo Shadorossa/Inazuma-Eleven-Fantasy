@@ -9,30 +9,26 @@
 
 Archetype = Archetype or {}
 
-local function info(...) VRFW.log("archetype:", ...) end
-local function warn(...) VRFW.warn("archetype:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("archetype")
 
 local INVALID = 0xC4DC849A
 local LOADER_EVENT = 951
-local ACTOR_STRIDE, ACTOR_MAX, ACTOR_HDL, ACTOR_TEAM, UNIT_CHARA = 0x570, 0x3A, 0x94, 0xD0, 0x370
 local N_SLOTS = 5
 local N_GAME = 6                     -- the game's builds 0-5; 6 = «Libertad» (Freedom)
 local FREEDOM = 6
 local MAX_NUMBER = 63
-local LIVE = { [9] = true, [14] = true, [15] = true, [16] = true }
 local EVENTS = { shot_on_target = true, goal = true, conceded = true, shot = true, no_shot = true }
 local EVENT_CODE = { [1] = "shot_on_target", [2] = "goal", [3] = "shot" }
 local REFRESH_S = 3.0
 local SOURCE = "archetype"
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v ~= v then return 0 end
-  v = math.floor(v)
-  return v % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
+local Actors = require "lib/actors"
+local Live = require "VRFW/lib/match_live"
 
-local function crc(s) return u32(VRFW.ui.crc32(s)) end
+local crc = VRFW.crc32
 
 -- "0x…" / decimal / a number → the number, any other text → crc32 of it
 local function id_of(v)
@@ -505,16 +501,12 @@ end
 
 -- every actor on the pitch: { hdl, side, ids }
 local function lineup()
-  local base = VRFW.game.arch_actors()
-  if not base or base == 0 then return nil end
+  if Actors.base() == nil then return nil end
   local v = {}
-  for i = 0, ACTOR_MAX - 1 do
-    local actor = base + i * ACTOR_STRIDE
-    local hdl = rd("u32", actor + ACTOR_HDL) or 0
-    local side = rd("u8", actor + ACTOR_TEAM) or 0xFF
-    if hdl ~= 0 and side <= 1 and VRFW.actor(hdl) ~= nil then
-      local ok, unit = pcall(VRFW.call, "ArchActorUnit", actor)
-      local chara = (ok and type(unit) == "number" and unit >= 0x10000) and (rd("u32", unit + UNIT_CHARA) or 0) or 0
+  for _, a in ipairs(Actors.list()) do
+    local hdl, side = a.handle, a.team
+    if side <= 1 and VRFW.actor(hdl) ~= nil then
+      local chara = Actors.chara(a.address)
       local c = ID_CACHE[hdl]
       if not c or c.chara ~= chara then
         c = { chara = chara, ids = slot_ids(chara) or {} }
@@ -672,12 +664,13 @@ if ON then
   VRFW.on("tick", function(ev)
     local m = ev.match or {}
     local dt = tonumber(m.dt) or 0
-    if LIVE[m.soccer_state or 0] and dt > 0 and dt < 1 then
+    local live_dt = Live.live_dt(m)
+    if live_dt > 0 then
       for side = 0, 1 do
         local s = SIDE[side]
         local x = s and DECL[s.build]
         if x then
-          s.idle = s.idle + dt
+          s.idle = s.idle + live_dt
           for _, r in ipairs(x.rules) do
             if r.on == "no_shot" and s.idle >= r.every then
               s.idle = s.idle - r.every

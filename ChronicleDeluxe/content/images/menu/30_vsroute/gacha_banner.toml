@@ -2,10 +2,20 @@
 # `banner`; VRFW docs/framework/gacha.md): the gacha creature's head where the «MI EQUIPO» banner shows the team's
 # picture (texture slot myteam_dmy01 of vsroute01_17, a square picture seen through the banner's mask band, y 39-61 %).
 # Built by research/scripts/chronicle_deluxe_gacha_icon_build.py's cut-out from the owner's local reference picture.
+# In the mod's own atlas chronicle_deluxe_gacha_banner (never the game's vsroute01_17): the gacha panel asks
+# vsroute01_17 for it by name; content\sprite_redirects\gacha_banner.toml serves it from here.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_gacha_banner.g4tx"
+name = "chronicle_deluxe_gacha_banner"
+size = [512, 512]
+
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_17/<LG>/vsroute01_17.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_gacha_banner.g4tx"
 name = "chronicle_deluxe_gacha_banner01"
+texture = "chronicle_deluxe_gacha_banner"
+x = 0
+y = 0
 png = "gacha_banner/chronicle_deluxe_gacha_banner01.png"
 size = [512, 512]

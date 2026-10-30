@@ -5,6 +5,7 @@
 --   CMND_VRFW_RANDOM_TEAM_PREVIEW(rule, seed, node, stage, slot) -> the same, nothing written
 --   CMND_VRFW_RANDOM_TEAM_MEMBER(i) -> card id, roster slot, card position (member i, 1-based, of the last build / preview)
 --   CMND_VRFW_RANDOM_TEAM_LOOK()     -> name text, emblem, kit, formation, theme element (the last build / preview)
+--   CMND_VRFW_RANDOM_TEAM_LOOK_OF(rule, seed, node, stage) -> name text, emblem, kit, name text key (no build)
 --   CMND_VRFW_RANDOM_TEAM_INFO(rule) -> ok, version, slot teams, stage rows
 --   CMND_VRFW_RANDOM_TEAM_RESTORE(team) -> ok, rows: the slot team's placeholders back (team 0 = every slot touched)
 
@@ -24,15 +25,10 @@ local SCHEMA = "VRFW.random_team/1"
 
 local FORMATION_STEM = "data/common/gamedata/formation/formation_config"
 
-local function info(...) VRFW.log("random_team:", ...) end
-local function warn(...) VRFW.warn("random_team:", ...) end
-local function err(...) VRFW.error("random_team:", ...) end
+require "VRFW/lib/basics"
+local info, warn, err = VRFW.logger("random_team")
 
-local function crc(s)
-  local ok, v = pcall(VRFW.crc32, s)
-  if ok and type(v) == "number" then return u32(v) end
-  return u32(VRFW.ui.crc32(s))
-end
+local crc = VRFW.crc32
 
 -- a declared id: a number, "0x…", decimal text, `<mod>.<name>` (a mod's team for kind `team`, else the id space of
 -- `kind`, else its crc32), any other text = its crc32 (the game's key hash)
@@ -117,11 +113,7 @@ local function full(mod, name)
   return mod .. "." .. name
 end
 
-local function list_of(v)
-  if v == nil then return {} end
-  if type(v) ~= "table" then return { v } end
-  return v
-end
+local function list_of(v) return VRFW.value.list(v, {}) end
 
 -- the keys of a number set (C.num_set) as a sorted list; nil for none
 local function keys_of(set)
@@ -260,6 +252,7 @@ local function load_decls()
               -- an entry of a mod that is not active: left out
             else
               look.entries[#look.entries + 1] = { n = k, name = e.Text ~= nil and id_of("text", e.Text) or nil,
+                text = type(e.Text) == "string" and e.Text or nil,
                 emblem = e.Emblem ~= nil and id_of("emblem", e.Emblem) or nil,
                 kit = e.Kit ~= nil and id_of("kit", e.Kit) or nil,
                 team = e.Team ~= nil and id_of("team", e.Team) or nil }
@@ -599,6 +592,36 @@ local function node_id(v)
   return 0
 end
 
+-- the presentation entry of `rule` for these seed words (name text, emblem, kit over `own`), drawn from its look pool
+local function draw_look(rule, words, own)
+  local look = { name = own.name, emblem = own.emblem, kit = own.kit, n = 0 }
+  local lp = rule.look and LOOKS[rule.look]
+  if rule.look and not lp then warn(rule.key .. ": look pool " .. rule.look .. " not declared") end
+  if lp and #lp.entries > 0 then
+    local look_rng = C.rng(words, 2)
+    local e = lp.entries[look_rng:below(#lp.entries) + 1]
+    look.n, look.text = e.n, e.text
+    if e.team then
+      local trec = find_team(e.team)
+      if trec then
+        local t = VRFW.mem.struct("RandomTeamRecord", trec)
+        look.name, look.emblem, look.kit = u32(t.NameText), u32(t.Emblem), u32(t.Uniform)
+      else
+        warn(rule.key .. ": look entry #" .. e.n .. ": team " .. hex(e.team) .. " not found")
+      end
+    end
+    look.name = e.name or look.name
+    look.emblem = e.emblem or look.emblem
+    look.kit = e.kit or look.kit
+  end
+  return look
+end
+
+local function seed_words(rule, seed, node, stage)
+  local hi, lo = C.split(seed)
+  return { hi, lo, node_id(node), rule.crc, rule.version, stage }, hi, lo
+end
+
 -- build (write = false: preview). Returns ok, team, level, members, why
 local function build(rule_arg, seed, node, stage, slot, write)
   local rule = find_rule(rule_arg)
@@ -632,11 +655,9 @@ local function build(rule_arg, seed, node, stage, slot, write)
     return 0, team, 0, 0, perr
   end
   local st = stage_of(rule, stage)
-  local hi, lo = C.split(seed)
   local nid = node_id(node)
-  local words = { hi, lo, nid, rule.crc, rule.version, stage }
+  local words, hi, lo = seed_words(rule, seed, node, stage)
   local rng = C.rng(words, 1)
-  local look_rng = C.rng(words, 2)
   -- formation: one of the stage's / rule's that fits the slot team's starters, else the slot team's own
   local form_id, classes
   local fits = {}
@@ -698,25 +719,7 @@ local function build(rule_arg, seed, node, stage, slot, write)
   end
   table.sort(members, function(a, b) return a.row.slot < b.row.slot end)
   -- presentation
-  local look = { name = s.own.name, emblem = s.own.emblem, kit = s.own.kit, n = 0 }
-  local lp = rule.look and LOOKS[rule.look]
-  if rule.look and not lp then warn(rule.key .. ": look pool " .. rule.look .. " not declared") end
-  if lp and #lp.entries > 0 then
-    local e = lp.entries[look_rng:below(#lp.entries) + 1]
-    look.n = e.n
-    if e.team then
-      local trec = find_team(e.team)
-      if trec then
-        local t = VRFW.mem.struct("RandomTeamRecord", trec)
-        look.name, look.emblem, look.kit = u32(t.NameText), u32(t.Emblem), u32(t.Uniform)
-      else
-        warn(rule.key .. ": look entry #" .. e.n .. ": team " .. hex(e.team) .. " not found")
-      end
-    end
-    look.name = e.name or look.name
-    look.emblem = e.emblem or look.emblem
-    look.kit = e.kit or look.kit
-  end
+  local look = draw_look(rule, words, s.own)
   -- write
   local wrote = 0
   if write then
@@ -783,6 +786,20 @@ end
 function RandomTeam.Look()
   if not LAST then return 0, 0, 0, 0, 0 end
   return LAST.look.name, LAST.look.emblem, LAST.look.kit, LAST.formation, LAST.theme
+end
+
+-- the name text, emblem, kit and name text key ("" = none) a build of (rule, seed, node, stage) will show, without
+-- drawing the roster or touching a slot team (a map shows a node's rival before the match). 0 = the slot team's own.
+function RandomTeam.LookOf(rule_arg, seed, node, stage)
+  local ok, rule = pcall(find_rule, rule_arg)
+  if not ok or not rule then return 0, 0, 0, "" end
+  local st = floor(tonumber(stage) or 1)
+  local okl, look = pcall(draw_look, rule, (seed_words(rule, seed, node, st)), { name = 0, emblem = 0, kit = 0 })
+  if not okl then
+    err("look of " .. tostring(rule_arg) .. " failed: " .. tostring(look))
+    return 0, 0, 0, ""
+  end
+  return look.name or 0, look.emblem or 0, look.kit or 0, look.text or ""
 end
 
 function RandomTeam.Info(rule)

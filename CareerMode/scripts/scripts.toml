@@ -1,0 +1,12 @@
+schema = "VRFW.script/1"
+
+# One entry script: career.lua (the career commands, its save blob career.json) requires lib/*.lua. The club pick
+# reads every team declaration of the source mods (config.toml [teams]) and every card of the game (the squads): the
+# widest budget. `flags`: the trophy signal of a won final (config.toml [match] trophy_signal).
+[settings]
+budget = 5000000
+memory_kb = 65536
+allow = ["save", "flags"]
+
+[[script]]
+file = "career.lua"

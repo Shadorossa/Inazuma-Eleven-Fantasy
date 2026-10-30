@@ -1,0 +1,10 @@
+schema = "VRFW.game/2"
+
+# The story-complete start's data (content\story_start\*.toml), served by scripts\story_start.lua. Game Lua side:
+# assets\lua\menu\_all\88_story.lua (VRFW_Story.Data, VRFW_Story.CompleteFlags) and the graft story_start.
+
+# () -> the data table (flags, byte flags, help, quests, search words, story matches, items, team set, roster, scouts,
+# normal copies, characters, trophies, level, phase); nothing when no active mod declares [[VRFW.StoryStart]]
+[[VRFW.Command]]
+name = "CMND_VRFW_STORY_START_DATA"
+handler = "StoryStart.Data"

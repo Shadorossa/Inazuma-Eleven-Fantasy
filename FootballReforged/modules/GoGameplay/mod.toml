@@ -2,14 +2,14 @@ id = "GoGameplay"
 former_ids = ["go_gameplay"]
 # name / description: the English fallback; the card on Football Reforged's page shows the text keys mod_name /
 # mod_description in the game's language (text\keys.toml)
-name = "GO Gameplay"
-version = "1.2.0"
+name = "GO-style duels"
+version = "1.2.1"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Inazuma Eleven GO style duels. In a focus battle against the CPU nobody moves and there is no countdown: you pick a special move or a side (go left / go right, block left / block right). The CPU answers with a special move of its own or a side: same side, the defender wins; opposite sides, the attacker; its special move wins unless your power beats it by a margin (config.toml). No sliding tackles in the match, for you and the CPU."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-22"
+updated = "2026-10-29"
 # This mod's own names (TOML keys GoGameplay.X, rule ids go_gameplay.*); never VRFW.
 prefix = "GoGameplay"
 folder = "GoGameplay"

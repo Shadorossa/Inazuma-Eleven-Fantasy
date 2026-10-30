@@ -23,15 +23,15 @@
 if VRFW_INPUT_TRACE == nil then
   local T = {on = true, log = false, MAX = 400, n = 0, frame = 0, last = {}, installed = false, vm = "?",
     watch = 0, WATCH = 3600, EVERY = 60, owners = nil, corner = nil,
-    DUMP = 3276827605 --[[CMND_VRFW_MENU_INPUT_DUMP]], GPOS = 4002164178, IS_VISIBLE = 1262717583, LAYER_NUM = 1175615627,
+    DUMP = VRFW_Cmd.VRFW_MENU_INPUT_DUMP, GPOS = 4002164178, IS_VISIBLE = VRFW_Cmd.IS_LAYER_VISIBLE, LAYER_NUM = VRFW_Cmd.GET_CREATE_LAYER_NUM,
     CORNER = {"evt_topbar_back", "evt_topbar_plate", "evt_topbar_icon", "evt_topbar_hint", "evt_topbar_drop_plate",
       "evt_topbar_drop_icon", "evt_topbar_drop_label",
       "vrfw_cm_bust", "vrfw_cm_busticon", "mainmenu01_10_return_arrow_button_guide"},
-    MENU = {[1558704558] = "menu_active", [2171393651] = "layer_input", [3518307824] = "ctrl_focus",
-      [1951894516] = "free_cursor", [879521569] = "virtual_mouse", [369172623] = "menu_hide", [66378409] = "menu_show",
+    MENU = {[1558704558] = "menu_active", [2171393651] = "layer_input", [VRFW_Cmd.SET_ENABLE_CTRL_FOCUS] = "ctrl_focus",
+      [1951894516] = "free_cursor", [VRFW_Cmd.SET_ENABLE_FREE_CURSOR_FOR_VIRTUAL_MOUSE] = "virtual_mouse", [369172623] = "menu_hide", [66378409] = "menu_show",
       [438207617] = "input_ctrl", [2515285936] = "input_switch", [3694710990] = "finalize_menu"},
-    CMD = {[1813741958] = "cursor_control", [320421347] = "close_menu", [433545986] = "open_menu",
-      [3964465990] = "temp_flag", [2515285936] = "input_switch", [2770980979] = "pause_input"},
+    CMD = {[1813741958] = "cursor_control", [VRFW_Cmd.CLOSE_MENU_OBJECT] = "close_menu", [VRFW_Cmd.OPEN_MENU_OBJECT] = "open_menu",
+      [VRFW_Cmd.SET_TEMP_BIT_FLAG] = "temp_flag", [2515285936] = "input_switch", [2770980979] = "pause_input"},
     ring = {}, RING = 50}
   VRFW_INPUT_TRACE = T
 
@@ -55,7 +55,7 @@ if VRFW_INPUT_TRACE == nil then
       return
     end
     T.n = T.n + 1
-    pcall(T.raw_cmd, 3661580131, "VRFW input", T.vm, "f" .. T.frame, what, sig)
+    pcall(T.raw_cmd, VRFW_Cmd.EVT_LOG, "VRFW input", T.vm, "f" .. T.frame, what, sig)
   end
 
   -- the engine's input owners (logged when they changed) and our layers in the top-left corner
@@ -64,8 +64,8 @@ if VRFW_INPUT_TRACE == nil then
     if ok and type(list) == "string" and list ~= T.owners then
       T.owners = list
       local G = VRFW_TopBarGuard
-      local okh, has = pcall(T.raw_cmd, 2947612279, 3672361613 --[[evt_top_bar_nav]])
-      pcall(T.raw_cmd, 3661580131, "VRFW input owners", T.vm, "f" .. T.frame, list, "guard off",
+      local okh, has = pcall(T.raw_cmd, VRFW_Cmd.PARAM_HAS, 3672361613 --[[evt_top_bar_nav]])
+      pcall(T.raw_cmd, VRFW_Cmd.EVT_LOG, "VRFW input owners", T.vm, "f" .. T.frame, list, "guard off",
         tostring(type(G) == "table" and G.off), "nav param", tostring(okh and has))
     end
     if owners_only or type(CRC32) ~= "function" then
@@ -90,7 +90,7 @@ if VRFW_INPUT_TRACE == nil then
     local s = table.concat(hits, "; ")
     if s ~= (T.corner or "") then
       T.corner = s
-      pcall(T.raw_cmd, 3661580131, "VRFW input topleft", T.vm, "f" .. T.frame, s ~= "" and s or "none")
+      pcall(T.raw_cmd, VRFW_Cmd.EVT_LOG, "VRFW input topleft", T.vm, "f" .. T.frame, s ~= "" and s or "none")
     end
   end
 
@@ -102,10 +102,17 @@ if VRFW_INPUT_TRACE == nil then
     local p = type(EVT_PATCH) == "table" and EVT_PATCH.script or nil
     T.vm = type(p) == "string" and p or "?"
     T.stem = (T.vm:gsub("_%d+%.%d+%.%d+[%.%d]*$", ""))
-    local raw_menu, raw_cmd = funcLuaMenuCommand, funcLuaCommand
-    T.raw_cmd = raw_cmd
-    T.raw_menu = raw_menu
-    funcLuaMenuCommand = function(c, ...)
+    -- the trace's own reads and resets go past every command handler (VRFW_Host)
+    T.raw_cmd = VRFW_Host.RealCommand
+    T.raw_menu = VRFW_Host.RealMenuCommand
+    local function IdsOf(map)
+      local ids = {}
+      for c in pairs(map) do
+        ids[#ids + 1] = c
+      end
+      return ids
+    end
+    VRFW_Host.HookCommand(IdsOf(T.MENU), function(nxt, c, ...)
       local what = T.on and T.MENU[c] or nil
       if what ~= nil then
         pcall(T.Log, what, ...)
@@ -119,21 +126,21 @@ if VRFW_INPUT_TRACE == nil then
           T.inactive = true
         end
       end
-      return raw_menu(c, ...)
-    end
+      return nxt(c, ...)
+    end, "VRFW.input_trace", { menu = true })
     -- the arguments go on exactly as the caller gave them (`...`, never `c, a, ...`): a C command counts its
     -- arguments, and a call without one would get an extra nil. The display getters read an optional screen mode
     -- after their arguments (0x790577C2 resolution, 0x01CF5DE6 resolution count): with that nil they answered the
     -- WINDOW mode's 1920 x 1080, so the settings menu's «Resolución pantalla» list lost the chosen size (check mark on
     -- 1920 x 1080).
-    funcLuaCommand = function(...)
+    VRFW_Host.HookCommand(IdsOf(T.CMD), function(nxt, ...)
       local c, a = ...
       local what = T.on and T.CMD[c] or nil
-      if what ~= nil and (c ~= 3964465990 or a == 939384271) then
+      if what ~= nil and (c ~= VRFW_Cmd.SET_TEMP_BIT_FLAG or a == 939384271) then
         pcall(T.Log, what, select(2, ...))
       end
-      return raw_cmd(...)
-    end
+      return nxt(...)
+    end, "VRFW.input_trace")
     T.watch = T.WATCH
     if T.WD.STEMS[T.stem or ""] ~= nil then
       pcall(T.WdCallbacks)                     -- the freeze watchdog counts this VM's input callbacks
@@ -176,13 +183,13 @@ if VRFW_INPUT_TRACE == nil then
     if T.cr == nil then return end
     T.cr = T.cr + 1
     if T.cr == 2 then
-      pcall(T.raw_menu, 879521569, false, false, true)
+      pcall(T.raw_menu, VRFW_Cmd.SET_ENABLE_FREE_CURSOR_FOR_VIRTUAL_MOUSE, false, false, true)
     elseif T.cr == 4 then
       -- the normal menu controller first (a shop's 3D model view leaves MENU_CTRL_SEPARATE_CROSS_KEY selected), then the retail virtual mouse, which may select
       -- MENU_CTRL itself
       pcall(T.raw_menu, 438207617 --[[CMND_CHANGE_MENU_INPUT_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]])
-      pcall(T.raw_menu, 879521569, true, false, true)
-      if T.log then pcall(T.raw_cmd, 3661580131, "VRFW input", T.vm, "f" .. T.frame, "cursor reset") end
+      pcall(T.raw_menu, VRFW_Cmd.SET_ENABLE_FREE_CURSOR_FOR_VIRTUAL_MOUSE, true, false, true)
+      if T.log then pcall(T.raw_cmd, VRFW_Cmd.EVT_LOG, "VRFW input", T.vm, "f" .. T.frame, "cursor reset") end
       T.cr = nil
     end
   end
@@ -226,16 +233,16 @@ if VRFW_INPUT_TRACE == nil then
   end
 
   function T.WdDevice(k)
-    local okp, held = pcall(T.raw_cmd, 2864033604 --[[CMND_VRFW_INPUT_PAD]])
+    local okp, held = pcall(T.raw_cmd, VRFW_Cmd.VRFW_INPUT_PAD)
     if okp and type(held) == "number" and held >= 0 and math.floor(held / k[2]) % 2 == 1 then
       return true
     end
-    local okk, v = pcall(T.raw_cmd, 3182184968 --[[CMND_VRFW_INPUT_KEY]], k[3])
+    local okk, v = pcall(T.raw_cmd, VRFW_Cmd.VRFW_INPUT_KEY, k[3])
     return okk and v == true
   end
 
   function T.WdOpen(m)
-    local ok, e = pcall(T.raw_menu, 2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], m)
+    local ok, e = pcall(T.raw_menu, VRFW_Cmd.IS_EXIST_MENU_OBJECT, m)
     return ok and e == true
   end
 
@@ -244,7 +251,7 @@ if VRFW_INPUT_TRACE == nil then
     if not T.WdOpen(S.menu) then
       return false
     end
-    local okc, closing = pcall(T.raw_cmd, 1193349555 --[[CMND_IS_CLOSING_MENU_OBJECT]], S.menu)
+    local okc, closing = pcall(T.raw_cmd, VRFW_Cmd.IS_CLOSING_MENU_OBJECT, S.menu)
     if okc and closing == true then
       return false
     end
@@ -253,12 +260,12 @@ if VRFW_INPUT_TRACE == nil then
         return false
       end
     end
-    local okf, fade = pcall(T.raw_cmd, 1215256347 --[[CMND_BRIGHT_IS_FADE]])
+    local okf, fade = pcall(T.raw_cmd, VRFW_Cmd.BRIGHT_IS_FADE)
     return not (okf and fade == true)
   end
 
   function T.WdLog(...)
-    pcall(T.raw_cmd, 3661580131, "VRFW freeze watchdog", T.vm, "f" .. T.frame, ...)
+    pcall(T.raw_cmd, VRFW_Cmd.EVT_LOG, "VRFW freeze watchdog", T.vm, "f" .. T.frame, ...)
   end
 
   function T.WdDump(S, why)
@@ -269,12 +276,12 @@ if VRFW_INPUT_TRACE == nil then
     local menus = {}
     for m, name in pairs(W.NAMES) do
       if T.WdOpen(m) then
-        local okc, closing = pcall(T.raw_cmd, 1193349555, m)
+        local okc, closing = pcall(T.raw_cmd, VRFW_Cmd.IS_CLOSING_MENU_OBJECT, m)
         menus[#menus + 1] = name .. ((okc and closing == true) and " closing" or " open")
       end
     end
-    local okf, fade = pcall(T.raw_cmd, 1215256347)
-    local okl, lf = pcall(T.raw_menu, 102308320 --[[CMND_IS_CTRL_FOCUS_ACTIVE]], S.list or 0)
+    local okf, fade = pcall(T.raw_cmd, VRFW_Cmd.BRIGHT_IS_FADE)
+    local okl, lf = pcall(T.raw_menu, VRFW_Cmd.IS_CTRL_FOCUS_ACTIVE, S.list or 0)
     T.WdLog("menus: " .. (#menus > 0 and table.concat(menus, ", ") or "none") .. " | fade " .. tostring(okf and fade)
       .. " | list focus " .. tostring(okl and lf) .. " | last callback " .. W.cb_name .. " at f" .. W.cb
       .. " | MENU_ACTIVE(false) last " .. tostring(T.inactive))
@@ -286,13 +293,13 @@ if VRFW_INPUT_TRACE == nil then
 
   function T.WdRecover(S)
     pcall(T.raw_menu, 438207617 --[[CMND_CHANGE_MENU_INPUT_CTRL]], 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]])
-    local okw, was = pcall(T.raw_cmd, 4001406493 --[[CMND_VRFW_MENU_INPUT_CTRL_ON]])
+    local okw, was = pcall(T.raw_cmd, VRFW_Cmd.VRFW_MENU_INPUT_CTRL_ON)
     pcall(T.raw_menu, 1558704558 --[[MENU_ACTIVE]], S.menu, true)
     if S.list ~= nil then
-      pcall(T.raw_menu, 3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS]], S.list, true)
+      pcall(T.raw_menu, VRFW_Cmd.SET_ENABLE_CTRL_FOCUS, S.list, true)
     end
     T.cr = 0                                   -- the virtual-mouse reset (CursorReset: off, then on)
-    local okc, ctrl = pcall(T.raw_cmd, 2250140554 --[[CMND_VRFW_MENU_INPUT_CTRL]])
+    local okc, ctrl = pcall(T.raw_cmd, VRFW_Cmd.VRFW_MENU_INPUT_CTRL)
     T.WdLog("freeze watchdog: recovered", "input switch was " .. tostring(okw and was), "now " .. tostring(okc and ctrl))
   end
 

@@ -29,13 +29,13 @@ local FM = VRFW_FM
 FM.bypass = FM.bypass or {}
 
 local K = {
-  RULES = 2045239528,        -- CMND_VRFW_FM_RULES
-  DIFFS = 1129484790,        -- CMND_VRFW_FM_DIFFICULTIES
+  RULES = VRFW_Cmd.VRFW_FM_RULES,        -- CMND_VRFW_FM_RULES
+  DIFFS = VRFW_Cmd.VRFW_FM_DIFFICULTIES,        -- CMND_VRFW_FM_DIFFICULTIES
   TXT_ASK = 4268189860,      -- crc32("vrfw_fm_ask_team"): "Play against %s?"
   TXT_LOCKED = 2350615877,   -- crc32("vrfw_fm_rival_locked")
-  TEXT_GET = 4074371074,     -- CMND_TEXT_GET
-  LOG = 3661580131,          -- CMND_EVT_LOG
-  CLEAR = 989257499,         -- CMND_GET_SOCCER_GAME_CLEAR_FLAG
+  TEXT_GET = VRFW_Cmd.TEXT_GET,     -- CMND_TEXT_GET
+  LOG = VRFW_Cmd.EVT_LOG,          -- CMND_EVT_LOG
+  CLEAR = VRFW_Cmd.GET_SOCCER_GAME_CLEAR_FLAG,         -- CMND_GET_SOCCER_GAME_CLEAR_FLAG
   LIST = 1107559438,         -- team05_03_soccer_cpu_opponent_list
   ITEM = 1074924810,         -- mainmenu90_19_vs_cpu_list_item
   MENU = 1970579282,         -- soccer_vs_cpu_list_menu
@@ -151,7 +151,7 @@ function FM.RetailLocked(game, story, c)
       else
         local ok, sfi = funcLuaCommand(2610596259, game)
         if ok then
-          flag = not funcLuaCommand(4034518619 --[[CMND_GET_CHRONICLE_CLEAR_STATUS]], sfi, c + 1)
+          flag = not funcLuaCommand(VRFW_Cmd.GET_CHRONICLE_CLEAR_STATUS, sfi, c + 1)
         end
         local ok2, ev = funcLuaCommand(2610596259, game, 1)
         if ok2 and ev > 0 then
@@ -207,7 +207,7 @@ function FM.Decide(game, story)
       end)
       funcLuaMenuCommand(1558704558, K.MENU, true)
     else
-      funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
+      funcLuaCommand(VRFW_Cmd.SND_PLAY_SE, 2086672038 --[[sy0003]])
     end
     return true
   end
@@ -231,22 +231,22 @@ function FM.Decide(game, story)
   end
   -- the steps of soccer_vs_cpu_class_select_menu OnDecideFocus, at the opponent's only class
   local diff = diffs[1]
-  if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], 811496143 --[[soccer_top_menu]]) then
-    if funcLuaCommand(2947612279, 570346750) then
-      funcLuaCommand(3363400568, 570346750)
+  if funcLuaMenuCommand(VRFW_Cmd.IS_EXIST_MENU_OBJECT, 811496143 --[[soccer_top_menu]]) then
+    if VRFW_Param.Has(570346750) then
+      VRFW_Param.Clear(570346750)
     end
-    funcLuaCommand(3860611758, 570346750, 0, 1, 1)          -- tells soccer_top_menu.OpenList a match starts
+    VRFW_Param.Set(570346750, 1)          -- tells soccer_top_menu.OpenList a match starts
   end
   BrightFadeAllMenu(2721617045 --[[fade_menu_encount]], true)
   local ret, ret2 = funcLuaCommand(634509816, game, 4)
   if not ret then
     ret2 = 3468355528 --[[s90g001]]
   end
-  funcLuaCommand(3014583614 --[[CMND_SET_PRE_MATCH_SOCCER_GAME_ID?]], game)
+  funcLuaCommand(VRFW_Cmd.SET_PRE_MATCH_SOCCER_GAME_ID, game)
   funcLuaCommand(1104380539, diff)
-  local okr = funcLuaCommand(1620561217 --[[CMND_RESERVE_SOCCER]], game, ret2, diff)
+  local okr = funcLuaCommand(VRFW_Cmd.RESERVE_SOCCER, game, ret2, diff)
   Log("reserve", game, ret2, diff, okr)
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], K.MENU)
+  funcLuaCommand(VRFW_Cmd.CLOSE_MENU_OBJECT, K.MENU)
   return true
 end
 
@@ -278,7 +278,7 @@ end
 local function TeamHeader(team)
   local ok, has, name = pcall(funcLuaCommand, 2151743654, team, 2)
   if ok and has then
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 1835074715 --[[mainmenu90_34_cpu_team_formation]], 3778687894 --[[_text_team_name01]], name or "", 0)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 1835074715 --[[mainmenu90_34_cpu_team_formation]], 3778687894 --[[_text_team_name01]], name or "", 0)
   end
   local ok2, has2, emblem = pcall(funcLuaCommand, 2151743654, team, 6, 0)
   if ok2 and has2 then
@@ -343,9 +343,9 @@ local function HideClass()
   if R == nil or R.cls or FM.Off() then
     return
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], 1835074715 --[[mainmenu90_34_cpu_team_formation]], 2841109264 --[[_chronicle_gtxt_lv01]], false, 0)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], 1835074715 --[[mainmenu90_34_cpu_team_formation]], 2839039721 --[[_chronicle_lv_num_dmy01]], false, 0)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], 1835074715 --[[mainmenu90_34_cpu_team_formation]], 126765991 --[[_cpu_icon_class_dmy01]], false, 0)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, 1835074715 --[[mainmenu90_34_cpu_team_formation]], 2841109264 --[[_chronicle_gtxt_lv01]], false, 0)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, 1835074715 --[[mainmenu90_34_cpu_team_formation]], 2839039721 --[[_chronicle_lv_num_dmy01]], false, 0)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, 1835074715 --[[mainmenu90_34_cpu_team_formation]], 126765991 --[[_cpu_icon_class_dmy01]], false, 0)
   funcLuaMenuCommand(1233047821, 1835074715 --[[mainmenu90_34_cpu_team_formation]], 0, 51927332 --[[the «Nv.» number]], false)
 end
 
@@ -376,7 +376,7 @@ if VRFW_Host ~= nil then
       if team ~= nil then
         local ok, cur = pcall(function() return L.n2 end)
         if ok and cur ~= team and pcall(function() L.n2 = team end) then
-          local okn, n = pcall(funcLuaMenuCommand, 1175615627 --[[created instances]], 1835074715 --[[mainmenu90_34_cpu_team_formation]])
+          local okn, n = pcall(funcLuaMenuCommand, VRFW_Cmd.GET_CREATE_LAYER_NUM --[[created instances]], 1835074715 --[[mainmenu90_34_cpu_team_formation]])
           if okn and type(n) == "number" and n >= 1 then
             TeamHeader(team)
           end
@@ -405,7 +405,7 @@ if VRFW_Host ~= nil then
       if not ok then
         ret5 = 0
       end
-      local tab = funcLuaCommand(47917410 --[[CMND_GET_TEMP_BYTE_FLAG]], K.SAVED_TAB)
+      local tab = funcLuaCommand(VRFW_Cmd.GET_TEMP_BYTE_FLAG, K.SAVED_TAB)
       local story = 1
       if IsStory ~= nil and IsStory(tab) and ret5 == 0 then
         story = 0
@@ -427,10 +427,10 @@ if VRFW_Host ~= nil then
       -- the single-orb pill (_pos_base02, on the capsule's top slot) + the class orb of the highest class won
       -- (_pos_clear01..04 = rows 6..9, all on that slot); the capsule's own pill and the red orb 05 hidden;
       -- nothing won = the empty pill
-      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], K.ORB_LAYER, a2, true)
+      funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, K.ORB_LAYER, a2, true)
       funcLuaMenuCommand(2158717427, K.ORB_LAYER, K.POS_BASE01, true, a2)
       funcLuaMenuCommand(2158717427, K.ORB_LAYER, K.POS_BASE02, true, a2)
-      funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], K.ORB_LAYER, K.CLEAR_BASE01, false, a2)
+      funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, K.ORB_LAYER, K.CLEAR_BASE01, false, a2)
       funcLuaMenuCommand(2158717427, K.ORB_LAYER, K.POS_CLEAR05, false, a2)
       local best = FM.Best(a3)
       for d = 6, 9 do

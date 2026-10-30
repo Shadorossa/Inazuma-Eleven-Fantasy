@@ -1,0 +1,15 @@
+schema = "VRFW.sprite_redirect/1"
+# Character Reforged: the Hiper card's PEG / SP look (EVT_HC.PegLook) asks the game's team02_02 for these sprites;
+# they live in the mod's own atlas (content\images\menu\102_team\team02\team02_02\plate_peg.toml).
+
+[[VRFW.SpriteRedirect]]
+name = "plate_peg"
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+own_atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
+sprites = [
+    "evt_gtxt_peg01",
+    "evt_gtxt_peg_t",
+    "evt_gtxt_sp_t",
+    "evt_tension_on_peg",
+    "evt_tension_on_sp",
+]

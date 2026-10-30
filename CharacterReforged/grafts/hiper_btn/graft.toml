@@ -3,7 +3,7 @@
 # match). Character Reforged's since 2026-10-14 (the new skill set's aura / mix buttons are the base's: its
 # content\menus\hiper_plates.toml + assets hold the layers, objbins, art and the selector's locators); a NEUTRAL plate.
 # Inazuma Fantasy's look on top: graft hiper_btn_face (its Hiper card rules EVT_HC: the portrait column) + its layer
-# evt_hiper_chr_icon. Nothing at chunk load.
+# evt_hiper_chr_icon. Nothing at chunk load. Both scripts append the same block, hiper_btn_block.lua.
 name = "hiper_btn"
 mod = "CharacterReforged"
 order = 100
@@ -42,8 +42,7 @@ stem = "soccer_command_action_menu"
 
   [[files.ops]]
   type = "append_block"
-  src = "hiper_btn_cmd_1.lua"
-  crc = "none"
+  src = "hiper_btn_block.lua"
 
   # the card portrait rules EVT_HC (shared with the player page and the skill table; was Inazuma Fantasy's graft
   # hiper_btn_face): the aura's portrait at the plate's right end, layer evt_hiper_chr_icon (content\menus\hiper_plates.toml)
@@ -51,7 +50,6 @@ stem = "soccer_command_action_menu"
   type = "append_block"
   src = "../plate_hiper_plate/evt_hiper_card.lua"
   marker = "hiper_card"
-  crc = "none"
 
 [[files]]
 stem = "soccer_battle_command_action_menu"
@@ -82,8 +80,7 @@ stem = "soccer_battle_command_action_menu"
 
   [[files.ops]]
   type = "append_block"
-  src = "hiper_btn_battle_1.lua"
-  crc = "none"
+  src = "hiper_btn_block.lua"
 
   # the card portrait rules EVT_HC (shared with the player page and the skill table; was Inazuma Fantasy's graft
   # hiper_btn_face): the aura's portrait at the plate's right end, layer evt_hiper_chr_icon (content\menus\hiper_plates.toml)
@@ -91,4 +88,3 @@ stem = "soccer_battle_command_action_menu"
   type = "append_block"
   src = "../plate_hiper_plate/evt_hiper_card.lua"
   marker = "hiper_card"
-  crc = "none"

@@ -24,7 +24,9 @@ conflicts = []
 wraps = ["ChangePersonalPlatePageByCharaHdl", "ChangePersonalPlatePageByCharaParamId",
          "UpdateCharaParameterGraphByCharaStHdl", "SwapPersonalPlateTexture", "PostStep", "OnCloseLayer",
          "SetPersonalPlateType", "OnSetupPersonalPlateLayer", "ChangeActiveUI", "OpenPersonalPlate",
-         "ClosePersonalPlate", "SetNameSearchInputEnabled"]
+         "ClosePersonalPlate", "SetNameSearchInputEnabled", "SetupEquipInfoWindow", "GetEquipParamText",
+         "GetEquipParamTextOneLine", "SetVisibleEquipInfoWindow", "OnBack", "OnInit", "SetupItemPositionIcon",
+         "ClearItemPositionIcon", "Step"]
 description = "Player page: PERFIL / ATRIBUTOS (gauges) / SUPERTÉCNICAS pages, header band as a 2D copy"
 
 [[files]]
@@ -34,7 +36,26 @@ stem = "personal_plate_menu"
   type = "append_block"
   src = "plate_pages.lua"
   marker = "plate_pages plate"
-  include = { "@COMMON@" = "plate_pages_common.lua", "@HOST@" = "host_plate.lua" }
+
+    [files.ops.include]   # the block's own pieces (parts\*.lua) after the host's
+    "@COMMON@" = "plate_pages_common.lua"
+    "@HOST@" = "host_plate.lua"
+    "@PP_BAND@" = "parts/band.lua"
+    "@PP_DOTS@" = "parts/dots.lua"
+    "@PP_MOVES@" = "parts/moves.lua"
+    "@PP_PASSIVES@" = "parts/passives.lua"
+    "@PP_CAREER@" = "parts/career.lua"
+    "@PP_HOST_CHART@" = "parts/host_chart.lua"
+    "@PP_EMPTY_EQUIPMENT_HIPER@" = "parts/empty_equipment_hiper.lua"
+    "@PP_STAT_ROWS@" = "parts/stat_rows.lua"
+    "@PP_FORMS@" = "parts/forms.lua"
+    "@PP_GAUGE_COPIES@" = "parts/gauge_copies.lua"
+    "@PP_POINTER@" = "parts/pointer.lua"
+    "@PP_ITEM_CARD@" = "parts/item_card.lua"
+    "@PP_ITEM_CARD_LAYERS@" = "parts/item_card_layers.lua"
+    "@PP_ITEM_CARD_EFFECT@" = "parts/item_card_effect.lua"
+    "@PP_ITEM_CARD_STAT_ROWS@" = "parts/item_card_stat_rows.lua"
+    "@PP_ITEM_CARD_SHOW@" = "parts/item_card_show.lua"
 
 # round 11: the same block on the screens with their own copy of the plate (header row, white card, bar chart);
 # 2026-10-13: ONE file for every host again (the hosts' fork plate_host_look.lua merged into plate_pages.lua)
@@ -45,4 +66,95 @@ stem = "equip_menu_select"
   type = "append_block"
   src = "plate_pages.lua"
   marker = "plate_pages plate"
-  include = { "@COMMON@" = "plate_pages_common.lua", "@HOST@" = "host_equip.lua" }
+
+    [files.ops.include]   # the block's own pieces (parts\*.lua) after the host's
+    "@COMMON@" = "plate_pages_common.lua"
+    "@HOST@" = "host_equip.lua"
+    "@ITEMSPEC@" = "item_card_spec.lua"
+    "@PP_BAND@" = "parts/band.lua"
+    "@PP_DOTS@" = "parts/dots.lua"
+    "@PP_MOVES@" = "parts/moves.lua"
+    "@PP_PASSIVES@" = "parts/passives.lua"
+    "@PP_CAREER@" = "parts/career.lua"
+    "@PP_HOST_CHART@" = "parts/host_chart.lua"
+    "@PP_EMPTY_EQUIPMENT_HIPER@" = "parts/empty_equipment_hiper.lua"
+    "@PP_STAT_ROWS@" = "parts/stat_rows.lua"
+    "@PP_FORMS@" = "parts/forms.lua"
+    "@PP_GAUGE_COPIES@" = "parts/gauge_copies.lua"
+    "@PP_POINTER@" = "parts/pointer.lua"
+    "@PP_ITEM_CARD@" = "parts/item_card.lua"
+    "@PP_ITEM_CARD_LAYERS@" = "parts/item_card_layers.lua"
+    "@PP_ITEM_CARD_EFFECT@" = "parts/item_card_effect.lua"
+    "@PP_ITEM_CARD_STAT_ROWS@" = "parts/item_card_stat_rows.lua"
+    "@PP_ITEM_CARD_SHOW@" = "parts/item_card_show.lua"
+
+# the item picker (its own script): the hovered item on the equipment screen's card (EVT_PPG_ItemCardPreview there)
+[[files]]
+stem = "equip_menu_list"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "item_card_list.lua"
+  marker = "plate_pages item card list"
+
+# the item card on the screens without a player (host_item_detail.lua, item_only: only the item card part runs):
+# the inventory «Objetos» and the shops' buy list (replaces the graft equip_shop_bonus)
+[[files]]
+stem = "item_menu"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "plate_pages.lua"
+  marker = "plate_pages plate"
+  vars = { "@MENU@" = "3040181864 --[[item_menu]]" }
+
+    [files.ops.include]   # the block's own pieces (parts\*.lua) after the host's
+    "@COMMON@" = "plate_pages_common.lua"
+    "@HOST@" = "host_item_detail.lua"
+    "@ITEMSPEC@" = "item_card_spec.lua"
+    "@PP_BAND@" = "parts/band.lua"
+    "@PP_DOTS@" = "parts/dots.lua"
+    "@PP_MOVES@" = "parts/moves.lua"
+    "@PP_PASSIVES@" = "parts/passives.lua"
+    "@PP_CAREER@" = "parts/career.lua"
+    "@PP_HOST_CHART@" = "parts/host_chart.lua"
+    "@PP_EMPTY_EQUIPMENT_HIPER@" = "parts/empty_equipment_hiper.lua"
+    "@PP_STAT_ROWS@" = "parts/stat_rows.lua"
+    "@PP_FORMS@" = "parts/forms.lua"
+    "@PP_GAUGE_COPIES@" = "parts/gauge_copies.lua"
+    "@PP_POINTER@" = "parts/pointer.lua"
+    "@PP_ITEM_CARD@" = "parts/item_card.lua"
+    "@PP_ITEM_CARD_LAYERS@" = "parts/item_card_layers.lua"
+    "@PP_ITEM_CARD_EFFECT@" = "parts/item_card_effect.lua"
+    "@PP_ITEM_CARD_STAT_ROWS@" = "parts/item_card_stat_rows.lua"
+    "@PP_ITEM_CARD_SHOW@" = "parts/item_card_show.lua"
+
+[[files]]
+stem = "shop_menu_buy"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "plate_pages.lua"
+  marker = "plate_pages plate"
+  vars = { "@MENU@" = "3170360552 --[[shop_menu]]" }
+
+    [files.ops.include]   # the block's own pieces (parts\*.lua) after the host's
+    "@COMMON@" = "plate_pages_common.lua"
+    "@HOST@" = "host_item_detail.lua"
+    "@ITEMSPEC@" = "item_card_spec.lua"
+    "@PP_BAND@" = "parts/band.lua"
+    "@PP_DOTS@" = "parts/dots.lua"
+    "@PP_MOVES@" = "parts/moves.lua"
+    "@PP_PASSIVES@" = "parts/passives.lua"
+    "@PP_CAREER@" = "parts/career.lua"
+    "@PP_HOST_CHART@" = "parts/host_chart.lua"
+    "@PP_EMPTY_EQUIPMENT_HIPER@" = "parts/empty_equipment_hiper.lua"
+    "@PP_STAT_ROWS@" = "parts/stat_rows.lua"
+    "@PP_FORMS@" = "parts/forms.lua"
+    "@PP_GAUGE_COPIES@" = "parts/gauge_copies.lua"
+    "@PP_POINTER@" = "parts/pointer.lua"
+    "@PP_ITEM_CARD@" = "parts/item_card.lua"
+    "@PP_ITEM_CARD_LAYERS@" = "parts/item_card_layers.lua"
+    "@PP_ITEM_CARD_EFFECT@" = "parts/item_card_effect.lua"
+    "@PP_ITEM_CARD_STAT_ROWS@" = "parts/item_card_stat_rows.lua"
+    "@PP_ITEM_CARD_SHOW@" = "parts/item_card_show.lua"

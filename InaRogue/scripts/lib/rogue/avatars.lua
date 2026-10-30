@@ -146,9 +146,10 @@ local function parse(t)
       warns[#warns + 1] = string.format("avatar `%s` declared twice; the first one kept", r.id)
     else
       seen[r.id] = true
-      list[#list + 1] = { id = r.id, name = r.name, team = r.team, texture = r.texture, prefix = r.prefix, unit = r.unit,
-        ie3_team = r.ie3_team or 0, kit_palette = r.kit_palette or 0, body = r.body or 0, tier = r.tier or 0,
-        price = r.price or 0, best_phase = r.best_phase or 0, captain = r.captain == true }
+      -- the parsed row itself becomes the entry (its optional fields defaulted): no copy of 5000+ rows
+      r.ie3_team, r.kit_palette, r.body, r.tier = r.ie3_team or 0, r.kit_palette or 0, r.body or 0, r.tier or 0
+      r.price, r.best_phase, r.captain = r.price or 0, r.best_phase or 0, r.captain == true
+      list[#list + 1] = r
     end
   end
   local rows = {}
@@ -178,7 +179,7 @@ local cat = nil
 
 function A.catalogue(acfg)
   if cat then return cat end
-  local ok, t = pcall(VRFW.files.toml, acfg.file)
+  local ok, t = pcall(VRFW.files.toml_cached or VRFW.files.toml, acfg.file)
   if not ok or type(t) ~= "table" then
     warn(acfg.file .. ": " .. tostring(t) .. "; only the default avatar")
   else
@@ -297,8 +298,9 @@ end
 
 local profile = nil
 
--- the active slot's profile (a corrupt blob is set aside: a new profile)
-function A.with_profile(c, slot)
+-- the active slot's profile (a corrupt blob is set aside: a new profile); needs no catalogue, so the points ledger never
+-- parses the avatar file
+function A.with_profile(slot)
   if profile and profile.slot == slot then return profile end
   local text, why = U.blob_read(A.BLOB, slot)
   local p = nil
@@ -313,8 +315,8 @@ function A.with_profile(c, slot)
     end
   end
   p = p or A.new_profile(slot)
-  info(string.format("slot %d: %d of %d avatars owned, current %s, points pending %d (earned %d, spent %d)", slot,
-    A.owned_count(c, p), #c.list, c.list[A.current(c, p) + 1].id, p.points.pending, p.points.earned, p.points.spent))
+  info(string.format("slot %d: %d avatar(s) bought, selected %s, points pending %d (earned %d, spent %d)", slot,
+    #p.owned, p.selected ~= "" and p.selected or "the default", p.points.pending, p.points.earned, p.points.spent))
   profile = p
   return p
 end

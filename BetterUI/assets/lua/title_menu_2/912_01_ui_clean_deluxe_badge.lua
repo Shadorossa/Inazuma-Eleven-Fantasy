@@ -143,8 +143,6 @@ local CMND_SET_ENABLE_CTRL_FOCUS = 3518307824
 local CMND_SET_HIT_ZONE = 855005857       -- (layer, idx, bool): the instance's mouse zone
 local CMND_SET_ON_CHANGE_FOCUS_MOUSE = 2206938151
 local CMND_FOCUS_INSTANCE = 1778826357    -- (layer, idx, bool): retail OnFunction moves the focus with it
-local UI_DX_EVERY = 30                    -- Step frames between two passes
-local ui_dx_frames = 0
 local ui_dx_logged = false
 
 local function UiDxCmd(...)
@@ -242,18 +240,15 @@ do
   end
 end
 
--- the retail OnOpenLayer of the layer runs before the set-up; later passes keep the look if anything shows a mesh again
+-- the retail OnOpenLayer of the layer runs before the set-up; a pass after every focus change keeps the look when
+-- the retail focus states show a mesh again
 UiWrapCallback("OnOpenLayer", function(a1)
   if a1 == UI_DX_LAYER then
     UiDxApply()
   end
 end)
-UiWrapCallback("Step", function()
-  ui_dx_frames = ui_dx_frames + 1
-  if ui_dx_frames >= UI_DX_EVERY then
-    ui_dx_frames = 0
-    UiDxApply()
-  end
+UiWrapCallback("OnChangeFocus", function()
+  UiDxApply()
 end)
 
 end

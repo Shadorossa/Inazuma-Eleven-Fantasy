@@ -4,8 +4,8 @@
 
 local E = require "lib/game_entries"
 
-local function info(...) VRFW.log("party:", ...) end
-local function warn(...) VRFW.warn("party:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("party")
 
 local KEY_LOADS = "vrfw.party.loads"
 local ENTRIES = {

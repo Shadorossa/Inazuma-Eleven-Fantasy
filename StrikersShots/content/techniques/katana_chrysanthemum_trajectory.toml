@@ -1,0 +1,16 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Katana crisantemo (Chrysanthemum Katana, whs02220; the edit also covers whs02220_mm),
+# cut-in ev60_02220.
+#
+# In the cut-in's last shot (c0400) the ball leaves the katana's guard on the tip of the blade growing out of it
+# (research/scripts/katana_chrysanthemum_ball_fx.py). Flight: straight and level at 2.0 m into the goal (the guard's
+# petals clear the pitch). unblockable = false: the game's block rules (this mod changes no block rule). Heights are
+# the ball centre over the pitch (m); points count from the kick; one point = a level flight; straight = true: one
+# straight line from the kick to the goal at that height. hide_ball (owner 2026-10-21, «oculta el balón»): the real
+# match ball is not drawn while the shot flies (the blade's tip is its place); drawn again when the shot is over.
+
+# Katana crisantemo (whs02220).
+[[edit]]
+target = "whs02220"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }
+hide_ball = true

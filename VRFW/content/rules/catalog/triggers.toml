@@ -33,7 +33,7 @@ name = "block_battle"
 id = 5
 actor = true
 move = true
-fired_by = "hook bus battle_build pre: a block battle (basic block or block move) is built"
+fired_by = "hook bus battle_build pre, field-block types (profile Battle.FieldBlockTypeFirst..Last, 0xF-0x14 on v7.2.1): a field player's block against a shot in flight (basic block or block move) is built; the blocker and his block move, the rival = the shot"
 
 [[trigger]]
 name = "mode_enter"
@@ -135,7 +135,7 @@ fired_by = "frame poll of the controlled player: the side that switched"
 [[trigger]]
 name = "clock"
 id = 22
-fired_by = "frame poll of the half's clock; arg (required) = the seconds it fires at, once per half"
+fired_by = "frame poll of the half's clock; arg (required) = the mark it fires at, once per half: game seconds (120) or a fraction of the period's regular length (2/3, mi + 0x1C); the rules' and the mod scripts' marks"
 
 [[trigger]]
 name = "goal"
@@ -298,13 +298,70 @@ move = true
 args = ["won", "lost"]
 fired_by = "the outcome of a special move: the move its player used last (Technique.Power, within 8 s) and the focus duel that decided it (match events duel_won / duel_lost), or the keeper's move in a keeper battle (keeper_scene: saved = won)"
 
+[[trigger]]
+name = "time_up"
+id = 48
+args = ["regular", "end"]
+fired_by = "frame poll of the period's clock in a timed period: regular = 2 game s before the period length (mi+0x1C), end = 2 game s before the period length + the added time (mi+0x2C00, where InPlay whistles); once per half each (end again after the added time grew)"
+
+[[trigger]]
+name = "shot_through"
+id = 49
+actor = true
+move = true
+args = ["move", "basic"]
+fired_by = "Shot.FieldBlockCommit post (0x14E7890): a shot beats a field player's block (battle types 0xF-0x14); the blocker and his block move, the rival = the shot; power_mult changes the ball's power left"
+
+[[trigger]]
+name = "knockdown"
+id = 50
+actor = true
+move = true
+args = ["move", "basic"]
+fired_by = "Status.AddEx pre (0x15D3740) inside Duel.ExecResult (0x150D3F0): the focus duel's loser gets his loss status; the winner and his move, the rival = the loser; down_mult scales the status time"
+
+[[trigger]]
+name = "crit_check"
+id = 51
+actor = true
+move = true
+fired_by = "Cmd.EventBuild pre (0x14DA3C0), the same hook as event_build: a command with a move that no rule refused, once per execution (user and CPU); its rules answer crit_chance / crit_cap / crit_mult, one roll decides, a hit multiplies that player's move_power of that move for 8 s (the execution's launch / duel / keeper battle)"
+
+[[trigger]]
+name = "crit"
+id = 52
+actor = true
+move = true
+fired_by = "the crit_check roll hit (right after it): the player and his move"
+
+[[trigger]]
+name = "ball_stopped"
+id = 53
+actor = true
+move = true
+args = ["keeper", "block"]
+fired_by = "the player stopped a shot by any means: keeper = a save (KeeperStageEvent post, saved set: catch or punch, with or without a move), block = a field block the shot does not win (Shot.FieldBlockCommit post, battle types 0xF-0x14)"
+
+[[trigger]]
+name = "tension_gain"
+id = 54
+actor = true
+fired_by = "Tension.GainRequest pre (0x16FDE20): a team earns tension from play (a duel / scramble won or lost, a keeper battle, set plays…): the player who earned it (req +0; none for a team-wide gain: the actor then has only the team), arg = the gain kind (req +0x10); gain_mult scales the amount before the team's own gain rate (0xEBFA40) and the game's rounding to whole points"
+
+[[trigger]]
+name = "foul_suffered"
+id = 55
+actor = true
+args = ["none", "card"]
+fired_by = "Match.FoulRestartBuild post (0x16CEE80): the pending foul (match info +0x2BE0, no offside) became its restart; the fouled player (+0x2BE8), the rival = the offender (+0x2BE4); card = the foul gave a card"
+
 # [[effect]]: a `do` key. on = triggers it acts on (absent = all); min = lowest value; words = accepted values (first is default); sink = built-in sink, overridable by a mod sink of the same name.
 
 [[effect]]
 name = "power_mult"
-on = ["move_power", "keeper_duel"]
+on = ["move_power", "keeper_duel", "shot_through"]
 min = 0.0
-summary = "the move's power (keeper_duel: the shot's power against the keeper) × the product of every rule's power_mult"
+summary = "the move's power (keeper_duel: the shot's power against the keeper; shot_through: the ball's power left after the block) × the product of every rule's power_mult"
 
 [[effect]]
 name = "power_add"
@@ -335,13 +392,46 @@ min = 0.0
 summary = "the move's recast time × the product of the recast_mults (rounded down)"
 
 [[effect]]
+name = "down_mult"
+on = ["knockdown"]
+min = 0.0
+summary = "the beaten player's down / stun status time × the product of the down_mults"
+
+[[effect]]
+name = "gain_mult"
+on = ["tension_gain"]
+min = 0.0
+summary = "the tension the team gains × the product of the gain_mults (before the team's own gain rate)"
+
+[[effect]]
+name = "crit_chance"
+on = ["crit_check"]
+summary = "percentage points added to the critical chance of this execution (negative lowers it); the sum is kept within 0..the lowest crit_cap"
+
+[[effect]]
+name = "crit_mult"
+on = ["crit_check"]
+min = 0.0
+summary = "on a critical hit the move's power × the product of the crit_mults (after the move_power rules)"
+
+[[effect]]
+name = "crit_cap"
+on = ["crit_check"]
+min = 0.0
+summary = "the highest critical chance in percent (the lowest cap of every rule wins; none = 100)"
+
+[[effect]]
 name = "add_tension"
 summary = "tension points (the HUD's units; negative takes them away), applied on the next unit tick"
 
 [[effect]]
+name = "add_tension_max"
+summary = "the tension gauge maximum in tension points (negative lowers it) for the rest of the match, never below a third of the team's starting maximum; applied on the next unit tick"
+
+[[effect]]
 name = "tension_team"
 words = ["actor", "opponent", "user", "rival"]
-summary = "whose tension add_tension changes"
+summary = "whose tension add_tension / add_tension_max change"
 
 [[effect]]
 name = "set_flag"
@@ -472,14 +562,80 @@ needs = "actor"
 summary = "the actor stands in that pitch area"
 
 [[condition]]
+name = "wears"
+needs = "actor"
+summary = "the actor wears one of these equipment items (the user's own players)"
+
+[[condition]]
+name = "wears_set"
+needs = "actor"
+summary = "the actor wears an equipment set ([[VRFW.EquipmentSet]]) with at least that many pieces"
+
+[[condition]]
 name = "technique"
 needs = "move"
 summary = "the move"
 
 [[condition]]
+name = "move_family"
+needs = "move"
+summary = "the move belongs to one of these technique families ([[VRFW.TechniqueFamily]])"
+
+[[condition]]
 name = "move_element"
 needs = "move"
 summary = "the move's element"
+
+[[condition]]
+name = "score_margin"
+summary = "the actor's team's goals minus the other team's (or the user's team without an actor)"
+
+[[condition]]
+name = "near"
+needs = "actor"
+summary = "how many teammates / opponents stand within a radius of the actor"
+
+[[condition]]
+name = "team_family"
+needs = "actor"
+summary = "how many of the actor's teammates carry a move of a technique family in their move slots"
+
+[[condition]]
+name = "uses"
+needs = "move"
+summary = "how many times the actor already finished this move (its technique results) in the match or the half; scope, result (any / won / lost), count"
+
+[[condition]]
+name = "chain"
+needs = "move"
+summary = "the shot chain this execution continues: chained, after_team (teammate / own / rival), after_element, after_same_element, after_family, links (move_power)"
+
+[[condition]]
+name = "rival"
+needs = "move"
+summary = "the opponent's move in this battle (move_power: the power request's opponent; keeper_duel: the shot): technique, element, family, special, chained, long, zone"
+
+[[condition]]
+name = "ball_height"
+summary = "the ball's height above the pitch in metres (min / max) when the trigger fires"
+
+[[condition]]
+name = "partners"
+needs = "actor"
+summary = "the move's partners (the count teammates nearest to the actor): within radius_m, distinct_elements"
+
+[[condition]]
+name = "aura"
+needs = "actor"
+summary = "the actor has an aura out (any aura bit of his unit) or none"
+
+[[condition]]
+name = "half_fraction_from"
+summary = "the part of the current half played (clock / the half's real length) is at least this fraction (\"2/3\" or 0.66)"
+
+[[condition]]
+name = "half_fraction_to"
+summary = "the part of the half played is below this fraction (\"1\" = to the end, added time included)"
 
 [[condition]]
 name = "chance"

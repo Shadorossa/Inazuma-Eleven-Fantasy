@@ -1,36 +1,37 @@
-# Inazuma Eleven Cross: the six Cross kit item icons of #/menu/200_icon/02_icon_item/icon_item07.g4tx (new 256x256
-# textures named by the item key, content\base_tables\gamedata\item\item_config.toml ITEM_FASHION_INFO). Moved from
+# Inazuma Eleven Cross: the six Cross kit item icons, in the mod's own atlas iecross_kit_icons (never the game's
+# icon_item07.g4tx: the game asks that sheet for them, content\sprite_redirects\kit_icons.toml serves them from
+# here; new 256x256 textures named by the item key, content\base_tables\gamedata\item\item_config.toml ITEM_FASHION_INFO). Moved from
 # Inazuma Fantasy's images\menu\200_icon\02_icon_item\icon_item07.toml (the 1.0.0 split moved the PNGs but left this
 # file in IF, 1.2.1). uni_u990001 = Equipación Japón 2026: Nacho's shirt (research\assets_src\iecross\
 # japan_2026_kit_icon.png) fitted into 240x240 and centred, like retail kit icons (1.2.1).
 schema = "VRFW.image/1"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item07.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/iecross_kit_icons.g4tx"
 name = "uni_u119701"
 png = "icon_item07/textures/uni_u119701.png"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item07.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/iecross_kit_icons.g4tx"
 name = "uni_u119801"
 png = "icon_item07/textures/uni_u119801.png"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item07.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/iecross_kit_icons.g4tx"
 name = "uni_u120001"
 png = "icon_item07/textures/uni_u120001.png"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item07.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/iecross_kit_icons.g4tx"
 name = "uni_u120001_20"
 png = "icon_item07/textures/uni_u120001_20.png"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item07.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/iecross_kit_icons.g4tx"
 name = "uni_u912001"
 png = "icon_item07/textures/uni_u912001.png"
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item07.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/iecross_kit_icons.g4tx"
 name = "uni_u990001"
 png = "icon_item07/textures/uni_u990001.png"

@@ -17,8 +17,8 @@ VRFW_BBP = {
   RESET = @crc:CMND_VRFW_BB_PAGE_RESET@,
   CAT = @crc:CMND_VRFW_BB_PAGE_CATEGORY@,
   SEASON = @crc:CMND_VRFW_BB_PAGE_SEASON@,
-  LOG = 3661580131 --[[CMND_EVT_LOG]],
-  TEXT_GET = 4074371074 --[[CMND_TEXT_GET]],
+  LOG = @crc:CMND_EVT_LOG@,
+  TEXT_GET = @crc:CMND_TEXT_GET@,
   FN_PREV = @crc:vrfw_bb_page_prev@,
   FN_NEXT = @crc:vrfw_bb_page_next@,
   FN_CAT_PREV = @crc:vrfw_bb_cat_prev@,
@@ -37,8 +37,8 @@ VRFW_BBP = {
     [3003299608 --[[team00_01_chara_card_left]]] = 1324325467 --[[vs01_46_enjoy_team_select_formation_frame_left]],
     [3825623416 --[[team00_01_chara_card_right]]] = 187604095 --[[vs01_46_enjoy_team_select_formation_frame_right]],
   },
-  GET_PRIO = 1018283794 --[[CMND_GET_DRAW_PRIORITY]],
-  SET_PRIO = 1491630496 --[[CMND_SET_DRAW_PRIORITY]],
+  GET_PRIO = @crc:CMND_GET_DRAW_PRIORITY@,
+  SET_PRIO = @crc:CMND_SET_DRAW_PRIORITY@,
   -- "win it to unlock it": the focused locked slot's hint on its padlock's guide balloon
   -- (the lock icon layer's own _pos_lock_guide01 / _text_guide01, as the game's locked list items use it), the "not
   -- available» sound on an Accept the game refused
@@ -94,8 +94,8 @@ VRFW_BBP = {
   PRIO = 690,
   Q = 36,                                 -- cmn01_10 quad size
   NODE_QUAD = 1909474081 --[[icon_new01]], MESH_QUAD = 312193881,
-  C_VISIBLE = 711242136, C_POS = 1389957207, C_SCALE = 3778714801, C_SPRITE = 558735651, C_PRIM_COLOR = 855211291,
-  C_LOAD_TEX = 839427544, C_TEX_LOADING = 1506186496,
+  C_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@, C_POS = @crc:CMND_SET_LAYER_LOCAL_POS@, C_SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@, C_SPRITE = 558735651, C_PRIM_COLOR = @crc:CMND_SET_PRIM_COLOR@,
+  C_LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@, C_TEX_LOADING = 1506186496,
   TEX_MIN = 10, TEX_MAX = 600,
   page = 1, pages = 1, count = 28, p1slot = -1, cat = 1, cats = 1, total = 1, season = 0, seasons = 0,
   catinfo = {}, seasoninfo = {}, textures = {}, tex_ready = false, tex_t = 0, hidden = false,
@@ -246,11 +246,11 @@ local function BBP_TextAt(idx, text, cx, y, show, scale)
   scale = scale or 1
   funcLuaMenuCommand(B.C_POS, B.LAYER, cx + B.TEXT_CX * scale, -y, 0, idx)
   funcLuaMenuCommand(B.C_SCALE, B.LAYER, scale, scale, 1, idx)
-  funcLuaMenuCommand(1491630496 --[[CMND_SET_DRAW_PRIORITY]], B.LAYER, idx, B.PRIO, true)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], B.LAYER, B.BTN, "", idx)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], B.LAYER, B.TEXT, text, idx)
-  funcLuaMenuCommand(1172899594 --[[CMND_UPDATE_TEXT_PLATE?]], B.LAYER, idx, B.TEXT)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.LAYER, B.PLATE_BASE, false, idx)
+  funcLuaMenuCommand(@crc:CMND_SET_DRAW_PRIORITY@, B.LAYER, idx, B.PRIO, true)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, B.LAYER, B.BTN, "", idx)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, B.LAYER, B.TEXT, text, idx)
+  funcLuaMenuCommand(@crc:CMND_UPDATE_TEXT_PLATE@, B.LAYER, idx, B.TEXT)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.LAYER, B.PLATE_BASE, false, idx)
 end
 
 -- one block's background: left edge x, centred on y, w x h. Left cap, middle, right cap: three sprites cut side by
@@ -420,7 +420,7 @@ VRFW_BBP.spares = {}
 VRFW_BBP.pend = nil
 
 function VRFW_BBP_Count()
-  return funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], VRFW_BBP.GRID) or 0
+  return funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, VRFW_BBP.GRID) or 0
 end
 
 -- milliseconds of the framework's monotonic clock, nil without it
@@ -475,8 +475,8 @@ function VRFW_BBP_RestoreMarks(i)
   end
   funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, 3808539401 --[[_pos_enjoy_list01_p1]], false, i)
   funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, 2047402675 --[[_pos_enjoy_list01_p2]], false, i)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.GRID, 2291119251 --[[_enjoy_list_p2_base02]], false, i)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.GRID, 100709232 --[[_enjoy_list_p1_base02]], false, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.GRID, 2291119251 --[[_enjoy_list_p2_base02]], false, i)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.GRID, 100709232 --[[_enjoy_list_p1_base02]], false, i)
   funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, 1061671357, false, i)
   funcLuaMenuCommand(2158717427 --[[node visible]], B.GRID, 2790162439, false, i)
   return "f"
@@ -727,7 +727,7 @@ function VRFW_BBP_Redraw(turn)
       -- a turn leaves a slot that keeps its team alone (no reset, no hide: no flicker)
       local same = turn and was == show and B.drawn[i] == (show and team or 0)
       if not turn or was ~= show then
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.GRID, i, show)
+        funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.GRID, i, show)
       end
       if show and not same then
         changed[i] = true
@@ -756,9 +756,9 @@ end
 -- kept the gold look on a locked team, whose press is refused. Both looks are set here.
 function VRFW_BBP_LockLook(lock, gold)
   local B = VRFW_BBP
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.LOCK, B.LOCK_OFF, not gold, lock)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], B.LOCK, B.LOCK_ON, gold, lock)
-  funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], B.LOCK, lock, B.LOCK_ANIME, gold and 0 or 2, B.LOCK_ANIME_TYPE)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.LOCK, B.LOCK_OFF, not gold, lock)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, B.LOCK, B.LOCK_ON, gold, lock)
+  funcLuaMenuCommand(@crc:CMND_PLAY_ANIME_TYPE@, B.LOCK, lock, B.LOCK_ANIME, gold and 0 or 2, B.LOCK_ANIME_TYPE)
 end
 
 -- the padlocks: the one a slot holds shown while its team is locked (closed
@@ -777,15 +777,15 @@ function VRFW_BBP_LockSync()
       if on then
         VRFW_BBP_LockLook(lock, unlocked == true)
       end
-      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.LOCK, lock, on)
+      funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.LOCK, lock, on)
       held[lock] = true
     end
   end
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], B.LOCK)
+  local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, B.LOCK)
   if type(n) == "number" then
     for k = 0, n - 1 do
       if not held[k] then
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], B.LOCK, k, false)
+        funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, B.LOCK, k, false)
       end
     end
   end
@@ -817,7 +817,7 @@ end
 -- the padlock was given next.
 function VRFW_BBP_GuidesOff(keep)
   local B = VRFW_BBP
-  local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM]], B.LOCK)
+  local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, B.LOCK)
   if type(n) ~= "number" then
     return
   end
@@ -840,7 +840,7 @@ function VRFW_BBP_Hint()
     return
   end
   if buzz == true then
-    funcLuaCommand(1917805374 --[[CMND_SND_PLAY]], B.SE_NG)
+    funcLuaCommand(@crc:CMND_SND_PLAY_SE@, B.SE_NG)
   end
   local team, _, _, lock = funcLuaCommand(B.SLOT, cur)
   local key = nil
@@ -867,8 +867,8 @@ function VRFW_BBP_Hint()
   chain = type(chain) == "string" and chain or ""
   s = s:gsub("{team}", function() return name end)
   s = s:gsub("{chain}", function() return chain end)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING]], B.LOCK, B.TEXT, s, lock)
-  funcLuaMenuCommand(1172899594 --[[CMND_UPDATE_TEXT_PLATE]], B.LOCK, lock, B.TEXT)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, B.LOCK, B.TEXT, s, lock)
+  funcLuaMenuCommand(@crc:CMND_UPDATE_TEXT_PLATE@, B.LOCK, lock, B.TEXT)
   funcLuaMenuCommand(2158717427 --[[node visible]], B.LOCK, B.LOCK_GUIDE, true, lock)
   funcLuaMenuCommand(2735666188, B.LOCK, B.TEXT, true, lock)
   B.hint_lock = lock
@@ -880,13 +880,13 @@ function VRFW_BBP_CanTurn()
   if not B.on or B.hidden then
     return false
   end
-  if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], B.OPTLIST, 0, B.MENU) == true then
+  if funcLuaMenuCommand(@crc:CMND_IS_OPEN_LAYER@, B.OPTLIST, 0, B.MENU) == true then
     return false
   end
-  if funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], B.SUBWIN) == true then
+  if funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, B.SUBWIN) == true then
     return false
   end
-  if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], B.DIFFWIN, 0, B.MENU) == true then
+  if funcLuaMenuCommand(@crc:CMND_IS_OPEN_LAYER@, B.DIFFWIN, 0, B.MENU) == true then
     return false
   end
   return true
@@ -915,14 +915,14 @@ function VRFW_BBP_Turn(d, mode)
   if mode == 2 then
     VRFW_BBP_LoadInfo()   -- the categories of the new season (their count / names may differ)
   end
-  funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2500047763 --[[sy0005]])
   VRFW_BBP_Preload(string.format("s%d c%d p%d", B.season, B.cat, B.page))
   -- the cursor stays on its slot, or the last filled one on a short page
   if type(cursor) == "number" and cursor >= B.count and B.count > 0 then
     local to = B.count - 1
-    local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], B.GRID) or 0
+    local n = funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, B.GRID) or 0
     funcLuaMenuCommand(1778826357, B.GRID, to, true)
-    funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], B.GRID, 3313461902 --[[cursor]], to, n)
+    funcLuaMenuCommand(@crc:CMND_SET_CURSOR_LOCATOR@, B.GRID, 3313461902 --[[cursor]], to, n)
   end
   VRFW_BBP_Draw()
   -- one string: the log command keeps only its first arguments (the 14:36 log cut this line after "category")
@@ -966,7 +966,7 @@ do
   local setup = OnSetupLayer
   function OnSetupLayer(a1, a2, ...)
     if ours(a1) then
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, a1, a2, false)
       -- a layer (re)set up: nothing of the strip is known to be shown any more: everything is sent again
       VRFW_BBP.shown = {}
       pcall(VRFW_BBP_Draw)
@@ -1033,7 +1033,7 @@ do
       VRFW_BBP.drawn[a1] = a2 or 0
     end
     if (a2 == nil or a2 == 0) and VRFW_BBP.on and (VRFW_BBP.total > 1 or VRFW_BBP.seasons >= 2) then
-      pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], VRFW_BBP.GRID, a1, false)
+      pcall(funcLuaMenuCommand, @crc:CMND_SET_LAYER_VISIBLE@, VRFW_BBP.GRID, a1, false)
       if type(a1) == "number" then
         VRFW_BBP.hidden_slots[a1] = true
       end

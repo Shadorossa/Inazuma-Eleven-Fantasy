@@ -7,7 +7,7 @@
 -- 2026-09-28 (docs/game/mechanics/stat-training.md): rule «pool» (loader default): raising spends the free pool =
 -- Libertad + points freed by lowering ANY stat; a stat stops at 1. Rows, bars, numbers and radar show the BASE stat
 -- (base + trained points, no equipment / beans / board / Miximax). Texts: menu_text rows evt_tr_* in the 9 languages
--- (research/scripts/training_text_build.py); the Spanish table TXT is only the fallback when a row is missing.
+-- (the mod's text\rows\training.toml).
 -- Layers come from the bean pop-up (ability_learning_set_beans_menu_setting, lump window group), cloned by
 -- research/scripts/tr_build.py:
 --   win06_06_beans_lump_use_window  = the window (cloned layout: taller, 9 gauge locators, 10 new text nodes)
@@ -24,7 +24,7 @@ INCLUDE("LUA_PERSONAL_PLATE_INC")
 
 -- ---- vr-loader commands (docs/game/training-classic.md §4). Loader absent: a single false. -------------------------
 local TR = {
-  VERSION = 2217361807,  -- () -> api, modules (bit 16 = training)
+  VERSION = @crc:CMND_EVT_LOADER_VERSION@,  -- () -> api, modules (bit 16 = training)
   INFO = 1924442262,         -- (hdl, fresh 0/1) -> ok, status, libTotal, libAvail, level, position, dirty, growth,
                              --   rule (0 pairs / 1 pool; nil = older loader = pairs)
   STAT = 2575656672,         -- (hdl, idx) -> ok, value, base, bonus, delta, committed, min, max, partner1, partner2
@@ -37,8 +37,8 @@ local MOD_TRAINING = 16
 local MOD_STAMINA = 256          -- per-player PE in matches (module stamina): the header shows the PE max
 local ERR_LOCKED = -9            -- TRAIN_* status of a Hero / Diamond / Prime card (training locked)
 
--- ---- texts: menu_text rows (9 languages, research/scripts/training_text_build.py); Spanish fallback -------------
--- T(key, a, b, c, d) = the row with <VALUE>/<A> = a, <B> = b, <C> = c, <D> = d; the Spanish TXT when the row is missing
+-- ---- texts: menu_text rows (9 languages, the mod's text\rows\training.toml) ----------------------------------
+-- T(key, a, b, c, d) = the row with <VALUE>/<A> = a, <B> = b, <C> = c, <D> = d; "" when the row is missing
 local TX = {
   TITLE = @crc:evt_tr_title@, TITLE_NONAME = @crc:evt_tr_title0@, POOL = @crc:evt_tr_pool@, LIBERTAD = @crc:evt_tr_lib@,
   LEVEL = @crc:evt_tr_level@, PE = @crc:evt_tr_pe@, PARTNER = @crc:evt_tr_partner@, HELP = @crc:evt_tr_help@,
@@ -51,31 +51,6 @@ local TX = {
   STATS = {493890773, 3206121007, 3492422219, 3740714941, 2851206955, 2895498128, 3773956166, @crc:evt_tr_speed@,
            @crc:evt_tr_luck@},
 }
-local TXT = {
-  TITLE = "Entrenamiento · <VALUE>",
-  TITLE_NONAME = "Entrenamiento",
-  POOL = "Puntos libres: <A>   (Libertad <B> · subido <C> · bajado <D>)",
-  LIBERTAD = "Libertad libre: <A> / <B>",
-  LEVEL = "Nv. <VALUE>",
-  PE = "PE <VALUE>",               -- match PE max (module stamina; not from Físico since 2026-10-06)
-  POS = {[1] = "Portero", [2] = "Delantero", [3] = "Centrocampista", [4] = "Defensa"},
-  STATS = {"Potencia", "Control", "Técnica", "Presión", "Físico", "Inteligencia", "Agilidad", "Rapidez", "Suerte"},
-  PARTNER = "(pareja)",
-  HELP = "Izq./Der.: -1/+1 (mantén: 10) · Arriba/Abajo: estadística · L1/R1: jugador",
-  HELP10 = "Izq./Der.: -10/+10 (Función 2: de 1 en 1) · Arriba/Abajo: estadística · L1/R1: jugador",
-  EMPTY = "Sin puntos libres: baja otra estadística para liberar puntos.",
-  FLOOR = "<A> ya está en su mínimo (<B>).",
-  CAP = "<A> ya está en su máximo (<B>).",
-  SAVE = "Guardar",
-  NO_LOADER = "Entrenamiento: instala el vr-loader con los módulos stats y training.",
-  NO_DATA = "Este jugador no tiene datos de entrenamiento.",
-  LOCKED = "Las cartas Héroe, Diamante y Prime no se pueden entrenar.",
-  ASK_DISCARD = "¿Descartar los cambios de entrenamiento?",
-  ASK_SAVE_SWITCH = "¿Guardar el entrenamiento de <VALUE> antes de cambiar de jugador?",
-  ASK_RESET = "¿Quitar todo el entrenamiento de <VALUE>? Se aplica al pulsar Guardar.",
-  SAVE_FAILED = "No se pudo guardar el entrenamiento (código <VALUE>).",
-  SAVED_HINT = "Entrenamiento guardado. Guarda la partida para conservarlo.",
-}
 
 -- ---- tweakables ---------------------------------------------------------------------------------------------------
 local HOLD_GAP = 14          -- frames between two Left/Right events that still count as holding
@@ -84,7 +59,6 @@ local WIN_X, WIN_Y = 640, -60        -- window position (retail bean pop-up: 960
 local GRAPH_X, GRAPH_Y = 1500, -470  -- radar position (retail: 1612, -471)
 local DIM = 0.55                     -- alpha of the rows that are neither selected nor partners (pairs rule)
 local DIM_POOL = 0.8                 -- alpha of the other rows (pool rule: every row can give points)
-local SHOW_SAVED_HINT = true         -- one message after the first save of the session
 -- PE max: IF's CMND_EVT_PE_MAX(Físico, hdl), per player since 2026-10-12. Since 2026-10-06 Físico does not change it (Físico slows
 -- the PE drain instead, docs/game/mechanics/match-stamina.md §16); PE_FALLBACK = the default, for an older loader
 local PE_FALLBACK = 120
@@ -128,29 +102,28 @@ local KEY_DOCK_OK = 1227131323
 local KEY_DOCK_NO = 1465023715
 local KEY_DOCK_TYPE = 1490115725
 local C = {
-  TEXT = 1083631230,          -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
-  TEXT_GET = 4074371074,      -- CMND_TEXT_GET (text id) -> string
-  TEXT_ALPHA = 1126837159,    -- (layer, idx, node, alpha)
-  MODEL_ALPHA = 4231609516,   -- (layer, idx, 0, alpha)
+  TEXT = @crc:CMND_SET_MENU_TEXT_STRING@,          -- CMND_SET_MENU_TEXT_STRING (layer, node, string, idx)
+  TEXT_GET = @crc:CMND_TEXT_GET@,      -- CMND_TEXT_GET (text id) -> string
+  TEXT_ALPHA = @crc:CMND_SET_MENU_TEXT_ALPHA@,    -- (layer, idx, node, alpha)
+  MODEL_ALPHA = @crc:CMND_SET_LAYER_MODEL_ALPHA@,   -- (layer, idx, 0, alpha)
   NODE_VISIBLE = 2158717427,  -- (layer, node, bool, idx)
-  MESH_VISIBLE = 3405944500,  -- (layer, mesh, bool, idx)
+  MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@,  -- (layer, mesh, bool, idx)
   SPRITE = 558735651,         -- (layer, textureCrc, spriteCrc, nodeCrc, 0, idx)
-  LOCAL_POS = 1389957207,     -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z)
-  PRIORITY = 1491630496,      -- CMND_SET_DRAW_PRIORITY (layer, idx, prio, bool)
-  PRIM_INDEX = 1927054058,    -- (layer, idx, primName) -> prim
+  LOCAL_POS = @crc:CMND_SET_LAYER_LOCAL_POS@,     -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z)
+  PRIORITY = @crc:CMND_SET_DRAW_PRIORITY@,      -- CMND_SET_DRAW_PRIORITY (layer, idx, prio, bool)
+  PRIM_INDEX = @crc:CMND_SEARCH_PRIM_INDEX@,    -- (layer, idx, primName) -> prim
   PRIM_VALUE = 3609943765,    -- (layer, idx, prim, value, true)
   PRIM_VISIBLE = 1233047821,  -- (layer, idx, primName, bool)
-  GROUP_INDEX = 112302847,    -- (layer, idx, group) -> group index
+  GROUP_INDEX = @crc:CMND_GET_GROUP_INDEX@,    -- (layer, idx, group) -> group index
   RATE_BIND = 541357333,      -- (layer, rate, groupIndex, idx)
   RATE_SET = 1595998683,      -- (layer, rate, 0, ratio, idx, false, group)
   CHARA_GET = 1131797651,     -- 0x4375DC93 (hdl, kind, true, excl90): kinds 14..20 = shown stat 0..6
-  CHARA_NAME = 1915015278,    -- CMND_GET_CHARA_NAME_TEXT (hdl) -> string
-  TEAM_INFO = 1033065575,     -- CMND_GET_TEAM_SET_INFO (dock, type, 0) -> ok, memberCount
+  CHARA_NAME = @crc:CMND_GET_CHARA_NAME_TEXT@,    -- CMND_GET_CHARA_NAME_TEXT (hdl) -> string
+  TEAM_INFO = @crc:CMND_GET_TEAM_SET_INFO@,     -- CMND_GET_TEAM_SET_INFO (dock, type, 0) -> ok, memberCount
   TEAM_MEMBER = 1720957768,   -- (dock, type, i, 0) -> ok, charaStHdl
-  SE = 1917805374,
+  SE = @crc:CMND_SND_PLAY_SE@,
   MENU_ACTIVE = 1558704558,   -- (menu, bool)
-  CLOSE_MENU = 320421347,     -- CMND_CLOSE_MENU_OBJECT
-  P_HAS = 2947612279, P_GET = 3522198769, P_CLEAR = 3363400568,
+  CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@,     -- CMND_CLOSE_MENU_OBJECT
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_BUSY = 898725220, MSG_RESULT = 1523741473, MSG_DONE = 682363669,
 }
 local SE_MOVE, SE_OK, SE_DECIDE, SE_BACK, SE_NG = 541750771, 3848881948, 4235359837, 202039849, 2086672038
@@ -179,7 +152,7 @@ local gauges_ready = {}
 
 -- errors go to evt_loader\loader.log (CMND_EVT_LOG) and the Lua console
 local function Log(msg)
-  pcall(funcLuaCommand, 3661580131, "evt_training_menu", tostring(msg))
+  pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "evt_training_menu", tostring(msg))
   pcall(print, "evt_training_menu: " .. tostring(msg))
 end
 
@@ -192,7 +165,7 @@ local function Signed(v)
   return tostring(v)
 end
 
--- menu_text row `id` with <VALUE>/<A>..<D> replaced; `fallback` (Spanish) when the row is missing
+-- menu_text row `id` with <VALUE>/<A>..<D> replaced; "" when the row is missing
 local function Fill(s, a, b, c, d)
   local map = {VALUE = a, A = a, B = b, C = c, D = d}
   return (string.gsub(s, "<(%u+)>", function(k)
@@ -204,33 +177,33 @@ local function Fill(s, a, b, c, d)
   end))
 end
 
-local function RowText0(id, fallback)
+local function RowText0(id)
   local ok, s = pcall(funcLuaCommand, C.TEXT_GET, id)
   if ok and type(s) == "string" and s ~= "" then
     return s
   end
-  return fallback or ""
+  return ""
 end
 
 local function T(key, a, b, c, d)
-  return Fill(RowText0(TX[key], TXT[key]), a, b, c, d)
+  return Fill(RowText0(TX[key]), a, b, c, d)
 end
 
 local function StatName(i)
-  return RowText0(TX.STATS[i + 1], TXT.STATS[i + 1])
+  return RowText0(TX.STATS[i + 1])
 end
 
 local function PosName(p)
   if TX.POS[p] == nil then
     return ""
   end
-  return RowText0(TX.POS[p], TXT.POS[p])
+  return RowText0(TX.POS[p])
 end
 
 local function Param(key)
-  if funcLuaCommand(C.P_HAS, key) then
-    local v = funcLuaCommand(C.P_GET, key)
-    funcLuaCommand(C.P_CLEAR, key)
+  if VRFW_Param.Has(key) then
+    local v = VRFW_Param.Get(key)
+    VRFW_Param.Clear(key)
     return v
   end
   return nil
@@ -610,7 +583,7 @@ local function DoSave()
   local dirty = info.ok and info.dirty
   if Commit() then
     funcLuaCommand(C.SE, SE_DECIDE)
-    if dirty and SHOW_SAVED_HINT and not saved_hint_shown then
+    if dirty and not saved_hint_shown then
       saved_hint_shown = true
       Say(T("SAVED_HINT"))
     end
@@ -734,7 +707,7 @@ function OnOpenLayer(a1, a2)
   elseif a1 == L_GAUGE then
     if a2 == nil or a2 < 0 or a2 >= ROWS then
       if a2 ~= nil and a2 >= ROWS then
-        funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)   -- the 9th gauge (ex Rapidez)
+        funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, a1, a2, false)   -- the 9th gauge (ex Rapidez)
       end
       return
     end

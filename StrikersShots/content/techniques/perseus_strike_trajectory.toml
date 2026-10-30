@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Orbe de Perseo (Perseus Strike, whs03240, cut-in ev60_03240).
+#
+# In the cut-in's last shot (c0500) the ball runs one straight line along the sword of Perseus. Flight: straight and
+# level at 2.5 m into the goal, so the blade (4.9 m wide, facing the camera) clears the pitch
+# (research/scripts/perseus_strike_ball_fx.py FLIGHT_H: keep the two equal). unblockable = false: the game's block
+# rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count from the kick;
+# one point = a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Orbe de Perseo (whs03240).
+[[edit]]
+target = "whs03240"
+trajectory = { points = [[0.0, 2.5]], straight = true, unblockable = false }

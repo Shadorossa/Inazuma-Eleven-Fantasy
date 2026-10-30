@@ -1,0 +1,245 @@
+schema = "VRFW.text/2"
+# Hissatsu Reforged › the «Crítico» archetype's build passives (retail «Brecha»: ps10052-ps10059 and the keepers'
+# ps10113) and its charge texts: they all say critical now; the values are config.toml [critical]
+# (docs/game/mods/hissatsu-critical.md §3.2; defaults = the game's numbers the texts show). Fixed ids: the retail
+# skill_text rows.
+table = "skill_text"
+
+[[row]]
+id = 0xA5A1BA12  # team breach rate +X % -> team critical rate
+kind = "noun"
+es = "Tasa de crítico del equipo [CPASSIVE01]+<VALUE> %[C]"
+en = "Team Critical Rate [CPASSIVE01]+<VALUE>%[C]"
+fr = "Taux de critique de l'équipe [CPASSIVE01]+<VALUE> %[C]"
+de = "Mannschaft: kritische Trefferrate [CPASSIVE01]+<VALUE> %[C]"
+it = "Probabilità di critico di squadra [CPASSIVE01]+<VALUE>%[C]"
+pt = "Taxa de crítico do time [CPASSIVE01]+<VALUE>%[C]"
+ja = "チームのクリティカル[率/りつ][CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "本队球员暴击率[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "隊伍暴擊率[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0xD2A68A84  # team breach rate +X % -> team critical rate
+kind = "noun"
+es = "Tasa de crítico del equipo [CPASSIVE01]+<VALUE> %[C]"
+en = "Team Critical Rate [CPASSIVE01]+<VALUE>%[C]"
+fr = "Taux de critique de l'équipe [CPASSIVE01]+<VALUE> %[C]"
+de = "Mannschaft: kritische Trefferrate [CPASSIVE01]+<VALUE> %[C]"
+it = "Probabilità di critico di squadra [CPASSIVE01]+<VALUE>%[C]"
+pt = "Taxa de crítico do time [CPASSIVE01]+<VALUE>%[C]"
+ja = "チームのクリティカル[率/りつ][CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "本队球员暴击率[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "隊伍暴擊率[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0x0BF7AFFC  # team breach rate up X % -> team critical rate
+kind = "noun"
+es = "Tasa de crítico del equipo [CPASSIVE01]+<VALUE> %[C]"
+en = "Team Critical Rate [CPASSIVE01]+<VALUE>%[C]"
+fr = "Taux de critique de l'équipe [CPASSIVE01]+<VALUE> %[C]"
+de = "Mannschaft: kritische Trefferrate [CPASSIVE01]+<VALUE> %[C]"
+it = "Probabilità di critico di squadra [CPASSIVE01]+<VALUE>%[C]"
+pt = "Taxa de crítico do time [CPASSIVE01]+<VALUE>%[C]"
+ja = "チームのクリティカル[率上昇/りつじょうしょう][CPASSIVE01]<VALUE>％[C]"
+zh_hans = "本队球员的暴击率上升[CPASSIVE01]<VALUE>%[C]"
+zh_hant = "隊伍暴擊率上升[CPASSIVE01]<VALUE>%[C]"
+
+[[row]]
+id = 0x4CC21F27  # level or behind: team breach rate -> critical rate
+kind = "noun"
+es = "Cuando se tienen los mismos goles o menos, \\ntasa de crítico del equipo [CPASSIVE01]+<VALUE> %[C]"
+en = "When tied or behind in goals, \\nTeam Critical Rate [CPASSIVE01]+<VALUE>%[C]"
+fr = "Quand à égalité ou en retard, \\ntaux de critique de l'équipe [CPASSIVE01]+<VALUE> %[C]"
+de = "Mannschaft: kritische Trefferrate bei Gleichstand \\noder Tor-Rückstand [CPASSIVE01]+<VALUE> %[C]"
+it = "Probabilità di critico di squadra [CPASSIVE01]+<VALUE>%[C] \\nquando in parità o in svantaggio"
+pt = "Quando empatado ou perdendo em gols, \\no time recebe taxa de crítico [CPASSIVE01]+<VALUE>%[C]"
+ja = "[同点/どうてん]または[不利時/ふりじ]\\nチームのクリティカル[率/りつ][CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "平手或落后时，本队球员暴击率[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "同分或不利時，隊伍暴擊率[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0x3BC52FB1  # level or behind: team breach rate -> critical rate
+kind = "noun"
+es = "Cuando se tienen los mismos goles o menos, \\ntasa de crítico del equipo [CPASSIVE01]+<VALUE> %[C]"
+en = "When tied or behind in goals, \\nTeam Critical Rate [CPASSIVE01]+<VALUE>%[C]"
+fr = "Quand à égalité ou en retard, \\ntaux de critique de l'équipe [CPASSIVE01]+<VALUE> %[C]"
+de = "Mannschaft: kritische Trefferrate bei Gleichstand \\noder Tor-Rückstand [CPASSIVE01]+<VALUE> %[C]"
+it = "Probabilità di critico di squadra [CPASSIVE01]+<VALUE>%[C] \\nquando in parità o in svantaggio"
+pt = "Quando empatado ou perdendo em gols, \\no time recebe taxa de crítico [CPASSIVE01]+<VALUE>%[C]"
+ja = "[同点/どうてん]または[不利時/ふりじ]\\nチームのクリティカル[率/りつ][CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "平手或落后时，本队球员暴击率[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "同分或不利時，隊伍暴擊率[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0x366E1DC4  # team breach rate (passive list) -> critical rate
+kind = "noun"
+es = "Tasa de crítico del equipo <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+en = "Team Critical Rate <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+fr = "Taux de critique de l'équipe <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+de = "Mannschaft: kritische Trefferrate <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+it = "Probabilità di critico di squadra <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+pt = "Taxa de crítico do time <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+ja = "チームのクリティカル[率/りつ]<PASSIVE_COLOR>＋<VALUE>％[C]<OVER_PASSIVE_INFO>"
+zh_hans = "本队球员暴击率<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+zh_hant = "隊伍暴擊率<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+
+[[row]]
+id = 0x41692D52  # level or behind (passive list) -> critical rate
+kind = "noun"
+es = "Cuando se tienen los mismos goles o menos, \\ntasa de crítico del equipo <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+en = "When tied or behind in goals, \\nTeam Critical Rate <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+fr = "Quand à égalité ou en retard, \\ntaux de critique de l'équipe <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+de = "Mannschaft: kritische Trefferrate bei Gleichstand \\noder Tor-Rückstand <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+it = "Probabilità di critico di squadra <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO> \\nquando in parità o in svantaggio"
+pt = "Quando empatado ou perdendo em gols, \\no time recebe taxa de crítico <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+ja = "[同点/どうてん]または[不利時/ふりじ]\\nチームのクリティカル[率/りつ]<PASSIVE_COLOR>＋<VALUE>％[C]<OVER_PASSIVE_INFO>"
+zh_hans = "平手或落后时，本队球员暴击率<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+zh_hant = "同分或不利時，隊伍暴擊率<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+
+# The «Crítico» charge (5 ranks, scripts/critical.lua; config.toml [critical] rank_up_seconds / rank_down_on_crit /
+# levels / keeper_levels): the build's rank rules and per-rank effect (retail team_build_config texts).
+[[row]]
+id = 0xB8413694  # rank up: no breach or save for N s -> no team critical for N s
+kind = "text"
+es = "Rango +<VALUE1> al no ocurrir críticos del equipo durante <VALUE> seg."
+en = "No team Critical Hits for <VALUE> sec: Rank +<VALUE1>"
+fr = "Si aucun coup critique pendant <VALUE>s,\\nle rang augmente de <VALUE1> niveau(x)."
+de = "Kein kritischer Treffer für <VALUE> Sek:\\nRang +<VALUE1>"
+it = "Se non si verifica alcun colpo critico\\nper <VALUE> secondi, il grado aumenta di <VALUE1>"
+pt = "Ranque +<VALUE1> após <VALUE>s sem golpe crítico\\ndo time"
+ja = "<VALUE>[秒間/びょうかん]クリティカルが[発生/はっせい]していないと\\n<VALUE1>[段階/だんかい]ＵＰ"
+zh_hans = "<VALUE>秒内未打出暴击时，提升<VALUE1>阶段"
+zh_hant = "<VALUE>秒內未打出暴擊時，提升<VALUE1>階段"
+
+[[row]]
+id = 0x7C089CF4  # rank down: breach or save -> a team critical
+kind = "text"
+es = "Rango -<VALUE> al lograr un crítico"
+en = "Critical Hit landed: Rank -<VALUE>"
+fr = "Si un coup critique a lieu,\\nle rang diminue de <VALUE> niveau(x)."
+de = "Nach kritischem Treffer: Rang -<VALUE>"
+it = "Se si verifica un colpo critico,\\nil grado diminuisce di <VALUE>"
+pt = "Ranque -<VALUE> ao conseguir um golpe crítico"
+ja = "クリティカルが[発動/はつどう]すると\\n<VALUE>[段階/だんかい]ＤＯＷＮ"
+zh_hans = "打出暴击时，下降<VALUE>阶段"
+zh_hant = "打出暴擊時，下降<VALUE>階段"
+
+[[row]]
+id = 0x5562CE2D  # per rank: breach + save rate -> critical + keeper critical rate
+kind = "text"
+es = "Tasa de crítico +<VALUE1> % y crítico de porteros +<VALUE2> %\\npor cada subida de rango"
+en = "For each Charge gained,\\nCritical Rate +<VALUE1>% and Keeper Critical Rate +<VALUE2>%"
+fr = "À chaque augmentation du build de 1 rang,\\ntaux de critique +<VALUE1>% et critique des gardiens +<VALUE2>%."
+de = "Jeder Stilrangaufstieg:\\nTorwart-Krit +<VALUE1> % und kritische Trefferrate +<VALUE2> %"
+it = "A ogni aumento di grado,\\ncritico portieri +<VALUE1>％, critico +<VALUE2>％"
+pt = "A cada aumento de ranque,\\nTaxa de crítico +<VALUE1>% e crítico dos goleiros +<VALUE2>%"
+ja = "チャージが１[上/あ]がるごとに\\nクリティカル[率/りつ]＋<VALUE1>％　キーパーのクリティカル[率/りつ]＋<VALUE2>％"
+zh_hans = "流派增益每提升1阶段，\\n暴击率+<VALUE1>%，门将暴击率+<VALUE2>%"
+zh_hant = "流派增益每提升1階段，\\n暴擊率+<VALUE1>%，門將暴擊率+<VALUE2>%"
+
+# ps10056 / ps10057 (per rank: castle wall pierce) -> critical power per rank (config power_per_rank)
+[[row]]
+id = 0xA2CC7E0B  # per rank wall pierce -> critical power
+kind = "noun"
+es = "Por cada rango de Conf. Crítico,\\npoder de los críticos del equipo [CPASSIVE01]+<VALUE> %[C]"
+en = "For each Charge Rank with Critical Team\\nBuild, Team Critical Power [CPASSIVE01]+<VALUE>%[C]"
+fr = "À chaque augmentation du build Critique,\\npuissance des coups critiques [CPASSIVE01]+<VALUE>%[C]"
+de = "Jeder Kritisch-Stilrangaufstieg,\\nStärke kritischer Treffer [CPASSIVE01]+<VALUE> %[C]"
+it = "A ogni aumento grado della costruzione\\nCritico, potenza dei critici di squadra [CPASSIVE01]+<VALUE>%[C]"
+pt = "Montagem: Crítico: Poder dos golpes\\ncríticos do time [CPASSIVE01]+<VALUE>%[C] por ranque"
+ja = "クリティカルビルドチャージ１ごとに\\nチームのクリティカル[威力/いりょく][CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "暴击流派增益每提升1阶段，\\n球队的暴击威力[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "暴擊隊伍流派增益每提升1階段，\\n隊伍的暴擊威力[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0xD5CB4E9D  # per rank wall pierce -> critical power
+kind = "noun"
+es = "Por cada rango de Conf. Crítico,\\npoder de los críticos del equipo [CPASSIVE01]+<VALUE> %[C]"
+en = "For each Charge Rank with Critical Team\\nBuild, Team Critical Power [CPASSIVE01]+<VALUE>%[C]"
+fr = "À chaque augmentation du build Critique,\\npuissance des coups critiques [CPASSIVE01]+<VALUE>%[C]"
+de = "Jeder Kritisch-Stilrangaufstieg,\\nStärke kritischer Treffer [CPASSIVE01]+<VALUE> %[C]"
+it = "A ogni aumento grado della costruzione\\nCritico, potenza dei critici di squadra [CPASSIVE01]+<VALUE>%[C]"
+pt = "Montagem: Crítico: Poder dos golpes\\ncríticos do time [CPASSIVE01]+<VALUE>%[C] por ranque"
+ja = "クリティカルビルドチャージ１ごとに\\nチームのクリティカル[威力/いりょく][CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "暴击流派增益每提升1阶段，\\n球队的暴击威力[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "暴擊隊伍流派增益每提升1階段，\\n隊伍的暴擊威力[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0xD8607CE8  # per rank wall pierce (passive list) -> critical power
+kind = "noun"
+es = "Por cada rango de Conf. Crítico,\\npoder de los críticos del equipo <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+en = "For each Charge Rank with Critical Team\\nBuild, Team Critical Power <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+fr = "À chaque augmentation du build Critique,\\npuissance des coups critiques <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+de = "Jeder Kritisch-Stilrangaufstieg,\\nStärke kritischer Treffer <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+it = "A ogni aumento grado della costruzione\\nCritico, potenza dei critici di squadra <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+pt = "Montagem: Crítico: Poder dos golpes\\ncríticos do time <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO> por ranque"
+ja = "クリティカルビルドチャージ１ごとに\\nチームのクリティカル[威力/いりょく]<PASSIVE_COLOR>＋<VALUE>％[C]<OVER_PASSIVE_INFO>"
+zh_hans = "暴击流派增益每提升1阶段，\\n球队的暴击威力<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+zh_hant = "暴擊隊伍流派增益每提升1階段，\\n隊伍的暴擊威力<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+
+# ps10058 / ps10059 (tension needed for a breach -X %) -> tension back on a team critical (config crit_tension)
+[[row]]
+id = 0x4574530C  # tension breach cost -> tension on a critical
+kind = "noun"
+es = "Tensión recuperada al lograr un crítico [CPASSIVE01]+<VALUE> %[C]"
+en = "Team Tension regained on a Critical Hit [CPASSIVE01]+<VALUE>%[C]"
+fr = "Tension regagnée sur un coup critique [CPASSIVE01]+<VALUE> %[C]"
+de = "Spannung zurück bei kritischem Treffer [CPASSIVE01]+<VALUE> %[C]"
+it = "Tensione recuperata con un colpo critico [CPASSIVE01]+<VALUE>%[C]"
+pt = "Tensão recuperada ao conseguir\\num golpe crítico [CPASSIVE01]+<VALUE>%[C]"
+ja = "クリティカルでチームのテンション[CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "打出暴击时恢复士气[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "打出暴擊時恢復士氣[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0x3273639A  # tension breach cost -> tension on a critical
+kind = "noun"
+es = "Tensión recuperada al lograr un crítico [CPASSIVE01]+<VALUE> %[C]"
+en = "Team Tension regained on a Critical Hit [CPASSIVE01]+<VALUE>%[C]"
+fr = "Tension regagnée sur un coup critique [CPASSIVE01]+<VALUE> %[C]"
+de = "Spannung zurück bei kritischem Treffer [CPASSIVE01]+<VALUE> %[C]"
+it = "Tensione recuperata con un colpo critico [CPASSIVE01]+<VALUE>%[C]"
+pt = "Tensão recuperada ao conseguir\\num golpe crítico [CPASSIVE01]+<VALUE>%[C]"
+ja = "クリティカルでチームのテンション[CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "打出暴击时恢复士气[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "打出暴擊時恢復士氣[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0xAF674C7E  # tension breach cost (passive list) -> tension on a critical
+kind = "noun"
+es = "Tensión recuperada al lograr un crítico <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+en = "Team Tension regained on a Critical Hit <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+fr = "Tension regagnée sur un coup critique <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+de = "Spannung zurück bei kritischem Treffer <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+it = "Tensione recuperata con un colpo critico <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+pt = "Tensão recuperada ao conseguir\\num golpe crítico <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+ja = "クリティカルでチームのテンション<PASSIVE_COLOR>＋<VALUE>％[C]<OVER_PASSIVE_INFO>"
+zh_hans = "打出暴击时恢复士气<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+zh_hant = "打出暴擊時恢復士氣<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+
+# ps10113 (keepers, per rank: save rate) -> keepers' critical chance per rank (config keeper_per_rank)
+[[row]]
+id = 0xB70825B7  # per rank save rate -> keeper critical rate
+kind = "noun"
+es = "Por cada rango de Conf. Crítico, \\ntasa de crítico de los porteros [CPASSIVE01]+<VALUE> %[C]"
+en = "For each Charge Rank up with Critical Team\\nBuild, Team Keeper Critical Rate [CPASSIVE01]+<VALUE>%[C]"
+fr = "À chaque augmentation du build Critique,\\ntaux de critique des gardiens [CPASSIVE01]+<VALUE>%[C]"
+de = "Jeder Kritisch-Stilrangaufstieg, \\nMannschaft: Torwart-Krit-Rate [CPASSIVE01]+<VALUE> %[C]"
+it = "A ogni aumento di grado della costruzione Critico,\\nprobabilità di critico dei portieri [CPASSIVE01]+<VALUE>％[C]"
+pt = "Montagem: Crítico: Taxa de crítico\\ndos goleiros do time [CPASSIVE01]+<VALUE>%[C] por ranque"
+ja = "クリティカルビルドチャージ１ごとに\\nチームのキーパーのクリティカル[率/りつ][CPASSIVE01]＋<VALUE>％[C]"
+zh_hans = "暴击流派增益每提升1阶段，\\n球队门将的暴击率[CPASSIVE01]+<VALUE>%[C]"
+zh_hant = "暴擊隊伍流派增益每提升1階段，\\n隊伍門將的暴擊率[CPASSIVE01]+<VALUE>%[C]"
+
+[[row]]
+id = 0xF34D2F2B  # per rank save rate (passive list) -> keeper critical rate
+kind = "noun"
+es = "Por cada rango de Conf. Crítico, \\ntasa de crítico de los porteros <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+en = "For each Charge Rank up with Critical Team\\nBuild, Team Keeper Critical Rate <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+fr = "À chaque augmentation du build Critique,\\ntaux de critique des gardiens <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO>"
+de = "Jeder Kritisch-Stilrangaufstieg, \\nMannschaft: Torwart-Krit-Rate <PASSIVE_COLOR>+<VALUE> %[C] <OVER_PASSIVE_INFO>"
+it = "A ogni aumento di grado della costruzione Critico,\\nprobabilità di critico dei portieri <PASSIVE_COLOR>+<VALUE>％[C] <OVER_PASSIVE_INFO>"
+pt = "Montagem: Crítico: Taxa de crítico\\ndos goleiros do time <PASSIVE_COLOR>+<VALUE>%[C] <OVER_PASSIVE_INFO> por ranque"
+ja = "クリティカルビルドチャージ１ごとに\\nチームのキーパーのクリティカル[率/りつ]<PASSIVE_COLOR>＋<VALUE>％[C]<OVER_PASSIVE_INFO>"
+zh_hans = "暴击流派增益每提升1阶段，\\n球队门将的暴击率<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"
+zh_hant = "暴擊隊伍流派增益每提升1階段，\\n隊伍門將的暴擊率<PASSIVE_COLOR>+<VALUE>%[C]<OVER_PASSIVE_INFO>"

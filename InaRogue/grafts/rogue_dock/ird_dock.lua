@@ -29,25 +29,25 @@ do
   local PLAYED = 23                                      -- byte 606: the match was reserved from this dock
   local M = {   -- the INAROGUE flag block (docs/game/modes/inarogue.md §5; flag_config rows of Inazuma Fantasy)
     RESULT = 504862522, GF = 3095885530, GA = 652469113, PROBE = 3345119360, STATE = 3014640977,
-    PRE_MATCH = 3014583614,      -- CMND_SET_PRE_MATCH_SOCCER_GAME_ID (game)
+    PRE_MATCH = @crc:CMND_SET_PRE_MATCH_SOCCER_GAME_ID@,      -- CMND_SET_PRE_MATCH_SOCCER_GAME_ID (game)
     DIFF_HELPER = 1104380539,    -- 0x41D3827B (difficulty): the retail VS flow calls it before RESERVE
-    RESERVE = 1620561217,        -- CMND_RESERVE_SOCCER (game, stadium, difficulty)
-    RETURN = 3094129190,         -- CMND_EVT_TRIAL_RETURN (1 arm / 0 disarm): the 5v5 street battle ends in the menus
-    UNIFORM = 1598711521,        -- CMND_EVT_TEAM_UNIFORM (set, team [, uniform [, src_team]]) -> ok, uniformId
-    CLOSE = 320421347, ACTIVE = 1558704558, FADE = 609722083, FADE_DONE = 2259183189, FADE_BUSY = 2736534827,
+    RESERVE = @crc:CMND_RESERVE_SOCCER@,        -- CMND_RESERVE_SOCCER (game, stadium, difficulty)
+    RETURN = @crc:CMND_EVT_TRIAL_RETURN@,         -- CMND_EVT_TRIAL_RETURN (1 arm / 0 disarm): the 5v5 street battle ends in the menus
+    UNIFORM = @crc:CMND_EVT_TEAM_UNIFORM@,        -- CMND_EVT_TEAM_UNIFORM (set, team [, uniform [, src_team]]) -> ok, uniformId
+    CLOSE = @crc:CMND_CLOSE_MENU_OBJECT@, ACTIVE = 1558704558, FADE = 609722083, FADE_DONE = 2259183189, FADE_BUSY = 2736534827,
     MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
     SE_OK = 3848881948,
   }
-  local TM = {  -- pre-match texts (9 languages: research/scripts/rogue_play_text_build.py)
-    ASK = {@crc:evt_ird_ask_play@, "{1}: {2} (Nv. {3}).\n¿Jugar el partido ahora con este equipo?\n(No = volver al mapa sin jugar.)"},
-    FEW11 = {@crc:evt_ird_few11@, "Faltan titulares para el partido: {1}/11.\nColoca a 11 jugadores en «Tipo: Partido»."},
-    FEW5 = {@crc:evt_ird_few5@, "Faltan titulares para la pachanga: {1}/5.\nColoca a 5 jugadores en «Tipo: Pachanga»."},
-    FOREIGN = {@crc:evt_ird_foreign_play@, "Hay {1} jugador(es) que no son de INAROGUE en el equipo."},
-    FAIL = {@crc:evt_ird_fail@, "El juego no aceptó el partido (mira el loader.log del vr-loader).\nLa casilla sigue pendiente."},
-    K5 = {@crc:evt_ird_kind5@, "Pachanga 5 contra 5"},
-    K11 = {@crc:evt_ird_kind11@, "Partido 11 contra 11"},
-    KBOSS = {@crc:evt_ird_kindboss@, "JEFE de la fase"},
-    KELITE = {@crc:evt_ird_kindelite@, "ÉLITE"},
+  local TM = {  -- pre-match texts (InaRogue text\rows\menu_text.toml, 9 languages)
+    ASK = {@crc:evt_ird_ask_play@},
+    FEW11 = {@crc:evt_ird_few11@},
+    FEW5 = {@crc:evt_ird_few5@},
+    FOREIGN = {@crc:evt_ird_foreign_play@},
+    FAIL = {@crc:evt_ird_fail@},
+    K5 = {@crc:evt_ird_kind5@},
+    K11 = {@crc:evt_ird_kind11@},
+    KBOSS = {@crc:evt_ird_kindboss@},
+    KELITE = {@crc:evt_ird_kindelite@},
   }
 
   --@lib evt_menu_kit.lua#call
@@ -73,8 +73,8 @@ do
 
   local function header()
     IRD.points()
-    local ok, base = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], HEADER_TEXT)
-    base = (ok and type(base) == "string") and base or "Plantilla de equipo"
+    local ok, base = pcall(funcLuaCommand, @crc:CMND_TEXT_GET@, HEADER_TEXT)
+    base = (ok and type(base) == "string") and base or ""
     if IRD.pachanga() and type(EVT_PT) == "table" and type(EVT_PT.text) == "function" then
       local ok2, p = pcall(EVT_PT.text, "HEADER")
       if ok2 and type(p) == "string" and p ~= "" then

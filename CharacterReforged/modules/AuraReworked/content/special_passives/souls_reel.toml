@@ -1,0 +1,44 @@
+# Souls Rework › the reel results as passives (kind VRFW.passive/1): a skill family of
+# content\souls\skills.toml with effect "passive" names one of these; the reel grants it (grant = true: the rule flag
+# <[grant] flag_prefix>.<passive>.<actor handle> = the skill level) for its seconds or while the totem is out.
+schema = "VRFW.passive/1"
+
+[[VRFW.Passive]]
+name = "reel_shoot_up"
+blocks = ["reel_power_shoot_10"]
+grant = true
+
+[[VRFW.Passive]]
+name = "reel_dribble_up"
+blocks = ["reel_power_dribble_10"]
+grant = true
+
+[[VRFW.Passive]]
+name = "reel_block_up"
+blocks = ["reel_power_block_10"]
+grant = true
+
+[[VRFW.Passive]]
+name = "reel_catch_up"
+blocks = ["reel_power_catch_10"]
+grant = true
+
+[[VRFW.Passive]]
+name = "reel_sp_saving"
+blocks = ["reel_pool_cost_m20"]
+grant = true
+
+[[VRFW.Passive]]
+name = "reel_numbness_plus"
+blocks = ["reel_keeper_shot_shooter_4"]
+grant = true
+
+[[VRFW.Passive]]
+name = "reel_numbness_minus"
+blocks = ["reel_keeper_shot_keeper_m4"]
+grant = true
+
+[[VRFW.Passive]]
+name = "reel_super_dash"
+blocks = ["reel_speed_20"]
+grant = true

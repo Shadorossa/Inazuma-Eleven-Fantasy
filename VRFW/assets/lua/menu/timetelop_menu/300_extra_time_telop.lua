@@ -9,10 +9,10 @@
 -- telop) and UpdateUseTextureTelop (sets the picture after the retail one); no engine call at load time.
 do
   local C = {
-    BREAK = 2605035580,       -- CMND_VRFW_RULE_ENGINE_BREAK -> phase, number in the phase, periods of the phase
-    STATE = 3084109502,       -- CMND_EVT_MATCH_ENGINE_STATE -> phase, id, scores…, winner, extra time played, …
+    BREAK = VRFW_Cmd.VRFW_RULE_ENGINE_BREAK,       -- CMND_VRFW_RULE_ENGINE_BREAK -> phase, number in the phase, periods of the phase
+    STATE = VRFW_Cmd.EVT_MATCH_ENGINE_STATE,       -- CMND_EVT_MATCH_ENGINE_STATE -> phase, id, scores…, winner, extra time played, …
     SET_SPRITE = 558735651,
-    LOG = 3661580131,         -- CMND_EVT_LOG
+    LOG = VRFW_Cmd.EVT_LOG,         -- CMND_EVT_LOG
   }
   local L_TEXT = 852785315          -- soccer05_02_timetelop_text
   local ATLAS = 3297212849          -- #/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx

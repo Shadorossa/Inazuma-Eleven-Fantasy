@@ -10,8 +10,9 @@
 
 Synergy = Synergy or {}
 
-local function info(...) VRFW.log("synergy:", ...) end
-local function warn(...) VRFW.warn("synergy:", ...) end
+require "VRFW/lib/basics"
+local GameText = require "VRFW/lib/game_text"
+local info, warn = VRFW.logger("synergy")
 
 local N_MEMBERS = 0x1D
 local MEMBER_BASE, MEMBER_STRIDE, MEMBER_CLASS = 0x80, 0x10, 0x0E
@@ -24,14 +25,10 @@ local KIND_NEXUS, KIND_NEXUS_MISSING, KIND_FILLED, KIND_EMPTY = 1, 2, 3, 4
 local GENDER = { male = 1, female = 2 }
 local ROLES = { manager = true, coach = true }
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v ~= v then return 0 end
-  v = math.floor(v)
-  return v % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
 
-local function crc(s) return u32(VRFW.ui.crc32(s)) end
+local crc = VRFW.crc32
 
 -- "0x…" / decimal / a number → the number, any other text → crc32 of it
 local function id_of(v)
@@ -64,11 +61,7 @@ local function wr(ty, at, v)
   return (pcall(VRFW.mem.write, ty, at, v))
 end
 
-local function list_of(v)
-  if v == nil then return {} end
-  if type(v) ~= "table" then return { v } end
-  return v
-end
+local function list_of(v) return VRFW.value.list(v, {}) end
 
 -- ---------------------------------------------------------------------------------------------- declarations
 
@@ -76,9 +69,9 @@ local POOLS = {}         -- "<mod>.<name>" -> pool
 local DECL = {}          -- synergy id -> declaration
 local LIST = {}
 
-local POOL_KEYS = { name = true, teams = true, series = true, role = true, gender = true, charas = true, exclude = true, hint = true }
+local POOL_KEYS = { name = true, teams = true, series = true, role = true, gender = true, charas = true, exclude = true, hint = true, show_candidates = true, captains_of = true, captains_of_teams = true, captain_overrides = true, crest_eras = true, crests = true, rosters = true }
 local SYN_KEYS = { key = true, nexus = true, pool = true, count = true, rule = true, distinct = true, hint = true, placeholder = true,
-  slots = true, skip_nexus_team = true, slot_members = true }
+  slots = true, skip_nexus_team = true, slot_members = true, need = true, nexus_pool = true, same_person = true }
 
 local function read_pool(mod, file, p, i)
   local where = string.format("mods/%s/%s: [[VRFW.SynergyPool]] #%d", tostring(mod), tostring(file), i)
@@ -87,7 +80,7 @@ local function read_pool(mod, file, p, i)
   end
   if type(p.name) ~= "string" or not p.name:match("^[a-z0-9_]+$") then return nil, where .. ": name = \"a-z 0-9 _\" is required" end
   local x = { key = tostring(mod) .. "." .. p.name, teams = {}, team_list = {}, series = {}, charas = {}, exclude = {},
-    hint = p.hint and id_of(p.hint) or nil }
+    hint = p.hint and id_of(p.hint) or nil, show_candidates = p.show_candidates == true }
   for _, t in ipairs(list_of(p.teams)) do
     local id = id_of(t)
     if not id then return nil, where .. " " .. p.name .. ": teams = [ belong team ids ]" end
@@ -122,8 +115,60 @@ local function read_pool(mod, file, p, i)
     local id = chara_of(c)
     if id then x.exclude[id] = true end
   end
-  if not (x.any_team or x.any_series or x.role or x.gender or x.any_chara) then
-    return nil, where .. " " .. p.name .. ": no criterion (teams, series, role, gender, charas): it would take everyone"
+  -- crest_eras: the crests of every era of the pool's teams; a pool restricted to the series of one era shows that era's crest
+  x.crest_eras = p.crest_eras == true
+  local ERA_OF = { ie1 = 1, ie2 = 1, ie3 = 1, go1 = 2, go2 = 2, go3 = 2, go = 2, cs = 2, galaxy = 2, ares = 3, orion = 3, victory_road = 4, vr = 4 }
+  for _, sname in ipairs(list_of(p.series)) do
+    local e = ERA_OF[tostring(sname)]
+    if e == nil or (x.era ~= nil and x.era ~= e) then x.era = nil; x.era_mixed = true
+    elseif not x.era_mixed then x.era = e end
+  end
+  -- crests = [{ team = "<belong team>", era = "ie" | "go" | "ares" | "vr" }]: exactly these crests (the team's emblem of that era)
+  x.crest_list = {}
+  local CREST_ERA = { ie = 1, go = 2, ares = 3, vr = 4 }
+  for _, c in ipairs(list_of(p.crests)) do
+    if type(c) == "table" and type(c.game_team) == "string" then
+      x.crest_list[#x.crest_list + 1] = { game_team = c.game_team }   -- the emblem of that game team (team_config), as its team screens show
+    else
+      local t = type(c) == "table" and id_of(c.team) or nil
+      local e = type(c) == "table" and CREST_ERA[tostring(c.era)] or nil
+      if not t or not e then return nil, where .. " " .. p.name .. ": crests = [ { team = <belong team id>, era = \"ie\" | \"go\" | \"ares\" | \"vr\" } or { game_team = \"<game team key>\" } ]" end
+      x.crest_list[#x.crest_list + 1] = { team = t, era = e }
+    end
+  end
+  -- captains_of_teams = [game team keys] (team_config): the captains of those teams join the pool
+  x.captain_keys = {}
+  for _, k in ipairs(list_of(p.captains_of_teams)) do
+    if type(k) ~= "string" then return nil, where .. " " .. p.name .. ": captains_of_teams = [ \"<game team key>\" ]" end
+    x.captain_keys[k] = true
+    x.has_captain_keys = true
+  end
+  -- rosters = [game team keys] (team_config): every member of those teams joins the pool (the squad a team really plays
+  -- with, when its players' belong teams are other clubs)
+  x.roster_keys = {}
+  for _, k in ipairs(list_of(p.rosters)) do
+    if type(k) ~= "string" then return nil, where .. " " .. p.name .. ": rosters = [ \"<game team key>\" ]" end
+    x.roster_keys[#x.roster_keys + 1] = k
+  end
+  -- captain_overrides = [{ team = "<game team key>", captain = "<chara>" }]: that game team's captain is the declared character
+  x.captain_override = {}
+  for _, o in ipairs(list_of(p.captain_overrides)) do
+    local c = type(o) == "table" and chara_of(o.captain) or nil
+    if type(o) ~= "table" or type(o.team) ~= "string" or not c then
+      return nil, where .. " " .. p.name .. ": captain_overrides = [ { team = \"<game team key>\", captain = \"<chara>\" } ]"
+    end
+    x.captain_override[o.team] = c
+  end
+  -- captains_of = [belong team ids]: the captains of the game's teams (team_config) named like those belong teams
+  x.captain_teams = {}
+  for _, t in ipairs(list_of(p.captains_of)) do
+    local id = id_of(t)
+    if not id then return nil, where .. " " .. p.name .. ": captains_of = [ belong team ids ]" end
+    x.captain_teams[#x.captain_teams + 1] = id
+  end
+  if not (x.any_team or x.any_series or x.role or x.gender or x.any_chara or #x.captain_teams > 0 or x.has_captain_keys
+      or #x.roster_keys > 0) then
+    return nil, where .. " " .. p.name .. ": no criterion (teams, series, role, gender, charas, captains_of, captains_of_teams, rosters): it would take everyone"
   end
   return x
 end
@@ -144,7 +189,12 @@ local function read_syn(mod, file, s, i)
       x.nexus_list[#x.nexus_list + 1] = b
     end
   end
-  x.has_nexus = #x.nexus_list > 0
+  if s.nexus_pool ~= nil then
+    -- the nexus = the members of a pool (resolved once the index is read: resolve_nexus)
+    if type(s.nexus_pool) ~= "string" then return nil, where .. " " .. x.key .. ": nexus_pool = \"<pool name>\"" end
+    x.nexus_pool = s.nexus_pool:find(".", 1, true) and s.nexus_pool or (tostring(mod) .. "." .. s.nexus_pool)
+  end
+  x.has_nexus = #x.nexus_list > 0 or x.nexus_pool ~= nil
   if s.slots ~= nil then
     -- one pool per slot (each slot filled by a different player of its pool), instead of `pool` + `count`
     if s.pool ~= nil or s.count ~= nil then return nil, where .. " " .. x.key .. ": `slots` replaces `pool` + `count`: give one or the other" end
@@ -161,14 +211,23 @@ local function read_syn(mod, file, s, i)
     if x.skip_nexus_team and not x.has_nexus then return nil, where .. " " .. x.key .. ": skip_nexus_team needs a nexus" end
     if x.rule ~= "min" then return nil, string.format("%s %s: rule %q: with `slots` every slot must be filled (rule min)", where, x.key, tostring(x.rule)) end
     x.count = #x.slot_keys - (x.skip_nexus_team and 1 or 0)
+    if s.need ~= nil then
+      -- «N players from N different pools»: `need` of the slots must be filled (each by a different person from a different pool)
+      local n = tonumber(s.need)
+      if not n or n ~= math.floor(n) or n < 1 or n > x.count then return nil, where .. " " .. x.key .. ": need = <whole number 1 to the number of slots>" end
+      x.need, x.count = n, n
+    end
     x.pool_key = table.concat(x.slot_keys, " / ")
+  elseif s.need ~= nil then
+    return nil, where .. " " .. x.key .. ": need works with `slots` only"
   elseif s.skip_nexus_team ~= nil then
     return nil, where .. " " .. x.key .. ": skip_nexus_team works with `slots` only"
   elseif s.slot_members ~= nil then
     return nil, where .. " " .. x.key .. ": slot_members works with `slots` only"
   end
   if x.count ~= math.floor(x.count) or x.count < 1 then return nil, where .. " " .. x.key .. ": count = <whole number ≥ 1> is required" end
-  if x.count + (x.has_nexus and 1 or 0) > MAX_ROWS then
+  -- `slots` may ask more players than the panel has rows: all are checked, the panel draws the first MAX_ROWS rows
+  if not x.slot_keys and x.count + (x.has_nexus and 1 or 0) > MAX_ROWS then
     return nil, string.format("%s %s: the nexus + count = %d rows: the panel shows %d at most", where, x.key, x.count + (x.has_nexus and 1 or 0), MAX_ROWS)
   end
   if x.rule ~= "min" and x.rule ~= "exact" then return nil, string.format("%s %s: rule %q (min, exact)", where, x.key, tostring(x.rule)) end
@@ -176,6 +235,22 @@ local function read_syn(mod, file, s, i)
   if not x.slot_keys then
     if type(s.pool) ~= "string" then return nil, where .. " " .. x.key .. ": pool = \"<a [[VRFW.SynergyPool]] name>\" is required" end
     x.pool_key = s.pool:find(".", 1, true) and s.pool or (tostring(mod) .. "." .. s.pool)
+  end
+  -- same_person = [ [ "<chara>", "<chara>", ... ], ... ]: each group is ONE person for `distinct = "person"` (characters whose name
+  -- texts differ, e.g. a hero's later name); resolved to the name texts on first use (person)
+  x.same_person = {}
+  if s.same_person ~= nil then
+    if type(s.same_person) ~= "table" then return nil, where .. " " .. x.key .. ": same_person = [ [ \"<chara>\", \"<chara>\" ], ... ]" end
+    for _, g in ipairs(s.same_person) do
+      local group = {}
+      for _, c in ipairs(type(g) == "table" and g or {}) do
+        local b = chara_of(c)
+        if not b then return nil, where .. " " .. x.key .. ": same_person: unknown character " .. tostring(c) end
+        group[#group + 1] = b
+      end
+      if #group < 2 then return nil, where .. " " .. x.key .. ": same_person: each group lists two or more characters" end
+      x.same_person[#x.same_person + 1] = group
+    end
   end
   x.placeholder = s.placeholder and chara_of(s.placeholder) or nil
   return x
@@ -203,7 +278,8 @@ local function load_decls()
   for _, e in ipairs(syns) do
     local x, why = read_syn(e.f.mod, e.f.file, e.s, e.i)
     local miss = nil
-    if x then
+    if x and x.nexus_pool and not POOLS[x.nexus_pool] then miss = x.nexus_pool end
+    if x and not miss then
       for _, k in ipairs(x.slot_keys or { x.pool_key }) do
         if not POOLS[k] then miss = k; break end
       end
@@ -282,14 +358,96 @@ end
 
 -- The pool's members (chara_base ids in table order), resolved once: the characters listed in `charas` plus those matching the other criteria
 -- (teams, series, role, gender), minus `exclude`.
+-- The captain of each game team (team_config: SOCCER_TEAM_INFO name text; its members' captain column), by the team's
+-- name text: name text id -> { chara_base = true }; and every game team's members (TEAM_ROSTERS: game team key ->
+-- { chara_base, … }, team_config order). Read once.
+local TEAM_CAPTAINS = nil
+local TEAM_ROSTERS = {}
+local function team_captains()
+  if TEAM_CAPTAINS then return TEAM_CAPTAINS end
+  TEAM_CAPTAINS = {}
+  TEAM_ROSTERS = {}
+  local ok, e = pcall(function()
+    local ents = VRFW.table.entries("data/common/gamedata/team/team_config_*.cfg.bin",
+      { "SOCCER_TEAM_INFO", "SOCCER_TEAM_INFO_REF_MEMBER", "SOCCER_TEAM_MEMBER" })
+    local members = {}
+    for _, m in ipairs(ents) do
+      if m.name == "SOCCER_TEAM_MEMBER" then members[#members + 1] = m end
+    end
+    for i, t in ipairs(ents) do
+      local ref = ents[i + 1]
+      if t.name == "SOCCER_TEAM_INFO" and ref and ref.name == "SOCCER_TEAM_INFO_REF_MEMBER" then
+        local text = u32(tonumber(t[4]) or 0)
+        local roster = {}
+        TEAM_ROSTERS[tostring(t[2])] = roster
+        for k = 0, (tonumber(ref[2]) or 0) - 1 do
+          local m = members[(tonumber(ref[1]) or 0) + k + 1]
+          local b = m and IDX.base_of[u32(tonumber(m[1]) or 0)] or nil
+          if b then roster[#roster + 1] = b end
+          if b and tonumber(m[12]) == 1 then
+            TEAM_CAPTAINS[#TEAM_CAPTAINS + 1] = { key = tostring(t[2]), text = text, base = b, emblem = u32(tonumber(t[7]) or 0) }
+          end
+        end
+      end
+    end
+  end)
+  if not ok then warn("team captains not readable: " .. tostring(e)) end
+  return TEAM_CAPTAINS
+end
+
+-- the captains of the teams named like the belong teams `ids`
+local function captains_of(ids, keys, override)
+  local out, texts = {}, {}
+  local ok, e = pcall(function()
+    for _, r in ipairs(VRFW.table.rows("character/belong_team") or {}) do
+      local id = u32(r.belong_team_id or r[1] or 0)
+      local text = u32(r.team_name_text_id or r[3] or 0)
+      for _, want in ipairs(ids) do
+        if id == want and text ~= 0 then texts[#texts + 1] = text end
+      end
+    end
+  end)
+  if not ok then warn("belong teams not readable: " .. tostring(e)) end
+  local seen = {}
+  for _, t in ipairs(team_captains()) do
+    local hit = keys[t.key] == true
+    for _, text in ipairs(texts) do
+      if t.text == text then hit = true end
+    end
+    local b = override[t.key] or t.base
+    if hit and not seen[b] then seen[b] = true; out[#out + 1] = b end
+  end
+  return out
+end
+
+-- the members of the game teams `keys` (team_config), every card of their rosters
+local function roster_members(keys)
+  local out = {}
+  if #keys == 0 then return out end
+  team_captains()
+  for _, k in ipairs(keys) do
+    local r = TEAM_ROSTERS[k]
+    if r then
+      for _, b in ipairs(r) do out[#out + 1] = b end
+    else
+      warn(string.format("rosters: game team %s not found in team_config", k))
+    end
+  end
+  return out
+end
+
 local function pool_members(p)
   if p.members then return p.members end
   index()
   p.members, p.set = {}, {}
   local include = {}
-  if p.any_chara then
+  local captains = (#p.captain_teams > 0 or p.has_captain_keys) and captains_of(p.captain_teams, p.captain_keys, p.captain_override) or {}
+  local roster = roster_members(p.roster_keys)
+  if p.any_chara or #captains > 0 or #roster > 0 then
     local ids = {}
     for b in pairs(p.charas) do ids[#ids + 1] = b end
+    for _, b in ipairs(captains) do ids[#ids + 1] = b end
+    for _, b in ipairs(roster) do ids[#ids + 1] = b end
     include[#include + 1] = { characters = ids }
   end
   if p.any_team or p.any_series or p.role or p.gender then
@@ -315,10 +473,28 @@ local function pool_members(p)
   return p.members
 end
 
+-- the name text a person group counts as (the first character's), per declaration, built once
+local function person_aliases(decl)
+  if decl.person_alias then return decl.person_alias end
+  local alias = {}
+  for _, group in ipairs(decl.same_person or {}) do
+    local first = IDX.info[group[1]]
+    local rep = first and first.person
+    for i = 2, #group do
+      local c = IDX.info[group[i]]
+      if rep and c and c.person ~= rep then alias[c.person] = rep end
+    end
+  end
+  decl.person_alias = alias
+  return alias
+end
+
 local function person(base, decl)
   if decl.distinct == "character" then return base end
   local c = IDX.info[base]
-  return c and c.person or base
+  local p = c and c.person or base
+  if decl.same_person and #decl.same_person > 0 then return person_aliases(decl)[p] or p end
+  return p
 end
 
 -- ---------------------------------------------------------------------------------------------- the check
@@ -383,7 +559,7 @@ end
 
 -- ---------------------------------------------------------------------------------------------- slots
 
--- the slots in play: every declared slot except those whose pool names a belong team of the nexus (skip_nexus_team); at most the panel's room
+-- the slots in play: every declared slot except those whose pool names a belong team of the nexus (skip_nexus_team); all are checked (the panel draws the first MAX_ROWS rows)
 local function active_slots(d, nexus_base)
   local out = {}
   local c = IDX.info[nexus_base or 0]
@@ -397,8 +573,6 @@ local function active_slots(d, nexus_base)
     end
     if not skip then out[#out + 1] = p end
   end
-  local room = MAX_ROWS - (d.has_nexus and 1 or 0)
-  while #out > room do table.remove(out) end
   return out
 end
 
@@ -445,7 +619,20 @@ local function fill_slots(d, slots, cands)
   return filled, extra
 end
 
+-- a nexus given as a pool (`nexus_pool`): its members, once
+local function resolve_nexus(d)
+  if not d.nexus_pool or d.nexus_resolved then return end
+  d.nexus_resolved = true
+  for _, b in ipairs(pool_members(POOLS[d.nexus_pool])) do
+    if not d.nexus[b] then
+      d.nexus[b] = true
+      d.nexus_list[#d.nexus_list + 1] = b
+    end
+  end
+end
+
 local function evaluate_slots(d, team)
+  resolve_nexus(d)
   local st = { sid = d.id, active = false, rows = {}, extra = 0, team = team ~= 0, marks = {} }
   local ms = (team ~= 0) and members(team) or nil
   local in_team = {}
@@ -474,24 +661,51 @@ local function evaluate_slots(d, team)
     end
   end
   local filled, extra = fill_slots(d, slots, cands)
-  local shown, all = {}, true
-  for si, p in ipairs(slots) do
-    local m = filled[si]
-    if m then
-      st.rows[#st.rows + 1] = { kind = KIND_FILLED, base = m.base, pool = p }
-      st.marks[#st.marks + 1] = m
-    else
-      all = false
-      local ph = nil
+  local shown, n_filled = {}, 0
+  local need = d.need or #slots
+  local function empty_row(p)
+    local ph = nil
+    -- the characters a pool names itself come first (a pool of named characters plus a team)
+    for pass = 1, 2 do
       for _, b in ipairs(p.members) do
-        if not in_team[b] and not d.nexus[b] and not shown[b] then ph = b; break end
+        if (pass == 2 or p.charas[b]) and not in_team[b] and not d.nexus[b] and not shown[b] then ph = b; break end
       end
-      if ph then shown[ph] = true end
-      st.rows[#st.rows + 1] = { kind = KIND_EMPTY, base = ph or 0, pool = p }
+      if ph then break end
+    end
+    if ph then shown[ph] = true end
+    st.rows[#st.rows + 1] = { kind = KIND_EMPTY, base = ph or 0, pool = p }
+  end
+  if d.need then
+    -- need < slots: the filled slots first (at most `need`), then empty rows of the unfilled pools up to `need` rows
+    for si, p in ipairs(slots) do
+      local m = filled[si]
+      if m and n_filled < need then
+        n_filled = n_filled + 1
+        st.rows[#st.rows + 1] = { kind = KIND_FILLED, base = m.base, pool = p }
+        st.marks[#st.marks + 1] = m
+      end
+    end
+    local rows_n = n_filled
+    for si, p in ipairs(slots) do
+      if not filled[si] and rows_n < need then
+        rows_n = rows_n + 1
+        empty_row(p)
+      end
+    end
+  else
+    for si, p in ipairs(slots) do
+      local m = filled[si]
+      if m then
+        n_filled = n_filled + 1
+        st.rows[#st.rows + 1] = { kind = KIND_FILLED, base = m.base, pool = p }
+        st.marks[#st.marks + 1] = m
+      else
+        empty_row(p)
+      end
     end
   end
   st.extra = extra
-  st.active = (team ~= 0) and all and (nexus ~= nil or not d.has_nexus)
+  st.active = (team ~= 0) and n_filled >= need and (nexus ~= nil or not d.has_nexus)
   return st
 end
 
@@ -499,6 +713,7 @@ end
 
 -- the synergy's state for one team (team = 0: no team, e.g. the shop's panel), computed (evaluate: the memo)
 local function evaluate_uncached(d, team)
+  resolve_nexus(d)
   if d.slots then return evaluate_slots(d, team) end
   -- pool_members gives the member list; the membership set is the pool's own `set`
   local pool = pool_members(d.pool)
@@ -542,8 +757,11 @@ local function evaluate_uncached(d, team)
       local ph = d.placeholder
       if not ph or in_team[ph] or shown[ph] then
         ph = nil
-        for _, b in ipairs(pool) do
-          if not in_team[b] and not d.nexus[b] and not shown[b] then ph = b; break end
+        for pass = 1, 2 do
+          for _, b in ipairs(pool) do
+            if (pass == 2 or d.pool.charas[b]) and not in_team[b] and not d.nexus[b] and not shown[b] then ph = b; break end
+          end
+          if ph then break end
         end
       end
       if ph then shown[ph] = true end
@@ -650,7 +868,7 @@ if #LIST > 0 then
 
   -- ------------------------------------------------------------------------------------------- the menu's command
 
-  local NAMES = {}         -- language folder -> { [name text id] = name (false: none) }
+  local NAMES_READ = {}    -- language folder -> true once the panel's name ids are read
   local NAME_IDS = nil     -- the name text ids a panel can show (every nexus and pool character), listed once
 
   local function name_ids()
@@ -673,60 +891,24 @@ if #LIST > 0 then
     return list
   end
 
-  -- one game text table's rows for these ids in a language (en when that language has no such file): id -> text
-  local function text_of_ids(file, lang, ids)
-    local ok, rows = pcall(VRFW.files.text_rows, "data/common/text/" .. lang .. "/" .. file, ids)
-    if (not ok or type(rows) ~= "table") and lang ~= "en" then
-      ok, rows = pcall(VRFW.files.text_rows, "data/common/text/en/" .. file, ids)
-    end
-    local out = {}
-    if ok and type(rows) == "table" then
-      for _, id in ipairs(ids) do
-        local r = rows[id]
-        local v = r and r[0]
-        if type(v) == "string" then out[id] = v end
-      end
-    end
-    return out
-  end
-
-  local function lang_of(code)
-    code = tonumber(code)
-    if code and code >= 0 and type(VRFW.files.game_languages) == "function" then
-      local ok, t = pcall(VRFW.files.game_languages)
-      local l = ok and type(t) == "table" and t[math.floor(code) + 1] or nil
-      if type(l) == "string" then return l end
-    end
-    return "en"
-  end
-
-  -- a character's name in that language: the listed ids are read once per language; an id outside the list is read alone
+  -- a character's name in that language (as written, furigana kept): the listed ids are read once per language; an id
+  -- outside the list is read alone
   local function name_of(base, lang)
-    local t = NAMES[lang]
-    if not t then
+    if not NAMES_READ[lang] then
       local t0 = VRFW.now()
       local ids = name_ids()
-      t = text_of_ids("chara_text.cfg.bin", lang, ids)
-      NAMES[lang] = t
+      GameText.texts("chara_text", lang, ids)
+      NAMES_READ[lang] = true
       info(string.format("names (%s): %d text ids read in %.1f ms", lang, #ids, VRFW.now() - t0))
     end
     local c = IDX and IDX.info[base]
-    if not c then return "" end
-    local s = t[c.person]
-    if s == nil then
-      s = text_of_ids("chara_text.cfg.bin", lang, { c.person })[c.person] or false
-      t[c.person] = s
-    end
-    return s or ""
-  end
-
-  -- `[kanji/kana]` furigana markup reduced to the kanji (a team name inside a hint)
-  local function no_furigana(s)
-    return (s:gsub("%[([^/%]]*)/[^%]]*%]", "%1"))
+    if not c or c.person == nil then return "" end
+    return GameText.chara_names({ c.person }, lang, true)[c.person] or ""
   end
 
   -- belong team id -> its crest (item_emblem id of the first era that has one), read once at load
   local EMBLEMS = nil
+  local ERA_EMBLEMS = {}   -- belong team id -> { [era 1-4] = crest }
   local TEAM_TEXT = {}     -- belong team id -> its name text id (team_text), from the same read
   local EMBLEM_COLS = { "team_emblem_id_ie", "team_emblem_id_go", "team_emblem_id_areori", "team_emblem_id_v" }
   local function emblems()
@@ -737,9 +919,13 @@ if #LIST > 0 then
         local id = u32(r.belong_team_id or r[1] or 0)
         local text_id = u32(r.team_name_text_id or r.teamNameTextId or 0)
         if id ~= 0 and text_id ~= 0 then TEAM_TEXT[id] = text_id end
+        ERA_EMBLEMS[id] = {}
         for i, c in ipairs(EMBLEM_COLS) do
           local v = u32(r[c] or r[i + 3] or 0)   -- by the schema's name, else in column order (cols 3-6)
-          if v ~= 0 then EMBLEMS[id] = v; break end
+          if v ~= 0 then
+            ERA_EMBLEMS[id][i] = v
+            if EMBLEMS[id] == nil then EMBLEMS[id] = v end
+          end
         end
       end
     end)
@@ -750,8 +936,41 @@ if #LIST > 0 then
   -- the crests of a slot pool's teams, comma-joined (at most MAX_CRESTS, the panel's room)
   local MAX_CRESTS = 6
   local function crests_of(p)
-    if not (p and p.team_list) then return "" end
+    if not (p and p.team_list) or (p.show_candidates and not p.any_team) then return "" end   -- a team pool always draws its crests
     local m, out, seen = emblems(), {}, {}
+    if #p.crest_list > 0 then
+      emblems()
+      local by_key = nil
+      for _, c in ipairs(p.crest_list) do
+        local e
+        if c.game_team then
+          if not by_key then
+            by_key = {}
+            for _, t in ipairs(team_captains()) do by_key[t.key] = t.emblem end
+          end
+          e = by_key[c.game_team]
+        else
+          e = ERA_EMBLEMS[c.team] and ERA_EMBLEMS[c.team][c.era]
+        end
+        if e and not seen[e] and #out < MAX_CRESTS then seen[e] = true; out[#out + 1] = string.format("%d", e) end
+      end
+      return table.concat(out, ",")
+    end
+    if p.era then
+      -- a pool of one era's series: the first team's crest of that era
+      for _, t in ipairs(p.team_list) do
+        local e = ERA_EMBLEMS[t] and ERA_EMBLEMS[t][p.era]
+        if e then return string.format("%d", e) end
+      end
+    elseif p.crest_eras then
+      for _, t in ipairs(p.team_list) do
+        for i = 1, 4 do
+          local e = ERA_EMBLEMS[t] and ERA_EMBLEMS[t][i]
+          if e and not seen[e] and #out < MAX_CRESTS then seen[e] = true; out[#out + 1] = string.format("%d", e) end
+        end
+      end
+      return table.concat(out, ",")
+    end
     for _, t in ipairs(p.team_list) do
       local e = m[t]
       if e and not seen[e] and #out < MAX_CRESTS then seen[e] = true; out[#out + 1] = string.format("%d", e) end
@@ -760,13 +979,14 @@ if #LIST > 0 then
   end
 
   -- a missing nexus (or the other persons beside a present one): every allowed nexus character, one card per person, comma-joined (at most MAX_FACES)
-  local MAX_FACES = 3
+  local MAX_FACES = 5
   local function faces_of(d, skip_base)
     local out, seen = {}, {}
     if skip_base then seen[person(skip_base, d)] = true end
     for _, b in ipairs(d.nexus_list) do
       local k = person(b, d)
-      if not seen[k] and #out < MAX_FACES then seen[k] = true; out[#out + 1] = string.format("%d", b) end
+      -- only characters with a card have a face picture (a card-less version would draw a blank box)
+      if not seen[k] and #out < MAX_FACES and IDX.card[b] then seen[k] = true; out[#out + 1] = string.format("%d", b) end
     end
     return table.concat(out, ",")
   end
@@ -795,6 +1015,58 @@ if #LIST > 0 then
     local out = {}
     for i = 1, math.min(#order, MAX_SLOT_FACES) do out[i] = string.format("%d", pick[order[i]]) end
     return table.concat(out, ",")
+  end
+
+  -- an empty row of a pool with few persons (at most MAX_ROW_FACES): every candidate as a miniface (one card per person) and
+  -- who is already in the team's synergy members (`have`, 1/0 per face); a bigger pool or a staff pool: none
+  local MAX_ROW_FACES = 8
+  local function candidate_faces(p, d, marks, first_base, lang)
+    -- a pure team pool shows its crests; a pool that also names characters shows those as candidates (and the crests)
+    if not p or p.role or (p.any_team and not p.any_chara) then return "", "" end
+    pool_members(p)
+    -- one candidate per displayed name: the versions of a character carry their own name text (several cards of one name)
+    local function who(b)
+      local nm = name_of(b, lang)
+      return nm ~= "" and nm or person(b, d)
+    end
+    local pick, order = {}, {}
+    for _, b in ipairs(p.members) do
+      -- the team's own players are not listed as faces (only the characters a pool names itself)
+      if (not p.any_team or p.charas[b]) and IDX.card[b] then
+        local k = who(b)
+        local cur = pick[k]
+        if cur == nil then
+          pick[k] = b
+          order[#order + 1] = k
+        elseif not IDX.card[cur] and IDX.card[b] then
+          pick[k] = b
+        end
+      end
+    end
+    if #order == 0 then return "", "" end
+    -- the row's own face (the placeholder the game's row builder draws) first, as the big face with its name
+    if first_base and first_base ~= 0 then
+      local fk = who(first_base)
+      if pick[fk] then
+        pick[fk] = first_base
+        for i, k in ipairs(order) do
+          if k == fk then table.remove(order, i); break end
+        end
+        table.insert(order, 1, fk)
+      end
+    end
+    if #order > MAX_ROW_FACES then
+      if not p.show_candidates then return "", "" end
+      for i = #order, MAX_ROW_FACES + 1, -1 do order[i] = nil end
+    end
+    local inm = {}
+    for _, m in ipairs(marks or {}) do inm[who(m.base)] = true end
+    local ids, have = {}, {}
+    for i, k in ipairs(order) do
+      ids[i] = string.format("%d", pick[k])
+      have[i] = inm[k] and "1" or "0"
+    end
+    return table.concat(ids, ","), table.concat(have, ",")
   end
 
   -- the nexus is one person (every declared nexus character a version of him): the panel draws his face as the icon
@@ -828,12 +1100,12 @@ if #LIST > 0 then
             if text_id and not seen[text_id] then seen[text_id] = true; ids[#ids + 1] = text_id end
           end
         end
-        local texts = text_of_ids("team_text.cfg.bin", lang, ids)
+        local texts = GameText.texts("team_text", lang, ids)
         for _, d in ipairs(LIST) do
           for _, sp in ipairs(d.slots or { d.pool }) do
             local team = sp.team_list and sp.team_list[1]
             local s = team and texts[TEAM_TEXT[team] or 0]
-            if s then m[team] = no_furigana(s) end
+            if s then m[team] = GameText.no_furigana(s) end
           end
         end
       end)
@@ -893,10 +1165,11 @@ if #LIST > 0 then
     local sid = u32(item)
     if not PANEL or PANEL.sid ~= sid then return nil end
     local d, st = DECL[sid], PANEL.state
-    local lang = lang_of(code)
+    local lang = GameText.language(code)
     if ANSWER and ANSWER.state == st and ANSWER.lang == lang then return ANSWER.answer end
     local rows = {}
     for r, row in ipairs(st.rows) do
+      if r > MAX_ROWS + 1 then break end   -- a 4-slot synergy: the menu patch draws its 4th row as a grid cell
       local members = d.slot_members and row.pool ~= nil
       rows[r] = { kind = row.kind, name = (row.kind ~= KIND_EMPTY) and name_of(row.base, lang) or "",
         hint = (row.pool and row.pool.hint) or d.hint,
@@ -909,6 +1182,12 @@ if #LIST > 0 then
         single = ((row.kind == KIND_NEXUS or row.kind == KIND_NEXUS_MISSING) and single_nexus(d)) and 1 or 0,
         base = row.base or 0 }
       local x = rows[r]
+      x.have = ""
+      if row.kind == KIND_EMPTY and not members and x.faces == "" then x.faces, x.have = candidate_faces(row.pool, d, st.marks, row.base, lang) end
+      if row.kind == KIND_EMPTY and x.faces ~= "" then
+        local first = tonumber(x.faces:match("^(%d+)"))
+        if first then x.base, x.name = first, name_of(first, lang) end
+      end
       local staff = row.kind == KIND_EMPTY and not members and row.pool and row.pool.role or nil
       x.role = staff or ""
       x.series = staff and pool_series(row.pool)
@@ -924,6 +1203,7 @@ if #LIST > 0 then
   index()
   if IDX.ok then
     for _, d in ipairs(LIST) do
+      resolve_nexus(d)
       for _, p in ipairs(d.slots or { d.pool }) do pool_members(p) end
     end
     info(string.format("index and pools ready at load in %d ms", math.floor(VRFW.now() - tw)))
@@ -961,10 +1241,10 @@ if #LIST > 0 then
     (VRFW.is_on("SynergyDetail") and VRFW.is_on("SynergyDetailRows")) and "on" or "OFF (not installed)"))
 end
 
--- CMND_VRFW_SYNERGY_SHOP_CONDITIONS() -> the shop's synergy panel shows the condition card (config.toml [synergy]
--- shop_conditions, default true)
+-- CMND_VRFW_SYNERGY_SHOP_CONDITIONS() -> the shop's synergy panel shows the condition card (config.toml [shop]
+-- synergy_conditions, default true)
 function Synergy.ShopConditions()
-  return VRFW.files.config("synergy.shop_conditions") ~= false
+  return VRFW.files.config("shop.synergy_conditions") ~= false
 end
 
 -- No mod declares a synergy: the command is still a global and answers nil, so the menu patch leaves every panel as the game draws it.

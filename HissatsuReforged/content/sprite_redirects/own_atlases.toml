@@ -1,0 +1,24 @@
+schema = "VRFW.sprite_redirect/1"
+# Hissatsu Reforged: the game and the Lua ask these game atlases for the mod's sprites by name; they live in the mod's own
+# atlases (content\images\..., one per game atlas), so the game atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "hissatsu_reforged_team02_02"
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+own_atlas = "#/menu/102_team/hissatsu_reforged_own/<LG>/hissatsu_reforged_team02_02.g4tx"
+sprites = [
+    "evt_gtxt_long_counter01",
+]
+
+[[VRFW.SpriteRedirect]]
+name = "hissatsu_reforged_icon_common"
+atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+own_atlas = "#/menu/200_icon/hissatsu_reforged_own/hissatsu_reforged_icon_common.g4tx"
+sprites = [
+    "evt_icon_sp_sub2_block_a",
+    "evt_icon_sp_sub2_block_b",
+    "evt_icon_sp_sub2_counter_a",
+    "evt_icon_sp_sub2_counter_b",
+    "evt_icon_sp_sub2_long_a",
+    "evt_icon_sp_sub2_long_b",
+]

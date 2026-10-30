@@ -15,14 +15,14 @@
 -- Wraps OnInit, OnSetupLayer, OnOpenLayer and Step (no host for this script). No engine call at load time.
 
 local CHRONICLE_SKIP = {
-  LOG = 3661580131,                    -- CMND_EVT_LOG
-  TAKE = 3945440440,                   -- CMND_VRFW_MENU_SCENE_TAKE (action) -> 1 | 0
-  RETURN = 2450671793,                 -- CMND_VRFW_MENU_SCENE_RETURN (menu) -> "title" | ""
+  LOG = VRFW_Cmd.EVT_LOG,                    -- CMND_EVT_LOG
+  TAKE = VRFW_Cmd.VRFW_MENU_SCENE_TAKE,                   -- CMND_VRFW_MENU_SCENE_TAKE (action) -> 1 | 0
+  RETURN = VRFW_Cmd.VRFW_MENU_SCENE_RETURN,                 -- CMND_VRFW_MENU_SCENE_RETURN (menu) -> "title" | ""
   MENU = "chronicle_mode_top_menu",
   BACK_FUNCTION = 1842266423,          -- the retail OnFunction id of the back key (BackToTitle)
-  GLOBAL_BIT = 941426960,              -- CMND_GET_GLOBAL_BIT_FLAG (bit) -> set
-  GLOBAL_BYTE = 2769028935,            -- CMND_GET_GLOBAL_BYTE_FLAG (byte) -> value
-  TEMP_BIT = 2283097588,               -- CMND_GET_TEMP_BIT_FLAG (bit) -> set
+  GLOBAL_BIT = VRFW_Cmd.GET_GLOBAL_BIT_FLAG,              -- CMND_GET_GLOBAL_BIT_FLAG (bit) -> set
+  GLOBAL_BYTE = VRFW_Cmd.GET_GLOBAL_BYTE_FLAG,            -- CMND_GET_GLOBAL_BYTE_FLAG (byte) -> value
+  TEMP_BIT = VRFW_Cmd.GET_TEMP_BIT_FLAG,               -- CMND_GET_TEMP_BIT_FLAG (bit) -> set
   TUTORIAL_ANSWERED_BIT = 1169930310,  -- the Chronicle tutorial question was answered (the retail asks it first)
   PLAYERS_UNIVERSE_EVENT_BIT = 774062760, -- a Players Universe event is reserved (the retail opens it)
   PLAYERS_UNIVERSE_BIT = 3914011134,   -- the retail goes to Players Universe at the open
@@ -30,10 +30,10 @@ local CHRONICLE_SKIP = {
   RETAIL_SKIP_VALUE = 2,
   TUTORIAL_FOCUS_PARAM = 2565779025,   -- (207055258, 0): the decision's tutorial focus cleared
   TUTORIAL_FOCUS_KEY = 207055258,
-  TEMP_BYTE_SET = 667984508,           -- CMND_SET_TEMP_BYTE_FLAG (2502072435, 0)
+  TEMP_BYTE_SET = VRFW_Cmd.SET_TEMP_BYTE_FLAG,           -- CMND_SET_TEMP_BYTE_FLAG (2502072435, 0)
   TUTORIAL_TEMP_BYTE = 2502072435,
   FADE = 609722083,                    -- (1 to black | 0 in, seconds)
-  VISIBLE = 711242136,                 -- CMND_SET_LAYER_VISIBLE (layer, instance, on)
+  VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,                 -- CMND_SET_LAYER_VISIBLE (layer, instance, on)
   BACKGROUND = 117665605,              -- vsroute04_03_chronicle_top_bg: its open starts the retail opening
   -- layers the retail itself shows or hides at its setup (left as the retail set them on a fallback)
   RETAIL_VISIBILITY = { [485095068] = true, [594583106] = true, [2279382105] = true },

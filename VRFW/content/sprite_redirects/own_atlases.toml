@@ -1,0 +1,22 @@
+schema = "VRFW.sprite_redirect/1"
+# VR-Framework: the game and the Lua ask these game atlases for the mod's sprites by name; they live in the mod's own
+# atlases (content\images\..., one per game atlas), so the game atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "vrfw_soccer05_02"
+atlas = "#/menu/00_soccer/soccer05/soccer05_02/<LG>/soccer05_02.g4tx"
+own_atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer05_02.g4tx"
+sprites = [
+    "gtxt_timetelop_vrfw_et1_end",
+    "gtxt_timetelop_vrfw_full_end",
+    "gtxt_timetelop_vrfw_reg_end",
+]
+
+[[VRFW.SpriteRedirect]]
+name = "vrfw_soccer00_01"
+atlas = "#/menu/00_soccer/soccer00/soccer00_01/<LG>/soccer00_01.g4tx"
+own_atlas = "#/menu/00_soccer/vrfw_own/<LG>/vrfw_soccer00_01.g4tx"
+sprites = [
+    "gtxt_half_vrfw_et1",
+    "gtxt_half_vrfw_et2",
+]

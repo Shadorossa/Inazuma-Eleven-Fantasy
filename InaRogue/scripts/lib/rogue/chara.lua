@@ -51,9 +51,18 @@ local function build()
   local cols = { COL_ID, COL_ELEMENT, COL_POSITION, COL_RANK, COL_SPECIAL, COL_STATS_VERSION, COL_GROWTH }
   for k = 0, MAIN_STATS - 1 do cols[#cols + 1] = COL_STAT0 + k end
   cols[#cols + 1] = COL_ROGUE_RARITY
+  -- the staff flags read with the rest of the row (one table read, no card table per character); the index's card
+  -- list only when the columns are unknown
+  local okc, coach_col = pcall(VRFW.chara.param_column, "flag_37")
+  local okm, manager_col = pcall(VRFW.chara.param_column, "flag_38")
+  local flag_cols = okc and okm and type(coach_col) == "number" and type(manager_col) == "number"
+  local coach_at, manager_at = #cols + 1, #cols + 2
+  if flag_cols then
+    cols[coach_at], cols[manager_at] = coach_col, manager_col
+  end
   local pos = {}
   for i, c in ipairs(cols) do pos[i] = c + 1 end
-  local staff = staff_cards()
+  local staff = flag_cols and {} or staff_cards()
   local ok, rows = pcall(VRFW.table.raw, "data/common/gamedata/character/chara_param_*.cfg.bin", "CHARA_PARAM_INFO", pos)
   if not ok or type(rows) ~= "table" then
     warn("no chara_param readable (" .. tostring(rows) .. "): every player counts as 1 star")
@@ -64,6 +73,7 @@ local function build()
     local id = intv(r[COL_ID + 1])
     if id then
       id = id % U.TWO32
+      if flag_cols and (r[coach_col + 1] == 1 or r[manager_col + 1] == 1) then staff[id] = true end
       local raw = 0
       if r[COL_ROGUE_RARITY + 1] ~= nil then
         t.with_column = t.with_column + 1

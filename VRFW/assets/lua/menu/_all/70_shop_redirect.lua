@@ -10,21 +10,21 @@
 -- menu-ready check) answer for it, so the opener waits for the screen and comes back the retail way when it closes.
 if VRFW_ShopRedirect == nil then
   local R = {
-    SET_PARAM = 3860611758,     -- CMND_SET_PARAM(key, index, value, kind)
-    CLEAR_PARAM = 3363400568,   -- CMND_CLEAR_PARAM(key)
+    SET_PARAM = VRFW_Cmd.PARAM_SET,     -- CMND_SET_PARAM(key, index, value, kind)
+    CLEAR_PARAM = VRFW_Cmd.PARAM_DELETE,   -- CMND_CLEAR_PARAM(key)
     SHOP_PARAM = 3460970878,    -- the param store key of the shop shop_menu opens
-    LIST = 2445086479,          -- CMND_VRFW_SHOP_REDIRECTS() -> n, from 1, to 1, …
-    SCREENS = 3797150395,       -- CMND_VRFW_SHOP_SCREENS() -> n, from 1, set 1, …
-    REG_FIND = 2175579023,      -- CMND_VRFW_REG_FIND(type, key) -> id (-1)
-    LOG = 3661580131,           -- CMND_EVT_LOG
-    OPEN_MENU = 433545986,      -- CMND_OPEN_MENU_OBJECT(menu)
-    MENU_READY = 1193349555,    -- (menu) -> true once the opened menu is up (the Mercado's wait asks it)
-    IS_MENU = 2231168902,       -- CMND_IS_EXIST_MENU_OBJECT(menu) (funcLuaMenuCommand)
+    LIST = VRFW_Cmd.VRFW_SHOP_REDIRECTS,          -- CMND_VRFW_SHOP_REDIRECTS() -> n, from 1, to 1, …
+    SCREENS = VRFW_Cmd.VRFW_SHOP_SCREENS,       -- CMND_VRFW_SHOP_SCREENS() -> n, from 1, set 1, …
+    REG_FIND = VRFW_Cmd.VRFW_REG_FIND,      -- CMND_VRFW_REG_FIND(type, key) -> id (-1)
+    LOG = VRFW_Cmd.EVT_LOG,           -- CMND_EVT_LOG
+    OPEN_MENU = VRFW_Cmd.OPEN_MENU_OBJECT,      -- CMND_OPEN_MENU_OBJECT(menu)
+    MENU_READY = VRFW_Cmd.IS_CLOSING_MENU_OBJECT,    -- (menu) -> true once the opened menu is up (the Mercado's wait asks it)
+    IS_MENU = VRFW_Cmd.IS_EXIST_MENU_OBJECT,       -- CMND_IS_EXIST_MENU_OBJECT(menu) (funcLuaMenuCommand)
     SHOP_MENUS = {[3170360552] = true --[[shop_menu]], [713974531] = true --[[shop_menu_basara_top]]},
     SCREEN = 1355292071,        -- crc32("vrfw_contact_map_menu")
     KEY_SET = 1128821923,       -- crc32("vrfw_contact_set"): the screen's parameter
     KEY_HUB = 3979190066,       -- crc32("vrfw_contact_hub"): the set, for a hub menu (the free-match list)
-    HUB = 1691394521,           -- CMND_VRFW_CONTACT_HUB (set) -> { menu, title }
+    HUB = VRFW_Cmd.VRFW_CONTACT_HUB,           -- CMND_VRFW_CONTACT_HUB (set) -> { menu, title }
     map = nil,                  -- shop id -> target shop id (this VM)
     screens = nil,              -- shop id -> contact set crc (this VM)
     pending = nil,              -- the contact set of the shop id just written
@@ -33,11 +33,7 @@ if VRFW_ShopRedirect == nil then
   }
   VRFW_ShopRedirect = R
 
-  local function unsigned(v)
-    if type(v) ~= "number" then return nil end
-    if v < 0 then v = v + 4294967296 end
-    return v
-  end
+  local function unsigned(v) return VRFW_Id.u32_or(v, nil) end
 
   local function shop_id(real, v)
     if type(v) == "number" then return unsigned(v) end
@@ -117,7 +113,7 @@ if VRFW_ShopRedirect == nil then
         local up = real(cmd, R.alias.to)
         if up ~= true then
           R.alias = nil            -- the screen closed: the shop screen's own answers again
-          pcall(funcLuaCommand, 2812667080 --[[CMND_VRFW_CONTACT_HUB_FILTER]], 0)   -- a hub's list filter off
+          pcall(funcLuaCommand, VRFW_Cmd.VRFW_CONTACT_HUB_FILTER, 0)   -- a hub's list filter off
         end
         return up
       end

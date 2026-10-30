@@ -89,7 +89,7 @@ P.C = {
   NODE_SCALE = 2885415772,         -- (layer, instance, node, width, height): a text node's box
   TEXT_SIZE = 3549540977,          -- CMND_GET_MENU_TEXT_RECT_SIZE (layer, instance, node) -> width, height
   CLEAR_GET = 4034518619,          -- CMND_GET_CHRONICLE_CLEAR_STATUS (slot, difficulty)
-  CLOSE_MENU = 320421347, P_CLEAR = 3363400568, P_SET = 3860611758,
+  CLOSE_MENU = 320421347,
 }
 -- the formation pitch (layout vsroute02_06, v7.1.2; px, layer axes y up): the field quad's top edge and height, the
 -- slot locators _pos_formation01_cc / _lu / _ld (centre, top-left, bottom-left), the top and bottom widths
@@ -447,17 +447,20 @@ local function sprite_card(slot, card)
   end
   M(P.C.SPRITE, L, S.TEXTURE, plate, S.PLATE_SLOT, 0, slot)
   M(P.C.MESH_VISIBLE, L, S.PLATE, true, slot)
-  M(P.C.RESET_FACE, L, slot, S.FACE_SLOT)
+  -- the face is drawn again on every fill (VRFW_FaceIcon: hidden while it loads, P.Step settles it)
+  VRFW_FaceIcon.Forget(L, slot)
   if card.handle ~= nil then
+    -- a team dock player is drawn from his handle, a form VRFW_FaceIcon does not take
+    M(P.C.RESET_FACE, L, slot, S.FACE_SLOT)
     M(P.C.FACE, L, slot, false, S.FACE, S.FACE_SLOT, card.handle, 0, 0, 0, false, false, 0)
+    M(P.C.MESH_VISIBLE, L, S.FACE, true, slot)
   else
     local chara = F(P.C.CHARA_OF_PARAM, card.chara)
     if type(chara) ~= "number" or chara == 0 then
       chara = card.chara
     end
-    M(P.C.FACE, L, slot, false, S.FACE, S.FACE_SLOT, 0, 0, chara, 0, false, true)
+    VRFW_FaceIcon.Face(L, slot, chara, S.FACE, S.FACE_SLOT, {kit = 0, keeper = false, use_args = true})
   end
-  M(P.C.MESH_VISIBLE, L, S.FACE, true, slot)
 end
 
 -- one card: the game's fill (its own sprites when refused), the extra pieces off (again when its instance is built:
@@ -617,8 +620,8 @@ function P.OpenTeamDock()
   funcLuaCommand(P.C.SE, P.C.SE_DECIDE)
   P.Hide()
   pcall(SetupButtonGuide)
-  funcLuaCommand(P.C.P_CLEAR, P.RESULT)
-  funcLuaCommand(P.C.P_SET, P.RESULT, 0, P.ITEM_TEAM_DOCK, 1)
+  VRFW_Param.Clear(P.RESULT)
+  VRFW_Param.Set(P.RESULT, P.ITEM_TEAM_DOCK)
   funcLuaCommand(P.C.CLOSE_MENU, P.MENU)
   L.flag = true
   return true
@@ -660,6 +663,9 @@ function P.FollowFocus()
 end
 
 function P.Step()
+  if VRFW_FaceIcon.Pending() then
+    VRFW_FaceIcon.Settle()
+  end
   if P.pending then
     P.pending = false
     if VRFW_RBC.L.flag then

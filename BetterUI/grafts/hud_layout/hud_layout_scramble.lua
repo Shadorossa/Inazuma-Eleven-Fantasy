@@ -49,9 +49,8 @@ if type(hls_prevStep) == "function" then
       end
     end
     if rate ~= nil and rate == rate and type(funcLuaCommand) == "function" then
-      pcall(funcLuaCommand, 3363400568 --[[parameter store: delete]], HLS_KEY)
-      pcall(funcLuaCommand, 3860611758 --[[parameter store: set]], HLS_KEY, 0,
-        math.floor(math.max(0, math.min(1, rate)) * 1000 + 0.5))
+      VRFW_Param.Clear(HLS_KEY)
+      VRFW_Param.Set(HLS_KEY, math.floor(math.max(0, math.min(1, rate)) * 1000 + 0.5), "plain")
     end
     return table.unpack(r, 2, r.n)
   end)

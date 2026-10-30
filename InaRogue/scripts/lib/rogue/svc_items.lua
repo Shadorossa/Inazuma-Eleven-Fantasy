@@ -71,6 +71,8 @@ local function publish(r)
       if level > (levels[card] or 0) then levels[card] = level end
     end
   end
+  -- the talents the run gave (content/rogue/talent_pool.toml): in the custom slot of their players
+  talents.set_run(require("lib/rogue/talent_pool").run_map(r, function(uid) return (Core.bank.bank_entry(uid)) end))
   talents.fill(levels)
 end
 

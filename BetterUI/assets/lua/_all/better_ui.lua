@@ -113,7 +113,7 @@ if type(NoMoreRarities) == "table" and type(NoMoreRarities.PositionLookOfType) =
     if takes == nil then
       takes = {}
       for t in pairs(NoMoreRarities.POSITION_LOOKS or {}) do
-        local ok, other = pcall(funcLuaCommand, 1217665665 --[[CMND_BETTERUI_POSITION_LOOK]], t)
+        local ok, other = pcall(funcLuaCommand, VRFW_Cmd.BETTERUI_POSITION_LOOK, t)
         takes[t] = ok and type(other) == "number" and NoMoreRarities.POSITION_LOOKS[other] ~= nil and other or t
       end
     end

@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Rizo de dragón (Dragon Drive, whs01990, cut-in ev60_01990): one straight level line
+# at 2.5 m from the kick point into the goal point, whatever the shot's length (the dragon's jaw and spikes stay clear
+# of the grass). The aura is the cut-in's dragon with the ball on its head (research/scripts/dragon_drive_ball_fx.py).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over
+# the pitch (m); the height is held.
+
+# Rizo de dragón (whs01990).
+[[edit]]
+target = "whs01990"
+trajectory = { points = [[0.0, 2.5]], straight = true, unblockable = false }

@@ -32,11 +32,11 @@ EVT_MI.GEOM[1580043721] = EVT_MI.GEOM[1580043721] or "b"   -- soccer11_09_format
 
 EVT_MI.CMD = 3655356805
 EVT_MI.LOG = 3661580131
-EVT_MI.SKILL_INFO = 2580586398          -- CMND_GET_SOCCER_SKILL_INFO(skill, 9) -> ok, category
+EVT_MI.SKILL_INFO = 2580586398          -- (skill, 9) -> ok, category
 EVT_MI.SKILL_FLAG = 3029125066          -- (skill, bit) -> ok, has (skillEffectBitFlag)
 EVT_MI.COMMON = 1875260309              -- (skill, chara) -> the «icon_sp_area00» case of GetSkillCategoryIcon
 EVT_MI.SPRITE_CMD = 558735651
-EVT_MI.MESH_VIS = 3405944500            -- CMND_SET_MESH_VISIBLE
+EVT_MI.MESH_VIS = 3405944500
 EVT_MI.ICON_TEX = 502529699             -- #/menu/200_icon/15_icon_common/<LG>/icon_common.g4tx (as the retail row)
 EVT_MI.SUB_MESH, EVT_MI.SUB_PH = 559600405, 3992937973      -- _icon_sp_sub_dmy01 / icon_sp_sub_dmy01
 EVT_MI.ARMED_MESH, EVT_MI.ARMED_PH = 1206374040, 3995515692

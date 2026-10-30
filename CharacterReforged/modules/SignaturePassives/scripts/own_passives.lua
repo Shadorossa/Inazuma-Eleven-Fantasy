@@ -1,6 +1,7 @@
 -- Signature Passives › own passives («Pasiva propia»): one passive per player in the custom passive slot (board equip
--- slot 9): the GamePassive block of his special passives (content\special_passives\, scripts\lib\special_passives.lua),
--- or an older content\own_passives\*.toml declaration (schema SignaturePassives.own_passives/1) of any active mod. The
+-- slot 9): the GamePassive block of his special passives (content\special_passives\, read by the framework's passive
+-- engine library VRFW/lib/passives), or an older content\own_passives\*.toml declaration (schema
+-- SignaturePassives.own_passives/1) of any active mod. The
 -- engine entries are content\game\own_passives.toml. This script fills their native tables:
 --
 --   SignaturePassives.OwnPassive  (chara_param id) -> passive id   the slot reader answers it (no entry = empty slot)
@@ -15,10 +16,11 @@ SignaturePassives = SignaturePassives or {}
 SignaturePassives.Cmd = SignaturePassives.Cmd or {}
 local SP = SignaturePassives
 
-local function info(...) VRFW.log("own_passives:", ...) end
-local function warn(...) VRFW.warn("own_passives:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("own_passives")
 
-local L = require "lib/special_passives"
+local L = require "VRFW/lib/passives"
+local OWN_KIND = "SignaturePassives.own_passives/1"
 
 local T_OWN, T_OPEN = "SignaturePassives.OwnPassive", "SignaturePassives.AlwaysOpen"
 
@@ -26,10 +28,73 @@ local BY_CARD = nil          -- [chara_param id] = { passive = id, always = bool
 local BUILD_ERROR = nil
 local u32 = L.u32
 
+-- ---------------------------------------------------------------------------------------------- own passive slot
+
+-- [card id] = { passive = id, always = bool, mod = id }: the GamePassive block of each character's passives, and the
+-- older content\own_passives\*.toml declarations. A later entry for the same card replaces an earlier one.
+local function own_slots(warn, info)
+  local map, n_entries = {}, 0
+  local function put(cards, passive, always, mod, where)
+    if #cards == 0 then
+      warn(where .. ": no card found (left out)")
+      return
+    end
+    for _, c in ipairs(cards) do
+      local before = map[c]
+      if before ~= nil and before.mod ~= mod and info then
+        info(string.format("card %s: the own passive of %s replaces the one of %s", L.hex(c), mod, before.mod))
+      end
+      map[c] = { passive = passive, always = always, mod = mod }
+    end
+  end
+  local ok, files = pcall(VRFW.files.declarations, "content/own_passives")
+  for _, f in ipairs((ok and type(files) == "table") and files or {}) do
+    local doc = f.data
+    local where0 = string.format("mods/%s/%s", tostring(f.mod), tostring(f.file))
+    if type(doc) ~= "table" or doc.schema ~= OWN_KIND then
+      warn(where0 .. ": schema is not " .. OWN_KIND .. " (file left out)")
+    else
+      for k, e in ipairs(type(doc.own_passive) == "table" and doc.own_passive or {}) do
+        local where = string.format("%s [[own_passive]] #%d", where0, k)
+        local passive = L.id_of(e.passive)
+        local unlock = e.unlock == nil and "board" or e.unlock
+        if unlock ~= "board" and unlock ~= "always" then
+          warn(where .. ": unlock must be \"board\" or \"always\" (taken as \"board\")")
+          unlock = "board"
+        end
+        if passive == nil or passive == 0 then
+          warn(where .. ": no passive (left out)")
+        elseif e.character == nil and e.card == nil then
+          warn(where .. ": needs `character` or `card` (left out)")
+        else
+          n_entries = n_entries + 1
+          put(L.cards_of({ character = e.character, card = e.card }), passive, unlock == "always", tostring(f.mod), where)
+        end
+      end
+    end
+  end
+  for _, e in ipairs(L.data(warn).characters) do
+    local slot = nil
+    for _, p in ipairs(e.passives) do
+      if p.slot then
+        if slot then warn(e.where .. ": " .. p.key .. " also has a GamePassive block (his slot holds one: " .. slot.key .. ")") else slot = p.slot end
+      end
+    end
+    if slot then
+      local passive = L.id_of(slot.v.passive)
+      if passive and passive ~= 0 then
+        n_entries = n_entries + 1
+        put(L.cards_of(e), passive, slot.v.unlock == "always", e.mod, e.where)
+      end
+    end
+  end
+  return map, n_entries
+end
+
 local function build()
-  -- the block and passive files' problems are logged once, by scripts\passive_blocks.lua
+  -- the block and passive files' problems are logged once, by the framework's scripts\passives.lua
   L.data(function() end)
-  return L.own_slots(warn, info)
+  return own_slots(warn, info)
 end
 
 local function fill()
@@ -50,8 +115,13 @@ local function fill()
   return true
 end
 
+-- a failed build is tried again once on first use and at each save load, never on every call
+local USE_TRIED = false
 local function ready()
-  if BY_CARD == nil then fill() end
+  if BY_CARD == nil and not USE_TRIED then
+    USE_TRIED = true
+    if not fill() then warn("tables not built (" .. tostring(BUILD_ERROR) .. "): the own passive slot stays empty") end
+  end
   return BY_CARD ~= nil
 end
 
@@ -85,8 +155,8 @@ end
 function SP.Cmd.OwnPassive(hdl)
   hdl = u32(hdl)
   if hdl == 0 then return 0, false, "" end
-  -- a mode without player passives (BetterQoL.passives_off): the boards show the slot empty
-  local okoff, off = pcall(VRFW.state.get, "BetterQoL.passives_off")
+  -- a mode without player passives (the framework's vrfw.passive.all_off): the boards show the slot empty
+  local okoff, off = pcall(VRFW.state.get, "vrfw.passive.all_off")
   if okoff and tonumber(off) == 1 then return 0, false, "" end
   -- a framework signature-only mode (vrfw.passive.slots_off): the slot shows what its readers answer
   local okmode, mode = pcall(VRFW.state.get, "vrfw.passive.slots_off")

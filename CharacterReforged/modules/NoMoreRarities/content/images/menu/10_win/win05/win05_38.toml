@@ -3,9 +3,19 @@ schema = "VRFW.image/1"
 # position look the mod's Lua draws outside a reserved slot (assets/lua/_all/no_more_rarities_card_look.lua,
 # POSITION_LOOKS); the game's own rarity sprites stay untouched. Derived from the game's own pixels, the
 # same in every language file of the atlas. Do not edit.
+# In the mod's own atlas no_more_rarities_drop_bands (never the game's win05_38: content\sprite_redirects\card_look.toml serves
+# them when the game asks it), one texture with every sprite at a fixed place.
+
+[[texture]]
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_drop_bands.g4tx"
+name = "no_more_rarities_drop_bands"
+size = [516, 72]
 
 # no_more_rarities_drop_band_forward (new): the game's list_drop_chr_rarity01 with its hue turned to 0 degrees
 [[sprite]]
-atlas = "#/menu/10_win/win05/win05_38/<LG>/win05_38.g4tx"
+atlas = "#/menu/102_team/no_more_rarities/no_more_rarities_drop_bands.g4tx"
 name = "no_more_rarities_drop_band_forward"
+texture = "no_more_rarities_drop_bands"
+x = 0
+y = 0
 png = "win05_38/no_more_rarities_drop_band_forward.png"

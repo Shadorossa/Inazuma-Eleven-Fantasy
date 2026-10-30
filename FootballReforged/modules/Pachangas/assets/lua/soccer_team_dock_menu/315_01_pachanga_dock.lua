@@ -3655,7 +3655,8 @@ end
 --   «11v11», «5v5». Up / down move between them as in any list, right leaves the list as the retail list does, Accept
 --   on a row switches the dock to that format (since 2026-10-19; before, one row «< 11 v 11 >» cycled with left / right
 --   and trapped the focus when it was the list's only row). Every refusal goes through PT.gate (one guard: OnEnter
---   refuses at once, PT.switch checks again).
+--   refuses at once, PT.switch checks again). Since 2026-10-30 two format rows share the first row as two columns,
+--   «Partido» | «Pachanga» (PT.layoutCols, doc §18).
 -- * 2026-09-30 (doc §9): the two templates of a dock share name, emblem, kit, supertácticas, coach and managers
 --   (PT.link); leaving the dock puts the Partido team of the visit back in vsUseTeamSet (PT.leave).
 -- Uses the file locals t, t2, n, n4, n5, n10, n11, flag3, flag4 (graft.toml expect). Wraps once per definition (EVT_PT_WRAPPED).
@@ -3679,11 +3680,11 @@ end
       end
       if n == 0 then
         funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
-        pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga bonus", tag, "dock", dock, "empty 5v5 team: refused")
+        pcall(funcLuaCommand, 3661580131, "EVT pachanga bonus", tag, "dock", dock, "empty 5v5 team: refused")
         return false
       end
       local okc, ok = pcall(funcLuaCommand, SWAP, dock, 1)
-      pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT pachanga bonus", tag, "dock", dock, "5v5 members", n,
+      pcall(funcLuaCommand, 3661580131, "EVT pachanga bonus", tag, "dock", dock, "5v5 members", n,
         "swap", tostring(okc and ok))
       if not (okc and ok) then
         funcLuaCommand(1917805374, 2086672038 --[[sy0003]])
@@ -3700,7 +3701,7 @@ end
       if type(wf) == "function" then
         waitFalse = function(...)
           local r = table.pack(wf(...))
-          if swapped and not funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], PARAM_MENU) then
+          if swapped and not funcLuaMenuCommand(2231168902, PARAM_MENU) then
             back()
           end
           return table.unpack(r, 1, r.n)
@@ -3752,8 +3753,7 @@ do
                3018698265,           -- soccer08_12_tactics_cmd (x3)
                1559239586},          -- team00_11_p1_tactics_focus (x3, opens the tactics picker)
     GET_INFO = 1033065575, SET_INFO = 1506470613,   -- CMND_GET / SET_TEAM_SET_INFO (set, team, field, ...)
-    -- the 5v5 formations (t7 of soccer_formation_menu_inc = the retail 5v5 list); the story's first one is 712431653
-    FORM5 = {[1567746227] = true, [712431653] = true, [3011479967] = true, [3296246025] = true, [1422369944] = true},
+    -- a 5v5 team's formation when it has none of the 5v5 formations (VRFW_Formation): the story's first one
     FORM5_DEFAULT = 712431653,
     VALID = 1538643580,              -- (set, team, false) -> 0 = the team can play (retail member check)
     GET_VS = 3713813716, SET_VS = 662075964,
@@ -3773,21 +3773,12 @@ do
       HEADER = 61815788,
       KIND_11 = 481419112, KIND_7 = 1001906035, KIND_5 = 3585719903,
       KIND_3 = 1020926826, KIND_LOCKED = 3098254663,
-      FORMAT = 901813452,
+      NAME_MATCH = 2223863259,       -- retail menu_text «Partido» («Match»), every language
+      NAME_PACHANGA = 61815788,
     },
+    -- the texts ship in every language (Pachangas text\rows\menu_text.toml); only the format names have a fallback
     FALLBACK = {
-      MATCH = "Tipo: Partido",
-      PACHANGA = "Tipo: Pachanga",
-      LINE = "Equipo activo de partido: {match} · Equipo activo de pachanga: {pachanga}",
-      NONE = "ninguno",
-      NOW = "La plantilla {n} «{team}» es ahora el equipo activo de pachanga.",
-      NEED5 = "Esta plantilla de pachanga no está completa. Coloca a 5 jugadores para poder usarla como equipo activo de pachanga.",
-      ONLY_TITLE = "El tipo de plantilla solo se puede cambiar en Plantilla de equipo, entrando desde el menú principal.",
-      NO_LOADER = "El equipo activo de pachanga necesita el cargador del mod (módulo team_banks).",
-      HEADER = "Pachanga",
       KIND_11 = "11v11", KIND_7 = "7v7", KIND_5 = "5v5", KIND_3 = "3v3",
-      KIND_LOCKED = "Este tipo de plantilla todavía no está disponible.",
-      FORMAT = "< {a} v {b} >",
     },
     active = -1, loader = false, start = nil, logs = 0,
   }
@@ -3899,9 +3890,9 @@ do
       return false, "inarogue"
     elseif not flag4 then
       return false, "not standalone"
-    elseif funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], 3902542018 --[[chronicle_mode_top_menu]]) == true then
+    elseif funcLuaMenuCommand(2231168902, 3902542018 --[[chronicle_mode_top_menu]]) == true then
       return false, "chronicle"
-    elseif funcLuaCommand(3004482920 --[[CMND_GET_PLAY_GAME_MODE?]]) == 2 then
+    elseif funcLuaCommand(3004482920) == 2 then
       return false, "story"
     elseif type(UTIL_TB) == "table" and type(UTIL_TB.online) == "function" and UTIL_TB.online() then
       return false, "online"
@@ -3958,13 +3949,14 @@ do
   -- list. kind = the retail team kind the dock shows for that format (n10: 0 = teamInfo[0], the 11v11 team; 1 =
   -- teamInfo[1], the 5v5 team; retail has no other kind). players / rivals = the numbers of the row text «< 11 v 11 >»
   -- (default: the numbers of id). A format with enabled = false or without a kind is skipped by the row. text = a key of
-  -- PT.T (or a menu_text id), used when the format has no numbers. A mode that adds a format sets EVT_PT_KINDS (same
-  -- fields) before this block.
+  -- PT.T (or a menu_text id), used when the format has no numbers. name = a key of PT.T (or a menu_text id): the
+  -- format's row label («Partido», «Pachanga»); without it the row shows text. A mode that adds a format sets
+  -- EVT_PT_KINDS (same fields) before this block.
   if EVT_PT_KINDS == nil then
     EVT_PT_KINDS = {
-      {id = "11v11", text = "KIND_11", players = 11, rivals = 11, kind = 0, enabled = true},
+      {id = "11v11", text = "KIND_11", name = "NAME_MATCH", players = 11, rivals = 11, kind = 0, enabled = true},
       {id = "7v7", text = "KIND_7", players = 7, rivals = 7, enabled = false},
-      {id = "5v5", text = "KIND_5", players = 5, rivals = 5, kind = 1, enabled = true},
+      {id = "5v5", text = "KIND_5", name = "NAME_PACHANGA", players = 5, rivals = 5, kind = 1, enabled = true},
       {id = "3v3", text = "KIND_3", players = 3, rivals = 3, enabled = false},
     }
   end
@@ -3981,8 +3973,8 @@ do
     if type(EVT_PT_KINDS) == "table" and #EVT_PT_KINDS > 0 then
       return EVT_PT_KINDS
     end
-    return {{id = "11v11", text = "KIND_11", players = 11, rivals = 11, kind = 0, enabled = true},
-            {id = "5v5", text = "KIND_5", players = 5, rivals = 5, kind = 1, enabled = true}}
+    return {{id = "11v11", text = "KIND_11", name = "NAME_MATCH", players = 11, rivals = 11, kind = 0, enabled = true},
+            {id = "5v5", text = "KIND_5", name = "NAME_PACHANGA", players = 5, rivals = 5, kind = 1, enabled = true}}
   end
 
   function PT.kindOn(k)
@@ -4010,20 +4002,6 @@ do
       return PT.text(k.text)
     end
     return tostring(k.label or k.id or "?")
-  end
-
-  -- the row text of a format: «< 11 v 11 >» (text key evt_pt_format_row), else «< label >»
-  function PT.formatText(k)
-    if type(k) ~= "table" then
-      return ""
-    end
-    local id = tostring(k.id or "")
-    local a = tonumber(k.players) or tonumber(string.match(id, "^(%d+)"))
-    local b = tonumber(k.rivals) or tonumber(string.match(id, "(%d+)$")) or a
-    if a ~= nil and b ~= nil then
-      return PT.text("FORMAT", {a = math.floor(a), b = math.floor(b)})
-    end
-    return "< " .. PT.kindLabel(k) .. " >"
   end
 
   -- the format on screen (n10)
@@ -4080,11 +4058,21 @@ do
     return PT.focusedCol() or PT.activeCol()
   end
 
-  -- a format row's text: the format's name («11v11», text keys evt_pt_kind_*)
+  -- a format row's text: the format's row name («Partido», «Pachanga»), else its format label («7v7»)
   function PT.rowText(col)
     local k = PT.kinds()[col or PT.activeCol()]
     if type(k) ~= "table" then
       return ""
+    end
+    local s = nil
+    if type(k.name) == "string" and PT.T[k.name] ~= nil then
+      s = PT.text(k.name)
+    elseif type(k.name) == "number" then
+      local ok, r = pcall(funcLuaCommand, PT.TEXT_GET, k.name)
+      s = ok and r or nil
+    end
+    if type(s) == "string" and s ~= "" then
+      return s
     end
     return PT.kindLabel(k)
   end
@@ -4140,11 +4128,219 @@ do
     end
     for i = 0, (n or 0) - 1 do
       if PT.colAt(i) ~= nil then
-        pcall(funcLuaMenuCommand, 4231609516 --[[CMND_SET_LAYER_MODEL_ALPHA?]], PT.LIST, i, 0, 0.5)
-        pcall(funcLuaMenuCommand, 1126837159 --[[CMND_SET_MENU_TEXT_ALPHA?]], PT.LIST, i, 931545948 --[[_text_list01_on]], 0.5)
-        pcall(funcLuaMenuCommand, 1126837159 --[[CMND_SET_MENU_TEXT_ALPHA?]], PT.LIST, i, 3705682548 --[[_text_list01_off]], 0.5)
+        pcall(funcLuaMenuCommand, 4231609516, PT.LIST, i, 0, 0.5)
+        pcall(funcLuaMenuCommand, 1126837159, PT.LIST, i, 931545948 --[[_text_list01_on]], 0.5)
+        pcall(funcLuaMenuCommand, 1126837159, PT.LIST, i, 3705682548 --[[_text_list01_off]], 0.5)
       end
     end
+  end
+
+  -- ================================================================================================================
+  -- The format columns (docs/game/ui/pachanga-templates.md §18): when the list starts with exactly two format rows,
+  -- they share the list's first row as two cells side by side, «Partido» left and «Pachanga» right, and the rows under
+  -- them move up one row. Only node transforms of this menu's layer instances: the list's slot locators
+  -- (team01_01_list_item_locator: list instance i hangs from _atc_list<i + 1>) and the two cells' plates. The cells
+  -- stay the list's instances 0 and 1, so focus, cursor, decide and the refusals are the list's own.
+  -- Keys: left / right between the cells (left is a function row of Pachangas' content\menus\pachanga_dock.toml; right
+  -- on the right cell is the retail move to the pitch); down from a cell = the next row; up from the next row = the cell
+  -- the focus last had (first: the left one); up from a cell = nothing.
+  -- Geometry in list-row units (team01_02 layout): plate x -97..471, 72 tall (its 392 x 72 sprite drawn 568 wide),
+  -- text left-aligned at x 47, cursor x -19..45, a focused row slides 30 to the right (_mt_list_in_01); rows 66 apart.
+  -- The cells' plates are their own sprites (Pachangas content\images\menu\102_team\team01\team01_02.toml: the
+  -- row's plate with its two slanted end caps and a shorter middle, made at build from the game's team01_02.g4tx),
+  -- drawn at the full rows' stretch so their slanted edges keep the full rows' angle. The left cell's left edge and the
+  -- right cell's right edge are the full rows' edges; the gap between the cells (about 38) takes the left cell's slide.
+  PT.C = {
+    LOCATOR = 2411076261,
+    SLOTS = {3618404533, 1319446799, 966924697, 2814807098, 3502357676,
+             1237904662, 1053810048, 2926624785, 3648516231},
+    ATLAS = 4262264508 --[[crc32 #/menu/102_team/team01/team01_02/team01_02.g4tx]],
+    SWAP = 558735651,                -- (layer, atlas, sprite, texture node, 0, idx): the sprite of a quad -> drawn
+    -- the plate quads: mesh node, texture node (= the game's sprite), the left / right cell's sprite
+    PLATES = {
+      {1525181930, 2257662053, 2867296564, 3548949691},
+      {4270801635, 2203362575, 2668933668, 3798614848},
+      {713202021, 4143695082, 3666709947, 2749519924},
+      {3034975430, 1755271497, 1156126744, 1032244631},
+    },
+    ROW_LEFT = -97, ROW_RIGHT = 471, ROW_WIDTH = 568, ROW_HEIGHT = 72, PITCH = 66, SPRITE_WIDTH = 392,
+    -- shift = the cell's instance offset from the first slot; sprite = its sprite's width (px); the left cell starts at
+    -- the row's left edge, the right cell ends at the row's right edge (in its own instance's units)
+    CELLS = {{shift = 0, sprite = 200}, {shift = 255, sprite = 166}},
+    SPLIT = 211,                     -- the pointer's border between the cells (first slot units)
+    NODE_POS = 2575768773,           -- (layer, idx, node, axis 0 x / 1 y, value): node local translation
+    NODE_SCALE = 2885415772,         -- (layer, idx, node, sx, sy): a mesh node's scale = its size
+    MESH_GPOS = 499270986,           -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, node) -> x, y
+    POINTER = 558229292,             -- the pointer (x, y down; compared as x, -y with global positions)
+    FOCUS_ACTIVE = 102308320, FOCUS_SET = 3466097042, FOCUS_MARK = 1778826357,
+    CURSOR_LOC = 381797568, CURSOR = 3313461902,
+    CHECK_INPUT = 4265778440, CTRL = 1332654303, MOUSE_LEFT = 218912913,   -- CMND_CHECK_INPUT_CMD, CMD_EVT_MOUSE_LEFT
+    FN_LEFT = 2719019630,   -- OnFunction of CMD_LEFT on the list (content\menus\pachanga_dock.toml)
+    ARG_RIGHT = 2682339866,          -- OnChangeFocus argument of CMD_RIGHT on the list
+  }
+  PT.cols = false                    -- the columns are drawn
+  PT.lastCell = 0                    -- the cell the focus last had (0 left, 1 right)
+
+  -- the list starts with exactly two format rows
+  function PT.colsOn()
+    return EVT_PACHANGA == true and (n or 0) >= 2 and PT.colAt(0) ~= nil and PT.colAt(1) ~= nil and PT.colAt(2) == nil
+  end
+
+  -- cell i (0 left, 1 right): its plate's left x and width in its own instance's units
+  function PT.cellBox(i)
+    local C = PT.C
+    local width = C.CELLS[i + 1].sprite * C.ROW_WIDTH / C.SPRITE_WIDTH
+    if i == 0 then
+      return C.ROW_LEFT, width
+    end
+    return C.ROW_RIGHT - C.CELLS[2].shift - width, width
+  end
+
+  -- the slot locators and the cells' plates for the columns, or back to the retail list
+  function PT.layoutCols()
+    local on = PT.colsOn()
+    if not on and not PT.cols then
+      return
+    end
+    local C = PT.C
+    for s = 1, #C.SLOTS do
+      local x, y = 0, 0
+      if on and s >= 2 then
+        y = C.PITCH
+        if s == 2 then
+          x = C.CELLS[2].shift
+        end
+      end
+      pcall(funcLuaMenuCommand, C.NODE_POS, C.LOCATOR, 0, C.SLOTS[s], 0, x)
+      pcall(funcLuaMenuCommand, C.NODE_POS, C.LOCATOR, 0, C.SLOTS[s], 1, y)
+    end
+    for i = 0, 1 do
+      local left, width = C.ROW_LEFT, C.ROW_WIDTH
+      if on then
+        left, width = PT.cellBox(i)
+      end
+      for _, q in ipairs(C.PLATES) do
+        local sprite = on and q[3 + i] or q[2]
+        local okS, drawn = pcall(funcLuaMenuCommand, C.SWAP, PT.LIST, C.ATLAS, sprite, q[2], 0, i)
+        if (not okS or drawn == false) and PT.swapLogged ~= true then
+          PT.swapLogged = true
+          PT.log("format columns: plate sprite not drawn", i, tostring(drawn))
+        end
+        pcall(funcLuaMenuCommand, C.NODE_POS, PT.LIST, i, q[1], 0, left)
+        pcall(funcLuaMenuCommand, C.NODE_SCALE, PT.LIST, i, q[1], width, C.ROW_HEIGHT)
+      end
+    end
+    if on ~= PT.cols then
+      PT.log("format columns", on and "on" or "off", "rows", n)
+    end
+    PT.cols = on
+  end
+
+  function PT.listActive()
+    local ok, r = pcall(funcLuaMenuCommand, PT.C.FOCUS_ACTIVE, PT.LIST)
+    return ok and r == true
+  end
+
+  -- the list's focus onto instance `to`, as the engine's own step: the cursor, the focus mark, then the dock's
+  -- OnChangeFocus (run by the engine's echo, else here) for the row animations and the help line
+  function PT.stepTo(to, quiet)
+    local C = PT.C
+    if PT.listIndex() == to then
+      return
+    end
+    pcall(funcLuaMenuCommand, C.CURSOR_LOC, PT.LIST, C.CURSOR, to, n)
+    PT.stepping, PT.echo = true, false
+    pcall(funcLuaMenuCommand, C.FOCUS_MARK, PT.LIST, to, true)
+    if PT.listIndex() ~= to then
+      pcall(funcLuaMenuCommand, C.FOCUS_SET, PT.LIST, to)
+    end
+    if not PT.echo and type(OnChangeFocus) == "function" then
+      pcall(OnChangeFocus, PT.LIST, to)
+    end
+    PT.stepping = false
+    PT.lastCell = (to == 0 or to == 1) and to or PT.lastCell
+    if PT.rowFocused() then
+      PT.activeLine()                -- a format cell: the active teams line (as the dock's OnChangeFocus wrapper)
+    end
+    if not quiet then
+      funcLuaCommand(PT.SOUND, PT.SE_MOVE)
+    end
+  end
+
+  -- up / down on the list (dir -1 / 1), asked before the engine's own step: true = handled here
+  function PT.colsKey(dir)
+    if not PT.cols or not PT.colsOn() or not PT.listActive() or PT.busy or PT.co ~= nil then
+      return false
+    end
+    local i = PT.listIndex()
+    if type(i) ~= "number" then
+      return false
+    end
+    if dir > 0 and i <= 1 then
+      if (n or 0) > 2 then
+        PT.stepTo(2)
+      end
+      return true
+    elseif dir < 0 and i <= 1 then
+      return true
+    elseif dir < 0 and i == 2 then
+      PT.stepTo(PT.lastCell == 1 and 1 or 0)
+      return true
+    end
+    return false
+  end
+
+  -- the cell under the pointer (0 / 1), nil = the pointer is not on the first row
+  function PT.cellUnder()
+    local C = PT.C
+    local okP, px, py = pcall(funcLuaMenuCommand, C.POINTER)
+    local okA, ax, ay = pcall(funcLuaMenuCommand, C.MESH_GPOS, C.LOCATOR, 0, C.SLOTS[1])
+    local okB, bx = pcall(funcLuaMenuCommand, C.MESH_GPOS, C.LOCATOR, 0, C.SLOTS[2])
+    if not (okP and okA and okB) or type(px) ~= "number" or type(py) ~= "number" or type(ax) ~= "number"
+        or type(ay) ~= "number" or type(bx) ~= "number" then
+      return nil
+    end
+    local k = (bx - ax) / C.CELLS[2].shift   -- global units per row unit
+    if k < 0.05 or k > 20 then
+      return nil
+    end
+    local ux, uy = (px - ax) / k, (-py - ay) / k
+    if math.abs(uy) > C.ROW_HEIGHT / 2 then
+      return nil
+    end
+    if ux >= C.ROW_LEFT and ux < C.SPLIT then
+      return 0
+    elseif ux >= C.SPLIT and ux <= C.ROW_RIGHT then
+      return 1
+    end
+    return nil
+  end
+
+  -- a pointer move that focused one cell while the pointer is over the other (the engine's hit zones of the two cells
+  -- overlap: they keep the full row's width): the focus goes to the cell under the pointer
+  function PT.pointerCell()
+    local okP, px, py = pcall(funcLuaMenuCommand, PT.C.POINTER)
+    if not okP or type(px) ~= "number" or type(py) ~= "number" then
+      return
+    end
+    local moved = PT.px ~= nil and (math.abs(px - PT.px) > 1 or math.abs(py - PT.py) > 1)
+    PT.px, PT.py = px, py
+    if not moved then
+      return
+    end
+    local c = PT.cellUnder()
+    if c ~= nil and c ~= PT.listIndex() then
+      PT.stepTo(c, true)
+    end
+  end
+
+  -- a mouse click on the first row: the cell under the pointer (nil = not a click there)
+  function PT.clickCell()
+    local ok, down = pcall(funcLuaCommand, PT.C.CHECK_INPUT, PT.C.CTRL, PT.C.MOUSE_LEFT)
+    if not ok or down ~= true then
+      return nil
+    end
+    return PT.cellUnder()
   end
 
   -- "02 Punishment" (dock number as on screen + the name of that team), or «ninguno»
@@ -4185,7 +4381,7 @@ do
     end
     if type(base) ~= "string" then
       local ok, r = pcall(funcLuaCommand, PT.TEXT_GET, PT.TEXT_HEADER)
-      base = (ok and type(r) == "string") and r or "Plantilla de equipo"
+      base = (ok and type(r) == "string") and r or ""
     end
     pcall(funcLuaMenuCommand, PT.SET_HEADER, 5, base .. " · " .. PT.text("HEADER"))
   end
@@ -4350,7 +4546,7 @@ do
       end
     end
     local ok, f = funcLuaCommand(PT.GET_INFO, set, 1, 4)
-    if ok and PT.FORM5[f] then
+    if ok and VRFW_Formation.IsFiveASide(f) ~= false then
       return changed
     end
     local r = set ~= 2 and funcLuaCommand(PT.INIT, set) or 0
@@ -4385,8 +4581,8 @@ do
       try(UpdateViewTeamDockListItem, i)
     end
     try(UpdateViewMenuByLock)
-    try(funcLuaMenuCommand, 1195645349 --[[CMND_UPDATE_SYNERGY_BUTTON?]], 1179455358 --[[team00_17_synergy_attachment_button_pillar]], 0, n5, n10)
-    try(funcLuaMenuCommand, 1195645349 --[[CMND_UPDATE_SYNERGY_BUTTON?]], 830633104 --[[team00_17_synergy_attachment_button_flag]], 0, n5, n10)
+    try(funcLuaMenuCommand, 1195645349, 1179455358 --[[team00_17_synergy_attachment_button_pillar]], 0, n5, n10)
+    try(funcLuaMenuCommand, 1195645349, 830633104 --[[team00_17_synergy_attachment_button_flag]], 0, n5, n10)
     try(SetupTeamDockTeamNameBar)
     try(UpdateViewTeamDockNo)
     try(SetActiveDockBackground, n4 == n5)
@@ -4427,8 +4623,8 @@ do
   PT.ONLY11 = {209828247 --[[team00_16_nickname]], 3266940395 --[[vroad02_03_seasonal_cap_plate_small]]}
   function PT.close11()
     for _, L in ipairs(PT.ONLY11) do
-      if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], L) then
-        funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], L)
+      if funcLuaMenuCommand(2640875187, L) then
+        funcLuaMenuCommand(1273612389, L)
       end
     end
   end
@@ -4444,11 +4640,11 @@ do
   -- kept (2026-09-30): retail 5v5 teams carry them (the tactics picker has its own 5v5 rule), so their slots stay.
   function PT.hideTS()
     for L in pairs(PT.NO5) do
-      local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], L) or 1
+      local n = funcLuaMenuCommand(1175615627, L) or 1
       for i = 0, math.max(n, 1) - 1 do
-        pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, false)
+        pcall(funcLuaMenuCommand, 711242136, L, i, false)
       end
-      pcall(funcLuaMenuCommand, 3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], L, false)
+      pcall(funcLuaMenuCommand, 3518307824, L, false)
     end
   end
 
@@ -4463,13 +4659,13 @@ do
       all[#all + 1] = L
     end
     for _, L in ipairs(all) do
-      if funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], L) then
-        local n = funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], L) or 1
+      if funcLuaMenuCommand(2640875187, L) then
+        local n = funcLuaMenuCommand(1175615627, L) or 1
         for i = 0, math.max(n, 1) - 1 do
-          pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], L, i, true)
+          pcall(funcLuaMenuCommand, 711242136, L, i, true)
         end
       end
-      pcall(funcLuaMenuCommand, 3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], L, true)
+      pcall(funcLuaMenuCommand, 3518307824, L, true)
     end
   end
 
@@ -4489,10 +4685,10 @@ do
   -- OpenCommonSoccerFormationUI). Runs in the OnDecideFocus callback coroutine.
   function PT.rebuild(to)
     local BAR = 1044086265           -- team01_04_team_name_bar
-    funcLuaMenuCommand(1273612389 --[[CMND_CLOSE_LAYER]], BAR)
+    funcLuaMenuCommand(1273612389, BAR)
     for _ = 1, 90 do
-      if not funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], BAR)
-          and not funcLuaMenuCommand(2640875187 --[[CMND_IS_OPEN_LAYER]], n11) then
+      if not funcLuaMenuCommand(2640875187, BAR)
+          and not funcLuaMenuCommand(2640875187, n11) then
         break
       end
       coroutine.yield()
@@ -4514,7 +4710,7 @@ do
     PT.plateKind(to)
     PT.refresh()
     n4 = to == 1 and PT.active or funcLuaCommand(PT.GET_VS)
-    funcLuaMenuCommand(629267548 --[[CMND_OPEN_LAYER]], BAR)
+    funcLuaMenuCommand(629267548, BAR)
     coroutine.yield()
     if to == 0 then
       PT.showTS()
@@ -4529,7 +4725,7 @@ do
       pcall(UTIL_TB.header)
     else
       local ok, s = pcall(funcLuaCommand, PT.TEXT_GET, PT.TEXT_HEADER)
-      pcall(funcLuaMenuCommand, PT.SET_HEADER, 5, (ok and type(s) == "string") and s or "Plantilla de equipo")
+      pcall(funcLuaMenuCommand, PT.SET_HEADER, 5, (ok and type(s) == "string") and s or "")
     end
     PT.flags()
   end
@@ -4540,7 +4736,7 @@ do
     col = col or PT.curCol()
     local function back()
       funcLuaMenuCommand(1558704558, PT.MENU_ID, true)
-      funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], a1, true)
+      funcLuaMenuCommand(3518307824, a1, true)
     end
     if PT.busy then
       return                         -- one press = one switch (a second decide while the pitch is rebuilt)
@@ -4998,6 +5194,7 @@ do
       end
       PT.flags()
       PT.pick, PT.child = nil, false
+      PT.cols, PT.lastCell, PT.px, PT.py = false, 0, nil, nil
       PT.log("open", PT.pachanga() and "pachanga" or "partido", "dock", n5, "active", n4, "pachanga", PT.active,
         "loader", tostring(PT.loader))
       return table.unpack(r, 1, r.n)
@@ -5008,12 +5205,15 @@ do
   PT.wrap("OnOpenLayer", function(orig)
     return function(a1, a2, ...)
       local r = PT.pack(orig(a1, a2, ...))
+      if a1 == PT.C.LOCATOR or (a1 == PT.LIST and (a2 == 0 or a2 == 1)) then
+        PT.layoutCols()              -- the slot locators / the cells are open: the columns
+      end
       if PT.pachanga() and a1 == n11 then
         pcall(PT.close11)
       end
       if PT.pachanga() and PT.NO5[a1] then
-        pcall(funcLuaMenuCommand, 711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2 or 0, false)
-        pcall(funcLuaMenuCommand, 3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], a1, false)
+        pcall(funcLuaMenuCommand, 711242136, a1, a2 or 0, false)
+        pcall(funcLuaMenuCommand, 3518307824, a1, false)
       end
       return table.unpack(r, 1, r.n)
     end
@@ -5031,10 +5231,37 @@ do
   end)
 
   PT.wrap("UpdateViewTeamDockListItem", function(orig)
-    return function(...)
-      local r = PT.pack(orig(...))
+    return function(a1, ...)
+      local r = PT.pack(orig(a1, ...))
       PT.greyRow()
+      if a1 == 0 or a1 == 1 then
+        PT.layoutCols()              -- the list was (re)drawn: the columns follow its rows
+      end
       return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  -- up / down on the list: the engine asks these before its own step (1 = handled, no step). The retail dock has no
+  -- MoveFocusDec; an empty one changes nothing (nil = the engine steps).
+  if type(MoveFocusDec) ~= "function" then
+    MoveFocusDec = function()
+      return nil
+    end
+  end
+  PT.wrap("MoveFocusInc", function(orig)
+    return function(a1, a2, ...)
+      if a2 == PT.LIST and PT.colsKey(1) then
+        return 1
+      end
+      return orig(a1, a2, ...)
+    end
+  end)
+  PT.wrap("MoveFocusDec", function(orig)
+    return function(a1, a2, ...)
+      if a2 == PT.LIST and PT.colsKey(-1) then
+        return 1
+      end
+      return orig(a1, a2, ...)
     end
   end)
 
@@ -5048,8 +5275,26 @@ do
 
   PT.wrap("OnChangeFocus", function(orig)
     return function(a1, a2, ...)
-      -- right on a format row is the retail move out of the list (no format cycling since 2026-10-19)
+      if a1 == PT.LIST and PT.stepping then
+        PT.echo = true               -- the engine's echo of PT.stepTo
+        return orig(a1, a2, ...)
+      end
+      -- right on the left cell: the right cell (on the right cell, the retail move out of the list)
+      if a1 == PT.LIST and a2 == PT.C.ARG_RIGHT and PT.cols and PT.colsOn() and PT.listActive()
+          and PT.listIndex() == 0 and not PT.busy and PT.co == nil then
+        PT.stepTo(1)
+        return
+      end
       local r = PT.pack(orig(a1, a2, ...))
+      if a1 == PT.LIST and a2 ~= PT.C.ARG_RIGHT and PT.cols and PT.colsOn() and PT.listActive() then
+        PT.pointerCell()
+      end
+      if PT.cols and (n6 == 0 or n6 == PT.LIST) then
+        local i = PT.listIndex()
+        if i == 0 or i == 1 then
+          PT.lastCell = i
+        end
+      end
       if PT.pachanga() and PT.NO5[a1] and type(OnChangeFocusCommon) == "function" then
         PT.log("focus moved off a hidden tactics / synergy layer", a1)
         pcall(OnChangeFocusCommon, PT.FORM_BOX, 0, true)
@@ -5081,6 +5326,15 @@ do
       -- a format row: refused here, at once (no yield: an OnEnter that yields is taken as accepted), sound and
       -- message by PT.gate; the message opens from Step
       local col = EVT_PACHANGA and a1 == PT.LIST and PT.colAt(a2) or nil
+      if col ~= nil and PT.cols and PT.colsOn() then
+        -- a click on the columns: the cell under the pointer (the two cells' hit zones overlap)
+        local c = PT.clickCell()
+        if c ~= nil and c ~= a2 then
+          PT.stepTo(c, true)
+          a2 = c
+          col = PT.colAt(a2)
+        end
+      end
       if col ~= nil then
         if PT.busy or PT.co ~= nil or not PT.gate(col) then
           return 1
@@ -5120,7 +5374,7 @@ do
         local r = table.pack(EVT_Bonus5(n5, "dock", orig, a1, a2, ...))
         if not r[1] then
           funcLuaMenuCommand(1558704558, PT.MENU_ID, true)
-          funcLuaMenuCommand(3518307824 --[[CMND_SET_ENABLE_CTRL_FOCUS?]], a1, true)
+          funcLuaMenuCommand(3518307824, a1, true)
           return
         end
         return table.unpack(r, 2, r.n)
@@ -5188,6 +5442,13 @@ do
 
   PT.wrap("OnFunction", function(orig)
     return function(a1, a2, ...)
+      if a1 == PT.C.FN_LEFT then
+        -- left on the list: the right cell to the left one; elsewhere nothing (the retail list has no left)
+        if PT.cols and PT.colsOn() and PT.listActive() and PT.listIndex() == 1 and not PT.busy and PT.co == nil then
+          PT.stepTo(0)
+        end
+        return
+      end
       if PT.pachanga() and a1 == PT.ACTIVE_FUNC and not PT.inRogue() then
         PT.setActive()
         return
@@ -5256,11 +5517,11 @@ do
       if not PT.pachanga() then
         return orig(a1, ...)
       end
-      local ok, at, df = funcLuaCommand(1033065575 --[[CMND_GET_TEAM_SET_INFO?]], a1, 1, 14)
+      local ok, at, df = funcLuaCommand(1033065575, a1, 1, 14)
       local L = 859123864 --[[mainmenu04_06_team_atdf]]
-      local p = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], L, 0, 3699456408)
+      local p = funcLuaMenuCommand(1927054058, L, 0, 3699456408)
       funcLuaMenuCommand(3609943765, L, 0, p, at)
-      p = funcLuaMenuCommand(1927054058 --[[CMND_SEARCH_PRIM_INDEX?]], L, 0, 4110270132)
+      p = funcLuaMenuCommand(1927054058, L, 0, 4110270132)
       funcLuaMenuCommand(3609943765, L, 0, p, df)
       funcLuaMenuCommand(1233047821, L, 0, 3699456408, true)
       funcLuaMenuCommand(1233047821, L, 0, 4110270132, true)

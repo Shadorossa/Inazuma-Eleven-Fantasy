@@ -13,8 +13,11 @@
 --                       card the bank cannot retire or that did not join by signing (merge_pass.lua: always the one
 --                       kept). Offered while a rule declares `one_card_per`.
 --   normal_rarity       every normal card to the rarity the rules declare (`normal_card_rarity`; No More Rarities: 4 =
---                       5★ Leyenda), and the special tiers a rule's option removes (`normalize_special_rarities`), no
---                       copy leaves. Offered while a rule declares `normal_card_rarity`.
+--                       5★ Leyenda), and every special card of the tiers a rule's option removes
+--                       (`normalize_special_rarities`) becomes his character's base card at that rarity; when the club
+--                       already has that character, his copies are merged into the one keep_first keeps (only those
+--                       copies leave). Offered while a rule declares `normal_card_rarity`; the confirmation line is
+--                       the option value's `save_adjust_label` when the rule names one.
 --
 -- Two more actions take out of the save what the active mods' rules make unobtainable:
 --
@@ -39,9 +42,9 @@ local MergePass = require "lib/duplicate_players/merge_pass"
 local Unobtainable = require "lib/unobtainable_moves"
 local PurgeMoves = require "lib/purge_moves"
 local PurgeKits = require "lib/purge_kits"
+local Id = require "VRFW/lib/ids"
 
 local PLAYER_SETS_BLOB = "ss_player_sets.json"
-local TWO32 = 4294967296
 
 local function log(message) VRFW.log("save adjust: " .. message) end
 
@@ -80,17 +83,22 @@ function SaveAdjust.remove_duplicates(tree, event)
     .. " hidden cards released, " .. (report.protected or 0) .. " kept (not retirable / not signed)" }
 end
 
+-- available: true, or the text key of the confirmation line the rules name for the option's current value
 function SaveAdjust.can_set_normal_rarity()
   local policy = Rules.load()
-  return #policy.names > 0 and policy.normal_card_rarity ~= nil
+  if #policy.names == 0 or policy.normal_card_rarity == nil then return false end
+  return policy.normal_rarity_label or true
 end
 
 function SaveAdjust.normal_rarity(tree, event)
-  -- only the rarity: no copy leaves (no one_card_per, no hidden-card release)
-  local policy = policy_with({ one_card_per = false, hidden_card_sources = {} })
+  -- the rarity and the removed special tiers to the base card; only the copies of a converted character leave (no
+  -- one_card_per, no hidden-card release)
+  local policy = policy_with({ one_card_per = false, hidden_card_sources = {}, convert_special_cards = true })
   if policy.normal_card_rarity == nil then return { error = "no duplicate rule declares normal_card_rarity" } end
   local report = run_pass(tree, policy, "normal_rarity (slot " .. event.slot .. ")")
-  return { count = report.to_normal_rarity, log = report.to_normal_rarity .. " normal cards -> rarity " .. tostring(policy.normal_card_rarity) }
+  return { count = report.to_normal_rarity + report.duplicates_merged, log = report.to_normal_rarity .. " cards -> rarity "
+    .. tostring(policy.normal_card_rarity) .. " (" .. report.to_base_card .. " special cards -> their base card), "
+    .. report.duplicates_merged .. " copies merged, " .. (report.protected or 0) .. " kept (not retirable / not signed)" }
 end
 
 -- ---------------------------------------------------------------------------------------------- unobtainable things
@@ -106,10 +114,7 @@ local function purge_player_sets(slot, drop, action)
     log(action .. ": " .. PLAYER_SETS_BLOB .. " not readable: left as it is")
     return 0
   end
-  local function u32(v)
-    v = tonumber(v) or 0
-    return v % TWO32
-  end
+  local u32 = Id.u32
   local n = 0
   for _, player in pairs(file.players) do
     for _, set in pairs(type(player) == "table" and type(player.sets) == "table" and player.sets or {}) do

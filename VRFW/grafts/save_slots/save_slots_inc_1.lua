@@ -21,17 +21,17 @@
 -- ---- vr-loader commands (API 1). Filled by slot_build.py from LOADER_CMDS. -------------
 -- Loader absent / module off: unknown hash -> the call returns a single false.
 local VRFW_SS_LOADER = {
-  VERSION = 2217361807,   -- () -> api (>= 1), modules bitmask (bit1 = value 2 = save_slots: the framework's slot service)
-  GET_SLOT = 4245285902,        -- () -> active slot
-  LAYOUT = 2351791086,          -- () -> playerCount, lockedSlot, active, slot1, slot2, ... (CMND_VRFW_SLOT_LAYOUT)
+  VERSION = @crc:CMND_EVT_LOADER_VERSION@,   -- () -> api (>= 1), modules bitmask (bit1 = value 2 = save_slots: the framework's slot service)
+  GET_SLOT = @crc:CMND_VRFW_SLOT_ACTIVE@,        -- () -> active slot
+  LAYOUT = @crc:CMND_VRFW_SLOT_LAYOUT@,          -- () -> playerCount, lockedSlot, active, slot1, slot2, ... (CMND_VRFW_SLOT_LAYOUT)
   SLOT_INFO = 1195222835,      -- (n) -> exists, chapter, ...
-  RELOAD = 347070041,       -- (n) -> bool: name map -> slot n now, writes fenced until COMMIT/ABORT
+  RELOAD = @crc:CMND_VRFW_SLOT_RELOAD@,       -- (n) -> bool: name map -> slot n now, writes fenced until COMMIT/ABORT
   COMMIT = 4173545121,       -- () -> bool: fence off, slot remembered
-  ABORT = 2340980027,         -- () -> bool: back to the previous slot, fence off
+  ABORT = @crc:CMND_VRFW_SLOT_ABORT@,         -- () -> bool: back to the previous slot, fence off
   STATE = 3534676964,         -- () -> 0 idle, 1 switching (fenced), -1 error
   BUSY = 1127104486,           -- () -> bool: a game save/load job is pending
-  LOG = 3661580131,                  -- (...) -> true: evt_loader\loader.log
-  SLOT_RESERVED = 1380583127, -- (n) -> reserved, ownerModId, enterable (CMND_VRFW_SLOT_RESERVED)
+  LOG = @crc:CMND_EVT_LOG@,                  -- (...) -> true: evt_loader\loader.log
+  SLOT_RESERVED = @crc:CMND_VRFW_SLOT_RESERVED@, -- (n) -> reserved, ownerModId, enterable (CMND_VRFW_SLOT_RESERVED)
   REARM = 1609225498,         -- NOT in API 1 (proposed): reset the InitTitleState "loaded" guard
                                              -- [[ ]+0x69C8]+ = 0; only used by VRFW_SS_FLOW "reentry"
 }
@@ -61,7 +61,7 @@ local VRFW_SS_TXT = {
   },
 }
 function VRFW_SS_Text(key)
-  local ok, s = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], VRFW_SS_TXT.ID[key])
+  local ok, s = pcall(funcLuaCommand, @crc:CMND_TEXT_GET@, VRFW_SS_TXT.ID[key])
   if ok and type(s) == "string" and s ~= "" then
     return s
   end
@@ -77,21 +77,20 @@ local VRFW_SS_G = {
   HEADER_CLEAR = 3960538079,      -- 0xEC1103DF
   RESET_ALL = 1481565076,         -- 0x584EE394 ResetAllGameData
   SKIP_PRESS_START = 937976662,   -- 0x37E86356 (true): TitleStart opens title_menu_2 directly on re-entry
-  GAME_RESET = 3897105282,        -- 0xE8491B82 CMND_GAME_RESET
-  GET_GFLAG = 941426960,          -- 0x381D0910 CMND_GET_GLOBAL_BIT_FLAG
-  SET_GFLAG = 3258400760,         -- 0xC2373FF8 CMND_SET_GLOBAL_BIT_FLAG
+  GAME_RESET = @crc:CMND_GAME_RESET@,        -- 0xE8491B82 CMND_GAME_RESET
+  GET_GFLAG = @crc:CMND_GET_GLOBAL_BIT_FLAG@,          -- 0x381D0910 CMND_GET_GLOBAL_BIT_FLAG
+  SET_GFLAG = @crc:CMND_SET_GLOBAL_BIT_FLAG@,         -- 0xC2373FF8 CMND_SET_GLOBAL_BIT_FLAG
   FLAG_AVATAR_DONE = 2113473044,  -- set by chara_edit_menu when the avatar is created; false -> TitleStart opens
                                   -- title_menu_first_run (avatar, template, opening) instead of the mode menu
   FADE = 609722083,               -- (1 out / 0 in, seconds)
   FADE_DONE = 2259183189,
   FADE_BUSY = 2736534827,
   PRE_RESET = 3015544382,         -- menu command BackToTitleTop runs before closing (meaning unknown)
-  OPEN_MENU = 433545986, EXIST_MENU = 2231168902, CLOSE_MENU = 320421347,
-  MENU_ACTIVE = 1558704558, FOCUS_ENABLE = 3518307824, ANIME = 3781155141,
-  P_HAS = 2947612279, P_GET = 3522198769, P_CLEAR = 3363400568,
+  OPEN_MENU = @crc:CMND_OPEN_MENU_OBJECT@, EXIST_MENU = @crc:CMND_IS_EXIST_MENU_OBJECT@, CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@,
+  MENU_ACTIVE = 1558704558, FOCUS_ENABLE = @crc:CMND_SET_ENABLE_CTRL_FOCUS@, ANIME = @crc:CMND_PLAY_ANIME_TYPE@,
   MSG_OPEN = 2289627655, MSG_BUSY = 898725220, MSG_DONE = 682363669,
-  SE = 1917805374,
-  OPEN_LAYER = 629267548, CLOSE_LAYER = 1273612389,
+  SE = @crc:CMND_SND_PLAY_SE@,
+  OPEN_LAYER = @crc:CMND_OPEN_LAYER@, CLOSE_LAYER = @crc:CMND_CLOSE_LAYER@,
 }
 
 local function VRFW_SS_Call(cmd, ...)
@@ -201,7 +200,7 @@ local function VRFW_SS_FadeIn()
   funcLuaCommand(VRFW_SS_G.FADE, 0, 0.3)
   coroutine.yield()
   local k = 0
-  while funcLuaCommand(1215256347 --[[CMND_BRIGHT_IS_FADE]]) and k < VRFW_SS_FADE_FRAMES do
+  while funcLuaCommand(@crc:CMND_BRIGHT_IS_FADE@) and k < VRFW_SS_FADE_FRAMES do
     k = k + 1
     coroutine.yield()
   end
@@ -303,17 +302,17 @@ function VRFW_SS_BeforeGameStart(gamestartLayer)
   local function Reopen()
     funcLuaMenuCommand(VRFW_SS_G.OPEN_LAYER, gamestartLayer)
   end
-  funcLuaCommand(VRFW_SS_G.P_CLEAR, VRFW_SS_KEY_RESULT)
+  VRFW_Param.Clear(VRFW_SS_KEY_RESULT)
   funcLuaCommand(VRFW_SS_G.OPEN_MENU, VRFW_SS_MENU)
   coroutine.yield()
   while funcLuaMenuCommand(VRFW_SS_G.EXIST_MENU, VRFW_SS_MENU) do
     coroutine.yield()
   end
   local r = 0
-  if funcLuaCommand(VRFW_SS_G.P_HAS, VRFW_SS_KEY_RESULT) then
-    r = funcLuaCommand(VRFW_SS_G.P_GET, VRFW_SS_KEY_RESULT) or 0
+  if VRFW_Param.Has(VRFW_SS_KEY_RESULT) then
+    r = VRFW_Param.Get(VRFW_SS_KEY_RESULT) or 0
   end
-  funcLuaCommand(VRFW_SS_G.P_CLEAR, VRFW_SS_KEY_RESULT)
+  VRFW_Param.Clear(VRFW_SS_KEY_RESULT)
   r = math.floor(tonumber(r) or 0)
   -- the menu may have duplicated into / deleted the active slot: the loader then fell back to slot 1 (locked)
   local a2 = VRFW_SS_Call(VRFW_SS_LOADER.GET_SLOT)

@@ -5,18 +5,23 @@
 # on 2026-10-08 (same sprites, same place: series_build.py drew them, docs/game/characters/series-tabs.md).
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/200_icon/iecross_own/iecross_icon_list_tab.g4tx"
+name = "iecross_icon_list_tab"
+size = [292, 96]
+
 [[sprite]]
-atlas = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx"
+atlas = "#/menu/200_icon/iecross_own/iecross_icon_list_tab.g4tx"
 name = "icon_list_tab_series10"
-texture = "icon_list_tab"
-x = 888
-y = 1600
+texture = "iecross_icon_list_tab"
+x = 0
+y = 0
 png = "icon_list_tab/icon_list_tab_series10.png"
 
 [[sprite]]
-atlas = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx"
+atlas = "#/menu/200_icon/iecross_own/iecross_icon_list_tab.g4tx"
 name = "icon_list_tab_series10_off"
-texture = "icon_list_tab"
-x = 1036
-y = 1600
+texture = "iecross_icon_list_tab"
+x = 148
+y = 0
 png = "icon_list_tab/icon_list_tab_series10_off.png"

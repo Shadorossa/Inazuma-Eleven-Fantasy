@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tornado de fuego meteoro (Meteoric Fire Tornado, whs10110) and its V (whs10160),
+# cut-ins ev60_10110 / ev60_10160 (the same animation).
+#
+# In the cut-in's last shot (c0500) the meteor dives from the sky onto the goal (53 deg down); the aura is turned onto
+# the match flight. Flight: straight and level at 2.0 m into the goal (the tornado, ~4 m round at its widest, stays
+# mostly over the grass). unblockable = false: the game's block rules (this mod changes no block rule). Heights are the
+# ball centre over the pitch (m); points count from the kick; one point = a level flight; straight = true: one
+# straight line from the kick to the goal at that height.
+
+# Tornado de fuego meteoro (whs10110).
+[[edit]]
+target = "whs10110"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }
+
+# Tornado de fuego meteoro V (whs10160).
+[[edit]]
+target = "whs10160"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

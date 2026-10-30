@@ -30,10 +30,10 @@
 -- When it goes on: the engine registers funcLuaCommand AFTER every patch of the script ran
 -- (docs/game/engine/lua-patches.md §7), and a later merge-path patch may redefine the script's callbacks after every
 -- _all file (in «Plantilla de equipo», soccer_team_dock_menu, Player Training's player_training_dock redefines
--- OnSetupLayer, Step...). So the notice filter is put on funcLuaCommand when the engine registers it
--- (NewRecruitment.WrapEngineCommand, below), and the callback wrappers (the dock rows, the Chronicle list, the result
--- rows, the recruit step) are taken at the VM's first engine command, when every patch of the script has run and before
--- the first layer is set up.
+-- OnSetupLayer, Step...). So the notice filter is a VR-Framework command hook registered at load (VRFW_Host.HookCommand:
+-- in place the moment the engine registers funcLuaCommand, right over the command), and the callback wrappers (the
+-- dock rows, the Chronicle list, the result rows, the recruit step) are taken at the VM's first engine command, when
+-- every patch of the script has run and before the first layer is set up.
 -- Defines functions and wrappers only; engine calls only inside the game's callbacks; every call goes through pcall.
 local SPIRIT_DOCK_ROW = 1        -- soccer_team_dock_menu row kind of «Espíritu»
 local SPIRIT_RPG_DOCK_ROW = 60   -- rpg_team_dock_menu_inc row kind of «Espíritu» (the Chronicle list)
@@ -43,71 +43,6 @@ local RECRUIT_MENUS = {          -- menus of a loaded save where the pending pla
 }
 
 NewRecruitment = type(NewRecruitment) == "table" and NewRecruitment or {}
-
--- NewRecruitment.WrapEngineCommand(name, make): puts make(command) over the engine command `name` ("funcLuaCommand" /
--- "funcLuaMenuCommand") the moment the engine registers it: a __newindex of the globals, chained onto any earlier one
--- (No More Rarities' card look puts one too; docs/game/characters/position-cards.md §4b). A command already registered
--- is wrapped at once. Defines a metamethod only: no engine call.
-if NewRecruitment.WrapEngineCommand == nil then
-  local makers_by_name = {}            -- command name -> {make, ...} in registration order
-  local globals_hooked = false
-
-  local function WrapAll(name, command)
-    for _, make in ipairs(makers_by_name[name]) do
-      command = make(command)
-    end
-    return command
-  end
-
-  local function HookGlobals()
-    local ok_meta, meta = pcall(getmetatable, _ENV)
-    if not ok_meta or (meta ~= nil and type(meta) ~= "table") then
-      return false                     -- a protected metatable
-    end
-    if meta == nil then
-      meta = {}
-      if not pcall(setmetatable, _ENV, meta) then
-        return false
-      end
-    end
-    local previous = meta.__newindex
-    meta.__newindex = function(globals, key, value)
-      if previous == nil then
-        rawset(globals, key, value)
-      elseif type(previous) == "function" then
-        previous(globals, key, value)
-      else
-        previous[key] = value
-      end
-      if makers_by_name[key] ~= nil and type(value) == "function" then
-        local stored = rawget(globals, key)
-        if type(stored) == "function" then
-          rawset(globals, key, WrapAll(key, stored))
-        end
-      end
-    end
-    return true
-  end
-
-  -- -> true when the wrapper is in place or will be at the engine's registration
-  function NewRecruitment.WrapEngineCommand(name, make)
-    local makers = makers_by_name[name]
-    if makers == nil then
-      makers = {}
-      makers_by_name[name] = makers
-    end
-    makers[#makers + 1] = make
-    local current = rawget(_ENV, name)
-    if type(current) == "function" then
-      rawset(_ENV, name, make(current))
-      return true
-    end
-    if not globals_hooked then
-      globals_hooked = HookGlobals()
-    end
-    return globals_hooked
-  end
-end
 
 -- NewRecruitment.Applies(): whether this module's rules apply to the loaded save: every save but a RESERVED slot (a
 -- mode's own save: INAROGUE's, or any mode that reserves one through the VR-Framework's slot service:
@@ -170,10 +105,9 @@ if NewRecruitment.Spirits == nil then
   local PENDING_COUNT_KEY = Crc("no_more_rarities_spirit_pending_count")
   local PENDING_KEY = Crc("no_more_rarities_spirit_pending")
 
-  -- the engine command under this file's notice filter (the game's own answers)
+  -- the engine command past every command hook (the game's own answers, not this file's notice filter)
   local function EngineCommand(...)
-    local command = S.raw or funcLuaCommand
-    return command(...)
+    return VRFW_Host.RealCommand(...)
   end
 
   local function Log(...)
@@ -199,9 +133,12 @@ if NewRecruitment.Spirits == nil then
 
   -- 1. the notices (and the late wrappers, at the VM's first engine command) -----------------------------------------
   -- the VM's first engine command (either one): every patch of the script ran, the callbacks are the final ones
+  local LATE_OWNER = "NewRecruitment.late_wrappers"
   local function LateOnce()
     if not S.late_done then
       S.late_done = true
+      VRFW_Host.UnhookCommand(LATE_OWNER)
+      VRFW_Host.UnhookCommand(LATE_OWNER, {menu = true})
       local ok, err = pcall(S.LateWrappers)
       if not ok then
         Log("late wrappers failed:", tostring(err))
@@ -209,19 +146,20 @@ if NewRecruitment.Spirits == nil then
     end
   end
 
-  local function NoticeFilter(raw)
-    S.raw = raw
-    return function(...)
-      LateOnce()
-      local id = ...
-      if id == SPIRIT_INFO and RemovalApplies() then
-        return true, false
-      end
-      if id == HAS_CHARA_SPIRIT and RemovalApplies() then
-        return false
-      end
-      return raw(...)
+  local function NoticeFilter(nxt, ...)
+    local id = ...
+    if id == SPIRIT_INFO and RemovalApplies() then
+      return true, false
     end
+    if id == HAS_CHARA_SPIRIT and RemovalApplies() then
+      return false
+    end
+    return nxt(...)
+  end
+
+  local function FirstCommand(nxt, ...)
+    LateOnce()
+    return nxt(...)
   end
 
   -- 2. the «Espíritu» rows ------------------------------------------------------------------------------------------
@@ -530,15 +468,10 @@ if NewRecruitment.Spirits == nil then
     end
   end
 
-  if type(NewRecruitment.WrapEngineCommand) == "function" then
-    NewRecruitment.WrapEngineCommand("funcLuaCommand", NoticeFilter)
-    NewRecruitment.WrapEngineCommand("funcLuaMenuCommand", function(raw)
-      return function(...)
-        if not S.late_done then
-          LateOnce()
-        end
-        return raw(...)
-      end
-    end)
+  if type(VRFW_Host) == "table" and type(VRFW_Host.HookCommand) == "function" then
+    local innermost = {priority = VRFW_Host.INNERMOST}
+    VRFW_Host.HookCommand({SPIRIT_INFO, HAS_CHARA_SPIRIT}, NoticeFilter, "NewRecruitment.spirit_notices", innermost)
+    VRFW_Host.HookCommand("*", FirstCommand, LATE_OWNER, innermost)
+    VRFW_Host.HookCommand("*", FirstCommand, LATE_OWNER, {menu = true, priority = VRFW_Host.INNERMOST})
   end
 end

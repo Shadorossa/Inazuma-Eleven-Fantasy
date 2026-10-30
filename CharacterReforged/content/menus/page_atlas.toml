@@ -1,0 +1,28 @@
+# Character Reforged: its own atlas evt_cr_page (#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx) on every screen that shows its player-page sprites (the gauge
+# fills, tiles, slanted boxes and bands, the form badges, the pair panel: content/images/menu/player_page.toml,
+# plate_form_badges.toml, pair_confirm_panel.toml). These sprites are never added to a game atlas.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "personal_plate_menu"
+res = ["#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"]
+
+[[patch]]
+menu = "equip_menu"
+res = ["#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"]
+
+# the item card's own atlas on the equipment screen for the stat bars' raise / lowering outlines (the bars' object
+# keeps its own texture: an added Texture row on it replaced the gauge's own and dropped the grey track)
+[[patch]]
+menu = "equip_menu"
+res = ["#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"]
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+res = ["#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"]
+
+# the element icon another mod declares for void / neutral ([[VRFW.ElementIcon]]: BetterQoL's, in icon_common) on the
+# item card's chips: the atlas loaded on the equipment screen (never changed by Character Reforged)
+[[patch]]
+menu = "equip_menu"
+res = ["#/menu/200_icon/15_icon_common/icon_common.g4tx"]

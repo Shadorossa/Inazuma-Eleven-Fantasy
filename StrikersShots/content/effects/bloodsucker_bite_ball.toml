@@ -1,0 +1,27 @@
+# «Mordisco de vampiro» (Bloodsucker Bite, whs02300; mountain shot, cut-in ev60_02300): while the ball flies to the
+# goal it wears the cut-in's last shot (c0200, the ball kicked from high in front of the moon, held at frame 376 from the
+# aura's first frame): the spiked blood shells round the ball throbbing as in the cut-in, the round red glow behind them,
+# the red blood streaks of its way laid straight behind the ball (each with a crossed copy, readable from the touchline)
+# with the blood flowing along them, and the blood drops left over them, coming out of the kick point as the ball flies
+# (never stretched) and fading out at the far end, x0.4. The sky, the moon, the black front plate and the charge parts
+# stay out.
+# The object is ev6230bs00 (effect/event/ev60/ev6230bs00/), built by research/scripts/bloodsucker_bite_ball_fx.py
+# from ev60023000 (docs/game/media/bloodsucker-bite-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\bloodsucker_bite_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "bloodsucker_bite_blood"
+from = "ega0075a"
+object = "effect/event/ev60/ev6230bs00/ev6230bs00.objbin"
+
+[[shot_aura]]
+name = "bloodsucker_bite_blood"
+when = { techniques = ["whs02300"] }
+aura = "bloodsucker_bite_blood"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

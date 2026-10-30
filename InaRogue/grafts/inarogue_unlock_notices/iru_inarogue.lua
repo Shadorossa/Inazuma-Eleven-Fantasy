@@ -7,8 +7,8 @@
 -- the menu's coroutine (Message yields). Nothing here calls the engine at load time.
 do
   local RU = {
-    NEWS = 2363800727,   -- CMND_EVT_RU_NEWS (0 = INAROGUE) -> n, name1 .. nameN
-    TEXT = "¡Desbloqueado: %s!\nYa puedes ficharlo en la Oficina de fichajes del modo normal (página «INAROGUE»).",
+    NEWS = @crc:CMND_EVT_RU_NEWS@,   -- CMND_EVT_RU_NEWS (0 = INAROGUE) -> n, name1 .. nameN
+    TEXT = {511040795 --[[InaRogue.unlock.notice]]},   -- {1} = the name
   }
   local function in_coroutine()
     local co, main = coroutine.running()
@@ -30,7 +30,7 @@ do
         if type(Log) == "function" then
           Log("unlock notice", why, name)
         end
-        Message(string.format(RU.TEXT, name))
+        Message(T(RU.TEXT, name))   -- T: the menu text reader of evt_inarogue_menu
         n = n + 1
       end
     end

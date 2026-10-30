@@ -40,22 +40,22 @@ do
   PlayerTraining.TrainingMode.T_CMD = 625330766                        -- _text_cmd01 (label)
   PlayerTraining.TrainingMode.T_KEY = 950238781                        -- _text_btn01 (key glyph: none, no key is bound)
 
-  -- menu_text row (the Spanish word when the text files are not installed)
-  function PlayerTraining.TrainingMode.Txt(id, fallback)
+  -- menu_text row ("" when the row is missing)
+  function PlayerTraining.TrainingMode.Txt(id)
     local ok, s = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], id)
     if ok and type(s) == "string" and s ~= "" then
       return s
     end
-    return fallback
+    return ""
   end
 
   function PlayerTraining.TrainingMode.Guide()
     funcLuaMenuCommand(C.TEXT, 3078308064 --[[mainmenu90_05_content_guide_line01]], 378156699 --[[_text_guide01]],
-      PlayerTraining.TrainingMode.Txt(PlayerTraining.TrainingMode.TX_GUIDE, "Reparte los puntos de Libertad entre las estadísticas base de este jugador."), 0)
+      PlayerTraining.TrainingMode.Txt(PlayerTraining.TrainingMode.TX_GUIDE), 0)
   end
 
   function PlayerTraining.TrainingMode.Label()
-    funcLuaMenuCommand(C.TEXT, PlayerTraining.TrainingMode.L_BTN, PlayerTraining.TrainingMode.T_CMD, PlayerTraining.TrainingMode.Txt(PlayerTraining.TrainingMode.TX_BTN, "Entrenar"), 0)
+    funcLuaMenuCommand(C.TEXT, PlayerTraining.TrainingMode.L_BTN, PlayerTraining.TrainingMode.T_CMD, PlayerTraining.TrainingMode.Txt(PlayerTraining.TrainingMode.TX_BTN), 0)
     funcLuaMenuCommand(C.TEXT, PlayerTraining.TrainingMode.L_BTN, PlayerTraining.TrainingMode.T_KEY, "", 0)
   end
 
@@ -194,7 +194,7 @@ do
     T.ROWBAR.BACK = {X0 = 86, X1 = 294, PRIO = 501, SPRITE = 530461209 --[[evt_trn_col_back]]}
     -- the pill's sprite slot (the retail sprite beans_param_base01 of team13_16)
     T.ROWBAR.BACK_SLOT = 1215825632 --[[beans_param_base01]]
-    T.ROWBAR.BACK_TEX = 1191797350                 -- #/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx
+    T.ROWBAR.BACK_TEX = 1688119314                 -- #/menu/102_team/player_training/player_training.g4tx (the mod's own atlas)
     -- v4: the trade arrows (training_ui_build.py: the retail radar number layer soccer11_06_p1 on the panel locators
     -- _atc_trnupNN / _atc_trndnNN, left of each value plate). Instance k = UP of layout row k, ROWS + k = DOWN of row
     -- k. Optional: without it in the setting no arrow is drawn (everything else works).
@@ -284,7 +284,7 @@ do
     T.HOLD_REPEATS = 6                             -- after this many repeats a step is 10 points
     T.DIM = 0.45                                   -- rows that are neither the focused one nor its pair (pairs rule;
                                                    -- 2026-10-12: dimmer, the focused row stands out)
-    -- texts: menu_text rows (9 languages, research/scripts/training_text_build.py); Spanish fallback
+    -- texts: menu_text rows (9 languages, the mod's text\rows\training.toml)
     T.TX = {
       STATS = {493890773, 3206121007, 3492422219, 3740714941, 2851206955, 2895498128, 3773956166, 3905618723 --[[evt_tr_speed]],
         3287183270 --[[evt_tr_luck]]},
@@ -298,31 +298,8 @@ do
       NO_LOADER = 3645334870 --[[evt_tr_no_loader]], NO_DATA = 3069212986 --[[evt_tr_no_data]], LOCKED = 478937911 --[[evt_tr_locked]],
       ASK_DISCARD = 375166360 --[[evt_tr_ask_discard]], ASK_SWITCH = 397029291 --[[evt_tr_ask_switch]], ASK_RESET = 338734597 --[[evt_tr_ask_reset]],
       SAVE_FAILED = 2850759658 --[[evt_tr_save_failed]], SAVED = 504246000 --[[evt_tr_saved]],
-      -- v3 (training_text_build.py; until installed: the Spanish below)
       C_UP = 950714621 --[[evt_tr_c_up]], C_DOWN = 1308885196 --[[evt_tr_c_down]], C_PAIR = 1537314462 --[[evt_tr_c_pair]],
       NO_TRADE = 1823910332 --[[evt_tr_no_trade]], FLOOR_BASE = 1767124428 --[[evt_tr_floor_base]], GUIDE_TRADE = 1088999070 --[[evt_tr_guide_trade]],
-    }
-    T.ES = {
-      STATS = {"Disparo", "Control", "Técnica", "Presión", "Físico", "Inteligencia", "Agilidad", "Rapidez", "Suerte"},
-      C_FREE = "PUNTOS LIBRES", C_LIB = "LIBERTAD", C_UPDOWN = "SUBIDO / BAJADO", C_VALUE = "VALOR BASE",
-      C_CHANGE = "ENTRENADO", C_PE = "PE MÁX.", C_UP = "SUBIDO", C_DOWN = "BAJADO", C_PAIR = "CONTRARIA",
-      GUIDE = "Arriba/Abajo: estadística · Izq./Der.: -1 / +1 (mantén pulsado: de 10 en 10)",
-      GUIDE10 = "Arriba/Abajo: estadística · Izq./Der.: -10 / +10 (Función 2: de 1 en 1)",
-      GUIDE_SHORT = "Invierte la libertad y estadísticas de tu jugador",
-      POS_GK = "POR", POS_DF = "DF", POS_MF = "MC", POS_FW = "DL",
-      GUIDE_TRADE = "Sin Libertad: cada punto de <A> baja 1 de <B> (su contraria).",
-      EMPTY = "Sin puntos libres: baja otra estadística para liberar puntos.",
-      NO_TRADE = "Sin Libertad y <B> ya está en su mínimo: <A> no puede subir más.",
-      FLOOR_BASE = "<A> no se puede bajar por debajo de su valor base (<B>).",
-      FLOOR = "<A> ya está en su mínimo (<B>).", CAP = "<A> ya está en su máximo (<B>).",
-      NO_LOADER = "Entrenamiento: instala el vr-loader con los módulos stats y training.",
-      NO_DATA = "Este jugador no tiene datos de entrenamiento.",
-      LOCKED = "Las cartas Héroe, Diamante y Prime no se pueden entrenar.",
-      ASK_DISCARD = "¿Descartar los cambios de entrenamiento?",
-      ASK_SWITCH = "¿Guardar el entrenamiento de <VALUE> antes de cambiar de jugador?",
-      ASK_RESET = "¿Quitar todo el entrenamiento de <VALUE>? Se aplica al pulsar Guardar.",
-      SAVE_FAILED = "No se pudo guardar el entrenamiento (código <VALUE>).",
-      SAVED = "Entrenamiento guardado. Guarda la partida para conservarlo.",
     }
     T.on = false
     T.ready = {}                                   -- [layer][idx] = true once OnOpenLayer ran
@@ -353,10 +330,10 @@ do
     return tostring(v)
   end
 
-  -- menu_text row TX[key] (or the Spanish ES[key]) with <VALUE>/<A> = a, <B> = b
+  -- menu_text row TX[key] with <VALUE>/<A> = a, <B> = b
   function PlayerTraining.TrainingMode.T(key, a, b)
     local T = PlayerTraining.TrainingMode
-    local s = T.Txt(T.TX[key], T.ES[key] or "")
+    local s = T.Txt(T.TX[key])
     local map = {VALUE = a, A = a, B = b}
     return (string.gsub(s, "<(%u+)>", function(k)
       local v = map[k]
@@ -382,7 +359,7 @@ do
   end
 
   function PlayerTraining.TrainingMode.StatName(i)
-    return PlayerTraining.TrainingMode.Txt(PlayerTraining.TrainingMode.TX.STATS[i + 1], PlayerTraining.TrainingMode.ES.STATS[i + 1])
+    return PlayerTraining.TrainingMode.Txt(PlayerTraining.TrainingMode.TX.STATS[i + 1])
   end
 
   function PlayerTraining.TrainingMode.Log(...)
@@ -1293,7 +1270,7 @@ do
   function PlayerTraining.SkillTableButton(phase, ctx)
     local T = PlayerTraining.TrainingMode
     if phase == "guide" then
-      return T.Txt(T.TX_GUIDE, "Reparte los puntos de Libertad entre las estadísticas base de este jugador.")
+      return T.Txt(T.TX_GUIDE)
     elseif phase == "press" then
       T.Log("button pressed", tostring(ctx and ctx.chara))
       return T.Coroutine()

@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Golpe de Atenea (Athenian Assault, whs02370), cut-in ev60_02370.
+#
+# In the cut-in's last shot (c0200) the beam fires out of the kick vortex in mid-air with no pitch in view
+# (research/scripts/athenian_assault_ball_fx.py). Flight: straight and level at 2.0 m into the goal. unblockable =
+# false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m);
+# points count from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal
+# at that height.
+
+# Golpe de Atenea (whs02370).
+[[edit]]
+target = "whs02370"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

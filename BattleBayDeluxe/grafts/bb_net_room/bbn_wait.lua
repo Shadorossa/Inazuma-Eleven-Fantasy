@@ -1,51 +1,461 @@
--- bb_chronicle_teams bb_net_room, network_menu's private-room screen (network_room_match_wait): in our own private
--- room's session the game's room screen runs as it is (members, rules, ready, countdown, start; the member count and
--- ready states come from the session the VR-Framework shim keeps, its messages travel on our Steam transport) except
--- the steps that belong to an EOS lobby:
---   RequestBack       (Back -> the retail «leave the room?» Yes) the retail one closes the lobby session and re-runs
---                     the online init (ToMatchingMenuSoccer: the game's own online service): here our room is left
---                     (its session goes purely: CMND_VRFW_NET_LEAVE) and network_menu closes (the caller's wait ends:
---                     the «Modos de juego» boxes / the Battle Bay top menu come back)
---   RequestBackError  (the session broke: the other player gone, an error) the retail screen cleanup, then the same
---                     leave once no message window is up
---   OnFunction        invite -> the Steam overlay's invite (CMND_VRFW_NET_INVITE), never the platform / EOS one;
---                     kick -> nothing (an EOS lobby kick)
--- Outside our session every function is the retail one. docs/game/modes/bb-online-ownnet.md §18. Globals only (BBNW,
--- BBNW_*); nothing runs at chunk load.
-BBNW = BBNW or {
+-- BattleBayDeluxe bb_net_room, network_menu's private-room screen (network_room_match_wait) as the UI SHELL of our
+-- own room (docs/game/modes/bb-p2p-lockstep.md §6): while this player is in one of the VR-Framework's rooms
+-- (CMND_VRFW_NET_STATUS phase waiting / joined / started) the retail screen runs as it is (layouts, member frames,
+-- ready balloons, countdown, start) and every network question it asks is answered from our room instead of the
+-- game's network module, which never runs (no GameNet, no EOS). The answers replace, in THIS script's lua_State only,
+-- funcLuaCommand / funcLuaMenuNetworkCommand / funcLuaMenuMultiplayCommand for the hashes in BBNW_NET / BBNW_CMD;
+-- every other call goes to the game unchanged. The engine sets those globals itself (after the chunk ran, and again
+-- later), so the shadow is put on top for the duration of each of the screen's engine callbacks (OnInit, Step,
+-- OnOpenLayer, OnDecideFocus…: BBNW_AROUND) and the globals are given back when the callback returns, as
+-- bb_tournament's readers do; nothing is installed once and checked afterwards, nothing is polled.
+--   members      0 = the host, 1 = the guest (member numbers 1 / 2); names from Steam; the host's frame = team 0
+--   team pick    the compete frame opens the Battle Bay grid (enjoy_team_select_menu, offline variant): the first
+--                tile decided is this player's room pick (CMND_BBD_NET_PICK_ARM, CMND_VRFW_NET_PICK), the grid closes
+--   ready        CMND_VRFW_NET_READY; the countdown and «fixed» stage are the retail ones; the host's session start
+--                = CMND_VRFW_NET_START (the room starts on both PCs), the guest's = the room's start seen
+--   start        the screen's soccer reserve = the room's local match: network_menu closes (the Battle Bay top menu
+--                stays) and bbn_common.lua's BBN_StartMatch asks the match (host's team vs guest's team)
+--   Back / error our room is left, network_menu closes; invite = the Steam overlay's; kick = nothing
+-- Outside our rooms every function is the retail one. Globals only (BattleBayDeluxe.NetRoomScreen, BBNW_*); nothing runs at chunk load.
+BattleBayDeluxe = type(BattleBayDeluxe) == "table" and BattleBayDeluxe or {}
+BattleBayDeluxe.NetRoomScreen = BattleBayDeluxe.NetRoomScreen or {
   MENU = 106494436 --[[crc32 network_menu]],
-  STATE = @crc:CMND_VRFW_NET_SESSION_STATE@,
+  TOP = 85255651 --[[bb_stadium_top_menu]],
+  GRID = 786045682 --[[enjoy_team_select_menu (the menu object; also the online variant's layer group)]],
+  GRID_OFFLINE = 534870484 --[[enjoy_team_select_menu_offline: the offline variant's layer group]],
   STATUS = @crc:CMND_VRFW_NET_STATUS@,
+  PICKS = @crc:CMND_VRFW_NET_PICKS@,
+  REVISION = @crc:CMND_VRFW_NET_REVISION@,
+  READY = @crc:CMND_VRFW_NET_READY@,
+  START = @crc:CMND_VRFW_NET_START@,
   LEAVE = @crc:CMND_VRFW_NET_LEAVE@,
   INVITE = @crc:CMND_VRFW_NET_INVITE@,
-  LOG = 3661580131 --[[CMND_EVT_LOG]],
+  PICK_ARM = @crc:CMND_BBD_NET_PICK_ARM@,
+  PICKED = @crc:CMND_BBD_NET_PICKED@,
+  TEAM = @crc:CMND_BBD_NET_TEAM@,
+  PICK = @crc:CMND_VRFW_NET_PICK@,
+  TEAM_INFO = 2151743654 --[[a team's info (team, 2 = name, 4 = kit, 6 0 = crest), as the Battle Bay grid reads it]],
+  MEMBER_ROW = 2836111356 --[[vs01_13_room_setting_member_list_item]],
+  RANK_ICON = 364170841 --[[_icon_rank_dmy01: the online rank badge of a member row]],
+  LOG = @crc:CMND_EVT_LOG@,
   FN_INVITE = 2028025522,
   FN_KICK = 564775998,
+  PLATFORM = 3930649506 --[[the local platform type]],
+  APP_PLATFORM = @crc:CMND_GET_APP_PLATFORM@,
+  OPEN_MENU = @crc:CMND_OPEN_MENU_OBJECT@,
+  CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@,
+  MATCHED = 570346750 --[[the param a soccer reserve sets (the caller's «closed for a match» test)]],
+  IDLE_SECONDS = 1800,
+  stage = 0,        -- this player's retail ready stage: 0 not ready, 1 ready, 2 fixed (countdown over)
+  picking = false,  -- the grid is open for this player's room pick
+  starting = false, -- the screen's soccer reserve ran: network_menu closes for the match
   leave_pending = false,
   seen = false,
+  room = nil,       -- this frame's room snapshot (BBNW_Room)
+  frame = 0,
 }
 
 function BBNW_Log(...)
-  pcall(funcLuaCommand, BBNW.LOG, "bb_chronicle_teams net room", ...)
+  pcall(BBNW_Original("flc"), BattleBayDeluxe.NetRoomScreen.LOG, "BattleBayDeluxe.net_room", ...)
 end
 
--- our session is up, or our room is open (a session the game just ended still has its room until we leave it)
+-- the game's own functions (the shadow keeps them in BattleBayDeluxe.NetRoomScreenOriginals). BattleBayDeluxe.NetRoomScreenShadows holds every shadow function this
+-- state ever installed (a chunk run again defines new ones): a shadow is never taken for the game's own function, so a
+-- shadow never calls a shadow (29/10: «Crear sala» hung, the shadow recursed through CMND_VRFW_NET_PICKS).
+BattleBayDeluxe.NetRoomScreenOriginals = BattleBayDeluxe.NetRoomScreenOriginals or {}
+BattleBayDeluxe.NetRoomScreenShadows = BattleBayDeluxe.NetRoomScreenShadows or {}
+function BBNW_Original(k)
+  local f = BattleBayDeluxe.NetRoomScreenOriginals[k]
+  if f ~= nil then
+    return f
+  end
+  local g = (k == "net" and funcLuaMenuNetworkCommand) or (k == "mp" and funcLuaMenuMultiplayCommand) or funcLuaCommand
+  if BattleBayDeluxe.NetRoomScreenShadows[g] then
+    return function()
+      return nil
+    end
+  end
+  return g
+end
+
+-- our room (nil = not in one of our rooms). Read again only when the room changed (CMND_VRFW_NET_REVISION, one number
+-- per frame); never re-entered.
+function BBNW_Room()
+  local cur = BattleBayDeluxe.NetRoomScreen.room
+  if BattleBayDeluxe.NetRoomScreen.reading or (cur ~= nil and cur.frame == BattleBayDeluxe.NetRoomScreen.frame) then
+    return cur ~= nil and cur.open and cur or nil
+  end
+  BattleBayDeluxe.NetRoomScreen.reading = true
+  local flc = BBNW_Original("flc")
+  local okv, rev = pcall(flc, BattleBayDeluxe.NetRoomScreen.REVISION)
+  rev = okv and rev or -1
+  if cur ~= nil and rev ~= -1 and cur.rev == rev then
+    cur.frame = BattleBayDeluxe.NetRoomScreen.frame
+    BattleBayDeluxe.NetRoomScreen.reading = false
+    return cur.open and cur or nil
+  end
+  local ok, phase, role, _, peer, my_ready, peer_ready, _, _, _, my_name = pcall(flc, BattleBayDeluxe.NetRoomScreen.STATUS)
+  local r = { frame = BattleBayDeluxe.NetRoomScreen.frame, rev = rev, open = false }
+  if ok and (phase == "waiting" or phase == "joined" or phase == "started") then
+    r.open = true
+    r.phase = phase
+    r.host = role == "host"
+    r.joined = phase ~= "waiting"
+    r.count = r.joined and 2 or 1
+    r.names = { [0] = r.host and (my_name or "") or (peer or ""), [1] = r.host and (peer or "") or (my_name or "") }
+    if not r.joined then
+      r.names[1] = ""
+    end
+    r.me = r.host and 0 or 1
+    r.ready = { [r.me] = my_ready == true, [1 - r.me] = peer_ready == true }
+    local okp, mine, theirs = pcall(flc, BattleBayDeluxe.NetRoomScreen.PICKS)
+    mine = okp and tonumber(mine) or 0
+    theirs = okp and tonumber(theirs) or 0
+    r.picks = { [r.me] = mine, [1 - r.me] = theirs }
+  end
+  BattleBayDeluxe.NetRoomScreen.room = r
+  BattleBayDeluxe.NetRoomScreen.reading = false
+  return r.open and r or nil
+end
+
 function BBNW_Ours()
-  local ok, st = pcall(funcLuaCommand, BBNW.STATE)
-  if ok and (st == "up" or st == "arming") then
+  return BBNW_Room() ~= nil
+end
+
+-- the retail ready stage of member `i` (0 / 1 / 2)
+function BBNW_Stage(r, i)
+  if i == r.me then
+    return BattleBayDeluxe.NetRoomScreen.stage
+  end
+  if not r.joined then
+    return 0
+  end
+  if r.phase == "started" then
+    return 2
+  end
+  return r.ready[i] and 1 or 0
+end
+
+-- ------------------------------------------------------------------------------------------------ the answers
+
+-- funcLuaMenuNetworkCommand(3275623542, case, ...): the member table
+function BBNW_Member(r, case, a, b)
+  local idx = (a == -1 or a == nil) and b or a
+  idx = tonumber(idx) or -1
+  if case == 13 then
+    return r.count
+  elseif case == 1 then
+    return (idx >= 0 and idx < r.count) and r.names[idx] or ""
+  elseif case == 15 then
+    return idx >= 0 and idx < r.count
+  elseif case == 20 then
+    return idx + 1
+  elseif case == 21 then
+    return idx
+  elseif case == 22 then
+    return (idx >= 0 and idx < r.count) and BBNW_Stage(r, idx) or 0
+  elseif case == 23 then
+    return BBNW_Original("flc")(BattleBayDeluxe.NetRoomScreen.PLATFORM)
+  elseif case == 28 then
+    return BBNW_Original("flc")(BattleBayDeluxe.NetRoomScreen.APP_PLATFORM)
+  end
+  return 0
+end
+
+-- funcLuaCommand(1549302719, k, member number): the member's setting (k 0 = its side, 255 none yet; 1 = spectator;
+-- 2 = its frame)
+function BBNW_Setting(r, k, m)
+  local idx = (tonumber(m) or 0) - 1
+  if idx < 0 or idx >= r.count then
+    return k == 1 and false or 255
+  end
+  if k == 1 then
+    return false
+  end
+  if k == 0 and (r.picks[idx] or 0) == 0 then
+    return 255
+  end
+  return idx
+end
+
+-- funcLuaMenuNetworkCommand(10872836, frame): the frame's team (name, level, crest, portrait chara, keeper, kit)
+function BBNW_FrameTeam(r, frame)
+  local team = r.picks[tonumber(frame) or -1] or 0
+  if team == 0 then
+    return "", 0, 0, 0, false, 0
+  end
+  local flc = BBNW_Original("flc")
+  local ok, leader, _, level = pcall(flc, BattleBayDeluxe.NetRoomScreen.TEAM, team)
+  local okn, hasn, name = pcall(flc, BattleBayDeluxe.NetRoomScreen.TEAM_INFO, team, 2)
+  local okk, hask, kit = pcall(flc, BattleBayDeluxe.NetRoomScreen.TEAM_INFO, team, 4)
+  local oke, hase, crest = pcall(flc, BattleBayDeluxe.NetRoomScreen.TEAM_INFO, team, 6, 0)
+  name = (okn and hasn and type(name) == "string") and name or ""
+  kit = (okk and hask and tonumber(kit)) or 0
+  crest = (oke and hase and tonumber(crest)) or 0
+  -- the frame draws the leader in the team's kit and its crest only with a kit (no kit: both pictures stay blank)
+  return name, ok and tonumber(level) or 0, crest, ok and tonumber(leader) or 0, false, kit
+end
+
+-- funcLuaCommand(829879707, 0, side, spectator, frame, ...): this player's place in the room; side 255 = leave the
+-- frame (the screen's first Back with a team set): the room pick is dropped, so the next Back leaves the room
+function BBNW_SetPlace(r, _, side)
+  if tonumber(side) ~= 255 or (r.picks[r.me] or 0) == 0 then
+    return
+  end
+  pcall(BBNW_Original("flc"), BattleBayDeluxe.NetRoomScreen.PICK, 0)
+  BattleBayDeluxe.NetRoomScreen.picked = false
+  BattleBayDeluxe.NetRoomScreen.room = nil
+  BBNW_Log("room pick dropped (Back on the team frame)")
+end
+
+-- the retail ready stage of this player set (2730093000): the room hears «ready» / «not ready»
+function BBNW_SetStage(r, s)
+  s = tonumber(s) or 0
+  if s == BattleBayDeluxe.NetRoomScreen.stage then
+    return
+  end
+  local was = BattleBayDeluxe.NetRoomScreen.stage
+  BattleBayDeluxe.NetRoomScreen.stage = s
+  if (was > 0) ~= (s > 0) and r.phase == "joined" then
+    pcall(BBNW_Original("flc"), BattleBayDeluxe.NetRoomScreen.READY, s > 0 and 1 or 0)
+  end
+  BBNW_Log("ready stage", was, "->", s)
+end
+
+-- the host's session start (339001344): the room starts on both PCs
+function BBNW_HostStart(r)
+  if r.phase == "started" then
     return true
   end
-  local okp, phase = pcall(funcLuaCommand, BBNW.STATUS)
-  return okp and type(phase) == "string" and phase ~= "none" and phase ~= "closed"
+  local ok, done, err = pcall(BBNW_Original("flc"), BattleBayDeluxe.NetRoomScreen.START)
+  BBNW_Log("room start", tostring(ok and done), tostring(err))
+  return ok and done == true
 end
+
+-- the screen's soccer reserve (funcLuaMenuMultiplayCommand 3361958747): the room's local match. network_menu closes
+-- (the retail WaitFade); the Battle Bay top menu stays and asks the match (bbn_common.lua BBN_StartMatch)
+function BBNW_Reserve(r)
+  if r.phase ~= "started" or (r.picks[0] or 0) == 0 or (r.picks[1] or 0) == 0 then
+    BBNW_Log("soccer reserve refused", tostring(r.phase), tostring(r.picks[0]), tostring(r.picks[1]))
+    return false
+  end
+  BattleBayDeluxe.NetRoomScreen.starting = true
+  BBNW_Log("soccer reserve: the room's local match")
+  return true
+end
+
+-- the room pick: the grid's own open with the offline variant, armed
+function BBNW_OpenGrid(open, menu, ...)
+  BattleBayDeluxe.NetRoomScreen.picking = true
+  pcall(BBNW_Original("flc"), BattleBayDeluxe.NetRoomScreen.PICK_ARM, 1)
+  BBNW_Log("room pick: the Battle Bay grid opens")
+  return open(BattleBayDeluxe.NetRoomScreen.OPEN_MENU, menu, BattleBayDeluxe.NetRoomScreen.GRID_OFFLINE, ...)
+end
+
+-- the hashes of funcLuaCommand answered by the shadow (each gets the room and the call's arguments)
+BBNW_CMD = {
+  [2903155582] = function(r) return r.host end,                         -- am I the host
+  [33022758] = function(r) return r.me end,                             -- my member index
+  [2655173747] = function(r, i)                                         -- ready stage of a member / of all
+    i = tonumber(i) or -1
+    if i < 0 then
+      if BattleBayDeluxe.NetRoomScreen.stage < 2 or not r.joined then
+        return BattleBayDeluxe.NetRoomScreen.stage < 1 and 0 or 1
+      end
+      return (r.phase == "started" or r.ready[1 - r.me]) and 2 or 1
+    end
+    return BBNW_Stage(r, i)
+  end,
+  [2730093000] = function(r, s) BBNW_SetStage(r, s) end,                -- set my ready stage
+  [1549302719] = function(r, k, m) return BBNW_Setting(r, k, m) end,    -- a member's setting
+  [2714657400] = function() return true end,                            -- the Battle Bay room
+  [524379756] = function() return false end,                            -- the 2 vs 2 room
+  [2399736010] = function() return false end,                           -- the ranked room (cheat checks)
+  [99921238] = function(r, op)                                          -- room match checks
+    -- op 0: «member i's team was flagged» (StepClientCheatCheckData opens «se ha modificado» on true, every frame): never
+    -- op 4 / 5: «the member's team data is valid»: always; ops 1 / 2 / 3 (clear, send, reset): nothing to do
+    if op == 0 then return false end
+    return true, true
+  end,
+  [339001344] = function(r) return BBNW_HostStart(r) end,               -- host: session start
+  [642319729] = function(r) return r.phase == "started" end,            -- guest: the session started
+  [283992225] = function() return true, 1 end,                          -- the team select may open
+  [714644454] = function() return BattleBayDeluxe.NetRoomScreen.picked and 0 or -1 end,          -- the team select's result
+  [1904579678] = function(r, k, c)                                      -- a member's profile
+    k = tonumber(k) or 0
+    if k == 1 then
+      return r.names[tonumber(c) or -1] or ""
+    elseif k == 2 then
+      return BBNW_Original("flc")(BattleBayDeluxe.NetRoomScreen.PLATFORM)
+    elseif k == 3 or k == 5 then
+      return ""
+    end
+    return 0
+  end,
+  [3634046379] = function() return nil end,                             -- a member's platform id
+  [@crc:CMND_IS_ERROR_NETWORK@] = function() return false, false end,                    -- CMND_IS_ERROR_NETWORK (our room: see Step)
+  [829879707] = function(r, k, side) BBNW_SetPlace(r, k, side) end,    -- this player's place (frame / none)
+  [1004008458] = function() end,
+  [1885905018] = function() end,
+  [2094946649] = function() end,
+  [2103770758] = function() end,
+  [2316954474] = function() end,
+  [473587382] = function() end,
+  [4052189765] = function() end,                                        -- room rules sent
+  [3341711083] = function() end,                                        -- report a player
+  [3907931468] = function() end,                                        -- kick a member
+  [@crc:CMND_RESET_ONLINE@] = function() end,                                        -- CMND_RESET_ONLINE
+  [2888362962] = function() end,
+  [4217935939] = function() return true end,
+  [@crc:CMND_IS_CLOSE_NETWORK@] = function() return true end,                            -- CMND_IS_CLOSE_NETWORK
+}
+
+-- the hashes of funcLuaMenuNetworkCommand answered by the shadow
+BBNW_NET = {
+  [3275623542] = function(r, case, a, b) return BBNW_Member(r, tonumber(case) or -1, a, b) end,
+  [1000640748] = function(r) return r.count - 1 end,
+  [10872836] = function(r, frame) return BBNW_FrameTeam(r, frame) end,
+  [3865807986] = function() return 0, "", 0, 0, 0 end,
+  [2375860295] = function() return 2 end,
+  [3028448045] = function() return BattleBayDeluxe.NetRoomScreen.IDLE_SECONDS end,
+  [4068635440] = function() end,
+  [1362422903] = function() end,
+  [1054176095] = function() end,
+  [2845237082] = function() end,
+  [2138766186] = function() end,
+  [3564740484] = function() end,
+  [4084498614] = function() end,
+  [3195473670] = function() end,
+  [4287663672] = function() end,
+}
+
+-- the shadow functions (put on top by BBNW_Around)
+function BBNW_FLC(cmd, ...)
+  local orig = BBNW_Original("flc")
+  local r = BBNW_Room()
+  if r ~= nil then
+    local f = BBNW_CMD[cmd]
+    if f ~= nil then
+      return f(r, ...)
+    end
+    if cmd == BattleBayDeluxe.NetRoomScreen.OPEN_MENU then
+      local menu, group = ...
+      if menu == BattleBayDeluxe.NetRoomScreen.GRID and group == BattleBayDeluxe.NetRoomScreen.GRID then
+        return BBNW_OpenGrid(orig, menu, select(3, ...))
+      end
+    elseif cmd == BattleBayDeluxe.NetRoomScreen.CLOSE_MENU and BattleBayDeluxe.NetRoomScreen.starting and (...) == BattleBayDeluxe.NetRoomScreen.TOP then
+      -- the retail WaitFade closes the Battle Bay top menu: it stays, it asks the room's match
+      return true
+    end
+  end
+  return orig(cmd, ...)
+end
+
+function BBNW_NETC(cmd, ...)
+  local r = BBNW_Room()
+  if r ~= nil then
+    local f = BBNW_NET[cmd]
+    if f ~= nil then
+      return f(r, ...)
+    end
+  end
+  return BBNW_Original("net")(cmd, ...)
+end
+
+function BBNW_MPC(cmd, ...)
+  local r = BBNW_Room()
+  if r ~= nil and cmd == 3361958747 --[[StepReserveStartSoccer]] then
+    return BBNW_Reserve(r)
+  end
+  return BBNW_Original("mp")(cmd, ...)
+end
+
+BattleBayDeluxe.NetRoomScreenShadows[BBNW_FLC] = true
+BattleBayDeluxe.NetRoomScreenShadows[BBNW_NETC] = true
+BattleBayDeluxe.NetRoomScreenShadows[BBNW_MPC] = true
+
+-- One engine callback of the screen with the shadow on top: the globals as they are now (the game's own functions, or
+-- other mods' wrappers over them) are kept as the originals and given back when the callback returns (also on an
+-- error). Outside our rooms the callback runs untouched. Nested callbacks (a coroutine resumed inside Step) find the
+-- shadow already there and leave it.
+function BBNW_Around(f, ...)
+  local saved = { funcLuaCommand, funcLuaMenuNetworkCommand, funcLuaMenuMultiplayCommand }
+  if BattleBayDeluxe.NetRoomScreenShadows[saved[1]] then
+    return f(...)
+  end
+  BattleBayDeluxe.NetRoomScreenOriginals.flc, BattleBayDeluxe.NetRoomScreenOriginals.net, BattleBayDeluxe.NetRoomScreenOriginals.mp = saved[1], saved[2], saved[3]
+  if not BBNW_Ours() then
+    return f(...)
+  end
+  funcLuaCommand, funcLuaMenuNetworkCommand, funcLuaMenuMultiplayCommand = BBNW_FLC, BBNW_NETC, BBNW_MPC
+  local r = table.pack(pcall(f, ...))
+  funcLuaCommand, funcLuaMenuNetworkCommand, funcLuaMenuMultiplayCommand = saved[1], saved[2], saved[3]
+  if not r[1] then
+    error(r[2], 0)
+  end
+  return table.unpack(r, 2, r.n)
+end
+
+-- ------------------------------------------------------------------------------------------------ the flow
 
 -- our room out, network_menu closed
 function BBNW_Close(why)
   BBNW_Log("leave", tostring(why))
-  BBNW.leave_pending = false
-  BBNW.seen = false
-  pcall(funcLuaCommand, BBNW.LEAVE)
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], BBNW.MENU, true)
+  BattleBayDeluxe.NetRoomScreen.leave_pending = false
+  BattleBayDeluxe.NetRoomScreen.seen = false
+  BattleBayDeluxe.NetRoomScreen.stage = 0
+  pcall(BBNW_Original("flc"), BattleBayDeluxe.NetRoomScreen.LEAVE)
+  BattleBayDeluxe.NetRoomScreen.room = nil
+  BBNW_Original("flc")(BattleBayDeluxe.NetRoomScreen.CLOSE_MENU, BattleBayDeluxe.NetRoomScreen.MENU, true)
+end
+
+-- the room pick's grid: closed once its pick is in (or the grid went by Back)
+function BBNW_StepPick()
+  if not BattleBayDeluxe.NetRoomScreen.picking then
+    return
+  end
+  local flc = BBNW_Original("flc")
+  local okp, team = pcall(flc, BattleBayDeluxe.NetRoomScreen.PICKED)
+  team = okp and tonumber(team) or 0
+  local open = funcLuaMenuCommand(@crc:CMND_IS_EXIST_MENU_OBJECT@, BattleBayDeluxe.NetRoomScreen.GRID)
+  if team ~= 0 then
+    BattleBayDeluxe.NetRoomScreen.picking = false
+    BattleBayDeluxe.NetRoomScreen.picked = true
+    BBNW_Log("room pick in", VRFW_Id.hex(team))
+    if open then
+      flc(BattleBayDeluxe.NetRoomScreen.CLOSE_MENU, BattleBayDeluxe.NetRoomScreen.GRID, true)
+    end
+  elseif not open then
+    BattleBayDeluxe.NetRoomScreen.picking = false
+    pcall(flc, BattleBayDeluxe.NetRoomScreen.PICK_ARM, 0)
+    BBNW_Log("room pick: the grid closed without a pick")
+  end
+end
+
+-- the member rows: our rooms have no online rank, the row's rank badge is hidden instead of left blank
+do
+  local update = UpdatePlayerInfo
+  if type(update) == "function" then
+    function UpdatePlayerInfo(row, ...)
+      local r = table.pack(update(row, ...))
+      if BBNW_Ours() then
+        funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, BattleBayDeluxe.NetRoomScreen.MEMBER_ROW, BattleBayDeluxe.NetRoomScreen.RANK_ICON, false, row)
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end
+end
+
+do
+  local init = OnInit
+  function OnInit(...)
+    BattleBayDeluxe.NetRoomScreen.stage, BattleBayDeluxe.NetRoomScreen.picking, BattleBayDeluxe.NetRoomScreen.picked, BattleBayDeluxe.NetRoomScreen.starting = 0, false, false, false
+    BattleBayDeluxe.NetRoomScreen.frame = BattleBayDeluxe.NetRoomScreen.frame + 1
+    if BBNW_Ours() then
+      BBNW_Log("the room screen runs on our room (shell)")
+    end
+    return init(...)
+  end
 end
 
 do
@@ -53,9 +463,9 @@ do
   BBNW_RetailBackError = rbe
   function RequestBackError(...)
     local r = table.pack(rbe(...))
-    if BBNW.seen or BBNW_Ours() then
-      BBNW_Log("session error: the room is left once the message is answered")
-      BBNW.leave_pending = true
+    if BattleBayDeluxe.NetRoomScreen.seen or BBNW_Ours() then
+      BBNW_Log("room error: the room is left once the message is answered")
+      BattleBayDeluxe.NetRoomScreen.leave_pending = true
     end
     return table.unpack(r, 1, r.n)
   end
@@ -68,8 +478,8 @@ do
       return back(...)
     end
     BBNW_Log("back: our room is left")
-    funcLuaMenuCommand(1558704558, BBNW.MENU, false)
-    -- the retail screen cleanup (BGM, timer, stamps, sub windows, team select, cursor); no session step in it
+    funcLuaMenuCommand(1558704558, BattleBayDeluxe.NetRoomScreen.MENU, false)
+    -- the retail screen cleanup (BGM, timer, stamps, sub windows, team select, cursor); no network step in it
     if type(BBNW_RetailBackError) == "function" then
       local ok, err = pcall(BBNW_RetailBackError)
       if not ok then
@@ -83,12 +493,21 @@ end
 do
   local step = Step
   function Step(...)
-    if not BBNW.seen and BBNW_Ours() then
-      BBNW.seen = true
+    BattleBayDeluxe.NetRoomScreen.frame = BattleBayDeluxe.NetRoomScreen.frame + 1
+    local r = BBNW_Room()
+    if r ~= nil then
+      BattleBayDeluxe.NetRoomScreen.seen = true
+      BBNW_StepPick()
+    elseif BattleBayDeluxe.NetRoomScreen.seen and not BattleBayDeluxe.NetRoomScreen.starting and not BattleBayDeluxe.NetRoomScreen.leave_pending then
+      -- our room closed under the screen (the other player left / was lost, the host closed it): the screen's own
+      -- error path, then the leave once its message is answered
+      BBNW_Log("our room closed: the room screen closes")
+      BattleBayDeluxe.NetRoomScreen.leave_pending = true
+      pcall(BBNW_RetailBackError)
     end
-    if BBNW.leave_pending and funcLuaCommand(898725220 --[[MSG_BUSY]]) ~= true
-        and funcLuaCommand(682363669 --[[MSG_DONE]]) == true then
-      BBNW_Close("session ended")
+    if BattleBayDeluxe.NetRoomScreen.leave_pending and BBNW_Original("flc")(898725220 --[[MSG_BUSY]]) ~= true
+        and BBNW_Original("flc")(682363669 --[[MSG_DONE]]) == true then
+      BBNW_Close("room ended")
       return
     end
     return step(...)
@@ -98,9 +517,9 @@ end
 do
   local fn = OnFunction
   function OnFunction(a1, a2, ...)
-    if (a1 == BBNW.FN_INVITE or a1 == BBNW.FN_KICK) and BBNW_Ours() then
-      if a1 == BBNW.FN_INVITE then
-        local ok, shown = pcall(funcLuaCommand, BBNW.INVITE)
+    if (a1 == BattleBayDeluxe.NetRoomScreen.FN_INVITE or a1 == BattleBayDeluxe.NetRoomScreen.FN_KICK) and BBNW_Ours() then
+      if a1 == BattleBayDeluxe.NetRoomScreen.FN_INVITE then
+        local ok, shown = pcall(BBNW_Original("flc"), BattleBayDeluxe.NetRoomScreen.INVITE)
         BBNW_Log("invite (Steam overlay)", tostring(ok and shown))
       else
         BBNW_Log("kick: not in our rooms")
@@ -108,5 +527,17 @@ do
       return
     end
     return fn(a1, a2, ...)
+  end
+end
+
+-- the screen's engine callbacks with the shadow on top (outermost: after every wrap above); pure Lua at chunk load
+BBNW_AROUND = { "OnInit", "Step", "PostStep", "OnSetupLayer", "OnOpenLayer", "OnOpenEndLayer", "OnCloseLayer",
+  "OnFocusLayerShift", "OnChangeFocus", "OnEnter", "OnDecideFocus", "OnFunction", "OnBack" }
+for _, name in ipairs(BBNW_AROUND) do
+  local f = _G[name]
+  if type(f) == "function" then
+    _G[name] = function(...)
+      return BBNW_Around(f, ...)
+    end
   end
 end

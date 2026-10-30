@@ -1,0 +1,40 @@
+schema = "InaRogue.challenges/1"
+# InaRogue › the optional challenges of a run (docs/game/mods/inarogue-loop-v2.md §4.4, §6). Picked at the run start
+# (or drawn by the weekly run); a won run pays `points` bonus Rogue points per completed challenge. Read by
+# scripts/lib/rogue/ascension.lua; texts InaRogue.run_challenge_<key>_name / _desc (text/rows/rogue_run.toml).
+#
+# [[challenge]]
+#   key      a-z 0-9 _
+#   points   bonus Rogue points of a won run
+#   weekly   false = never drawn by the weekly run (default true)
+#   rules    the run's modifiers (as ascension.toml) and goals: elites_needed (Élite wins the run must reach)
+
+[[challenge]]
+key = "no_shop"
+points = 15
+rules = { no_shop = true }
+
+[[challenge]]
+key = "no_recruit"
+points = 25
+rules = { no_recruit = true }
+
+[[challenge]]
+key = "no_items"
+points = 20
+rules = { no_items = true }
+
+[[challenge]]
+key = "poor"
+points = 15
+rules = { coins_mult = 0.5 }
+
+[[challenge]]
+key = "veterans"
+points = 20
+rules = { rival_levels = 5 }
+
+[[challenge]]
+key = "elite_hunter"
+points = 20
+rules = { elites_needed = 6, elite_weight = 6 }

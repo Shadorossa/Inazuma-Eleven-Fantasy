@@ -1,0 +1,38 @@
+# Hissatsu Reforged: the critical hit of special moves (read by scripts/critical.lua when a match needs it; restart the
+# game after a change). Mechanism: docs/game/mods/hissatsu-critical.md. A user layer: [mods.HissatsuReforged.critical]
+# in the loader's config.toml, key by key (survives mod updates). The same rules for the user's team and the CPU.
+
+[critical]
+# the critical chance of every special move, in percent (once per execution: the move's cut-in is built)
+base_chance = 5
+# on a critical hit the move's power × this (after every other power rule)
+multiplier = 1.5
+# the highest critical chance in percent, whatever adds up (other mods' passives included)
+cap = 50
+# the team build that is the «Crítico» archetype: the game's build 0 (retail «Brecha», renamed by this mod)
+archetype_build = 0
+# the skill table category of the keepers' moves (keeper_levels / keeper_per_rank apply to them)
+keeper_move_category = 4
+
+# The «Crítico» team's four build passives (ps10052-ps10059 families, retail breach values), team-wide while the team
+# is on the «Crítico» build:
+# ps10053: percentage points added to its moves' chance (retail: team breach rate +5 %)
+archetype_chance = 5
+# ps10055: more points while level or behind on goals (retail: +7 % when level or behind)
+archetype_level_or_behind_chance = 7
+# ps10057: the critical multiplier + this % per rank (retail: castle wall pierce +1 % per rank)
+power_per_rank = 1
+# ps10059: tension units its team gets back on each of its critical hits (retail: tension needed for a breach -3.6 %)
+crit_tension = 3.6
+# ps10113 (keepers): its keepers' chance × (1 + this % × rank) (retail: keeper save rate +4 % per rank)
+keeper_per_rank = 4
+
+# The «Crítico» charge: ranks 1..(number of levels), the game's breach charge rules with the critical hit in place of
+# the breach. Rank 1 at kick-off; +1 per rank_up_seconds of match clock without a critical of the team; -rank_down_on_crit
+# when the team lands one.
+rank_up_seconds = 15
+rank_down_on_crit = 4
+# per rank (1..5): the team's critical chance × (1 + this %) (retail: breach rate +0/25/50/75/100 %)
+levels = [0, 25, 50, 75, 100]
+# per rank (1..5): its keepers' critical chance × (1 + this %) on top (retail: keeper save rate +0/25/50/75/100 %)
+keeper_levels = [0, 25, 50, 75, 100]

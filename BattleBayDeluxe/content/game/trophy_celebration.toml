@@ -1,0 +1,22 @@
+# The champions' celebration of a won competition (scripts\lib\trophy_celebration.lua; docs/game/mods/
+# bbd-tournament-celebration.md §7) as native data (schema VRFW.game/1, docs/framework/native.md).
+schema = "VRFW.game/1"
+
+[[VRFW.Global]]
+# [[g_gameRoot]+Game.RootMatch]: +0 the match's rule word (bit 24 = the tournament-final end), +0x2C29 the user's side
+name = "trophy_match"
+base = "game_root"
+chain = ["Game.RootMatch"]
+
+[[VRFW.Global]]
+# [[g_gameRoot]+Game.RootParty]: the match setup's two teams at +0x1E0 (stride 0x4A8), +0 = the team id
+name = "trophy_party"
+base = "game_root"
+chain = ["Game.RootParty"]
+
+[[VRFW.Command]]
+# -> table { active, competition ("tournament" | "league" | "campaign" | "daily_challenge"), name (the text key of the
+# competition's name), name_id (its crc32) }: the celebration of the match that just ended (the photo scene's patch hides its online plates)
+name = "CMND_BBD_TROPHY_INFO"
+handler = "BattleBayDeluxe.TrophyInfo"
+needs = ["trophy_match"]

@@ -45,12 +45,11 @@ do
   -- ---- the screen's state --------------------------------------------------------------------------------------
   -- a parameter of the store without taking it (the retail OnInit clears it after reading)
   function UTIL_CP.Peek(key)
-    local okh, has = pcall(funcLuaCommand, 2947612279, key)
-    if not okh or has ~= true then
+    if not VRFW_Param.Has(key) then
       return nil
     end
-    local okg, v = pcall(funcLuaCommand, 3522198769, key)
-    return okg and v or nil
+    local v = VRFW_Param.Get(key)
+    return v or nil
   end
 
   function UTIL_CP.Seen(h, dock_no, dock_type, formation)
@@ -274,6 +273,7 @@ do
   UTIL_CP.WrapGlobal("Step", function(prev)
     return function(...)
       local r = table.pack(prev(...))
+      pcall(UTIL_CP.FacesSettle)
       local ok, err = pcall(UTIL_CP.Poll)
       if not ok then
         UTIL_CP.Log("poll failed", tostring(err))

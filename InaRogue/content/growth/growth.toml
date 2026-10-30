@@ -2,7 +2,9 @@ schema = "InaRogue.growth/1"
 # InaRogue's own growth (decision 3 of docs/refactor/roguelite-split-map.md; docs/game/modes/inarogue-growth.md): the
 # numbers INAROGUE's levels follow, declared here and depending on no other mod. Read by scripts\lib\rogue\growth.lua.
 #   LevelCap      the highest level INAROGUE gives or plays (rival ladders, boss levels): 1..999 (inarogue-infinite-scaling:
-#                 the cap stays <= 999; a run's rivals scale by rule multipliers past it, never by level)
+#                 the cap stays <= 999). The level a match really takes is also bounded by the game's cap now (game_state
+#                 vrfw.level.max: 99, or a mod's [VRFW.Level] Max with Npc = true); the levels above it become a rival
+#                 stat multiplier (config.toml [rogue.run] over_cap_stat_per_level), never a patched level
 #   StartLevel    the level of a player when he joins the INAROGUE bank (starter, gift, gacha, recruit)
 #   RivalLevels   [phase, target level] keyframes of the rivals (linear between keys; a node column rises toward the next
 #                 phase's value; Élite / boss add [rogue] elite_bonus / boss_bonus). [rogue] level_curve of config.toml,
@@ -12,6 +14,6 @@ schema = "InaRogue.growth/1"
 # INAROGUE itself sets.
 
 [InaRogue.Growth]
-LevelCap = 99
+LevelCap = 999
 StartLevel = 5
 RivalLevels = [[1, 6], [2, 9], [3, 13], [5, 18], [8, 25], [12, 35], [18, 45], [25, 55], [35, 65], [50, 75], [70, 85], [90, 95]]

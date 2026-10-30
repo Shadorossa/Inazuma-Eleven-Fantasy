@@ -1,0 +1,37 @@
+# «Gran explosión» (Great Blaster, whs02180 and whs02180_mm, same cut-in; void shot of two players, cut-in ev60_02180):
+# the end of the cut-in's last shot (c0300), in two effects (a fixed point the tails come out of, as in the cut-in,
+# where the camera stays at the kick point):
+# * great_blaster_drops (object ev6218gs00, `ground_effect`): the cut-in's blue drops floating by the kick point, each
+#   fading in, flipping and fading out in turn over and over; it fades out 5 s after it appears, past any flight;
+# * great_blaster (object ev6218gb00, the ball aura, on the distance clock): the blue / yellow / white tails, tail
+#   auras and soft back light (held at frame 392) laid on the pitch from the kick point at the cut-in's own size, copy
+#   after copy, revealed by the ball as it passes and never stretched (their pattern stays put on the pitch, their
+#   flow running on), fading in from the kick point; the white star, ball cards and round front light round the
+#   ball, x0.12.
+# Both built by research/scripts/great_blaster_ball_fx.py from the cut-in's effect object ev60021800
+# (docs/game/media/great-blaster-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the void special-shot aura's row (like = "ega0075e"). Flight:
+# content\techniques\great_blaster_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "great_blaster"
+from = "ega0075e"
+object = "effect/event/ev60/ev6218gb00/ev6218gb00.objbin"
+
+[[effect]]
+name = "great_blaster_drops"
+from = "ega0021"
+object = "effect/event/ev60/ev6218gs00/ev6218gs00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "great_blaster"
+when = { techniques = ["whs02180", "whs02180_mm"] }
+aura = "great_blaster"
+like = "ega0075e"
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "great_blaster_drops" }

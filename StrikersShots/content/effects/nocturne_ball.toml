@@ -1,0 +1,28 @@
+# «Escena nocturna» (Nocturne, whs02310; wind shot, cut-in ev60_02310) and Inazuma Fantasy's whs02310_or (same
+# cut-in): while the ball flies to the goal it wears the cut-in's last shot (c0300, held at frame 440 from the aura's
+# first frame): the black wolf's head holding the ball in its open jaws, the red-black funnel streaming behind it (its
+# shells and beast auras at the cut-in's size of that frame, never growing; the wolf swaying gently), the red fragments it sheds
+# (flung back and dissolving, drawn facing the camera) and the 13 bats flying behind it with their wings beating; the
+# funnel and the bats come out of the kick point as the ball flies (never stretched), the funnel's far end fading out,
+# x0.5. The night sky, the moon, the camera cards and the moon-ball sets stay out.
+# The object is ev6231nc00 (effect/event/ev60/ev6231nc00/), built by research/scripts/nocturne_ball_fx.py from
+# ev60023100 and the waza models chr/_waza/ev60_02310 (wolf) and ev60_02300 (bats)
+# (docs/game/media/nocturne-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\nocturne_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "nocturne"
+from = "ega0075b"
+object = "effect/event/ev60/ev6231nc00/ev6231nc00.objbin"
+
+[[shot_aura]]
+name = "nocturne"
+when = { techniques = ["whs02310", "whs02310_or"] }
+aura = "nocturne"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

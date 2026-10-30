@@ -25,7 +25,6 @@ stem = "soccer_team_dock_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "shop_menu_buy"
@@ -34,7 +33,6 @@ stem = "shop_menu_buy"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "market_menu"
@@ -43,7 +41,6 @@ stem = "market_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 # "Game Modes" (soccer_top_menu): a mode that starts its friendly straight from the hub (e.g. a
 # "Training Field" graft)
@@ -54,7 +51,6 @@ stem = "soccer_top_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "soccer_vs_cpu_list_menu"
@@ -63,7 +59,6 @@ stem = "soccer_vs_cpu_list_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "title_menu_2"
@@ -72,7 +67,6 @@ stem = "title_menu_2"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
   [[files.ops]]
   type = "append_block"
@@ -87,7 +81,6 @@ stem = "rpg_info_window"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "activity_telop_menu"
@@ -96,14 +89,12 @@ stem = "activity_telop_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
   # return = "title" fallback: a story field after a pachanga -> black, title (rules field_net)
   [[files.ops]]
   type = "append_block"
   src = "pachanga_field.lua"
   marker = "pachanga field"
-  crc = "none"
 
 [[files]]
 stem = "main_menu"
@@ -112,13 +103,11 @@ stem = "main_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
   [[files.ops]]
   type = "append_block"
   src = "pachanga_field.lua"
   marker = "pachanga field"
-  crc = "none"
 
 [[files]]
 stem = "map_menu"
@@ -127,13 +116,11 @@ stem = "map_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
   [[files.ops]]
   type = "append_block"
   src = "pachanga_field.lua"
   marker = "pachanga field"
-  crc = "none"
 
 # The match start service (VRFW_MATCH, lua\_all\12_match_start.lua, VRFW): a match started straight from any hub
 # of the menus needs the executor there (the top bar hosts of the menus; the field / title ones are left out: a match
@@ -146,7 +133,6 @@ stem = "item_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "play_guide_top_menu"
@@ -155,7 +141,6 @@ stem = "play_guide_top_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "chronicle_mode_top_menu"
@@ -164,7 +149,6 @@ stem = "chronicle_mode_top_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "victory_road_top_menu"
@@ -173,7 +157,6 @@ stem = "victory_road_top_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "bb_stadium_top_menu"
@@ -182,7 +165,6 @@ stem = "bb_stadium_top_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "team_dock_common_top_menu"
@@ -191,7 +173,6 @@ stem = "team_dock_common_top_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "information_top_menu"
@@ -200,7 +181,6 @@ stem = "information_top_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"
 
 [[files]]
 stem = "vs_route_town_menu"
@@ -209,4 +189,3 @@ stem = "vs_route_town_menu"
   type = "append_block"
   src = "pachanga_core.lua"
   marker = "pachanga core"
-  crc = "none"

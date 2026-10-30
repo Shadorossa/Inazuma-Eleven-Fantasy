@@ -1,19 +1,20 @@
 schema = "VRFW.image/1"
-# InaRogue: the INAROGUE tier frames / «¿Y si…?» Vestigio sprites of this atlas (moved from Inazuma
+# InaRogue: the INAROGUE tier frames / «¿Y si…?» Vestigio sprites the game asks team00_01 for, in the mod's own
+# atlas inarogue_cards (never the game's: content\sprite_redirects\card_frames.toml serves them). (Moved from Inazuma
 # Fantasy 2026-10-14; the image type merges them per name with the other mods' rows of the atlas).
 
 [[texture]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rogue_card_atl"
 size = [956, 828]
 
 [[texture]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_whatif_atl"
 size = [988, 532]
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_l01"
 texture = "evt_rogue_card_atl"
 x = 0
@@ -21,7 +22,7 @@ y = 0
 png = "team00_01/evt_rg_color_l01.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_l02"
 texture = "evt_rogue_card_atl"
 x = 160
@@ -29,7 +30,7 @@ y = 0
 png = "team00_01/evt_rg_color_l02.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_l03"
 texture = "evt_rogue_card_atl"
 x = 320
@@ -37,7 +38,7 @@ y = 0
 png = "team00_01/evt_rg_color_l03.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_l04"
 texture = "evt_rogue_card_atl"
 x = 480
@@ -45,7 +46,7 @@ y = 0
 png = "team00_01/evt_rg_color_l04.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_l05"
 texture = "evt_rogue_card_atl"
 x = 640
@@ -53,7 +54,7 @@ y = 0
 png = "team00_01/evt_rg_color_l05.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_s01"
 texture = "evt_rogue_card_atl"
 x = 800
@@ -61,7 +62,7 @@ y = 0
 png = "team00_01/evt_rg_color_s01.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_s02"
 texture = "evt_rogue_card_atl"
 x = 0
@@ -69,7 +70,7 @@ y = 160
 png = "team00_01/evt_rg_color_s02.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_s03"
 texture = "evt_rogue_card_atl"
 x = 160
@@ -77,7 +78,7 @@ y = 160
 png = "team00_01/evt_rg_color_s03.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_s04"
 texture = "evt_rogue_card_atl"
 x = 320
@@ -85,7 +86,7 @@ y = 160
 png = "team00_01/evt_rg_color_s04.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_color_s05"
 texture = "evt_rogue_card_atl"
 x = 480
@@ -93,7 +94,7 @@ y = 160
 png = "team00_01/evt_rg_color_s05.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_l01"
 texture = "evt_rogue_card_atl"
 x = 640
@@ -101,7 +102,7 @@ y = 160
 png = "team00_01/evt_rg_base_l01.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_l02"
 texture = "evt_rogue_card_atl"
 x = 0
@@ -109,7 +110,7 @@ y = 320
 png = "team00_01/evt_rg_base_l02.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_l03"
 texture = "evt_rogue_card_atl"
 x = 216
@@ -117,7 +118,7 @@ y = 320
 png = "team00_01/evt_rg_base_l03.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_l04"
 texture = "evt_rogue_card_atl"
 x = 432
@@ -125,7 +126,7 @@ y = 320
 png = "team00_01/evt_rg_base_l04.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_l05"
 texture = "evt_rogue_card_atl"
 x = 648
@@ -133,7 +134,7 @@ y = 320
 png = "team00_01/evt_rg_base_l05.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_l01"
 texture = "evt_rogue_card_atl"
 x = 0
@@ -141,7 +142,7 @@ y = 456
 png = "team00_01/evt_rg_frame_l01.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_l02"
 texture = "evt_rogue_card_atl"
 x = 216
@@ -149,7 +150,7 @@ y = 456
 png = "team00_01/evt_rg_frame_l02.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_l03"
 texture = "evt_rogue_card_atl"
 x = 432
@@ -157,7 +158,7 @@ y = 456
 png = "team00_01/evt_rg_frame_l03.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_l04"
 texture = "evt_rogue_card_atl"
 x = 648
@@ -165,7 +166,7 @@ y = 456
 png = "team00_01/evt_rg_frame_l04.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_l05"
 texture = "evt_rogue_card_atl"
 x = 0
@@ -173,7 +174,7 @@ y = 592
 png = "team00_01/evt_rg_frame_l05.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_s01"
 texture = "evt_rogue_card_atl"
 x = 216
@@ -181,7 +182,7 @@ y = 592
 png = "team00_01/evt_rg_base_s01.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_s02"
 texture = "evt_rogue_card_atl"
 x = 356
@@ -189,7 +190,7 @@ y = 592
 png = "team00_01/evt_rg_base_s02.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_s03"
 texture = "evt_rogue_card_atl"
 x = 496
@@ -197,7 +198,7 @@ y = 592
 png = "team00_01/evt_rg_base_s03.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_s04"
 texture = "evt_rogue_card_atl"
 x = 636
@@ -205,7 +206,7 @@ y = 592
 png = "team00_01/evt_rg_base_s04.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_base_s05"
 texture = "evt_rogue_card_atl"
 x = 776
@@ -213,7 +214,7 @@ y = 592
 png = "team00_01/evt_rg_base_s05.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_s01"
 texture = "evt_rogue_card_atl"
 x = 0
@@ -221,7 +222,7 @@ y = 728
 png = "team00_01/evt_rg_frame_s01.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_s02"
 texture = "evt_rogue_card_atl"
 x = 140
@@ -229,7 +230,7 @@ y = 728
 png = "team00_01/evt_rg_frame_s02.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_s03"
 texture = "evt_rogue_card_atl"
 x = 280
@@ -237,7 +238,7 @@ y = 728
 png = "team00_01/evt_rg_frame_s03.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_s04"
 texture = "evt_rogue_card_atl"
 x = 420
@@ -245,7 +246,7 @@ y = 728
 png = "team00_01/evt_rg_frame_s04.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_rg_frame_s05"
 texture = "evt_rogue_card_atl"
 x = 560
@@ -253,7 +254,7 @@ y = 728
 png = "team00_01/evt_rg_frame_s05.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_color01_l13"
 texture = "evt_whatif_atl"
 x = 0
@@ -261,7 +262,7 @@ y = 0
 png = "team00_01/icon_chr_color01_l13.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_color01_l14"
 texture = "evt_whatif_atl"
 x = 160
@@ -269,7 +270,7 @@ y = 0
 png = "team00_01/icon_chr_color01_l14.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_color01_l15"
 texture = "evt_whatif_atl"
 x = 320
@@ -277,7 +278,7 @@ y = 0
 png = "team00_01/icon_chr_color01_l15.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_color01_s13"
 texture = "evt_whatif_atl"
 x = 480
@@ -285,7 +286,7 @@ y = 0
 png = "team00_01/icon_chr_color01_s13.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_color01_s14"
 texture = "evt_whatif_atl"
 x = 640
@@ -293,7 +294,7 @@ y = 0
 png = "team00_01/icon_chr_color01_s14.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_color01_s15"
 texture = "evt_whatif_atl"
 x = 800
@@ -301,7 +302,7 @@ y = 0
 png = "team00_01/icon_chr_color01_s15.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_icon_chr_base01_l13_ns"
 texture = "evt_whatif_atl"
 x = 0
@@ -309,7 +310,7 @@ y = 160
 png = "team00_01/evt_icon_chr_base01_l13_ns.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_icon_chr_base01_l14_ns"
 texture = "evt_whatif_atl"
 x = 216
@@ -317,7 +318,7 @@ y = 160
 png = "team00_01/evt_icon_chr_base01_l14_ns.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_icon_chr_base01_l15_ns"
 texture = "evt_whatif_atl"
 x = 432
@@ -325,7 +326,7 @@ y = 160
 png = "team00_01/evt_icon_chr_base01_l15_ns.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_base01_l13"
 texture = "evt_whatif_atl"
 x = 648
@@ -333,7 +334,7 @@ y = 160
 png = "team00_01/icon_chr_base01_l13.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_base01_l14"
 texture = "evt_whatif_atl"
 x = 0
@@ -341,7 +342,7 @@ y = 296
 png = "team00_01/icon_chr_base01_l14.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_base01_l15"
 texture = "evt_whatif_atl"
 x = 216
@@ -349,7 +350,7 @@ y = 296
 png = "team00_01/icon_chr_base01_l15.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_icon_chr_base01_s13_ns"
 texture = "evt_whatif_atl"
 x = 432
@@ -357,7 +358,7 @@ y = 296
 png = "team00_01/evt_icon_chr_base01_s13_ns.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_icon_chr_base01_s14_ns"
 texture = "evt_whatif_atl"
 x = 572
@@ -365,7 +366,7 @@ y = 296
 png = "team00_01/evt_icon_chr_base01_s14_ns.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "evt_icon_chr_base01_s15_ns"
 texture = "evt_whatif_atl"
 x = 712
@@ -373,7 +374,7 @@ y = 296
 png = "team00_01/evt_icon_chr_base01_s15_ns.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_base01_s13"
 texture = "evt_whatif_atl"
 x = 852
@@ -381,7 +382,7 @@ y = 296
 png = "team00_01/icon_chr_base01_s13.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_base01_s14"
 texture = "evt_whatif_atl"
 x = 0
@@ -389,7 +390,7 @@ y = 432
 png = "team00_01/icon_chr_base01_s14.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/team00/team00_01/<LG>/team00_01.g4tx"
+atlas = "#/menu/102_team/inarogue/inarogue_cards.g4tx"
 name = "icon_chr_base01_s15"
 texture = "evt_whatif_atl"
 x = 140

@@ -8,16 +8,10 @@ local TWO32 = 4294967296
 
 C.POS_GK, C.POS_FW, C.POS_MF, C.POS_DF = 1, 2, 3, 4
 
-function C.u32(v)
-  if type(v) ~= "number" or v ~= v then
-    return 0
-  end
-  return floor(v) % TWO32
-end
+local Id = require "VRFW/lib/ids"
+C.u32 = Id.u32
 
-function C.hex(v)
-  return string.format("0x%08X", C.u32(v))
-end
+C.hex = Id.hex
 
 -- a seed argument (a game Lua number: up to 2^53, possibly negative) as two u32 halves
 function C.split(v)

@@ -1,5 +1,5 @@
-# The framework's title version label (docs/framework/lua-hosts.md §6.1): «ver.7.1.2  VRFW 2.00».
-# Retail: «ver.7.1.2  0.90 301», layer title02_04_version of title_menu_2 (layout title02_04.g4pkm, local units of its
+# The framework's title version label (docs/framework/lua-hosts.md §6.1): «ver.7.2.1  VRFW 2.00».
+# Retail: «ver.A.B.C  X.YY ZZZ», layer title02_04_version of title_menu_2 (layout title02_04.g4pkm, local units of its
 # node _pos_scl_base01, which sits at the top right of the screen, x scale 0.65, y 0.9; quads hang from their joint's
 # top-left corner, Y up; the number primitives end at their joint).
 #
@@ -14,7 +14,7 @@
 #   colour, x-height, stroke and baseline measured from the retail «ver.» sprite and the cap height of the retail
 #   version digits (our own glyphs, no Level-5 pixels), into the framework root's images\ (the image type creates the atlas).
 #   It reads the box size from the _gtxt_ver01 row below.
-# Widths: «ver.» + 7.1.2 as retail, gap 26, word 120 (the natural width of «VRFW»), gap 30, X.YY 96: from local -512
+# Widths: «ver.» + A.B.C as retail, gap 26, word 120 (the natural width of «VRFW»), gap 30, X.YY 96: from local -512
 # (screen x ≈ 1540 of 1920) to 0 (≈ 1873, the retail right edge). The layer keeps the retail anchoring (right / top), so ultrawide places it as retail.
 schema = "VRFW.menu/2"
 

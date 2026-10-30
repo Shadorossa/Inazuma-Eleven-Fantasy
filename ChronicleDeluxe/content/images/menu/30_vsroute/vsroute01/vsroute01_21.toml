@@ -5,6 +5,11 @@
 # class's Ball in content/defaults/match_difficulty.toml (VRFW MatchDifficulty Ball); docs/game/mods/chronicle-deluxe-free-match.md.
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_21.g4tx"
+name = "chronicle_deluxe_vsroute01_21"
+size = [176, 68]
+
 [[recipe]]
 name = "chronicle_deluxe_legendary_ball_base"
 game = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
@@ -28,8 +33,11 @@ from = "chronicle_deluxe_legendary_ball_base"
 ops = [{ op = "mix_gradient", image = "chronicle_deluxe_legendary_ball_lv_base00", weight = [-0.2, 1.4, 1.4], clamp = [0.0, 1.0] }, { op = "mix_gradient", image = "chronicle_deluxe_legendary_ball_lv_base02", weight = [-1.2, 1.6, 1.6], clamp = [0.0, 1.0] }]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_21.g4tx"
 name = "chronicle_deluxe_legendary_ball"
+texture = "chronicle_deluxe_vsroute01_21"
+x = 0
+y = 0
 recipe = "chronicle_deluxe_legendary_ball"
 
 # The class orbs of the free-match class cards (owner 2026-10-21: the orb of each class's colour in place of the ticks,
@@ -43,8 +51,11 @@ game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
 sprite = "clear_icon01"
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_21.g4tx"
 name = "chronicle_deluxe_class_orb_inazuma"
+texture = "chronicle_deluxe_vsroute01_21"
+x = 72
+y = 0
 recipe = "chronicle_deluxe_class_orb_inazuma"
 
 [[recipe]]
@@ -53,8 +64,11 @@ game = "#/menu/30_vsroute/vsroute01/vsroute01_06b/vsroute01_06b.g4tx"
 sprite = "clear_icon02"
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_21.g4tx"
 name = "chronicle_deluxe_class_orb_lethal_zone"
+texture = "chronicle_deluxe_vsroute01_21"
+x = 144
+y = 0
 recipe = "chronicle_deluxe_class_orb_lethal_zone"
 
 [[recipe]]
@@ -80,6 +94,9 @@ from = "chronicle_deluxe_class_orb_legendary_base"
 ops = [{ op = "mix_gradient", image = "chronicle_deluxe_class_orb_legendary_cyan", weight = [-0.2, 1.4, 1.4], clamp = [0.0, 1.0] }, { op = "mix_gradient", image = "chronicle_deluxe_class_orb_legendary_lime", weight = [-1.2, 1.6, 1.6], clamp = [0.0, 1.0] }]
 
 [[sprite]]
-atlas = "#/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx"
+atlas = "#/menu/30_vsroute/chronicle_deluxe_own/chronicle_deluxe_vsroute01_21.g4tx"
 name = "chronicle_deluxe_class_orb_legendary"
+texture = "chronicle_deluxe_vsroute01_21"
+x = 108
+y = 0
 recipe = "chronicle_deluxe_class_orb_legendary"

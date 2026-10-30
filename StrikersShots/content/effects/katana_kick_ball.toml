@@ -1,0 +1,25 @@
+# «Katana Kick» («Chut ancestral», whs01500; mountain shot, cut-in ev60_01500): the cut-in's last shot (c0300): the
+# ball skims the pitch inside the katana's wave, the yellow-white wall and the two slash blades rising over it, the line
+# wave and tails along the ground, the sand smoke trailing behind and the red maple leaves turning round it (held at
+# frame 300, texture flow running on), every part behind the ball coming out of the kick point as the ball moves away
+# (never stretched); the hollow trench of the cut laid fixed on the pitch from the kick point and shown as the ball
+# passes, drawn under the wave. x1 (wall 6 m, blades 7 m).
+# Built by research/scripts/katana_kick_ball_fx.py from the cut-in's effect object ev60015000 (object ev6150kk00).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\katana_kick_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "katana_kick"
+from = "ega0075a"
+object = "effect/event/ev60/ev6150kk00/ev6150kk00.objbin"
+
+[[shot_aura]]
+name = "katana_kick"
+when = { techniques = ["whs01500"] }
+aura = "katana_kick"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

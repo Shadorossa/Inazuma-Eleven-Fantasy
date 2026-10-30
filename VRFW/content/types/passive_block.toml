@@ -1,0 +1,576 @@
+# VR-Framework › the block types of the passive engine (kind VRFW.passive_block/1). A block is one reusable piece of a
+# passive, declared once by name in a mod's content\passive_blocks\*.toml and used by name by any number of passives
+# (content\special_passives\, kind VRFW.passive/1). A passive reads as a sentence:
+#   «When <event> of <who> → <effects> to <targets> · nullified when <event> of <who>»
+# Roles:
+#   trigger    the event that turns the passive on (one more stack each time with a Stack block); a passive without
+#              any trigger is always on
+#   stack      how the stacks build up: maximum, how long each lasts, back to 0 at each half
+#   reset      the event that nullifies it (its stacks back to 0)
+#   condition  what must hold (when it counts and when it applies)
+#   trait      a set of players (tags, element, position, gender, series, team group, carried moves, keshin /
+#              miximax, or relative to the carrier): named by the Present, Count, By and Holder conditions and the
+#              effects' `trait` key
+#   effect     what it does to its targets while it is on, × its stacks: technique power by move kind, stat parameters,
+#              tension cost, move speed, recast, critical chance; or at once on the trigger (tension, tension max, refuse); or the game passive of the
+#              own passive slot (GamePassive)
+# Each [entry.<Type>] is one block type. Its plain keys describe it: `role`, `text` (the text key of its description
+# in text\keys.toml; `{<key>}` = the block's value of <key>), `needs` (the fact it reads: actor / move), `apply` (how
+# the interpreter uses an effect), `hooks` (the triggers a lasting effect is answered on), `answer` (the
+# behaviour-rule effect it answers) and `amount_key` (the key holding the amount). Its table keys are the block's keys:
+# { type, required, default, min, max, values, words, ref, doc } (`values` = the allowed words; `words` = the text key
+# prefix of those words; `ref` = what the value names, for the editors). The tables after the entries are data the
+# interpreter and the editors share. vrfw check validates the block files against this file;
+# scripts\passives.lua (lib\passives.lua) runs them.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.passive_block/1"
+folder = "content/passive_blocks"
+
+# ------------------------------------------------------------------------------------------------ when / stacks / reset
+
+[entry.Trigger]
+role = "trigger"
+text = "ev_default"
+doc = "the event that turns the passive on: a behaviour-rule trigger (VRFW content\\rules\\catalog\\triggers.toml) whose player is `by`, seen from the carrier"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+on = { type = "string", required = true, ref = "rule_trigger", doc = "the event (goal, keeper_save, ball_stopped, block_won, duel_won, possession, foul…), or one of the engine's own events: `carried` (the carrier starts carrying the passive: his spirit is summoned, a grant is given), `half_start` (a half starts: its clock runs again), `interval` (every `arg` seconds of play while he is on the pitch); tension_gain (his team earns tension from play: duels, scrambles, keeper battles, set plays; `by` = the player who earned it) and foul_suffered (`by` = the fouled player) are behaviour-rule triggers too" }
+arg = { type = "string", default = "", ref = "rule_trigger_arg", doc = "only this argument of the event (goal:user, duel_won:move…); empty = any" }
+by = { type = "string", default = "self", values = ["self", "teammate", "team", "opponent", "anyone"], words = "by", doc = "whose event: the carrier, a teammate, anyone of his team, an opponent, anyone" }
+wording = { type = "string", default = "", values = ["when", "each_time"], words = "wording", doc = "the description says «when» or «each time» (empty: «each time» with a Stack block, else «when»)" }
+
+[entry.Stack]
+role = "stack"
+text = "sentence_max"
+doc = "each trigger adds one stack (the effects × the stacks)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+max = { type = "int", default = 0, min = 0, max = 99, doc = "the most stacks (0 = no limit)" }
+duration_s = { type = "int", default = 0, min = 0, max = 5400, doc = "the stacks end this many seconds after the last one (0 = they stay)" }
+per_half = { type = "bool", default = false, doc = "the stacks go back to 0 at each half" }
+
+[entry.Reset]
+role = "reset"
+text = "sentence_reset"
+doc = "the event that nullifies the passive: its stacks back to 0"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+on = { type = "string", required = true, ref = "rule_trigger", doc = "the event" }
+arg = { type = "string", default = "", ref = "rule_trigger_arg", doc = "only this argument of the event; empty = any" }
+by = { type = "string", default = "team", values = ["self", "teammate", "team", "opponent", "anyone"], words = "by", doc = "whose event" }
+
+# ------------------------------------------------------------------------------------------------ conditions
+
+[entry.MoveElement]
+role = "condition"
+text = "block_move_element"
+needs = "move"
+doc = "the element of the move used, as the game answers for that slot"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+elements = { type = "strings", required = true, values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "any of these elements" }
+
+[entry.CarrierElement]
+role = "condition"
+text = "block_carrier_element"
+needs = "actor"
+doc = "the element of the carrier's card"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+elements = { type = "strings", required = true, values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "any of these elements" }
+
+[entry.Move]
+role = "condition"
+text = "block_move"
+needs = "move"
+doc = "the move used is one of these"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+moves = { type = "strings", required = true, ref = "move", doc = "moves: an internal key (whs00010) or a mod move <mod>.<name>" }
+
+[entry.MoveKind]
+role = "condition"
+text = "block_move_kind"
+needs = "move"
+doc = "the kind of the move of the event (skill table category and flags: [move_kinds])"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+kinds = { type = "strings", required = true, values = ["shoot", "long_shoot", "chain_shoot", "dribble", "block", "shoot_block", "catch", "punch"], words = "move_kind", doc = "any of these kinds" }
+
+[entry.MoveFamily]
+role = "condition"
+text = "block_move_family"
+needs = "move"
+doc = "the move used belongs to one of these technique families ([[VRFW.TechniqueFamily]], the moves' `families`)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+families = { type = "strings", required = true, ref = "technique_family", doc = "family ids <mod>.<Name> (HissatsuReforged.Dragon)" }
+
+[entry.Wears]
+role = "condition"
+text = "block_wears"
+needs = "actor"
+carrier = "equipment"
+doc = "the carrier wears one of these equipment items (the user's own players). A passive with a Wears or WearsSet block is carried by every player who meets it"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+items = { type = "strings", required = true, ref = "item", doc = "items: an internal name (eq_sh110001) or a mod item <mod>.<name>" }
+
+[entry.WearsSet]
+role = "condition"
+text = "block_wears_set"
+needs = "actor"
+carrier = "equipment"
+doc = "the carrier wears at least `pieces` pieces of an equipment set ([[VRFW.EquipmentSet]]: one piece per equip slot)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+set = { type = "string", required = true, ref = "equipment_set", doc = "the set: <mod>.<Name>" }
+pieces = { type = "int", default = 2, min = 1, max = 4, doc = "the least pieces worn" }
+
+[entry.Outcome]
+role = "condition"
+text = "block_outcome"
+doc = "how the event ended: the argument of its trigger (technique_result won / lost, keeper_scene saved / beaten…; [outcomes])"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+result = { type = "string", required = true, values = ["succeeds", "fails"], words = "outcome", doc = "succeeds or fails" }
+
+[entry.CarriesPassive]
+role = "condition"
+text = "block_carries_passive"
+needs = "actor"
+doc = "the carrier carries one of these game passives: in an unlocked team passive slot or in his own passive slot"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+passives = { type = "strings", required = true, ref = "passive", doc = "passive keys (ps10001, a mod passive's key)" }
+
+[entry.Side]
+role = "condition"
+text = "block_side"
+needs = "actor"
+doc = "the carrier plays for this side"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+side = { type = "string", required = true, values = ["user", "rival"], words = "side", doc = "user = the player's team, rival = the other team" }
+
+[entry.HasBall]
+role = "condition"
+text = "block_has_ball"
+needs = "actor"
+doc = "the carrier holds the ball (or, with holds = false, does not)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+holds = { type = "bool", default = true, doc = "true: he holds the ball; false: he does not" }
+
+[entry.Score]
+role = "condition"
+text = "block_score"
+doc = "the score of the carrier's team"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+states = { type = "strings", required = true, values = ["leading", "level", "trailing"], words = "score", doc = "any of these" }
+
+[entry.Half]
+role = "condition"
+text = "block_half"
+doc = "the current half"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+halves = { type = "ints", required = true, min = 1, max = 5, doc = "any of these: 1-2, 3-4 extra time, 5 shootout" }
+
+[entry.Clock]
+role = "condition"
+text = "block_clock"
+doc = "the clock of the current half: game minutes, or parts of the half's real length (half_fraction_from / half_fraction_to)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+from_minute = { type = "int", default = 0, min = 0, max = 90, doc = "from this minute of the half" }
+until_minute = { type = "int", default = 0, min = 0, max = 90, doc = "before this minute of the half (0 = to the end)" }
+half_fraction_from = { type = "string", default = "", doc = "from this part of the half's real length on: a fraction \"a/b\" or a number 0-1 (\"2/3\" = the last third); with it the minutes are ignored" }
+half_fraction_to = { type = "string", default = "", doc = "before this part of the half's real length (\"1\" = to the end, added time included); empty = to the end" }
+
+[entry.Chance]
+role = "condition"
+text = "block_chance"
+doc = "it counts this often (checked when the trigger happens)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "int", required = true, min = 1, max = 100, doc = "the chance in %" }
+
+[entry.Zone]
+role = "condition"
+text = "block_zone"
+needs = "actor"
+doc = "the carrier stands in an area of the pitch (metres, match coordinates; the rule engine's zone convention)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+x = { type = "numbers", default = [], doc = "[from, to] across the pitch (empty = any)" }
+z = { type = "numbers", default = [], doc = "[from, to] along the pitch (empty = any); with frame = team, negative = his own half" }
+frame = { type = "string", default = "team", values = ["team", "pitch"], words = "zone_frame", doc = "team: z mirrored for team 1, so one area fits both sides; pitch: as is" }
+
+[entry.SpiritsOut]
+role = "condition"
+scale = "count"
+text = "block_spirits_out"
+needs = "actor"
+doc = "counts the players with one of these spirits out (summoned without armour: a [[VRFW.Spirit]] aura); the passive's effects × that count, off at 0"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+auras = { type = "strings", default = [], ref = "aura", doc = "these auras (internal key wko00010 or a mod aura <mod>.<name>)" }
+family = { type = "string", default = "", ref = "spirit_family", doc = "or every aura of this family ([[VRFW.SpiritFamily]], <name> or <mod>.<name>)" }
+who = { type = "string", default = "teammates", values = ["teammates", "team", "opponents"], words = "target", doc = "whose spirits count, seen from the carrier" }
+max = { type = "int", default = 3, min = 1, max = 10, doc = "the count stops here" }
+
+[entry.Near]
+role = "condition"
+filter = "target"
+text = "block_near"
+needs = "actor"
+doc = "the passive's effects reach only targets within this distance of the carrier"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+metres = { type = "number", required = true, min = 1, max = 60, doc = "the distance in metres" }
+
+# ------------------------------------------------------------------------------------------------ traits (who)
+
+[entry.Trait]
+role = "trait"
+text = "block_trait"
+doc = "a set of players, named by the Present / Count / By / Holder blocks and by the `trait` key of the effects. Every key given must hold (empty = not asked). The relative keys compare the player with the passive's carrier (the holder)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+tags = { type = "strings", default = [], ref = "passive_tag", doc = "any of these archetype tags ([[VRFW.Tag]] names; a character's tags: [[VRFW.CharacterTags]])" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "any of these elements (the card's)" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "any of these positions (the card's main position)" }
+gender = { type = "string", default = "", values = ["male", "female"], words = "gender", doc = "the character's gender (empty = any)" }
+series = { type = "strings", default = [], ref = "series", doc = "any of these source series (the framework's series names: ie1, ie2, ie3, go1, go2, go3, galaxy, ares, orion, victory_road, aliases of content\\defaults\\series_names.toml)" }
+team_groups = { type = "strings", default = [], ref = "synergy_pool", doc = "the character is in one of these team groups: [[VRFW.SynergyPool]] keys <mod>.<name> (their teams / series / gender / characters)" }
+families = { type = "strings", default = [], ref = "technique_family", doc = "he carries a move of one of these technique families in his move slots" }
+moves = { type = "strings", default = [], ref = "move", doc = "he carries one of these moves in his move slots (internal key or <mod>.<name>)" }
+keshin = { type = "bool", default = false, doc = "he has a keshin (his aura plate holds a keshin this match)" }
+miximax = { type = "bool", default = false, doc = "he has a miximax (his mix plate holds one this match)" }
+same_team_as_holder = { type = "bool", default = false, doc = "he shares a belong team with the carrier" }
+same_team_group_as_holder = { type = "bool", default = false, doc = "he is in a team group ([[VRFW.SynergyPool]] with `teams`) the carrier is in, or shares a belong team with him" }
+same_saga_as_holder = { type = "bool", default = false, doc = "his source series is the carrier's" }
+same_element_as_holder = { type = "bool", default = false, doc = "his element is the carrier's" }
+
+[entry.Present]
+role = "condition"
+text = "block_present"
+needs = "actor"
+doc = "at least `min` players of a Trait are on the pitch"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+trait = { type = "string", required = true, ref = "block", doc = "the Trait block" }
+side = { type = "string", default = "team", values = ["team", "opponents", "any"], words = "side_of", doc = "whose players, seen from the carrier" }
+min = { type = "int", default = 1, min = 1, max = 11, doc = "at least this many" }
+others = { type = "bool", default = true, doc = "the carrier himself does not count" }
+
+[entry.Count]
+role = "condition"
+scale = "count"
+text = "block_count"
+needs = "actor"
+doc = "counts the players of a Trait on the pitch: the passive's effects × that count, off at 0"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+trait = { type = "string", required = true, ref = "block", doc = "the Trait block" }
+side = { type = "string", default = "team", values = ["team", "opponents", "any"], words = "side_of", doc = "whose players, seen from the carrier" }
+max = { type = "int", default = 3, min = 1, max = 11, doc = "the count stops here" }
+others = { type = "bool", default = true, doc = "the carrier himself does not count" }
+
+[entry.By]
+role = "condition"
+text = "block_by"
+needs = "event"
+doc = "the trigger counts only when its player belongs to a Trait (with the trigger's own `by`)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+trait = { type = "string", required = true, ref = "block", doc = "the Trait block" }
+
+[entry.Holder]
+role = "condition"
+text = "block_holder"
+needs = "actor"
+doc = "a player of a Trait holds the ball"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+trait = { type = "string", required = true, ref = "block", doc = "the Trait block" }
+side = { type = "string", default = "team", values = ["team", "opponents", "any"], words = "side_of", doc = "whose players, seen from the carrier" }
+others = { type = "bool", default = false, doc = "the carrier himself does not count" }
+
+[entry.Absent]
+role = "condition"
+text = "block_absent"
+needs = "actor"
+doc = "no player of a Trait is on the pitch (the zero count of Present / Count): «the only <trait> of his team» = side team, others true"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+trait = { type = "string", required = true, ref = "block", doc = "the Trait block" }
+side = { type = "string", default = "team", values = ["team", "opponents", "any"], words = "side_of", doc = "whose players, seen from the carrier" }
+others = { type = "bool", default = true, doc = "the carrier himself does not count" }
+
+[entry.SetPiece]
+role = "condition"
+text = "block_set_piece"
+needs = "actor"
+doc = "the carrier took the last restart of these kinds (behaviour-rule trigger set_piece) and no other player has had the ball since (possession): his own set piece's play (a direct free kick, a corner kicked into the box…)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+kinds = { type = "strings", default = ["free_kick", "corner", "penalty"], values = ["throw_in", "corner", "goal_kick", "free_kick", "offside", "penalty"], words = "set_piece", doc = "the restart kinds (the set_piece trigger's words)" }
+
+# ------------------------------------------------------------------------------------------------ effects
+
+[entry.TechniquePower]
+role = "effect"
+text = "obj_power"
+apply = "power"
+hooks = "move_power"
+amount_key = "value"
+doc = "the power of the targets' special moves of these kinds (move_power), × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+kinds = { type = "strings", default = [], values = ["shoot", "long_shoot", "chain_shoot", "dribble", "block", "shoot_block", "catch", "punch"], words = "move_kind", doc = "the move kinds (empty = every move); see [move_kinds]" }
+mode = { type = "string", default = "percent", values = ["percent", "flat"], words = "mode", doc = "percent of the power, or power points" }
+value = { type = "number", required = true, min = -1000, max = 1000, doc = "per stack" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose moves" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.Stat]
+role = "effect"
+text = "obj_stat"
+apply = "stat"
+amount_key = "value"
+doc = "the targets' match stat parameters (the framework's set_stat, from their base), × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+stats = { type = "strings", required = true, values = ["kick", "control", "technique", "pressure", "physical", "agility", "intelligence"], words = "stat", doc = "the parameters" }
+mode = { type = "string", default = "flat", values = ["percent", "flat"], words = "mode", doc = "percent of the base, or points" }
+value = { type = "number", required = true, min = -1000, max = 1000, doc = "per stack" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose parameters" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.TensionCost]
+role = "effect"
+text = "obj_tension_cost"
+apply = "rate"
+answer = "cost_mult"
+hooks = "tension_pay"
+amount_key = "percent"
+doc = "the tension cost the targets pay (tension_pay), in %, × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (-20 = 20 % cheaper)" }
+kinds = { type = "strings", default = [], values = ["shoot", "long_shoot", "chain_shoot", "dribble", "block", "shoot_block", "catch", "punch"], words = "move_kind", doc = "only moves of these kinds (empty = every move); see [move_kinds]" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "who pays" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.MoveSpeed]
+role = "effect"
+text = "obj_move_speed"
+apply = "rate"
+answer = "speed_mult"
+hooks = "move_speed"
+amount_key = "percent"
+doc = "the targets' move speed rate (move_speed), in %, × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (10 = 10 % faster)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "who" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.RecastTime]
+role = "effect"
+text = "obj_recast_time"
+apply = "rate"
+answer = "recast_mult"
+hooks = "recast"
+amount_key = "percent"
+doc = "the recast time of the targets' moves (recast), in %, × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (-50 = half the time)" }
+kinds = { type = "strings", default = [], values = ["shoot", "long_shoot", "chain_shoot", "dribble", "block", "shoot_block", "catch", "punch"], words = "move_kind", doc = "only moves of these kinds (empty = every move); see [move_kinds]" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose moves" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.CriticalChance]
+role = "effect"
+text = "obj_crit_chance"
+apply = "chance_add"
+answer = "crit_chance"
+hooks = "crit_check"
+amount_key = "percent"
+doc = "the critical chance of the targets' special moves of these kinds (crit_check: once per execution), in percentage points, × the stacks"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+kinds = { type = "strings", default = [], values = ["shoot", "long_shoot", "chain_shoot", "dribble", "block", "shoot_block", "catch", "punch"], words = "move_kind", doc = "the move kinds (empty = every move); see [move_kinds]" }
+percent = { type = "number", required = true, min = -100, max = 100, doc = "per stack, percentage points (5 = +5 points of critical chance)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose moves" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.TensionGain]
+role = "effect"
+text = "obj_tension_gain"
+apply = "rate"
+answer = "gain_mult"
+hooks = "tension_gain"
+amount_key = "percent"
+doc = "the tension the targets earn for their team from play (tension_gain: duels, scrambles, keeper battles, set plays), in %, × the stacks; target team / opponents also scale a team's gains that no player earned"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (5 = 5 % more tension)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose gains" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.StaminaRecovery]
+role = "effect"
+text = "obj_stamina_recovery"
+apply = "stamina_recovery"
+amount_key = "percent"
+doc = "what the targets' match stamina regains by itself (the match resource that pays the pe_sacrifice moves: its regen_per_s and half-time gain, VRFW.resource.set_gain_mult), in %, × the stacks; nothing while no mod declares a stamina resource"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (5 = 5 % faster)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose stamina" }
+positions = { type = "strings", default = [], values = ["gk", "fw", "mf", "df"], words = "position", doc = "only targets of these positions (empty = any)" }
+elements = { type = "strings", default = [], values = ["wind", "forest", "fire", "mountain", "void"], words = "element", doc = "only targets of these elements (empty = any)" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.Tension]
+role = "effect"
+text = "fx_tension"
+apply = "tension"
+amount_key = "units"
+doc = "at once, each time the trigger happens: tension points (the HUD's units) for a team, seen from the event's player"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+units = { type = "int", required = true, min = -100, max = 100, doc = "units added (negative takes them away)" }
+team = { type = "string", default = "actor", values = ["actor", "opponent", "user", "rival", "carrier", "carrier_opponent"], words = "tension_team", doc = "whose tension: the event player's team (actor) or the other (opponent), the user's or the rival team, the carrier's team or the other" }
+
+[entry.TensionMax]
+role = "effect"
+text = "fx_tension_max"
+apply = "tension_max"
+amount_key = "units"
+doc = "at once, each time the trigger happens: the maximum of a team's tension gauge, in tension points, for the rest of the match (rule effect add_tension_max: never below a third of the team's starting maximum; a tension above it comes down to it)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+units = { type = "int", required = true, min = -300, max = 300, doc = "points added to the maximum (negative lowers it)" }
+team = { type = "string", default = "actor", values = ["actor", "opponent", "user", "rival", "carrier", "carrier_opponent"], words = "tension_team", doc = "whose gauge: the event player's team (actor) or the other (opponent), the user's or the rival team, the carrier's team or the other" }
+
+[entry.Refuse]
+role = "effect"
+text = "fx_refuse"
+apply = "refuse"
+answer = "block"
+doc = "at once: what the trigger is about is refused (the move, the dash, the aura…), when the carrier is the event's player"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+
+[entry.KeeperShotPower]
+role = "effect"
+text = "obj_keeper_shot"
+apply = "keeper"
+hooks = "keeper_duel"
+amount_key = "percent"
+doc = "the power of a shot in the keeper battle (keeper_duel), in %, × the stacks: the shots of the targets (side shooter) or the shots that reach the targets (side keeper)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+side = { type = "string", default = "shooter", values = ["shooter", "keeper"], words = "keeper_side", doc = "shooter: the targets' shots; keeper: the shots against the targets" }
+percent = { type = "number", required = true, min = -100, max = 1000, doc = "per stack (-10 = the shot 10 % weaker)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…: [levels]; a granted passive: the grant's level); empty = the one value" }
+chance = { type = "int", default = 100, min = 1, max = 100, doc = "it applies to a battle this often (%)" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "whose shots / which keepers" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+shooter_trait = { type = "string", default = "", ref = "block", doc = "side keeper: only shots of a shooter of this Trait block (empty = any)" }
+
+[entry.PoolCost]
+role = "effect"
+text = "obj_pool_cost"
+apply = "pool_cost"
+answer = "cost_mult"
+hooks = "tension_pay"
+amount_key = "percent"
+doc = "the costs the targets pay from their running spirit's pool ([points] cost_flag), in %; without a pool their tension cost instead"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+percent = { type = "number", required = true, min = -100, max = 100, doc = "per stack (-20 = 20 % cheaper)" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level (1, 2…; a granted passive: the grant's level); empty = the one value" }
+target = { type = "string", default = "self", values = ["self", "teammates", "team", "opponents", "all"], words = "target", doc = "who pays" }
+trait = { type = "string", default = "", ref = "block", doc = "only targets of this Trait block (empty = any)" }
+
+[entry.PoolRestore]
+role = "effect"
+text = "fx_pool_restore"
+apply = "pool"
+amount_key = "units"
+doc = "at once, each time the trigger happens: points back into the carrier's running spirit pool ([points] pool_resources); without a pool, seconds of summon time instead"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+units = { type = "int", required = true, min = 1, max = 500, doc = "points added" }
+value_by_level = { type = "numbers", default = [], doc = "per passive level; empty = the one value" }
+no_pool_seconds = { type = "number", default = 0, min = 0, max = 120, doc = "without a pool: seconds added to his summon time (0 = nothing)" }
+
+[entry.SummonTime]
+role = "effect"
+text = "fx_summon_time"
+apply = "summon_time"
+amount_key = "seconds"
+doc = "at once, each time the trigger happens: seconds added to the carrier's running summon, only when it runs on its timer (no pool)"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+seconds = { type = "number", required = true, min = 1, max = 120, doc = "seconds added" }
+
+[entry.GamePassive]
+role = "effect"
+text = "block_game_passive"
+apply = "own_slot"
+doc = "the game passive in the carrier's own passive slot (board equip slot 9): shown on the board, used by the match like any passive"
+name = { type = "name", required = true, doc = "the block's name (a-z 0-9 _), unique in its mod" }
+passive = { type = "string", required = true, ref = "passive", doc = "the passive's key (ps10001, a mod passive's key from a content\\techniques\\*.toml [[passive]] row)" }
+unlock = { type = "string", default = "board", values = ["board", "always"], words = "unlock", doc = "board: once the custom passive piece of his board is open; always: from level 1" }
+
+# ------------------------------------------------------------------------------------------------ shared data
+
+# the move kinds of TechniquePower: skill table `category` (1 shoot, 2 dribble, 3 block, 4 keeper) and the
+# `skill_effect_bit_flag` bits (shoot: 4 long shot, 8 chain; block: 16 shot block; keeper: 1 catch, 2 punch)
+[move_kinds]
+shoot = { category = 1 }
+long_shoot = { category = 1, flag = 4 }
+chain_shoot = { category = 1, flag = 8 }
+dribble = { category = 2 }
+block = { category = 3 }
+shoot_block = { category = 3, flag = 16 }
+catch = { category = 4, flag = 1 }
+punch = { category = 4, flag = 2 }
+
+# how an Outcome reads the argument of its event
+[outcomes]
+succeeds = ["won", "saved"]
+fails = ["lost", "beaten"]
+
+# the passive level of a player (value_by_level): the first level whose player level he has reached. The game has no
+# level for the special passives: this table is the mod's choice (14 levels over the game's 99).
+[levels]
+from_player_level = [1, 8, 15, 22, 29, 36, 43, 50, 57, 64, 71, 78, 85, 92]
+
+# the card's main_position numbers (chara_position)
+[positions]
+gk = 1
+fw = 2
+mf = 3
+df = 4
+
+# KeeperShotPower side shooter: the battle's shot is the last shoot move of the other team within this many seconds
+[keeper_duel]
+shot_window_s = 8
+
+# the spirit pools (Aura Points' match resources, per aura) PoolRestore / PoolCost use, and the rule flag
+# <cost_flag>.<actor handle> = the percent of that player's pool costs
+[points]
+pool_resources = ["aura_points.peg", "aura_points.sp"]
+cost_flag = "aura_points.cost_pct"
+
+# the match unit's move slots (Trait `moves` / `families`): `count` entries from `first`, `stride` bytes apart; the
+# move id is at +0, or at +`id_kind3` when the entry's kind byte (at +`kind`) is 3
+[unit_moves]
+first = 0x30
+stride = 0x1C
+count = 6
+kind = 8
+id_kind3 = 4
+
+# when the on-pitch player list is read again (no timer): at a match start, at a soccer state change that is not
+# between two of these live play states (a restart, a half, a substitution happen out of them), after a
+# metamorphosis / summon command (command type `aura_command` of event_build), a declared form's start / end
+# (transform), a match resource event (a spirit pool emptied) and the signal `vrfw.passives.refresh` (a mod that
+# grants passives or changes a lineup may send it). Spirits and granted passives are checked again on every answered
+# event.
+[refresh]
+live_states = [9, 14, 15, 16]
+aura_command = 22
+
+# the character's gender numbers (chara_base) of the Trait key `gender`
+[genders]
+male = 1
+female = 2

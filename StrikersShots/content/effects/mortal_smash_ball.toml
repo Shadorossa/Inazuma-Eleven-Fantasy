@@ -1,0 +1,25 @@
+# «Mortal Smash» («Asalto mortal», whs02410; mountain shot, the keshin shot of Evera, cut-in ev60_02410): while the
+# ball flies to the goal it wears the cut-in's last shot (c0400, the ball punched out of the keshin's fist, held at
+# frame 408): the blue energy ball (its domes, shells and glows facing the camera, throbbing at the cut-in's 8-frame
+# pulse) with the ball at its centre, and the blue lightning crackling round it (the 3D bolts round the ball and the
+# long bolts striking out of it, turned about their own length to face the camera; their blinks and pose jumps
+# replayed from the cut-in), x1.6. The cut-in's scenery (black backdrop, background, the keshin smoke banks lying on
+# its pitch) and the parts already off in c0400 are dropped; nothing trails behind the ball.
+# The object is ev6241ms00 (effect/event/ev60/ev6241ms00/), built by research/scripts/mortal_smash_ball_fx.py from
+# ev60024100.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"; skillEffectBitFlag 0). The move has no
+# _or / _mm / _cro variant. Flight: content\techniques\mortal_smash_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "mortal_smash"
+from = "ega0075a"
+object = "effect/event/ev60/ev6241ms00/ev6241ms00.objbin"
+
+[[shot_aura]]
+name = "mortal_smash"
+when = { techniques = ["whs02410"] }
+aura = "mortal_smash"
+like = "ega0075a"

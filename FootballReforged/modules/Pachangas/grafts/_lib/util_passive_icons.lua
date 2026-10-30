@@ -57,8 +57,8 @@
   end
   -- special = an entry of a special slot: the declared special tile (UTIL_PCI.SPECIAL_TILE, 0 = none)
   function UTIL_PCI.RowBacking(L, k, show, badge, special)
-    funcLuaMenuCommand(3405944500, L, UTIL_PCI.ROW_MASKED_MESH, false, k)
-    funcLuaMenuCommand(3405944500, L, UTIL_PCI.ROW_BACK_MESH, show == true, k)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, L, UTIL_PCI.ROW_MASKED_MESH, false, k)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, L, UTIL_PCI.ROW_BACK_MESH, show == true, k)
     if show then
       local tile = special and UTIL_PCI.SPECIAL_TILE ~= nil and UTIL_PCI.SPECIAL_TILE ~= 0 and UTIL_PCI.SPECIAL_TILE or nil
       pcall(funcLuaMenuCommand, 558735651, L, UTIL_PCI.PLATE_TEX, tile or (badge and 63179614) or 2597149412,
@@ -86,7 +86,7 @@
       return
     end
     funcLuaMenuCommand(558735651, L, UTIL_PCI.ICON_TEX, tex, UTIL_PCI.LOCK_DUMMY, 0, idx)
-    funcLuaMenuCommand(3405944500, L, UTIL_PCI.LOCK_MESH, true, idx)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, L, UTIL_PCI.LOCK_MESH, true, idx)
   end
 
   -- Install(wrap): the wrappers of SwapPassiveSkillEffectIcon (own effect icons on the plate rows) and

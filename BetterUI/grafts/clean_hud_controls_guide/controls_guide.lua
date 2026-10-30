@@ -16,7 +16,7 @@ BETTERUI_CONTROLS_GUIDE = {
   ICON = 3794706590 --[[<CMD_FUNC3>: Y on a pad, V on the keyboard]],
   KEY = 3421673595 --[[CMD_FUNC3: what a click on the prompt sends]],
   FUNCTION = 1643904886 --[[the lists' retail CMD_FUNC3 function: the controls guide]],
-  PLAY_SOUND = 1917805374,
+  PLAY_SOUND = @crc:CMND_SND_PLAY_SE@,
   DECIDE_SOUND = 3848881948 --[[the retail sound of the controls guide button]],
   guide_on = false,
 }

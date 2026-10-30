@@ -137,10 +137,6 @@ local SN_KEY_TYPE = 1264286919  -- param store: team type of this dock
 local SN_TEXT_CMD = 2111784635   -- menu_text «Ajustes de dorsales» (Clean HUD text/rows)
 local SN_ROW = 100              -- the row id of «Ajustes de dorsales» in the COMANDOS window (above the retail 0..5)
 local SN_PARAM_TEAM_TYPE = 4081600465 -- retail OnInit reads (and consumes) the dock's team type here
-local CMND_PARAM_HAS = 2947612279
-local CMND_PARAM_GET = 3522198769
-local CMND_PARAM_DEL = 3363400568
-local CMND_PARAM_SET = 3860611758
 
 CLEAN_HUD_SHIRT_NUMBER = CLEAN_HUD_SHIRT_NUMBER or {}
 local S = CLEAN_HUD_SHIRT_NUMBER
@@ -156,15 +152,15 @@ function S.Arm()
 end
 
 local function SnSetParam(key, v)
-  funcLuaCommand(CMND_PARAM_DEL, key)
-  funcLuaCommand(CMND_PARAM_SET, key, 0, v, 1)
+  VRFW_Param.Clear(key)
+  VRFW_Param.Set(key, v)
 end
 
 -- the dock's team type: retail OnInit consumes the param, so it is read just before (nothing is consumed here)
 local function SnReadTeamType()
   S.teamType = 0
-  if funcLuaCommand(CMND_PARAM_HAS, SN_PARAM_TEAM_TYPE) then
-    S.teamType = funcLuaCommand(CMND_PARAM_GET, SN_PARAM_TEAM_TYPE) or 0
+  if VRFW_Param.Has(SN_PARAM_TEAM_TYPE) then
+    S.teamType = VRFW_Param.Get(SN_PARAM_TEAM_TYPE) or 0
   end
 end
 
@@ -174,7 +170,7 @@ local function SnArmCelebrationMenu()
     SnSetParam(SN_KEY, 1)
     SnSetParam(SN_KEY_TYPE, S.teamType or 0)
   else
-    funcLuaCommand(CMND_PARAM_DEL, SN_KEY)
+    VRFW_Param.Clear(SN_KEY)
   end
   S.armed = false
 end

@@ -1,0 +1,8 @@
+# Stoppage Time › the command the match HUD (assets\lua\_all\stoppage_time_telop.lua) asks every frame for the «+N»
+# telop: scripts\stoppage_time.lua shows it when a half's regular time ends, for config.toml [telop] hold_seconds.
+schema = "VRFW.game/2"
+
+# CMND_STOPPAGETIME_TELOP() -> shown (true / false), text, offset_x, offset_y (layout units from the retail place)
+[[VRFW.Command]]
+name = "CMND_STOPPAGETIME_TELOP"
+handler = "StoppageTime.Telop"

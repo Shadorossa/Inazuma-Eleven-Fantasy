@@ -2,14 +2,11 @@
 # table (a chunk local) gets the pages of plate_hiper_bank / Utilities' career page / plate_pages (index 6 PERFIL type 8,
 # 7 ATRIBUTOS type 9), the common block (Q / E through the VR-Framework's player page registry, the Pasivas cursor
 # mode, the pointer) and the bank's own lineup hidden while the page is over it. Split out of plate_pages on
-# 2026-10-14 (docs/refactor/aura-mods-split.md «Player page»): Inazuma Fantasy's grafts edit the same chunks (series
-# tabs, cross only, fichajes, mx_bank), so IF rebuilds this graft into its merged bank scripts (`rebuilt_by`); with
-# both mods on, a VM runs this mod's copy and then IF's merged one: every wrapper goes through EVT_PPG_Wrap (one per
+# 2026-10-14 (docs/refactor/aura-mods-split.md «Player page»): every wrapper goes through EVT_PPG_Wrap (one per
 # function, a fresh definition wrapped again) and the page declarations replace themselves by name.
 # Sources: the files of research/grafts/plate_pages.
 name = "plate_pages_bank"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged bank scripts too (its grafts edit the same chunks)
 order = 975
 module = "lua_bridge"
 requires = ["plate_hiper_bank"]

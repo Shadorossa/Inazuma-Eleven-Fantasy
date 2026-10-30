@@ -9,9 +9,10 @@
 TeamMomentum = TeamMomentum or {}
 
 local D = require "lib/declarations"
+local Live = require "VRFW/lib/match_live"
 
-local function info(...) VRFW.log("team_momentum:", ...) end
-local function warn(...) VRFW.warn("team_momentum:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("team_momentum")
 
 local LIST = {}            -- momentums in load order
 local BY_KEY = {}          -- key -> momentum
@@ -180,7 +181,7 @@ end
 
 local function step(m, match, dt)
   local state = tonumber(match.soccer_state) or -1
-  local live = m.live[state] == true and dt > 0 and dt < 1
+  local live = Live.live_dt(match, m.live) > 0
   -- drain_only_in_play: the phase stands still outside open play (its gauge and its effects stay)
   local drains = live and (not m.drain_only_in_play or m.play[state] == true)
   for team = 0, 1 do

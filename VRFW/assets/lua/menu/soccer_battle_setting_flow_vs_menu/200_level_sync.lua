@@ -9,8 +9,8 @@ VRFW_LevelSyncVs = VRFW_LevelSyncVs or {}
 
 do
   local V = VRFW_LevelSyncVs
-  local CMD = 2632661515     -- crc32("CMND_VRFW_LEVEL_SYNC")
-  local LOG = 3661580131     -- crc32("CMND_EVT_LOG")
+  local CMD = VRFW_Cmd.VRFW_LEVEL_SYNC     -- crc32("CMND_VRFW_LEVEL_SYNC")
+  local LOG = VRFW_Cmd.EVT_LOG     -- crc32("CMND_EVT_LOG")
   local TEAM_LEVEL = 2       -- CMND_GET_SOCCER_TEAM_INFO field: the team level
 
   local function synced()

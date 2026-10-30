@@ -10,10 +10,15 @@
 -- | CMND_VRFW_TEAM_LEVEL | team id, row level, level | true, rows: every member plays at `level` (+ his own data offset) |
 -- | CMND_VRFW_TEAM_MEMBER_MOVES | team id, roster slot | true, 6 moves, 6 learn levels of his loadout; false, why |
 -- | CMND_VRFW_MATCH_MEMBER | chara handle | true, team id, roster slot of the match player's member row; false, why |
+-- | CMND_VRFW_TEAM_ROSTER | team id, slot, card, slot, card… | true, rows written: those slots play those cards; false, why |
+-- | CMND_VRFW_TEAM_ROSTER_RESTORE | team id (0 = every team written) | true, rows: the data's cards back |
+-- | CMND_VRFW_TEAM_STAND_IN | slot team id, source team id, card… | true, players: the slot team plays as the source with these cards |
+-- | CMND_VRFW_TEAM_STAND_IN_RESTORE | slot team id (0 = every one) | true, teams: the slot team's data back |
 
 TeamLineup = TeamLineup or {}
 
-local function info(...) VRFW.log("team_lineup:", ...) end
+require "VRFW/lib/basics"
+local info = VRFW.logger("team_lineup")
 
 local MEMBER_STRIDE = 0x54       -- member row size (team_config member table)
 local MEMBER_CARD = 0x20         -- the row's chara_param (u32)
@@ -262,4 +267,273 @@ function TeamLineup.MatchMember(hdl)
     end
   end
   return false, string.format("card 0x%08X is in neither team of the match", card)
+end
+
+-- ------------------------------------------------------------------------------------------------ roster
+
+-- member row address -> { team, card, uid, skill } as the data had it (kept from the first write until restored)
+local ROSTER_DATA = {}
+
+-- the team's player rows (slot < 19) by roster slot: { [slot] = row address }; nil, why
+local function player_rows(team)
+  local rec, cont = find_team(team)
+  if not rec then return nil, cont end
+  local okc, cv = pcall(VRFW.mem.read_struct, "RandomTeamConfig", cont)
+  local okr, rv = pcall(VRFW.mem.read_struct, "RandomTeamRecord", rec)
+  local mbase = okc and type(cv) == "table" and cv.Members or nil
+  local first = okr and type(rv) == "table" and rv.First or nil
+  local count = okr and type(rv) == "table" and rv.Count or nil
+  if not mbase or mbase < 0x10000 or not first or not count or count == 0 or count > MAX_ROWS then
+    return nil, "member slice unreadable"
+  end
+  first = first % 65536
+  local rows = {}
+  for k = 0, count - 1 do
+    local a = mbase + (first + k) * MEMBER_STRIDE
+    local slot = rd("u8", a + MEMBER_SLOT)
+    if slot == nil then return nil, "member row " .. k .. " unreadable" end
+    if slot < 19 then rows[slot] = a end
+  end
+  return rows
+end
+
+-- one member row plays `card` (its card, uid and loadout 0: the card's own learn list)
+local function write_member(a, card, uid, skill)
+  local ms = VRFW.mem.struct("RandomTeamMember", a)
+  local ok = pcall(function()
+    ms.Param = card
+    ms.Uid = uid
+    ms.Skill = skill
+  end)
+  return ok and rd("u32", a + MEMBER_CARD) == card
+end
+
+-- CMND_VRFW_TEAM_ROSTER(team, slot, card, slot, card…): the member row in each roster slot plays that card for the
+-- team's next matches (in memory, never saved; the row's level offset, AI step and slot stay). A slot the team has no
+-- player row in is skipped. The data's cards come back with CMND_VRFW_TEAM_ROSTER_RESTORE.
+function TeamLineup.Roster(team, ...)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  local args = { ... }
+  local rows, why = player_rows(team)
+  if not rows then return false, why end
+  local wrote, skipped = 0, 0
+  for i = 1, #args - 1, 2 do
+    local slot = math.floor(tonumber(args[i]) or -1)
+    local card = math.floor(tonumber(args[i + 1]) or 0) % 4294967296
+    local a = rows[slot]
+    if a == nil or card == 0 then
+      skipped = skipped + 1
+    else
+      if ROSTER_DATA[a] == nil then
+        local okm, m = pcall(VRFW.mem.read_struct, "RandomTeamMember", a)
+        if not okm or type(m) ~= "table" or m.Param == nil or m.Uid == nil or m.Skill == nil then
+          return false, "member row of slot " .. slot .. " unreadable"
+        end
+        ROSTER_DATA[a] = { team = team, card = m.Param, uid = m.Uid, skill = m.Skill }
+      end
+      if rd("u32", a + MEMBER_CARD) ~= card then
+        if not write_member(a, card, card, 0) then return false, "write failed (slot " .. slot .. ")" end
+        wrote = wrote + 1
+      end
+    end
+  end
+  info(string.format("team 0x%08X: roster of %d slot(s), %d row(s) written, %d skipped", team, math.floor(#args / 2),
+    wrote, skipped))
+  return true, wrote
+end
+
+-- CMND_VRFW_TEAM_ROSTER_RESTORE(team): the data's cards back in the rows CMND_VRFW_TEAM_ROSTER wrote (0 = every team)
+function TeamLineup.RosterRestore(team)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  local n = 0
+  for a, d in pairs(ROSTER_DATA) do
+    if team == 0 or d.team == team then
+      if d.card and d.uid and d.skill and write_member(a, d.card, d.uid, d.skill) then n = n + 1 end
+      ROSTER_DATA[a] = nil
+    end
+  end
+  info(string.format("roster restore %s: %d row(s)", team == 0 and "every team" or string.format("team 0x%08X", team), n))
+  return true, n
+end
+
+-- ------------------------------------------------------------------------------------------------ stand-in team
+
+local ROW_WORDS = math.floor(MEMBER_STRIDE / 4)    -- a member row as u32 words (copied whole)
+local RECORD_STRIDE = 0x50              -- team_config record array stride
+local REC_FIRST, REC_COUNT = 0x28, 0x2C -- the record's member slice
+local STAFF_SLOT = 19                   -- roster slots 19 / 20: coach and manager
+local LOOK_FIELDS = { "Level", "NameText", "Formation", "Uniform", "Emblem" }
+local STAND_IN = {}                     -- slot team id -> its data as first read (record, slice, rows), until restored
+
+local function hex(n) return string.format("0x%08X", math.floor(tonumber(n) or 0) % 4294967296) end
+
+-- the team's record, container and member slice: { rec, cont, base, first, count, rows = { { addr, slot, card, words } } }
+local function read_slice(team)
+  local rec, cont = find_team(team)
+  if not rec then return nil, cont end
+  local okc, cv = pcall(VRFW.mem.read_struct, "RandomTeamConfig", cont)
+  local okr, rv = pcall(VRFW.mem.read_struct, "RandomTeamRecord", rec)
+  local base = okc and type(cv) == "table" and cv.Members or nil
+  local first = okr and type(rv) == "table" and rv.First or nil
+  local count = okr and type(rv) == "table" and rv.Count or nil
+  if not base or base < 0x10000 or not first or not count or count == 0 or count > MAX_ROWS then
+    return nil, "member slice unreadable"
+  end
+  first = first % 65536
+  local rows = {}
+  for k = 0, count - 1 do
+    local a = base + (first + k) * MEMBER_STRIDE
+    local okw, words = pcall(VRFW.mem.read_array, "u32", a, ROW_WORDS)
+    local slot = rd("u8", a + MEMBER_SLOT)
+    if not okw or type(words) ~= "table" or #words ~= ROW_WORDS or slot == nil then
+      return nil, "member row " .. k .. " unreadable"
+    end
+    rows[#rows + 1] = { addr = a, slot = slot, words = words, card = words[math.floor(MEMBER_CARD / 4) + 1] }
+  end
+  return { rec = rec, cont = cv, base = base, first = first, count = count, rows = rows }
+end
+
+-- true when no other team_config record uses rows of this slice (a stand-in write must touch one team only)
+local function own_rows(team, sl)
+  local recs, nrec = sl.cont.Records, sl.cont.RecordCount
+  if not recs or recs < 0x10000 or not nrec or nrec <= 0 then return false, "record table unreadable" end
+  local done = 0
+  while done < nrec do
+    local take = math.min(4096, nrec - done)
+    local at = recs + done * RECORD_STRIDE
+    local ok1, ids = pcall(VRFW.mem.read_array, "u32", at, take, RECORD_STRIDE)
+    local ok2, fs = pcall(VRFW.mem.read_array, "u32", at + REC_FIRST, take, RECORD_STRIDE)
+    local ok3, cs = pcall(VRFW.mem.read_array, "u32", at + REC_COUNT, take, RECORD_STRIDE)
+    if not (ok1 and ok2 and ok3) or type(ids) ~= "table" or type(fs) ~= "table" or type(cs) ~= "table" then
+      return false, "record table unreadable"
+    end
+    for k = 1, take do
+      if recs + (done + k - 1) * RECORD_STRIDE ~= sl.rec and ids[k] ~= team then
+        local f2, c2 = fs[k] % 65536, cs[k]
+        if c2 > 0 and f2 < sl.first + sl.count and sl.first < f2 + c2 then
+          return false, "member rows shared with team " .. hex(ids[k])
+        end
+      end
+    end
+    done = done + take
+  end
+  return true
+end
+
+-- the slot team's data as first read (kept until restored; read again when the table was reloaded)
+local function stand_in_data(team)
+  local s = STAND_IN[team]
+  local sl, why = read_slice(team)
+  if not sl then return nil, why end
+  if s and s.rec == sl.rec and s.first == sl.first then return s end
+  local ok, why2 = own_rows(team, sl)
+  if not ok then return nil, why2 end
+  local r = VRFW.mem.struct("RandomTeamRecord", sl.rec)
+  local look = {}
+  for _, f in ipairs(LOOK_FIELDS) do look[f] = r[f] end
+  local players, staff = {}, {}
+  for _, x in ipairs(sl.rows) do
+    if x.slot < STAFF_SLOT then players[#players + 1] = x else staff[#staff + 1] = x end
+  end
+  table.sort(players, function(a, b) return a.slot < b.slot end)
+  s = { rec = sl.rec, base = sl.base, first = sl.first, count = sl.count, rows = sl.rows, players = players,
+    staff = staff, look = look }
+  STAND_IN[team] = s
+  return s
+end
+
+local function put_row(a, words)
+  return (pcall(VRFW.mem.write_array, "u32", a, words))
+end
+
+-- CMND_VRFW_TEAM_STAND_IN(slot team, source team, card…): the slot team (a team declared with player rows of its own)
+-- plays as the source team in its next matches: the source's level, name, formation, kit and emblem, and the cards in
+-- roster slots 0.. in order (at most the slot team's player rows). A card that has a row in the source team takes a
+-- copy of that row (number, captain, boots, moves, level offset); another card takes the source's row of its slot when
+-- that row's card is not listed, else the slot team's own row, with the card's own learn list. The member slice
+-- shrinks to these rows and the staff rows, so no placeholder plays. In memory only;
+-- CMND_VRFW_TEAM_STAND_IN_RESTORE puts the data back.
+function TeamLineup.StandIn(team, source, ...)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  source = math.floor(tonumber(source) or 0) % 4294967296
+  local s, why = stand_in_data(team)
+  if not s then return false, "slot team " .. hex(team) .. ": " .. tostring(why) end
+  local src, why2 = read_slice(source)
+  if not src then return false, "source team " .. hex(source) .. ": " .. tostring(why2) end
+  local cards = {}
+  for _, c in ipairs({ ... }) do
+    c = math.floor(tonumber(c) or 0) % 4294967296
+    if c ~= 0 and #cards < #s.players then cards[#cards + 1] = c end
+  end
+  if #cards == 0 then return false, "no card" end
+  local listed, by_card, by_slot = {}, {}, {}
+  for _, c in ipairs(cards) do listed[c] = true end
+  for _, x in ipairs(src.rows) do
+    if x.slot < STAFF_SLOT then
+      if by_card[x.card] == nil then by_card[x.card] = x end
+      by_slot[x.slot] = x
+    end
+  end
+  local copied, other = 0, 0
+  for k, c in ipairs(cards) do
+    local slot = k - 1
+    local own = by_card[c]
+    local vacated = by_slot[slot]
+    if vacated and listed[vacated.card] then vacated = nil end
+    local tpl = own or vacated or s.players[k]
+    local words = {}
+    for i = 1, ROW_WORDS do words[i] = tpl.words[i] end
+    local a = s.base + (s.first + slot) * MEMBER_STRIDE
+    if not put_row(a, words) or not wr("u8", a + MEMBER_SLOT, slot) then
+      return false, "write failed (slot " .. slot .. ")"
+    end
+    if own then
+      copied = copied + 1
+    else
+      local ms = VRFW.mem.struct("RandomTeamMember", a)
+      local ok = pcall(function()
+        ms.Param = c
+        ms.Uid = c
+        ms.Skill = 0
+        ms.LevelOffset = 0
+      end)
+      if not ok or rd("u32", a + MEMBER_CARD) ~= c then return false, "write failed (slot " .. slot .. ")" end
+      other = other + 1
+    end
+  end
+  for i, x in ipairs(s.staff) do
+    if not put_row(s.base + (s.first + #cards + i - 1) * MEMBER_STRIDE, x.words) then
+      return false, "staff row write failed"
+    end
+  end
+  if not wr("u32", s.rec + REC_COUNT, #cards + #s.staff) then return false, "slice count write failed" end
+  local r = VRFW.mem.struct("RandomTeamRecord", s.rec)
+  local sr = VRFW.mem.struct("RandomTeamRecord", src.rec)
+  local okl = pcall(function()
+    for _, f in ipairs(LOOK_FIELDS) do r[f] = sr[f] end
+  end)
+  if not okl then VRFW.warn("team_lineup: team " .. hex(team) .. ": record look not written") end
+  info(string.format("team %s stands in for %s: %d player(s) (%d copied rows, %d other cards), %d staff row(s)",
+    hex(team), hex(source), #cards, copied, other, #s.staff))
+  return true, #cards
+end
+
+-- CMND_VRFW_TEAM_STAND_IN_RESTORE(slot team, 0 = every one): the slot team's rows, slice and record back
+function TeamLineup.StandInRestore(team)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  local n = 0
+  for id, s in pairs(STAND_IN) do
+    if team == 0 or id == team then
+      for _, x in ipairs(s.rows) do put_row(x.addr, x.words) end
+      wr("u32", s.rec + REC_COUNT, s.count)
+      local r = VRFW.mem.struct("RandomTeamRecord", s.rec)
+      pcall(function()
+        for _, f in ipairs(LOOK_FIELDS) do r[f] = s.look[f] end
+      end)
+      STAND_IN[id] = nil
+      n = n + 1
+    end
+  end
+  info(string.format("stand-in restore %s: %d team(s)", team == 0 and "every team" or hex(team), n))
+  return true, n
 end

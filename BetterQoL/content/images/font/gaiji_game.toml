@@ -1,8 +1,8 @@
 # Utilities, feature neutral_element (docs/game/ui/neutral-element-icon.md): the text icon [$gaiji_cmd_type00] (purple
-# square, black rim, black ensō) of the «neutro» element in gaiji_game.g4tx. Made at the first start (and after a game
+# tile, navy ensō) of the «neutro» element in gaiji_game.g4tx. Made at the first start (and after a game
 # update) from the PLAYER'S own game files by an image recipe (docs/framework/types/image.md §2.1): the retail wind
-# gaiji with its glyph covered by a stretched glyph-free column, its blue moved to the neutral purple (the black rim
-# stays black), and our own ensō (neutral\enso_gaiji.png, research/scripts/util_neutral_icon_parts.py) on top.
+# element tile (icon_cmd_type01) with its glyph covered by a stretched glyph-free column, filled with the neutral purple,
+# and our own ensō (neutral\enso_gaiji.png, research/scripts/util_neutral_icon_parts.py) on top.
 schema = "VRFW.image/1"
 
 [[texture]]
@@ -23,22 +23,25 @@ recipe = "gaiji"
 name = "enso"
 png = "neutral/enso_gaiji.png"
 
+# the glyph in the navy the retail element tiles show their glyphs in (0, 25, 96)
+[[recipe]]
+name = "enso_navy"
+from = "enso"
+ops = [{ op = "affine", mul = [1.0, 1.0, 1.0], add = [0.0, 25.0, 96.0] }]
+
+# the tile of the retail element icons of the item filter (icon_cmd_type01: rounded square without rim; the wind glyph
+# is covered with a glyph-free column of the same sprite), flat purple, navy ensō
 [[recipe]]
 name = "wind"
-game = "#/font/gaiji_game.g4tx"
-sprite = "gaiji_cmd_type01"
+game = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+sprite = "icon_cmd_type01"
 
 [[recipe]]
 name = "strip"
 from = "wind"
-ops = [{ op = "crop", box = [12, 0, 13, 64] }, { op = "resize", size = [39, 64] }]
+ops = [{ op = "crop", box = [8, 0, 10, 64] }, { op = "resize", size = [46, 64] }]
 
-# wind blue (120, 180, 255) -> purple (173, 81, 234), black (the rim) stays black
 [[recipe]]
 name = "gaiji"
 from = "wind"
-ops = [
-    { op = "paste", image = "strip", at = [12, 0] },
-    { op = "affine", mul = [1.4417, 0.45, 0.9176], add = [0.0, 0.0, 0.0] },
-    { op = "paste", image = "enso", at = [0, 0] },
-]
+ops = [{ op = "paste", image = "strip", at = [9, 0] }, { op = "fill", rgb = [173, 81, 234] }, { op = "paste", image = "enso_navy", at = [0, 0] }]

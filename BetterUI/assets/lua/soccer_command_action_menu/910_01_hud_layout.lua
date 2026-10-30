@@ -7,7 +7,6 @@
 -- relative to that locator. Display only: no input / no engine state is changed. Every engine call is inside a
 -- callback (OnSetupLayer, PostStep, the guide status functions the engine calls by name every frame).
 
-EVT_HL_ON = true                  -- false: retail layout (every wrapper passes through)
 EVT_HL_HIDE_DASH = true           -- hide «RT Esprintar» and «RT + B Esprint agresivo» (the sprint still works)
 EVT_HL_HIDE_FOCUS_FIELD = true    -- hide «LT + B Campo de foco» (soccer08_17_catch_bomb_guide; the focus field still works)
 -- «¡Subid!» guide (soccer08_17_go_ahead_guide; retail centre = locator _atc_btn10_l at -1139, 136; text sprite untouched)
@@ -37,7 +36,6 @@ EVT_HL_AURA_RELEASE_DY = 0        -- height: the locator's row (88 below the cro
 -- rounding of the other HUD plates («Pase», «Esquivar»: soccer08_08 cmd_base01 instead of the pill), a bit smaller
 -- and a bit further left. Layer scaled around the corner, then moved so the plate's centre lands at the retail centre
 -- + (DX, DY).
-EVT_HL_SKILL_OPEN_ON = true
 EVT_HL_SKILL_OPEN_SCALE = 0.85    -- layer scale (glyph, icon and plate)
 EVT_HL_SKILL_OPEN_DX = -40        -- centre shift, layout units (- = left)
 EVT_HL_SKILL_OPEN_DY = 0          -- (+ = up)
@@ -57,7 +55,7 @@ EVT_HL_TACTICS_RING_Y = 224       -- centre height (the Y/X/B/A cross of the ope
 EVT_HL_TACTICS_FLIP = false       -- true: also x scale -1 (icons swap sides; the LB / Tab glyph may be drawn mirrored)
 -- the tactics menu LB opens (plates around the Y/X/B/A cross + coach bust) on the left while it is up
 EVT_HL_TACTICS_MENU_LEFT = true
-EVT_HL_TACTICS_MENU_CROSS_X = 420 -- cross centre, layout units from the LEFT edge (the left plate, narrowed below and
+EVT_HL_TACTICS_MENU_CROSS_X = 340 -- cross centre, layout units from the LEFT edge (the left plate, narrowed below and
                                   -- pulled in towards the cross, starts at ~30)
 -- the four tactics plates (soccer08_12_cmd_act_tactics_cmd, 480 wide) narrower: scaled around their centre and the side
 -- plates pulled in so their inner end stays where it was (name text scales with them)
@@ -77,6 +75,9 @@ EVT_HL_SCREEN_W = 1920            -- layout width of a 16:9 screen
 -- left of the cross; arrows at -617 / +258 and page dots at -238 around the cross, retail spacing). flag3 itself is
 -- untouched (SetupSkillCmdInfo still sees the list open). The other slides (vs offset02, btl) are not touched.
 EVT_HL_LIST_ANCHOR = true
+-- the whole move list panel (cross, rows, hiper plates hung on it) while the list is open: layer scale of the cross
+-- layer (set on the list open / close event, not per frame) about the screen's bottom-right corner (the layout origin), so it stays anchored there and off the edge
+EVT_HL_PANEL_SCALE = 0.78
 
 local HL_GOAHEAD = 4104611069 --[[soccer08_17_go_ahead_guide]]
 local HL_AURA_REL = 3063505148 --[[soccer08_17b_aura_release_button_guide]]
@@ -87,11 +88,11 @@ local HL_COACH = 31978744 --[[soccer08_13_tactics_director_icon]]
 local HL_GOAHEAD_ATC_X, HL_GOAHEAD_ATC_Y = -1139, 136 --[[_atc_btn10_l of soccer08_07]]
 local HL_RING_X, HL_RING_Y = -130, 429
 local HL_SLOT_RIGHT, HL_SLOT_CY = -50, 300 --[[retail right edge / centre height of soccer08_19b]]
-local HL_CMND_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]]
-local HL_CMND_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]]
+local HL_CMND_POS = 1389957207
+local HL_CMND_SCALE = 3778714801
 local HL_CMND_SWAP = 558735651 --[[swap texture (layer, atlas, new sprite, slot sprite, 0, idx)]]
 local HL_CMND_GPOS = 499270986 --[[CMND_GET_MESH_GLOBAL_POSITION(layer, idx, node) -> x, y, z]]
-local HL_CMND_TACTICS_MODE = 1350751656 --[[CMND_IS_SPECIAL_TACTICS_CMD_MODE]]
+local HL_CMND_TACTICS_MODE = 1350751656
 local HL_ATLAS_0808 = 1822283221 --[[#/menu/00_soccer/soccer08/soccer08_08/<LG>/soccer08_08.g4tx]]
 local HL_NODE_GAIJI = 708999887 --[[_pos_gaiji01: centre of the Y/X/B/A cross]]
 local HL_NODE_OUT = 2812881813 --[[soccer08_07_output: layer root]]
@@ -164,7 +165,7 @@ end
 
 local function HL_Log(msg)
   if type(funcLuaCommand) == "function" then
-    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT hud_layout " .. msg)
+    pcall(funcLuaCommand, 3661580131, "EVT hud_layout " .. msg)
   end
 end
 
@@ -199,9 +200,7 @@ end
 local hl_so_swapped = false
 local function HL_SwapSkillOpen()
   hl_so_swapped = true
-  if EVT_HL_SKILL_OPEN_ON then
-    HL_Cmd(HL_CMND_SWAP, HL_SKILL_OPEN, HL_ATLAS_0808, HL_SWAPS[1][1], HL_SO_SLOT, 0, 0)
-  end
+  HL_Cmd(HL_CMND_SWAP, HL_SKILL_OPEN, HL_ATLAS_0808, HL_SWAPS[1][1], HL_SO_SLOT, 0, 0)
 end
 
 -- the «RB + rayo» plate mesh (cmd_base01) whose visible rectangle wraps the content with EVT_HL_SKILL_OPEN_PAD,
@@ -319,9 +318,6 @@ local function HL_Place(layer)
     HL_Cmd(HL_CMND_NODE_POS, HL_AURA_SLOT, 0, HL_SLOT_MESH, 1, y)
     HL_Cmd(HL_CMND_NODE_SIZE, HL_AURA_SLOT, 0, HL_SLOT_MESH, w, h)
   elseif layer == HL_SKILL_OPEN then
-    if not EVT_HL_SKILL_OPEN_ON then
-      return
-    end
     local s = EVT_HL_SKILL_OPEN_SCALE
     local x, y, w, h = EVT_HL_SkillOpenPlateRect()
     HL_Cmd(HL_CMND_NODE_POS, HL_SKILL_OPEN, 0, HL_SO_MESH, 0, x)
@@ -374,6 +370,18 @@ local function HL_PlaceActionPlates()
   end
 end
 
+local hl_panel_sent = nil
+local function HL_PlacePanel()
+  local s = 1
+  if hl_list_open and type(EVT_HL_PANEL_SCALE) == "number" then
+    s = EVT_HL_PANEL_SCALE
+  end
+  if hl_panel_sent ~= s then
+    HL_Cmd(HL_CMND_SCALE, HL_BASE, s, s, 1, 0)
+    hl_panel_sent = s
+  end
+end
+
 local function HL_PlaceAll()
   HL_Place(HL_GOAHEAD)
   HL_Place(HL_AURA_REL)
@@ -392,11 +400,9 @@ local function HL_Wrap(name, after)
   end
   rawset(_ENV, name, function(...)
     local r = HL_Pack(prev(...))
-    if EVT_HL_ON then
-      local ok, err = pcall(after, ...)
-      if not ok then
-        HL_Log(name .. " error " .. tostring(err))
-      end
+    local ok, err = pcall(after, ...)
+    if not ok then
+      HL_Log(name .. " error " .. tostring(err))
     end
     return table.unpack(r, 1, r.n)
   end)
@@ -409,7 +415,7 @@ local function HL_WrapDash(name)
     return
   end
   rawset(_ENV, name, function(a1, ...)
-    if EVT_HL_ON and EVT_HL_HIDE_DASH then
+    if EVT_HL_HIDE_DASH then
       return prev(false, ...)
     end
     return prev(a1, ...)
@@ -427,7 +433,7 @@ local HL_FOCUS_FIELD = 2211469663 --[[soccer08_17_catch_bomb_guide]]
 local hl_prevAttach = rawget(_ENV, "SetAttachButtonGuideStatus")
 if type(hl_prevAttach) == "function" then
   rawset(_ENV, "SetAttachButtonGuideStatus", function(a1, a2, a3, ...)
-    if EVT_HL_ON and EVT_HL_HIDE_FOCUS_FIELD and a1 == HL_FOCUS_FIELD then
+    if EVT_HL_HIDE_FOCUS_FIELD and a1 == HL_FOCUS_FIELD then
       return hl_prevAttach(a1, a2, false, ...)
     end
     return hl_prevAttach(a1, a2, a3, ...)
@@ -441,7 +447,7 @@ if type(hl_prevCursor) == "function" then
     if a1 == true then
       hl_zone = EVT_HL_ZONE_HOLD
     end
-    if EVT_HL_ON and EVT_HL_HIDE_CURSOR_GUIDE then
+    if EVT_HL_HIDE_CURSOR_GUIDE then
       return hl_prevCursor(false, ...)
     end
     return hl_prevCursor(a1, ...)
@@ -452,7 +458,7 @@ end
 local hl_prevSlotGuide = rawget(_ENV, "SetRunAuraSlotButtonGuideStatus")
 if type(hl_prevSlotGuide) == "function" then
   rawset(_ENV, "SetRunAuraSlotButtonGuideStatus", function(a1, ...)
-    if EVT_HL_ON and EVT_HL_AURA_SLOT_HIDE_IN_ZONE and hl_zone > 0 then
+    if EVT_HL_AURA_SLOT_HIDE_IN_ZONE and hl_zone > 0 then
       return hl_prevSlotGuide(false, ...)
     end
     return hl_prevSlotGuide(a1, ...)
@@ -474,7 +480,7 @@ local function HL_ListAnchorSync(changed)
   if type(play) ~= "function" then
     return
   end
-  local want = EVT_HL_ON and EVT_HL_LIST_ANCHOR and hl_list_open
+  local want = EVT_HL_LIST_ANCHOR and hl_list_open
     and not (HL_TacticsMode() and not EVT_HL_TACTICS_MENU_LEFT)
   if want then
     if changed or not hl_anchor then
@@ -501,6 +507,9 @@ if type(hl_prevOffset) == "function" then
     local open = a1 == true
     local changed = open ~= hl_list_open
     hl_list_open = open
+    if changed then
+      HL_PlacePanel()               -- open / close event: panel scale on / back to 1
+    end
     local ok, err = pcall(HL_ListAnchorSync, changed)
     if not ok then
       HL_Log("UpdateAnimeMoveOffsetCmdBase error " .. tostring(err))
@@ -549,6 +558,9 @@ HL_Wrap("OnSetupLayer", function(a1, a2)
     HL_SwapAuraRelease()
   elseif a1 == HL_SKILL_OPEN then
     HL_SwapSkillOpen()
+  elseif a1 == HL_BASE then
+    hl_panel_sent = nil             -- the retail setup may have reset the layer scale
+    HL_PlacePanel()
   elseif a1 == HL_BASE_CMD and type(a2) == "number" then
     hl_plate_ready[a2] = true
     hl_plate_scale_sent[a2] = nil   -- the retail setup may have reset the layer scale
@@ -587,11 +599,11 @@ HL_Wrap("PostStep", function()
   -- BetterUI: the coach bust (Byron Love) drawn behind the plates of the tactics menu is hidden while the menu is up
   -- (every frame: the engine turns it visible again); shown again once the menu closes (retail state)
   if dx ~= 0 then
-    HL_Cmd(711242136 --[[CMND_SET_LAYER_VISIBLE]], HL_COACH, 0, false)
+    HL_Cmd(711242136, HL_COACH, 0, false)
     hl_coach_hidden = true
   elseif hl_coach_hidden then
     hl_coach_hidden = false
-    HL_Cmd(711242136 --[[CMND_SET_LAYER_VISIBLE]], HL_COACH, 0, true)
+    HL_Cmd(711242136, HL_COACH, 0, true)
   end
   hl_menu_dx_applied = dx
   if not hl_logged then

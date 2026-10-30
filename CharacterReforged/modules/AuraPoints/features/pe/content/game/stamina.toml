@@ -139,7 +139,7 @@ handler = "AuraPoints.HyperGainOff"
 name = "Ap_HyperGainSkill"
 kind = "stub"
 pattern = "0F B6 41 01 3C ?? 0F 83 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? 0F 57 ?? F3 0F 10 ?? 81 0F 2F ?? ?? ?? ?? ?? ?? ??"
-rva = 0x16BB00A
+rva = 0x16FCF0D
 offset = 0x1E
 expect = "0F 86 ?? ?? ?? ??"
 code = "E9 ?? ?? ?? ??"
@@ -152,7 +152,7 @@ apply = "script"
 [[VRFW.Patch]]
 name = "Ap_HyperGainScriptA"
 pattern = "?? 53 48 83 EC 30 83 7A 08 01 48 8B D9 0F B7 42"
-rva = 0x16A1FE0
+rva = 0x16FBEE0
 expect = "40"
 bytes = "C3"
 apply = "script"
@@ -160,7 +160,7 @@ apply = "script"
 [[VRFW.Patch]]
 name = "Ap_HyperGainScriptB"
 pattern = "?? 53 48 83 EC 30 41 83 78 08 01 48 8B DA 41 0F"
-rva = 0x16A2090
+rva = 0x16FBF90
 expect = "40"
 bytes = "C3"
 apply = "script"

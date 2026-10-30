@@ -1,7 +1,8 @@
 # Player Training (moved from Inazuma Fantasy 2026-10-14): the translucent backing behind the «Entrenar» value and gauge column (owner 2026-10-13: «ponle un
 # fondo translúcido a las barras para que haya un poco de contraste con el azul»). One plain rounded panel in the rows'
-# navy at 40 % opacity, drawn at boot by the image recipes (nothing from the game's pixels ships: a flat fill). Added to
-# the btl06_13 atlas; the graft player_training_mode (PlayerTraining.TrainingMode.ROWBAR.BACK) swaps it into the gauge's retail navy pill mesh
+# navy at 40 % opacity, drawn at boot by the image recipes (nothing from the game's pixels ships: a flat fill). In the
+# mod's own atlas player_training (never a game atlas; evt_skill_slot_menu loads it: content\menus\
+# skill_table_training.toml); the graft player_training_mode (PlayerTraining.TrainingMode.ROWBAR.BACK) swaps it into the gauge's retail navy pill mesh
 # (_beans_param_base01, sprite slot beans_param_base01) and stretches that mesh over rows 1..8 (one gauge instance).
 # The panel is ONE rounded rectangle behind the whole value + gauge column (owner: a rectangle for the whole column, not one
 # per row); the game stretches it, so it carries a nine-slice (the corners keep their radius).
@@ -17,9 +18,17 @@ ops = [
     { op = "alpha_scale", mul = 102, div = 255 },
 ]
 
+[[texture]]
+atlas = "#/menu/102_team/player_training/player_training.g4tx"
+name = "player_training"
+size = [256, 256]
+
 [[sprite]]
-atlas = "#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"
+atlas = "#/menu/102_team/player_training/player_training.g4tx"
 name = "evt_trn_col_back"
+texture = "player_training"
+x = 0
+y = 0
 recipe = "trn_col_back"
 nine_slice = [20, 20, 20, 20]
 design_size = [256, 256]

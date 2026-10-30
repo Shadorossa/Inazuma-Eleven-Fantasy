@@ -3,7 +3,6 @@
 # player page's PERFIL shows the model and R3 cycles the forms instead (research/grafts/plate_model).
 name = "plate_no_view"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF's merged team dock script redefines GetSelectSettingTypeOrderList: IF's copy filters again
 order = 980
 module = "lua_bridge"
 requires = []  # was passive_config (now mod utilities: a hook file, runtime order only)

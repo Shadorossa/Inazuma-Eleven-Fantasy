@@ -1,0 +1,23 @@
+schema = "VRFW.sprite_redirect/1"
+# IE Cross: the game and the Lua ask these game atlases for the mod's sprites by name; they live in the mod's own
+# atlases (content\images\..., one per game atlas), so the game atlases get no entry.
+
+[[VRFW.SpriteRedirect]]
+name = "iecross_icon_list_tab"
+atlas = "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx"
+own_atlas = "#/menu/200_icon/iecross_own/iecross_icon_list_tab.g4tx"
+sprites = [
+    "icon_list_tab_series10",
+    "icon_list_tab_series10_off",
+]
+
+# The same sprites asked from the atlas without the language folder (the Battle Bay season carousel, the player bank's
+# series icons): the redirect matches the exact atlas path, so this path needs its own entry.
+[[VRFW.SpriteRedirect]]
+name = "iecross_icon_list_tab_common"
+atlas = "#/menu/200_icon/16_icon_list_tab/icon_list_tab.g4tx"
+own_atlas = "#/menu/200_icon/iecross_own/iecross_icon_list_tab.g4tx"
+sprites = [
+    "icon_list_tab_series10",
+    "icon_list_tab_series10_off",
+]

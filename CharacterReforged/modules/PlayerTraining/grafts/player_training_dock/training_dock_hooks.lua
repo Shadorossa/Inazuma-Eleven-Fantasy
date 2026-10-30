@@ -3,7 +3,6 @@
 -- VR-Framework's host of soccer_team_dock_menu, never merged with other grafts, no promoted locals: the chunk's locals
 -- (n5 dock no, l6 / l7 coroutines, n12 last row) are read and written through the host's locals map (host.L), so a
 -- later patch that redefines the retail functions keeps them. Nothing runs at load but the registration.
-EVT_TRD_ENABLED = true                 -- false: no "Entrenamiento" row (the bean rows stay hidden)
 EVT_TRD_ROW = 6                        -- row index of "Entrenamiento" (after the 6 retail rows 0..5)
 EVT_TRD_TEXT = 3637418543              -- menu_text crc32("evt_tr_title0") «Entrenamiento» (text/rows/training.toml)
 EVT_TRD_MENU = 1107782452              -- crc32("evt_training_menu")
@@ -63,8 +62,8 @@ function EVT_TRD_Available()
 end
 
 function EVT_TRD_Param(key, v)
-  funcLuaCommand(3363400568, key)
-  funcLuaCommand(3860611758, key, 0, v, 1)
+  VRFW_Param.Clear(key)
+  VRFW_Param.Set(key, v)
 end
 
 -- copy of soccer_formation_menu_inc OpenSelectTeamMemberControlSubWindowCore (its t13/t14/n5 are locals of the
@@ -86,7 +85,7 @@ function EVT_TRD_OpenCore(a1, a2)
     shown[i] = enable[EVT_TRD_SHOW[i] + 1]
     check[i] = 0
   end
-  local extra = EVT_TRD_ENABLED and EVT_TRD_Available()
+  local extra = EVT_TRD_Available()
   if extra then
     ids[#ids + 1] = EVT_TRD_TEXT
     shown[#shown + 1] = on
@@ -155,7 +154,7 @@ if type(host) == "table" and type(host.on) == "function" then
   host.on(STEM, "CallbackCloseCondTeamCommandSubWinSoccerTeamDock", {id = "player_training.dock.choose_row",
     phase = "around", fn = function(nxt, a1, ...)
       a1 = EVT_TRD_Retail(a1)
-      if a1 == EVT_TRD_ROW and EVT_TRD_ENABLED then
+      if a1 == EVT_TRD_ROW then
         local L = locals()
         L.l6 = nil
         L.n12 = EVT_TRD_ROW

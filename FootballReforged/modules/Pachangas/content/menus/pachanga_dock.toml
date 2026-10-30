@@ -1,0 +1,11 @@
+# Pachangas (module of Football Reforged): the Team Dock list («Plantilla de equipo», soccer_team_dock_menu) gets a
+# LEFT row. The retail list has none (only up / down / right); the graft pachanga_dock reads it in OnFunction
+# (pachangas_dock_left) to move from the «Pachanga» cell to the «Partido» cell of the list's first row
+# (docs/game/ui/pachanga-templates.md §18). On every other row it does nothing, as before.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_cmd = [
+    { layer = "team01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = "pachangas_dock_left", flag = 1 },
+]

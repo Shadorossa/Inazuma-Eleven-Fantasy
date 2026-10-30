@@ -9,12 +9,12 @@ do
   local R = EVT_IRW_REVEAL
   R.STATE = @crc:CMND_INAROGUE_WELCOME_STATE@
   R.INFO = @crc:CMND_INAROGUE_WELCOME_INFO@
-  R.LOG = 3661580131                      -- CMND_EVT_LOG
+  R.LOG = @crc:CMND_EVT_LOG@
   R.MENU = 369188769                      -- soccer_summon_menu
   R.TEMP_CHARA = 1423295663               -- (param, 1, rarity) -> a temporary menu character
   R.MENU_ACTIVE = 1558704558              -- (menu, bool)
-  R.CLOSE_MENU = 320421347                -- CMND_CLOSE_MENU_OBJECT (menu)
-  R.FADE, R.FADE_BUSY = 609722083, 1215256347
+  R.CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@                -- (menu)
+  R.FADE, R.FADE_BUSY = 609722083, @crc:CMND_BRIGHT_IS_FADE@
   R.WAIT_FRAMES = 10                      -- the screen's layers open before the performance starts
   R.MAX_PLAYERS = 30
   R.on = false

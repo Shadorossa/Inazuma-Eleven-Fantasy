@@ -2,7 +2,7 @@
 -- «Save pass on load and card look», docs/game/characters/rarity-removal.md §4.6, docs/game/characters/position-cards.md).
 -- Owner rule 2026-10-14: the position colours belong to No More Rarities (taken out of Inazuma Fantasy's position_cards):
 -- with this mod on, every card of a removed rarity shows its player's position, the same scheme as the player header
--- (no_more_rarities_header.lua): POR gold, DF blue, MC green, DL red. Without this mod: the retail look. A mode's own
+-- (no_more_rarities_header.lua): POR gold, DF green, MC blue, DL red. Without this mod: the retail look. A mode's own
 -- save (a reserved slot: INAROGUE) keeps its players' rarities and their look exactly as in the game. Which rarities
 -- are removed is the option no_more_rarities.removed_rarities (options.toml): the normal cards 0-4 always, the Ídolo
 -- cards 5-7 and the Diamante cards 8 by the choice; a kept rarity and the season cards (9+) keep their look exactly as
@@ -30,18 +30,16 @@
 --
 --   NoMoreRarities.STAFF_LOOKS[role]        the staff look ("coach" white, "manager" pink; Inazuma Fantasy's staff
 --     colours, owner rule 2026-10-14): card_frame (the card frame the engine draws). NoMoreRarities.StaffLookOf(role).
---   NoMoreRarities.WrapEngineCommand(name, make)  puts make(command) over the engine command `name`
---     ("funcLuaCommand" / "funcLuaMenuCommand") the moment the engine registers it (below).
 --
 -- When the filter goes on (1.0.11, owner 2026-10-14: «Plantilla de equipo» showed the rarity cards and still listed
 -- «Espíritu»): the engine registers funcLuaCommand / funcLuaMenuCommand AFTER every patch of the script ran
 -- (docs/game/engine/lua-patches.md §7), and until 1.0.10 the filter went on from the VM's first OnInit, through a
 -- wrapper of OnInit and a VR-Framework host handler. In soccer_team_dock_menu a later merge-path patch (Player
 -- Training's player_training_dock, promoted locals, not lua_early) redefines OnInit and the other callbacks after both,
--- so neither ran there: the overview's pitch, coach and bench cards kept the rarity look. Now the wrapper is put on the
--- command when the engine stores it (a __newindex of the globals, chained onto any earlier one: position-cards.md §4b),
--- before the VM's first callback and first card draw, whatever the callbacks become. The OnInit wrapper and the host
--- handler stay as fallbacks (a VM whose globals cannot take a metatable). The plate fills and rarity queries are wrapped
+-- so neither ran there: the overview's pitch, coach and bench cards kept the rarity look. Now the filter is a
+-- VR-Framework command hook registered at load (VRFW_Host.HookCommand): in place when the engine stores the command,
+-- right over it, before the VM's first callback and first card draw, whatever the callbacks become. The OnInit wrapper
+-- and the host handler register it again as fallbacks (a VM whose globals cannot take a metatable). The plate fills and rarity queries are wrapped
 -- at load and again at the VM's first menu command (a later patch may redefine them).
 --
 -- While it applies, in every menu VM that draws cards (soccer_common / MENU_DEF.SetupCharaRarityIcon), the menu
@@ -82,8 +80,8 @@
 local NO_TITLE_SPRITE = "no_more_rarities_no_title"
 local POSITION_LOOKS = {
   [0] = {key = "goalkeeper", card_frame = 16, status_plate = "status_chr_base01_s04", personal_plate = "status_chr_plate01_04", rgb = {231, 185, 1}},
-  [1] = {key = "defender", card_frame = 17, status_plate = "status_chr_base01_s02", personal_plate = "status_chr_plate01_02", rgb = {34, 119, 238}},
-  [2] = {key = "midfielder", card_frame = 18, status_plate = "status_chr_base01_s01", personal_plate = "status_chr_plate01_01", rgb = {38, 158, 30}},
+  [1] = {key = "defender", card_frame = 18, status_plate = "status_chr_base01_s01", personal_plate = "status_chr_plate01_01", rgb = {38, 158, 30}},
+  [2] = {key = "midfielder", card_frame = 17, status_plate = "status_chr_base01_s02", personal_plate = "status_chr_plate01_02", rgb = {34, 119, 238}},
   [3] = {key = "forward", card_frame = 19, status_plate = "status_chr_base01_s01_type03", personal_plate = "status_chr_plate01_19", rgb = {192, 52, 33}},
 }
 -- The staff looks (Inazuma Fantasy's staff colours; the generator reads these lines too, keep them as they are:
@@ -102,70 +100,6 @@ function NoMoreRarities.StaffLookOf(role)
   return NoMoreRarities.STAFF_LOOKS[role or ""]
 end
 
--- The engine command wrappers: put on the command when the engine registers it (it does so after every patch of the
--- script ran), through a __newindex of the globals chained onto any earlier one (an include's own, e.g. a card graft of
--- soccer_common: it stores first, this wrapper goes over what it stored). A command already registered (an INCLUDE at
--- run time) is wrapped at once. Defines a metamethod only: no engine call.
-if NoMoreRarities.WrapEngineCommand == nil then
-  local makers_by_name = {}            -- command name -> {make, ...} in registration order
-  local globals_hooked = false
-
-  local function WrapAll(name, command)
-    for _, make in ipairs(makers_by_name[name]) do
-      command = make(command)
-    end
-    return command
-  end
-
-  local function HookGlobals()
-    local ok_meta, meta = pcall(getmetatable, _ENV)
-    if not ok_meta or (meta ~= nil and type(meta) ~= "table") then
-      return false                     -- a protected metatable: the callers' fallbacks install it
-    end
-    if meta == nil then
-      meta = {}
-      if not pcall(setmetatable, _ENV, meta) then
-        return false
-      end
-    end
-    local previous = meta.__newindex
-    meta.__newindex = function(globals, key, value)
-      if previous == nil then
-        rawset(globals, key, value)
-      elseif type(previous) == "function" then
-        previous(globals, key, value)
-      else
-        previous[key] = value
-      end
-      if makers_by_name[key] ~= nil and type(value) == "function" then
-        local stored = rawget(globals, key)
-        if type(stored) == "function" then
-          rawset(globals, key, WrapAll(key, stored))
-        end
-      end
-    end
-    return true
-  end
-
-  -- -> true when the wrapper is in place or will be at the engine's registration
-  function NoMoreRarities.WrapEngineCommand(name, make)
-    local makers = makers_by_name[name]
-    if makers == nil then
-      makers = {}
-      makers_by_name[name] = makers
-    end
-    makers[#makers + 1] = make
-    local current = rawget(_ENV, name)
-    if type(current) == "function" then
-      rawset(_ENV, name, make(current))
-      return true
-    end
-    if not globals_hooked then
-      globals_hooked = HookGlobals()
-    end
-    return globals_hooked
-  end
-end
 local draws_cards = type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function"
   or (type(rawget(_ENV, "MENU_DEF")) == "table" and type(MENU_DEF.SetupCharaRarityIcon) == "function")
 
@@ -360,7 +294,7 @@ end
 -- the menu command under this file's filter (the header's own band swap goes there: it must not be filtered)
 function NoMoreRarities.RawMenuCommand()
   local look = NoMoreRarities.CardLook
-  return look ~= nil and look.raw or funcLuaMenuCommand
+  return look ~= nil and look.raw or funcLuaMenuCommand  -- look.raw: VRFW_Host.RealMenuCommand
 end
 
 if draws_cards and NoMoreRarities.CardLook == nil then
@@ -718,33 +652,63 @@ if draws_cards and NoMoreRarities.CardLook == nil then
     WrapGlobal("GetCharaParamRarity", RarityQuery(ParamType))
   end
 
-  -- the filter over the menu command (the engine's, or what earlier wrappers made of it)
-  local function MenuFilter(raw)
-    L.raw = raw
-    L.installed = true
-    return function(...)
-      if not L.late_done then
-        L.late_done = true             -- the VM's first menu command: every patch of the script ran
-        pcall(WrapPlateFunctions)
+  -- the command a handler calls: the handled command goes on through the hook chain (nxt), any other one (the coach
+  -- frame's sprite swaps) straight to the engine, past this filter
+  local function CommandUnder(nxt, handled)
+    return function(id, ...)
+      if id == handled then
+        return nxt(id, ...)
       end
-      local handler = HANDLERS[(...)]
-      if handler ~= nil and Ready() then
-        return handler(raw, ...)
-      end
-      return raw(...)
+      return VRFW_Host.RealMenuCommand(id, ...)
     end
   end
 
-  -- fallback (no metatable on the globals): installed from the VM's first OnInit
+  -- the filter over the card commands, right over the engine's menu command
+  local function MenuFilter(nxt, ...)
+    L.installed = true
+    local id = ...
+    local handler = HANDLERS[id]
+    if handler ~= nil and Ready() then
+      return handler(CommandUnder(nxt, id), ...)
+    end
+    return nxt(...)
+  end
+
+  -- the VM's first menu command: every patch of the script ran
+  local LATE_OWNER = "NoMoreRarities.card_look_late"
+  local function FirstMenuCommand(nxt, ...)
+    if not L.late_done then
+      L.late_done = true
+      VRFW_Host.UnhookCommand(LATE_OWNER, {menu = true})
+      pcall(WrapPlateFunctions)
+    end
+    return nxt(...)
+  end
+
+  local function RegisterHooks()
+    local ids = {}
+    for id in pairs(HANDLERS) do
+      ids[#ids + 1] = id
+    end
+    local innermost = {menu = true, priority = VRFW_Host.INNERMOST}
+    L.raw = VRFW_Host.RealMenuCommand
+    local installed = VRFW_Host.HookCommand(ids, MenuFilter, "NoMoreRarities.card_look", innermost)
+    if not L.late_done then
+      VRFW_Host.HookCommand("*", FirstMenuCommand, LATE_OWNER, innermost)
+    end
+    return installed
+  end
+
+  -- fallback (no metatable on the globals): registered again from the VM's first OnInit
   function L.Install()
     if L.installed or type(funcLuaMenuCommand) ~= "function" then
       return
     end
-    funcLuaMenuCommand = MenuFilter(funcLuaMenuCommand)
+    L.installed = RegisterHooks()
   end
 
   pcall(WrapPlateFunctions)
-  NoMoreRarities.WrapEngineCommand("funcLuaMenuCommand", MenuFilter)
+  RegisterHooks()
 
   -- the fallbacks: the retail OnInit wrapped here, and the same entry as a VR-Framework host handler
   local init = rawget(_ENV, "OnInit")

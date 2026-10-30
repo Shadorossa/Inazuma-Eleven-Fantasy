@@ -1,0 +1,25 @@
+# «Supertrampolín relámpago» (Inazuma-1 Drop, whs00690 and whs00690_or, same cut-in; wind shot of three players,
+# cut-in ev60_00690): while the ball flies to the goal it wears the cut-in's last cut (c0800, held at frame 462 from the
+# aura's first frame): the ball in its blue / sky starburst of lights with the yellow lightning crackling round it, both
+# camera-facing (billboards, as the cut-in camera the ball flies at sees them) and centred on the ball, so it looks the
+# same from the touchline as from the front; the blue / sky cones over it and the four ribbons trailing ~32 m straight
+# behind it with the electric sparks flashing along them, coming out of the kick point (soft rear end) and fading out
+# at their far end. The cut-in's big sky bolts and sparks reaching far off the flight stay out.
+# The object is ev6069i100 (effect/event/ev60/ev6069i100/), built by research/scripts/inazuma_1_drop_ball_fx.py from
+# ev60006900.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\inazuma_1_drop_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "inazuma_1_drop"
+from = "ega0075b"
+object = "effect/event/ev60/ev6069i100/ev6069i100.objbin"
+
+[[shot_aura]]
+name = "inazuma_1_drop"
+when = { techniques = ["whs00690", "whs00690_or"] }
+aura = "inazuma_1_drop"
+like = "ega0075b"

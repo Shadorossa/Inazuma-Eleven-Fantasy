@@ -75,14 +75,15 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
     local G_X, G_Y, G_W, G_H = 94, -816, 476, 44
     local MESH_LABEL = 1257514352          -- _gtxt_stamina01
     local MESH_EMPTY, MESH_FILL = 2609329121, 2043683848       -- _hp_empty01, _hp_bar02
-    local ATLAS = 1191797350               -- #/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx
+    local ATLAS = 1191797350               -- #/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx (the retail gauge's hp_bar02)
+    local OWN_ATLAS = 641552684            -- #/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx (the mod's own atlas)
     local TEX_TAG, TEX_FRAME = 2270199711, 538967808           -- stamina_points_pe_tag01, hp_base01
     -- the fill: the fill layer's frame quad with the fill's sprite hp_bar02, over the bar's fill rect, top-left
     -- (100, -820), 448 x 24 (gauge units, y up), cut to the current PE's share of its width
     local TEX_FILL = 1460691304            -- hp_bar02
     local FILL_X, FILL_Y, FILL_W, FILL_H = 100, -820, 448, 24
     local G_VIS_TOP = 2                    -- the frame's visible rows are 2..29 of the 44-row mesh
-    -- Chrono Stone's digits stamina_points_pe_num0..9 (btl06_13 atlas, content\images\...\stamina_points_pe_num.toml)
+    -- Chrono Stone's digits stamina_points_pe_num0..9 (the mod's own atlas, content\images\...\stamina_points_pe_num.toml)
     P.DIGITS = {[0] = 2312268123, 4275395021, 1742473335, 282802401, 2394926402, 4189625812, 1622264942, 397868280,
       2265571689, 4027503103}
     P.digit = {}                           -- per digit layer: the digit its frame shows now (nil = not swapped yet)
@@ -237,7 +238,7 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
       Cmd(CMD_MESH, l, MESH_EMPTY, false, 0)
       Cmd(CMD_MESH, l, MESH_FILL, false, 0)
       if l == P.TAG then
-        Cmd(CMD_SWAP_TEX, l, ATLAS, TEX_TAG, TEX_FRAME, 0, 0)
+        Cmd(CMD_SWAP_TEX, l, OWN_ATLAS, TEX_TAG, TEX_FRAME, 0, 0)
       elseif l == P.FILL then
         Cmd(CMD_SWAP_TEX, l, ATLAS, TEX_FILL, TEX_FRAME, 0, 0)
       elseif l ~= P.BAR then
@@ -303,7 +304,7 @@ if type(rawget(_ENV, "UpdateCharaStatusPlateInfoByCharaStHdl")) == "function" th
           Cmd(CMD_POS, l, x, y, 0, 0)
           if P.digit[l] ~= d then
             P.digit[l] = d
-            Cmd(CMD_SWAP_TEX, l, ATLAS, P.DIGITS[d], TEX_FRAME, 0, 0)
+            Cmd(CMD_SWAP_TEX, l, OWN_ATLAS, P.DIGITS[d], TEX_FRAME, 0, 0)
           end
         end
       end

@@ -40,11 +40,11 @@ M.KIND_CODE = { any = 0, special = 1, general = 2, archetype = 3 }
 M.E_NOT_ALLOWED, M.E_LOCKED, M.E_WRONG_CLASS, M.E_DUPLICATE, M.E_UNKNOWN, M.E_BAD_SLOT, M.E_LIMIT = 1, 2, 3, 4, 5, 6, 7
 
 local band = bit32.band
+local Id = require "VRFW/lib/ids"
 
 function M.u32(v)
   if type(v) ~= "number" then return 0 end
-  local n = v >= 0 and math.floor(v) or math.ceil(v)
-  return n % 4294967296
+  return Id.u32(v)
 end
 
 function M.key(hdl)

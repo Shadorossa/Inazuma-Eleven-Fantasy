@@ -7,7 +7,7 @@
 -- layers (which layer holds the band / portrait / gauge); what a card shows and how is decided by EVT_HC.
 -- No main-chunk locals (both menus are near the 200-local limit): everything lives in the global EVT_HC.
 EVT_HC = EVT_HC or {}
-EVT_HC.SKILL_INFO = 2580586398       -- CMND_GET_SOCCER_SKILL_INFO (skill, 13 aura type | 16 change skill | 11 cost)
+EVT_HC.SKILL_INFO = @crc:CMND_GET_SOCCER_SKILL_INFO@       -- (skill, 13 aura type | 16 change skill | 11 cost)
 EVT_HC.MC_TYPE = 6                   -- aura type «Modo cambio»
 EVT_HC.TEAM02 = 3964676290           -- #/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx
 EVT_HC.SP_RGB = {0.32, 0.72, 1.0}
@@ -15,7 +15,7 @@ EVT_HC.TENS_RGB = {0.99, 0.51, 0.0}   -- round 12: the retail TENSIÓN orange (n
 EVT_HC.PEG_RGB = {0.72, 0.42, 1.0}   -- the PEG gauge / label / number tint (the match HUD's PEG purple)
 
 function EVT_HC.Log(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "hiper_card", ...)
+  pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "hiper_card", ...)
 end
 
 function EVT_HC.AuraType(skill)
@@ -75,15 +75,15 @@ function EVT_HC.Header(A, skill, name, inst)
   if band ~= nil then
     funcLuaMenuCommand(558735651, A, EVT_HC.TEX_T30, band, 1716659057 --[[fs_base01]], 0, inst)
   end
-  funcLuaMenuCommand(3405944500, A, 734954092 --[[_fs_base01]], true, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, A, 734954092 --[[_fs_base01]], true, inst)
   local t = EVT_HC.AuraType(skill)
   local icon = t ~= nil and EVT_HC.TYPE_ICON[t] or nil
   if icon ~= nil then
     funcLuaMenuCommand(558735651, A, 2320109963 --[[icon_common.g4tx]], icon, 4285917355 --[[icon_fs_area_dmy01]], 0, inst)
   end
-  funcLuaMenuCommand(3405944500, A, 1605611365 --[[_icon_fs_area_dmy01]], icon ~= nil, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, A, 1605611365 --[[_icon_fs_area_dmy01]], icon ~= nil, inst)
   if type(name) == "string" then
-    funcLuaMenuCommand(1083631230, A, 2915321899 --[[_text_fs01]], name, inst)
+    funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, A, 2915321899 --[[_text_fs01]], name, inst)
     funcLuaMenuCommand(2735666188, A, 2915321899, true, inst)
   end
   return icon
@@ -131,7 +131,7 @@ function EVT_HC.McGet(chara, skill)
   local m = {chara = pchara or 0}
   local okk, face = pcall(funcLuaCommand, 347353059, pparam)
   m.face = (okk and type(face) == "number" and face ~= 0) and face or m.chara
-  local okn, a, b = pcall(funcLuaCommand, 4060384944 --[[CMND_GET_CHARA_INFO]], m.chara, 10)
+  local okn, a, b = pcall(funcLuaCommand, @crc:CMND_GET_CHARA_INFO@, m.chara, 10)
   m.name = (okn and type(b) == "string" and b) or (okn and type(a) == "string" and a) or nil
   return m
 end
@@ -148,15 +148,6 @@ function EVT_HC.Title(name, fusion, mc)
   return name
 end
 
--- the whole card name: the title, plus the pool of a PEG / SP spirit (not for a fusion / mode change)
-function EVT_HC.CardName(skill, name, fusion, mc)
-  local t = EVT_HC.Title(name, fusion, mc)
-  if fusion == nil and mc == nil then
-    t = EVT_HC.PoolName(t, EVT_HC.PegInfo(skill))
-  end
-  return t
-end
-
 -- ---- portrait: a partner drawn as retail draws a miximax partner (UpdateMixiMaxDetailInfo) -----------------------
 -- A = a team00_30 aura window (or a clone with its meshes): _icon_chr_dmy01 (200 px, mask icon_chr_win_msk01), face
 -- type 12; no type-12 face for the key -> the plain chara icon the bank / dock lists draw. Both portrait slots cleared
@@ -168,13 +159,13 @@ function EVT_HC.Partner(A, face, ctx, inst)
   inst = inst or 0   -- layer instance (2026-10-06: the match HUD's RB plates draw 2 cards; the pages use 0)
   funcLuaMenuCommand(4176779611 --[[clear face icon]], A, inst, EVT_HC.FS_SLOT)
   funcLuaMenuCommand(4176779611 --[[clear face icon]], A, inst, EVT_HC.CHR_SLOT)
-  funcLuaMenuCommand(3405944500 --[[MESH_VISIBLE]], A, EVT_HC.FS_MESH, false, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@ --[[MESH_VISIBLE]], A, EVT_HC.FS_MESH, false, inst)
   if face == nil or face == 0 then
-    funcLuaMenuCommand(3405944500, A, EVT_HC.CHR_MESH, false, inst)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, A, EVT_HC.CHR_MESH, false, inst)
     return false
   end
-  funcLuaMenuCommand(3405944500, A, EVT_HC.CHR_MESH, true, inst)
-  pcall(funcLuaCommand, 3148141229 --[[CMND_EVT_APPEARANCE]], ctx or "plate_page", face)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, A, EVT_HC.CHR_MESH, true, inst)
+  pcall(funcLuaCommand, @crc:CMND_EVT_APPEARANCE@, ctx or "plate_page", face)
   local has = funcLuaMenuCommand(2208175668 --[[has a miximax face icon]], face)
   if has then
     funcLuaMenuCommand(346643487 --[[SwapLayerFaceIconTex]], A, inst, EVT_HC.CHR_MESH, EVT_HC.CHR_SLOT, face, 0, 12, true,
@@ -202,8 +193,8 @@ EVT_HC.FACE_BY_TYPE = {[0] = {2449339029, 1051570875, 8}, [1] = {2449339029, 105
   [2] = {478320441, 3237726902, 12}, [3] = {2449339029, 1051570875, 14}}
 function EVT_HC.Portrait(A, skill, fusion, mc, ctx, inst)
   inst = inst or 0
-  funcLuaMenuCommand(3405944500, A, EVT_HC.FS_MESH, false, inst)
-  funcLuaMenuCommand(3405944500, A, EVT_HC.CHR_MESH, false, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, A, EVT_HC.FS_MESH, false, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, A, EVT_HC.CHR_MESH, false, inst)
   funcLuaMenuCommand(4176779611 --[[clear face icon]], A, inst, EVT_HC.FS_SLOT)
   funcLuaMenuCommand(4176779611 --[[clear face icon]], A, inst, EVT_HC.CHR_SLOT)
   local partner = (fusion ~= nil and fusion.face) or (mc ~= nil and mc.face) or nil
@@ -215,7 +206,7 @@ function EVT_HC.Portrait(A, skill, fusion, mc, ctx, inst)
   local face = t ~= nil and EVT_HC.FACE_BY_TYPE[t] or nil
   local okc, cid = funcLuaCommand(EVT_HC.SKILL_INFO, skill, 17)
   if okc and cid ~= nil and cid ~= 0 and face ~= nil then
-    funcLuaMenuCommand(3405944500, A, face[1], true, inst)
+    funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, A, face[1], true, inst)
     funcLuaMenuCommand(346643487 --[[SwapLayerFaceIconTex]], A, inst, face[1], face[2], cid, 0, face[3], true, true, true, 5)
     return cid
   end
@@ -284,17 +275,17 @@ function EVT_HC.PegLook(L, inst, on, kind)
       tostring(kind), tostring(ok1), tostring(r1), tostring(ok2), tostring(r2)))
   end
   pcall(funcLuaMenuCommand, 558735651, L, EVT_HC.TEAM02, CALC_CRC("gtxt_tension01"), CALC_CRC("gtxt_tension01"), 0, inst)
-  funcLuaMenuCommand(3405944500, L, CALC_CRC("_gtxt_tension01"), not on, inst)
-  funcLuaMenuCommand(3405944500, L, CALC_CRC("_tension_off01"), not on, inst)
-  funcLuaMenuCommand(3405944500, L, CALC_CRC("_gtxt_t01"), true, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, L, CALC_CRC("_gtxt_tension01"), not on, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, L, CALC_CRC("_tension_off01"), not on, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, L, CALC_CRC("_gtxt_t01"), true, inst)
   -- Keep the obsolete label transparent even if a parent show restores mesh visibility.
-  pcall(funcLuaMenuCommand, 2219773080, L, inst, CALC_CRC("_gtxt_tension01"), on and 0 or 1)
-  pcall(funcLuaMenuCommand, 2219773080, L, inst, CALC_CRC("_tension_off01"), on and 0 or 1)
-  pcall(funcLuaMenuCommand, 855211291 --[[CMND_SET_PRIM_COLOR]], L, inst, 3424269865 --[[number prim]], c[1], c[2], c[3])
+  pcall(funcLuaMenuCommand, @crc:CMND_SET_PRIM_ALPHA@, L, inst, CALC_CRC("_gtxt_tension01"), on and 0 or 1)
+  pcall(funcLuaMenuCommand, @crc:CMND_SET_PRIM_ALPHA@, L, inst, CALC_CRC("_tension_off01"), on and 0 or 1)
+  pcall(funcLuaMenuCommand, @crc:CMND_SET_PRIM_COLOR@, L, inst, 3424269865 --[[number prim]], c[1], c[2], c[3])
   -- 2026-10-07 (Nacho: «80T» with a white patch behind the last digit and the «T»): the number field's 24 x 24
   -- placeholder _num_tension_dmy01 (under the last digit) came back when the caller showed _pos_tension01 (a shown
   -- locator shows all its meshes); off here, after every show
-  funcLuaMenuCommand(3405944500, L, CALC_CRC("_num_tension_dmy01"), false, inst)
+  funcLuaMenuCommand(@crc:CMND_SET_MESH_VISIBLE@, L, CALC_CRC("_num_tension_dmy01"), false, inst)
 end
 
 -- the pool (keshin / armour PEG, totem SP) goes into the card's name, as the extra bands do («Sirena  ·  PEG 170»;
@@ -309,7 +300,7 @@ end
 -- the AT slot of a team02_02 layer back to the retail «AT» label (the pool is no longer drawn there)
 function EVT_HC.PegPool(L, peg)
   pcall(funcLuaMenuCommand, 558735651, L, EVT_HC.TEAM02, CALC_CRC("gtxt_cmd_at01"), CALC_CRC("gtxt_cmd_at01"), 0, 0)
-  pcall(funcLuaMenuCommand, 855211291, L, 0, 2223127589, 1, 1, 1)
+  pcall(funcLuaMenuCommand, @crc:CMND_SET_PRIM_COLOR@, L, 0, 2223127589, 1, 1, 1)
 end
 
 -- the gauge's lit squares: cost / scale × 10 (retail), at least 1 when the scale is known; PEG mode: scale = the pool (2026-10-04: pool / 10 lit every square)

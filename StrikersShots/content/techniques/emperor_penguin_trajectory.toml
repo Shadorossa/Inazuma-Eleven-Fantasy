@@ -1,0 +1,24 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flights of Pingüino emperador n.º 1 / 2 / 3 (Emperor Penguin No. 1 / 2 / 3; whs00610, whs00400 +
+# _or, whs01050 + _or / _mm).
+#
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre held at one height the whole way, high enough that the penguins and their streaks never
+# touch the grass: n.º 1 2.00 m (they reach 1.45 m under the ball at x0.8), n.º 2 2.10 m (about 1 m under it at x0.7),
+# n.º 3 1.60 m (they reach about 1.1 m under the ball at x0.8). unblockable = false: the game's block rules (this mod
+# changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Pingüino emperador n.º 1 (whs00610).
+[[edit]]
+target = "whs00610"
+trajectory = { points = [[0.0, 2.00]], straight = true, unblockable = false }
+
+# Pingüino emperador n.º 2 (covers whs00400_or).
+[[edit]]
+target = "whs00400"
+trajectory = { points = [[0.0, 2.10]], straight = true, unblockable = false }
+
+# Pingüino emperador n.º 3 (covers whs01050_or / _mm).
+[[edit]]
+target = "whs01050"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }

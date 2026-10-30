@@ -1,5 +1,4 @@
--- Player Training › classic (Chrono Stone style) training rules (moved from Inazuma Fantasy 2026-10-14) (docs/game/mechanics/stat-training.md §10,
--- training-classic.md §2). Pure Lua, no game access: the same rules as the plugin's training::rules before
+-- Player Training › classic (Chrono Stone style) training rules (moved from Inazuma Fantasy 2026-10-14) (docs/game/mechanics/training-classic.md §2). Pure Lua, no game access: the same rules as the plugin's training::rules before
 -- 2026-10-10 (step by step, so the menu reaches exactly the same states). Three rule sets:
 --
 -- * trade (default since 2026-09-30): Libertad = free points. While any are left, raising a stat spends one. With none
@@ -18,7 +17,6 @@ local R = {}
 R.N = 9
 local KICK, CONTROL, TECHNIQUE, PRESSURE, PHYSICAL, INTELLIGENCE, AGILITY, SPEED, LUCK = 0, 1, 2, 3, 4, 5, 6, 7, 8
 R.SPEED, R.LUCK = SPEED, LUCK
-R.NAMES = { [0] = "Disparo", "Control", "Técnica", "Presión", "Físico", "Inteligencia", "Agilidad", "Rapidez", "Suerte" }
 
 -- stop codes (CMND_PLAYERTRAINING_SET's second answer)
 R.NONE, R.NO_ROOM, R.CAP, R.NOT_TRAINED, R.NO_RETURN, R.FLOOR = 0, 1, 2, 3, 4, 5

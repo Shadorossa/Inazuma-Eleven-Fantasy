@@ -3,7 +3,7 @@
 # Galileo's ev74_01140 from the Chronicle match against Gemini Storm, played by the match's keeper). Any shot, with or without a technique; the random retail scenes stay for every other save.
 # Only when the ball comes AT the keeper: his own save is a standing catch (front / high / low), never a dive
 # (keeper_scenes 1.3; the game's save command of his SoccerCalcKeeperSaveComponent, basic-move-cutscenes.md §6.6).
-# Mechanism: technique engine `[[keeper_scene]] max_gauge_damage` + `keeper_save` (docs/app/technique-engine.md §3.6;
+# Mechanism: technique engine `[[keeper_scene]] max_gauge_damage` + `keeper_save` (docs/framework/types/technique.md;
 # docs/game/mechanics/basic-move-cutscenes.md §6). Always on (1.3.1).
 # Its choice among the conditional saves goes through the VR-Framework's scene selector (situation keeper.conditional,
 # docs/framework/scene-select.md): the highest priority among the saves whose conditions hold, the roll among equals.

@@ -20,11 +20,8 @@ local COL_FIRST = 11           -- slot k: move col 11 + 2 (k - 1), level col 12 
 local LISTS = nil              -- [u32 card] = { {move, level} x 9 }
 local MIX = nil                -- [u32 card] = aura command id
 
-local function u32(v)
-  if type(v) ~= "number" then return 0 end
-  local n = v >= 0 and math.floor(v) or math.ceil(v)
-  return n % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 local function load_lists()
   if LISTS then return LISTS end

@@ -68,15 +68,15 @@ do
   end
 
   local function exists(k)
-    return funcLuaCommand(2947612279, k) == true
+    return VRFW_Param.Has(k)
   end
 
   local function put(k, v, keep)
-    funcLuaCommand(3363400568, k)
+    VRFW_Param.Clear(k)
     if keep then
-      funcLuaCommand(3860611758, k, 0, v)
+      VRFW_Param.Set(k, v, "plain")
     else
-      funcLuaCommand(3860611758, k, 0, v, 1)
+      VRFW_Param.Set(k, v)
     end
   end
 
@@ -153,7 +153,7 @@ do
 
   local function clear(keys)
     for _, k in ipairs(keys or {}) do
-      funcLuaCommand(3363400568, k)
+      VRFW_Param.Clear(k)
     end
   end
 
@@ -323,21 +323,21 @@ do
     local hidden = B.HideForPassives()
     pcall(UpdatePersonalPlate, h)
     coroutine.yield()
-    funcLuaCommand(3363400568, B.KEY_DONE)
+    VRFW_Param.Clear(B.KEY_DONE)
     put(B.KEY_PARENT, B.owner)
     put(B.KEY_REQ, h)
     local wait = 0
     while true do
       coroutine.yield()
       if exists(B.KEY_DONE) then
-        funcLuaCommand(3363400568, B.KEY_DONE)
+        VRFW_Param.Clear(B.KEY_DONE)
         break
       end
       if exists(B.KEY_REQ) then
         wait = wait + 1
         if wait > 90 then            -- the plate did not take it (no passive_config plate file)
-          funcLuaCommand(3363400568, B.KEY_REQ)
-          funcLuaCommand(3363400568, B.KEY_PARENT)
+          VRFW_Param.Clear(B.KEY_REQ)
+          VRFW_Param.Clear(B.KEY_PARENT)
           ng()
           B.Log("passive session not taken", h)
           break
@@ -419,9 +419,9 @@ do
       B.open, B.arm, B.autosave = false, false, false
       B.owner = 2645952753 --[[main_menu]]
       if exists(B.GUIDE_KEY) then
-        B.owner = funcLuaCommand(3522198769, B.GUIDE_KEY)
+        B.owner = VRFW_Param.Get(B.GUIDE_KEY)
       end
-      B.club = exists(B.KIND_KEY) and funcLuaCommand(3522198769, B.KIND_KEY) == 1
+      B.club = exists(B.KIND_KEY) and VRFW_Param.Get(B.KIND_KEY) == 1
       return orig(...)
     end
   end)

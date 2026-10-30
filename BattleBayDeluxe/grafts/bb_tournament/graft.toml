@@ -1,7 +1,8 @@
 # Battle Bay «Torneo» (docs/game/modes/bb-tournament.md) of the mod bb_chronicle_teams (Battle Bay Deluxe): the run
 # lives in the mod's scripts (scripts\tournament.lua + lib\tourney.lua, commands CMND_BBD_TOURN_*, content\game\
-# tournament.toml); the player's matches are the game's own Battle Bay campaign matches; the bracket overlay is the
-# Victory Road final-stage bracket art added to the Battle Bay top menu (content\menus\bb_tournament.toml); texts
+# tournament.toml); the player's matches are the game's own Battle Bay campaign matches; the bracket overlay is added
+# to the Battle Bay top menu (content\menus\bb_tournament.toml), its tree page is the framework's bracket
+# screen vrfw_bracket_menu (VRFW_Bracket); texts
 # evt_bbd_tn_* (text\rows\menu_text.toml); knockout matches use the rulebook content\rules\bbd_knockout.toml
 # (the VR-Framework rule engine: extra time + penalties), selected with CMND_VRFW_RULE_ENGINE_SELECT.
 #   bb_stadium_top_menu              bbt_common.lua + bbt_top.lua + bbt_mode.lua: the «Campaña» row in Torneo mode
@@ -21,10 +22,13 @@
 #                                    juego» hosts the Torneo (its tile: the panel over the bracket, the grid, the
 #                                    matches, the sync after them); the Battle Bay top menu never opens for it
 #   game_over_menu                   bbt_over.lua: the game-over telop after a group-stage defeat that keeps the player
-#                                    in the run is skipped (CMND_BBD_TOURN_STILL_IN); an eliminating defeat keeps it
+#                                    in the run, and after every league match (a draw or a defeat is a league result),
+#                                    is closed unseen from Step (CMND_BBD_TOURN_STILL_IN; the retail telop again if the
+#                                    menu does not close); an eliminating defeat keeps it
 #   sub_window_group                 bbt_common.lua: Accept on a row of the Torneo's options panel (L / R window)
 #                                    changes the value in place (OnEnter; 1.5.10); 1.5.16: the panel's third L / R row (OpenWindow
 #                                    wrapped: the mod's 3-row locator evt_bbd_tn_opts_locator, row instance 3)
+# bbt_top.lua's parts (bbt_top_*.lua) follow it in this order on both top menus: one chunk, shared locals.
 # Order 346: after bb_draft (345), so the sync runs before the Draft's own top-menu sync (outer OnInit wrapper).
 # Globals only (BBT, BBT_*); nothing runs at chunk load but the CMND_GET_BB_STADIUM_CAMPAIGN_INFO wrapper's install.
 name = "bb_tournament"
@@ -48,6 +52,36 @@ stem = "bb_stadium_top_menu"
   type = "append_block"
   src = "bbt_top.lua"
   marker = "bb_tournament top"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_overlay.lua"
+  marker = "bb_tournament top overlay"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_advance.lua"
+  marker = "bb_tournament top advance"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_league_hub.lua"
+  marker = "bb_tournament top league hub"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_entry.lua"
+  marker = "bb_tournament top entry"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_mode_selector.lua"
+  marker = "bb_tournament top mode selector"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_wraps.lua"
+  marker = "bb_tournament top wraps"
 
   [[files.ops]]
   type = "append_block"
@@ -118,6 +152,36 @@ stem = "soccer_top_menu"
   type = "append_block"
   src = "bbt_top.lua"
   marker = "bb_tournament top"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_overlay.lua"
+  marker = "bb_tournament top overlay"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_advance.lua"
+  marker = "bb_tournament top advance"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_league_hub.lua"
+  marker = "bb_tournament top league hub"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_entry.lua"
+  marker = "bb_tournament top entry"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_mode_selector.lua"
+  marker = "bb_tournament top mode selector"
+
+  [[files.ops]]
+  type = "append_block"
+  src = "bbt_top_wraps.lua"
+  marker = "bb_tournament top wraps"
 
   [[files.ops]]
   type = "append_block"

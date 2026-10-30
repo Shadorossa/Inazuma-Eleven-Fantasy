@@ -1,9 +1,12 @@
 -- Character Reforged › duplicate players: the pass over a duplicated save (the mechanism; the policy is the mods'
 -- duplicate rules, lib/duplicate_players/rules.lua). Ported from Inazuma Fantasy's «Ajustar save al mod»
--- (scripts/lib/save_slots/adjust.lua, docs/game/engine/savefix.md) on 2026-10-14, without its own rules.
+-- (scripts/lib/save_slots/adjust.lua, docs/framework/save-adjust.md) on 2026-10-14, without its own rules.
 --
 --   * rarity (policy normal_card_rarity): every normal card (chara_param col 41 = 0), and every special card whose col 41
---     the policy lists (normal_special_rarities: the tiers a rule's option removes), whose saved rarity differs -> it
+--     the policy lists (normal_special_rarities: the tiers a rule's option removes), whose saved rarity differs -> it.
+--     With policy convert_special_cards (the save adjust action) such a special card also becomes his character's
+--     base card (CardFacts:base_card_of: param_id_crc, a team's captainParamId) and joins that character's copies: when
+--     the club already has him, the copies are merged into the one keep_first keeps (as the duplicates below)
 --   * hidden cards (policy release_cards_hidden_in): every copy is released, a copy in a team too (team slot,
 --     memberNum, captain, team aura entry); their spirit cards (spirit lists) are emptied
 --   * duplicates (policy one_card_per): ONE card per character (a normal card by its chara_base, a special card by its
@@ -73,8 +76,17 @@ MergePass.retirable = retirable
 -- what "the same card" is: per character, a normal card is its character and a special card (or an unknown row) its
 -- card; per card, always the card. Ordered keys: every character key sorts before every card key, then by number.
 local function same_card_key(record, one_card_per)
-  if one_card_per == "character" and record.special_rarity == 0 and record.character ~= 0 then return 0, record.character end
-  return 1, record.card
+  local normal = record.special_rarity == 0 or record.converts_to ~= nil
+  if one_card_per == "character" and normal and record.character ~= 0 then return 0, record.character end
+  return 1, record.converts_to or record.card
+end
+
+-- the group of a record: per policy one_card_per; without it, only the character copies a conversion merges (a normal
+-- card or a converted special card by its character; nil = no group)
+local function group_key(record, one_card_per)
+  if one_card_per ~= nil then return same_card_key(record, one_card_per) end
+  if record.character ~= 0 and (record.special_rarity == 0 or record.converts_to ~= nil) then return 0, record.character end
+  return nil
 end
 
 -- the comparison of policy keep_first: a is kept before b
@@ -101,12 +113,14 @@ local function keeps_before(keep_first)
   end
 end
 
--- plan.rarity = { {handle, card, rarity, character} }, plan.release = { {handle, card, kept} } (kept 0 = a hidden card),
--- plan.protected = { {handle, card, why, kept} } (cards the pass would release but may not)
+-- plan.rarity = { {handle, card, rarity, character, converts_to} }, plan.release = { {handle, card, kept} } (kept 0 = a
+-- hidden card), plan.protected = { {handle, card, why, kept} } (cards the pass would release but may not). A record's
+-- base_card (his character's base card) is read when convert_special_cards asks for it.
 function MergePass.plan(records, policy, is_hidden)
   local plan = { rarity = {}, release = {}, protected = {} }
   local special = policy.normal_special_rarities or {}
-  local groups, keys = {}, {}
+  local convert = policy.convert_special_cards == true and policy.normal_card_rarity ~= nil
+  local groups, keys, converting = {}, {}, {}
   for _, record in ipairs(records) do
     if eligible(record) then
       if is_hidden(record.card) then
@@ -116,20 +130,27 @@ function MergePass.plan(records, policy, is_hidden)
           plan.protected[#plan.protected + 1] = { record.handle, record.card, "hidden card", 0, record }
         end
       else
-        if policy.normal_card_rarity ~= nil and (record.special_rarity == 0 or special[record.special_rarity])
-            and record.rarity ~= policy.normal_card_rarity then
-          plan.rarity[#plan.rarity + 1] = { record.handle, record.card, record.rarity, record.character }
+        if convert and record.special_rarity ~= nil and record.special_rarity ~= 0 and special[record.special_rarity]
+            and record.base_card ~= nil and record.base_card ~= record.card then
+          record.converts_to = record.base_card
         end
-        if policy.one_card_per ~= nil then
-          local kind, value = same_card_key(record, policy.one_card_per)
-          local key = kind .. ":" .. value
-          local group = groups[key]
-          if not group then
-            group = {}
-            groups[key] = group
-            keys[#keys + 1] = { kind, value, key }
+        if policy.normal_card_rarity ~= nil and (record.special_rarity == 0 or special[record.special_rarity])
+            and (record.rarity ~= policy.normal_card_rarity or record.converts_to ~= nil) then
+          plan.rarity[#plan.rarity + 1] = { record.handle, record.card, record.rarity, record.character, record.converts_to }
+        end
+        if policy.one_card_per ~= nil or convert then
+          local kind, value = group_key(record, policy.one_card_per)
+          if kind ~= nil then
+            local key = kind .. ":" .. value
+            local group = groups[key]
+            if not group then
+              group = {}
+              groups[key] = group
+              keys[#keys + 1] = { kind, value, key }
+            end
+            group[#group + 1] = record
+            if record.converts_to ~= nil then converting[key] = true end
           end
-          group[#group + 1] = record
         end
       end
     end
@@ -141,7 +162,7 @@ function MergePass.plan(records, policy, is_hidden)
   local before = keeps_before(policy.keep_first)
   for _, key in ipairs(keys) do
     local group = groups[key[3]]
-    if #group >= 2 then
+    if #group >= 2 and (policy.one_card_per ~= nil or converting[key[3]]) then
       table.sort(group, before)
       local kept = group[1].handle
       for i = 2, #group do
@@ -182,6 +203,7 @@ end
 local function new_report()
   return {
     players = 0, hidden_released = 0, duplicates_merged = 0, protected = 0, to_normal_rarity = 0, to_normal_rarity_from = {},
+    to_base_card = 0,
     element_spirits = { 0, 0, 0, 0 }, element_spirits_lost = 0, without_element = 0, spirit_entries_cleared = 0,
     spirit_cards_removed = 0, team_slots_cleared = 0, captains_cleared = 0, team_auras_cleared = 0,
     bank_words_cleared = 0, kizuna_items_cleared = 0, kizuna_lines_cleared = 0, residents_unlinked = 0,
@@ -236,17 +258,20 @@ function MergePass.run(tree, facts, policy)
       if handle and handle ~= 0 then in_a_team[handle] = true end
     end
   end
+  local converting = policy.convert_special_cards == true
   local records, index_of = {}, {}
   for i = 0, count - 1 do
     local handle = handles[i + 1]
     if handle ~= 0 then
       local card = cards[i + 1]
+      local special_rarity, character = facts:special_rarity_of(card), facts:character_of(card)
       index_of[handle] = i
       records[#records + 1] = {
         handle = handle, card = card, rarity = rarities[i + 1], attributes = attributes[i + 1], level = level_of(i),
         experience = experiences[i + 1], get_order = get_orders[i + 1], in_a_team = in_a_team[handle] == true,
-        in_a_fusion = false, move_uses = 0, special_rarity = facts:special_rarity_of(card), character = facts:character_of(card),
+        in_a_fusion = false, move_uses = 0, special_rarity = special_rarity, character = character,
         source = source_of(i),
+        base_card = (converting and special_rarity ~= nil and special_rarity ~= 0 and character ~= 0) and facts:base_card_of(character) or nil,
       }
     end
   end
@@ -259,17 +284,39 @@ function MergePass.run(tree, facts, policy)
       entry[1], entry[2], entry[3], entry[4] ~= 0 and string.format(" of 0x%08X", entry[4]) or "", record.attributes, record.source)
   end
 
-  -- ---- rarity of the normal cards
+  -- ---- rarity of the normal cards (and the special cards that become their character's base card)
   local rarity_from = {}
-  local rarity_path = humans .. ".charaRarity"
+  local rarity_path, card_path = humans .. ".charaRarity", humans .. ".param_id_crc"
+  -- the card each converted player has after the pass (handle -> base card)
+  local final_card = {}
   for _, entry in ipairs(plan.rarity) do
     local i = index_of[entry[1]]
     local wanted = T.le(policy.normal_card_rarity, 4)
     if sub(columns.charaRarity, i * 4 + 1, i * 4 + 4) ~= wanted then P:put(rarity_path, i * 4, wanted, 4, columns.charaRarity) end
+    local base = entry[5]
+    if base ~= nil then
+      P:put(card_path, i * 4, T.le(base, 4), 4, columns.param_id_crc)
+      final_card[entry[1]] = base
+      report.to_base_card = report.to_base_card + 1
+    end
     report.to_normal_rarity = report.to_normal_rarity + 1
     rarity_from[entry[3]] = (rarity_from[entry[3]] or 0) + 1
-    report.lines[#report.lines + 1] = string.format("rarity 0x%08X (m_saveHumanP[%d]) card 0x%08X character 0x%08X: %d -> %d",
-      entry[1], i, entry[2], entry[4] or 0, entry[3], policy.normal_card_rarity)
+    report.lines[#report.lines + 1] = string.format("rarity 0x%08X (m_saveHumanP[%d]) card 0x%08X character 0x%08X: %d -> %d%s",
+      entry[1], i, entry[2], entry[4] or 0, entry[3], policy.normal_card_rarity,
+      base ~= nil and string.format(", card -> base card 0x%08X", base) or "")
+  end
+  local function card_after(handle)
+    return final_card[handle] or cards[index_of[handle] + 1]
+  end
+  -- a converted captain: his team's captain card follows
+  if next(final_card) ~= nil then
+    for _, team in ipairs(teams) do
+      local captain = T.num(tree, team, "captainStHdl")
+      local captain_card = T.num(tree, team, "captainParamId")
+      if captain and captain_card and final_card[captain] then
+        P:set(team .. ".captainParamId", captain_card, final_card[captain])
+      end
+    end
   end
   for rarity, n in pairs(rarity_from) do report.to_normal_rarity_from[#report.to_normal_rarity_from + 1] = { rarity, n } end
   table.sort(report.to_normal_rarity_from, function(a, b) return a[1] < b[1] end)
@@ -373,9 +420,9 @@ function MergePass.run(tree, facts, policy)
     else
       report.duplicates_merged = report.duplicates_merged + 1
       local k = index_of[kept]
-      outcome.merges[#outcome.merges + 1] = { duplicate = handle, duplicate_card = card, kept = kept, kept_card = cards[k + 1], character = facts:character_of(card) }
+      outcome.merges[#outcome.merges + 1] = { duplicate = handle, duplicate_card = card, kept = kept, kept_card = card_after(kept), character = facts:character_of(card) }
       what = string.format("duplicate (Lv %d, EXP %d) merged into 0x%08X (m_saveHumanP[%d], card 0x%08X, Lv %d, EXP %d)",
-        level_of(i), experiences[i + 1], kept, k, cards[k + 1], level_of(k), experiences[k + 1])
+        level_of(i), experiences[i + 1], kept, k, card_after(kept), level_of(k), experiences[k + 1])
     end
     local element = facts:element_of(card)
     if element then
@@ -473,7 +520,7 @@ function MergePass.run(tree, facts, policy)
         local kept = kept_of[captain]
         if kept and present[kept] then
           P:set(team .. ".captainStHdl", captain, kept)
-          if captain_card then P:set(team .. ".captainParamId", captain_card, cards[index_of[kept] + 1]) end
+          if captain_card then P:set(team .. ".captainParamId", captain_card, card_after(kept)) end
           report.captains_repointed = report.captains_repointed + 1
         else
           P:set(team .. ".captainStHdl", captain, 0)
@@ -661,11 +708,11 @@ function MergePass.summary(report)
   for i, entry in ipairs(report.to_normal_rarity_from) do from[i] = "(" .. entry[1] .. ", " .. entry[2] .. ")" end
   return string.format(
     "Duplicate players: %d players; %d hidden cards released, %d duplicates merged into the kept card, %d kept (not retirable), %d normal cards "
-      .. "-> the normal rarity [%s]; element spirits +%d wind +%d forest +%d fire +%d mountain (%d lost to the cap, %d "
+      .. "-> the normal rarity [%s] (%d special cards -> their base card); element spirits +%d wind +%d forest +%d fire +%d mountain (%d lost to the cap, %d "
       .. "players without element); %d spirit entries (%d cards) of hidden cards emptied; moved to the kept card: %d "
       .. "team slots, %d captains, %d team auras, %d bank words, %d dock-bit records; cleared: %d team slots, %d "
       .. "captains, %d team auras, %d bank words, %d Kizuna items + %d lines, %d residents, %d item references; %d bytes patched",
-    report.players, report.hidden_released, report.duplicates_merged, report.protected or 0, report.to_normal_rarity, concat(from, ", "),
+    report.players, report.hidden_released, report.duplicates_merged, report.protected or 0, report.to_normal_rarity, concat(from, ", "), report.to_base_card,
     report.element_spirits[1], report.element_spirits[2], report.element_spirits[3], report.element_spirits[4],
     report.element_spirits_lost, report.without_element, report.spirit_entries_cleared, report.spirit_cards_removed,
     report.team_slots_repointed, report.captains_repointed, report.team_auras_repointed, report.bank_words_repointed,

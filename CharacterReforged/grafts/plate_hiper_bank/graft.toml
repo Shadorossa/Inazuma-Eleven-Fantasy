@@ -1,6 +1,5 @@
-# Character Reforged (moved from Inazuma Fantasy 2026-10-14, docs/refactor/aura-mods-split.md «Player page»; rebuilt
-# by Inazuma Fantasy: its grafts series_tabs / cross_only / fichajes / mx_bank edit the same chunks, so its merged
-# bank scripts carry this graft too; the appended common block wraps through EVT_PH_Wrap, safe in both copies).
+# Character Reforged (moved from Inazuma Fantasy 2026-10-14, docs/refactor/aura-mods-split.md «Player page»; the
+# appended common block wraps through EVT_PH_Wrap).
 # Personal plate 'Hipertécnica' page, the two player banks (research/scripts/plate_hiper_build.py patch_bank; docs/
 # game/skill-slots.md): page table {1, 0, 2, 3} -> {1, 0, 2, 3, 5, 6} (type 6 = the mod Utilities' career page «TRAYECTORIA»,
 # index 5, which Utilities declares to the VR-Framework's player page registry; was IF's graft career_page until
@@ -8,7 +7,6 @@
 # docs/framework/player-pages.md), the guide edit and the common block. Last of all (order 950, hiper-match-slot.md 16.34).
 name = "plate_hiper_bank"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged bank scripts too (its grafts edit the same chunks)
 order = 950
 module = "lua_bridge"
 requires = []
@@ -55,7 +53,6 @@ local t2 = {1, 0, 2, 3, 5, 6} -- EVT plate_hiper (index 4 = Hiper page, type 5) 
   type = "append_block"
   src = "../plate_hiper_common/evt_plate_hiper_common.lua"
   marker = "plate_hiper common"
-  crc = "none"
 
 [[files]]
 stem = "chara_bank_menu_for_search"
@@ -96,4 +93,3 @@ local t3 = {1, 0, 2, 3, 5, 6} -- EVT plate_hiper (index 4 = Hiper page, type 5) 
   type = "append_block"
   src = "../plate_hiper_common/evt_plate_hiper_common.lua"
   marker = "plate_hiper common"
-  crc = "none"

@@ -108,10 +108,11 @@ when = [
 
 # ------------------------------------------------------------------------------------------------ what other readers see
 
-# 1 while a declared off mode is the current mode, else 0 (no value before the mode service answers): the one test
-# every reader of «no passives here» uses (this mod's plate and formation hook files, other mods' own passive slots,
-# script-driven passives, team bonus screens): native answers `when = { state = "BetterQoL.passives_off", equals = 1 }`,
-# scripts `VRFW.state.get("BetterQoL.passives_off") == 1`
+# 1 while a declared off mode is the current mode, else 0 (no value before the mode service answers): this mod's own
+# test (its plate and formation hook files). content/passive_slots/no_passives.toml names it in a [[VRFW.NoPassives]],
+# so the framework publishes vrfw.passive.all_off, the key other mods read (native answers
+# `when = { state = "vrfw.passive.all_off", equals = 1 }`, scripts `VRFW.state.get("vrfw.passive.all_off") == 1`).
+# BetterQoL.passives_off still answers as before for readers that have not moved yet.
 [[VRFW.State]]
 key = "BetterQoL.passives_off"
 formula = "lookup_or(PassiveConfig.OffMode, 1, state(mode.current)) == 0"

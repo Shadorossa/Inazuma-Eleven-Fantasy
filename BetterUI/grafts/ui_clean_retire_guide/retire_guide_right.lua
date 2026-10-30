@@ -7,7 +7,6 @@
 -- right edge (EVT_RG_HALF_W from the bottom centre) - EVT_RG_RIGHT_GAP - width, y = EVT_RG_DY. Offline only: the
 -- online layout (retire + AFK kick guides side by side) is retail's. Only from the retail callbacks (never at load).
 -- Tune in game: EVT_RG_RIGHT_GAP (room for the pause icon), EVT_RG_DY (level with the icon).
-EVT_RG_ON = true
 EVT_RG_HALF_W = 960        -- layout units from the bottom centre to the right screen edge (1920-wide layout)
 EVT_RG_RIGHT_GAP = 130     -- the prompt's right end this far from the right edge: the pause icon + a small gap
 EVT_RG_DY = 0              -- layout units up (+) / down (-) from the retail height, to line up with the pause icon
@@ -17,7 +16,7 @@ local EVT_RG_AFK = 4270197957 --[[soccer01_33_game_afk_kick_guide]]
 local evt_rg_last = nil
 
 local function EVT_RG_Place()
-  if not EVT_RG_ON or rawget(_ENV, "EVT_UI_PRESET") == "off" or type(funcLuaMenuCommand) ~= "function" then
+  if rawget(_ENV, "EVT_UI_PRESET") == "off" or type(funcLuaMenuCommand) ~= "function" then
     return
   end
   local okOpen, open = pcall(funcLuaMenuCommand, 2640875187 --[[CMND_IS_OPEN_LAYER]], EVT_RG_LAYER, 0)
@@ -61,7 +60,6 @@ end
 -- «Reanudar» and «Formación» (content\images\menu\00_soccer\pause_prompts.toml repaints the soccer01_33 text plate).
 -- Retail UpdateGameEndButtonGuide centres it (x = -width / 2, y 0) only when the stamp guide moves; after retail the
 -- local y is written again whenever it is not ours. Only from the retail callback (never at load).
-EVT_GE_ON = true
 EVT_GE_CENTRE_Y = 150      -- height of the plate's centre above the screen bottom (= «Reanudar»'s)
 EVT_GE_NODE_Y = 92         -- retail: the locator node _under_guide01 (top of the plate) above the bottom
 EVT_GE_PLATE_H = 52        -- the soccer01_33 plate height (layout units, scale 1)
@@ -70,7 +68,7 @@ local EVT_GE_LAYER = 902585941 --[[soccer01_33_gameend_guide]]
 local evt_ge_last = nil
 
 local function EVT_GE_Place()
-  if not EVT_GE_ON or rawget(_ENV, "EVT_UI_PRESET") == "off" or type(funcLuaMenuCommand) ~= "function" then
+  if rawget(_ENV, "EVT_UI_PRESET") == "off" or type(funcLuaMenuCommand) ~= "function" then
     return
   end
   local okOpen, open = pcall(funcLuaMenuCommand, 2640875187 --[[CMND_IS_OPEN_LAYER]], EVT_GE_LAYER, 0)

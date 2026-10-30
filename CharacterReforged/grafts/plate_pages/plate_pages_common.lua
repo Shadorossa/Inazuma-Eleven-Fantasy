@@ -57,7 +57,7 @@ EVT_PPG_CURSOR = false
 function EVT_PPG_SetCursor(on)
   EVT_PPG_CURSOR = on == true
   for _, l in ipairs({1973487846, 1658289671}) do      -- team00_01_chara_card_for_soccer / _for_leader
-    pcall(funcLuaMenuCommand, 3518307824, l, not EVT_PPG_CURSOR)
+    pcall(funcLuaMenuCommand, @crc:CMND_SET_ENABLE_CTRL_FOCUS@, l, not EVT_PPG_CURSOR)
   end
   return true
 end
@@ -72,7 +72,7 @@ end)
 EVT_PPG_Wrap("FuncOnBack", function(orig)
   return function(...)
     if EVT_PPG_CURSOR then
-      pcall(funcLuaCommand, 3661580131, "EVT_PPG back swallowed (Pasivas cursor mode)")
+      pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT_PPG back swallowed (Pasivas cursor mode)")
       return
     end
     return orig(...)
@@ -101,7 +101,7 @@ function EVT_PPG_PointerPage(target, dir, bank)
     P.Goto(nil)
   end
   if not ok then
-    pcall(funcLuaCommand, 3661580131, "EVT_PPG pointer page error", tostring(err))
+    pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT_PPG pointer page error", tostring(err))
   end
   return ok
 end
@@ -126,12 +126,12 @@ do
   local F = EVT_PPG_FANTASY_MOVES
   F.GET_SKILL = 903078840               -- (charaStHdl, list position 0..5) -> move (save skill_list)
   F.LEARNABLE = 3475351727              -- (charaStHdl) -> ok, {move per slot}, {unlock level per slot}
-  F.LEARN_LEVEL = 8867751               -- CMND_VRFW_CHARACTER_LEARN_LEVEL (charaStHdl, move) -> level needed, player's level
-  F.SKILL_INFO = 2580586398             -- (move, 9) -> ok, category (8 = an aura)
+  F.LEARN_LEVEL = @crc:CMND_VRFW_CHARACTER_LEARN_LEVEL@               -- (charaStHdl, move) -> level needed, player's level
+  F.SKILL_INFO = @crc:CMND_GET_SOCCER_SKILL_INFO@             -- (move, 9) -> ok, category (8 = an aura)
   F.BOARD_INV = 632801955               -- (charaStHdl, board slot, kind 1 placed / 0 native) -> inventory handle
   F.INV_ITEM = 2662166687               -- (inventory handle, 0) -> move
   F.ROW_COUNT = 6
-  F.SKILL_SET = 640242939               -- CMND_VRFW_SKILL_SET (charaStHdl) -> answered, aura, mix, aura_from, mix_from, row1..6, technique1..6
+  F.SKILL_SET = @crc:CMND_VRFW_SKILL_SET@               -- (charaStHdl) -> answered, aura, mix, aura_from, mix_from, row1..6, technique1..6
 
   local function U32(v)
     v = tonumber(v) or 0
@@ -351,7 +351,7 @@ do
         GetSkillEvoLevelByCharaStHdl = grade
       end
       if not ok then
-        pcall(call, 3661580131, "EVT_PPG fantasy moves: retail row fill failed", tostring(r1))
+        pcall(call, @crc:CMND_EVT_LOG@, "EVT_PPG fantasy moves: retail row fill failed", tostring(r1))
         return orig(hdl, slot, ...)
       end
       return r1, r2, r3
@@ -393,15 +393,15 @@ do
   -- frame, guide label). Victory Road: untouched.
   F.AI_USE_GET = 232181607              -- (charaStHdl, list position) -> the AI may use the move (nil = no move there)
   F.AI_USE_SET = 139872667              -- (charaStHdl, list position, allowed): writes the save
-  F.SET_SKILL = 2394267160              -- CMND_SET_SKILL (charaStHdl, move, list position): swap, writes the save
+  F.SET_SKILL = @crc:CMND_SET_SKILL@              -- (charaStHdl, move, list position): swap, writes the save
   F.LIST_POSITION_OF = 26437624         -- (charaStHdl, move) -> its list position (6 or more = not in the list)
   F.FOCUSED_INSTANCE = 2603265800       -- menu command (layer) -> focused instance
   F.AI_TOGGLE_FUNCTION = 2941571381     -- OnFunctionCommon id of the AI-use toggle
-  F.PLAY_SOUND = 1917805374
+  F.PLAY_SOUND = @crc:CMND_SND_PLAY_SE@
   F.CANNOT_SOUND = 3791946501           -- sy0004
-  F.BOARD_PLACE = 3270716539            -- CMND_CHARACTERREFORGED_BOARD_PLACE (charaStHdl, inventory handle, board slot)
-  F.BOARD_CLEAR = 1398771376            -- CMND_CHARACTERREFORGED_BOARD_CLEAR (charaStHdl, board slot, keepOpen)
-  F.LOG = 3661580131                    -- CMND_EVT_LOG
+  F.BOARD_PLACE = @crc:CMND_CHARACTERREFORGED_BOARD_PLACE@            -- (charaStHdl, inventory handle, board slot)
+  F.BOARD_CLEAR = @crc:CMND_CHARACTERREFORGED_BOARD_CLEAR@            -- (charaStHdl, board slot, keepOpen)
+  F.LOG = @crc:CMND_EVT_LOG@
   F.BOARD_SLOTS = 9                     -- board slots 0-8 (0-5 = list positions, 8 = the aura slot)
 
   -- the move on board slot `slot` of card `hdl` and its inventory handle (placed item, else the native one)
@@ -572,7 +572,7 @@ do
         local okFrom, from = pcall(call, F.LIST_POSITION_OF, card, move)
         if target == nil or target.position == nil or not okFrom or type(from) ~= "number" or from < 0
             or from >= F.ROW_COUNT then
-          pcall(call, 3661580131, "EVT_PPG fantasy moves: swap refused", tostring(move), tostring(instance))
+          pcall(call, @crc:CMND_EVT_LOG@, "EVT_PPG fantasy moves: swap refused", tostring(move), tostring(instance))
           pcall(call, F.PLAY_SOUND, F.CANNOT_SOUND)
           return false
         end

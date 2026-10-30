@@ -1,0 +1,9 @@
+# Character Reforged's own atlas evt_cr_page (the game has none): this texture creates it. Its sprites (player_page.toml,
+# plate_form_badges.toml, pair_confirm_panel.toml) are packed into it by the image type; the screens that show them
+# load it (content/menus/page_atlas.toml, 10_win/pair_confirm.toml).
+schema = "VRFW.image/1"
+
+[[texture]]
+atlas = "#/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx"
+name = "evt_cr_page"
+size = [2048, 980]

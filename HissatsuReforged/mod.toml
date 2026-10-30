@@ -4,7 +4,7 @@ former_ids = ["hissatsu_reforged"]
 # supertécnicas, y de ahí serán dependientes Hissatsu Effects y otras cosas más»). The BASE mod of the special-move
 # family: the balance of the game's special moves (power, tension cost, recast) and the «double icon» (a move with two
 # properties, e.g. long shot + counter shot, shows both badges). Split out of Inazuma Fantasy (its _phases.toml part
-# hissatsu_overhaul, and the generic half of its part move_icons). No DLL, no script: declarations of the VR-Framework's
+# hissatsu_overhaul, and the generic half of its part move_icons). No DLL: declarations of the VR-Framework's
 # technique / image types and one Lua graft (research/grafts/move_icons, `mod = "hissatsu_reforged"`).
 # docs/game/mods/hissatsu-reforged.md.
 # Layout (docs/framework/mod-layout.md):
@@ -14,6 +14,12 @@ former_ids = ["hissatsu_reforged"]
 #                                               (200_icon\15_icon_common\move_icons.toml) and the detail card's long +
 #                                               counter shot tag (102_team\team02\team02_02\move_tags_combined.toml)
 #   text\keys.toml                              the «Mods» screen's name and description
+#   config.toml [critical]                      the critical hit's values (base chance, «Crítico» archetype bonus,
+#                                               multiplier, cap): docs/game/mods/hissatsu-critical.md
+#   scripts\critical.lua                        answers the framework's critical stage (crit_check) from that config
+#   content\params\no_breach.toml               forceWinShootPercentage = 0: the game's breach roll is gone
+#   text\rows\menu_text.toml, skill_text.toml   build 0 «Brecha» renamed «Crítico»: its 4 team passives,
+#                                               its keeper passive and its 5-rank charge texts (9 languages)
 #   modules\<Module>\                           the embedded module mods, shipped in this folder (docs/framework/
 #                                               mod-families.md §1.3): HissatsuEffects (order 10), HissatsuLevelUp
 #                                               (order 20); each keeps its own id, prefix, version, texts and save data
@@ -24,23 +30,28 @@ former_ids = ["hissatsu_reforged"]
 name = "Hissatsu Reforged"
 prefix = "HissatsuReforged"
 folder = "HissatsuReforged"
-version = "1.3.0"
+version = "1.19.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Rebalances the game's special moves: new minimum and maximum power, tension cost and recast time for 683 of the game's moves. The power each grade adds stays the game's. A move with two properties (long shot and counter shot) shows both icons in every move list and on its card. The base of the special-move mods: Hissatsu Effects and Hissatsu Level Up are its modules."
+description = "Rebalances the game's special moves: new minimum and maximum power, tension cost and recast time for 683 of the game's moves. The power each grade adds stays the game's. A move with two properties (long shot and counter shot) shows both icons in every move list and on its card. Special moves can land a critical hit that multiplies their power (both teams), and the Breach team build becomes the Critical build: more critical chance for its team instead of breaches at the keeper. The base of the special-move mods: Hissatsu Effects and Hissatsu Level Up are its modules."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-23"
+updated = "2026-10-30"
 # 1.2.0 (owner 2026-10-23: «HissatsuEffects y HissatsuLevelUp deben ir como módulos de HissatsuReforged»): both are
 # embedded modules (modules\HissatsuEffects\, modules\HissatsuLevelUp\); their ids, prefixes, saves and texts unchanged
 # vr_framework 2.4.13: the technique type's [[edit]] (power_min / power_max / tp / recast), the technique engine's move
 # icon sets (CMND_VRFW_MOVE_ICONS) and the mod families ([module] rows of this mod's entry on the «Mods» screen). Works
 # on the base game: Inazuma Fantasy and Character Reforged are not needed.
-requires = ["VRFW>=2.4.13"]
+# VRFW 2.171.0: [[VRFW.TechniqueFamily]] and the `families` key (content/techniques/families.toml)
+# VRFW 2.194.0: the rule engine's critical stage (triggers crit_check / crit, effects crit_chance / crit_mult /
+# crit_cap): scripts/critical.lua answers it from config.toml [critical]
+requires = ["VRFW>=2.260.0"]
 conflicts = []
-permissions = []
-# the graft move_icons patches INCLUDE'd menu scripts (soccer_common, personal_plate_inc): ModLoader 1.7.0
-loader_modules = ["lua_patch"]
+# command: CMND_HISSATSUREFORGED_MOVE_FAMILIES (content/game/technique_families.toml, scripts/technique_families.lua)
+permissions = ["command"]
+# the graft move_icons patches INCLUDE'd menu scripts (soccer_common, personal_plate_inc): ModLoader 1.7.0; lua_bridge:
+# the menus' call of the families command
+loader_modules = ["lua_patch", "lua_bridge"]
 loader_min = "1.7.0"
 
 [exports]

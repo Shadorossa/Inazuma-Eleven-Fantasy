@@ -6,7 +6,7 @@ EVT_PREMATCH_LINEUPS = true       -- false = retail pre-match flow (kill switch)
 EVT_PREMATCH_LOG = false          -- true: probe lines in evt_loader\loader.log (CMND_EVT_LOG, if the loader runs)
 function EVT_PmLog(...)
   if EVT_PREMATCH_LOG then
-    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], ...)
+    pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, ...)
   end
 end
 function EVT_PmOnline()                  -- network match / observer: never change anything

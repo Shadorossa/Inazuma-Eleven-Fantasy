@@ -18,19 +18,19 @@ CLEAN_HUD_SS_O = {frames = 0, since = 0, active = nil, was_l = true, was_r = tru
 
 
 function CLEAN_HUD_SS_OLog(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT shop_shortcuts office", ...)
+  pcall(funcLuaCommand, 3661580131, "EVT shop_shortcuts office", ...)
 end
 
 function CLEAN_HUD_SS_OTextId()
   if CLEAN_HUD_SS_O.txt == nil then
-    local ok, id = pcall(funcLuaCommand, 3096244543 --[[CMND_VRFW_TEXT_ID]], CLEAN_HUD_SS_TXT_KEY)
+    local ok, id = pcall(funcLuaCommand, 3096244543, CLEAN_HUD_SS_TXT_KEY)
     CLEAN_HUD_SS_O.txt = (ok and type(id) == "number" and id ~= 0) and id or CLEAN_HUD_SS_TXT_CRC
   end
   return CLEAN_HUD_SS_O.txt
 end
 
 function CLEAN_HUD_SS_OKey(k)
-  return funcLuaCommand(4265778440 --[[CMND_CHECK_INPUT_CMD]], 1332654303 --[[MENU_CTRL]], k) == true
+  return funcLuaCommand(4265778440, 1332654303 --[[MENU_CTRL]], k) == true
     or funcLuaCommand(4265778440, 2748927068 --[[MENU_CTRL_WITH_ANALOG_MOVE_FOCUS]], k) == true
 end
 
@@ -40,11 +40,11 @@ function CLEAN_HUD_SS_OOn()
   if EVT_OFFICE ~= true or CLEAN_HUD_SS_O.left then
     return false
   end
-  if funcLuaCommand(2947612279, CLEAN_HUD_SS_HOST_KEY) ~= true then
+  if not VRFW_Param.Has(CLEAN_HUD_SS_HOST_KEY) then
     return false
   end
-  local host = CLEAN_HUD_SS_OHOSTS[funcLuaCommand(3522198769, CLEAN_HUD_SS_HOST_KEY)]
-  return host ~= nil and funcLuaMenuCommand(2231168902 --[[CMND_IS_EXIST_MENU_OBJECT?]], host) == true
+  local host = CLEAN_HUD_SS_OHOSTS[VRFW_Param.Get(CLEAN_HUD_SS_HOST_KEY)]
+  return host ~= nil and funcLuaMenuCommand(2231168902, host) == true
 end
 
 function CLEAN_HUD_SS_OCan()
@@ -55,7 +55,7 @@ function CLEAN_HUD_SS_OCan()
   if (O.active == nil and O.frames < 90) or (O.active == true and O.frames - O.since < 12) then
     return false
   end
-  if funcLuaCommand(1215256347 --[[CMND_BRIGHT_IS_FADE]]) == true or funcLuaCommand(2736534827) == true then
+  if funcLuaCommand(1215256347) == true or funcLuaCommand(2736534827) == true then
     return false
   end
   return funcLuaMenuCommand(2231168902, 968210065 --[[sub_window]]) ~= true
@@ -80,14 +80,14 @@ function CLEAN_HUD_SS_OTick()
     return
   end
   O.left = true
-  if funcLuaCommand(2947612279, CLEAN_HUD_SS_KEY) then
-    funcLuaCommand(3363400568, CLEAN_HUD_SS_KEY)
+  if VRFW_Param.Has(CLEAN_HUD_SS_KEY) then
+    VRFW_Param.Clear(CLEAN_HUD_SS_KEY)
   end
-  funcLuaCommand(3860611758, CLEAN_HUD_SS_KEY, 0, d, 1)
+  VRFW_Param.Set(CLEAN_HUD_SS_KEY, d)
   CLEAN_HUD_SS_OLog("leave", d)
   funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
   funcLuaMenuCommand(1558704558, CLEAN_HUD_SS_HUB, false)
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], CLEAN_HUD_SS_HUB)
+  funcLuaCommand(320421347, CLEAN_HUD_SS_HUB)
 end
 
 -- funcLuaMenuCommand wrapper (the hub's CMND_MENU_ACTIVE on itself + the two guide entries). The engine registers

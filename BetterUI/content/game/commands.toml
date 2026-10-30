@@ -13,3 +13,9 @@ handler = "BetterUI.TacticSlices"
 [[VRFW.Command]]
 name = "CMND_BETTERUI_POSITION_LOOK"
 handler = "BetterUI.PositionLook"
+
+# assets\lua\_all\formation_card_spread.lua (formation screens, once per menu): the tunables of config.toml
+# [formation_card_spread] as a table, or nothing when it is turned off (the pitch cards then stay where the game puts them).
+[[VRFW.Command]]
+name = "CMND_BETTERUI_FORMATION_CARD_SPREAD"
+handler = "BetterUI.FormationCardSpread"

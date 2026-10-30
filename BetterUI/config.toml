@@ -22,3 +22,21 @@ goalkeeper = "goalkeeper"
 defender = "midfielder"
 midfielder = "defender"
 forward = "forward"
+
+# The pitch cards of the formation screens moved apart where they touch (assets\lua\_all\formation_card_spread.lua,
+# asked once per screen through CMND_BETTERUI_FORMATION_CARD_SPREAD). The game puts each card at the formation's
+# attacking position; in the attacking half the rows sit close and the cards overlap. Only the cards that touch move,
+# each pair along the side where it overlaps least, inside the pitch; when that is not enough the cards are drawn a
+# little smaller (down to smallest_scale), and when even that does not help the formation stays as the game draws it.
+# Matches and the formations themselves are not changed. Sizes and limits in layout pixels of the pitch frame
+# (soccer11_02, card centres; y grows upwards, the centre circle is 0). enabled = false: the game's own placement.
+[formation_card_spread]
+enabled = true
+card_width = 154      # the compact card's touch area (team00_01_evt_fc _touch_chr01)
+card_height = 116
+gap = 6               # space kept between two cards that had to move
+smallest_scale = 0.8  # the smallest card size tried when moving is not enough
+scale_step = 0.05     # the size steps tried from 1 down to smallest_scale
+pitch_side = 300      # how far left / right of the centre a card centre may go (the bench starts beyond)
+pitch_top = 262       # the highest card centre (the far goal line is at 278)
+pitch_bottom = -323   # the lowest card centre (the own goal line is at -381)

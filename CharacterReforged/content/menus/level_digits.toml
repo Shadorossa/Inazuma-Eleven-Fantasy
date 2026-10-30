@@ -193,3 +193,9 @@ file = "common/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4pkm"
 joint = "_num_team_lv_dmy02"
 translate = [-6.5, 0.0, 0.0]
 scale = [13.0, 23.0, 1.0]
+
+# the technique plates' AT number (soccer11_09_formation_chara_skill: 4 digit slots in retail, clamped at 999): the real value
+# shows, right-aligned, the 4th digit growing to the left
+[[object_set]]
+object = "soccer11_09_formation_chara_skill"
+set = [{ param = "DispMaxValue", match = { 1 = 0x93171FE6 }, values = { 2 = 9999 } }]

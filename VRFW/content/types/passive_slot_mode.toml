@@ -1,12 +1,18 @@
 # Schema of the passive slot modes: a game state in which every player keeps only his signature passive (the custom
-# passive slot, board equip slot 9) and his 5 passive slots are empty. Unknown keys, wrong types or out-of-range values
-# leave the declaration out with a warning.
+# passive slot, board equip slot 9) and his 5 passive slots are empty, or one in which no player carries any passive.
+# Unknown keys, wrong types or out-of-range values leave the declaration out with a warning.
 schema = "VRFW.decl_schema/1"
 kind = "VRFW.passive_slots/1"
 folder = "content/passive_slots"
 
 [entry.SignatureOnly]
 doc = "while the game_state key `state` is 1, the plates show no passive in the 5 slots and the framework's key vrfw.passive.slots_off is 1"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+state = { type = "string", required = true, doc = "a game_state key (any mod's, e.g. one of its [[VRFW.State]]) that is 1 while the mode runs" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }
+
+[entry.NoPassives]
+doc = "while the game_state key `state` is 1, no player carries a passive (the 5 slots, the custom passive slot, script-driven passives) and the framework's key vrfw.passive.all_off is 1"
 name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
 state = { type = "string", required = true, doc = "a game_state key (any mod's, e.g. one of its [[VRFW.State]]) that is 1 while the mode runs" }
 when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

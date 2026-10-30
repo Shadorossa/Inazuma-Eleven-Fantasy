@@ -264,12 +264,10 @@ do
   end
 
   -- a mode without player passives (a mod's [[off_mode]] in Utilities' passive declarations): the plate's passive rows
-  -- stay hidden; the plugin is asked on every row update and every OFF_EVERY frames
-  UTIL_PPC.OFF_EVERY = 30
+  -- stay hidden; the plugin is asked on every row update (the plate's open draws every row)
   function UTIL_PPC.OffNow()
     local ok, off = pcall(funcLuaCommand, UTIL_PPC.CMD_OFF)
     UTIL_PPC.off = ok and off == true
-    UTIL_PPC.offAt = 0
     return UTIL_PPC.off
   end
 
@@ -1074,8 +1072,8 @@ do
     pcall(UTIL_PPC.Mark, -1)
     pcall(UTIL_PPC.ListShow, false, {}, 0, 0)
     UTIL_PPC.Log("session end")
-    funcLuaCommand(3363400568, UTIL_PPC.KEY_DONE)
-    funcLuaCommand(3860611758, UTIL_PPC.KEY_DONE, 0, 1, 1)
+    VRFW_Param.Clear(UTIL_PPC.KEY_DONE)
+    VRFW_Param.Set(UTIL_PPC.KEY_DONE, 1)
   end
 
   -- every frame: start a requested session, or run the current one
@@ -1091,16 +1089,15 @@ do
       end
       return
     end
-    local okH, has = pcall(funcLuaCommand, 2947612279, UTIL_PPC.KEY_REQ)
-    if not okH or not has then
+    if not VRFW_Param.Has(UTIL_PPC.KEY_REQ) then
       return
     end
-    local h = funcLuaCommand(3522198769, UTIL_PPC.KEY_REQ)
-    funcLuaCommand(3363400568, UTIL_PPC.KEY_REQ)
+    local h = VRFW_Param.Get(UTIL_PPC.KEY_REQ)
+    VRFW_Param.Clear(UTIL_PPC.KEY_REQ)
     UTIL_PPC.parent = 0
-    if funcLuaCommand(2947612279, UTIL_PPC.KEY_PARENT) then
-      UTIL_PPC.parent = funcLuaCommand(3522198769, UTIL_PPC.KEY_PARENT)
-      funcLuaCommand(3363400568, UTIL_PPC.KEY_PARENT)
+    if VRFW_Param.Has(UTIL_PPC.KEY_PARENT) then
+      UTIL_PPC.parent = VRFW_Param.Get(UTIL_PPC.KEY_PARENT)
+      VRFW_Param.Clear(UTIL_PPC.KEY_PARENT)
     end
     UTIL_PPC.co = coroutine.create(UTIL_PPC.Session)
     local ok, err = coroutine.resume(UTIL_PPC.co, h)
@@ -1119,10 +1116,6 @@ do
         r = prev(...)
       end
       pcall(UTIL_PPC.Poll)
-      UTIL_PPC.offAt = (UTIL_PPC.offAt or 0) + 1
-      if UTIL_PPC.offAt >= UTIL_PPC.OFF_EVERY then
-        UTIL_PPC.OffNow()
-      end
       if UTIL_PPC.off and UTIL_PPC.co == nil then
         pcall(UTIL_PPC.HideRows)
       end

@@ -4,7 +4,7 @@ schema = "CharacterReforged.duplicate_rules/1"
 # another slot («X: duplicar» of the slot screen), the copy keeps ONE card per character; with apply_on_load, the same on
 # every load of a player slot. Rules merge key by key across mods: No More Rarities declares the normal card's rarity
 # (its content\duplicate_rules\no_more_rarities.toml), this module the one-card limit. Was No More Rarities' (1.0.0-1.0.13)
-# and before that Inazuma Fantasy's «Ajustar save al mod» rule `one_card` (docs/game/engine/savefix.md).
+# and before that Inazuma Fantasy's «Ajustar save al mod» rule `one_card` (docs/framework/save-adjust.md).
 
 [CharacterReforged.DuplicateRules.new_recruitment]
 # "character": one normal card (chara_param col 41 = 0) per character (chara_base), one special card (Héroe,

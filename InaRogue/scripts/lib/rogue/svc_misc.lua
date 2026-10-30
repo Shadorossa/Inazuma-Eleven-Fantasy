@@ -44,6 +44,10 @@ local function handles(bank)
   return out
 end
 
+-- the list read by the last PartyCount / PartyHdl index 0 of each bank: a caller walks COUNT then HDL 0..n-1, so one
+-- read of the 5302-entry list serves the whole walk instead of one read per handle
+local listed = {}
+
 function S.PartyCount(bank_arg)
   if not U.rogue_active() then
     warn("party: CMND_EVT_RL_PARTY_COUNT refused outside the INAROGUE save")
@@ -51,6 +55,7 @@ function S.PartyCount(bank_arg)
   end
   local bank = U.int(bank_arg, 0)
   local v = handles(bank)
+  listed[bank] = v
   if not v then return -1 end
   info(string.format("party: bank %d: %d owned handles", bank, #v))
   return #v
@@ -58,8 +63,10 @@ end
 
 function S.PartyHdl(bank_arg, i_arg)
   if not U.rogue_active() then return 0 end
-  local v = handles(U.int(bank_arg, 0))
+  local bank = U.int(bank_arg, 0)
   local i = U.int(i_arg, -1)
+  if i == 0 or listed[bank] == nil then listed[bank] = handles(bank) end
+  local v = listed[bank]
   if not v or i < 0 then return 0 end
   return v[i + 1] or 0
 end
@@ -86,7 +93,7 @@ local function role_api()
   return nil
 end
 
-local function no_role_rule() return U.cfg("rogue.grant_without_role", false) == true end
+local function no_role_rule() return U.cfg("rogue.grant_without_role", true) == true end
 
 -- the creation-time staff role of an INAROGUE record is cleared (not a badge the user chose)
 function S.clears_creation_role(attr, staff)

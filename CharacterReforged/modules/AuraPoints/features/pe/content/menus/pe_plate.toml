@@ -292,3 +292,29 @@ menu = "evt_skill_slot_menu"
 add_layer = { name = "stamina_points_plate_fill", object = "stamina_points_plate_fill", count = 1, align = ["right", "middle"], scale = 0.20000000298023224, after = "stamina_points_plate_num3", groups = [
     { group = "common", flags = [0, 0, 0, 0, 1, 0], after = "stamina_points_plate_num3" },
 ] }
+
+# the mod's own atlas aura_points_hud (the «PE» tag and the digits: content\images\...\stamina_points_bars.toml,
+# stamina_points_pe_num.toml) on every screen that shows the header
+[[patch]]
+menu = "team_dock_menu"
+res = ["#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"]
+
+[[patch]]
+menu = "personal_plate_menu"
+res = ["#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"]
+
+[[patch]]
+menu = "personal_plate_menu_for_datafile"
+res = ["#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"]
+
+[[patch]]
+menu = "personal_plate_menu_for_mode_change"
+res = ["#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"]
+
+[[patch]]
+menu = "equip_menu"
+res = ["#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"]
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+res = ["#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"]

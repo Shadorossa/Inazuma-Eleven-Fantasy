@@ -1,0 +1,62 @@
+# Hissatsu Effects 1.11.0: the move card's type badge («Tiro», «Regate», ...) with square ends. Four sprites of the mod's own atlas evt_skc_badges (never a game atlas), each the retail pill area_base01..04 with its middle column repeated across the width (same colour,
+# no rounded ends); the card (graft skill_card) swaps them in for the retail pill on the move card only, the retail
+# sprites stay for every other screen.
+schema = "VRFW.image/1"
+
+# the own atlas does not exist in the game: this texture creates it (an atlas with only [[sprite]] is refused).
+# Layout: the pill (600 x 82) on top, the five 76 x 40 rectangles in a row below it, on 4-pixel block bounds.
+[[texture]]
+atlas = "#/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx"
+name = "evt_skc_badges"
+size = [600, 124]
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx"
+name = "evt_area_rect01"
+texture = "evt_skc_badges"
+x = 0
+y = 84
+png = "family_badge/area_rect01.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx"
+name = "evt_area_rect02"
+texture = "evt_skc_badges"
+x = 80
+y = 84
+png = "family_badge/area_rect02.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx"
+name = "evt_area_rect03"
+texture = "evt_skc_badges"
+x = 160
+y = 84
+png = "family_badge/area_rect03.png"
+
+[[sprite]]
+atlas = "#/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx"
+name = "evt_area_rect04"
+texture = "evt_skc_badges"
+x = 240
+y = 84
+png = "family_badge/area_rect04.png"
+
+# the family name badge on the move card's family page: a flat dark rectangle (Hissatsu Effects 1.17.0)
+[[sprite]]
+atlas = "#/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx"
+name = "evt_area_rect05"
+texture = "evt_skc_badges"
+x = 320
+y = 84
+png = "family_badge/area_rect05.png"
+
+# the family name badge on the move card's family page: the type badge's pill shape (rounded ends) in a neutral dark,
+# 600 x 82 like the technique plate it replaces (Hissatsu Effects 1.20.0)
+[[sprite]]
+atlas = "#/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx"
+name = "evt_area_pill05"
+texture = "evt_skc_badges"
+x = 0
+y = 0
+png = "family_badge/area_pill05.png"

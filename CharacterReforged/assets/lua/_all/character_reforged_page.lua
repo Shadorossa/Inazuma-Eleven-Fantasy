@@ -170,11 +170,7 @@ if CharacterReforged.Page == nil then
     return nil
   end
   local function U32(v)
-    v = tonumber(v) or 0
-    if v < 0 then
-      v = v + 4294967296
-    end
-    return v
+    return VRFW_Id.u32(v)
   end
   -- a player of a match team (the player page in a match, e.g. the pause «Formación»): his team member row's set as
   -- the match plays it (VR-Framework CMND_VRFW_MATCH_MEMBER -> team, slot; CMND_VRFW_TEAM_MEMBER_MOVES -> his loadout):

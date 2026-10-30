@@ -8,11 +8,12 @@
 -- Models: built only for the selected entry, once the selection rests (SETTLE frames); a change releases the old ones,
 -- closing releases every slot.
 -- Opened by VRFW_PoseRow.Open (assets\lua\menu\_all\76_pose_row.lua): parameters crc32("vrfw_pose_row") = crc32 of the
--- key, crc32("vrfw_pose_row_context") = the context; out crc32("vrfw_pose_row_pick") = the picked entry (0 = Back).
+-- key, crc32("vrfw_pose_row_context") = the context; out crc32("vrfw_pose_row_pick") = the picked entry (0 = Back);
+-- crc32("vrfw_pose_row_focus") in = the entry focused at open (optional), out = the entry focused at close.
 -- Style `node_panel` (a declaration's `style`): the Chronicle board's own node panel look over the board (the retail
 -- menu background and header off): a title band, the banner with the mod's retail icon, the rows (each with its level
--- circle and a check when done), the selected entry's lineup under them and the «Y» button of the declaration (`team`,
--- the pick -1); on the right a blue side panel (the retail «Tasa de aparición» look) with the entry's players posing,
+-- circle and a check when done; scroll arrows above / below them while more rows lie there), the selected entry's
+-- lineup under them and the «Y» button of the declaration (`team`, the pick -1); on the right a blue side panel (the retail «Tasa de aparición» look) with the entry's players posing,
 -- 5 a page (L1 / R1 turn the pages: every player is shown).
 -- Rule: no engine call at top level; funcLuaCommand only exists inside callbacks.
 INCLUDE("LUA_PROG_BASE")
@@ -22,6 +23,7 @@ local MENU = 3907790619           -- crc32("vrfw_pose_row_menu")
 local KEY_ROW = 970894462         -- crc32("vrfw_pose_row"): parameter in, the declaration's key crc
 local KEY_CTX = 734132499         -- crc32("vrfw_pose_row_context"): parameter in, the context
 local KEY_RESULT = 203690515      -- crc32("vrfw_pose_row_pick"): parameter out, the picked entry
+local KEY_FOCUS = 2167843046      -- crc32("vrfw_pose_row_focus"): parameter in / out, the focused entry
 
 -- ---- layers ---------------------------------------------------------------------------------------------------------
 local L_ROW = 3455690937        -- save01_02_list_item (1 instance: the input anchor, off screen)
@@ -42,25 +44,24 @@ local L_CARD = 4114633020       -- vrfw_pr_card  x5 the game's small player card
 local N = {PLATE = 64, TEXT = 84, SLOTS = 5}
 
 local C = {
-  DRAW_PRIORITY = 1491630496, PLATE_PRIORITY = 457,   -- (layer, instance, priority, children); the plates object's own
-  TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
-  SPRITE = 558735651, LOAD_TEX = 839427544, TEX_LOADING = 1506186496, SCALE = 3778714801, POS = 1389957207,
-  ATTACH_TRACE = 1774843228, OPEN_LAYER = 629267548,
-  FOCUS_ENABLE = 3518307824, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
+  DRAW_PRIORITY = @crc:CMND_SET_DRAW_PRIORITY@, PLATE_PRIORITY = 457,   -- (layer, instance, priority, children); the plates object's own
+  TEXT = @crc:CMND_SET_MENU_TEXT_STRING@, MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@, LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,
+  SPRITE = 558735651, LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@, TEX_LOADING = 1506186496, SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@, POS = @crc:CMND_SET_LAYER_LOCAL_POS@,
+  ATTACH_TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, OPEN_LAYER = @crc:CMND_OPEN_LAYER@,
+  FOCUS_ENABLE = @crc:CMND_SET_ENABLE_CTRL_FOCUS@, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
-  SE = 1917805374, CLOSE_MENU = 320421347, FADE = 609722083, FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568, P_EXISTS = 2947612279, P_GET = 3522198769,
-  TEXT_VISIBLE = 1505208242, TEXT_GET = 4074371074, PRIM_COLOR = 855211291, LOG = 3661580131,
-  LANG = 477234096,           -- CMND_GET_LANGUAGE_CODE
-  ROW_DECL = 1965621257,      -- CMND_VRFW_POSE_ROW (key crc)
-  ROW_CARDS = 3517017366,     -- CMND_VRFW_POSE_ROW_CARDS (language, card…)
-  POSE_BODIES = 2091146409,   -- CMND_VRFW_MODEL_POSE_BODIES (pose)
-  TEAM_KIT = 4158248751,      -- CMND_VRFW_TEAM_KIT (team) -> its kit (uniform id; 0 = none)
-  MODEL_POS = 1088067423,     -- CMND_SET_CHARA_MODEL_POS (layer, inst, x, y, z, slot)
+  SE = @crc:CMND_SND_PLAY_SE@, CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@, FADE = 609722083, FADE_DONE = 2259183189,
+  TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@, TEXT_GET = @crc:CMND_TEXT_GET@, PRIM_COLOR = @crc:CMND_SET_PRIM_COLOR@, LOG = @crc:CMND_EVT_LOG@,
+  LANG = @crc:CMND_GET_LANGUAGE_CODE@,           -- CMND_GET_LANGUAGE_CODE
+  ROW_DECL = @crc:CMND_VRFW_POSE_ROW@,      -- CMND_VRFW_POSE_ROW (key crc)
+  ROW_CARDS = @crc:CMND_VRFW_POSE_ROW_CARDS@,     -- CMND_VRFW_POSE_ROW_CARDS (language, card…)
+  POSE_BODIES = @crc:CMND_VRFW_MODEL_POSE_BODIES@,   -- CMND_VRFW_MODEL_POSE_BODIES (pose)
+  TEAM_KIT = @crc:CMND_VRFW_TEAM_KIT@,      -- CMND_VRFW_TEAM_KIT (team) -> its kit (uniform id; 0 = none)
+  MODEL_POS = @crc:CMND_SET_CHARA_MODEL_POS@,     -- CMND_SET_CHARA_MODEL_POS (layer, inst, x, y, z, slot)
   MODEL_TURN = 1195674914,    -- the model control (layer, inst, on): the right stick turns the model
   MSG_BUSY = 898725220,
-  CHECK_INPUT = 4265778440,   -- CMND_CHECK_INPUT_CMD (ctrl, input)
-  FREE_CURSOR = 879521569,
+  CHECK_INPUT = @crc:CMND_CHECK_INPUT_CMD@,   -- CMND_CHECK_INPUT_CMD (ctrl, input)
+  FREE_CURSOR = @crc:CMND_SET_ENABLE_FREE_CURSOR_FOR_VIRTUAL_MOUSE@,
 }
 local T = {POS = {1453968399, 3483409845, 3097996579, 650328192}}   -- vrfw_pr_pos_1..4 (GK FW MF DF)
 local MARK_ON = "[$gaiji_check01_on] "  -- the game's check mark
@@ -110,6 +111,8 @@ local FALLBACK = {
   side_panel = {"square", {0.10, 0.27, 0.78}},
   check = {"circle", {1, 0.55, 0.1}},
   label_plate = {"square", {0.08, 0.13, 0.25}},
+  arrow_up = {"square", {0, 0.59, 1}},
+  arrow_down = {"square", {0, 0.59, 1}},
 }
 local FALLBACK_ANY = {"square", {1, 1, 1}}
 local art, plain_tint = {}, {}
@@ -420,6 +423,13 @@ end
 
 -- ---- drawing --------------------------------------------------------------------------------------------------------
 local function UpdateTitle()
+  if DECL ~= nil and DECL.style == "node_panel" then
+    -- over the board the header is off and the title is the title band's (NP.Draw): its sub title stays empty, never a
+    -- stray label over the models
+    funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], "", 0)
+    funcLuaMenuCommand(C.LAYER_VISIBLE, L_HEADER, 0, false)
+    return
+  end
   local title = Text(DECL and DECL.title or 0)
   local sub = HEAD and Str(HEAD.title) or ""
   if sub ~= "" then
@@ -560,6 +570,18 @@ function NP.Draw(Lo)
       pos[i] = {x = x + w / 2, y = y + h / 2, hw = w / 2, hh = h / 2}
     end
   end
+  -- the list's scroll arrows (art roles arrow_up / arrow_down): up while rows lie above the window, down while rows
+  -- lie below it; redrawn with the list on every move
+  local Ar = box(Lo.arrows, {})
+  local aw, ah = Ar.w or 44, Ar.h or 32
+  local ax = Ar.x or ((Rw.x or 90) + (Rw.w or 540) - aw - 18)
+  if first > 1 then
+    Plate("arrow_up", ax, Ar.up_y or ((Rw.y or 380) - ah - 2), aw, ah, C.PLATE_PRIORITY + 1)
+  end
+  if first + shown - 1 < count then
+    Plate("arrow_down", ax, Ar.down_y or ((Rw.y or 380) + (shown - 1) * step + (Rw.h or 52) + 4), aw, ah,
+      C.PLATE_PRIORITY + 1)
+  end
   local Mo = box(Lo.more, {})
   local more_text = HEAD and Str(HEAD.info) or ""
   if more_text ~= "" then
@@ -627,8 +649,8 @@ NP.LU = {
   PITCH = {CENTRE_X = 1394, CENTRE_Y = -533, TOP_Y = -296, BOTTOM_Y = -856, TOP_WIDTH = 428, BOTTOM_WIDTH = 588,
     FIELD_TOP_Y = -294, FIELD_HEIGHT = 564},
   FORM = {WIDTH_UNITS = 60, DEPTH_UNITS = 90, BASE_SET = 2, OFFSET_SET = 10, OFFSET_SCALE = 0.85, KEEPER_LIFT = 20},
-  FORMATION_INFO = 2649030357, TEAM_PARAM = 2151743654, TEXT_OF_ID = 297699480, FILL = 2339877830,
-  DRAW_PRIORITY = 1491630496, NODE_VISIBLE = 2158717427, FACE = 552280324, RESET_FACE = 4176779611,
+  FORMATION_INFO = @crc:CMND_GET_SOCCER_FORMATION_INFO@, TEAM_PARAM = 2151743654, TEXT_OF_ID = 297699480, FILL = 2339877830,
+  DRAW_PRIORITY = @crc:CMND_SET_DRAW_PRIORITY@, NODE_VISIBLE = 2158717427,
   CHARA_OF_PARAM = 347353059, SPRITE = 558735651,
   PRIORITY_PITCH = 458, PRIORITY_CARD = 459,
   -- the card's pieces never shown here: card / lock icons, the focus frames
@@ -744,10 +766,9 @@ function NP.SpriteCard(slot, card, position)
   end
   funcLuaMenuCommand(NP.LU.SPRITE, L_CARD, S.TEXTURE, plate, S.PLATE_SLOT, 0, slot)
   funcLuaMenuCommand(C.MESH_VISIBLE, L_CARD, S.PLATE, true, slot)
-  funcLuaMenuCommand(NP.LU.RESET_FACE, L_CARD, slot, S.FACE_SLOT)
   local chara = Call(NP.LU.CHARA_OF_PARAM, card)
-  funcLuaMenuCommand(NP.LU.FACE, L_CARD, slot, false, S.FACE, S.FACE_SLOT, 0, 0, Int(chara) ~= 0 and chara or card, 0,
-    false, true)
+  VRFW_FaceIcon.Request(L_CARD, slot, Int(chara) ~= 0 and chara or card, S.FACE, S.FACE_SLOT,
+    { kit = 0, keeper = false, use_args = true })
   funcLuaMenuCommand(C.MESH_VISIBLE, L_CARD, S.FACE, true, slot)
 end
 
@@ -916,8 +937,10 @@ local function CloseStep()
     Log("close", "models still held after", c.frames, "frames: closing anyway")
   end
   pcall(funcLuaMenuCommand, C.FREE_CURSOR, true, false, true)
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
-  funcLuaCommand(C.P_SET, KEY_RESULT, 0, c.result, 1)
+  VRFW_Param.Clear(KEY_RESULT)
+  VRFW_Param.Set(KEY_RESULT, c.result)
+  VRFW_Param.Clear(KEY_FOCUS)
+  VRFW_Param.Set(KEY_FOCUS, focus)
   funcLuaCommand(C.CLOSE_MENU, MENU)
   Log("closed", DECL and DECL.key or "", "after", c.frames, "frames")
 end
@@ -1012,7 +1035,7 @@ end
 
 -- ---- callbacks ------------------------------------------------------------------------------------------------------
 function OnInit()
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
   art, plain_tint = VRFW_ScreenArt.Get(ART_SCREEN), {}
   for _, path in ipairs(VRFW_ScreenArt.Atlases(ART_SCREEN)) do
     Tex(path)
@@ -1022,14 +1045,19 @@ function OnInit()
   used = {plate = 0, text = 0, plate_was = N.PLATE, text_was = N.TEXT}
   models, shown, placed, settle, closing = {}, {}, {}, nil, nil
   local key = 0
-  if funcLuaCommand(C.P_EXISTS, KEY_ROW) then
-    key = Int(funcLuaCommand(C.P_GET, KEY_ROW))
-    funcLuaCommand(C.P_CLEAR, KEY_ROW)
+  if VRFW_Param.Has(KEY_ROW) then
+    key = Int(VRFW_Param.Get(KEY_ROW))
+    VRFW_Param.Clear(KEY_ROW)
   end
   CTX = 0
-  if funcLuaCommand(C.P_EXISTS, KEY_CTX) then
-    CTX = Int(funcLuaCommand(C.P_GET, KEY_CTX))
-    funcLuaCommand(C.P_CLEAR, KEY_CTX)
+  if VRFW_Param.Has(KEY_CTX) then
+    CTX = Int(VRFW_Param.Get(KEY_CTX))
+    VRFW_Param.Clear(KEY_CTX)
+  end
+  local start = 0
+  if VRFW_Param.Has(KEY_FOCUS) then
+    start = Int(VRFW_Param.Get(KEY_FOCUS))
+    VRFW_Param.Clear(KEY_FOCUS)
   end
   local d = Call(C.ROW_DECL, key)
   if type(d) ~= "table" or type(d.source) ~= "number" then
@@ -1058,7 +1086,11 @@ function OnInit()
     DECL = nil
     return
   end
-  focus = math.max(1, math.min(count, Int(HEAD.focus) > 0 and Int(HEAD.focus) or 1))
+  -- the opener's focus (the entry it reopens on), else the source's
+  if start <= 0 then
+    start = Int(HEAD.focus)
+  end
+  focus = math.max(1, math.min(count, start > 0 and start or 1))
   -- the body types the pose has: a player of another body type gets no model (evt_menu_kit.lua#CharaModel)
   local bodies = nil
   local list = Call(C.POSE_BODIES, DECL.pose)
@@ -1171,6 +1203,8 @@ function OnOpenLayer(a1, a2)
     if funcLuaCommand(C.FADE_DONE) then
       funcLuaCommand(C.FADE, 0, 0.3)
     end
+  elseif a1 == L_HEADER and DECL ~= nil and DECL.style == "node_panel" then
+    UpdateTitle()                          -- the header opened after the list: off again, no sub title
   elseif a1 == L_GUIDE_LINE then
     funcLuaMenuCommand(C.LAYER_VISIBLE, a1, 0, false)
   end

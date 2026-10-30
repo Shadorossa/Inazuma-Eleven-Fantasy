@@ -23,6 +23,8 @@ ReleaseRefund = 3
 JoinRarity = 4
 # the friendly a card's trial is played as (content\friendlies\office_trial.toml)
 TrialFriendly = "new_recruitment_office_trial"
+# the same trial with the active match team when no active pachanga team is set
+TrialFriendlyActiveTeam = "new_recruitment_office_trial_active_team"
 # the old office's requirements (office_terms.toml): asked only while config.toml [office] requirements is true
 # (default false: price only, trials optional)
 Requirements = { config = "office.requirements", default = false }

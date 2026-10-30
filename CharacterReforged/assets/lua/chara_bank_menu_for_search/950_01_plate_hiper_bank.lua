@@ -1461,7 +1461,7 @@ end)
 EVT_PH_MX_HINT_KEY = 1361529897         -- crc32("evt_r9_mx_hint")
 EVT_PH_MX_TEXT = 3716432925             -- menu_text "Miximax"
 EVT_PH_MX_KEYS = 3378555688             -- menu_text "<CMD_FUNC5>"
-EVT_PH_UI_FLAG_GET = 100903117          -- CMND_EVT_UI_FLAG_GET
+EVT_PH_UI_FLAG_GET = 100903117
 
 function EVT_PH_MxHint()
   local ok, v = pcall(funcLuaCommand, EVT_PH_UI_FLAG_GET, EVT_PH_MX_HINT_KEY)

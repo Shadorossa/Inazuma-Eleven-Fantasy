@@ -41,8 +41,12 @@ function S.min_cost(c, tier)
   return math.max(math.floor((S.base_cost(c, tier) + 1) / 2), 1)
 end
 
-function S.cost(c, tier, frags)
-  return math.max(S.base_cost(c, tier) - S.frag_level(c, frags), S.min_cost(c, tier))
+-- the starter cost: the base by rarity lowered by the fragments (down to min_cost), then by the spirit levels bought
+-- (lib/rogue/spirits.lua, down to [rogue.spirits] floor)
+function S.cost(c, tier, frags, spirit_level)
+  local cost = math.max(S.base_cost(c, tier) - S.frag_level(c, frags), S.min_cost(c, tier))
+  if (spirit_level or 0) > 0 then cost = require("lib/rogue/spirits").apply(cost, spirit_level) end
+  return cost
 end
 
 function S.budget(c, best_phase)

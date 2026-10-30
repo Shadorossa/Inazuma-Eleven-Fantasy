@@ -1,0 +1,29 @@
+schema = "InaRogue.shop_tabs/1"
+# The tabs of the INAROGUE «Tienda» (screen evt_rogue_shop_menu, graft research/grafts/rogue_shop/), one per shop of
+# the mode, in this order: the retail shop tab bar (cmn06_01_list_tab_attach + cmn06_20_list_tab_item) shows them with
+# their icon, L1 / R1 (Q / E) or a click switches, the bar's name line shows the selected one.
+# Read by scripts/lib/rogue/shop_tabs.lua (command CMND_INAROGUE_RL_SHOP_TAB).
+#
+#   id     the shop's page in the screen's Lua; a tab whose page the screen does not have yet is not shown
+#   text   the tab's name: a row id of text/rows/menu_text.toml
+#   icon   a retail tab icon type (LISTVIEW.SetupTabIcon: the icon_list_tab atlas of the game). Retail shop tabs:
+#          0-3 equipment, 4 emblems, 5 kits, 6 tickets / items, 27 special moves, 53 spirits, 59 auras;
+#          others: 35 a bust (datafile05), 80 training (training01), 74 «all»
+# At most 9 tabs (the retail bar's instances).
+
+[[tab]]
+id = "avatars"
+text = "evt_rogue_shop_tab_avatars"
+icon = 35
+
+# the rogue items (content/rogue/items.toml, CMND_INAROGUE_RL_ITEM_CATALOGUE): no page in the screen yet
+[[tab]]
+id = "items"
+text = "evt_rogue_shop_tab_items"
+icon = 6
+
+# «Mejorar» of the rogue items (CMND_INAROGUE_RL_ITEM_UPGRADE): no page in the screen yet
+[[tab]]
+id = "upgrades"
+text = "evt_rogue_shop_tab_upgrades"
+icon = 80

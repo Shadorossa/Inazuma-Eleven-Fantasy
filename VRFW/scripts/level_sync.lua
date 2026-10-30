@@ -20,7 +20,7 @@ local RULES = {}          -- "game:row" -> { game, row, level, raise, key } (gam
 local BLOCK = nil         -- the native block: +0 u8 difficulty row, +4 u32 game of the match request
 local LIVE = false
 
-local function hex(v) return string.format("0x%08X", v or 0) end
+local hex = require("lib/ids").hex
 
 local function pair_text(game, row)
   local g = game == 0 and "any game" or "game " .. hex(game)

@@ -1,0 +1,38 @@
+schema = "VRFW.game/2"
+
+# Better Equipment › its match modifier and the equipment commands it follows (docs/game/mods/better-equipment.md).
+# The logic is scripts\better_equipment.lua; this file only names what it uses in the game.
+
+# The affinity and set stats of the user's players (+15 % / +25 % of an item's raises when the card's position / element
+# match; the sets' stats for the pieces worn), added to the match copy: the native table BetterEquipment.StatAdd, key
+# (saved character handle, stat 0..7), filled by the script at each save load and after each equip change. A copy is
+# looked up by its own handle, then by its saved owner. After the trained points (10) and the run coach (20), before
+# the run speed (100).
+[[VRFW.MatchStat]]
+name = "BetterEquipment.Bonus"
+order = 30
+stat = "clamp(args[4] + lookup_or(BetterEquipment.StatAdd, lookup_or(BetterEquipment.StatAdd, 0, owner(args[2]), i), args[2], i), 1, 9999)"
+
+# the equipment changes (retail CMND_EQUIP_ITEM / CMND_REMOVE_EQUIP): the table is computed again after the game's handler
+[[VRFW.CommandFilter]]
+name = "BetterEquipment.AfterEquip"
+command = 0x0AB6BEBD
+phase = "after"
+handler = "BetterEquipment.AfterEquip"
+
+[[VRFW.CommandFilter]]
+name = "BetterEquipment.AfterRemove"
+command = 0x17F75F90
+phase = "after"
+handler = "BetterEquipment.AfterEquip"
+
+# the item card's second page on Equipamiento (Character Reforged graft plate_pages): the item's passive, its set and
+# the set's bonus tiers, and its affinity, as short text lines ("" = nothing to show)
+[[VRFW.Command]]
+name = "CMND_BETTEREQUIPMENT_ITEM_PAGE"   # (item id) -> text
+handler = "BetterEquipment.ItemPage"
+
+# the item card's «Conjunto» page: the item's set, its pieces in order and its bonus tiers (nil = in no set)
+[[VRFW.Command]]
+name = "CMND_BETTEREQUIPMENT_ITEM_SET"    # (item id, charaHdl) -> { name, count, members, tiers = { { pieces, text } }, worn, also }
+handler = "BetterEquipment.ItemSet"

@@ -1,0 +1,747 @@
+schema = "BetterEquipment.sets/1"
+# Better Equipment › the sets (docs/game/mods/better-equipment-proposal.md §2.6, §5): members (alternatives per slot;
+# a set counts the distinct equip slots worn), the bonus tiers (cumulative): `stats` as fractions of S (printed at
+# S = 70 in the comments), `effects` in the passives' vocabulary. research/scripts/better_equipment.py makes the
+# [[VRFW.EquipmentSet]] and the effect passives from this file; scripts\better_equipment.lua adds the stats in matches.
+# An item may be a member of several sets; a worn piece counts for one set only (the most complete one, then the one
+# with more pieces, then data order: VRFW.item.resolve_sets). docs/game/mods/better-equipment-sets.md lists every set.
+# The two automatic sets (Team Colours, Squad) are [[auto_set]] (no member list).
+
+[[set]]  # Thundercloud (Nube de trueno)
+name = "Thundercloud"
+members = ["eq_mi0107301", "eq_ac0107501", "eq_sp0107701", "eq_sp0108101"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0857 }  # agility +6 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { kick = 0.0857 }  # kick +6 at S = 70
+  effects = [{ kind = "technique_power", move_kind = "shoot", value = 3 }]
+
+[[set]]  # Cloudbound (Nubes errantes)
+name = "Cloudbound"
+members = ["eq_mi0101901", "eq_ac0101001", "eq_sp0103101", "eq_sp0100901"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0571 }  # agility +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { technique = 0.0571 }  # technique +4 at S = 70
+  effects = [{ kind = "move_speed", value = 2 }]
+
+[[set]]  # Sun (Sol)
+name = "Sun"
+members = ["eq_mi0107101", "eq_ac0107201", "eq_sp0107401", "eq_ac0102701", "eq_sh1102701"]
+element = "fire"
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.0857 }  # kick +6 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { control = 0.0857 }  # control +6 at S = 70
+  effects = [{ kind = "tension_on", event = "duel_won", value = 3 }]
+
+[[set]]  # Moonlight (Luz de luna)
+name = "Moonlight"
+members = ["eq_sh1106601", "eq_mi0107701", "eq_sh070301", "eq_sh041201", "eq_sh051701"]
+element = "void"
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.1143 }  # technique +8 at S = 70
+  effects = [{ kind = "technique_power", move_kind = "dribble", value = 3 }]
+
+[[set]]  # Victory (Victoria)
+name = "Victory"
+members = ["eq_sh1106001", "eq_mi0103001", "eq_ac0102401", "eq_ac0105001", "eq_sp0104201"]
+element = "fire"
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.0714 }  # kick +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { control = 0.0714 }  # control +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "tension_on", event = "goal", value = 5 }]
+
+[[set]]  # Valiant (Del valiente)
+name = "Valiant"
+members = ["eq_sh1102101", "eq_mi0102901", "eq_ac0104301", "eq_sp0102001", "eq_sp0106201", "eq_sh1106301"]
+element = "fire"
+  [[set.bonus]]
+  pieces = 2
+  stats = { pressure = 0.0714 }  # pressure +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { physical = 0.0714 }  # physical +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "stat_when", stats = ["kick", "technique"], score = "trailing", value = 6 }]
+
+[[set]]  # Hero (Héroe)
+name = "Hero"
+members = ["eq_sh1104301", "eq_mi0105201", "eq_mi0106901", "eq_ac0103501"]
+element = "fire"
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.0857 }  # kick +6 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "technique_power", move_kind = "shoot", value = 3 }]
+
+[[set]]  # Destiny (Destino)
+name = "Destiny"
+members = ["eq_sh1104101", "eq_sh1105001", "eq_mi0106201", "eq_ac0105901"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0714 }  # technique +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "engine_passive", effect = "focus", value = 3 }]
+
+[[set]]  # Hope (Esperanza)
+name = "Hope"
+members = ["eq_mi0106001", "eq_mi0108101", "eq_ac0103101"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0857 }  # agility +6 at S = 70
+  effects = [{ kind = "tension_on", event = "duel_won", value = 2 }]
+
+[[set]]  # Thunder (Relámpago)
+name = "Thunder"
+members = ["eq_mi0105101", "eq_ac0105501", "eq_sp0106901", "eq_sp0107101", "eq_sp0108101", "eq_sh010101", "eq_sh040101", "eq_sh070101", "eq_sh040901", "eq_sh011401", "eq_sh110201", "eq_sh011101", "eq_sh040401", "eq_sh050201", "eq_sh030101", "eq_sh030201", "eq_sh051401", "eq_sh051501", "eq_sh080101"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0714 }  # agility +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { kick = 0.0714 }  # kick +5 at S = 70
+  effects = [{ kind = "technique_power", move_kind = "chain_shoot", value = 3 }]
+
+[[set]]  # Sleek (Elegante)
+name = "Sleek"
+members = ["eq_sh1101201", "eq_sh045101", "eq_mi0101001", "eq_ac0104201", "eq_sp0100401", "eq_sp0101101", "eq_ac0101201", "eq_sp0100101", "eq_sp0100601", "eq_sh080901"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { control = 0.0571 }  # control +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { technique = 0.0571 }  # technique +4 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "tension_cost", move_kind = "dribble", value = -5 }]
+
+[[set]]  # Sporty (Deportivo)
+name = "Sporty"
+members = ["eq_sh1100501", "eq_mi0101101", "eq_ac0101301", "eq_sp0101701", "eq_sp0103401", "eq_sp0104101", "eq_sp0104701", "eq_sp0105601"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0571 }  # agility +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { physical = 0.0571 }  # physical +4 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "aura_points", effect = "gp_drain", value = -5 }]
+
+[[set]]  # Athlete (Atleta)
+name = "Athlete"
+members = ["eq_sh1104901", "eq_ac0103601", "eq_sp0105701"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0714 }  # agility +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "move_speed", value = 3 }]
+
+[[set]]  # Trendy (A la moda)
+name = "Trendy"
+members = ["eq_sh1101601", "eq_mi0103501", "eq_ac0100901", "eq_sp0100801"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0571 }  # technique +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { control = 0.0571 }  # control +4 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "engine_passive", effect = "drop_rate", value = 5 }]
+
+[[set]]  # Youth (Juventud)
+name = "Youth"
+members = ["eq_mi0100601", "eq_ac0100101"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.0429, agility = 0.0429 }  # kick +3, agility +3 at S = 70
+
+[[set]]  # Bond (Vínculo)
+name = "Bond"
+members = ["eq_sh1104801", "eq_mi0100201", "eq_mi0100301", "eq_ac0106601", "eq_ac0103801", "eq_sp0100201"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { intelligence = 0.0714 }  # intelligence +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { control = 0.0714 }  # control +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "tension_on", event = "duel_won", value = 2 }]
+
+[[set]]  # Oath (Pacto y oración)
+name = "Oath"
+members = ["eq_mi0103901", "eq_mi0104401", "eq_ac0103701", "eq_ac0106301"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { pressure = 0.0571, intelligence = 0.0571 }  # pressure +4, intelligence +4 at S = 70
+
+[[set]]  # Prism (Prisma)
+name = "Prism"
+members = ["eq_mi0106801", "eq_ac0104501"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0571, intelligence = 0.0571 }  # physical +4, intelligence +4 at S = 70
+
+[[set]]  # Nimbus (Nimbus)
+name = "Nimbus"
+members = ["eq_mi0106401", "eq_ac0105401"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0571, agility = 0.0571 }  # technique +4, agility +4 at S = 70
+
+[[set]]  # Colorful (Colores)
+name = "Colorful"
+members = ["eq_mi0101201", "eq_ac0101101"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0429, agility = 0.0429 }  # physical +3, agility +3 at S = 70
+
+[[set]]  # Stormcloud (Nube de tormenta)
+name = "Stormcloud"
+members = ["eq_mi0103801", "eq_ac0103201"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0571, agility = 0.0571 }  # physical +4, agility +4 at S = 70
+
+[[set]]  # Greenwood (Verdor)
+name = "Greenwood"
+members = ["eq_sh045401", "eq_sh1101001", "eq_sh071701", "eq_mi0105601", "eq_mi0103301", "eq_ac0103301", "eq_ac0105701", "eq_sh010801", "eq_sh021801", "eq_sh050401", "eq_sh045601"]
+element = "forest"
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0714 }  # physical +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { agility = 0.0714 }  # agility +5 at S = 70
+  effects = [{ kind = "element_power", element = "forest", value = 3 }]
+
+[[set]]  # Exotic (Exótico)
+name = "Exotic"
+members = ["eq_mi0103601", "eq_sp0103001"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { pressure = 0.0571, agility = 0.0571 }  # pressure +4, agility +4 at S = 70
+
+[[set]]  # Scholar (Estudioso)
+name = "Scholar"
+members = ["eq_mi0103701", "eq_sp0103301", "eq_sh040501", "eq_sh111601", "eq_sh111701", "eq_sp0104401", "eq_sp0107801"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { intelligence = 0.0857 }  # intelligence +6 at S = 70
+  effects = [{ kind = "engine_passive", effect = "focus", value = 2 }]
+
+  [[set.bonus]]
+  pieces = 3
+  stats = { technique = 0.0571 }  # technique +4 at S = 70
+[[set]]  # Military (Militar)
+name = "Military"
+members = ["eq_mi0104601", "eq_ac0102901", "eq_sh1102201", "eq_sh020101", "eq_sh032201", "eq_sh080801", "eq_ac0100601", "eq_ac0106201"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0571, pressure = 0.0571 }  # physical +4, pressure +4 at S = 70
+
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "tension_on", event = "duel_won", value = 2 }]
+[[set]]  # Castella (Castella)
+name = "Castella"
+members = ["eq_ac0101701", "eq_sp0101801", "eq_sp0103801"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0429, agility = 0.0429 }  # technique +3, agility +3 at S = 70
+
+[[set]]  # Umibozu (Umibozu)
+name = "Umibozu"
+members = ["eq_ac0101501", "eq_sp0104501"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { pressure = 0.0571, intelligence = 0.0571 }  # pressure +4, intelligence +4 at S = 70
+
+[[set]]  # Shopping Street (Calle comercial)
+name = "Street"
+members = ["eq_sh1101501", "eq_sh110002", "eq_sh1100401", "eq_sh1102501", "eq_sh1106501", "eq_sh1105601", "eq_sp0103501", "eq_sp0106301", "eq_sp0104801", "eq_sp0105001", "eq_sp0101301", "eq_sp0100301", "eq_sh111201", "eq_sh011301", "eq_sh111301", "eq_sp0105501", "eq_sp0106001"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0571, technique = 0.0571 }  # agility +4, technique +4 at S = 70
+
+[[set]]  # Penguin (Pingüino)
+name = "Penguin"
+members = ["eq_sh010201", "eq_sh040801", "eq_sh070701", "eq_sh110801", "eq_sp0101001", "eq_sp0107201"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { control = 0.0857 }  # control +6 at S = 70
+  effects = [{ kind = "tension_cost", move_kind = "shoot", value = -4 }]
+
+[[set]]  # Dragon (Dragón)
+name = "Dragon"
+members = ["eq_sh030501", "eq_sh060101", "eq_mi0100401", "eq_sp0102501", "eq_sp0102801", "eq_sh041801"]
+element = "fire"
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.0714 }  # kick +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "element_power", element = "fire", value = 3 }]
+
+[[set]]  # Pegasus (Pegaso)
+name = "Pegasus"
+members = ["eq_sh1104701", "eq_sp0107601", "eq_sh030901", "eq_sh081301"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.1143 }  # technique +8 at S = 70
+  effects = [{ kind = "technique_power", move_kind = "long_shoot", value = 4 }]
+
+[[set]]  # Endou's Legacy (Legado de Endo)
+name = "Endo"
+members = ["eq_mi0107001", "eq_mi0108001", "eq_sp0107301", "eq_sp0108001", "eq_ac0107701", "cro_eq_mi110004"]
+element = "mountain"
+  [[set.bonus]]
+  pieces = 2
+  stats = { intelligence = 0.1429 }  # intelligence +10 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "tension_cost", move_kind = "catch", value = -8 }, { kind = "tension_on", event = "keeper_save", value = 5 }]
+
+[[set]]  # Strategist (Estratega)
+name = "Strategist"
+members = ["eq_ac0107401", "eq_sp0107501", "eq_sh020501"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { control = 0.1429 }  # control +10 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "engine_passive", effect = "team_focus", value = 2 }]
+
+[[set]]  # Alius (Alius)
+name = "Alius"
+members = ["eq_ac0107101", "eq_mi0103101", "eq_sh021201", "eq_sh020301", "eq_sh020701", "eq_sh021401", "eq_sh021501", "eq_sh021601", "eq_sh021301"]
+element = "void"
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.1429 }  # kick +10 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "technique_power", move_kind = "shoot", value = 5 }, { kind = "tension_cost", move_kind = "shoot", value = 10 }]
+
+[[set]]  # Olympus (Olimpo)
+name = "Olympus"
+members = ["eq_sh011001", "eq_sh070801", "eq_sh041701", "eq_sh111501", "eq_mi0107501", "eq_ac0107301", "eq_sp0105801", "eq_sh031101"]
+element = "mountain"
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0857 }  # physical +6 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { agility = 0.0857 }  # agility +6 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "technique_power", move_kind = "block", value = 4 }]
+
+[[set]]  # Omega (Omega)
+name = "Omega"
+members = ["eq_sh050101", "eq_sh052001", "eq_sp0105201", "eq_ac0104701", "eq_sh1103801", "eq_sh1105801", "eq_sh050901", "eq_sh051101", "eq_sh051201", "eq_sh051301", "eq_sp0105101"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { pressure = 0.0857 }  # pressure +6 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "tension_cost", move_kind = "block", value = -6 }]
+
+[[set]]  # Darkness (Oscuridad)
+name = "Darkness"
+members = ["eq_sh042001", "eq_sh042401", "eq_sh1106801", "eq_sh031701", "eq_mi0106101", "eq_mi0107401", "eq_mi0107201", "eq_sp0105401", "eq_sp0105301", "eq_sh031601", "eq_sh080301", "eq_sh051901", "eq_sh051801", "eq_sh030701", "eq_sh042101", "eq_ac0102501"]
+element = "void"
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.1143 }  # technique +8 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "element_power", element = "void", value = 4 }]
+
+[[set]]  # Royalty (Realeza)
+name = "Royalty"
+members = ["eq_sh1105701", "eq_sh1106701", "eq_sh1103201", "eq_sh1102301", "eq_ac0105101", "eq_ac0105801", "eq_sh030601", "eq_sh030801", "eq_sh031201", "eq_sh081101", "eq_ac0101801"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { control = 0.0714, intelligence = 0.0714 }  # control +5, intelligence +5 at S = 70
+
+[[set]]  # Shinobi (Shinobi)
+name = "Shinobi"
+members = ["eq_sh1100101", "eq_sh1104401", "eq_sp0102901", "eq_sh010701"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0714 }  # agility +5 at S = 70
+  effects = [{ kind = "move_speed", value = 3, when = "dash" }]
+
+[[set]]  # Training (Entrenamiento)
+name = "Training"
+members = ["eq_mi0102701", "eq_ac0104401", "eq_sp0103601", "eq_sp0104901", "eq_sp0101401", "eq_sh1101801", "eq_sh1105901", "eq_sh1101101", "eq_sh110000", "eq_ac0103401", "eq_sp0103201", "eq_sp0100501", "eq_sp0106701"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0571 }  # physical +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { pressure = 0.0571 }  # pressure +4 at S = 70
+  effects = [{ kind = "aura_points", effect = "gp_drain", value = -4 }]
+
+[[set]]  # Seagull (Gaviota)
+name = "Seagull"
+members = ["eq_sh111401", "eq_sp0106501"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0571, intelligence = 0.0571 }  # agility +4, intelligence +4 at S = 70
+
+[[set]]  # Neo (Neo)
+name = "Neo"
+members = ["eq_mi0105701", "eq_mi0105801", "eq_ac0105201", "eq_ac0105601", "eq_ac0106401", "eq_sp0105901", "eq_sp0106401"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { control = 0.0714 }  # control +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { agility = 0.0714 }  # agility +5 at S = 70
+  effects = [{ kind = "recast", value = -4 }]
+
+[[set]]  # Goal Guardian (Guardameta)
+name = "Guardian"
+members = ["eq_sh112301", "eq_ac0108001", "eq_ac0106901", "eq_mi0102001", "eq_mi0102101", "eq_mi0102301", "eq_mi0102401", "eq_mi0104501", "eq_mi0104701", "eq_mi0104801", "eq_mi0104901", "eq_mi0106801", "eq_mi0107901", "eq_ac0100401"]
+element = "mountain"
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0857 }  # physical +6 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { intelligence = 0.0857 }  # intelligence +6 at S = 70
+  effects = [{ kind = "technique_power", move_kind = "catch", value = 3 }]
+
+[[set]]  # Path of Fire (Senda del fuego)
+name = "FirePath"
+members = ["eq_sh113201", "eq_mi0105001", "eq_ac0105301", "eq_mi0100401", "eq_sh060901", "eq_sh1103601", "eq_mi0104101"]
+element = "fire"
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.1143 }  # kick +8 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "element_power", element = "fire", value = 4 }]
+
+[[set]]  # Path of Wind (Senda del viento)
+name = "WindPath"
+members = ["eq_sh112901", "eq_mi0101701", "eq_ac0103001", "eq_mi0106301", "eq_sh045301"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.1143 }  # agility +8 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "element_power", element = "wind", value = 4 }]
+
+[[set]]  # Path of the Forest (Senda del bosque)
+name = "ForestPath"
+members = ["eq_sh113001", "eq_mi0100801", "eq_ac0106001", "eq_sp0106601", "eq_sh061101"]
+element = "forest"
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.1143 }  # technique +8 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "element_power", element = "forest", value = 4 }]
+
+[[set]]  # Path of the Mountain (Senda de la montaña)
+name = "MountainPath"
+members = ["eq_sh113101", "eq_mi0100701", "eq_ac0102201", "eq_sp0103901", "eq_sh060701", "eq_sh1104501"]
+element = "mountain"
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.1143 }  # physical +8 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  effects = [{ kind = "element_power", element = "mountain", value = 4 }]
+
+[[set]]  # Tide (Marea)
+name = "Tide"
+members = ["eq_sh030301", "eq_sh060201", "eq_sh041001", "eq_sh050701", "eq_sh020801", "eq_sh111001", "eq_sh060801", "eq_sh071201", "eq_mi0101401", "eq_mi0106701", "eq_ac0106101", "eq_ac0107801", "eq_ac0104601", "eq_ac0102801", "eq_ac0101401", "eq_sp0100101"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0714 }  # technique +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { control = 0.0714 }  # control +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "technique_power", move_kind = "dribble", value = 4 }]
+
+[[set]]  # Frost (Escarcha)
+name = "Frost"
+members = ["eq_sh1103501", "eq_sh020201", "eq_sh041301", "eq_sh070901", "eq_sh111901", "eq_ac0104001", "eq_ac0104101", "eq_ac0101401", "eq_sp0101601"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { intelligence = 0.0714 }  # intelligence +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { technique = 0.0714 }  # technique +5 at S = 70
+  effects = [{ kind = "technique_power", move_kind = "block", value = 3 }]
+
+[[set]]  # Wild (Salvaje)
+name = "Wild"
+members = ["eq_sh010401", "eq_sh030401", "eq_sh060401", "eq_sh060601", "eq_sh080201", "eq_sh042301", "eq_sh042201", "eq_sh031001", "eq_sh032101", "eq_mi0100101", "eq_ac0102501"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0714 }  # physical +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { pressure = 0.0714 }  # pressure +5 at S = 70
+  effects = [{ kind = "tension_on", event = "duel_won", value = 2 }]
+
+[[set]]  # Rebel (Rebelde)
+name = "Rebel"
+members = ["eq_sh111301", "eq_sh050601", "eq_sh112501", "eq_sh041401_20", "eq_sh051601", "eq_sh112201", "eq_mi0100501", "eq_ac0100201", "eq_ac0100301", "eq_ac0100801", "eq_ac0101601", "eq_ac0102101", "eq_sp0100701", "eq_sp0102601", "eq_sp0106001", "eq_sp0104601"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.0714 }  # kick +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { pressure = 0.0714 }  # pressure +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "stat_when", stats = ["kick", "pressure"], score = "trailing", value = 5 }]
+
+[[set]]  # Challenger (Desafío)
+name = "Challenger"
+members = ["eq_sh1102801", "eq_mi0100901", "eq_ac0100501", "eq_ac0102301", "eq_ac0106701", "eq_ac0108101", "eq_sp0104601", "eq_sp0102301"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { pressure = 0.0714 }  # pressure +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { kick = 0.0714 }  # kick +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "tension_on", event = "duel_won", value = 3 }]
+
+[[set]]  # Passion (Pasión)
+name = "Passion"
+members = ["eq_sh1103601", "eq_sh031901", "eq_sh080501", "eq_mi0104101", "eq_mi0105901", "eq_sp0106101", "eq_sp0102301"]
+element = "fire"
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.0714 }  # kick +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { physical = 0.0714 }  # physical +5 at S = 70
+  effects = [{ kind = "element_power", element = "fire", value = 3 }]
+
+[[set]]  # Glory (Gloria)
+name = "Glory"
+members = ["eq_sh1103001", "eq_sh030101", "eq_sh030201", "eq_sh051401", "eq_sh051501", "eq_sh080101", "eq_sh060501", "eq_sh061701", "eq_sh110201", "eq_mi0107601", "eq_mi0104201", "eq_mi0107801", "eq_ac0104801", "eq_ac0102001", "eq_ac0107001", "eq_sp0106701"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { control = 0.0714 }  # control +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { intelligence = 0.0714 }  # intelligence +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "technique_power", move_kind = "shoot", value = 4 }]
+
+[[set]]  # Cosmos (Cosmos)
+name = "Cosmos"
+members = ["eq_sh040601", "eq_sh070201", "eq_sh061501", "eq_sh061401", "eq_sh040301", "eq_sh061601", "eq_sh061201", "eq_sh061301", "eq_sh081201", "eq_sh081501", "eq_mi0106601", "eq_mi0102801", "eq_ac0104901", "eq_ac0107601", "eq_ac0107901", "eq_sp0104001", "eq_sp0107901"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0714 }  # technique +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { intelligence = 0.0714 }  # intelligence +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "technique_power", move_kind = "long_shoot", value = 4 }]
+
+[[set]]  # Angel (Ángel)
+name = "Angel"
+members = ["eq_sh020401", "eq_sh040701", "eq_sh041901", "eq_sh031501", "eq_sh040201", "eq_sh080301", "eq_mi0106501", "eq_mi0105501", "eq_mi0102801", "eq_ac0102101", "eq_ac0106801", "eq_sp0104001"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { intelligence = 0.0714 }  # intelligence +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { control = 0.0714 }  # control +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "tension_cost", value = -3 }]
+
+[[set]]  # Occult (Ocultismo)
+name = "Occult"
+members = ["eq_sh010301", "eq_sh010501", "eq_sh070601", "eq_sh041501", "eq_mi0103201", "eq_mi0104001", "eq_ac0101901", "eq_sp0104301", "eq_sp0107801"]
+element = "void"
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0714 }  # technique +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { intelligence = 0.0714 }  # intelligence +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "element_power", element = "void", value = 3 }]
+
+[[set]]  # Bulwark (Baluarte)
+name = "Bulwark"
+members = ["eq_sh1100201", "eq_sh1103101", "eq_sh1104501", "eq_sh1105201", "eq_sh1103401", "eq_sh070401", "eq_sh080701", "eq_ac0100401", "eq_sp0101901"]
+element = "mountain"
+  [[set.bonus]]
+  pieces = 2
+  stats = { physical = 0.0714 }  # physical +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { pressure = 0.0714 }  # pressure +5 at S = 70
+  effects = [{ kind = "technique_power", move_kind = "block", value = 3 }]
+
+[[set]]  # Swift (Veloz)
+name = "Swift"
+members = ["eq_sh1104201", "eq_sh1103701", "eq_sh1101701", "eq_sh045301", "eq_sh080601", "eq_mi0105301", "eq_ac0102601", "eq_sp0106801"]
+element = "wind"
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0714 }  # agility +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { technique = 0.0714 }  # technique +5 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "move_speed", value = 3 }]
+
+[[set]]  # Tech (Tecno)
+name = "Tech"
+members = ["eq_sh1105301", "eq_sh111801", "eq_sh010601", "eq_mi0103401", "eq_sp0100601"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0714 }  # technique +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { control = 0.0714 }  # control +5 at S = 70
+  effects = [{ kind = "recast", value = -3 }]
+
+[[set]]  # Fortune (Fortuna)
+name = "Fortune"
+members = ["eq_sh1102601", "eq_mi0101501", "eq_mi0105401", "eq_ac0103901", "eq_sp0102101"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0571 }  # agility +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { technique = 0.0571 }  # technique +4 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "tension_on", event = "duel_won", value = 3 }]
+
+[[set]]  # Classic (Clásico)
+name = "Classic"
+members = ["eq_sh110001", "eq_sh1103301", "eq_sh1105101", "eq_sh1106101", "eq_sh041101", "eq_mi0102501", "eq_ac0100701", "eq_sp0101501", "eq_sp0104401", "eq_sp0100501", "eq_sp0102101"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { control = 0.0571 }  # control +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { kick = 0.0571 }  # kick +4 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "tension_cost", move_kind = "shoot", value = -4 }]
+
+[[set]]  # School (Escuela)
+name = "School"
+members = ["eq_sh071101", "eq_sh071001", "eq_sh110901", "eq_sh110601", "eq_sh110301", "eq_sh110501", "eq_sh110701", "eq_sh112101", "eq_sh110101", "eq_sh010901", "eq_sh041401", "eq_sh070501", "eq_sh020901", "eq_sh020601", "eq_sh011201", "eq_sh111601", "eq_sh111701", "eq_mi0101601", "eq_ac0106501", "eq_sp0102201", "eq_sp0102401"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { intelligence = 0.0571 }  # intelligence +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { agility = 0.0571 }  # agility +4 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "recast", value = -3 }]
+
+[[set]]  # Baseball (Béisbol)
+name = "Baseball"
+members = ["eq_sh1100701", "eq_sh110401", "eq_mi0102201", "eq_sp0105601"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { kick = 0.0714 }  # kick +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { physical = 0.0714 }  # physical +5 at S = 70
+  effects = [{ kind = "technique_power", move_kind = "long_shoot", value = 3 }]
+
+[[set]]  # World (Mundial)
+name = "World"
+members = ["eq_sh031301", "eq_sh031401", "eq_sh071601", "eq_sh060301", "eq_sh081401", "eq_sh110601", "eq_sh030301", "eq_sh030401", "eq_sh031901", "eq_sh030601", "eq_sh030801", "eq_sh030901", "eq_sh031101", "eq_sh031201", "eq_sh032301", "eq_sh032201", "eq_sh032101", "eq_sh081001", "eq_sh080201", "eq_sh080801", "eq_sh081101", "eq_sh080601", "eq_sh080701", "eq_sh080901", "eq_sh081301", "eq_sh080401", "eq_mi0101801", "eq_mi0104301", "eq_sp0107001"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0571 }  # agility +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { control = 0.0571 }  # control +4 at S = 70
+  effects = [{ kind = "move_speed", value = 2 }]
+
+[[set]]  # Fiesta (Fiesta)
+name = "Fiesta"
+members = ["eq_sh1100601", "eq_sh045201", "eq_sh045501", "eq_sh080401", "eq_sh081001", "eq_mi0101301", "eq_ac0103901", "eq_sp0101201", "eq_sp0108201", "eq_sp0102701", "eq_sp0105101"]
+  [[set.bonus]]
+  pieces = 2
+  stats = { agility = 0.0571 }  # agility +4 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { technique = 0.0571 }  # technique +4 at S = 70
+  [[set.bonus]]
+  pieces = 4
+  effects = [{ kind = "tension_on", event = "duel_won", value = 2 }]
+
+[[set]]  # Bloom (Floración)
+name = "Bloom"
+members = ["eq_sh045601", "eq_sh032301", "eq_sh111101", "eq_mi0102601", "eq_sp0103701"]
+element = "forest"
+  [[set.bonus]]
+  pieces = 2
+  stats = { technique = 0.0714 }  # technique +5 at S = 70
+  [[set.bonus]]
+  pieces = 3
+  stats = { agility = 0.0714 }  # agility +5 at S = 70
+  effects = [{ kind = "element_power", element = "forest", value = 3 }]
+
+[[auto_set]]
+name = "TeamColours"
+kind = "boots_kit"     # team boots whose kit (item col 18) is the kit the team plays in
+bonus = { primary = 0.0714 }   # +5 at S = 70 on the primary raise
+
+[[auto_set]]
+name = "Squad"
+kind = "team_boots"     # 3 or more of the eleven in boots of one team family, under that team's kit
+pieces = 3
+effects = [{ kind = "tension_on", event = "duel_won", value = 2 }]

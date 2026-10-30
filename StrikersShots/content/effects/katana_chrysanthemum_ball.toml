@@ -1,0 +1,37 @@
+# «Katana crisantemo» (Chrysanthemum Katana, whs02220 and whs02220_mm, same cut-in; fire shot, cut-in ev60_02220):
+# the cut-in's last shot (c0400 from the kick), in two effects (the katana's guard at the kick point, its blade out to
+# the ball, as in the cut-in):
+# * katana_chrysanthemum_guard (object ev6222kg00, `ground_effect`): the golden burst, the katana's guard, its glows and
+#   the flames at the blade's root at the kick point at the flight's height, the outer chrysanthemum petals blown off
+#   it tumbling round it, held at the cut's last frame from the first frame; it fades out 5 s after it appears, past
+#   any flight;
+# * katana_chrysanthemum (object ev6222kc00, the ball aura): the white-gold katana blade with its flowing flame aura,
+#   generated out of the guard, never stretched: the cut-in's blade tip on the ball, its body laid end to end at its
+#   own size back from the tip (~64 m), riding the ball and revealed as the kick point passes it, so the blade grows
+#   out of the guard with the ball on its tip; crossed so it reads from every side; x1.
+# Both built by research/scripts/katana_chrysanthemum_ball_fx.py from the cut-in's effect object ev60022200.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\katana_chrysanthemum_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "katana_chrysanthemum"
+from = "ega0075c"
+object = "effect/event/ev60/ev6222kc00/ev6222kc00.objbin"
+
+[[effect]]
+name = "katana_chrysanthemum_guard"
+from = "ega0021"
+object = "effect/event/ev60/ev6222kg00/ev6222kg00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "katana_chrysanthemum"
+when = { techniques = ["whs02220", "whs02220_mm"] }
+aura = "katana_chrysanthemum"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "katana_chrysanthemum_guard" }

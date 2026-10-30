@@ -18,3 +18,19 @@ save = "sink"
 return = "menus"
 pass = "none"
 before = [{ op = "fade_encounter", frames = 120 }]
+
+# the same pachanga when no active pachanga team is set: the player's active match team (the VS team the other modes
+# use) plays its five, untouched; the board's NewRecruitment.PachangaBoard.Play picks it through the match start
+# service's `set` answer
+[[friendly]]
+id = "new_recruitment_pachanga_active_team"
+name = "New Recruitment pachanga (active team)"
+ruleset = "if_pachanga_5v5"
+team = "current"
+kit_from_11 = true
+pre_match = true
+challenge = "none"
+save = "sink"
+return = "menus"
+pass = "none"
+before = [{ op = "fade_encounter", frames = 120 }]

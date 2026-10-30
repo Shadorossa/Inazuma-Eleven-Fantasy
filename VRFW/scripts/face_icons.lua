@@ -6,8 +6,8 @@ FaceIcons = FaceIcons or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("face_icons:", ...) end
-local function warn(...) VRFW.warn("face_icons:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("face_icons")
 
 local T_RARITY, T_KEY = "VRFW.FaceIcon.Rarity", "VRFW.FaceIcon.Key"
 local FACE_ONLY = 10

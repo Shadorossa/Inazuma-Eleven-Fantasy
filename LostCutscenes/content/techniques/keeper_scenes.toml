@@ -1,5 +1,5 @@
 # Escenas del portero (new_animations 1.0.0; the mod keeper_scenes until 2026-10-08): three more pairs for the game's random keeper-gauge scenes (technique engine `[[keeper_scene]]`,
-# docs/app/technique-engine.md §3.6). The game keeps 5 pairs {save, goal conceded} (ev71_31010/31020 … 31090/31100)
+# docs/framework/types/technique.md). The game keeps 5 pairs {save, goal conceded} (ev71_31010/31020 … 31090/31100)
 # and rolls ONE index per shot (never one of the last 2); the outcome picks the member. These pairs go after the
 # retail ones (indices 5-7), so the retail mix stays and the new scenes are 3 of 8.
 #

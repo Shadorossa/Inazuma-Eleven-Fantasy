@@ -1,0 +1,114 @@
+schema = "VRFW.changelog/1"
+# Stoppage Time: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes.
+# 1.0.0 (2026-10-28): created (a module of Football Reforged).
+lang = "es"
+name = "Tiempo añadido"
+
+[en]
+name = "Stoppage Time"
+
+[fr]
+name = "Temps additionnel"
+
+[de]
+name = "Nachspielzeit"
+
+[it]
+name = "Recupero"
+
+[pt]
+name = "Tempo de compensação"
+
+[ja]
+name = "アディショナルタイム"
+
+[zh_hans]
+name = "补时"
+
+[zh_hant]
+name = "補時"
+
+[[release]]
+icon = "general"
+notes = [
+    "Cada parte tiene tiempo añadido, como en el fútbol.",
+    "Faltas, técnicas, paradas, goles y cambios suman.",
+    "Al final sale «+N» y el reloj sigue corriendo.",
+    "Si atacas en campo rival al acabar, la jugada sigue.",
+    "Módulo de Football Reforged.",
+]
+
+[release.en]
+notes = [
+    "Every half gets added time, as in football.",
+    "Fouls, moves, saves, goals and substitutions add up.",
+    "A «+N» telop shows and the clock keeps running.",
+    "Attacking in the rival half at the end? Play goes on.",
+    "A module of Football Reforged.",
+]
+
+[release.fr]
+notes = [
+    "Chaque mi-temps a du temps additionnel.",
+    "Fautes, techniques, arrêts, buts et changements.",
+    "Un bandeau «+N» s'affiche, le chrono continue.",
+    "En attaque dans le camp adverse, l'action continue.",
+    "Un module de Football Reforged.",
+]
+
+[release.de]
+notes = [
+    "Jede Halbzeit hat Nachspielzeit wie im Fußball.",
+    "Fouls, Techniken, Paraden, Tore und Wechsel zählen.",
+    "Eine Einblendung «+N», die Uhr läuft weiter.",
+    "Angriff in der Gegnerhälfte? Der Spielzug läuft.",
+    "Ein Modul von Football Reforged.",
+]
+
+[release.it]
+notes = [
+    "Ogni tempo ha il recupero, come nel calcio.",
+    "Falli, tecniche, parate, gol e cambi si sommano.",
+    "Compare «+N» e il cronometro continua.",
+    "In attacco nella metà avversaria, l'azione continua.",
+    "Un modulo di Football Reforged.",
+]
+
+[release.pt]
+notes = [
+    "Cada parte tem tempo de compensação.",
+    "Faltas, técnicas, defesas, golos e trocas somam.",
+    "Aparece «+N» e o relógio continua a correr.",
+    "A atacar no meio-campo rival, a jogada continua.",
+    "Um módulo de Football Reforged.",
+]
+
+[release.ja]
+notes = [
+    "各ハーフにサッカーのようなアディショナルタイム。",
+    "ファウル、必殺技、セーブ、ゴール、交代で増える。",
+    "「+N」が表示され、時計は進み続ける。",
+    "終了時に相手陣内で攻撃中ならプレーが続く。",
+    "Football Reforgedのモジュール。",
+]
+
+[release.zh_hans]
+notes = [
+    "每个半场都有补时，就像足球一样。",
+    "犯规、必杀技、扑救、进球和换人都会增加补时。",
+    "显示「+N」，时钟继续走。",
+    "结束时在对方半场进攻，比赛继续。",
+    "Football Reforged的模块。",
+]
+
+[release.zh_hant]
+notes = [
+    "每個半場都有補時，就像足球一樣。",
+    "犯規、必殺技、撲救、進球和換人都會增加補時。",
+    "顯示「+N」，時鐘繼續走。",
+    "結束時在對方半場進攻，比賽繼續。",
+    "Football Reforged的模組。",
+]

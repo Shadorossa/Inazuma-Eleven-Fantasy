@@ -7,7 +7,7 @@ if VRFW_Host ~= nil then
   local STEM = "chara_bank_menu"
   local SWITCH_FUNCTION = 3959000859     -- OnFunction argument of L2 / R2 (input rows CMD_FUNCL2 / CMD_FUNCR2)
   local GUIDE = 3026610789               -- team14_06_active_ui_change_guide
-  local LAYER_VISIBLE = 711242136        -- CMND_SET_LAYER_VISIBLE (layer, instance, visible)
+  local LAYER_VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE        -- (layer, instance, visible)
 
   -- a player page open (the game's own local: L2 / R2 page it then)
   local function plate_open()

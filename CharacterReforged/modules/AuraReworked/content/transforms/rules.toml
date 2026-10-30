@@ -17,3 +17,6 @@ armour_no_mesh_groups = [17]
 # in its slot from the kick-off (the board's armed slot): the framework has the engine build it again as the wearer
 # once the match plays (docs/game/mechanics/armed-body-types.md §7.1). The armours' owners keep their retail card.
 armour_identity = "wearer"
+# the armour put on while its own keshin of the same player is out (the aura command, RB + B, with the keshin summoned)
+# costs no tension: the keshin was already paid. The framework neither asks nor takes the hyper gauge for it.
+armour_from_keshin_free = true

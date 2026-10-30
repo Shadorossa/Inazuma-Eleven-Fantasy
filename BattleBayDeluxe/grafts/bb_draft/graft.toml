@@ -41,7 +41,7 @@ order = 345
 module = "lua_bridge"
 requires = []
 conflicts = []
-wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnBack", "OnFunction", "OnCloseEndLayer", "Step", "SetupEmblemIcon", "UpdateFormation", "UpdateTacticsLayer", "UpdateButtonGuide", "OnChangeFocus", "GetSelectDifficultyIdx"]
+wraps = ["OnInit", "OnSetupLayer", "OnOpenLayer", "OnDecideFocus", "OnBack", "OnFunction", "OnCloseEndLayer", "OnOpenEndLayer", "Step", "SetupEmblemIcon", "UpdateFormation", "UpdateTacticsLayer", "UpdateButtonGuide", "OnChangeFocus", "GetSelectDifficultyIdx"]
 description = "Battle Bay: the Draft tile of the Campaña (pitch + bench, 1 of 5 per slot in any order, then the campaign)"
 
 [[files]]

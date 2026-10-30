@@ -1,0 +1,35 @@
+# «Cañón de meteoritos A» (Meteor Blade A, whs03410; fire; cut-in ev60_03410): the end of the cut-in's last shot
+# (c0400, Ares' version), in two effects (owner 2026-10-26: a fixed point the fan comes out of, as in the cut-in):
+# * meteor_blade_a_source (object ev6341mf00, `ground_effect`): the beam root glow the fan is fired from in the cut-in
+#   (c0300, held at frame 432), camera-facing, standing at the kick point at the flight's height; it fades out 5 s
+#   after it appears, past any flight;
+# * meteor_blade_a (object ev6341ma00, the ball aura, on the distance clock): every layer of the cut-in's fan (white,
+#   blue and yellow sheets, the heads, the line and star sheets, the star streams; held at frame 537) coming out of the
+#   source to the ball, revealed by the distance flown and never stretched in its texture, drawn three times about the
+#   flight so it reads from every side; the ball inside the fan's tip with its glow, x0.25.
+# Both built by research/scripts/meteor_blade_a_ball_fx.py from the cut-in's effect object ev60034100.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\meteor_blade_a_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "meteor_blade_a"
+from = "ega0075c"
+object = "effect/event/ev60/ev6341ma00/ev6341ma00.objbin"
+
+[[effect]]
+name = "meteor_blade_a_source"
+from = "ega0021"
+object = "effect/event/ev60/ev6341mf00/ev6341mf00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "meteor_blade_a"
+when = { techniques = ["whs03410"] }
+aura = "meteor_blade_a"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "meteor_blade_a_source" }

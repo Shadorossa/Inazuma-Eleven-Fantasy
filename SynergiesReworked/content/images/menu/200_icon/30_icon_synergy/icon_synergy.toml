@@ -1,0 +1,152 @@
+# Synergies Reworked › the symbols of its new synergies, in an atlas of its own (the game's icon_synergy.g4tx gets no
+# entry). The game asks for a synergy's symbol by its key (sprite sf11001, sf11002, sf11003, sf11004, sp11001) in icon_synergy.g4tx; the
+# VR-Framework's sprite redirect (content/sprite_redirects/synergy_icons.toml) serves them from this atlas. The
+# white flag (offensive) and the castle (defensive) are a separate base layer of each menu layout, drawn under the
+# symbol, so a transparent symbol shows the flag alone.
+#   sf11001 «Los cuatro magníficos» (item four_magnificent): its four members' heads, 2 x 2, white rim
+#   sf11002 «Japón en la sombra» (item shadow_japan): an original eclipsed rising sun (a red sun with 16 rays, a navy
+#           shadow disc over it), white rim and dark outline like the retail symbols; assets/images/.../shadow_japan.png
+#   sf11003 «Los chicos de la Segunda Fase» (item second_stage_children): the double helix of Ragnah's emblem (game emblem
+#           em050213) alone, white rim and dark outline; assets/images/.../second_stage_children.png, built by
+#           research/scripts/second_stage_icon_build.py
+#   sf11004 «Los cinco hermanos Blackley» (item five_blackley_brothers): a black die showing five, its pips in the Italian
+#           colours (the brothers are named Uno … Cinque); sp11001 «Los cinco hermanos Whitely» (item
+#           five_whitely_brothers): a white die showing five, its pips in the German colours (Eins … Fünf). White rim and
+#           dark outline; assets/images/.../five_*_brothers.png, built by research/scripts/five_brothers_icon_build.py
+schema = "VRFW.image/1"
+
+# «Los cuatro magníficos»: its four members' heads (the game's face icons of the condition characters, the same chara_base
+# ids as its synergy_flag_config row) in a 2 x 2 group with a white rim, the look of the retail symbols (character
+# drawings outlined in white). Each head: the face icon's head box at 27 px; the rim: its white silhouette pasted around it.
+[[recipe]]
+name = "head_autumn"
+game = "#/menu/200_icon/10_icon_chr/face/c02028510_l.g4tx"
+ops = [{ op = "crop", box = [44, 36, 212, 204] }, { op = "resize", size = [27, 27] }]
+
+[[recipe]]
+name = "rim_autumn"
+from = "head_autumn"
+ops = [{ op = "fill", rgb = [255, 255, 255] }]
+
+[[recipe]]
+name = "head_summer"
+game = "#/menu/200_icon/10_icon_chr/face/c02027650_l.g4tx"
+ops = [{ op = "crop", box = [44, 36, 212, 204] }, { op = "resize", size = [27, 27] }]
+
+[[recipe]]
+name = "rim_summer"
+from = "head_summer"
+ops = [{ op = "fill", rgb = [255, 255, 255] }]
+
+[[recipe]]
+name = "head_spring"
+game = "#/menu/200_icon/10_icon_chr/face/c02028970_l.g4tx"
+ops = [{ op = "crop", box = [44, 36, 212, 204] }, { op = "resize", size = [27, 27] }]
+
+[[recipe]]
+name = "rim_spring"
+from = "head_spring"
+ops = [{ op = "fill", rgb = [255, 255, 255] }]
+
+[[recipe]]
+name = "head_winter"
+game = "#/menu/200_icon/10_icon_chr/face/c01003050_l.g4tx"
+ops = [{ op = "crop", box = [44, 36, 212, 204] }, { op = "resize", size = [27, 27] }]
+
+[[recipe]]
+name = "rim_winter"
+from = "head_winter"
+ops = [{ op = "fill", rgb = [255, 255, 255] }]
+
+[[recipe]]
+name = "four_heads"
+canvas = [56, 56]
+ops = [
+  { op = "paste", image = "rim_autumn", at = [0, 2] },
+  { op = "paste", image = "rim_autumn", at = [4, 2] },
+  { op = "paste", image = "rim_autumn", at = [2, 0] },
+  { op = "paste", image = "rim_autumn", at = [2, 4] },
+  { op = "paste", image = "rim_autumn", at = [1, 1] },
+  { op = "paste", image = "rim_autumn", at = [3, 1] },
+  { op = "paste", image = "rim_autumn", at = [1, 3] },
+  { op = "paste", image = "rim_autumn", at = [3, 3] },
+  { op = "paste", image = "rim_summer", at = [25, 2] },
+  { op = "paste", image = "rim_summer", at = [29, 2] },
+  { op = "paste", image = "rim_summer", at = [27, 0] },
+  { op = "paste", image = "rim_summer", at = [27, 4] },
+  { op = "paste", image = "rim_summer", at = [26, 1] },
+  { op = "paste", image = "rim_summer", at = [28, 1] },
+  { op = "paste", image = "rim_summer", at = [26, 3] },
+  { op = "paste", image = "rim_summer", at = [28, 3] },
+  { op = "paste", image = "rim_spring", at = [0, 27] },
+  { op = "paste", image = "rim_spring", at = [4, 27] },
+  { op = "paste", image = "rim_spring", at = [2, 25] },
+  { op = "paste", image = "rim_spring", at = [2, 29] },
+  { op = "paste", image = "rim_spring", at = [1, 26] },
+  { op = "paste", image = "rim_spring", at = [3, 26] },
+  { op = "paste", image = "rim_spring", at = [1, 28] },
+  { op = "paste", image = "rim_spring", at = [3, 28] },
+  { op = "paste", image = "rim_winter", at = [25, 27] },
+  { op = "paste", image = "rim_winter", at = [29, 27] },
+  { op = "paste", image = "rim_winter", at = [27, 25] },
+  { op = "paste", image = "rim_winter", at = [27, 29] },
+  { op = "paste", image = "rim_winter", at = [26, 26] },
+  { op = "paste", image = "rim_winter", at = [28, 26] },
+  { op = "paste", image = "rim_winter", at = [26, 28] },
+  { op = "paste", image = "rim_winter", at = [28, 28] },
+  { op = "paste", image = "head_autumn", at = [2, 2] },
+  { op = "paste", image = "head_summer", at = [27, 2] },
+  { op = "paste", image = "head_spring", at = [2, 27] },
+  { op = "paste", image = "head_winter", at = [27, 27] },
+]
+
+
+[[texture]]
+atlas = "#/menu/200_icon/30_icon_synergy/synergies_reworked_icons.g4tx"
+name = "synergies_reworked_icons"
+size = [296, 56]
+
+[[sprite]]
+atlas = "#/menu/200_icon/30_icon_synergy/synergies_reworked_icons.g4tx"
+name = "sf11001"
+texture = "synergies_reworked_icons"
+x = 0
+y = 0
+size = [56, 56]
+recipe = "four_heads"
+
+[[sprite]]
+atlas = "#/menu/200_icon/30_icon_synergy/synergies_reworked_icons.g4tx"
+name = "sf11002"
+texture = "synergies_reworked_icons"
+x = 60
+y = 0
+size = [56, 56]
+png = "synergies_reworked/shadow_japan.png"
+
+[[sprite]]
+atlas = "#/menu/200_icon/30_icon_synergy/synergies_reworked_icons.g4tx"
+name = "sf11003"
+texture = "synergies_reworked_icons"
+x = 120
+y = 0
+size = [56, 56]
+png = "synergies_reworked/second_stage_children.png"
+
+[[sprite]]
+atlas = "#/menu/200_icon/30_icon_synergy/synergies_reworked_icons.g4tx"
+name = "sf11004"
+texture = "synergies_reworked_icons"
+x = 180
+y = 0
+size = [56, 56]
+png = "synergies_reworked/five_blackley_brothers.png"
+
+[[sprite]]
+atlas = "#/menu/200_icon/30_icon_synergy/synergies_reworked_icons.g4tx"
+name = "sp11001"
+texture = "synergies_reworked_icons"
+x = 240
+y = 0
+size = [56, 56]
+png = "synergies_reworked/five_whitely_brothers.png"

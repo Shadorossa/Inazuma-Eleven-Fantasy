@@ -1,6 +1,7 @@
 # Chronicle Deluxe: the icon of «Moneda dorada» (content/items/golden_coin.toml), a new texture of icon_item10 (the
 # `tk` sheet), made at build from the player's own game files: the «Medalla de la victoria» icon (tk_tnm000001) turned
 # gold (hue + 0.62 turn, saturation x 2). Preview: docs/game/media/previews/cd_golden_coin_icon.png.
+# In the mod's own atlas chronicle_deluxe_item_icons (never the game's icon_item10): the game asks icon_item10 for it by the item key; content\sprite_redirects\item_icons.toml serves it from here.
 schema = "VRFW.image/1"
 
 [[recipe]]
@@ -13,7 +14,7 @@ ops = [
 ]
 
 [[texture]]
-atlas = "#/menu/200_icon/02_icon_item/icon_item10.g4tx"
+atlas = "#/menu/200_icon/02_icon_item/chronicle_deluxe_item_icons.g4tx"
 name = "tk_gc000001"
 recipe = "golden_coin"
 mips = 1

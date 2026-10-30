@@ -76,9 +76,6 @@ BetterQoL.OriginalNames = {
     TEXT_VISIBLE = 2735666188, -- (layer, text node, on, instance)
     SET_TEXT = 1083631230,     -- (layer, text node, string, instance)
     COLOR = 801406373,         -- material colour (layer, instance, material, r, g, b)
-    RESET_FACE = 4176779611,   -- ResetFaceIcon (layer, instance, texture node)
-    FACE = 552280324,          -- chara icon (layer, instance, face only, mesh, texture node, 0, 0, key, kit, keeper, use args)
-    LOADING = 1277042906,      -- the instance's textures are still loading (layer, instance)
     POINTER = 558229292,       -- the pointer's position (screen px, y down)
     POINTER_MOVED = 3272825600,
     IS_OPEN_LAYER = 2640875187, -- CMND_IS_OPEN_LAYER (layer, instance)
@@ -148,7 +145,6 @@ BetterQoL.OriginalNames = {
   FACE_OX = 59,
   FACE_OY = 11,
   FOCUS_SCALE = 1.12,
-  FACE_WAIT = 120,             -- frames a requested face waits for its textures before it is shown anyway
   BUILD_WAIT = 30,             -- frames an opened instance may take to be built before its face is asked for anyway
   -- every other quad / node of the card, hidden on each tile (names: crc32 at run time)
   HIDE_MESHES = {"_icon_chr_base_l01", "_icon_chr_gradation_l01", "_seasonal_frame_l01", "_avatar_frame_l01",
@@ -701,7 +697,7 @@ function BetterQoL.OriginalNames.GridOpen(i)
   local per = math.max(1, math.min(cols * rows, have))
   local G = {n = n, on = on or 0, team = tostring(tname), cols = cols, rows = math.ceil(per / cols), per = per,
              px = px, py = py, tile = tile, cx = cx, cy = cy, grey = grey, names = names == true,
-             players = {}, sel = 0, page = 0, held = {}, keys_seen = false, key_face = {}, fwait = {}, fdim = {},
+             players = {}, sel = 0, page = 0, held = {}, keys_seen = false, key_face = {}, fdim = {},
              asked = {}, ptr = nil, drawn = false}
   for j = 1, n do
     local okP, key, pon, dub, orig = pcall(funcLuaCommand, N.C.PLAYER, j)
@@ -753,7 +749,8 @@ function BetterQoL.OriginalNames.Tile(k, d)
     if N.opened[k] then
       N.M(N.C.LAYER_VISIBLE, L, k, false)
     end
-    G.key_face[k], G.fwait[k] = nil, nil
+    G.key_face[k] = nil
+    VRFW_FaceIcon.Forget(L, k)
     return
   end
   local p = G.players[d]
@@ -792,7 +789,7 @@ function BetterQoL.OriginalNames.Tile(k, d)
 end
 
 -- the face of tile k is asked for once its instance is built (OnOpenLayer) or BUILD_WAIT frames after it was opened;
--- it shows once its textures have loaded (or FACE_WAIT frames later)
+-- the framework's VRFW_FaceIcon draws it and shows it once its textures have loaded (FaceStep)
 function BetterQoL.OriginalNames.FaceAsk(k)
   local N = BetterQoL.OriginalNames
   local G = N.grid
@@ -804,12 +801,9 @@ function BetterQoL.OriginalNames.FaceAsk(k)
     return
   end
   local L = N.FACE_LAYER
-  N.M(N.C.RESET_FACE, L, k, N.FACE_TEX)
-  pcall(SetDisableForceCharaInvalidUseTarget)
-  local fr = N.M(N.C.FACE, L, k, false, N.FACE_MESH, N.FACE_TEX, 0, 0, key, 0, false, true)
-  pcall(SetEnableForceCharaInvalidUseTarget)
+  VRFW_FaceIcon.Forget(L, k)
+  local fr = VRFW_FaceIcon.Face(L, k, key, N.FACE_MESH, N.FACE_TEX, {kit = 0, keeper = false, use_args = true})
   G.asked[k] = N.frame
-  G.fwait[k] = N.FACE_WAIT
   if (N.face_logs or 0) < 20 then
     N.face_logs = (N.face_logs or 0) + 1
     N.Log("face", k, key, tostring(fr), N.built[k] ~= nil and "built" or "timeout")
@@ -825,22 +819,8 @@ function BetterQoL.OriginalNames.FaceStep()
       N.FaceAsk(k)
     end
   end
-  for k, left in pairs(G.fwait) do
-    local loading = N.M(N.C.LOADING, N.FACE_LAYER, k) == true
-    if not loading or left <= 0 then
-      N.M(N.C.MESH_VISIBLE, N.FACE_LAYER, N.FACE_MESH, true, k)
-      G.fwait[k] = nil
-    else
-      G.fwait[k] = left - 1
-    end
-  end
-  -- the layer's open animation can hide a face already shown: again every 10 frames
-  if N.frame % 10 == 0 then
-    for k = 0, G.per - 1 do
-      if G.asked[k] and G.fwait[k] == nil and G.key_face[k] ~= nil then
-        N.M(N.C.MESH_VISIBLE, N.FACE_LAYER, N.FACE_MESH, true, k)
-      end
-    end
+  if VRFW_FaceIcon.Pending() then
+    VRFW_FaceIcon.Settle()
   end
 end
 
@@ -1123,16 +1103,18 @@ do
         BetterQoL.OriginalNames.labels[a1] = a2
       end
     end})
-    -- an instance of the face layer is built: its face may be asked for (BetterQoL.OriginalNames.FaceAsk)
-    H.on("setting_menu", "OnOpenLayer", {id = id, phase = "after", fn = function(a1, a2)
+    -- an instance of the face layer is built (or opened again): its face is asked for from scratch
+    -- (BetterQoL.OriginalNames.FaceAsk) and shown once loaded, after the open, so the open never hides it.
+    -- An after handler gets the results first: (r, layer, instance).
+    H.on("setting_menu", "OnOpenLayer", {id = id, phase = "after", fn = function(_, a1, a2)
       local N = BetterQoL.OriginalNames
       if N.eg ~= nil then
         N.eg:Built(a1, a2)
       end
       if a1 == N.FACE_LAYER and type(a2) == "number" then
         N.built[a2] = N.frame
-        if N.grid ~= nil and N.grid.asked[a2] then
-          N.grid.asked[a2] = nil       -- asked before it was built: again
+        if N.grid ~= nil then
+          N.grid.asked[a2] = nil       -- asked before it was built or before this open: again
         end
       end
     end})

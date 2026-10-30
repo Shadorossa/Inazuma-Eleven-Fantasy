@@ -18,12 +18,8 @@ AuraReworked.KeshinArmed = AuraReworked.KeshinArmed or {}
 -- the part's switch (Mods options › All Keshin Armed, applied after a restart): off = nothing of this part runs
 if VRFW.option("all_keshin_armed") == 0 then return end
 
-local function u32(v)
-  if type(v) == "boolean" then return v and 1 or 0 end
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
 -- the chara_param of a character handle (0 = unknown)
 local function card_of(handle)

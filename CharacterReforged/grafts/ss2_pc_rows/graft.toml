@@ -6,7 +6,6 @@
 # Mod Character Reforged since 2026-10-14 (the skill table moved there with graft ss2_menus).
 name = "ss2_pc_rows"
 mod = "CharacterReforged"
-rebuilt_by = ["inazuma_fantasy"]   # IF builds it into its own merged scripts too (its grafts extend the same chunks)
 order = 300
 module = "lua_bridge"
 requires = ["ss2_menus"]

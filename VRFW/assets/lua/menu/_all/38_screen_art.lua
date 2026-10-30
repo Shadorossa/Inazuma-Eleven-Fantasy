@@ -7,8 +7,8 @@
 -- no engine call at load: a screen's art is read at its first use, once per VM).
 if VRFW_ScreenArt == nil then
   local A = {
-    CMD = 4208389390,            -- CMND_VRFW_SCREEN_ART (screen) -> { [role] = { atlas, sprite, mod } }
-    LOG = 3661580131,            -- CMND_EVT_LOG
+    CMD = VRFW_Cmd.VRFW_SCREEN_ART,            -- CMND_VRFW_SCREEN_ART (screen) -> { [role] = { atlas, sprite, mod } }
+    LOG = VRFW_Cmd.EVT_LOG,            -- CMND_EVT_LOG
     PLAIN = "#/menu/220_img/vrfw_plain/vrfw_plain.g4tx",
     art = {},                    -- screen -> role -> { atlas, sprite, tex, crc }
   }

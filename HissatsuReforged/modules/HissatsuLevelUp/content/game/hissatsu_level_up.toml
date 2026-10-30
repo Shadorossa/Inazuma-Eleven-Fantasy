@@ -112,7 +112,7 @@ name = "CMND_HISSATSULEVELUP_CAN_PLACE"   # (charaStHdl, boardSlot 0..8, itemId)
 handler = "HissatsuLevelUp.Cmd.CanPlace"
 
 [[VRFW.Command]]
-name = "CMND_HISSATSULEVELUP_RETAIL_STOCK"   # (count) -> count -1: the save slot still needs its line; count >= 0 (abl_000001 stock) logs the retail «Nueva posibilidad» stock once per slot (graft sr_popup; 1.0.4)
+name = "CMND_HISSATSULEVELUP_RETAIL_STOCK"   # (count) -> count -1: true, old book id, raise_item id while the save slot still needs the conversion; count >= 0 logs the old book stock graft sr_popup converted (1.12.0)
 handler = "HissatsuLevelUp.Cmd.RetailStock"
 
 # ------------------------------------------------------------------------------------------------ grade sync

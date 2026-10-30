@@ -1,0 +1,12 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Descenso estelar (Celestial Smash, whs01430, cut-in ev60_01430): one straight level
+# line at 1.6 m from the kick point into the goal point, whatever the shot's length (the galaxy cannon, ~2.5 m across
+# at its widest, stays clear of the grass: lowest ~0.35 m). In the cut-in's last shot (c0300) the cannon is fired in
+# place out of a black hole; the aura is its head (research/scripts/celestial_smash_ball_fx.py FRAME = 425).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Descenso estelar (whs01430).
+[[edit]]
+target = "whs01430"
+trajectory = { points = [[0.0, 1.6]], straight = true, unblockable = false }

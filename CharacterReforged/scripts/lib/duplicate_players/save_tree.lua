@@ -206,11 +206,6 @@ function P:val(v, new)
   if v and v.v ~= new then self:put(v.path, 0, T.le(new, v.w), v.w) end
 end
 
--- a value to 0 (only when it is not 0)
-function P:zero_val(v)
-  if v and v.v ~= 0 then self:put(v.path, 0, string.rep("\0", v.w), v.w) end
-end
-
 -- leaf `path` (a number leaf whose value is `cur`) to `new` (only when it differs), at its own width
 function P:set(path, cur, new)
   if cur ~= new then

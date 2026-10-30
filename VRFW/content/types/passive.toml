@@ -1,0 +1,84 @@
+# VR-Framework › the passives (kind VRFW.passive/1, a mod's content\special_passives\*.toml). A passive is a named
+# list of blocks (content\passive_blocks\, kind VRFW.passive_block/1): its triggers,
+# stack rule, reset, conditions and effects. Who has it:
+#   [[VRFW.Passive]] carried_by    a GENERIC passive: every player carrying one of these game passives
+#                                            (team passive slots or own passive slot) has it
+#   [[VRFW.Character]]             a SPECIAL passive: every card of a character (or one card), his own
+#                                            («Pasiva propia»: ONE per player, `passive = "<name>"`)
+#   [[VRFW.Spirit]]                a SPIRIT passive: every player while that aura is his running summon
+#                                            without armour (a keshin), plus its optional `synergy` passive
+#   Passive `grant = true`                     a GRANTED passive: a player while another mod's rule flag gives it
+#                                            (Souls Rework's reel results)
+# [[VRFW.SpiritFamily]] names a set of auras the SpiritsOut block counts (chess pieces, Four Symbols…).
+# [[VRFW.Tag]] / [[VRFW.CharacterTags]]: the archetype tags the Trait block reads; [[VRFW.PassiveCap]]: a cap on the
+# summed percents of the passives that name it.
+# Names: a block or passive of the same mod is written `<name>`, one of another mod `<mod id>.<name>`. A later mod's
+# [[VRFW.Character]] for the same character or card replaces an earlier one (it never adds a second passive). vrfw check validates the files
+# against this file; scripts\lib\passives.lua reads them.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.passive/1"
+folder = "content/special_passives"
+
+[entry.Passive]
+doc = "a passive: a named list of blocks"
+name = { type = "name", required = true, doc = "the passive's name (a-z 0-9 _), unique in its mod" }
+blocks = { type = "strings", required = true, ref = "block", doc = "its blocks by name, in any order" }
+carried_by = { type = "strings", default = [], ref = "passive", doc = "game passive keys: every player carrying one of them has this passive (a generic passive)" }
+text = { type = "string", default = "", doc = "a text key of the declaring mod with the passive's own description (empty = the description made from its blocks)" }
+grant = { type = "bool", default = false, doc = "another mod may give it to a player for a while: rule flag <[grant] flag_prefix>.<mod>.<name>.<actor handle> = its level (value_by_level index; 0 = off)" }
+caps = { type = "strings", default = [], ref = "passive_cap", doc = "its percent effects count toward these caps ([[VRFW.PassiveCap]] names): on one player and one answer (a move's power, a stat, a rate), the sum of the capped passives' percents is held within each cap; passives without caps multiply as usual" }
+
+[entry.Character]
+doc = "the own passive («Pasiva propia») of a character (every card of his) or of one card: one passive per player"
+unique = ["character", "card"]
+character = { type = "string", default = "", ref = "character", doc = "a chara_base internal key (c01000010) or a mod character <mod>.<name>" }
+card = { type = "string", default = "", ref = "card", doc = "instead of character: one card (its chara_param key or id)" }
+passive = { type = "string", default = "", ref = "special_passive", doc = "his own passive by name (one per player)" }
+passives = { type = "strings", default = [], max_items = 1, error = true, ref = "special_passive", doc = "older form: a list of one passive (more is an error: a player has one own passive; the first is used)" }
+
+[entry.Spirit]
+doc = "the spirit passive of a keshin: carried while that aura is the player's running summon without armour (the user's and the rival's players)"
+unique = ["aura"]
+aura = { type = "string", required = true, ref = "aura", doc = "the keshin's aura command: internal key (wko00010) or a mod aura <mod>.<name>" }
+aliases = { type = "strings", default = [], ref = "aura", doc = "other aura rows that carry the same passives (story copies, prototypes)" }
+passive = { type = "string", required = true, ref = "special_passive", doc = "its passive (a [[VRFW.Passive]] by name)" }
+synergy = { type = "string", default = "", ref = "special_passive", doc = "optional second passive carried with it (a family or partner bonus, usually with a SpiritsOut block)" }
+
+[entry.SpiritFamily]
+doc = "a family of spirits: a named set of auras the SpiritsOut block counts"
+name = { type = "name", required = true, doc = "the family's name (a-z 0-9 _), unique in its mod" }
+auras = { type = "strings", required = true, ref = "aura", doc = "its auras (internal keys or mod auras <mod>.<name>)" }
+
+[entry.PassiveCap]
+doc = "a cap on the sum of the percent effects of the passives that name it (`caps`): per player and per answer (a move's power, a stat, a rate), the sum stays within ±max_percent"
+name = { type = "name", required = true, doc = "the cap's name (a-z 0-9 _), unique in its mod" }
+max_percent = { type = "number", required = true, min = 0, max = 1000, doc = "the largest sum, in % (both signs)" }
+
+[entry.Tag]
+doc = "an archetype tag (the Trait key `tags`): its name and the text key of its word"
+name = { type = "name", required = true, doc = "the tag (a-z 0-9 _); one name across every mod (a later mod's entry replaces the text)" }
+text = { type = "string", default = "", doc = "a text key of the declaring mod with the tag's word (9 languages)" }
+
+[entry.CharacterTags]
+doc = "the archetype tags of a character: a later mod's entry for the same character replaces an earlier one"
+unique = ["character"]
+character = { type = "string", required = true, ref = "character", doc = "a chara_base internal key (c01000010) or a mod character <mod>.<name>" }
+tags = { type = "strings", required = true, max_items = 3, ref = "passive_tag", doc = "1 to 3 tags ([[VRFW.Tag]] names)" }
+
+# ------------------------------------------------------------------------------------------------ shared data
+
+# where the interpreter reads a soccer actor's running summon (keshin / totem) and its unit's aura bits
+# (docs/game/mechanics/keshin-armed.md §2.1-2.2): a spirit passive holds while summon_state = summon_active and no
+# armour_bits are set on the unit
+[spirit]
+summon_skill = 0x358
+summon_full = 0x360
+summon_left = 0x370
+summon_state = 0x374
+summon_active = 2
+unit_aura_bits = 0x2B4
+armour_bits = 2
+
+# the rule flag of a granted passive: <flag_prefix>.<passive key>.<actor handle> = its level
+[grant]
+flag_prefix = "VRFW.passive.grant"

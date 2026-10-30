@@ -36,5 +36,15 @@ badge_met = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_off
 badge_unmet = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_badge_unmet" }
 card_panel = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_card_panel" }
 player_plate = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_player_plate" }
+# the requirement card's plates (the game's slanted list buttons: met = on, not met = a dark copy of off, unused =
+# lock), their progress bars (the spirit gauge: track, green fill met, orange fill not yet) and the header's slanted
+# counter (the module's own)
+requirement_plate_met = { Atlas = "#/menu/100_mainmenu/mainmenu90/mainmenu90_14/mainmenu90_14.g4tx", Sprite = "list_base_xs01_on" }
+requirement_plate_unmet = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_plate_unmet" }
+requirement_plate_empty = { Atlas = "#/menu/100_mainmenu/mainmenu90/mainmenu90_14/mainmenu90_14.g4tx", Sprite = "list_base_xs01_lock" }
+requirement_counter = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office.g4tx", Sprite = "new_recruitment_office_counter" }
+requirement_bar_base = { Atlas = "#/menu/102_team/team04/team04_01/team04_01.g4tx", Sprite = "gauge_spirit_base01" }
+requirement_bar_met = { Atlas = "#/menu/102_team/team04/team04_01/team04_01.g4tx", Sprite = "gauge_spirit_bar01_01" }
+requirement_bar_unmet = { Atlas = "#/menu/102_team/team04/team04_01/team04_01.g4tx", Sprite = "gauge_spirit_bar01_05" }
 # the player panel's ground (the right part of the game's menu background)
 panel_ground = { Atlas = "#/menu/220_img/new_recruitment_office/new_recruitment_office_ground.g4tx", Sprite = "new_recruitment_office_panel_ground" }

@@ -11,16 +11,14 @@ if BattleBayDeluxe.LineupPages == nil and VRFW_PlayerPages ~= nil and type(VRFW_
   local L = {
     FLAG = 2100506454,                   -- crc32 of BattleBayDeluxe.lineup (this mod's parameter)
     CONTEXT = "battle_bay",              -- the framework context of the Battle Bay's menus
-    PARAM_EXISTS = 2947612279,
-    MODE_IS = 624411898,                 -- CMND_VRFW_MODE_IS
+    MODE_IS = VRFW_Cmd.VRFW_MODE_IS,                 -- CMND_VRFW_MODE_IS
     PAGES = {"vrfw.SixthSense", "vrfw.TeamPassives", "BetterQoL.Career"},
   }
   BattleBayDeluxe.LineupPages = L
 
   -- false while the lineup screen shows the player page
   function L.Shown()
-    local ok, has = pcall(funcLuaCommand, L.PARAM_EXISTS, L.FLAG)
-    if not (ok and has == true) then
+    if not VRFW_Param.Has(L.FLAG) then
       return true
     end
     local okm, inside = pcall(funcLuaCommand, L.MODE_IS, L.CONTEXT)

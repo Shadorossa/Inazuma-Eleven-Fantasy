@@ -1,0 +1,29 @@
+# «Caja de sorpresas» (Magician's Box, whs01810; forest shot, cut-in ev60_01810): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last shot (c0500, the ball shot out of the bursting box) instead of the
+# plain forest special-shot aura (ega0075d): the dark purple tip streak on the ball and the three purple-black streak
+# sheets behind it, standing vertical along the flight with the ball at their tip, born at the kick point and laid as
+# the ball passes (never stretched, fading out at their far end), their textures flowing on.
+# The object ev6181mb00 (assets\data\{common,dx11}\effect\event\ev60\ev6181mb00\) is built by
+# research/scripts/magicians_box_ball_fx.py from the cut-in's effect object ev60018100 (cutin_replay_aura.py; c0500
+# held at frame 420 from the aura's first frame, where the sheets end at the ball; flight along +Z, level, x1,
+# priorities <= 30). Left out: the box's burst at the kick point (shards, smoke, impact, light, white-out) and the
+# keshin. The trigger row copies the forest special-shot aura's (like = "ega0075d": its callback turns +Z along the
+# ball's velocity). Its flight: content\techniques\magicians_box_trajectory.toml. No other technique key uses
+# ev60_01810.
+# Mod «Strikers Shots»: visuals only. The objects under assets\data are generated on the author's PC from
+# the game's own cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "magicians_box"
+from = "ega0075d"
+object = "effect/event/ev60/ev6181mb00/ev6181mb00.objbin"
+
+[[shot_aura]]
+name = "magicians_box"
+when = { techniques = ["whs01810"] }
+aura = "magicians_box"
+like = "ega0075d"
+# the sheets come out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

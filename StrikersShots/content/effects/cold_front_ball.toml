@@ -1,0 +1,26 @@
+# «Frente frío» (Cold Front, whs02930 and its override whs02930_or; wind; cut-in ev60_02930): while the ball flies to
+# the goal it wears the cut-in's last shot (c0500, the ball shot away inside its ice comet, held at frame 424 from the
+# aura's first frame): the spiky ice head turning round the ball, its ice shards and two long ice tails, the ice
+# glows, the wind rings it flies through and the blizzard gust opening behind it, x1. The tails, the long shards, the
+# rings and the gust come out of the kick point as the ball flies (never stretched) and fade out at the far end. The
+# wind cones opening forward, the front wind card, the snowflakes and the backdrop stay out.
+# The object is ev6293cf00 (effect/event/ev60/ev6293cf00/), built by research/scripts/cold_front_ball_fx.py from
+# ev60029300 (docs/game/media/cold-front-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\cold_front_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "cold_front"
+from = "ega0075b"
+object = "effect/event/ev60/ev6293cf00/ev6293cf00.objbin"
+
+[[shot_aura]]
+name = "cold_front"
+when = { techniques = ["whs02930", "whs02930_or"] }
+aura = "cold_front"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

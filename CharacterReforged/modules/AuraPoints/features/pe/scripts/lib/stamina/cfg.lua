@@ -5,11 +5,8 @@
 
 local M = {}
 
-local function num(v, d)
-  v = tonumber(v)
-  if v == nil or v ~= v then return d end
-  return v
-end
+require "VRFW/lib/basics"
+local num = VRFW.value.num
 
 local function pos_or(v, d)
   v = tonumber(v)
@@ -17,10 +14,7 @@ local function pos_or(v, d)
   return d
 end
 
-local function bool(v, d)
-  if v == nil then return d end
-  return v == true
-end
+local bool = VRFW.value.bool
 
 local function list(v, d)
   if type(v) ~= "table" then return d end

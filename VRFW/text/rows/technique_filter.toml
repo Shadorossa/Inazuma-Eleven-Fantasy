@@ -1,0 +1,17 @@
+# Move filter window texts (menu_text rows, 9 languages, read with CMND_TEXT_GET by id = crc32(row id)).
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# the tension tab's name while it also lists the technique family rows
+[[row]]
+id = "vrfw_technique_filter_tab_family"
+es = "Tensión / Familia"
+en = "Tension / Family"
+fr = "Tension / Famille"
+de = "Spannung / Familie"
+it = "Tensione / Famiglia"
+pt = "Tensão / Família"
+ja = "テンション / ファミリー"
+zh_hans = "气势 / 系列"
+zh_hant = "氣勢 / 系列"

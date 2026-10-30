@@ -11,11 +11,11 @@ do
   local R = EVT_IRW_REVEAL
   R.STATE = 459028698
   R.INFO = 3116769088
-  R.LOG = 3661580131                      -- CMND_EVT_LOG
+  R.LOG = 3661580131
   R.MENU = 369188769                      -- soccer_summon_menu
   R.TEMP_CHARA = 1423295663               -- (param, 1, rarity) -> a temporary menu character
   R.MENU_ACTIVE = 1558704558              -- (menu, bool)
-  R.CLOSE_MENU = 320421347                -- CMND_CLOSE_MENU_OBJECT (menu)
+  R.CLOSE_MENU = 320421347                -- (menu)
   R.FADE, R.FADE_BUSY = 609722083, 1215256347
   R.WAIT_FRAMES = 10                      -- the screen's layers open before the performance starts
   R.MAX_PLAYERS = 30

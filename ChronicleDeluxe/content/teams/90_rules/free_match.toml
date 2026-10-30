@@ -115,6 +115,20 @@ Before = "fbtl_cro01_130_010"
 Game = "fbtl_cro03_140_010"            # Ángel Oscuro
 Before = "fbtl_cro01_130_010"
 
+# GO (owner 2026-10-30): Luz Eterna, Oscuridad Ancestral and Equipo Zero (the table lists them first) go right after
+# Dragon Link (fbtl_cro04_190_010), so right before Garras del Sur, in their relative order
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro04_120_010"            # Luz Eterna
+Before = "fbtl_cro04_200_010"          # Garras del Sur
+
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro04_130_010"            # Oscuridad Ancestral
+Before = "fbtl_cro04_200_010"
+
+[[VRFW.FreeMatchPlace]]
+Game = "fbtl_cro04_140_010"            # Equipo Zero
+Before = "fbtl_cro04_200_010"
+
 # Chrono Stone: Los Arions (1.11.17, owner 2026-10-20; the line-up of the first Chrono Stone Chronicle battle, «¿Ha
 # desaparecido el fútbol?»), first in the tab before Protocolo Omega; the rows (three classes, AI, stadium) are that
 # battle's, and it opens with its win
@@ -129,7 +143,7 @@ Before = "fbtl_cro05_030_010"          # Protocolo Omega's list row (the tab's f
 # Chrono Stone: Chrono Storm (the line-up against Ragnarok), right before Ragnah, opens when Ragnarok is beaten
 [[VRFW.FreeMatchGame]]
 Game = "chronicle_deluxe_fm_chrono_storm"
-Team = "pltm_cro_ie5_19"
+Team = "chronicle_deluxe.fm_chrono_storm" # content/teams/14_cs/0001_chrono_storm_free_match.toml
 Template = "fbtl_cro05_190_010"        # Ragnah (Ragnarok)
 Tab = 4
 Unlock = "fbtl_cro05_190_010"
@@ -156,11 +170,11 @@ Team = "chronicle_deluxe.fm_raimon_island"  # «Raimon Isla Remota» (content/te
 Template = "fbtl_cro07_130_010"        # ¡Hacia la cima! (Academia Plenilunio)
 Tab = 6
 Unlock = "fbtl_cro07_010_010"          # Barcelona Orb
-Before = "fbtl_cro07_010_010"          # declared first: before Raimon (Ares) below
+After = "fbtl_cro07_010_010"           # right after Barcelona Orb (Raimon (Ares) is before it)
 
 # Ares (owner 2026-10-22, for New Recruitment's office): Raimon of the first Ares battle (the line-up that faces Barcelona
 # Orb: Bobby Shearer, Jack Wallside, Erik Eagle, Steve Grim, Tim Saunders, Maxwell Carson, Jim Wraith, Sam Kincaid…),
-# right after Raimon Isla Remota (same anchor, declared after it), before Barcelona Orb; rows (three classes, AI, stadium) of that battle, opening with it.
+# right before Barcelona Orb (Raimon Isla Remota is right after it); rows (three classes, AI, stadium) of that battle, opening with it.
 [[VRFW.FreeMatchGame]]
 Game = "chronicle_deluxe_fm_raimon_ares_first"
 Team = "chronicle_deluxe.fm_raimon_ares"    # «Raimon (Ares)» (content/teams/16_ares/0001_raimon_free_match.toml)
@@ -213,6 +227,19 @@ Tab = 8
 [[VRFW.GameTab]]
 Game = "fbtl_cro12_030_010"            # Plathos
 Tab = 8
+
+# Victory Road (owner 2026-10-30): Plathos' and Destructores' BATALLA LEGENDARIA play their players unpossessed
+# (generated base-form teams: content/teams/90_rules/free_match_base_forms.toml), as Épsilon's plays Épsilon Plus;
+# INAZUMA / ZONA LETAL and the Chronicle keep the possessed team
+[[VRFW.FreeMatchRival]]
+Game = "fbtl_cro12_030_010"            # Plathos
+Classes = [9]
+Team = "chronicle_deluxe.fm_plathos_base"
+
+[[VRFW.FreeMatchRival]]
+Game = "fbtl_cro12_080_020"            # Destructores (its free-match game)
+Classes = [9]
+Team = "chronicle_deluxe.fm_destructores_base"
 
 [[VRFW.FreeMatchPlace]]
 Game = "fbtl_cro12_020_010"

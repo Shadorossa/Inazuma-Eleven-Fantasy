@@ -38,10 +38,7 @@ schema = "VRFW.technique/3"
 target = "whs00970"
 distance_falloff = { mode = "inverted", slope = 1.0, cap = 0.5 }
 effect_flags = 20
-# Its flight (on the ground into the goal) is Living Shots' (shot_fx techniques\excalibur_trail.toml).
-# The cut-in's ground cut left along the path (ground_trail, visual only) and every ball aura in flight moved to the
-# mod «Efectos de tiro» (research/mods/LivingShots, optional) on 2026-10-08: its
-# techniques\excalibur_trail.toml adds that key to this move (the technique type merges the mods' keys per field).
+# Its flight (on the ground into the goal) and its ball aura are Strikers Shots' (content\techniques\excalibur_trajectory.toml).
 
 # Malla eléctrica (Electric Trap, keeper catch, wind): stopping a shot locks the shooter's move.
 [[edit]]
@@ -71,11 +68,11 @@ on_win_steal_tension = { pct = 15 }
 # Diluvio letal (Doom Rain, long shot, fire; Nacho 2026-10-07: «cada uno de esos balones reparta la fuerza de la
 # supertécnica en 7: … al chocar 2 balones, la fuerza de 5 se mantiene igual»): the ball leaves the kicker on the
 # game's own flight (no dive: Nacho 2026-10-07 in game, «que salga de abajo, del jugador») among its rain of 7 balls
-# fanning out from his foot (shot_fx effects\doom_rain_ball.toml; one of them covers the white match ball) and its power
+# fanning out from his foot (Strikers Shots effects\doom_rain_ball.toml; the ball flies inside the front one) and its power
 # is split in them: a body / basic block takes 1 ball, a block move 2, a wall (El muro, Muro de hierro) 3; the shot flies on with the power of
 # the balls left (the spread lets the rest pass); the block that would take the last balls plays the game's battle.
-# Gameplay only. Hiding the real ball while the 7 visual balls fly (hide_ball) is Living Shots' (shot_fx
-# techniques\doom_rain_split_ball.toml): the technique type merges split_shot key by key across mods, so Living Shots
+# Gameplay only. Hiding the real ball while the 7 visual balls fly (hide_ball) is Strikers Shots' (StrikersShots
+# techniques\doom_rain_split_ball.toml): the technique type merges split_shot key by key across mods, so Strikers Shots
 # adds only its hide_ball key to this rule.
 [[edit]]
 target = "whs01390"

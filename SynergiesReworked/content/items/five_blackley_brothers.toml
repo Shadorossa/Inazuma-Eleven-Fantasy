@@ -1,0 +1,56 @@
+schema = "VRFW.item/2"
+default_lang = "en"
+
+# Synergies Reworked › «Los cinco hermanos Blackley»: a NEW team synergy (owner 2026-10-30, idea 1 of the teamless
+# groups): any three of the five Blackley brothers (Uno, Due, Tre, Quattro, Cinque; Italian numbers, GO, no team).
+# Category synergy, cloned from the offensive retail synergy sf10001 (so it keeps its slot); key string and id `sf11004`
+# / crc32 of it. Its icon (sprite sf11004, content/images/menu/200_icon/30_icon_synergy/icon_synergy.toml) is a die
+# showing five. Effects and conditions: the sf11004 row of
+# content/tables/common/gamedata/skill/synergy_flag_config.toml; who counts: the pool blackley_brothers of
+# content/synergies/reworked_synergies.toml. Sold in the retail synergy shop for the cards of the four eldest (the shop
+# shows at most 4 card costs): content/shops/five_blackley_brothers.toml.
+
+[[item]]
+name = "five_blackley_brothers"
+base = "sf10001"
+category = "synergy"
+icon_key = "sf11004"
+key_id = true
+  [item.text.es]
+  name = "Los cinco hermanos Blackley"
+  [item.text.en]
+  name = "The Five Blackley Brothers"
+  [item.text.fr]
+  name = "Les cinq frères Blackley"
+  [item.text.de]
+  name = "Die fünf Blackley-Brüder"
+  [item.text.it]
+  name = "I cinque fratelli Blackley"
+  [item.text.pt]
+  name = "Os cinco irmãos Blackley"
+  [item.text.ja]
+  name = "[黒石/くろいし][五/ご][兄弟/きょうだい]"
+  [item.text.zh_hans]
+  name = "黑石五兄弟"
+  [item.text.zh_hant]
+  name = "黑石五兄弟"
+
+[[currency]]
+name = "uno_blackley_card"
+spirit = 0x5AE55B85                      # chara_param of Uno Blackley c04015030
+rarity = 4
+
+[[currency]]
+name = "due_blackley_card"
+spirit = 0x15A4CD42                      # chara_param of Due Blackley c04015040
+rarity = 4
+
+[[currency]]
+name = "tre_blackley_card"
+spirit = 0x9B043022                      # chara_param of Tre Blackley c04011140
+rarity = 4
+
+[[currency]]
+name = "quattro_blackley_card"
+spirit = 0x0CBFFC03                      # chara_param of Quattro Blackley c04015050
+rarity = 4

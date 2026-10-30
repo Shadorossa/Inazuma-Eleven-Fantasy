@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Lanza de carámbanos (Icicle Road, whs01830, cut-in ev60_01830).
+#
+# In the cut-in's last shot (c0300) the ball flies level along +Z, kicked at 2.1 m and settling to 1.8 m, the ice
+# crystals bursting out of the pitch under it (research/scripts/icicle_road_ball_fx.py FLIGHT_H: keep the two equal).
+# Flight: straight and level at 1.8 m into the goal. unblockable = false: the game's block rules (this mod changes no
+# block rule). Heights are the ball centre over the pitch (m); points count from the kick; one point = a level flight;
+# straight = true: one straight line from the kick to the goal at that height.
+
+# Lanza de carámbanos (whs01830).
+[[edit]]
+target = "whs01830"
+trajectory = { points = [[0.0, 1.8]], straight = true, unblockable = false }

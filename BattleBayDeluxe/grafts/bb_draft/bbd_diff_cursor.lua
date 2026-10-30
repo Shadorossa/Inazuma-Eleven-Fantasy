@@ -1,4 +1,4 @@
--- bb_chronicle_teams bb_draft, the cursor on the Campaña's difficulty window (enjoy_team_select_menu_campaign).
+-- BattleBayDeluxe bb_draft, the cursor on the Campaña's difficulty window (enjoy_team_select_menu_campaign).
 -- Deciding a team hides the grid and opens the difficulty window (list win05_02_general_sub_list_item + the start
 -- button cmn03_05_cmn_button_b_graphic_text «Empezar partido»). The grid's tiles keep their «cursor» attach to
 -- cmn05_01_cursor traced while they are hidden, so the arrow stayed on the decided tile (left of the window) when the
@@ -13,17 +13,19 @@ BBD_DIFF_CURSOR = {
   START = 336167129 --[[cmn03_05_cmn_button_b_graphic_text]],
   CURSOR = 3313461902 --[[cursor: the attach of the grid tiles and of the start button]],
   LIST_CURSOR = 21268581 --[[select_cur: the attach of the list rows]],
-  ATTACH_TRACE = 1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, attach, on)]],
-  CURSOR_LOCATOR = 381797568 --[[CMND_SET_CURSOR_LOCATOR (layer, attach, idx, count)]],
-  LAYER_COUNT = 1175615627 --[[CMND_GET_CREATE_LAYER_NUM]],
-  IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]],
+  ATTACH_TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@ --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE (layer, idx, attach, on)]],
+  CURSOR_LOCATOR = @crc:CMND_SET_CURSOR_LOCATOR@ --[[CMND_SET_CURSOR_LOCATOR (layer, attach, idx, count)]],
+  LAYER_COUNT = @crc:CMND_GET_CREATE_LAYER_NUM@,
+  IS_OPEN = @crc:CMND_IS_OPEN_LAYER@,
   FOCUS_INDEX = 2603265800,
   released = false,
   last = nil,
 }
 
+-- the logger (VRFW_Log), made at the first line: the framework's menu files load after the graft blocks
 function BBD_DiffCursorLog(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "bb_chronicle_teams difficulty cursor", ...)
+  BBD_DIFF_CURSOR.logger = BBD_DIFF_CURSOR.logger or VRFW_Log.New("BattleBayDeluxe.difficulty_cursor")
+  BBD_DIFF_CURSOR.logger(...)
 end
 
 -- the instance count of a layer (0 when unknown)

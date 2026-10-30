@@ -7,10 +7,7 @@
 
 local M = {}
 
-local function crc(s)
-  local f = VRFW.crc32 or (VRFW.ui and VRFW.ui.crc32)
-  return f(s) % 4294967296
-end
+local crc = VRFW.crc32
 
 -- "0x…" / decimal text / a number -> the number; any other text -> its crc32 (a game key name)
 function M.id_of(v)

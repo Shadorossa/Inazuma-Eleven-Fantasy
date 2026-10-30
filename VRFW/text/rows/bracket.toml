@@ -1,0 +1,252 @@
+# Texts of the knockout bracket screen (vrfw_bracket_menu): the round panel, the final stadium panel and the
+# player's run end. The screen asks CMND_TEXT_GET(crc32(id)).
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# The player's team won the knockout.
+[[row]]
+id = "vrfw_bracket_champion"
+es = "¡Campeones del torneo!"
+en = "Tournament champions!"
+fr = "Champions du tournoi !"
+de = "Turniersieger!"
+it = "Campioni del torneo!"
+pt = "Campeões do torneio!"
+ja = "トーナメント優勝！"
+zh_hans = "锦标赛冠军！"
+zh_hant = "錦標賽冠軍！"
+
+# The player's team won the league.
+[[row]]
+id = "vrfw_bracket_champion_league"
+es = "¡Campeones de la liga!"
+en = "League champions!"
+fr = "Champions de la ligue !"
+de = "Ligameister!"
+it = "Campioni del campionato!"
+pt = "Campeões da liga!"
+ja = "リーグ優勝！"
+zh_hans = "联赛冠军！"
+zh_hant = "聯賽冠軍！"
+
+# The player's team went out in the group stage.
+[[row]]
+id = "vrfw_bracket_out_groups"
+es = "Eliminados en la fase de grupos"
+en = "Out in the group stage"
+fr = "Éliminés en phase de groupes"
+de = "In der Gruppenphase ausgeschieden"
+it = "Eliminati nella fase a gironi"
+pt = "Eliminados na fase de grupos"
+ja = "グループステージ敗退"
+zh_hans = "小组赛出局"
+zh_hant = "小組賽出局"
+
+# The player's team lost the final.
+[[row]]
+id = "vrfw_bracket_out_ko_1"
+es = "Subcampeones"
+en = "Runners-up"
+fr = "Finalistes"
+de = "Zweiter Platz"
+it = "Secondi classificati"
+pt = "Vice-campeões"
+ja = "準優勝"
+zh_hans = "亚军"
+zh_hant = "亞軍"
+
+# The player's team went out in the semi-finals.
+[[row]]
+id = "vrfw_bracket_out_ko_2"
+es = "Eliminados en semifinales"
+en = "Out in the semi-finals"
+fr = "Éliminés en demi-finale"
+de = "Im Halbfinale ausgeschieden"
+it = "Eliminati in semifinale"
+pt = "Eliminados nas semifinais"
+ja = "準決勝敗退"
+zh_hans = "半决赛出局"
+zh_hant = "半決賽出局"
+
+# The player's team went out in the quarter-finals.
+[[row]]
+id = "vrfw_bracket_out_ko_3"
+es = "Eliminados en cuartos de final"
+en = "Out in the quarter-finals"
+fr = "Éliminés en quart de finale"
+de = "Im Viertelfinale ausgeschieden"
+it = "Eliminati ai quarti di finale"
+pt = "Eliminados nas quartas de final"
+ja = "準々決勝敗退"
+zh_hans = "四分之一决赛出局"
+zh_hant = "八強賽出局"
+
+# The player's team went out in the round of 16.
+[[row]]
+id = "vrfw_bracket_out_ko_4"
+es = "Eliminados en octavos de final"
+en = "Out in the round of 16"
+fr = "Éliminés en huitième de finale"
+de = "Im Achtelfinale ausgeschieden"
+it = "Eliminati agli ottavi di finale"
+pt = "Eliminados nas oitavas de final"
+ja = "ベスト16敗退"
+zh_hans = "十六强赛出局"
+zh_hant = "十六強賽出局"
+
+# The player's team went out in the round of 32.
+[[row]]
+id = "vrfw_bracket_out_ko_5"
+es = "Eliminados en dieciseisavos"
+en = "Out in the round of 32"
+fr = "Éliminés en seizième de finale"
+de = "Im Sechzehntelfinale ausgeschieden"
+it = "Eliminati ai sedicesimi"
+pt = "Eliminados nos dezesseis-avos"
+ja = "ベスト32敗退"
+zh_hans = "三十二强赛出局"
+zh_hant = "三十二強賽出局"
+
+# The player's team went out in the round of 64.
+[[row]]
+id = "vrfw_bracket_out_ko_6"
+es = "Eliminados en treintaidosavos"
+en = "Out in the round of 64"
+fr = "Éliminés en trente-deuxième de finale"
+de = "Im Zweiunddreißigstelfinale ausgeschieden"
+it = "Eliminati ai trentaduesimi"
+pt = "Eliminados nos trinta e dois avos"
+ja = "ベスト64敗退"
+zh_hans = "六十四强赛出局"
+zh_hant = "六十四強賽出局"
+
+# The player's team's final place in the league (<VALUE> = the place).
+[[row]]
+id = "vrfw_bracket_out_league"
+es = "Puesto final: <VALUE>.º"
+en = "Final place: <VALUE>"
+fr = "Classement final : <VALUE>"
+de = "Endplatzierung: <VALUE>."
+it = "Posizione finale: <VALUE>º"
+pt = "Posição final: <VALUE>º"
+ja = "最終順位：<VALUE>位"
+zh_hans = "最终排名：第<VALUE>名"
+zh_hant = "最終排名：第<VALUE>名"
+
+# Round panel title: the final.
+[[row]]
+id = "vrfw_bracket_round_1"
+es = "Final"
+en = "Final"
+fr = "Finale"
+de = "Finale"
+it = "Finale"
+pt = "Final"
+ja = "決勝"
+zh_hans = "决赛"
+zh_hant = "決賽"
+
+# Round panel title: the semi-finals.
+[[row]]
+id = "vrfw_bracket_round_2"
+es = "Semifinales"
+en = "Semi-finals"
+fr = "Demi-finales"
+de = "Halbfinale"
+it = "Semifinali"
+pt = "Semifinais"
+ja = "準決勝"
+zh_hans = "半决赛"
+zh_hant = "準決賽"
+
+# Round panel title: the quarter-finals.
+[[row]]
+id = "vrfw_bracket_round_3"
+es = "Cuartos de final"
+en = "Quarter-finals"
+fr = "Quarts de finale"
+de = "Viertelfinale"
+it = "Quarti di finale"
+pt = "Quartas de final"
+ja = "準々決勝"
+zh_hans = "四分之一决赛"
+zh_hant = "八強賽"
+
+# Round panel title: the round of 16.
+[[row]]
+id = "vrfw_bracket_round_4"
+es = "Octavos de final"
+en = "Round of 16"
+fr = "Huitièmes de finale"
+de = "Achtelfinale"
+it = "Ottavi di finale"
+pt = "Oitavas de final"
+ja = "ベスト16"
+zh_hans = "十六强赛"
+zh_hant = "十六強賽"
+
+# Round panel line: matches played (<VALUE>) of the round's matches (<VALUE2>).
+[[row]]
+id = "vrfw_bracket_sched_played"
+es = "Partidos jugados: <VALUE> de <VALUE2>"
+en = "Matches played: <VALUE> of <VALUE2>"
+fr = "Matchs joués : <VALUE> sur <VALUE2>"
+de = "Gespielte Spiele: <VALUE> von <VALUE2>"
+it = "Partite giocate: <VALUE> di <VALUE2>"
+pt = "Partidas jogadas: <VALUE> de <VALUE2>"
+ja = "試合消化：<VALUE>/<VALUE2>"
+zh_hans = "已赛场次：<VALUE>/<VALUE2>"
+zh_hant = "已賽場次：<VALUE>/<VALUE2>"
+
+# Round panel line: the player's next match (its rival follows).
+[[row]]
+id = "vrfw_bracket_sched_next"
+es = "Tu próximo partido"
+en = "Your next match"
+fr = "Ton prochain match"
+de = "Dein nächstes Spiel"
+it = "La tua prossima partita"
+pt = "Sua próxima partida"
+ja = "次のあなたの試合"
+zh_hans = "你的下一场比赛"
+zh_hant = "你的下一場比賽"
+
+# Round panel line: the next rival is not known yet.
+[[row]]
+id = "vrfw_bracket_sched_rival_tbd"
+es = "Rival por decidir"
+en = "Opponent to be decided"
+fr = "Adversaire à déterminer"
+de = "Gegner noch offen"
+it = "Avversario da definire"
+pt = "Adversário a definir"
+ja = "対戦相手は未定"
+zh_hans = "对手待定"
+zh_hant = "對手待定"
+
+# Round panel title once the knockout is over.
+[[row]]
+id = "vrfw_bracket_sched_over"
+es = "Torneo terminado"
+en = "Tournament over"
+fr = "Tournoi terminé"
+de = "Turnier beendet"
+it = "Torneo concluso"
+pt = "Torneio encerrado"
+ja = "大会終了"
+zh_hans = "比赛已结束"
+zh_hant = "比賽已結束"
+
+# Final stadium panel: its label.
+[[row]]
+id = "vrfw_bracket_final_stadium"
+es = "Estadio de la final"
+en = "Final stadium"
+fr = "Stade de la finale"
+de = "Finalstadion"
+it = "Stadio della finale"
+pt = "Estádio da final"
+ja = "決勝のスタジアム"
+zh_hans = "决赛球场"
+zh_hant = "決賽球場"

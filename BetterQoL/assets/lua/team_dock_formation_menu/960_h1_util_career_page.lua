@@ -20,7 +20,7 @@ do
   if VRFW_PlayerPages ~= nil then
     -- not in the Battle Bay (its team select / menus and its matches: the framework mode `battle_bay`, entered by
     -- Utilities' menu hook); the registry skips a page that says no, so Q / E and the dots leave it out
-    VRFW_PlayerPages.Add({Name = "BetterQoL.Career", Index = S.PAGE, Type = S.TYPE, Last = true,
+    VRFW_PlayerPages.Add({Name = "BetterQoL.Career", Index = S.PAGE, Type = S.TYPE, Last = true, Foreign = false,
       Enabled = function()
         local ok, on = pcall(funcLuaCommand, 624411898, "battle_bay")
         return not (ok and on == true)

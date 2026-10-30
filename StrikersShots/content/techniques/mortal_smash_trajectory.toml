@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Asalto mortal (Mortal Smash, whs02410, cut-in ev60_02410).
+#
+# In the cut-in's last shot (c0400) the keshin Evera punches the ball out of its fist and it flies low at the camera
+# in its energy ball. Flight: straight and level at 1.5 m into the goal, so the energy ball (~2-2.5 m across) clears
+# the pitch (research/scripts/mortal_smash_ball_fx.py FLIGHT_H: keep the two equal). unblockable = false: the game's
+# block rules (this mod changes no block rule). Heights are the ball centre over the pitch (m); points count from the
+# kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Asalto mortal (whs02410).
+[[edit]]
+target = "whs02410"
+trajectory = { points = [[0.0, 1.5]], straight = true, unblockable = false }

@@ -44,9 +44,6 @@ local SN_TITLE = 2089758945
 local SN_TEAM_PARAM = 3357163798
 local SN_CURSOR = 2296367164 -- cmn05_01_cursor
 local SN_COACH_POS = 19
-local CMND_PARAM_HAS = 2947612279
-local CMND_PARAM_GET = 3522198769
-local CMND_PARAM_DEL = 3363400568
 local CMND_TEXT_GET = 4074371074
 local CMND_SET_MESH_VISIBLE = 3405944500
 local CMND_SET_LAYER_VISIBLE = 711242136
@@ -73,20 +70,20 @@ local M = CLEAN_HUD_SHIRT_NUMBER_MENU
 
 local function SnReadMode()
   local mode = 0
-  if funcLuaCommand(CMND_PARAM_HAS, SN_KEY) then
-    mode = funcLuaCommand(CMND_PARAM_GET, SN_KEY) or 0
-    funcLuaCommand(CMND_PARAM_DEL, SN_KEY)
+  if VRFW_Param.Has(SN_KEY) then
+    mode = VRFW_Param.Get(SN_KEY) or 0
+    VRFW_Param.Clear(SN_KEY)
   end
   M.type = 0
-  if funcLuaCommand(CMND_PARAM_HAS, SN_KEY_TYPE) then
-    M.type = funcLuaCommand(CMND_PARAM_GET, SN_KEY_TYPE) or 0
-    funcLuaCommand(CMND_PARAM_DEL, SN_KEY_TYPE)
+  if VRFW_Param.Has(SN_KEY_TYPE) then
+    M.type = VRFW_Param.Get(SN_KEY_TYPE) or 0
+    VRFW_Param.Clear(SN_KEY_TYPE)
   end
   M.on = mode == 1 and UiOn("shirt_number")
   M.rows = {}
   M.cur, M.edit, M.prev, M.forced = nil, nil, 0, false
-  if funcLuaCommand(CMND_PARAM_HAS, SN_TEAM_PARAM) then
-    M.team = funcLuaCommand(CMND_PARAM_GET, SN_TEAM_PARAM)
+  if VRFW_Param.Has(SN_TEAM_PARAM) then
+    M.team = VRFW_Param.Get(SN_TEAM_PARAM)
   end
   if M.on then
     UiLog("shirt number mode team", M.team, "type", M.type)

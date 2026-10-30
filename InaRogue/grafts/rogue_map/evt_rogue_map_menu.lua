@@ -24,41 +24,55 @@
 INCLUDE("LUA_PROG_BASE")
 INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc) + general window inc
 
+-- texts: InaRogue text\rows\rogue_screens.toml / menu_text.toml (9 languages), read with RTx
 local TXT = {
   -- 2026-10-06: the header shows only our mode plate (evt_map_mode_icon, no text); «Fase N» is drawn under it with
   -- atlas sprites (DrawTitle); the bottom-left guide line (phase / column / node / rival) is gone
-  KIND = {[0] = "Salida", [1] = "Pachanga 5 vs 5", [2] = "Partido 11 vs 11", [3] = "JEFE de la fase",
-          [4] = "Cofre", [5] = "Evento", [6] = "Fichaje", [7] = "ÉLITE",
-          [8] = "JEFE ÉPICO", [9] = "JEFE DE PUERTA"},     -- boss tiers (inarogue.md §33, rogue/bosses.toml)
+  KIND = {
+    [0] = {3250357874 --[[InaRogue.map.kind_start]]},
+    [1] = {3647072111 --[[InaRogue.map.kind_5v5]]},
+    [2] = {2345548152 --[[InaRogue.map.kind_11v11]]},
+    [3] = {3795316700 --[[evt_ird_kindboss]]},
+    [4] = {2776719434 --[[InaRogue.map.kind_chest]]},
+    [5] = {1701566810 --[[InaRogue.map.kind_event]]},
+    [6] = {1318739985 --[[InaRogue.map.kind_signing]]},
+    [7] = {2654474453 --[[evt_ird_kindelite]]},
+    [8] = {3305167255 --[[evt_ird_kindepic]]},
+    [9] = {1692537202 --[[evt_ird_kindgate]]},
+  },     -- boss tiers (inarogue.md §33, rogue/bosses.toml)
   -- map content (docs/game/inarogue.md §12.3): the effects come in later steps; placeholders say what will happen
   CONTENT = {
-    [5] = "Evento\nUna escena con varias opciones: premio o riesgo.\n(Contenido pendiente: esta casilla cuenta como superada.)",
+    [5] = {3965169204 --[[InaRogue.map.event_pending]]},
   },
   -- matches (§14): the node's rival comes from the loader's seeded pool; the match is played by the engine
-  NO_MATCH = "Esta casilla no tiene partido asignado (mira evt_loader\\loader.log).",
-  -- Fichaje (§14): a player from the pool offers to join (bank + bench)
-  RECRUIT_ASK = "¡%s (%d estrella%s, coste %d) quiere unirse a tu equipo!\nEntrará en tu banco y en el banquillo. ¿Aceptar?",
-  RECRUIT_ASK_BANK = "¡%s (%d estrella%s, coste %d) quiere unirse!\nEl banquillo está lleno: entrará solo en tu banco. ¿Aceptar?",
-  RECRUIT_JOIN = "%s se une a tu equipo y a tu banco de INAROGUE.",
-  RECRUIT_BANK = "%s se une a tu banco de INAROGUE.",
-  RECRUIT_DECLINED = "%s se marcha.",
-  RECRUIT_NONE = "Nadie quiere unirse esta vez.",
+  NO_MATCH = {1940179312 --[[InaRogue.map.no_match]]},
+  -- Fichaje (§14): a player from the pool offers to join (bank + bench); _ONE = one star
+  RECRUIT_ASK_ONE = {1478576860 --[[InaRogue.map.recruit_ask_one]]},
+  RECRUIT_ASK = {3135339939 --[[InaRogue.map.recruit_ask]]},
+  RECRUIT_ASK_BANK_ONE = {3393762599 --[[InaRogue.map.recruit_ask_bank_one]]},
+  RECRUIT_ASK_BANK = {2644356803 --[[InaRogue.map.recruit_ask_bank]]},
+  RECRUIT_JOIN = {3345354602 --[[InaRogue.map.recruit_join]]},
+  RECRUIT_BANK = {929523911 --[[InaRogue.map.recruit_bank]]},
+  RECRUIT_DECLINED = {1958169870 --[[InaRogue.map.recruit_declined]]},
+  RECRUIT_NONE = {2425870194 --[[InaRogue.map.recruit_none]]},
   -- «Vestigio» (What if) card offered by the Fichaje (docs/game/modes/inarogue-whatif.md)
-  RECRUIT_WHATIF = "¡Un Vestigio! %s, de otro universo (%d estrella%s, coste %d), quiere unirse a tu equipo.\nEntrará en tu banco y en el banquillo. ¿Aceptar?",
-  RECRUIT_WHATIF_BANK = "¡Un Vestigio! %s, de otro universo (%d estrella%s, coste %d), quiere unirse.\nEl banquillo está lleno: entrará solo en tu banco. ¿Aceptar?",
-  GACHA_NEW = "%s se une a tu banco de INAROGUE.\n(Moneda de %s)",
-  GACHA_DUPE = "%s ya estaba en tu banco: recibe fragmentos.\n(Moneda de %s)",
-  GACHA_NONE = "La moneda de %s no dio ningún jugador.",
+  RECRUIT_WHATIF_ONE = {4100191349 --[[InaRogue.map.whatif_ask_one]]},
+  RECRUIT_WHATIF = {3433600508 --[[InaRogue.map.whatif_ask]]},
+  RECRUIT_WHATIF_BANK_ONE = {998169378 --[[InaRogue.map.whatif_ask_bank_one]]},
+  RECRUIT_WHATIF_BANK = {842790705 --[[InaRogue.map.whatif_ask_bank]]},
+  GACHA_NEW = {7856442 --[[InaRogue.map.gacha_new]]},
+  GACHA_DUPE = {353108442 --[[InaRogue.map.gacha_dupe]]},
+  GACHA_NONE = {3208771783 --[[InaRogue.map.gacha_none]]},
   LINE = {
-    [1] = "Tienda\nPor el camino encuentras una tienda (se paga con Puntos de la partida).\n(Pendiente.)",
-    [2] = "Gacha\nEncuentras una moneda de constelación para el Players Universe.\n(Pendiente.)",
-    [3] = "Tragaperras\nUna máquina tragaperras: apuesta Puntos y prueba suerte.\n(Pendiente.)",
+    [1] = {410845622 --[[InaRogue.map.line_shop]]},
+    [2] = {2848246286 --[[InaRogue.map.line_gacha]]},
+    [3] = {404319603 --[[InaRogue.map.line_slot]]},
   },
-  PENDING = "%s\n(Contenido pendiente: esta casilla cuenta como superada.)",
-  BOSS_DONE = "¡Has superado al jefe de la fase %d!\nSigues en la fase %d con un mapa nuevo.",
-  ASK_QUIT = "¿Abandonar esta partida de INAROGUE?\nEl banco de jugadores no cambia.",
-  ERROR = "No se pudo guardar la partida (código %d).\nMira evt_loader\\loader.log.",
-  NO_LOADER = "El mapa de INAROGUE necesita el vr-loader con el módulo \"rogue\" activado\n(app: Proyecto > Loader).",
+  PENDING = {3117807354 --[[InaRogue.map.pending]]},
+  BOSS_DONE = {2031182626 --[[InaRogue.map.boss_done]]},
+  ASK_QUIT = {4056222294 --[[InaRogue.map.ask_quit]]},
+  ERROR = {940138526 --[[InaRogue.map.error]]},
+  NO_LOADER = {2671085769 --[[InaRogue.map.no_loader]]},
 }
 
 local MENU = 2533083129
@@ -66,38 +80,39 @@ local KEY_RESULT = 1333012321     -- 0 back (run kept), 2 run abandoned, 3 a mat
                                                   -- 4 a match node was chosen: INAROGUE shows the VS preview (§28)
 
 local RL = {
-  VERSION = 2217361807,
-  LOG = 3661580131,
-  INFO = 3112916915,       -- () -> exists, phase, cols, nodes, edges, cur, curCol, seed, done, budget, slot, stage, pnode
-  START = 50483520,     -- (seed) -> code, seed
-  NODE = 4152200865,       -- (i) -> ok, col, slot, kind, pick, state
-  EDGE = 117749122,       -- (i) -> ok, from, to, walked
-  MOVE = 2637975964,       -- (to) -> code (the node becomes the one in progress, stage 1)
+  VERSION = @crc:CMND_EVT_LOADER_VERSION@,
+  LOG = @crc:CMND_EVT_LOG@,
+  INFO = @crc:CMND_EVT_RL_RUN_INFO@,       -- () -> exists, phase, cols, nodes, edges, cur, curCol, seed, done, budget, slot, stage, pnode
+  START = @crc:CMND_EVT_RL_RUN_START@,     -- (seed) -> code, seed
+  NODE = @crc:CMND_EVT_RL_RUN_NODE@,       -- (i) -> ok, col, slot, kind, pick, state
+  EDGE = @crc:CMND_EVT_RL_RUN_EDGE@,       -- (i) -> ok, from, to, walked
+  MOVE = @crc:CMND_EVT_RL_RUN_MOVE@,       -- (to) -> code (the node becomes the one in progress, stage 1)
   STAGE = 1577555878,     -- (stage) -> code (2 = the line event is done)
-  RESUME = 1357403213,   -- () -> stage, node, kind, event, coin, game, diff, stadium, level, rival
-  MATCH = 3860906442,     -- (node) -> ok, game, diff, stadium, kind, level, rival, emblem
-  RESERVE = 4194663851, -- () -> code, game, diff, stadium, level, rival (stage 3 in the run file)
-  CLEAR = 2043344329,     -- () -> code, isBoss
+  RESUME = @crc:CMND_EVT_RL_RUN_RESUME@,   -- () -> stage, node, kind, event, coin, game, diff, stadium, level, rival
+  MATCH = @crc:CMND_EVT_RL_RUN_MATCH@,     -- (node) -> ok, game, diff, stadium, kind, level, rival, emblem
+  RESERVE = @crc:CMND_EVT_RL_RUN_RESERVE@, -- () -> code, game, diff, stadium, level, rival (stage 3 in the run file)
+  CLEAR = @crc:CMND_EVT_RL_RUN_CLEAR@,     -- () -> code, isBoss
   NEXT = 1175064779, -- () -> code, phase
   ABANDON = 1752049649, -- () -> code
-  RECRUIT = 4119772646, -- (0) -> ok, param, tier, cost, freeSlot; (1, param) -> code, uid, slot
+  RECRUIT = @crc:CMND_EVT_RL_RUN_RECRUIT@, -- (0) -> ok, param, tier, cost, freeSlot; (1, param) -> code, uid, slot
   SET_HDL = 3245339429, -- (slot, hdl) -> code
-  SLOT_ROGUE = 2087918688,  -- () -> rogueSlot, active, returnSlot, hasGame
+  SLOT_ROGUE = @crc:CMND_EVT_SLOT_ROGUE@,  -- () -> rogueSlot, active, returnSlot, hasGame
+  -- v2 runs (docs/game/mods/inarogue-loop-v2.md): the offer of the board (lib/rogue/offers.lua): (0) -> ok, kind, intro,
+  -- choices, exclusive; (1, i) -> ok, question, param; (2, i) -> code, text, action (1 = a player joined), param, slot;
+  -- (3) -> ok, closing text; (4, what 1 Tienda / 2 Tragaperras / 3 Evento / 4 Cofre) -> ok (false = not a v2 run), text
+  OFFER = @crc:CMND_INAROGUE_RL_RUN_OFFER@,
 }
--- run players in the INAROGUE save (slot 4): created at Lv 5 into no team set (ADD_PARTY arg 10 = 16), tagged, and
+-- run players in the INAROGUE save (slot 4): created by InaRogue_RunPlayers (lua\_all\inarogue_run_players.lua) and
 -- placed in the VS dock with the retail place command (docs/game/modes/inarogue.md §14 stages 2-3)
 local PL = {
-  ADD_PARTY = 1885323816, SET_ATTR = 1525180681, GET_VS = 3713813716,
+  GET_VS = @crc:CMND_GET_VS_USE_TEAM_SET@,
   -- the retail SwapChara pair (docs/game/modes/inarogue.md §26): 1730898405 only checks (it never placed anybody),
   -- 193693077 places and keeps the 11v11 and 5v5 teams of the dock linked (the recruit joins both)
   CHECK = 1730898405,          -- (hdl, set, pos, fromSet, team) -> ok, code
   MOVE = 193693077,            -- (toSet, pos, fromSet = 16: the bank, hdl, team)
   POS_IDX = 1721292418, IDX_HDL = 1720957768,
-  TAG = 268435456,             -- 0x10000000: INAROGUE player
-  LEVEL = 5,
-  NO_ROLE = 3766629437,        -- CMND_EVT_RL_NO_ROLE (hdl): no creation-time coach / manager role (party_rt.rs)
 }
-local CMD_CHARA_INFO = 4060384944   -- CMND_GET_CHARA_INFO (param, 0) -> ok, name
+local CMD_CHARA_INFO = @crc:CMND_GET_CHARA_INFO@   -- (param, 0) -> ok, name
 local ST_ARRIVED, ST_NODE, ST_MATCH = 1, 2, 3   -- stages of the node in progress (run file; audit A19)
 local MOD_ROGUE = 32768
 local ST_LOCKED, ST_NEXT, ST_CLEAR, ST_CUR, ST_VISITED = 0, 1, 2, 3, 4
@@ -135,22 +150,21 @@ local L_RUNNER = 2771742028     -- evt_rogue_map_runner: 0 shadow, 1 the runner 
 local N_PIECES, N_LINES = 50, 90
 
 local C = {
-  TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
+  TEXT = @crc:CMND_SET_MENU_TEXT_STRING@, MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@, LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,
   SPRITE = 558735651,         -- (layer, textureCrc, spriteCrc, nodeCrc, 0, idx)
-  LOAD_TEX = 839427544,
-  SCALE = 3778714801,         -- (layer, sx, sy, sz, idx)
-  POS = 1389957207,           -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, idx); layout units, y up
-  ATTACH_TRACE = 1774843228,  -- (layer, idx, label, bool)
-  OPEN_LAYER = 629267548,
-  FOCUS_ENABLE = 3518307824, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
-  CURSOR_LOC = 381797568,     -- (layer, label, idx, count)
+  LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@,
+  SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@,         -- (layer, sx, sy, sz, idx)
+  POS = @crc:CMND_SET_LAYER_LOCAL_POS@,           -- CMND_SET_LAYER_LOCAL_POS (layer, x, y, z, idx); layout units, y up
+  ATTACH_TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@,  -- (layer, idx, label, bool)
+  OPEN_LAYER = @crc:CMND_OPEN_LAYER@,
+  FOCUS_ENABLE = @crc:CMND_SET_ENABLE_CTRL_FOCUS@, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
+  CURSOR_LOC = @crc:CMND_SET_CURSOR_LOCATOR@,     -- (layer, label, idx, count)
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
-  SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
+  SE = @crc:CMND_SND_PLAY_SE@, MENU_ACTIVE = 1558704558, CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@,
   FADE = 609722083, FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568,
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
-  TEXT_VISIBLE = 1505208242,
-  OPEN_MENU = 433545986, EXIST_MENU = 2231168902,
+  TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@,
+  OPEN_MENU = @crc:CMND_OPEN_MENU_OBJECT@, EXIST_MENU = @crc:CMND_IS_EXIST_MENU_OBJECT@,
 }
 local CUR = 3313461902                          -- crc32("cursor"): the anchor row's cursor label
 local PIECE_CURSOR = 3673682654                 -- piece objbin label: cmn05_01_cursor on _pos_atc_cur01
@@ -538,23 +552,23 @@ local vsr = nil                 -- crc32("emNNNNNN") -> vsroute sprite name (bui
 local tex_asked = {}            -- path -> true: CMND_LOAD_MENU_RES_TEXTURE sent
 local tex_wait, tex_frames = false, 0
 local tex_dead = {}             -- path -> true: never came in (600 frames): the node keeps the board emblem
--- texts of the rival line (menu_text rows of the 9 languages, research/scripts/rogue_play_text_build.py)
+-- texts of the rival line and the Cofre (InaRogue text\rows\menu_text.toml, 9 languages)
 local RT = {
-  RIVAL = {4028447128, "{1} (Nv. {2})"},
+  RIVAL = {4028447128 --[[evt_rmap_rival]]},
   -- §20 M4: the Cofre (the retail «item get» window shows gear / moves; these are the other cases)
-  COFRE = {2363720240, "¡Un cofre! Dentro hay…"},
-  FORM = {2884409743, "¡Nueva formación: {1}!\nRareza {2} de 4. Ya puedes elegirla en «Formación».\nFormaciones: {3} de {4}."},
-  FULL = {421245024, "No cabe en tu inventario: el objeto se queda en el cofre."},
-  EMPTY = {4082801424, "El cofre estaba vacío."},
-  USE_GEAR = {1745594814, "Equípalo a un jugador en «Plantilla de equipo» (jugador → Equipo)."},
-  USE_MOVE = {2356268381, "Colócala a un jugador en «Plantilla de equipo» (jugador → Supertécnicas)."},
+  COFRE = {2363720240 --[[evt_rmap_cofre]]},
+  FORM = {2884409743 --[[evt_rmap_form]]},
+  FULL = {421245024 --[[evt_rmap_full]]},
+  EMPTY = {4082801424 --[[evt_rmap_empty]]},
+  USE_GEAR = {1745594814 --[[evt_rmap_use_gear]]},
+  USE_MOVE = {2356268381 --[[evt_rmap_use_move]]},
 }
 -- the loot of a Cofre / a won boss (loader §20 M4) and the retail item calls (prog_common AddItem,
 -- multi_mission_result_menu callGetItemDialog)
 local LOOT = {
-  CMD = 3559964435,   -- (node, salt) -> kind (1 gear, 2 move, 3 formation, 0 none), id, tier, name, owned, total
+  CMD = @crc:CMND_EVT_RL_RUN_LOOT@,   -- (node, salt) -> kind (1 gear, 2 move, 3 formation, 0 none), id, tier, name, owned, total
   CAN_ADD = 765340069,                -- (item, n) -> the inventory has room for n
-  ADD = 1897915498,                   -- CMND_ADD_ITEM_ONLY (item, n)
+  ADD = @crc:CMND_ADD_ITEM_ONLY@,                   -- CMND_ADD_ITEM_ONLY (item, n)
   ITEM_GET = 3675423478,              -- sysmes_item_get: «¡Has conseguido <item>!» (message kind 11 = item parameter)
   SALT_COFRE = 1,
 }
@@ -569,44 +583,45 @@ local TITLE_ADV = {29, 23, 29, 29, 30, 29, 29, 29, 29, 29}
 local TITLE_I0, TITLE_DIGITS = 2, 3   -- evt_rogue_map_hint instances: 2 = «Fase», 3..5 = the phase digits
 local MODE_ICON_NODE = 3293713115     -- mainmenu90_01_header node mode_base01 (retail plate mode_base02 goes there)
 local CONTENT_NAME = {[4] = "cofre", [5] = "evento", [6] = "fichaje", [7] = "elite"}
--- THE gacha table (rogue_map_build.py gacha_table): constellation no. -> {star-sign id, name}. Coin weights / phases
--- are the loader's [rogue] gacha_coins; a Gacha line's coin comes with CMND_EVT_RL_RUN_EDGE.
+-- THE gacha table: constellation no. -> {star-sign id, its name's text row (InaRogue.map.constellation_NN: the game's
+-- own names, 9 languages)}. Coin weights / phases are the loader's [rogue] gacha_coins; a Gacha line's coin comes with
+-- CMND_EVT_RL_RUN_EDGE.
 local GACHA = {
-  [1] = {3470114373, "Bolarrozana"},
-  [2] = {2306196629, "Metallicus"},
-  [3] = {3021335845, "Inazumis"},
-  [4] = {104149301, "Caravanis"},
-  [5] = {995432581, "Instructus Notara"},
-  [6] = {2096456277, "Pinguinus"},
-  [7] = {1100303333, "Ovnius"},
-  [8] = {3284524084, "Ferrus"},
-  [9] = {4272289156, "Meteorica"},
-  [10] = {954811472, "Tornadus"},
-  [11] = {92892640, "Demonis"},
-  [12] = {1109989168, "Extraterrestris"},
-  [13] = {2135506560, "Draconis"},
-  [14] = {3446268560, "Ocularium"},
-  [15] = {4027173664, "Pneumaticus"},
-  [16] = {3081351664, "Manus"},
-  [17] = {2328467520, "Dinosaurum"},
-  [18] = {144248721, "Academius"},
-  [19] = {905520673, "Odentum"},
-  [20] = {3195877118, "Judicium"},
-  [21] = {2199723854, "Animare"},
-  [22] = {3300746654, "Trophaeum"},
-  [23] = {4192029742, "Sortilaza"},
-  [24] = {1274908734, "Ramenae"},
-  [25] = {1990048142, "Silbilus"},
-  [26] = {826131294, "Victoria"},
-  [27] = {207481582, "Amicitia"},
-  [28] = {2383248703, "Calceus"},
-  [29] = {3010286735, "Cuspis"},
-  [30] = {1965155675, "Diamantis"},
+  [1] = {3470114373, {2283843254 --[[InaRogue.map.constellation_01]]}},
+  [2] = {2306196629, {287964940 --[[InaRogue.map.constellation_02]]}},
+  [3] = {3021335845, {1714343834 --[[InaRogue.map.constellation_03]]}},
+  [4] = {104149301, {4165622329 --[[InaRogue.map.constellation_04]]}},
+  [5] = {995432581, {2404215471 --[[InaRogue.map.constellation_05]]}},
+  [6] = {2096456277, {373570325 --[[InaRogue.map.constellation_06]]}},
+  [7] = {1100303333, {1631783811 --[[InaRogue.map.constellation_07]]}},
+  [8] = {3284524084, {4059829778 --[[InaRogue.map.constellation_08]]}},
+  [9] = {4272289156, {2264606340 --[[InaRogue.map.constellation_09]]}},
+  [10] = {954811472, {3862736737 --[[InaRogue.map.constellation_10]]}},
+  [11] = {92892640, {2436603895 --[[InaRogue.map.constellation_11]]}},
+  [12] = {1109989168, {137547341 --[[InaRogue.map.constellation_12]]}},
+  [13] = {2135506560, {2134245083 --[[InaRogue.map.constellation_13]]}},
+  [14] = {3446268560, {3780209528 --[[InaRogue.map.constellation_14]]}},
+  [15] = {4027173664, {2522242030 --[[InaRogue.map.constellation_15]]}},
+  [16] = {3081351664, {257886804 --[[InaRogue.map.constellation_16]]}},
+  [17] = {2328467520, {2019048130 --[[InaRogue.map.constellation_17]]}},
+  [18] = {144248721, {3907462995 --[[InaRogue.map.constellation_18]]}},
+  [19] = {905520673, {2682263493 --[[InaRogue.map.constellation_19]]}},
+  [20] = {3195877118, {3440508066 --[[InaRogue.map.constellation_20]]}},
+  [21] = {2199723854, {3122056244 --[[InaRogue.map.constellation_21]]}},
+  [22] = {3300746654, {589274510 --[[InaRogue.map.constellation_22]]}},
+  [23] = {4192029742, {1410903320 --[[InaRogue.map.constellation_23]]}},
+  [24] = {1274908734, {3397138619 --[[InaRogue.map.constellation_24]]}},
+  [25] = {1990048142, {3178956845 --[[InaRogue.map.constellation_25]]}},
+  [26] = {826131294, {611473815 --[[InaRogue.map.constellation_26]]}},
+  [27] = {207481582, {1400203521 --[[InaRogue.map.constellation_27]]}},
+  [28] = {2383248703, {3284825232 --[[InaRogue.map.constellation_28]]}},
+  [29] = {3010286735, {3033351174 --[[InaRogue.map.constellation_29]]}},
+  [30] = {1965155675, {3557477859 --[[InaRogue.map.constellation_30]]}},
 }
-local PU = {DRAW = 1637876476,  -- (sign) -> ok, param, charaRarity, rarityType, index: the loader draws from
+local PU = {DRAW = @crc:CMND_EVT_RL_GACHA_DRAW@,  -- (sign) -> ok, param, charaRarity, rarityType, index: the loader draws from
             -- the game data of the star sign; the retail lottery (normal-mode state) is never called (inarogue.md rule #1, V3)
             RESULT_MENU = 2721949403, COUNT_KEY = 1872993680, PRE_RESULT = 2490454692,
-            GRANT = 3603871645, TRIES = 20}
+            GRANT = @crc:CMND_EVT_RL_GACHA_GRANT@, TRIES = 20}
 local LEV_NAME = {[1] = "tienda", [2] = "gacha", [3] = "tragaperras"}
 
 -- ---- state --------------------------------------------------------------------------------------------------------
@@ -637,9 +652,9 @@ local resume_at_open = false
 -- the free cursor alike; the walkable platforms are its zones, from their global positions every frame.
 local MS = {
   HIT = 855005857,          -- (layer, idx, bool): hit collision of one instance on / off (retail SetupActiveHitCollision)
-  HOVER = 2206938151,       -- CMND_SET_ON_CHANGE_FOCUS_MOUSE (layer, idx, bool): hover moves the focus (chara_bank)
-  FOCUS_ENABLE = 3518307824, FOCUS_ACTIVE = 102308320, FOCUS_IDX = 2603265800, FOCUS_SET = 3466097042,
-  CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303,        -- CMND_CHECK_INPUT_CMD (ctrl, cmd) -> bool
+  HOVER = @crc:CMND_SET_ON_CHANGE_FOCUS_MOUSE@,       -- CMND_SET_ON_CHANGE_FOCUS_MOUSE (layer, idx, bool): hover moves the focus (chara_bank)
+  FOCUS_ENABLE = @crc:CMND_SET_ENABLE_CTRL_FOCUS@, FOCUS_ACTIVE = @crc:CMND_IS_CTRL_FOCUS_ACTIVE@, FOCUS_IDX = 2603265800, FOCUS_SET = 3466097042,
+  CHECK_INPUT = @crc:CMND_CHECK_INPUT_CMD@, MENU_CTRL = 1332654303,        -- CMND_CHECK_INPUT_CMD (ctrl, cmd) -> bool
   WHEEL_UP = 1942756954, WHEEL_DOWN = 1623431741,          -- crc32("CMD_EVT_WHEEL_UP" / "CMD_EVT_WHEEL_DOWN")
   -- Lua hit test (the retail players_universe_menu GetCursorPos / GetHitStarLocator way; the engine did not move the
   -- cursor on hover in game, 30/09): the pointer (x, -y) against the layer global position of each walkable platform
@@ -652,7 +667,7 @@ local pan = 0          -- columns the wheel moved the camera away from the curso
 local Ptr = EVT_PointerNew()
 -- the selected node's look (inarogue.md §27): emblem bobbing, platform pulse, walkable / locked tint, blue path
 local FX = {
-  PRIM_COLOR = 855211291,   -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b): retail grey-out of the formation cards
+  PRIM_COLOR = @crc:CMND_SET_PRIM_COLOR@,   -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b): retail grey-out of the formation cards
   MESH_QUAD = 312193881,   -- the cmn01_10 quad's mesh (platforms, emblems, lines)
   BOB = 5, PULSE = 0.045, PERIOD = 72,                  -- px up / down, scale +-4.5 %, frames per cycle
   LOCKED = {0.55, 0.55, 0.62}, CLEARED = {0.9, 0.9, 0.9}, WALK = {1, 1, 1},
@@ -677,7 +692,7 @@ local RN = {
   DEFAULT = "mk_mark_raimon",   -- Mark Evans (GK) in the Raimon home GK kit (rogue_map_marker_build.py AVATARS)
   -- the chosen avatar (Rogue-points avatar shop): CMND_EVT_RL_AVATAR_GET () -> texture path, sprite prefix (an atlas
   -- with <prefix>_cNN / <prefix>_cNN_m for the cells below, same 96 px box / feet line); nothing = the default
-  AVATAR_GET = 3729018318,
+  AVATAR_GET = @crc:CMND_EVT_RL_AVATAR_GET@,
   IDLE_DIR = 4,
   MIRROR = {[1] = true, [2] = true, [3] = true},
   TAN = 0.41421356,             -- tan(22.5 deg): the 8 direction sectors
@@ -845,18 +860,6 @@ local function ReadRun()
   focus = math.max(1, math.min(focus, #reach))
   Log("run phase", run.phase, "cols", run.cols, "nodes", n_nodes, "edges", n_edges, "cur", run.cur, "reach", #reach,
       "seed", tostring(seed))
-end
-
--- "<rival> (Nv. N)" in the game's language (fallback: the Spanish literal)
-local function RivalText(n)
-  local s = Call(4074371074 --[[CMND_TEXT_GET]], RT.RIVAL[1])
-  if type(s) ~= "string" or s == "" then
-    s = RT.RIVAL[2]
-  end
-  local v = {tostring(n.rival or "?"), tostring(n.level or 0)}
-  return (s:gsub("{(%d)}", function(k)
-    return v[tonumber(k)] or ""
-  end))
 end
 
 -- one loader.log line per node and emblem source (§23): "emblem", node, kind, source, name
@@ -1463,11 +1466,11 @@ end
 -- ---- windows ------------------------------------------------------------------------------------------------------------
 --@lib evt_menu_kit.lua#Ask,Message
 
--- a menu_text row of RT in the game's language (fallback: the Spanish literal); {1}.. = values
+-- a text row of RT / TXT in the game's language ("" when missing); {1}.. = values
 local function RTx(t, ...)
-  local s = Call(4074371074 --[[CMND_TEXT_GET]], t[1])
-  if type(s) ~= "string" or s == "" then
-    s = t[2]
+  local s = Call(@crc:CMND_TEXT_GET@, t[1])
+  if type(s) ~= "string" then
+    s = ""
   end
   local v = table.pack(...)
   return (s:gsub("{(%d)}", function(k)
@@ -1506,7 +1509,7 @@ local function Cofre()
       return
     end
     Call(LOOT.ADD, id, 1)
-    Call(3673719958 --[[CMND_SYSTEM_AUTO_SAVE: the item is in the INAROGUE save before the node counts as cleared]])
+    Call(@crc:CMND_SYSTEM_AUTO_SAVE@ --[[CMND_SYSTEM_AUTO_SAVE: the item is in the INAROGUE save before the node counts as cleared]])
     funcLuaCommand(C.SE, SE_OK)
     ItemGet(id)
     Message(RTx(kind == 1 and RT.USE_GEAR or RT.USE_MOVE))
@@ -1522,12 +1525,30 @@ end
 -- 1 (arrived)", the line event walked to reach it runs, STAGE(2) marks it done, then the node's own effect runs. A
 -- match writes stage 3 (RESERVE) BEFORE the launch; INAROGUE resolves the result when it reopens. A game closed at any
 -- point resumes the node from its stage the next time the map opens (Resume, also Aceptar on the platform).
+local Offers                                   -- the offers loop (below CreatePlayer)
+local OFFER_SHOP, OFFER_SLOT, OFFER_EVENT, OFFER_CHEST = 1, 2, 3, 4
+
+-- v2 runs: the offer of the current node opened and shown; false = not a v2 run (the old content stays)
+local function OpenOffer(what)
+  local ok, text = Call(RL.OFFER, 4, what)
+  if ok ~= true then
+    return false
+  end
+  if type(text) == "string" and text ~= "" then
+    Message(text)
+  end
+  Offers()
+  return true
+end
+
 local function LineEvent(ev, coin)
   if ev == 2 and GACHA[coin] ~= nil then
     GachaPull(coin)
+  elseif (ev == 1 and OpenOffer(OFFER_SHOP)) or (ev == 3 and OpenOffer(OFFER_SLOT)) then
+    Log("line event", ev, "offer done")
   elseif TXT.LINE[ev] ~= nil then
     Log("line event", ev)
-    Message(TXT.LINE[ev])
+    Message(RTx(TXT.LINE[ev]))
   end
 end
 
@@ -1542,13 +1563,11 @@ local function CreatePlayer(param, slot)
   if not InRogueSlot() then
     return 0
   end
-  local hdl = Call(PL.ADD_PARTY, param, PL.LEVEL, false, false, 0, 0, false, false, false, 16, 255, 255, 0, false, false, false, 0, false, false)
-  if type(hdl) ~= "number" or hdl == 0 then
-    Log("create player FAILED", param, "slot", slot, tostring(hdl))
+  local hdl, answer = InaRogue_RunPlayers.Create(param)   -- lua\_all\inarogue_run_players.lua: tagged, «Sin rol»
+  if hdl == 0 then
+    Log("create player FAILED", param, "slot", slot, tostring(answer))
     return 0
   end
-  Call(PL.SET_ATTR, hdl, PL.TAG, true)
-  Call(PL.NO_ROLE, hdl)                -- granted players arrive «Sin rol» ([rogue] grant_without_role)
   Call(RL.SET_HDL, slot, hdl)
   local vs = Int(Call(PL.GET_VS))
   local ok, code = Call(PL.CHECK, hdl, vs, slot, 16, 0)
@@ -1564,38 +1583,131 @@ local function CreatePlayer(param, slot)
   return hdl
 end
 
+-- {name} of a script text = the player's name
+local function WithName(text, param)
+  if type(text) ~= "string" then
+    return ""
+  end
+  if type(param) ~= "number" or param == 0 then
+    return text
+  end
+  local _, name = Call(CMD_CHARA_INFO, param, 0)
+  name = type(name) == "string" and name or "?"
+  return (text:gsub("{name}", function() return name end))
+end
+
+-- the framework's pick screen (VRFW_PickCards, cards set by the script: op 5): picks until a card ends the offer, the
+-- player skips, or the screen cannot open (false: the windows take over). The map's own layers stay, dimmed under it.
+local function OfferPicks(exclusive)
+  if VRFW_PickCards == nil then
+    return false
+  end
+  local shown = false
+  for _ = 1, 12 do
+    if Call(RL.OFFER, 5) ~= true then
+      return shown
+    end
+    local pick = VRFW_PickCards.Show()
+    if pick == nil then
+      return shown
+    end
+    shown = true
+    if pick <= 0 then
+      return true
+    end
+    local code, text, action, p2, slot = Call(RL.OFFER, 2, pick)
+    Log("offer pick", pick, "code", Int(code), "action", Int(action))
+    if Int(code) == 0 then
+      funcLuaCommand(C.SE, SE_OK)
+    end
+    if Int(action) == 1 and type(p2) == "number" and Int(slot) >= 0 then
+      CreatePlayer(p2, Int(slot))
+    end
+    if type(text) == "string" and text ~= "" then
+      Message(WithName(text, p2))
+    end
+    if exclusive == true and Int(code) == 0 then
+      return true
+    end
+  end
+  return shown
+end
+
+-- the offers waiting in the run: the pick screen, else an intro window and one question per choice; a player who
+-- joins is created in the save and placed in his team slot at once (he can play the next match)
+Offers = function()
+  for _ = 1, 8 do
+    local ok, kind, intro, n, exclusive = Call(RL.OFFER, 0)
+    if ok ~= true then
+      return
+    end
+    Log("offer", tostring(kind), "choices", Int(n))
+    if Int(n) == 0 or kind == "slot" or not OfferPicks(exclusive) then
+      if type(intro) == "string" and intro ~= "" then
+        Message(intro)
+      end
+      for i = 1, Int(n) do
+        local can, q, param = Call(RL.OFFER, 1, i)
+        if can == true and Ask(WithName(q, param)) then
+          local code, text, action, p2, slot = Call(RL.OFFER, 2, i)
+          Log("offer choice", i, "code", Int(code), "action", Int(action))
+          if Int(code) == 0 then
+            funcLuaCommand(C.SE, SE_OK)
+          end
+          if Int(action) == 1 and type(p2) == "number" and Int(slot) >= 0 then
+            CreatePlayer(p2, Int(slot))
+          end
+          if type(text) == "string" and text ~= "" then
+            Message(WithName(text, p2))
+          end
+          if exclusive == true and Int(code) == 0 then
+            break
+          end
+        end
+      end
+    end
+    local _, closing = Call(RL.OFFER, 3)
+    if type(closing) == "string" and closing ~= "" then
+      Message(closing)
+    end
+  end
+end
+
 -- Fichaje (§14 step 4): the loader's seeded offer (not owned, tier by phase) -> bank + the first free bench slot
 local function Recruit()
   local ok, param, tier, cost, slot, whatif = Call(RL.RECRUIT, 0)
   if ok ~= true then
-    Message(TXT.RECRUIT_NONE)
+    Message(RTx(TXT.RECRUIT_NONE))
     return
   end
   local _, name = Call(CMD_CHARA_INFO, param, 0)
   name = type(name) == "string" and name or "?"
   tier, cost, slot = Int(tier), Int(cost), Int(slot)
-  local q = slot >= 0 and TXT.RECRUIT_ASK or TXT.RECRUIT_ASK_BANK
+  local one = tier == 1
+  local q = slot >= 0 and (one and TXT.RECRUIT_ASK_ONE or TXT.RECRUIT_ASK)
+            or (one and TXT.RECRUIT_ASK_BANK_ONE or TXT.RECRUIT_ASK_BANK)
   if whatif == true then
-    q = slot >= 0 and TXT.RECRUIT_WHATIF or TXT.RECRUIT_WHATIF_BANK
+    q = slot >= 0 and (one and TXT.RECRUIT_WHATIF_ONE or TXT.RECRUIT_WHATIF)
+        or (one and TXT.RECRUIT_WHATIF_BANK_ONE or TXT.RECRUIT_WHATIF_BANK)
     Log("fichaje what-if offer", param)
   end
-  if not Ask(string.format(q, name, tier, tier == 1 and "" or "s", cost)) then
+  if not Ask(RTx(q, name, tier, cost)) then
     Log("fichaje declined", param)
-    Message(string.format(TXT.RECRUIT_DECLINED, name))
+    Message(RTx(TXT.RECRUIT_DECLINED, name))
     return
   end
   local code, uid, s = Call(RL.RECRUIT, 1, param)
   code, uid, s = Int(code), Int(uid), Int(s)
   Log("fichaje", param, "code", code, "uid", uid, "slot", s)
   if code ~= 0 and code ~= 3 then
-    Message(string.format(TXT.ERROR, code))
+    Message(RTx(TXT.ERROR, code))
     return
   end
   if s >= 0 then
     CreatePlayer(param, s)
-    Message(string.format(TXT.RECRUIT_JOIN, name))
+    Message(RTx(TXT.RECRUIT_JOIN, name))
   else
-    Message(string.format(TXT.RECRUIT_BANK, name))
+    Message(RTx(TXT.RECRUIT_BANK, name))
   end
 end
 
@@ -1609,12 +1721,12 @@ local function AfterClear(boss)
   local c3, phase = Call(RL.NEXT)
   Log("next phase code", Int(c3), "phase", Int(phase))
   if Int(c3) == 0 then
-    Message(string.format(TXT.BOSS_DONE, done, Int(phase)))
+    Message(RTx(TXT.BOSS_DONE, done, Int(phase)))
     focus = 1
     ReadRun()
     DrawAll()
   else
-    Message(string.format(TXT.ERROR, Int(c3)))
+    Message(RTx(TXT.ERROR, Int(c3)))
   end
 end
 
@@ -1626,7 +1738,7 @@ end
 local function PlayMatch(n)
   local ok, game, diff, stadium, kind, level, rival = Call(RL.MATCH, run.cur)
   if ok ~= true then
-    Message(TXT.NO_MATCH)
+    Message(RTx(TXT.NO_MATCH))
     return false
   end
   Log("match node", run.cur, "kind", Int(n.kind), "game", tostring(game), "rival", tostring(rival), "level",
@@ -1645,16 +1757,20 @@ local function NodeEffect(n)
   if k == 6 then
     Recruit()
   elseif k == 4 then
-    Cofre()
+    if not OpenOffer(OFFER_CHEST) then        -- v2: a relic to choose; older runs: the loot table
+      Cofre()
+    end
+  elseif k == 5 and OpenOffer(OFFER_EVENT) then
+    Log("event node done")
   elseif TXT.CONTENT[k] ~= nil then
-    Message(TXT.CONTENT[k])
+    Message(RTx(TXT.CONTENT[k]))
   else
-    Message(string.format(TXT.PENDING, TXT.KIND[k] or "?"))
+    Message(RTx(TXT.PENDING, TXT.KIND[k] ~= nil and RTx(TXT.KIND[k]) or "?"))
   end
   local c2, boss = Call(RL.CLEAR)
   Log("clear", run.cur, "code", Int(c2), "boss", tostring(boss))
   if Int(c2) ~= 0 then
-    Message(string.format(TXT.ERROR, Int(c2)))
+    Message(RTx(TXT.ERROR, Int(c2)))
   end
   AfterClear(boss == true and Int(c2) == 0)
   return false
@@ -1672,7 +1788,7 @@ local function Resume()
     LineEvent(Int(ev), Int(coin))
     local c = Int(Call(RL.STAGE, ST_NODE))
     if c ~= 0 then
-      Message(string.format(TXT.ERROR, c))
+      Message(RTx(TXT.ERROR, c))
       return true
     end
   end
@@ -1683,7 +1799,7 @@ end
 
 local function Go()
   if not has_loader or run == nil then
-    Message(TXT.NO_LOADER)
+    Message(RTx(TXT.NO_LOADER))
     return
   end
   if pending > 0 then
@@ -1706,7 +1822,7 @@ local function Go()
   local code = Int(Call(RL.MOVE, to))
   Log("move", run.cur, "->", to, "kind", n.kind, "code", code)
   if code ~= 0 then
-    Message(string.format(TXT.ERROR, code))
+    Message(RTx(TXT.ERROR, code))
     return
   end
   focus = 1
@@ -1721,7 +1837,7 @@ local function Go()
   LineEvent(ev, coin)                         -- what he finds on the road (shop / gacha / slot machine)
   local c = Int(Call(RL.STAGE, ST_NODE))
   if c ~= 0 then
-    Message(string.format(TXT.ERROR, c))
+    Message(RTx(TXT.ERROR, c))
     return
   end
   -- ... then he stands there: «Enfrentarte» / «Abrir» / «Entrar» / «Hablar» (Aceptar on the platform) is Resume ->
@@ -1756,20 +1872,20 @@ function GachaPull(no)
     Call(PU.GRANT, dupe[1], 1)             -- every try was owned: fragments for the first one
     table.insert(res, dupe)
   end
-  Log("gacha coin", no, g[2], "results", #res)
+  Log("gacha coin", no, "sign", g[1], "results", #res)
   if #res == 0 then
-    Message(string.format(TXT.GACHA_NONE, g[2]))
+    Message(RTx(TXT.GACHA_NONE, RTx(g[2])))
     return
   end
   local keys = {PU.COUNT_KEY}
   funcLuaCommand(PU.PRE_RESULT, #res)
-  funcLuaCommand(C.P_CLEAR, PU.COUNT_KEY)
-  funcLuaCommand(C.P_SET, PU.COUNT_KEY, 0, #res, 1)
+  VRFW_Param.Clear(PU.COUNT_KEY)
+  VRFW_Param.Set(PU.COUNT_KEY, #res)
   for i, r in ipairs(res) do
     for k, v in ipairs({{"cpr_chara_param_id_", r[1]}, {"cpr_pack_rarity_type_", r[2]}, {"cpr_pack_chara_rarity_", r[3]}}) do
       local key = CRC32(v[1] .. i)
-      funcLuaCommand(C.P_CLEAR, key)
-      funcLuaCommand(C.P_SET, key, 0, v[2], 1)
+      VRFW_Param.Clear(key)
+      VRFW_Param.Set(key, v[2])
       table.insert(keys, key)
     end
   end
@@ -1781,23 +1897,23 @@ function GachaPull(no)
     coroutine.yield()
   end
   for _, k in ipairs(keys) do
-    funcLuaCommand(C.P_CLEAR, k)
+    VRFW_Param.Clear(k)
   end
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
   for _, r in ipairs(res) do
-    local _, name = Call(4060384944 --[[CMND_GET_CHARA_INFO]], r[1], 0)
-    Message(string.format(r[4] and TXT.GACHA_NEW or TXT.GACHA_DUPE, type(name) == "string" and name or "?", g[2]))
+    local _, name = Call(@crc:CMND_GET_CHARA_INFO@, r[1], 0)
+    Message(RTx(r[4] and TXT.GACHA_NEW or TXT.GACHA_DUPE, type(name) == "string" and name or "?", RTx(g[2])))
   end
 end
 
 local function Quit()
-  if run == nil or not Ask(TXT.ASK_QUIT) then
+  if run == nil or not Ask(RTx(TXT.ASK_QUIT)) then
     return
   end
   local code = Int(Call(RL.ABANDON))
   Log("abandon code", code)
   if code ~= 0 then
-    Message(string.format(TXT.ERROR, code))
+    Message(RTx(TXT.ERROR, code))
     return
   end
   funcLuaCommand(C.SE, SE_BACK)
@@ -1883,7 +1999,7 @@ end
 
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------
 function OnInit()
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
   funcLuaMenuCommand(C.LOAD_TEX, TEX)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_MARKER)
   focus, shown = 1, -1

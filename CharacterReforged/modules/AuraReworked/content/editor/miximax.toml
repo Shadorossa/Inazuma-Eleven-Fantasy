@@ -58,11 +58,30 @@ Merge = "by_key"
   "mxp.no_head" = { en = "The face texture is missing: without it the game does not apply the palette", es = "Falta la textura de la cara: sin ella el juego no aplica la paleta" }
   "mxp.tab.simulation" = { en = "Simulation", es = "Simulación" }
   "mxp.tab.parts" = { en = "Parts", es = "Partes" }
+  "mxp.tab.zones" = { en = "Zones", es = "Zonas" }
+  "mxp.zones.help" = { en = "Paint which texels are hair, face and eyes (they start as the colours find them): with zones only the painted texels change colour.", es = "Pinta qué píxeles son pelo, cara y ojos (empiezan como los encuentran los colores): con zonas solo cambian de color los píxeles pintados." }
+  "mxp.zones.brush" = { en = "Brush", es = "Pincel" }
+  "mxp.zones.brush_help" = { en = "Paint the chosen zone (click or drag)", es = "Pinta la zona elegida (clic o arrastrar)" }
+  "mxp.zones.fill" = { en = "Fill", es = "Relleno" }
+  "mxp.zones.fill_help" = { en = "Fill the joined texels of a similar colour with the chosen zone", es = "Rellena con la zona elegida los píxeles unidos de color parecido" }
+  "mxp.zones.eraser" = { en = "Eraser", es = "Goma" }
+  "mxp.zones.eraser_help" = { en = "Take texels out of every zone (they keep their colour)", es = "Saca píxeles de toda zona (conservan su color)" }
+  "mxp.zones.hair" = { en = "Hair / eyebrows", es = "Pelo / cejas" }
+  "mxp.zones.face" = { en = "Face", es = "Cara" }
+  "mxp.zones.eyes" = { en = "Eyes", es = "Ojos" }
+  "mxp.zones.size" = { en = "Brush size", es = "Tamaño del pincel" }
+  "mxp.zones.tolerance" = { en = "Colour tolerance", es = "Tolerancia de color" }
+  "mxp.zones.auto" = { en = "Back to the automatic zones", es = "Volver a las zonas automáticas" }
+  "mxp.zones.auto_help" = { en = "Forget the painted zones: the colours decide again", es = "Olvida las zonas pintadas: vuelven a decidir los colores" }
+  "mxp.zones.skin_note" = { en = "Body skin: one colour", es = "Piel del cuerpo: un solo color" }
+  "mxp.zones.skin_note_help" = { en = "The body skin is not a texture: the model multiplies one colour into its skin part, so it has no zones (its colour is the palette's «Piel del cuerpo»).", es = "La piel del cuerpo no es una textura: el modelo multiplica un solo color en su parte de piel, así que no tiene zonas (su color es «Piel del cuerpo» de la paleta)." }
+  "mxp.zones.texture.face" = { en = "Face atlas", es = "Atlas de la cara" }
+  "mxp.zones.texture.hair" = { en = "Hair", es = "Pelo" }
+  "mxp.zones.changed" = { en = "painted zones", es = "zonas pintadas" }
   "mxp.frame.body" = { en = "Body", es = "Cuerpo" }
   "mxp.frame.head" = { en = "Head", es = "Cabeza" }
   "mxp.eye" = { en = "Eyedropper", es = "Cuentagotas" }
-  "mxp.eye_help" = { en = "Pick a palette colour and click the model, a mini face or a texture: that pixel goes into this player's chosen colour", es = "Elige un color de la paleta y pulsa en el modelo, una minicara o una textura: ese píxel pasa al color elegido de este jugador" }
-  "mxp.eye.off" = { en = "Off", es = "Apagado" }
+  "mxp.eye_help" = { en = "Eyedropper: click it, then click the model, a mini face or a texture: that pixel goes into this colour (click it again or Esc to cancel)", es = "Cuentagotas: púlsalo y luego pulsa en el modelo, una minicara o una textura: ese píxel pasa a este color (púlsalo otra vez o Esc para cancelar)" }
   "mxp.eye.done" = { en = "{0} copied into {1}", es = "{0} copiado a {1}" }
   "mxp.sim.base" = { en = "Base", es = "Base" }
   "mxp.sim.partner" = { en = "Partner", es = "Pareja" }

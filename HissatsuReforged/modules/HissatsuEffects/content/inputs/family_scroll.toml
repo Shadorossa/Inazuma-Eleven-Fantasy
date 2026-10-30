@@ -1,0 +1,25 @@
+# Hissatsu Effects: the right stick up / down on the move card's family page (graft skill_card, «Habilidades» list,
+# ability_list_menu): scrolls a family list longer than the card. Copies of the retail right stick rows of the menu
+# controllers (CMD_FREE_MOVE_RY: pad axis 3, past half tilt), one command per direction; the card checks them only while
+# a family page shows (CMND_CHECK_INPUT_CMD on MENU_CTRL / MENU_CTRL_WITH_ANALOG_MOVE_FOCUS).
+schema = "VRFW.input/1"
+
+[[command]]
+ctrl = "MENU_CTRL"
+name = "CMD_HISSATSUEFFECTS_SCROLL_UP"
+pad = [4, 5, 3, 0.5, 1.1]
+
+[[command]]
+ctrl = "MENU_CTRL"
+name = "CMD_HISSATSUEFFECTS_SCROLL_DOWN"
+pad = [4, 5, 3, -1.1, -0.5]
+
+[[command]]
+ctrl = "MENU_CTRL_WITH_ANALOG_MOVE_FOCUS"
+name = "CMD_HISSATSUEFFECTS_SCROLL_UP"
+pad = [4, 5, 3, 0.5, 1.1]
+
+[[command]]
+ctrl = "MENU_CTRL_WITH_ANALOG_MOVE_FOCUS"
+name = "CMD_HISSATSUEFFECTS_SCROLL_DOWN"
+pad = [4, 5, 3, -1.1, -0.5]

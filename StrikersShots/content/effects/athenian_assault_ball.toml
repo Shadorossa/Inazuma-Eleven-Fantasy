@@ -1,0 +1,36 @@
+# «Golpe de Atenea» (Athenian Assault, whs02370; wind shot, cut-in ev60_02370): the cut-in's last shot (c0200 from the
+# kick), in two effects (a fixed point the beam comes out of, as in the cut-in):
+# * athenian_assault_vortex (object ev6237av00, `ground_effect`): the purple kick vortex and the beam's root at the
+#   kick point at the flight's height (its kick waves and shoot kick spinning on, the shot rings flaring and fading where they are born,
+#   the sphere bombs and sparkles thrown off), the kick replayed from frame 414, held at 460; it fades out 5 s after it
+#   appears, past any flight;
+# * athenian_assault (object ev6237ab00, the ball aura): the purple beam (its waves and grains, textures flowing)
+#   generated out of the vortex, never stretched: the cut-in's beam (frame 460) laid end to end at its own size back
+#   from the ball (one seamless band, ~50 m), riding the ball and revealed as the kick point passes it, so it streams
+#   out of the vortex to the ball; crossed so it reads from the touchline, its front soft round the ball; x0.4.
+# Both built by research/scripts/athenian_assault_ball_fx.py from the cut-in's effect object ev60023700.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\athenian_assault_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "athenian_assault"
+from = "ega0075b"
+object = "effect/event/ev60/ev6237ab00/ev6237ab00.objbin"
+
+[[effect]]
+name = "athenian_assault_vortex"
+from = "ega0021"
+object = "effect/event/ev60/ev6237av00/ev6237av00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "athenian_assault"
+when = { techniques = ["whs02370"] }
+aura = "athenian_assault"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "athenian_assault_vortex" }

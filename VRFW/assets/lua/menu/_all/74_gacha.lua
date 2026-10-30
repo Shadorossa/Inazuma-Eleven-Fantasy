@@ -18,29 +18,25 @@
 if VRFW_Gacha == nil then
   local G = {
     C = {
-      OF_PIECE = 2789066073,         -- CMND_VRFW_GACHA_OF_PIECE (pieceId) -> pool index, 0 = none
-      POOL = 1397719389,             -- CMND_VRFW_GACHA_POOL (index) -> key, cost item, cost count, level, card count
-      CARDS = 777104705,             -- CMND_VRFW_GACHA_CARDS (index) -> card, …
-      CANDIDATES = 1771238333,       -- CMND_VRFW_GACHA_CANDIDATES (index) -> the cards a draw picks from now
-      TEXTS = 883353091,             -- CMND_VRFW_GACHA_TEXTS (index) -> command text id, banner image id, no-cost text id,
+      OF_PIECE = VRFW_Cmd.VRFW_GACHA_OF_PIECE,         -- CMND_VRFW_GACHA_OF_PIECE (pieceId) -> pool index, 0 = none
+      POOL = VRFW_Cmd.VRFW_GACHA_POOL,             -- CMND_VRFW_GACHA_POOL (index) -> key, cost item, cost count, level, card count
+      CARDS = VRFW_Cmd.VRFW_GACHA_CARDS,             -- CMND_VRFW_GACHA_CARDS (index) -> card, …
+      CANDIDATES = VRFW_Cmd.VRFW_GACHA_CANDIDATES,       -- CMND_VRFW_GACHA_CANDIDATES (index) -> the cards a draw picks from now
+      TEXTS = VRFW_Cmd.VRFW_GACHA_TEXTS,             -- CMND_VRFW_GACHA_TEXTS (index) -> command text id, banner image id, no-cost text id,
                                      -- count text id
-      EXCLUDE_OWNED = 3491817672,    -- CMND_VRFW_DROP_LIST_EXCLUDE_OWNED (1 | 0)
-      PARAM_HAS = 2947612279,        -- the parameter store: (key) -> set
-      PARAM_GET = 3522198769,        -- (key) -> value
-      CLOSE_MENU = 320421347,        -- CMND_CLOSE_MENU_OBJECT
-      SET_TEXT = 1083631230,         -- (layer, text node, string, instance)
+      EXCLUDE_OWNED = VRFW_Cmd.VRFW_DROP_LIST_EXCLUDE_OWNED,    -- CMND_VRFW_DROP_LIST_EXCLUDE_OWNED (1 | 0)
+      CLOSE_MENU = VRFW_Cmd.CLOSE_MENU_OBJECT,        -- CMND_CLOSE_MENU_OBJECT
+      SET_TEXT = VRFW_Cmd.SET_MENU_TEXT_STRING,         -- (layer, text node, string, instance)
       LOC_VISIBLE = 2158717427,      -- (layer, locator, on, instance)
-      MESH_VISIBLE = 3405944500,     -- (layer, mesh, on, instance)
-      LAYER_VISIBLE = 711242136,     -- (layer, instance, on)
+      MESH_VISIBLE = VRFW_Cmd.SET_MESH_VISIBLE,     -- (layer, mesh, on, instance)
+      LAYER_VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,     -- (layer, instance, on)
       SET_TEX = 558735651,           -- (layer, atlas path, sprite, texture slot, 0, instance)
       PIECE_INFO = 126049514,        -- (piece index, 6) -> ok, the piece's save slot (statusFlagIndex)
-      TEXT_GET = 4074371074,         -- CMND_TEXT_GET (text id) -> text
+      TEXT_GET = VRFW_Cmd.TEXT_GET,         -- CMND_TEXT_GET (text id) -> text
       WIN_TEXT = 2289627655,         -- the general window's text (text, 0, 0, 0, 0, 0, false)
       WIN_BUTTONS = 2351835063,      -- its buttons (1 = OK, 0)
       WIN_SOUNDS = 528596549,        -- its decide / cancel sounds
       WIN_CLOSED = 682363669,        -- -> true once an OK window closed
-      PARAM_SET = 3860611758,        -- the parameter store (key, 0, value, 1)
-      PARAM_CLEAR = 3363400568,      -- (key)
     },
     SOUND_DECIDE = 3848881948,       -- sy0000
     SOUND_CANCEL = 202039849,        -- sy0006
@@ -228,8 +224,8 @@ if VRFW_Gacha == nil then
   local function menu_decide(nxt, layer, inst, ...)
     if layer == G.SUB_LIST and menu_pool() > 0 then
       local p = menu_pool()
-      call(G.C.PARAM_CLEAR, G.REQUEST)
-      call(G.C.PARAM_SET, G.REQUEST, 0, p, 1)
+      VRFW_Param.Clear(G.REQUEST)
+      VRFW_Param.Set(G.REQUEST, p)
       call(G.C.CLOSE_MENU, G.MENU_ID)
       G.Log("command row picked: pool", p)
       return
@@ -253,11 +249,11 @@ if VRFW_Gacha == nil then
   -- draw (the cost, the draw, the signing, the «obtained» window); the board then goes back as after «back» (no retail
   -- result was written)
   function G.AfterMenu(idx)
-    if call(G.C.PARAM_HAS, G.REQUEST) ~= true then
+    if not VRFW_Param.Has(G.REQUEST) then
       return false
     end
-    local p = call(G.C.PARAM_GET, G.REQUEST) or 0
-    call(G.C.PARAM_CLEAR, G.REQUEST)
+    local p = VRFW_Param.Get(G.REQUEST) or 0
+    VRFW_Param.Clear(G.REQUEST)
     local pool = G.Pool(p)
     if pool == nil then
       G.Log("piece", idx, "pool", p, "not served")

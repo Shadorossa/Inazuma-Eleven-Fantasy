@@ -52,8 +52,22 @@ function G.get()
   return c
 end
 
+-- the highest level the game plays now: the framework's level cap (game_state vrfw.level.max: the game's 99, or a
+-- mod's [VRFW.Level] Max with Npc = true, e.g. Character Reforged's 200), never above InaRogue's LevelCap
+function G.effective_cap()
+  local ok, v = pcall(VRFW.state.get, "vrfw.level.max")
+  local engine = (ok and tonumber(v)) or 99
+  if engine < 1 then engine = 99 end
+  return math.min(G.get().cap, math.floor(engine))
+end
+
 function G.clamp(level)
-  return U.clamp(math.floor(level), 1, G.get().cap)
+  return U.clamp(math.floor(level), 1, G.effective_cap())
+end
+
+-- the levels of `level` above what the game plays now (0 = none): the rivals get them as a stat multiplier instead
+function G.over_cap(level)
+  return math.max(math.floor(level) - G.effective_cap(), 0)
 end
 
 return G

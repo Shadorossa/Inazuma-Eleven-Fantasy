@@ -9,11 +9,8 @@ local M = {}
 M.N = 9
 M.LUCK = 8
 
-local function u32(v)
-  if type(v) ~= "number" then return 0 end
-  local n = v >= 0 and math.floor(v) or math.ceil(v)
-  return n % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 M.u32 = u32
 
 -- Character Reforged published its per-card tables

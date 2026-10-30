@@ -2,14 +2,14 @@ id = "Pachangas"
 former_ids = ["pachangas"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
-name = "Pachangas"
-version = "1.4.0"
+name = "5-a-side teams"
+version = "1.9.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Team Dock's list starts with one row per match format («11v11», «5v5»; confirm switches the dock to it): every Team Dock holds its own 5-a-side team next to its 11-a-side one, with its 5v5 formations, kit, emblem and bank view, and «Set as active team» picks the active 5-a-side team the friendlies are played with."
+description = "Team Dock's list starts with one row of two columns, «Match» and «5-a-side» (left / right pick one, confirm switches the dock to it): every Team Dock holds its own 5-a-side team next to its 11-a-side one, with its 5v5 formations, kit, emblem and bank view, and «Set as active team» picks the active 5-a-side team the friendlies are played with."
 priority = 0
 tags = ["Teams", "Gameplay"]
-updated = "2026-10-23"
+updated = "2026-10-30"
 # 1.0.1 (2026-10-15): the team name length filter left pachanga_dock: Utilities owns it (graft util_team_name,
 # docs/game/ui/team-name-length.md)
 # 1.0.2 (2026-10-16): the four type boxes became one normal list row «< 11 v 11 >»: left / right (or a click on its
@@ -18,6 +18,10 @@ updated = "2026-10-23"
 # 1.0.4 (owner 2026-10-19): the format row became one list row per enabled format («11v11», «5v5», texts
 # evt_pt_kind_*): up / down between them, confirm switches, right leaves the list as the retail list does (the single
 # row cycled with left / right and trapped the focus once BetterUI's shortcut tiles left it alone in the list)
+# 1.7.0 (owner 2026-10-30): the two format rows became ONE row of two columns, «Partido» | «Pachanga» (left / right
+# between them, down to the next row, up back to the last column; content\menus\pachanga_dock.toml adds the list's
+# left key; the half plates keep the full rows' slant: content\images\...\team01_02.toml cuts them from the game's own
+# plates at build; docs/game/ui/pachanga-templates.md §18)
 # This mod's own names (Lua Pachangas.X, commands CMND_PACHANGAS_*); never VRFW. The grafts keep their EVT_PT_* game Lua
 # globals.
 prefix = "Pachangas"
@@ -32,6 +36,9 @@ folder = "Pachangas"
 #   content\game\save_import.toml          Inazuma Fantasy's pachanga.json, copied once per save slot
 #   content\menus\pachanga_bank.toml       the bank's 5v5 pitch layer evt_bank5_field (assets\gamedata\menu\obj\ and
 #                                          assets\menu\100_mainmenu\mainmenu04\evt_bank5_field\)
+#   content\menus\pachanga_dock.toml       the Team Dock list's LEFT key (the format columns, graft pachanga_dock)
+#   content\images\menu\102_team\team01\team01_02.toml   the format columns' half plates: recipes that cut the game's
+#                                          own list row plates at build (end caps + a shorter middle; no game pixel)
 #   text\rows\pachanga_dock.toml           the type row's texts (menu_text, 9 languages)
 #   text\keys.toml                         the mod's name / description
 # Grafts (research/grafts, mod = "pachangas"): pachanga_dock (the format row and the 5v5 dock), pachanga_bank (the bank's
@@ -39,7 +46,7 @@ folder = "Pachangas"
 # player plate in the 5v5 dock). The 7v7 and 3v3 formats are not offered yet (enabled = false; the rulesets are in Football Reforged's base).
 # Utilities: its team bank pages (UTIL_TB, mounted page) and the team kit command. InaRogue is optional: while its save is
 # loaded (its export InaRogue.SaveSlot) the docks keep the retail 11v11 / 5v5 link.
-requires = ["VRFW>=2.87.0", "FootballReforged>=1.2.0", "BetterQoL>=1.15.1"]
+requires = ["VRFW>=2.260.0", "FootballReforged>=1.2.0", "BetterQoL>=1.15.1"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 loader_min = "1.7.0"

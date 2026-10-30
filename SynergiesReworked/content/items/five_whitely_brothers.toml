@@ -1,0 +1,55 @@
+schema = "VRFW.item/2"
+default_lang = "en"
+
+# Synergies Reworked › «Los cinco hermanos Whitely»: a NEW team synergy (owner 2026-10-30, idea 2 of the teamless
+# groups): any three of the five Whitely brothers (Eins, Zwei, Drei, Vier, Fünf; German numbers, GO, no team). Category
+# synergy, cloned from the defensive retail synergy sp09003 (so it keeps its slot); key string and id `sp11001` / crc32
+# of it. Its icon (sprite sp11001, content/images/menu/200_icon/30_icon_synergy/icon_synergy.toml) is a die showing
+# five. Effects and conditions: the sp11001 row of content/tables/common/gamedata/skill/synergy_flag_config.toml; who
+# counts: the pool whitely_brothers of content/synergies/reworked_synergies.toml. Sold in the retail synergy shop for
+# the cards of the four eldest (the shop shows at most 4 card costs): content/shops/five_whitely_brothers.toml.
+
+[[item]]
+name = "five_whitely_brothers"
+base = "sp09003"
+category = "synergy"
+icon_key = "sp11001"
+key_id = true
+  [item.text.es]
+  name = "Los cinco hermanos Whitely"
+  [item.text.en]
+  name = "The Five Whitely Brothers"
+  [item.text.fr]
+  name = "Les cinq frères Whitely"
+  [item.text.de]
+  name = "Die fünf Whitely-Brüder"
+  [item.text.it]
+  name = "I cinque fratelli Whitely"
+  [item.text.pt]
+  name = "Os cinco irmãos Whitely"
+  [item.text.ja]
+  name = "[白木/しらき][五/ご][兄弟/きょうだい]"
+  [item.text.zh_hans]
+  name = "白木五兄弟"
+  [item.text.zh_hant]
+  name = "白木五兄弟"
+
+[[currency]]
+name = "eins_whitely_card"
+spirit = 0x3E899E81                      # chara_param of Eins Whitely c04015070
+rarity = 4
+
+[[currency]]
+name = "zwei_whitely_card"
+spirit = 0xB911824E                      # chara_param of Zwei Whitely c04015080
+rarity = 4
+
+[[currency]]
+name = "drei_whitely_card"
+spirit = 0x1F9D647D                      # chara_param of Drei Whitely c04010960
+rarity = 4
+
+[[currency]]
+name = "vier_whitely_card"
+spirit = 0xA00AB30F                      # chara_param of Vier Whitely c04015090
+rarity = 4

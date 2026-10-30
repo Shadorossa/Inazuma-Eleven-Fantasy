@@ -3,19 +3,32 @@
 -- INAROGUE's card on the VR-Framework's slot screen (its reserved-slot card, docs/refactor/if-adaptation-after-e3.md
 -- §5): InaRogue reserves slot 4 (the single INAROGUE save) and gives the card its content here. The framework
 -- screen shows the card only while the slot is enterable and calls these fields when it draws / acts (no engine call
--- at chunk load). Texts: the menu_text rows of rogue_play_text_build.py (9 languages) when the field reads one, else
--- the Spanish literal the screen had before E3.
+-- at chunk load). Texts: InaRogue's text rows (text\rows\menu_text.toml, rogue_screens.toml; 9 languages).
 do
   local CMD = {
     CARD = 2751131207,     -- CMND_EVT_RL_CARD () -> ok, best, running, phase, node, played, won, last, lastPhase,
                            --   count, pool, frags, tiers x5, albumOwned, albumTotal (rogue module)
     RESET = 2759097086,    -- CMND_EVT_SLOT_ROGUE_RESET () -> ok, code: the INAROGUE save + its sidecars archived
   }
-  -- a menu_text row in the game's language, the literal when the row is missing
-  local function T(id, fallback)
+  -- a text row in the game's language with {1}.. filled; nil when the row is missing
+  local function Text(api, id, ...)
+    local s = api.Call(api.C.TEXT_GET, id)
+    if type(s) ~= "string" or s == "" then
+      return nil
+    end
+    if select("#", ...) == 0 then
+      return s
+    end
+    local a = table.pack(...)
+    return (s:gsub("{(%d)}", function(k)
+      local v = a[tonumber(k)]
+      return v == nil and "" or tostring(v)
+    end))
+  end
+  -- a provider text field: the row, read when the screen shows it (nil = the screen's own default)
+  local function T(id)
     return function(api)
-      local s = api.Call(api.C.TEXT_GET, id)
-      return (type(s) == "string" and s ~= "") and s or fallback
+      return Text(api, id)
     end
   end
   local function N(v)
@@ -26,9 +39,9 @@ do
   VRFW_SS_RESERVED.inarogue = {
     row = "INAROGUE",
     title = "INAROGUE",
-    ask = "INAROGUE tiene una única partida propia (ranura 4), la misma desde cualquier ranura\n" ..
-          "y separada de tus partidas normales. ¿Entrar en INAROGUE?",
-    -- IF's own atlas (slot_rogue_art.py at pack time; Level-5-derived, never committed)
+    ask = T(437172294 --[[InaRogue.slot.ask]]),
+    -- InaRogue's own atlas: content/images/menu/220_img/evt_rogue/evt_slot_rogue.toml (image recipes made from the
+    -- player's game files at the first start)
     art = {
       tex = "#/menu/220_img/evt_rogue/evt_slot_rogue.g4tx",
       body_on = "evt_slot_card_rogue_on", body_off = "evt_slot_card_rogue_off",
@@ -41,18 +54,22 @@ do
     -- album of the INAROGUE save (values 18..19; an older loader: no footer)
     fill = function(api)
       local t = {api.Call(CMD.CARD)}
+      local running = t[3] == true
+          and Text(api, 1342355909 --[[InaRogue.slot.running_value]], N(t[4]), math.max(N(t[5]), 1))
+          or Text(api, 3301637055 --[[InaRogue.slot.no_run]])
       local d = {
-        line = N(t[2]) > 0 and string.format("Mejor fase alcanzada: %d", N(t[2])) or "Ninguna fase superada",
+        line = N(t[2]) > 0 and Text(api, 3312042517 --[[InaRogue.slot.best_phase]], N(t[2]))
+            or Text(api, 3805178667 --[[InaRogue.slot.no_phase]]),
         rows = {
-          {"En curso", t[3] == true and string.format("Fase %d · combate %d", N(t[4]), math.max(N(t[5]), 1)) or "Sin partida"},
-          {"Jugadas / ganadas", string.format("%d / %d", N(t[6]), N(t[7]))},
-          {"Fragmentos"},
+          {Text(api, 3410987986 --[[InaRogue.slot.running]]), running},
+          {Text(api, 564919435 --[[InaRogue.slot.played_won]]), string.format("%d / %d", N(t[6]), N(t[7]))},
+          {Text(api, 219978234 --[[InaRogue.slot.fragments]])},
         },
         count = N(t[12]),
-        empty = "Se creará al entrar",
+        empty = Text(api, 369058907 --[[InaRogue.slot.empty]]),
       }
       if type(t[19]) == "number" and t[19] > 0 then
-        d.footer = string.format("Álbum: %d / %d", N(t[18]), N(t[19]))
+        d.footer = Text(api, 1151350748 --[[InaRogue.slot.album]], N(t[18]), N(t[19]))
       end
       return d
     end,
@@ -60,13 +77,9 @@ do
     -- (evt_loader\backups\slot4\reset_<stamp>); the next entry is a clean first run
     reset = {
       button = 4215737381,   -- menu_text «Reiniciar»
-      ask = T(3324694580, "¿Reiniciar INAROGUE desde cero?\nSe archivan la partida del modo (ranura 4), el banco, " ..
-              "la run, las formaciones y el equipo.\nLa próxima vez empezarás como la primera. (Copia en " ..
-              "evt_loader/backups/slot4)"),
-      done = T(2436758108, "INAROGUE reiniciado. Al entrar empezarás desde cero.\nTodo lo anterior está guardado " ..
-               "en evt_loader/backups/slot4."),
-      fail = T(121057726, "No se ha podido reiniciar INAROGUE (código {1}).\nSal de INAROGUE a tu partida y vuelve " ..
-               "a intentarlo."),
+      ask = T(3324694580 --[[evt_ir_reset_ask]]),
+      done = T(2436758108 --[[evt_ir_reset_done]]),
+      fail = T(121057726 --[[evt_ir_reset_fail]]),
       run = function(api)
         return api.Call(CMD.RESET)
       end,

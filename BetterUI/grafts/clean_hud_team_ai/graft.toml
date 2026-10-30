@@ -7,7 +7,9 @@
 #     celebración de gol»; WaitExecPerfromanceChangeMenu tells the celebration list its mode (param store keys
 #     clean_hud_team_ai / clean_hud_team_ai_type);
 #   * team_ai_menu.lua (bytecode child of soccer_performance_change_menu): the celebration list in AI-role mode, every
-#     row = the player's AI role, Enter = the retail AI-role chooser, applied like the retail per-player option.
+#     row = the player's AI role, Enter = the retail AI-role chooser, applied like the retail per-player option; when
+#     mods declare match roles for the player's position (VR-Framework CMND_VRFW_MATCH_ROLE_*, docs/framework/
+#     match-role.md), a one-column list of «none», the 4 retail roles and those roles instead (BetterUI 1.58.0).
 # Texts: text\rows\team_ai.toml (clean_hud_team_ai_cmd, 9 languages); the role names are the game's own texts.
 name = "clean_hud_team_ai"
 order = 907

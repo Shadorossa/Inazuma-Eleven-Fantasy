@@ -1,0 +1,40 @@
+# «Tornado de fuego meteoro» (Meteoric Fire Tornado, whs10110, fire shot, cut-in ev60_10110) and «Tornado de fuego
+# meteoro V» (whs10160, cut-in ev60_10160): the cut-in's last shot (c0500, frame 440: the meteor fully grown as it
+# dives onto the goal): the ball is the meteor's head (orange rim shells, white-yellow flames, the fire right on the
+# ball) with its tornado of fire turning behind it about the flight (the fire rolls and fire trails, their fire
+# flowing on); turned along the flight (no cut-in tilt), x0.2 (head ~2 m, the fire ~6 m behind the ball). The tornado
+# comes out of the kick point as the ball moves away (distance clock) and fades out at its far end. The objects are
+# ev6111mf00 (from the cut-in's effect object ev60101100) and ev6116mf00 (from ev60101600, the V: the same meshes and
+# animation, its fire on the full shaders), built by research/scripts/meteoric_fire_tornado_ball_fx.py.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The triggers copy the fire special-shot aura's row (like = "ega0075c"). The goal scene of these moves (the smashed
+# goal, ev71_00070) is Goal Smash's (content\techniques\goal_smash.toml). Flight:
+# content\techniques\meteoric_fire_tornado_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "meteoric_fire_tornado"
+from = "ega0075c"
+object = "effect/event/ev60/ev6111mf00/ev6111mf00.objbin"
+
+[[effect]]
+name = "meteoric_fire_tornado_v"
+from = "ega0075c"
+object = "effect/event/ev60/ev6116mf00/ev6116mf00.objbin"
+
+[[shot_aura]]
+name = "meteoric_fire_tornado"
+when = { techniques = "whs10110" }
+aura = "meteoric_fire_tornado"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "meteoric_fire_tornado_v"
+when = { techniques = "whs10160" }
+aura = "meteoric_fire_tornado_v"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

@@ -2,8 +2,8 @@
 # (team02_02_skill_detail_info) of ability_list_menu for a move with a ball mini-effect (graft research/grafts/skill_card).
 # Same assets as the player page's row (research/grafts/plate_pages, layer evt_pp_dots): copies of the retail status
 # base soccer11_05_formation_status_base (its _page01_off / _page01_on dot meshes and its _text_btn_l01 / _text_btn_r01
-# key glyphs, atlas soccer11_05.g4tx). Four instances, each showing ONE part and placed by the Lua:
-#   0 = the Q (LT) glyph, 1 = dot 1 (description), 2 = dot 2 (mini-effect), 3 = the E (RT) glyph.
+# key glyphs, atlas soccer11_05.g4tx). Eight instances, each showing ONE part and placed by the Lua:
+#   0 = the Q (LT) glyph, 1..6 = the page dots (one per page of the move), 7 = the E (RT) glyph.
 # Round 2 (in game: the row never showed; the copy draws at priority 301, under the card's 570, and floated free):
 # each instance is ATTACHED to the card's _pos_base01 (the card's centre; the card copy evt_skc_card = the retail card
 # + 4 attach rows evt_skc_dots0..3, used in ability_list_menu only) so it moves with the card, the Lua turns each trace
@@ -19,7 +19,11 @@ remove = [
     { param = "_touch_arw01_r" },
 ]
 
-# the card with the row's attach rows (trace name, card node _pos_base01, layer evt_skc_dots, instance)
+# Hissatsu Effects 1.6.0: the row has up to 6 page dots (instances 0 = Q glyph, 1..6 = the dots, 7 = E glyph; the Lua
+# shows one dot per page of the move). The family page of a move in a technique family (Hissatsu Reforged's
+# CMND_HISSATSUREFORGED_MOVE_FAMILIES, Hissatsu Effects 1.7.0): layer evt_skc_plate (13 copies of the Plantilla's move row: 12 plates for the family's moves, 4 rows x 3
+# columns, the 13th (its sprite swapped for a neutral dark pill) the family's name badge beside the card's type badge), both attached the same way.
+# the card with the attach rows (trace name, card node _pos_base01, layer evt_skc_dots / evt_skc_plate, instance)
 [[object]]
 name = "evt_skc_card"
 from = "team02_02_skill_detail_info"
@@ -30,6 +34,23 @@ add = [
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xDBD18493, 0x5A709C12, 0x6527353D, 1] },
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x42D8D529, 0x5A709C12, 0x6527353D, 2] },
     { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x35DFE5BF, 0x5A709C12, 0x6527353D, 3] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xABBB701C, 0x5A709C12, 0x6527353D, 4] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xDCBC408A, 0x5A709C12, 0x6527353D, 5] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x45B51130, 0x5A709C12, 0x6527353D, 6] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x32B221A6, 0x5A709C12, 0x6527353D, 7] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xFEBEDF7E, 0x5A709C12, 0x65AE788E, 0] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x89B9EFE8, 0x5A709C12, 0x65AE788E, 1] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x10B0BE52, 0x5A709C12, 0x65AE788E, 2] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x67B78EC4, 0x5A709C12, 0x65AE788E, 3] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF9D31B67, 0x5A709C12, 0x65AE788E, 4] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x8ED42BF1, 0x5A709C12, 0x65AE788E, 5] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x17DD7A4B, 0x5A709C12, 0x65AE788E, 6] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x60DA4ADD, 0x5A709C12, 0x65AE788E, 7] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xF065574C, 0x5A709C12, 0x65AE788E, 8] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x876267DA, 0x5A709C12, 0x65AE788E, 9] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x5A830C84, 0x5A709C12, 0x65AE788E, 10] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0x2D843C12, 0x5A709C12, 0x65AE788E, 11] },
+    { block = "CMenuAttachLocator", param = "NullLayerName", values = [0xB48D6DA8, 0x5A709C12, 0x65AE788E, 12] },
 ]
 
 [[redirect]]
@@ -39,5 +60,29 @@ menus = ["ability_list_menu"]
 
 [[patch]]
 menu = "ability_list_menu"
-add_layer = { name = "evt_skc_dots", object = "evt_skc_dots", count = 4, align = [0, 0], scale = 1, after = "team00_40_change_page_guide", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "team00_40_change_page_guide" }] }
+add_layer = { name = "evt_skc_dots", object = "evt_skc_dots", count = 8, align = [0, 0], scale = 1, after = "team00_40_change_page_guide", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "team00_40_change_page_guide" }] }
 res = ["#/menu/00_soccer/soccer11/soccer11_05/<LG>/soccer11_05.g4tx"]
+
+# the family page's move plates: the retail Plantilla move row (soccer11_09_formation_chara_skill: element plate,
+# category icon, name), without its index attach rows and touch zone; attached to the card by the Lua (traces
+# evt_skc_plate0..5). Atlases: the row's own (soccer11_09: the element plates) and icon_common (the category icons).
+[[object]]
+name = "evt_skc_plate"
+from = "soccer11_09_formation_chara_skill"
+remove_block = ["CMenuAttachLocator", "MenuCollisionSetting"]
+
+[[patch]]
+menu = "ability_list_menu"
+add_layer = { name = "evt_skc_plate", object = "evt_skc_plate", count = 13, align = [0, 0], scale = 1, after = "evt_skc_dots", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "evt_skc_dots" }] }
+res = ["#/menu/00_soccer/soccer11/soccer11_09/<LG>/soccer11_09.g4tx", "#/menu/200_icon/15_icon_common/icon_common.g4tx", "#/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx"]
+
+# the page prompt «Y <next page>» (Hissatsu Effects 1.18.0, the retail keshin cards' paging): ONE copy of the retail
+# change-page plate (button glyph _text_btn01 + text _text_guide01 on an auto-sized plate), at the place the game puts that
+# guide; the Lua (VRFW_Pager, style ycycle) fills and shows it. Layer evt_skc_ypage.
+[[object]]
+name = "evt_skc_ypage"
+from = "team00_40_change_page_guide"
+
+[[patch]]
+menu = "ability_list_menu"
+add_layer = { name = "evt_skc_ypage", object = "evt_skc_ypage", count = 1, align = [0, 0], scale = 1, after = "evt_skc_dots", groups = [{ group = "common", flags = [0, 1, 0, 0, 1, 0], after = "evt_skc_dots" }] }

@@ -56,7 +56,7 @@ local function ChrLog(...)
   for i = 1, select("#", ...) do
     parts[#parts + 1] = tostring((select(i, ...)))
   end
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT clean_hud chr_boxes " .. table.concat(parts, " "))
+  pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT clean_hud chr_boxes " .. table.concat(parts, " "))
 end
 
 local prev_GetLitItemInfo = GetLitItemInfo
@@ -95,7 +95,7 @@ local function ChrActive()
     return false
   end
   local m = ChrMap()
-  return funcLuaMenuCommand(1175615627 --[[CMND_GET_CREATE_LAYER_NUM?]], CHR_SMALL) == #m.rows
+  return funcLuaMenuCommand(@crc:CMND_GET_CREATE_LAYER_NUM@, CHR_SMALL) == #m.rows
 end
 
 local function ChrInfo(k)
@@ -142,13 +142,13 @@ local function ChrGuide(k)
   if info == nil then
     return
   end
-  local label = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], info.buttonTextName) or ""
-  local desc = funcLuaCommand(4074371074 --[[CMND_TEXT_GET]], info.explanationTextName) or ""
+  local label = funcLuaCommand(@crc:CMND_TEXT_GET@, info.buttonTextName) or ""
+  local desc = funcLuaCommand(@crc:CMND_TEXT_GET@, info.explanationTextName) or ""
   local text = label .. ": " .. desc
   if CHR_LABEL_COLOR ~= "" then
     text = CHR_LABEL_COLOR .. label .. ":[C] " .. desc
   end
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], CHR_GUIDE, 378156699 --[[_text_guide01]], text, 0)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, CHR_GUIDE, 378156699 --[[_text_guide01]], text, 0)
 end
 
 local function ChrSetup(a1, a2)
@@ -158,18 +158,18 @@ local function ChrSetup(a1, a2)
   end
   local info = ChrInfo(a2)
   if CHR_N <= a2 or info == nil then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
-    funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], a1, a2, CHR_CURSOR, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, a1, a2, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, a1, a2, CHR_CURSOR, false)
     return 1
   end
   -- no caption on the box: the label goes to the help line
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, 931545948 --[[_text_list01_on]], "", a2)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, 3705682548 --[[_text_list01_off]], "", a2)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, a1, 931545948 --[[_text_list01_on]], "", a2)
+  funcLuaMenuCommand(@crc:CMND_SET_MENU_TEXT_STRING@, a1, 3705682548 --[[_text_list01_off]], "", a2)
   funcLuaMenuCommand(558735651, a1, CHR_TEX, info.listItemOnTextureName, 2880627768 --[[list_icon_dmy_s01_on]], 0, a2)
   funcLuaMenuCommand(558735651, a1, CHR_TEX, info.listItemOnTextureName, 3688370359 --[[list_icon_dmy_s01_ok]], 0, a2)
   funcLuaMenuCommand(558735651, a1, CHR_TEX, info.listItemOffTextureName, 2527308690 --[[list_icon_dmy_s01_off]], 0, a2)
-  funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], a1, a2, CHR_CURSOR, false)
-  funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], a1, a2, CHR_NEWICON, true)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, a1, a2, CHR_CURSOR, false)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, a1, a2, CHR_NEWICON, true)
 end
 
 -- the blue "!" of the retail rows (UpdateListItemNewIcon), per box
@@ -183,7 +183,7 @@ local function ChrNotice(k)
         on = SearchHaveNewItemForTeamdockAbilityList()
       end
       if not on then
-        local _, f = funcLuaCommand(707505551 --[[CMND_GET_SPIRIT_INFO?]], 0, 0)
+        local _, f = funcLuaCommand(@crc:CMND_GET_SPIRIT_INFO@, 0, 0)
         on = f
       end
     elseif b == CHR_TXT_ITEMS then
@@ -193,18 +193,18 @@ local function ChrNotice(k)
       on = funcLuaMenuCommand(1862518458, rawget(_ENV, "EVT_SRW_CHRONICLE_SHOP") or CHR_SHOP_RETAIL)
     end
   end
-  funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], CHR_NOTICE, k, on and true or false)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, CHR_NOTICE, k, on and true or false)
 end
 
 local function ChrFocusVisual(a1, ret)
   funcLuaMenuCommand(1778826357, a1, ret, true)
   if chr_prev ~= ret then
-    funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], a1, chr_prev, CHR_ACTIVE, 2, CHR_BUTTON)
-    funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], a1, chr_prev, CHR_CURSOR, false)
+    funcLuaMenuCommand(@crc:CMND_PLAY_ANIME_TYPE@, a1, chr_prev, CHR_ACTIVE, 2, CHR_BUTTON)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, a1, chr_prev, CHR_CURSOR, false)
   end
-  funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], a1, ret, CHR_ACTIVE, 0, CHR_BUTTON)
-  funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], a1, ret, CHR_CURSOR, true)
-  funcLuaMenuCommand(381797568 --[[CMND_SET_CURSOR_LOCATOR?]], a1, CHR_CURSOR, ret, CHR_N)
+  funcLuaMenuCommand(@crc:CMND_PLAY_ANIME_TYPE@, a1, ret, CHR_ACTIVE, 0, CHR_BUTTON)
+  funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, a1, ret, CHR_CURSOR, true)
+  funcLuaMenuCommand(@crc:CMND_SET_CURSOR_LOCATOR@, a1, CHR_CURSOR, ret, CHR_N)
   chr_prev = ret
   chr_focus = ret
   ChrGuide(ret)
@@ -219,7 +219,7 @@ local function ChrLeave(target, idx)
   end
   chr_focus = i
   ChangeFocusToNextLayer(CHR_LAYER, i, target, idx)
-  funcLuaCommand(1917805374, 2500047763 --[[sy0005]])
+  funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2500047763 --[[sy0005]])
   ChrLog("leave box", i, "->", target, idx)
 end
 
@@ -232,13 +232,13 @@ local function ChrDecide(a1, a2)
   chr_focus = a2
   ChrLog("decide box", a2, "menu", info.menuObjectName)
   funcLuaCommand(2565779025, 207055258, 0)
-  funcLuaCommand(667984508 --[[CMND_SET_TEMP_BYTE_FLAG]], 2502072435, 0)
+  funcLuaCommand(@crc:CMND_SET_TEMP_BYTE_FLAG@, 2502072435, 0)
   WaitExecOtherMenu(info.menuObjectName, a1, info.mainMenuType, info.isAutoSaveEnabled)
   -- WaitExecOtherMenu gives the focus back to the item of the last list row (n3): move it to the decided box
   for i = 0, CHR_N - 1 do
     if i ~= a2 then
       funcLuaMenuCommand(1778826357, a1, i, false)
-      funcLuaMenuCommand(1774843228 --[[CMND_SET_LAYER_ATTACH_LOCATOR_TRACE?]], a1, i, CHR_CURSOR, false)
+      funcLuaMenuCommand(@crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@, a1, i, CHR_CURSOR, false)
     end
   end
   chr_prev = a2
@@ -253,7 +253,7 @@ function OnSetupLayer(a1, a2)
     return r
   end
   if a1 == CHR_NOTICE and ChrActive() then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+    funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, a1, a2, false)
     return prev_OnSetupLayer(a1, a2)
   end
   return prev_OnSetupLayer(a1, a2)
@@ -274,7 +274,7 @@ end
 local prev_OnChangeFocus = OnChangeFocus
 function OnChangeFocus(a1, a2)
   if a1 == CHR_LAYER and ChrActive() then
-    if not funcLuaMenuCommand(102308320 --[[CMND_IS_CTRL_FOCUS_ACTIVE?]], a1) then
+    if not funcLuaMenuCommand(@crc:CMND_IS_CTRL_FOCUS_ACTIVE@, a1) then
       return
     end
     local ret = funcLuaMenuCommand(2603265800, a1)

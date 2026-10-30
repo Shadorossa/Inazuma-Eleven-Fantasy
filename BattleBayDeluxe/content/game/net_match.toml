@@ -1,0 +1,35 @@
+# The «Sala privada» match as native data (schema VRFW.game/1, docs/framework/native.md), handled by
+# scripts\net_match.lua (required by campaign.lua: one VM with the Campaña's Decide hook). The graft
+# research/grafts/bb_net_room calls these commands from the room screen (network_room_match_wait) and the Battle Bay
+# top menu. docs/game/modes/bb-p2p-lockstep.md §7, §11.
+schema = "VRFW.game/1"
+
+[[VRFW.Command]]
+# 1 / 0 -> true: the next team decide in the Battle Bay grid is this player's room pick (its team goes to the room,
+# the game's decide does not run)
+name = "CMND_BBD_NET_PICK_ARM"
+handler = "BattleBayDeluxe.NetPickArm"
+
+[[VRFW.Command]]
+# -> the team hash the armed pick took (0 = none yet)
+name = "CMND_BBD_NET_PICKED"
+handler = "BattleBayDeluxe.NetPicked"
+
+[[VRFW.Command]]
+# host team, guest team -> true: the Campaña's block kept (save blob bb_net_campaign.json) and the room's match written
+# into it (the host's team = the player's side, the guest's = rival 1, index 0)
+name = "CMND_BBD_NET_PREPARE"
+handler = "BattleBayDeluxe.NetPrepare"
+needs = ["session"]
+
+[[VRFW.Command]]
+# -> true: a kept Campaña block was written back
+name = "CMND_BBD_NET_RESTORE"
+handler = "BattleBayDeluxe.NetRestore"
+needs = ["session"]
+
+[[VRFW.Command]]
+# team -> leader chara, crest, level of the room screen's team frame
+name = "CMND_BBD_NET_TEAM"
+handler = "BattleBayDeluxe.NetTeam"
+needs = ["enjoy", "EnjoyTable", "EnjoyRow"]

@@ -45,29 +45,29 @@
 if VRFW_Recruit == nil then
   local R = {
     C = {
-      ADD_PARTY = 1885323816,        -- CMND_ADD_PARTY 0x705FC228
+      ADD_PARTY = VRFW_Cmd.ADD_PARTY,        -- CMND_ADD_PARTY 0x705FC228
       AFTER_ADD = 3007956834,        -- 0xB349C762: retail AddSummonChara calls it right after CMND_ADD_PARTY
-      AUTO_SAVE = 3673719958,        -- CMND_SYSTEM_AUTO_SAVE
+      AUTO_SAVE = VRFW_Cmd.SYSTEM_AUTO_SAVE,        -- CMND_SYSTEM_AUTO_SAVE
       OWNED = 1052152255,            -- (card, 0) -> ok, n / n: copies of the card in the club
-      BANK_FREE = 1333628693,        -- CMND_CAN_SPIRIT_NUM -> free bank slots
-      ITEM_NUM = 2011560392,         -- CMND_GET_ITEM_NUM (id, false) -> count
-      DEL_ITEM = 425598937,          -- CMND_DELETE_ITEM (id, n) -> ok (never below the equipped count)
+      BANK_FREE = VRFW_Cmd.CAN_SPIRIT_NUM,        -- CMND_CAN_SPIRIT_NUM -> free bank slots
+      ITEM_NUM = VRFW_Cmd.GET_ITEM_NUM,         -- CMND_GET_ITEM_NUM (id, false) -> count
+      DEL_ITEM = VRFW_Cmd.DELETE_ITEM,          -- CMND_DELETE_ITEM (id, n) -> ok (never below the equipped count)
       ITEM_FITS = 765340069,         -- (id, n) -> the bag has room
-      ADD_ITEM = 1897915498,         -- CMND_ADD_ITEM_ONLY (id, n): no window
-      LOG = 3661580131,              -- CMND_EVT_LOG
-      CLUB = 3686368570,             -- CMND_VRFW_RECRUIT_CLUB () -> {total, element = {..}, position = {..}}
-      SAVE_GET = 2187277743,         -- CMND_VRFW_SAVE_GET (owner, key, default)
+      ADD_ITEM = VRFW_Cmd.ADD_ITEM_ONLY,         -- CMND_ADD_ITEM_ONLY (id, n): no window
+      LOG = VRFW_Cmd.EVT_LOG,              -- CMND_EVT_LOG
+      CLUB = VRFW_Cmd.VRFW_RECRUIT_CLUB,             -- CMND_VRFW_RECRUIT_CLUB () -> {total, element = {..}, position = {..}}
+      SAVE_GET = VRFW_Cmd.VRFW_SAVE_GET,         -- CMND_VRFW_SAVE_GET (owner, key, default)
       IN_STORY = 424926145,          -- true while the story's play mode runs (menu_def GetActiveTeamDockNoByMode)
       STORY_DOCK = 2787124386,       -- the story's team dock in use
-      VS_DOCK = 3713813716,          -- CMND_GET_VS_USE_TEAM_SET: the team dock in use outside the story
-      TEAM_SET_INFO = 1033065575,    -- CMND_GET_TEAM_SET_INFO (dock, 0, 1) -> ok, team level
-      GAME_CLEAR = 989257499,        -- CMND_GET_SOCCER_GAME_CLEAR_FLAG (game, difficulty) -> won
-      CHRONICLE_CLEAR = 4034518619,  -- CMND_GET_CHRONICLE_CLEAR_STATUS (status flag index, difficulty) -> cleared
-      GLOBAL_BIT = 941426960,        -- CMND_GET_GLOBAL_BIT_FLAG (flag) -> on
+      VS_DOCK = VRFW_Cmd.GET_VS_USE_TEAM_SET,          -- CMND_GET_VS_USE_TEAM_SET: the team dock in use outside the story
+      TEAM_SET_INFO = VRFW_Cmd.GET_TEAM_SET_INFO,    -- CMND_GET_TEAM_SET_INFO (dock, 0, 1) -> ok, team level
+      GAME_CLEAR = VRFW_Cmd.GET_SOCCER_GAME_CLEAR_FLAG,        -- CMND_GET_SOCCER_GAME_CLEAR_FLAG (game, difficulty) -> won
+      CHRONICLE_CLEAR = VRFW_Cmd.GET_CHRONICLE_CLEAR_STATUS,  -- CMND_GET_CHRONICLE_CLEAR_STATUS (status flag index, difficulty) -> cleared
+      GLOBAL_BIT = VRFW_Cmd.GET_GLOBAL_BIT_FLAG,        -- CMND_GET_GLOBAL_BIT_FLAG (flag) -> on
       PASSED = 3228376551,           -- CMND_VRFW_FRIENDLY_PASSED (friendly id, tag, sub) -> passed
-      HOLDERS = 3795984993,          -- CMND_VRFW_RECRUIT_HOLDERS (card, ...) -> { {handle, param, level, busy}, ... }
-      SPIRIT_NUM = 1883729669,       -- CMND_GET_SPIRIT_NUM (card, rarity) -> ok, n
-      ADD_SPIRIT = 2757645277,       -- CMND_ADD_ITEM_SPIRIT (card, n, rarity, used): n < 0 takes
+      HOLDERS = VRFW_Cmd.VRFW_RECRUIT_HOLDERS,          -- CMND_VRFW_RECRUIT_HOLDERS (card, ...) -> { {handle, param, level, busy}, ... }
+      SPIRIT_NUM = VRFW_Cmd.GET_SPIRIT_NUM,       -- CMND_GET_SPIRIT_NUM (card, rarity) -> ok, n
+      ADD_SPIRIT = VRFW_Cmd.ADD_ITEM_SPIRIT,       -- CMND_ADD_ITEM_SPIRIT (card, n, rarity, used): n < 0 takes
       RETIRE = 3955826921,           -- the bank's retire (funcLuaMenuCommand, handle) -> ok
       STATUS = 1131797651,           -- (handle, field) -> a value of the player's status (12 = rarity)
       HAS_ATTRIBUTE = 29506568,      -- 0x01C23C08 (handle, mask) -> the player's attribute has those bits
@@ -486,13 +486,15 @@ end
 -- through the match start service (VRFW_MATCH, _all\12_match_start.lua). The rival is the page match's own rival team
 -- (teams.rival.team, so a friendly that plays its own match row, e.g. a 5v5 row, meets the page's team) and the stadium
 -- the page match's own one (game data, CMND_VRFW_RECRUIT_GAME_STADIUM); a home stadium declared for the rival team
--- comes first when the friendly asks rival_home. The contact map screen calls it in its hub's VM (CMND MENU_CALL) and
--- closes itself. Returns true when the launch runs.
+-- comes first when the friendly asks rival_home. The team: the active pachanga team; none set, the active match team's
+-- five with `friendly_team` (the contact set's TrialFriendlyActiveTeam: the same friendly with team = "current";
+-- VRFW_MATCH.pachanga_team). The contact map screen calls it in its hub's VM (CMND MENU_CALL) and closes itself.
+-- Returns true when the launch runs.
 if VRFW_RecruitTrial == nil then
   local GAME_RIVAL = 2204933160      -- (game, difficulty) -> the match row's rival team
-  local GAME_STADIUM = 943736720     -- CMND_VRFW_RECRUIT_GAME_STADIUM (game) -> map crc (0 = none)
+  local GAME_STADIUM = VRFW_Cmd.VRFW_RECRUIT_GAME_STADIUM     -- (game) -> map crc (0 = none)
 
-  function VRFW_RecruitTrial(friendly, game, difficulty, tag, sub, objective)
+  function VRFW_RecruitTrial(friendly, game, difficulty, tag, sub, objective, friendly_team)
     if type(VRFW_MATCH) ~= "table" or type(VRFW_MATCH.start) ~= "function" or type(friendly) ~= "string" then
       return false
     end
@@ -503,6 +505,7 @@ if VRFW_RecruitTrial == nil then
     stadium = (oks and type(stadium) == "number" and stadium ~= 0) and stadium or nil
     local ok, started, why = pcall(VRFW_MATCH.start, {friendly = friendly, game = game, difficulty = difficulty,
       tag = tag, sub = sub, objective = objective, rival = rival, stadium = stadium,
+      set = function() return VRFW_MATCH.pachanga_team(friendly_team) end,
       overrides = rival and {{"teams.rival.team", rival}} or nil, settle = 20, black = false})
     if VRFW_Recruit ~= nil then
       VRFW_Recruit.Log("trial start", friendly, game, difficulty, tag, sub, objective, "rival", tostring(rival),

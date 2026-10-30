@@ -142,7 +142,7 @@ function Co.start_items(c) return E.start_items(c.effects) end
 -- n x mult, rounded (1.0 = unchanged exactly)
 function Co.scaled(n, mult) return E.scaled(n, mult) end
 
--- a rule in Spanish with the coaches' names
+-- a rule in the game's language with the coaches' names
 function Co.describe(k, cond)
   return unlocks.describe(cond, function(id)
     local c = Co.by_id(k, id)
@@ -156,7 +156,7 @@ function Co.hint(k, c, s)
   if c.hint == "" then
     local parts = {}
     for i, u in ipairs(c.unlock) do parts[i] = Co.describe(k, u) end
-    h = table.concat(parts, " y ")
+    h = unlocks.join(parts)
   else
     h = c.hint
   end

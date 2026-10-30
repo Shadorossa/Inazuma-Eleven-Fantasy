@@ -1,49 +1,40 @@
 schema = "VRFW.text_key/1"
 # Changelog texts (text_engine format; ids are crc32("changelog.<name>")): `news` labels the FUNC3 key of the Mods screen button guide,
-# `sheet_title` titles the sheet, `date_format` orders a release date ({y} year, {m} month, {d} day).
+# `sheet_title` titles the sheet.
 default_lang = "en"
 
 [ja.new]
 sheet_title = "MODの新着情報"
-date_format = "{y}/{m}/{d}"
 news = "新着情報"
 
 [en.new]
 sheet_title = "Mod updates"
-date_format = "{y}-{m}-{d}"
 news = "What's new"
 
 [es.new]
 sheet_title = "Novedades de mods"
-date_format = "{d}/{m}/{y}"
 news = "Novedades"
 
 [fr.new]
 sheet_title = "Nouveautés des mods"
-date_format = "{d}/{m}/{y}"
 news = "Nouveautés"
 
 [de.new]
 sheet_title = "Neues in den Mods"
-date_format = "{d}.{m}.{y}"
 news = "Neuigkeiten"
 
 [it.new]
 sheet_title = "Novità delle mod"
-date_format = "{d}/{m}/{y}"
 news = "Novità"
 
 [pt.new]
 sheet_title = "Novidades dos mods"
-date_format = "{d}/{m}/{y}"
 news = "Novidades"
 
 [zh_hans.new]
 sheet_title = "模组更新内容"
-date_format = "{y}/{m}/{d}"
 news = "更新内容"
 
 [zh_hant.new]
 sheet_title = "模組更新內容"
-date_format = "{y}/{m}/{d}"
 news = "更新內容"

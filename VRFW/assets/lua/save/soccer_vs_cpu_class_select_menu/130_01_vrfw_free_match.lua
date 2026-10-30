@@ -24,9 +24,9 @@ local n6 = 0
 -- Unlock = "together" (the list already checked the opponent). Without an answer from the DLL: the 4 retail rows.
 -- No engine call at load time; the functions take the game / story bytes from the callbacks (no chunk local here).
 VRFW_FMC = VRFW_FMC or {}
-VRFW_FMC.RULES = 2045239528   -- CMND_VRFW_FM_RULES
-VRFW_FMC.DIFFS = 1129484790   -- CMND_VRFW_FM_DIFFICULTIES
-VRFW_FMC.CLASS = 490102859    -- CMND_VRFW_FM_CLASS
+VRFW_FMC.RULES = 2045239528
+VRFW_FMC.DIFFS = 1129484790
+VRFW_FMC.CLASS = 490102859
 VRFW_FMC.ATLAS = 1103995203   -- #/menu/200_icon/06_icon_class/<LG>/icon_class.g4tx (the retail class titles)
 VRFW_FMC.BALLS = 3795985350   -- #/menu/30_vsroute/vsroute01/vsroute01_21/vsroute01_21.g4tx (the level balls lv_base00..03)
 VRFW_FMC.cache = nil
@@ -87,7 +87,7 @@ function VRFW_FMC.RetailLocked(game, story, c)
       else
         local ok, sfi = funcLuaCommand(2610596259, game)
         if ok then
-          flag = not funcLuaCommand(4034518619 --[[CMND_GET_CHRONICLE_CLEAR_STATUS]], sfi, c + 1)
+          flag = not funcLuaCommand(4034518619, sfi, c + 1)
         end
         local ok2, ev = funcLuaCommand(2610596259, game, 1)
         if ok2 and ev > 0 then
@@ -146,7 +146,7 @@ end
 -- the row's mark box (_list_state_base01) hidden without ClearTicks (the marks are never shown there)
 function VRFW_FMC.Box(layer, a2)
   if not VRFW_FMC.Rules().ticks then
-    funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], layer, 1445391659 --[[_list_state_base01]], false, a2)
+    funcLuaMenuCommand(3405944500, layer, 1445391659 --[[_list_state_base01]], false, a2)
   end
 end
 -- the team of `game`'s row of difficulty d (0x836C9C28(game, d)); `fallback` (the first row's, retail) without one
@@ -162,7 +162,7 @@ function VRFW_FMC.Marks(game, c)
   if not VRFW_FMC.Rules().ticks then
     return false, false
   end
-  return funcLuaCommand(989257499 --[[CMND_GET_SOCCER_GAME_CLEAR_FLAG]], game, 6 + c), funcLuaCommand(479325357, game, 6 + c)
+  return funcLuaCommand(989257499, game, 6 + c), funcLuaCommand(479325357, game, 6 + c)
 end
 -- VRFW free-match classes end ------------------------------------------------------------------
 function OnInit()

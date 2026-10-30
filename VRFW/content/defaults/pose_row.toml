@@ -24,6 +24,8 @@ art = { panel_ground = ["#/menu/30_vsroute/vsroute01/vsroute01_15/vsroute01_15.g
 title = { x = 40, y = 42, w = 890, h = 70, scale = 1.15 }
 banner = { x = 90, y = 190, w = 530, h = 160, scale = 1.0, icon = { x = 515, y = 265, size = 150 } }
 rows = { x = 90, y = 380, w = 540, h = 52, step = 66, shown = 5, scale = 0.85 }
+# the list's scroll arrows (top-left, px): over the first row / under the last one, at the rows' right end
+arrows = { x = 568, up_y = 346, down_y = 700, w = 44, h = 32 }
 more = { x = 300, y = 718, scale = 0.6 }
 # the lineup: the formation's name, the VS pitch (its scale) and the player cards (their scale)
 lineup = { x = 90, y = 740, w = 540, h = 210, name_y = 20, name_scale = 0.7, pitch_top = 40, pitch_scale_x = 0.62, pitch_scale_y = 0.29, card_scale = 0.36 }
@@ -45,7 +47,8 @@ player_rows = { x = 740, y = 648, w = 1050, h = 46, step = 54, name_scale = 0.62
 [layout.node_panel.art]
 title_band = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_on"]
 banner = ["#/menu/30_vsroute/vsroute01/vsroute01_17/vsroute01_17.g4tx", "myteam_base01_a"]
-row = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_off"]
+# the row: the framework's opaque copy of the board's list row (content\images\menu\220_img\vrfw_pose_row.toml)
+row = ["#/menu/220_img/vrfw_pose_row/vrfw_pose_row.g4tx", "vrfw_pose_row_row"]
 row_focus = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_on"]
 level_circle = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "lv_base02"]
 check = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_icon_state_comp02"]
@@ -57,6 +60,9 @@ check_box = ["#/menu/102_team/team16/team16_03/team16_03.g4tx", "icon_check_box0
 check_mark = ["#/menu/102_team/team16/team16_03/team16_03.g4tx", "icon_list_check01"]
 button_plate = ["#/menu/30_vsroute/vsroute01/vsroute01_16/vsroute01_16.g4tx", "list_base01_on"]
 side_panel = ["#/menu/30_vsroute/vsroute01/vsroute01_15/vsroute01_15.g4tx", "list_base01"]
+# the list's scroll arrows: the battle HUD's blue chevrons (btl01_01, in the screen's res)
+arrow_up = ["#/menu/02_btl/btl01/btl01_01/btl01_01.g4tx", "chr_arrow01_u"]
+arrow_down = ["#/menu/02_btl/btl01/btl01_01/btl01_01.g4tx", "chr_arrow01_d"]
 
 # The model camera (the shop list base's: eye (0, 2.25, 12.5) looking at (0, 1.6, 0), 3060 px a metre at 1 m) and the
 # depth the models stand at (world z): the screen turns slot_x / feet_y into world places with it.

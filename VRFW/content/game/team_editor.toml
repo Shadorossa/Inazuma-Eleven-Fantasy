@@ -1,0 +1,25 @@
+schema = "VRFW.game/2"
+
+# Team editor (docs/framework/team-editor.md; menu side assets/lua/menu/_all/81_team_editor.lua, logic
+# scripts\team_editor.lua). A team set's kit as every consumer reads it: TeamInfo +0x290 (CMND_GET_TEAM_SET_INFO
+# field 7, the dock's 3D players, face icons, the match team record); +0x294 is the owned kit item (field 12), which
+# the dock's kit icon reads first. The retail field 5 write does not reach +0x290 for a team set.
+
+# the party (team sets): [[g_gameRoot] + Game.RootParty]
+[[VRFW.Global]]
+name = "TeamEditorParty"
+base = "game_root"
+chain = ["Game.RootParty"]
+
+# TeamInfo of (party, set, team)
+[[VRFW.Struct]]
+name = "TeamEditorTeamInfo"
+game = "TeamInfo"
+fields = { Uniform = { at = 0x290, type = "u32" }, UniformItem = { at = 0x294, type = "u32" } }
+
+# (set, team, uniform) -> ok, the set's uniform now: the uniform written, the owned kit item cleared (the icon then
+# shows the uniform). Used inside a save session only (the session's restore puts both back).
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_SET_KIT"
+handler = "TeamEditor.SetKit"
+needs = ["Team.SetStruct", "TeamEditorParty", "TeamEditorTeamInfo"]

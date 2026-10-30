@@ -19,7 +19,6 @@ path = "common/script/lua/menu/evt_rogue_coach_menu.lua.bin"
   [[files.ops]]
   type = "new_file"
   src = "evt_rogue_coach_menu.lua"
-  crc = "none"
   vars = { "@MENU_FILE@" = "evt_rogue_coach_menu" }   # --@lib evt_menu_kit.lua#StartCo
 
 [[files]]
@@ -29,4 +28,3 @@ path = "common/script/lua/menu/evt_inarogue_menu.lua.bin"
   type = "append_block"
   src = "irm_coach.lua"
   marker = "rogue_coaches"
-  crc = "none"

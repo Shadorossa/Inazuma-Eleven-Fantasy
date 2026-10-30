@@ -1,14 +1,15 @@
 schema = "VRFW.image/1"
-# InaRogue: the INAROGUE tier frames / «¿Y si…?» Vestigio sprites of this atlas (moved from Inazuma
+# InaRogue: the INAROGUE tier frames / «¿Y si…?» Vestigio sprites the game asks icon_rarity for, in the mod's own
+# atlas inarogue_rarity_titles (never the game's: content\sprite_redirects\card_frames.toml serves them). (Moved from Inazuma
 # Fantasy 2026-10-14; the image type merges them per name with the other mods' rows of the atlas).
 
 [[texture]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "evt_whatif_atl"
 size = [800, 392]
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -17,7 +18,7 @@ png = "icon_rarity/default/gtxt_rarity01_13.png"
 lang = ""
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -26,7 +27,7 @@ png = "icon_rarity/default/gtxt_rarity01_14.png"
 lang = ""
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -35,7 +36,7 @@ png = "icon_rarity/default/gtxt_rarity01_15.png"
 lang = ""
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -44,7 +45,7 @@ png = "icon_rarity/en/gtxt_rarity01_13.png"
 lang = "en"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -53,7 +54,7 @@ png = "icon_rarity/en/gtxt_rarity01_14.png"
 lang = "en"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -62,7 +63,7 @@ png = "icon_rarity/en/gtxt_rarity01_15.png"
 lang = "en"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -71,7 +72,7 @@ png = "icon_rarity/es/gtxt_rarity01_13.png"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -80,7 +81,7 @@ png = "icon_rarity/es/gtxt_rarity01_14.png"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -89,7 +90,7 @@ png = "icon_rarity/es/gtxt_rarity01_15.png"
 lang = "es"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -98,7 +99,7 @@ png = "icon_rarity/fr/gtxt_rarity01_13.png"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -107,7 +108,7 @@ png = "icon_rarity/fr/gtxt_rarity01_14.png"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -116,7 +117,7 @@ png = "icon_rarity/fr/gtxt_rarity01_15.png"
 lang = "fr"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -125,7 +126,7 @@ png = "icon_rarity/de/gtxt_rarity01_13.png"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -134,7 +135,7 @@ png = "icon_rarity/de/gtxt_rarity01_14.png"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -143,7 +144,7 @@ png = "icon_rarity/de/gtxt_rarity01_15.png"
 lang = "de"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -152,7 +153,7 @@ png = "icon_rarity/it/gtxt_rarity01_13.png"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -161,7 +162,7 @@ png = "icon_rarity/it/gtxt_rarity01_14.png"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -170,7 +171,7 @@ png = "icon_rarity/it/gtxt_rarity01_15.png"
 lang = "it"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -179,7 +180,7 @@ png = "icon_rarity/pt/gtxt_rarity01_13.png"
 lang = "pt"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -188,7 +189,7 @@ png = "icon_rarity/pt/gtxt_rarity01_14.png"
 lang = "pt"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -197,7 +198,7 @@ png = "icon_rarity/pt/gtxt_rarity01_15.png"
 lang = "pt"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -206,7 +207,7 @@ png = "icon_rarity/zh_hans/gtxt_rarity01_13.png"
 lang = "zh_hans"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -215,7 +216,7 @@ png = "icon_rarity/zh_hans/gtxt_rarity01_14.png"
 lang = "zh_hans"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0
@@ -224,7 +225,7 @@ png = "icon_rarity/zh_hans/gtxt_rarity01_15.png"
 lang = "zh_hans"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_13"
 texture = "evt_whatif_atl"
 x = 0
@@ -233,7 +234,7 @@ png = "icon_rarity/zh_hant/gtxt_rarity01_13.png"
 lang = "zh_hant"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_14"
 texture = "evt_whatif_atl"
 x = 0
@@ -242,7 +243,7 @@ png = "icon_rarity/zh_hant/gtxt_rarity01_14.png"
 lang = "zh_hant"
 
 [[sprite]]
-atlas = "#/menu/200_icon/05_icon_rarity/<LG>/icon_rarity.g4tx"
+atlas = "#/menu/102_team/inarogue/<LG>/inarogue_rarity_titles.g4tx"
 name = "gtxt_rarity01_15"
 texture = "evt_whatif_atl"
 x = 0

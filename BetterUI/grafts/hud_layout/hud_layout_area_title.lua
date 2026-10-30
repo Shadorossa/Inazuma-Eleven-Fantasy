@@ -14,7 +14,6 @@
 --   switched off in THIS menu's VM only (EVT_UI_FLAGS is per menu) while EVT_HL_ZONE_TITLE is on.
 -- Engine calls only from OnSetupLayer / OnOpenLayer / SetupAreaTitle.
 
-EVT_HL_AREA_TITLE_ON = true
 EVT_HL_AREA_TITLE_SCALE = 0.61    -- ZONA / FOCO: text 29 / 48 = 0.60, bar 15 / 24 = 0.63
 EVT_HL_AREA_TITLE_DX = 0          -- fine tuning after the alignment (layout units, + = right)
 EVT_HL_AREA_TITLE_DY = 0          -- (+ = up)
@@ -26,8 +25,8 @@ local HLA_ZONE_TEXT_LEFT, HLA_ZONE_BAR_BOTTOM = -1 + 30, -146 - 51
 local HLA_MESH_X, HLA_MESH_Y, HLA_MESH_W, HLA_MESH_H = -31, -143, 456, 76    -- _mode_title01
 local HLA_ZMESH_X, HLA_ZMESH_Y, HLA_ZMESH_W, HLA_ZMESH_H = -1, -146, 268, 52 -- soccer00_15 _zonearea_title01
 local HLA_ZONE_TYPE = 3
-local HLA_CMND_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]]
-local HLA_CMND_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]]
+local HLA_CMND_POS = @crc:CMND_SET_LAYER_LOCAL_POS@
+local HLA_CMND_SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@
 local HLA_CMND_SWAP = 558735651
 local HLA_ATLAS_15 = 1215532632 --[[#/menu/00_soccer/soccer00/soccer00_15/<LG>/soccer00_15.g4tx]]
 local HLA_ZONE_SPRITE = 437059094 --[[title_zonearea01]]
@@ -44,7 +43,7 @@ local function HLA_Pack(...)
 end
 
 local function HLA_Apply()
-  if not EVT_HL_AREA_TITLE_ON or type(funcLuaMenuCommand) ~= "function" then
+  if type(funcLuaMenuCommand) ~= "function" then
     return
   end
   local sx, sy, x, y
@@ -125,22 +124,21 @@ local HLT_MESH = 2750042957 --[[_speed01]]
 local HLT_PARENT_Y = -14          -- _pos_title (under _pos_base01)
 local HLT_ROWS, HLT_ROW0, HLT_OPAQUE = 16, 3, 10
 local HLT_QUAD_W, HLT_QUAD_END = 264, 262   -- sprite width / its slanted end's top corner, screen layout units
-local HLT_CMND_IS_OPEN = 2640875187
-local HLT_CMND_MESH_VIS = 3405944500
+local HLT_CMND_IS_OPEN = @crc:CMND_IS_OPEN_LAYER@
+local HLT_CMND_MESH_VIS = @crc:CMND_SET_MESH_VISIBLE@
 local HLT_CMND_NODE_POS = 2575768773 --[[(layer, idx, node, axis 0 x / 1 y, value)]]
 local HLT_CMND_NODE_SIZE = 2885415772 --[[(layer, idx, node, sx, sy): a mesh's size]]
-local HLT_CMND_LOAD_TEX = 839427544
+local HLT_CMND_LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@
 local HLT_CMND_TEX_BUSY = 1506186496
 -- (2026-10-06, clean_hud 1.9.1: the parameter store does not overwrite an existing key, as retail RegisterPropValue
 -- shows: it deletes the key (3363400568) first. Without that only the first value of a key ever landed, and the
 -- -1 written by the banner's SetupAreaTitle kept the line hidden for good.)
-local HLT_P_SET, HLT_P_GET, HLT_P_HAS, HLT_P_DEL = 3860611758, 3522198769, 2947612279, 3363400568
 local hlt = {tex = 0, t = 0, swapped = false, shown = nil, geo = nil, logs = 0}
 
 local function HLT_Log(...)
   if hlt.logs < 20 and type(funcLuaCommand) == "function" then
     hlt.logs = hlt.logs + 1
-    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "EVT hud_layout timeline", ...)
+    pcall(funcLuaCommand, @crc:CMND_EVT_LOG@, "EVT hud_layout timeline", ...)
   end
 end
 
@@ -181,7 +179,7 @@ local function HLT_Show(on)
 end
 
 local function HLT_Sprite()
-  if hla_type == HLA_ZONE_TYPE and EVT_HL_ZONE_TITLE and EVT_HL_AREA_TITLE_ON then
+  if hla_type == HLA_ZONE_TYPE and EVT_HL_ZONE_TITLE then
     return HLT_SPR_ZONEAREA
   end
   return HLT_SPR[hla_type]
@@ -203,8 +201,8 @@ local function HLT_Step()
     return
   end
   local v
-  if funcLuaCommand(HLT_P_HAS, key) == true then
-    v = funcLuaCommand(HLT_P_GET, key)
+  if VRFW_Param.Has(key) then
+    v = VRFW_Param.Get(key)
   end
   hlt.nf = (hlt.seen == hla_type and (hlt.nf or 0) or 0) + 1
   if hlt.seen ~= hla_type then
@@ -252,8 +250,8 @@ local function HLT_Reset(clearKeys)
   hlt.swapped, hlt.shown, hlt.geo, hlt.seen = false, nil, nil, nil
   if clearKeys and type(funcLuaCommand) == "function" then
     for _, k in pairs(HLT_KEY) do
-      pcall(funcLuaCommand, HLT_P_DEL, k)
-      pcall(funcLuaCommand, HLT_P_SET, k, 0, -1)
+      VRFW_Param.Clear(k)
+      VRFW_Param.Set(k, -1, "plain")
     end
   end
 end

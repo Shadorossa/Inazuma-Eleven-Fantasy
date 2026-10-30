@@ -25,6 +25,7 @@ local welcome = require "lib/rogue/welcome_gacha"
 local items = require "lib/rogue/svc_items"
 local pieces = require "lib/rogue/svc_pieces"
 local collections = require "lib/rogue/collections"
+local shop_tabs = require "lib/rogue/shop_tabs"
 
 Core.bank, Core.run, Core.meta = bank, run, meta
 
@@ -36,6 +37,10 @@ do
   local U = require "lib/rogue/util"
   local ok, e = pcall(VRFW.native.table_replace, "InaRogue.Slot", nil, { { U.ROGUE_SLOT, 1 } })
   if not ok then VRFW.warn("rogue: InaRogue.Slot: " .. tostring(e)) end
+  -- config.toml [drops] retail = false: no retail match drops in the INAROGUE save (content\items\no_retail_drops.toml)
+  local rows = U.cfg("drops.retail", false) == false and { { U.ROGUE_SLOT, 1 } } or {}
+  local okd, ed = pcall(VRFW.native.table_replace, "InaRogue.NoRetailDrops", nil, rows)
+  if not okd then VRFW.warn("rogue: InaRogue.NoRetailDrops: " .. tostring(ed)) end
 end
 -- The talent slot (Talento propio, content/rogue/talents.toml): in the INAROGUE save each player keeps only his talent
 local talents = require "lib/rogue/talents"
@@ -45,6 +50,16 @@ if ENABLED then
   VRFW.on("slot_load", function() talents.fill() end)
 end
 function InaRogue.TalentOfCard(card) return talents.of_card(card) end
+
+-- The session-wide catalogues (the chara_param tiers, the album, the avatars) are read while the scripts load (files
+-- and the character index only), not at the first slot card or route map on the game thread.
+if ENABLED then
+  local ok, e = pcall(function()
+    require("lib/rogue/album").data()
+    require("lib/rogue/avatars").catalogue(Core.cfg().avatars)
+  end)
+  if not ok then VRFW.warn("rogue: catalogues not read at load (read at their first use): " .. tostring(e)) end
+end
 
 if not ENABLED then VRFW.log("rogue: module rogue off ([modules] rogue / [modes] inarogue / [phase]): INAROGUE commands answer nothing") end
 
@@ -90,6 +105,8 @@ function InaRogue.Mode.GachaDraw(...) return call(bank.GachaDraw, ...) end
 function InaRogue.Mode.Card(...) return call(bank.Card, ...) end
 function InaRogue.Mode.RunEnd(...) return call(bank.RunEnd, ...) end
 function InaRogue.Mode.AlbumInfo(...) return call(bank.AlbumInfo, ...) end
+-- «Espíritus»: the spirits of the collection's players and their starter cost levels (svc_bank.Spirits)
+function InaRogue.Mode.Spirits(...) return call(bank.Spirits, ...) end
 -- the album's «Objetos» / «Equipos» sections (scripts/lib/rogue/collections.lua)
 function InaRogue.Mode.Collection(...) return call(collections.Collection, ...) end
 
@@ -104,6 +121,7 @@ function InaRogue.Mode.RunResume(...) return call(run.Resume, ...) end
 function InaRogue.Mode.RunMatch(...) return call(run.Match, ...) end
 function InaRogue.Mode.RunReserve(...) return call(run.Reserve, ...) end
 function InaRogue.Mode.RunResult(...) return call(run.Result, ...) end
+function InaRogue.Mode.RunRecorded(...) return call(run.Recorded, ...) end
 function InaRogue.Mode.RunClear(...) return call(run.Clear, ...) end
 function InaRogue.Mode.RunNextPhase(...) return call(run.NextPhase, ...) end
 function InaRogue.Mode.RunAbandon(...) return call(run.Abandon, ...) end
@@ -114,12 +132,24 @@ function InaRogue.Mode.RunRecruit(...) return call(run.Recruit, ...) end
 function InaRogue.Mode.RunLaunch(...) return call(run.Launch, ...) end
 function InaRogue.Mode.RunLoot(...) return call(run.Loot, ...) end
 function InaRogue.Mode.RunRival(...) return call(run.Rival, ...) end
+-- v2 runs (docs/game/mods/inarogue-loop-v2.md): the end of a won run, the last run's summary
+function InaRogue.Mode.RunOutro(...) return call(run.Outro, ...) end
+function InaRogue.Mode.RunSummary(...) return call(run.Summary, ...) end
+-- the offers of the board (lib/rogue/offers.lua): recruits, Tienda, Evento, Tragaperras, relics
+local offers = require "lib/rogue/offers"
+function InaRogue.Mode.RunOffer(...) return call(offers.Offer, ...) end
+-- the start options of a new run (lib/rogue/ascension.lua): Ascension, challenges, the weekly run
+local ascension = require "lib/rogue/ascension"
+function InaRogue.Mode.RunOptions(...) return call(ascension.Options, ...) end
 
 -- meta progress
 function InaRogue.Mode.UnlockInfo(...) return call(meta.RuInfo, ...) end
 function InaRogue.Mode.UnlockCard(...) return call(meta.RuCard, ...) end
 function InaRogue.Mode.UnlockState(...) return call(meta.RuState, ...) end
 function InaRogue.Mode.UnlockNews(...) return call(meta.RuNews, ...) end
+-- what an INAROGUE save gets on top of the finished story (content/rogue/progress_unlock.toml)
+local progress = require "lib/rogue/progress"
+function InaRogue.Mode.ProgressData(...) return call(progress.Data, ...) end
 function InaRogue.Mode.CoachList(...) return call(meta.CoachList, ...) end
 function InaRogue.Mode.CoachPick(...) return call(meta.CoachPick, ...) end
 function InaRogue.Mode.CoachRun(...) return call(meta.CoachRun, ...) end
@@ -131,6 +161,8 @@ function InaRogue.Mode.AvatarUnlock(...) return call(meta.AvatarUnlock, ...) end
 function InaRogue.Mode.AvatarSelect(...) return call(meta.AvatarSelect, ...) end
 function InaRogue.Mode.Points(...) return call(meta.Points, ...) end
 function InaRogue.Mode.PointsGiven(...) return call(meta.PointsGiven, ...) end
+-- the «Tienda» tabs (content/rogue/shop_tabs.toml)
+function InaRogue.Mode.ShopTab(...) return call(shop_tabs.Tab, ...) end
 function InaRogue.Mode.FormOwned(...) return call(meta.FormOwned, ...) end
 function InaRogue.Mode.FormList(...) return call(meta.FormList, ...) end
 
@@ -172,6 +204,11 @@ if ENABLED then require("lib/rogue/svc_blocks").register() end
 -- the INAROGUE save shows / sets no retail achievements («logros», inarogue.md §21)
 if ENABLED then
   VRFW.on("hook:RL_TrophySetTier", function(ev) return misc.on_trophy(ev) end)
+end
+
+-- the result of a finished match (VR-Framework's match result): the reserved node's result goes into the run file
+if ENABLED then
+  VRFW.on("signal:vrfw.match_result", function() return run.on_match_result() end)
 end
 
 -- a return to the title: every slot cache is dropped (the next command reads the files again)

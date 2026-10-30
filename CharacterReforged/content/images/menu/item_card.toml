@@ -1,0 +1,59 @@
+# Character Reforged: the Equipamiento screen's sprites in the item card's own atlas evt_eq_fx (never a game atlas):
+# the stat bar outlines of a stat the focused equipment item raises / lowers (graft plate_pages, host table
+# item_card.row_mark: the bar's rect + 2 px; the equipment screen loads the atlas, content/menus/page_atlas.toml) and the set page's slot icons where one of the set is worn (green copies of the
+# equipment list's icon_equip01..04)
+schema = "VRFW.image/1"
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_pp_row_raise"
+png = "102_team/team05/evt_eq_fx/evt_pp_row_raise.png"
+texture = "evt_eq_fx"
+x = 1356
+y = 128
+size = [184, 32]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_pp_row_lower"
+png = "102_team/team05/evt_eq_fx/evt_pp_row_lower.png"
+texture = "evt_eq_fx"
+x = 1164
+y = 128
+size = [184, 32]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_slot01_worn"
+png = "102_team/team05/evt_eq_fx/evt_eq_slot01_worn.png"
+texture = "evt_eq_fx"
+x = 144
+y = 128
+size = [48, 52]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_slot02_worn"
+png = "102_team/team05/evt_eq_fx/evt_eq_slot02_worn.png"
+texture = "evt_eq_fx"
+x = 200
+y = 128
+size = [48, 52]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_slot03_worn"
+png = "102_team/team05/evt_eq_fx/evt_eq_slot03_worn.png"
+texture = "evt_eq_fx"
+x = 256
+y = 128
+size = [48, 52]
+
+[[sprite]]
+atlas = "#/menu/102_team/team05/evt_eq_fx/evt_eq_fx.g4tx"
+name = "evt_eq_slot04_worn"
+png = "102_team/team05/evt_eq_fx/evt_eq_slot04_worn.png"
+texture = "evt_eq_fx"
+x = 312
+y = 128
+size = [48, 52]

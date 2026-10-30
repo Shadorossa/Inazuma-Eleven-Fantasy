@@ -12,10 +12,6 @@
 -- the first callback on); no engine call at load.
 do
   local STEM = "team_dock_formation_menu"
-  local PARAM_DELETE = 3363400568
-  local PARAM_SET = 3860611758
-  local PARAM_HAS = 2947612279
-  local PARAM_GET = 3522198769
   local KEY_BOARD_PLAYER = 4161869490      -- the board's player (written by the retail branch)
   local KEY_DOCK_NUMBER = 3357163798       -- the dock number (written by the retail branch, read by both screens)
   local KEY_DOCK_TYPE = 4081600465         -- the dock type (idem)
@@ -26,13 +22,13 @@ do
   local TEXT_SKILL_TABLE_HEADER = 2489792255
 
   local function set_param(key, value)
-    funcLuaCommand(PARAM_DELETE, key)
-    funcLuaCommand(PARAM_SET, key, 0, value, 1)
+    VRFW_Param.Clear(key)
+    VRFW_Param.Set(key, value)
   end
 
   local function read_param(key, default)
-    if funcLuaCommand(PARAM_HAS, key) then
-      return funcLuaCommand(PARAM_GET, key)
+    if VRFW_Param.Has(key) then
+      return VRFW_Param.Get(key)
     end
     return default
   end
@@ -41,16 +37,16 @@ do
   -- what the retail «Tabla de habilidades» branch wrote for the board
   local function open_skill_table()
     local player = read_param(KEY_BOARD_PLAYER, 0)
-    funcLuaCommand(PARAM_DELETE, KEY_BOARD_PLAYER)
+    VRFW_Param.Clear(KEY_BOARD_PLAYER)
     if (player == nil or player == 0) and type(GetFormationSelectCharaStHdl) == "function" then
       player = GetFormationSelectCharaStHdl()
     end
     local dock_number = read_param(KEY_DOCK_NUMBER, 0)
     local dock_type = read_param(KEY_DOCK_TYPE, 0)
     local formation = read_param(KEY_FORMATION, 0)
-    funcLuaCommand(PARAM_DELETE, KEY_OPEN_BOARD)
-    funcLuaCommand(PARAM_DELETE, KEY_DOCK_TYPE)
-    funcLuaCommand(PARAM_SET, KEY_DOCK_TYPE, 0, dock_type)
+    VRFW_Param.Clear(KEY_OPEN_BOARD)
+    VRFW_Param.Clear(KEY_DOCK_TYPE)
+    VRFW_Param.Set(KEY_DOCK_TYPE, dock_type, "plain")
     local main_menu = MAIN_MENU.IsEnableUseMainMenu()
     set_param(2029825652, true)            -- team-dock member list (L/R changes player)
     set_param(363718978, main_menu)        -- main-menu mode
@@ -67,15 +63,15 @@ do
 
   -- after the skill table closed: a stale request to open the original board is only cleared
   local function after_close()
-    if funcLuaCommand(PARAM_HAS, KEY_OPEN_BOARD) then
-      funcLuaCommand(PARAM_DELETE, KEY_OPEN_BOARD)
+    if VRFW_Param.Has(KEY_OPEN_BOARD) then
+      VRFW_Param.Clear(KEY_OPEN_BOARD)
     end
   end
 
   if VRFW_Host ~= nil then
     VRFW_Host.on(STEM, "OnInit", {id = "character_reforged.team_dock_skill_table", phase = "before", fn = function()
       if CharacterReforged ~= nil and CharacterReforged.InstallBoardOpenRedirect ~= nil then
-        CharacterReforged.InstallBoardOpenRedirect("team dock (Plantilla / Formación)", open_skill_table, after_close)
+        CharacterReforged.InstallBoardOpenRedirect("team dock (squad / formation)", open_skill_table, after_close)
       end
     end})
   end

@@ -54,24 +54,26 @@ do
   M.PLATE_NAME_NODE = 3359986143   -- _text_sp01 (the plate's name)
   M.WINDOW = 292844459             -- general_win (the window layer of type 191)
   M.TEXT_WIN = 2883172407          -- _text_win02
-  M.KEY = {N = 3845463003, BASE = 3138498002, PARTNER = 3239651284, MOVE = 2493211851, KIND = 1080160106,
-    MASK = 80384131,
+  M.KEY = { -- the pairing confirmation's parameter keys: the bank (bank_create_moves_hooks.lua) writes them, the general window
+    -- (pair_confirm_window_hooks.lua) reads and clears them; character_reforged_pair_<name>
+    N = 3845463003, BASE = 3138498002, PARTNER = 3239651284, MOVE = 2493211851,   -- _n / _base / _partner / _move
+    KIND = 1080160106, MASK = 80384131, ICON = 4064933282,                          -- _kind / _mask / _icon_sprite
+    PE_S = 2347582693, PE_G = 2436337816, PE_F = 3861946382,                        -- _pe_s / _pe_g / _pe_f
+    -- _s0 .. _s8 (the base's stats), then _g0 .. _g8 (what the pair adds)
     S = {[0] = 441683322, 1834270188, 4099796054, 2203770048, 490621283, 1782151669, 4080019535, 2218203353, 344458568},
-    G = {[0] = 889018927, 1140484793, 3673373443, 2918452117, 865115702, 1150791328, 3718184730, 2862206860, 975622685},
-    PE_S = 2347582693, PE_G = 2436337816, PE_F = 3861946382,   -- character_reforged_pair_pe_s / _pe_g / _pe_f
-    ICON = 4064933282}                                          -- character_reforged_pair_icon_sprite
+    G = {[0] = 889018927, 1140484793, 3673373443, 2918452117, 865115702, 1150791328, 3718184730, 2862206860, 975622685}}
   M.C = {
     EXISTS = 262659071, OPEN = 629267548, OPEN_ARRAY = 2152386330, CLOSE_ARRAY = 2323943931, VIS = 711242136,
     POS = 1389957207, SCALE = 3778714801, PRIO = 1491630496, TEXT_PRIO = 1848885328, SPRITE = 558735651,
     MESH = 3405944500, TEXT = 1083631230, TEXT_VIS = 1505208242, STYLE = 2333948100, LOAD_TEX = 839427544,
     TEX_LOADING = 1506186496, TEXT_GET = 4074371074, CHARA = 1131797651, CHARA_INFO = 4060384944,
     SKILL_INFO = 2580586398, SKILL_NAME = 720417636, COMMON_SKILL = 800895612, CARD_FILL = 3837561292,
-    P_HAS = 2947612279, P_GET = 3522198769, P_CLEAR = 3363400568, LOG = 3661580131,
+    LOG = 3661580131,
     IS_OPEN = 2640875187, IS_VISIBLE = 1262717583, GET_PRIO = 1018283794, GPOS = 4002164178, NODE_VIS = 2158717427,
   }
-  -- atlases: icon_common (general_window res), the bar atlas btl06_13 <LG> (res), soccer08_10 (loaded here)
+  -- atlases: icon_common (general_window res), Character Reforged's own atlas evt_cr_page (res), soccer08_10 (loaded here)
   M.TX_COMMON = 2320109963         -- #/menu/200_icon/15_icon_common/icon_common.g4tx
-  M.TX_BAR = 1191797350            -- #/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx
+  M.TX_BAR = 387834804             -- #/menu/102_team/team11/evt_cr_page/evt_cr_page.g4tx (Character Reforged's own atlas)
   M.TX_CMD_PATH = "#/menu/00_soccer/soccer08/soccer08_10/soccer08_10.g4tx"
   M.TX_CMD = 2576972555            -- crc32 of TX_CMD_PATH
   M.QUAD_SLOT, M.QUAD_MESH, M.Q = 1909474081, 312193881, 36   -- cmn01_10: icon_new01 slot, _icon_new01, 36 px
@@ -82,7 +84,7 @@ do
     BAND = 2676710510,             -- evt_pair_panel (flat light inset, rounded: content/images/menu/pair_confirm_panel.toml)
     RULE = 3174271245,             -- evt_pp_slantbox (navy): the line between base and gain
     TRACK = 2201244747,            -- beans_bar_base01 (team13_16: the training gauge's grey track, 176 x 16)
-    -- the ATRIBUTOS page's gauge fills (btl06_13 atlas: this mod's content/images/menu/player_page.toml), named by
+    -- the ATRIBUTOS page's gauge fills (the own atlas evt_cr_page: content/images/menu/player_page.toml), named by
     -- the stat's position tags, evt_pp_gfill_<tags> (fw red, mf orange, df blue, gk purple, all green; two tags = two
     -- stripes), the gain evt_pp_gfill_gain (lime). Keys = the tag suffix, values = crc32 of the sprite name.
     FILL = {fw = 2403506164, fw_mf = 4164716282, df_mf = 1784276320, gk = 2186869498, gk_df = 240253988,
@@ -161,11 +163,7 @@ do
   end
 
   local function U32(v)
-    v = tonumber(v) or 0
-    if v < 0 then
-      v = v + 4294967296
-    end
-    return v
+    return VRFW_Id.u32(v)
   end
 
   local function Cmd(...)
@@ -185,13 +183,12 @@ do
   end
 
   function M.Take(key)
-    local okh, has = pcall(funcLuaCommand, M.C.P_HAS, key)
-    if not okh or has ~= true then
+    if not VRFW_Param.Has(key) then
       return nil
     end
-    local okg, v = pcall(funcLuaCommand, M.C.P_GET, key)
-    pcall(funcLuaCommand, M.C.P_CLEAR, key)
-    return okg and tonumber(v) or nil
+    local v = VRFW_Param.Get(key)
+    VRFW_Param.Clear(key)
+    return tonumber(v) or nil
   end
 
   -- the pair the picker left in the parameter store (nil = none: a retail window); the keys are always cleared
@@ -246,29 +243,6 @@ do
     s = s:gsub("{base}", function() return M.Name(d.base) end)
     s = s:gsub("{partner}", function() return M.Name(d.partner) end)
     return s
-  end
-
-  -- the fallback (no panel layers): the stats as text under the question, as before the panel
-  function M.FallbackText(d)
-    local lines, row = {}, {}
-    for _, c in ipairs(M.COLS) do
-      local s = string.format("%s %d (+%d)", Text(c.text) or "?", d.s[c.stat] + d.g[c.stat], d.g[c.stat])
-      row[#row + 1] = M.Fav(d, c.stat) and (M.GREEN .. s .. "[C]") or s
-      if #row == 4 then
-        lines[#lines + 1] = table.concat(row, "   ")
-        row = {}
-      end
-    end
-    local pe = Text(M.TX.PE)
-    if pe ~= nil and (d.pe_g or 0) > 0 then
-      local s = string.format("%s %d (+%d)", pe, d.pe_s + d.pe_g, d.pe_g)
-      lines[#lines + 1] = d.pe_f and (M.GREEN .. s .. "[C]") or s
-    end
-    local head = M.Question(d)
-    if d.kind == 0 then
-      return head
-    end
-    return head .. "\n" .. table.concat(lines, "\n")
   end
 
   -- ---- drawing ----------------------------------------------------------------------------------------------------

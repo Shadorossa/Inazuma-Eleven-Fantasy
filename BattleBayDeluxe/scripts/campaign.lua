@@ -28,6 +28,42 @@ local G = require "lib/game"
 local Draft = require "draft"
 local Tourn = require "tournament"
 local Active = require "active_team"
+local Net = require "net_match"
+require "kit_diag"
+-- 1.75.0: the «Reto diario» (its commands, its blob, its match handlers)
+require "daily_challenge"
+local Block = require "lib/campaign_block"
+local Trophy = require "lib/trophy_celebration"
+
+-- 1.80.0: the Campaña's last match (index 6 of its own block, the 7th rival: the game's campaign clear when won) gets
+-- the champions' celebration after its full time. The Torneo, the Reto diario and the private room borrow the block at
+-- index 0 .. 2, never 6; the match's rival must be the block's 7th rival (a free match keeps the block untouched).
+local CAMPAIGN_LAST = nil -- { rival }: the block's 7th rival while its last match may be played
+
+VRFW.on("match_start", function()
+  CAMPAIGN_LAST = nil
+  local b = Block.read()
+  if b and (b.rivals[1] or 0) ~= 0 and b.index == Block.RIVALS - 1 then
+    CAMPAIGN_LAST = { rival = U.u32(b.rivals[Block.RIVALS] or 0) }
+  end
+  return nil
+end)
+
+VRFW.on("signal:vrfw.match_result", function()
+  local c = CAMPAIGN_LAST
+  CAMPAIGN_LAST = nil
+  if not c then
+    return nil
+  end
+  local rival = Trophy.rival_team()
+  if rival == 0 or rival ~= c.rival then
+    VRFW.log(string.format("campaign: match with the block at its last match, rival %s, not the block's last rival %s: " ..
+      "not the Campaña's match", U.hex(rival), U.hex(c.rival)))
+    return nil
+  end
+  Trophy.play("campaign", Trophy.last_result())
+  return nil
+end)
 -- a tournament started with the Draft team keeps the drafted squad (as a Campaña started with it)
 Tourn.on_started = function(run)
   if run.player_team == Draft.team() then
@@ -37,6 +73,8 @@ end
 -- 1.5.42: a running Torneo with the Draft team owns the drafted squad (the top-menu sync keeps it, a restart brings it
 -- back) and every one of its matches checks it on the rows first (draft.lua, «runs that play the Draft»)
 Draft.tournament_team = Tourn.player_team
+-- 1.48.0: the league's top scorers draw the simulated goals among a team's starters (its member rows in memory)
+Tourn.roster = Draft.roster
 Tourn.before_match = function(run)
   local team = Draft.team()
   if team ~= 0 and run.player_team == team then
@@ -54,15 +92,8 @@ local CFG = {
   seed = tonumber(U.config("campaign.seed", 0)) or 0,
 }
 
-local function info(...)
-  VRFW.log("campaign:", ...)
-end
-local function warn(...)
-  VRFW.warn("campaign:", ...)
-end
-local function err(...)
-  VRFW.error("campaign:", ...)
-end
+require "VRFW/lib/basics"
+local info, warn, err = VRFW.logger("campaign")
 
 info(string.format("rivals from the whole enjoy table (progression %s, seed %s)", tostring(CFG.progression),
   tostring(CFG.seed)))
@@ -513,7 +544,7 @@ local function prepare(menu, btn)
     end
     pool = keep
   end
-  Tourn.note_pool(#pool) -- 1.5.15: the Torneo's options offer only the team counts this pool fills
+  Tourn.note_pool(#pool, pool, player) -- 1.5.15: the Torneo's options offer only the team counts this pool fills
   if #pool == 0 then
     warn("no unlocked team besides the player's in " .. #rows .. " rows: game campaign draw")
     return nil
@@ -707,6 +738,13 @@ local CAMPAIGN_GRID = nil
 -- the pre-phase of a decide (the Decide hook, and the start without the difficulty window): nil = the game's Decide
 -- runs, { skip = true, ret = 0 } = it does not
 local function decide_pre(menu, btn, idx)
+  -- a «Sala privada» team pick (net_match.lua): the tile's team goes to the room, the game's decide does not run
+  local okn, net = pcall(Net.decide, menu, btn, idx)
+  if not okn then
+    warn("room pick check failed: " .. tostring(net))
+  elseif net then
+    return net
+  end
   pcall(function()
     if U.rd("u32", btn) == G.GRID_LAYER and (U.get(U.struct("GridMenu", menu), "campaign") or 0) ~= 0 then
       CAMPAIGN_GRID = menu

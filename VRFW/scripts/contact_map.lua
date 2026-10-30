@@ -8,8 +8,9 @@
 
 ContactMap = ContactMap or {}
 
-local function warn(...) VRFW.warn("contact_map:", ...) end
-local function info(...) VRFW.log("contact_map:", ...) end
+require "VRFW/lib/basics"
+local GameText = require "VRFW/lib/game_text"
+local info, warn = VRFW.logger("contact_map")
 
 -- Debug view-everything mode (config.toml [debug] reveal_all): the screen draws every tile open; signing keeps its real rules and writes nothing.
 -- The same key is the game_state vrfw.debug.reveal_all.
@@ -18,13 +19,10 @@ if REVEAL_ALL then
   warn("[debug] reveal_all is ON: view-everything mode (contact maps, office pages) - turn it off for players")
 end
 
-local function u32(v)
-  v = tonumber(v) or 0
-  if v ~= v then return 0 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "lib/ids"
+local u32 = Id.u32
 
-local function crc(s) return u32(VRFW.ui.crc32(s)) end
+local crc = VRFW.crc32
 
 -- "0x..." / decimal text / a number -> the number; nil otherwise
 local function id_of(v)
@@ -385,11 +383,6 @@ end
 local NAMES = { lang = nil, of = {} }   -- of[text id] = the name (furigana reduced)
 local NEED = { ids = {}, list = {} }    -- the name text ids the maps use
 
--- `[kanji/kana]` furigana markup reduced to the kanji
-local function strip(s)
-  return (s:gsub("%[([^/%]]*)/[^%]]*%]", "%1"))
-end
-
 local function need_id(id)
   if id ~= nil and id ~= 0 and not NEED.ids[id] then
     NEED.ids[id] = true
@@ -416,49 +409,20 @@ local function need_texts()
   end
 end
 
-local function lang_of(code)
-  local c = type(code) == "number" and math.floor(code) or nil
-  if c and c >= 0 and type(VRFW.files.game_languages) == "function" then
-    local ok, t = pcall(VRFW.files.game_languages)
-    local l = ok and type(t) == "table" and t[c + 1] or nil
-    if type(l) == "string" then return l end
-  end
-  return "en"
-end
+local lang_of = GameText.language
 
 local function names_for(lang)
   chara_index()
   if NAMES.lang == lang then return end
   local t0 = VRFW.now()
-  local ok, rows = pcall(VRFW.files.text_rows, "data/common/text/" .. lang .. "/chara_text.cfg.bin", NEED.list)
-  if (not ok or type(rows) ~= "table") and lang ~= "en" then
-    ok, rows = pcall(VRFW.files.text_rows, "data/common/text/en/chara_text.cfg.bin", NEED.list)
-  end
-  NAMES.of = {}
-  if ok and type(rows) == "table" then
-    for _, id in ipairs(NEED.list) do
-      local r = rows[id]
-      local s = r and r[0]
-      if type(s) == "string" and s ~= "" then NAMES.of[id] = strip(s) end
-    end
-  end
+  NAMES.of = GameText.chara_names(NEED.list, lang)
   NAMES.lang = lang
   info(string.format("names (%s): %d text ids read in %d ms", lang, #NEED.list, math.floor(VRFW.now() - t0)))
 end
 
--- A game text table's rows in a language (Notes), kept per table and language
-local GAME_TEXT = {}
+-- A game text table's row in a language (Notes); the whole table is read once per language
 local function game_text(tbl, lang, id)
-  local key = tbl .. "/" .. lang
-  if GAME_TEXT[key] == nil then
-    local ok, rows = pcall(VRFW.files.text_rows, "data/common/text/" .. lang .. "/" .. tbl .. ".cfg.bin")
-    if (not ok or type(rows) ~= "table") and lang ~= "en" then
-      ok, rows = pcall(VRFW.files.text_rows, "data/common/text/en/" .. tbl .. ".cfg.bin")
-    end
-    GAME_TEXT[key] = (ok and type(rows) == "table") and rows or {}
-  end
-  local r = GAME_TEXT[key][id]
-  return r and r[0] or nil
+  return GameText.texts(tbl, lang)[id]
 end
 
 -- A note's text: <VALUE1> = its value, the progress «<ACHIEVE_COUNT>/» left out, line breaks as spaces
@@ -483,8 +447,8 @@ end
 -- A team's name (team_text, furigana reduced) in a language; "" when unknown
 local function team_name(id, lang)
   if id == nil or id == 0 then return "" end
-  local s = game_text("team_text", lang, id)
-  return type(s) == "string" and strip(s) or ""
+  local s = GameText.texts("team_text", lang)[id]
+  return s and GameText.no_furigana(s) or ""
 end
 
 -- [VRFW.ContactSet] ElementCurrency = { wind = card, forest = …, fire = …, mountain = …, void = … }: the spirit card a
@@ -556,7 +520,9 @@ local function load()
           exclude = type(s.Exclude) == "table" and s.Exclude or nil, where = string.format("mods/%s/%s", f.mod, f.file),
           teams = type(s.Teams) == "table" and s.Teams or nil, derived = {},
           element_currency = element_currency(s.ElementCurrency),
-          trial_friendly = type(s.TrialFriendly) == "string" and s.TrialFriendly or nil, terms = {}, trials = {},
+          trial_friendly = type(s.TrialFriendly) == "string" and s.TrialFriendly or nil,
+          trial_friendly_team = type(s.TrialFriendlyActiveTeam) == "string" and s.TrialFriendlyActiveTeam or nil,
+          terms = {}, trials = {},
           refund = math.max(0, math.floor(tonumber(s.ReleaseRefund) or 0)),
           join_rarity = tonumber(s.JoinRarity) and math.max(0, math.floor(tonumber(s.JoinRarity))) or nil,
           requirements = requirements_on(s.Requirements, f.mod),
@@ -1014,8 +980,8 @@ function ContactMap.Map(map, code)
       elseif r.kind == "unlock" then
         reqs[k] = { kind = "unlock", groups = r.groups, count = 1, name = team_name(r.name_text, lang) }
       elseif r.kind == "trial" then
-        reqs[k] = { kind = "trial", friendly = r.friendly, tag = r.tag, sub = r.sub, game = r.game, difficulty = r.difficulty,
-          objective = r.objective, part = r.part, of = r.of, count = 1 }
+        reqs[k] = { kind = "trial", friendly = r.friendly, friendly_team = r.friendly_team, tag = r.tag, sub = r.sub,
+          game = r.game, difficulty = r.difficulty, objective = r.objective, part = r.part, of = r.of, count = 1 }
       else
         reqs[k] = { kind = r.kind, count = r.count, element = r.element, position = r.position }
       end
@@ -1026,6 +992,7 @@ function ContactMap.Map(map, code)
       cards = n.cards, spirit = n.spirit, item = n.item, slot = n.slot, px = n.px, py = n.py, trials = n.trials,
       element = n.element, position = n.position, main = n.main, staff = n.staff,
       sold_at = (n.sold_at or 0) ~= 0 and team_name(n.sold_at, lang) or nil,
+      sold_team = (n.sold_team or 0) ~= 0 and n.sold_team or nil, sold_map = n.sold_map,
       pay_element = pay_element(s, n.spirit), pay_title = pay_title(s, n.spirit), pay_unit = pay_unit(s, n.spirit),
       pay_name = (n.spirit or 0) ~= 0 and name_of_card(n.spirit) or nil }
     if n.story then
@@ -1081,10 +1048,11 @@ end
 
 local POSE_LOGGED = {}
 -- Each player in his own team's kit: the uniform for the screen's 3D model, derived per card by lib/chara_kit.lua (0 = none: the build's default). Cached per card.
---   CMND_VRFW_CONTACT_KIT(card) -> { uniform, flags (2 = the keeper shirt), source (belong / roster / none) }
+--   CMND_VRFW_CONTACT_KIT(card[, team]) -> { uniform, flags (2 = the keeper shirt), source (team / belong / roster / none) };
+--   team = a team_config id that dresses the card (its uniform first)
 local Kit = require "lib/chara_kit"
-function ContactMap.Kit(card)
-  local u, f, src = Kit.of(card)
+function ContactMap.Kit(card, team)
+  local u, f, src = Kit.of(card, team)
   return { uniform = u, flags = f, source = src }
 end
 

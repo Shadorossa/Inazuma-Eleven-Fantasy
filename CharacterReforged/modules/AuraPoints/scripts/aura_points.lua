@@ -32,8 +32,8 @@ local C = require "lib/cfg"
 local A = require "lib/auras"
 local ROUTE = require "lib/route"
 
-local function info(...) VRFW.log("aura_points:", ...) end
-local function warn(...) VRFW.warn("aura_points:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("aura_points")
 
 -- the mod's option rows (options.toml; restart = true: the values the game started with). No answer = on (default).
 local function option_on(id)
@@ -48,17 +48,16 @@ local P = C.points(RAW, PARTS)
 local PEG, SP = "aura_points.peg", "aura_points.sp"
 
 -- game layout (docs/game/mechanics/match-stamina.md §6 / §10, aura-costs.md)
-local ACTOR_MAX, ACTOR_STRIDE = 0x3A, 0x570
+local Actors = require "VRFW/lib/actors"
+local Live = require "VRFW/lib/match_live"
 local PEND_FLAG_NO_COST, PEND_FLAG_HYPER_GAUGE = 0x08, 0x10
 local TENSION_PAY_KIND_SKILL = 8
-local IN_PLAY = 9
 local EMPTY_EPS = 1e-3
 local MIN_LEFT_S = 0.5
 local AURA_SLOT_CATEGORY = 8
 
 -- the soccer states of live play (the armour drains only there): [points] live_states
-local LIVE = {}
-for _, s in ipairs(type(RAW.live_states) == "table" and RAW.live_states or { 9, 14, 15, 16 }) do LIVE[s] = true end
+local LIVE = Live.state_set(RAW.live_states)
 
 local band = bit32.band
 
@@ -74,13 +73,8 @@ local function wr(ty, at, v)
   return (pcall(VRFW.mem.write, ty, at, v))
 end
 
-local function global(name)
-  local ok, p = pcall(VRFW.game[name])
-  if ok and type(p) == "number" and p >= 0x10000 then return p end
-  return nil
-end
-
-local function hex(v) return string.format("0x%X", v or 0) end
+local Id = require "VRFW/lib/ids"
+local hex = Id.hex
 local function key_of(id) return A.key(id) end
 
 local function flag(name) return VRFW.flag(name) or 0 end
@@ -89,7 +83,7 @@ local function flag(name) return VRFW.flag(name) or 0 end
 
 local seen = { in_match = false, ended = false, half = 0, clock = 0, end_half = 0 }
 local match_no = 0
-local frame = { state = 0, half = 0, clock = 0, user = 0xFF, dt = 0 }
+local frame = { state = 0, half = 0, clock = 0, user = 0xFF, dt = 0, live = false, in_play = false }
 local players = {}      -- hdl -> player record (this match)
 
 local function new_player(hdl)
@@ -427,7 +421,7 @@ local function aura_step(p, actor, a, unit, live, dt)
   local keshin = band(attr, 1) ~= 0 and ss == 2 and P.peg()
   local armour = band(attr, 2) ~= 0 and meta_run and P.peg()
   local soul = band(attr, 8) ~= 0 and ss == 2 and band(attr, 1) == 0 and P.sp()
-  local in_play = frame.state == IN_PLAY
+  local in_play = frame.in_play
   local tr = p.tr
   local ctx = nil
   local cut = cost_factor(hdl)
@@ -678,7 +672,7 @@ local function step_player(p, actor, a)
   elseif not running then
     p.poolless_aura = false
   end
-  local live = LIVE[frame.state] and a.in_play ~= 0 and frame.dt > 0 and frame.dt < 1
+  local live = frame.live and a.in_play ~= 0
   aura_step(p, actor, a, unit, live, frame.dt)
 end
 
@@ -690,16 +684,17 @@ VRFW.on("tick", function(ev)
   frame.clock = m.clock or 0
   frame.user = m.user_team or 0xFF
   frame.dt = m.dt or 0
+  frame.live = Live.live_dt(m, LIVE) > 0
+  frame.in_play = Live.in_play(m)
   if frame.half == 0 then return nil end
   frame_update()
   if not seen.in_match or seen.ended then return nil end
   cost_teams()
-  local base = global("Match.SoccerActors.ViaSkillUsed")
-  if not base then return nil end
-  for i = 0, ACTOR_MAX - 1 do
-    local actor = base + i * ACTOR_STRIDE
+  if not Actors.base() then return nil end
+  for _, entry in ipairs(Actors.list()) do
+    local actor = entry.address
     local a = VRFW.mem.read_struct("ApActor", actor)
-    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == i and a.team <= 1 then
+    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == entry.index and a.team <= 1 then
       local p = players[a.hdl]
       if not p then
         p = new_player(a.hdl)
@@ -748,8 +743,8 @@ VRFW.on("hook:Ap_TensionPay", function(ev)
   local cost = rd("i32", req) or 0
   local p = players[hdl]
   if hdl == 0 or not p or not applies(p.team) or exempt(hdl) then return nil end
-  local base = global("Match.SoccerActors.ViaSkillUsed")
-  local actor = base and base + band(hdl, 0xFF) * ACTOR_STRIDE
+  local entry = Actors.of(hdl)
+  local actor = entry and entry.address
   local a = actor and VRFW.mem.read_struct("ApActor", actor)
   if not a or a.hdl ~= hdl then return nil end
   -- the pending record is still filled while ProcessPending pays (kind 3: the id at +0x18C first)

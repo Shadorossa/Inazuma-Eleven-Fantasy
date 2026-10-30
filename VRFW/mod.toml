@@ -2,14 +2,132 @@ id = "VRFW"
 former_ids = ["vr_framework"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\rows\mod_info.toml)
 name = "VRFW"
-version = "2.154.0"
+version = "2.311.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The base of the VR ModLoader's mods, in one mod: characters and teams declared by mods and their rarity (chara), mod texts in 9 languages (text), the save slots (the slot screen before the game starts), per-mod save data tied to the slot and the mods' save flags (save), global game rules declared by mods: parameters (game_param and the other property tables), controls and buttons (system), mod audio and voice packs (audio), match rulesets (match), special move animations (anim), row changes in any game table (tables), game modes declared by mods (modes), special move name banners, the «Mod options» tab and the title menu's «Mods» screen (graphics). Built into the VR ModLoader (winmm.dll): no DLL of its own. Needed by the mods that use any of its parts."
 # the base loads first: the mods that use it load after it (and win their conflicts)
 priority = -10
 tags = ["Framework"]
-updated = "2026-10-24"
+updated = "2026-10-30"
+# 2.285.0: VRFW_Param (menu Lua parameter store), lib/basics (VRFW.value / config / logger), docs/framework/shared-helpers.md §3b-3c
+# 2.284.0: Comment links to existing docs and README rewritten for the VRFW folder and id
+# 2.277.0: stand-in teams (CMND_VRFW_TEAM_STAND_IN / _RESTORE, docs/framework/team-lineup.md): a slot team plays as
+# another team with a squad larger than its data rows
+# 2.276.0: match roles (docs/framework/match-role.md): kind VRFW.match_role/1 (a mod's per-position roles: off-ball
+# spot effects and AI rate forms by condition), the post-hooks Ai.PositionOffset / Ai.GetRate (every mode, both
+# teams), VRFW.ai.roles / role / set_role / team_set, scripts\match_roles.lua (who plays which role per team set, in
+# the save; CMND_VRFW_MATCH_ROLE_LIST / GET / SET), catalogue knobs attention / sideAttention / posOffsetRate* /
+# sideOffsetRate, rate_kinds and [[position]]; the probe (match_engine config match_role_probe, on)
+# 2.275.0: team roster writes for other mods (CMND_VRFW_TEAM_ROSTER / _RESTORE, docs/framework/team-lineup.md) and the
+# match rule teams.user.team (the user side's team of the next match)
+# 2.274.0: free-match section pages (docs/framework/team-sections.md): L2 / R2 turn the page of the section bar,
+# [[VRFW.FreeMatchTab]] Page / Teams / Template / Unlock
+# 2.257.0: the framework's own scripts and menus use the shared helpers: VRFW_Id / lib/ids, lib/actors (archetypes,
+# passives), VRFW_Host.HookCommand / WithCommands (route slots, menu pick, team editor, menu music, title scene, plate
+# member), VRFW_FaceIcon.Request (drop lists, synergy rows, pose row); shot rules and menu input offsets in the profile
+# 2.252.0: shared helpers (docs/framework/shared-helpers.md): VRFW_Id / lib/ids, VRFW_Host.HookCommand / WithCommands /
+# Command, VRFW_Log, VRFW_Text / lib/text_fold, lib/actors (profile Match.ActorCount); the story-complete start's data as
+# content\story_start\story_complete.toml, served by scripts\story_start.lua (CMND_VRFW_STORY_START_DATA, VRFW_Story)
+# 2.250.0: pick cards (docs/framework/pick-cards.md): the «pick 1 of N» reward screen vrfw_pick_cards_menu (graft
+# pick_cards), cards set by a mod's script (PickCards.Set, CMND_VRFW_PICK_CARDS), opened with VRFW_PickCards.Show
+# 2.249.0: rule trigger clock marks as a fraction of the period (clock:2/3) and the mod scripts' marks watched; the
+# passive engine's summed effects (stats, pool costs, stamina recovery) are summed again on their inputs' events
+# (stacks and their scheduled end, goals, possession, clock thresholds, the player list), no timer but for Zone / Near
+# 2.248.0: rule triggers tension_gain (a team's tension gain from play, with the player who earned it; answer gain_mult)
+# and foul_suffered (the fouled player); VRFW.resource.set_gain_mult (a recovery multiplier on a match resource's own
+# regain); passive blocks TensionGain, StaminaRecovery, Absent, SetPiece; the shot events read the shot's move; the
+# passive engine's player list is read again on events (match start, restarts, halves, forms, signals), not every second
+# 2.244.0: rule effect add_tension_max (VRFW.add_tension_max, passive block TensionMax): a team's tension gauge maximum
+# for the rest of the match, floor a third of its starting maximum, put back at the match's end; trigger ball_stopped
+# (keeper save or a field block that holds the shot, arg keeper / block) for «each stop» passives
+# 2.243.0: passive engine: Trait blocks (tags, element, position, gender, series, team group, carried moves / families,
+# keshin / miximax, relative to the carrier) named by Present / Count / By / Holder and by the effects' `trait`;
+# [[VRFW.Tag]] / [[VRFW.CharacterTags]] archetype tags; [[VRFW.PassiveCap]] caps on summed percents; engine events
+# half_start and interval:<s>; Tension team carrier / carrier_opponent; TensionCost / RecastTime `kinds`; team groups
+# read from [[VRFW.SynergyPool]] (scripts\lib\team_groups.lua); per-event passive lookups by set.
+# 2.239.0: VRFW_TeamEditor.ViewOnly(spec): a screen opened from a foreign team's dock refuses Accept and its editing
+# function keys and shows no guide entry but Back (bonds: paste list / photo manager; hyper commands: «Equipar»)
+# 2.238.0: VRFW_TeamEditor: spec.rows = the dock list rows a foreign team offers (VRFW_TeamEditor.ROW: LINEUP, BONDS,
+# HYPER_COMMANDS), bonds and hyper commands screens view only on the copy; the kit through CMND_VRFW_TEAM_SET_KIT
+# (scripts	eam_editor.lua: TeamInfo +0x290 written, the owned kit item cleared): the retail field 5 never reached it
+# 2.237.0: foreign team editor: Pachangas / team banks / active dock background off in the dock (EVT_DOCK_OWNERS, R3 guide
+# entry dropped), the lineup starts a card move without the PERSONAJE window, no coach decide, no COMANDOS
+# («Equipar todo») and no guide entry for it; player pages declared Foreign = false (team passives, sixth sense) are
+# left out while a foreign team is shown
+# 2.235.0: VRFW_TeamEditor foreign team mode: the team's identity (kit, emblem, name, coach, tactics) is view only, and
+# a swap in the dock or its lineup screen only among the team's own players (GuardSwap; lineup: no next dock, a card's
+# commands keep only «move»)
+# 2.234.0: VRFW_TeamEditor foreign team mode (spec.foreign, docs/framework/team-editor.md): the copy gets the team's coach,
+# kit, emblem, tactics and synergies (none given = cleared); the dock (soccer_team_dock_menuX_foreign_team.lua) keeps
+# only the lineup row, refuses team switching / active team / bank / the player's items, hides the dock number;
+# VRFW_TeamEditor.Foreign() gives the dock's add-ons the team's own stadium
+# 2.232.0: VRFW_Pager card guide pills: one shared stack (PillRegister / PillShow / PillOffset) so the Y page pill (rank 1,
+# bottom right) and another mod's pill (e.g. a prompt above it) never share a spot
+# 2.231.0: VRFW_Pager Y-cycle style (spec.style = "ycycle", spec.guide): the retail keshin cards' paging, the page dots and a
+# «Y <next page's name>» prompt on the retail change-page plate, instead of the L2 / R2 glyphs
+# 2.230.0: menu events (assets/lua/menu/_all/82_menu_event.lua, CMND_VRFW_MENU_EVENT / _ON / _OFF, docs/framework/
+# menu-event.md): a menu script sends a named event with a payload and every other subscribed menu script receives it
+# at once in its own Lua state (game profile Lua.GetGlobal); a subscription ends with its script's menu
+# 2.229.1: CMND_VRFW_CONTACT_KIT(card[, team]) and lib/chara_kit Kit.of(card[, team]): a named team_config team
+# dresses the card first; the plate's VRFW.plate_card_team names it (VRFW_PlateMember.CardKit), e.g. a mod card's own team.
+# 2.229.0: VRFW_TeamEditor: the menu commands (dock exists, host input / suspend / resume) go through funcLuaMenuCommand
+# (they went through funcLuaCommand: the dock never counted as open and the game was restored under the open dock);
+# nothing goes on while the dock or its formation screen exists; every card <-> temporary player id is logged
+# 2.228.0: match resources: a team dash record without the engine's dash status (no dash speed) is no dash: no dash
+# drain; logged once when it happens and when it agrees again
+# 2.227.0: a sprint the AI move override gives a player (VRFW.ai.move with sprint) is a manual dash for the match
+# resources: the dash answers before it starts (block_dash, dash costs), the same drain, caps and states while it runs,
+# ended by a state with end_dash (one count: services match_resource dash_of)
+# 2.226.0: VRFW_TeamEditor (assets/lua/menu/_all/81_team_editor.lua, docs/framework/team-editor.md): the game's team
+# dock for a team kept as data (a temporary copy inside a save session of kind test, restored and verified when the
+# dock closes); Run(spec) gives back the dock positions of the team's players and the formation
+# 2.225.0: VRFW_FaceIcon (assets/lua/menu/_all/80_face_icon.lua): a character's miniface drawn into a face mesh with the
+# game's chara icon command (Face) or as the list character card's portrait (Card); hidden while it loads, one log line
+# per face not drawn
+# 2.222.0: Shot.FieldBlockCommit's v7.2.1 pattern made unique (the shot_through hook was refused: 3 hits).
+# 2.216.0: image type: new sprites that do not fit in a game atlas (255 G4TX entries) move to generated sibling
+# atlases <stem>__vrfw_ovf<N>.g4tx instead of the whole atlas being left unbuilt; menu scripts' sprite command follows
+# them (assets/lua/menu/_all/09_image_spill.lua); an atlas at 230+ entries is a WARN
+# 2.215.0: VRFW_UI.HeaderRow.ArchBox / ArchBoxSetup take the box sprites' atlas (o.atlas; default btl06_13), so a mod
+# keeps its box sprites in its own atlas
+# 2.213.0: match AI: a team in Commander mode that plays a script's profile (VRFW.ai.mirror_profiles) substitutes by
+# its profile too (SubstituteAtStamina / SubstituteForElement): when the game asks the CPU team at a dead ball or half
+# time, that team gets the same decision (Ai.DecideMemberChange) and the game's substitution message
+# (profile Ai.ApplyMemberChange)
+# 2.212.0: rule engine: rules indexed by trigger and move (a trigger looks only at the rules that can fire on its move),
+# move_power outcomes kept per (player, move) while their facts and flags stay the same; the polled triggers log on change
+# 2.211.0: VRFW_Pager (assets/lua/menu/_all/79_pager.lua): the «L2 • • R2» page row of paged cards (status base
+# copies: L2 / R2 glyphs, one dot per page, the current one lit), shared by the technique card and the item card
+# 2.210.0: plate card kit: a screen that shows a card on the player plate names it with the parameter VRFW.plate_card;
+# VRFW_PlateMember.Kit() then gives that card's own team kit (CMND_VRFW_CONTACT_KIT), worn by the page's 3D model
+# 2.220.0: the per-screen spirit passive text of 2.209.0 is gone (Lua patches of personal_plate_inc /
+# soccer_parameter_menu, CMND_VRFW_SPIRIT_PASSIVE_TEXT, [[VRFW.Spirit]] `text`): a mod gives each keshin its own
+# command-effect row instead, so every screen reads the text natively (Aura Reworked's spirit passive rows).
+# 2.209.0: a keshin's spirit passive text ([[VRFW.Spirit]] `text`) replaces the shared aura effect text on the keshin
+# detail card (personal_plate_inc UpdateKeshinDetailInfo) and in the match «Pasivas de keshin» list
+# (soccer_parameter_menu UpdateAuraInfoItem): CMND_VRFW_SPIRIT_PASSIVE_TEXT; require "VRFW/<path>" also finds the
+# framework's libraries under its key id.
+# 2.196.0: the focus line rule (match_engine focus_line, docs/framework/focus-line.md): a mod's script sets the
+# defender's reach band and what a contact on his body / arm / hand gives in a plain focus duel (VRFW.duel.line_rule);
+# Duel.LineParams post-hook (relocated entry) + Duel.Duel wrapper; profile Duel.LineParams, Duel.ForcedDefenderWin,
+# Duel.ForcedAttackerWin, Duel.GameScale, Duel.LineArmLength, Duel.LineHandLength.
+# 2.195.0: the passive engine is a framework service (content\types\passive_block.toml + passive.toml, kinds
+# VRFW.passive_block/1 / VRFW.passive/1; scripts\passives.lua + lib\passives.lua; text\passive.toml; was Signature
+# Passives'), and a mod's script loads a framework library with require "VRFW/<path>".
+# 2.194.0: the critical stage of a technique execution: trigger crit_check (once per execution, CmdEventBuild) with the
+# effects crit_chance / crit_mult / crit_cap, one roll, a hit multiplies that execution's move power and fires crit.
+# 2.193.0: block_battle fires on the field-block battle types (profile Battle.FieldBlockTypeFirst..Last; types 7 / 8
+# are the shot itself on v7.2.1) with the shot as its rival; mod scripts' events carry ev.rival.
+# 2.192.0: behaviour rules gain the execution conditions uses, chain, rival, ball_height, partners, aura and the
+# clock relative to the half's real length (half_fraction_from / half_fraction_to); triggers shot_through (a shot
+# beats a field block: power_mult on the ball's power left) and knockdown (a focus duel's loser status: down_mult).
+# 2.191.0: behaviour rules gain the conditions score_margin, near and team_family and the rule key `text` (the
+# sentence key a menu shows for the rule; docs/framework/rules.md §2).
+# 2.190.0: Lua command answers grow the game's Lua stack first (lua_checkstack): a long answer (a gacha pool's cards)
+# no longer writes past the stack and corrupts the heap.
+# 2.183.0: the period service: trigger time_up (regular / end), VRFW.match.period / set_added / end_period
+# (the period's added time, mi+0x2C00; the engine's own whistle check ends it).
 # 2.154.0: trajectory.zigzag = { length, low, high }: sharp fixed-length teeth from the flight's start, the last cut at
 # the goal; any profile of more than three pieces is served whole by the segment provider; points up to 32 a list;
 # ground_effect.anchor = "kick" + drift: the ground effect runs on the distance clock (ground distance from the start).
@@ -162,6 +280,9 @@ loader_modules = ["lua_bridge"]
 loader_min = "2.0.0"
 # Native access used by content\game: byte patches, functions, hooks, commands and state keys.
 permissions = ["patch", "memory", "call", "command", "state", "hook"]
+# content\ folders the framework's scripts and run times read in every mod (not types, no declaration schema)
+[layout]
+script_folders = ["archetypes", "camera_drives", "community_links", "contact_maps", "editor", "random_teams", "screen_art", "story_start", "talk_templates"]
 
 # ---- debug switches (docs/framework/debug-flags.md) ----------------------------------------------------------------------
 # The framework's config switches a debug flag forces on (e.g. while the mod Debug Tools is enabled); config.toml keeps them off.

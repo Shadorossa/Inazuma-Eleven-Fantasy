@@ -19,7 +19,7 @@ menu = "soccer_team_buff_icon_list_menu"
 add_layer = { name = "aura_points_buff_bar", object = "aura_points_peg_bar", count = 22, after = "soccer00_54_aura_recast_gauge", groups = [
     { group = "soccer_team_buff_icon_list_menu", flags = [0, 0, 0, 0, 1, 0] },
 ] }
-res = ["#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx"]
+res = ["#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx", "#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx"]   # the retail gauge + the mod's own atlas (its sprites)
 
 # every bar follows its portrait: copies of the attach row of the aura portrait (soccer00_53_aura_buff_chara_icon
 # instance 0) for aura_points_buff_bar (crc32 0xE951D3B0) instances 0..21

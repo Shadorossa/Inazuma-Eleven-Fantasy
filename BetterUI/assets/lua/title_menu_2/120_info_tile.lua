@@ -25,8 +25,8 @@ if VRFW_Host ~= nil then
 
   local Tile = {
     STATE = Crc("CMND_VRFW_MM_STATE"),
-    LOG = 3661580131,                 -- CMND_EVT_LOG
-    VISIBLE = 711242136,              -- CMND_SET_LAYER_VISIBLE
+    LOG = VRFW_Cmd.EVT_LOG,                 -- CMND_EVT_LOG
+    VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,              -- CMND_SET_LAYER_VISIBLE
     NEW_ICON = 1538377437,            -- cmn01_13_new_icon_middle
     INFO_ITEM = 8,                    -- the retail list index of Información in t4
     INFO_INSTANCE = 2,                -- its lower instance, where the retail code opens the «!»

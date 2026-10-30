@@ -36,8 +36,8 @@ local EVT_KEY_DBG_BITS = 3833368827   -- try 8: which hooks fired (bitmask, see 
 local EVT_BIT = {FOCUS = 1, DETAIL = 2, STEP = 4, ENTER = 8, CLICK = 16, ONENTER = 32, ONDECIDE = 64, COMMIT = 128}
 local evt_bits = 0
 local function EVT_PSet(key, v)
-  funcLuaCommand(3363400568, key)
-  funcLuaCommand(3860611758, key, 0, v, 1)
+  VRFW_Param.Clear(key)
+  VRFW_Param.Set(key, v)
 end
 local EVT_LIST = 571205469          -- team05_03_ability_list (native list view)
 local EVT_ITEM = 1205526439         -- team08_02_ability_list_item
@@ -56,7 +56,7 @@ function EVT_CR_Rules()
   if EVT_CR.rules ~= nil then
     return EVT_CR.rules
   end
-  local r = {pcall(funcLuaCommand, 884939394 --[[CMND_CHARACTERREFORGED_PLACE_RULES]])}
+  local r = {pcall(funcLuaCommand, 884939394)}
   local out = {}
   if r[1] == true and type(r[2]) == "number" then
     for i = 1, r[2] do
@@ -69,7 +69,7 @@ function EVT_CR_Rules()
   return out
 end
 function EVT_CR_Allowed(skill)
-  local okc, res = pcall(funcLuaCommand, 6717499 --[[CMND_CHARACTERREFORGED_CAN_PLACE]], EVT_CR.chara, EVT_CR.slot, skill)
+  local okc, res = pcall(funcLuaCommand, 6717499, EVT_CR.chara, EVT_CR.slot, skill)
   if okc and res == false then
     return false
   end
@@ -170,19 +170,19 @@ function OnInit()
   if type(VRFW_Copies) == "table" then
     pcall(VRFW_Copies.Reset)                  -- unlimited copies: asked again per list open
   end
-  if funcLuaCommand(2947612279, EVT_KEY_PICK) then
-    local m = tonumber(funcLuaCommand(3522198769, EVT_KEY_PICK)) or 1
+  if VRFW_Param.Has(EVT_KEY_PICK) then
+    local m = tonumber(VRFW_Param.Get(EVT_KEY_PICK)) or 1
     evt_pick = true
     EVT_ListState.latched = true                 -- the press that opened the picker never chooses in it
     evt_mode = (m == 3 and "P") or (m == 2 and "S") or "N"   -- try 26: 3 = six sense ("Pasiva personalizada")
-    EVT_MX.prime = funcLuaCommand(2947612279, EVT_MX.KEY_PRIME) == true
-    EVT_MX.fused = funcLuaCommand(2947612279, EVT_MX.KEY_FUSED) == true
+    EVT_MX.prime = VRFW_Param.Has(EVT_MX.KEY_PRIME)
+    EVT_MX.fused = VRFW_Param.Has(EVT_MX.KEY_FUSED)
     EVT_MX.chara, EVT_MX.param, EVT_MX.forbid, EVT_MX.hdl = 0, 0, false, 0
     if EVT_CreateCard() ~= nil then
       pcall(EVT_CreateCard().Reset)
     end
     local function pget(k)
-      return funcLuaCommand(2947612279, k) and EVT_U32(funcLuaCommand(3522198769, k)) or 0
+      return VRFW_Param.Has(k) and EVT_U32(VRFW_Param.Get(k)) or 0
     end
     EVT_MX.pchara, EVT_MX.m1, EVT_MX.m2 = pget(EVT_MX.KEY_PCHARA), pget(EVT_MX.KEY_M1), pget(EVT_MX.KEY_M2)
     EVT_MX.pface = pget(3808658029)
@@ -190,18 +190,18 @@ function OnInit()
     for k = 1, #EVT_MC.KEY_C do
       EVT_MC.c[k] = pget(EVT_MC.KEY_C[k])
     end
-    if funcLuaCommand(2947612279, EVT_MX.KEY_BASE) then
-      local h = funcLuaCommand(3522198769, EVT_MX.KEY_BASE)
+    if VRFW_Param.Has(EVT_MX.KEY_BASE) then
+      local h = VRFW_Param.Get(EVT_MX.KEY_BASE)
       EVT_MX.hdl = type(h) == "number" and h or 0
       EVT_MX.chara = EVT_U32(funcLuaCommand(1131797651, h, 1))
       EVT_MX.param = EVT_U32(funcLuaCommand(1131797651, h, 4))
-      local okf, fb = pcall(funcLuaCommand, 3835898462 --[[CMND_EVT_MX_FORBIDDEN]], h)
+      local okf, fb = pcall(funcLuaCommand, 3835898462, h)
       EVT_MX.forbid = okf and fb == true
     end
     evt_used = {}
     for k = 1, 6 do
-      if funcLuaCommand(2947612279, EVT_KEY_USED[k]) then
-        local id = EVT_U32(funcLuaCommand(3522198769, EVT_KEY_USED[k]))
+      if VRFW_Param.Has(EVT_KEY_USED[k]) then
+        local id = EVT_U32(VRFW_Param.Get(EVT_KEY_USED[k]))
         if id ~= 0 then
           evt_used[id] = k
         end
@@ -209,9 +209,9 @@ function OnInit()
     end
     EVT_PSet(EVT_KEY_DBG_INIT, m)
     -- the slot being edited and its player (evt_skill_slot_menu's Character Reforged block): its slot rules
-    EVT_CR.slot = funcLuaCommand(2947612279, 4199810934 --[[evt_ss_pick_slot]]) and (tonumber(funcLuaCommand(3522198769, 4199810934)) or 0) or 0
-    EVT_CR.chara = funcLuaCommand(2947612279, 3798840340 --[[evt_ss_pick_chara]]) and funcLuaCommand(3522198769, 3798840340) or 0
-    EVT_CR.board = funcLuaCommand(2947612279, 850416018 --[[evt_ss_pick_board]]) and (tonumber(funcLuaCommand(3522198769, 850416018)) or -1) or -1
+    EVT_CR.slot = VRFW_Param.Has(4199810934 --[[evt_ss_pick_slot]]) and (tonumber(VRFW_Param.Get(4199810934)) or 0) or 0
+    EVT_CR.chara = VRFW_Param.Has(3798840340 --[[evt_ss_pick_chara]]) and VRFW_Param.Get(3798840340) or 0
+    EVT_CR.board = VRFW_Param.Has(850416018 --[[evt_ss_pick_board]]) and (tonumber(VRFW_Param.Get(850416018)) or -1) or -1
     EVT_CR.seen = {}
   end
   EVT_RetailOnInit()
@@ -225,7 +225,7 @@ local function EVT_Grayout(a1, a2, a3)
   local function prim(a4, a5, a6, a7)
     local r, g, b = funcLuaMenuCommand(3648327470, a4, a5, a6)
     if r ~= nil then
-      funcLuaMenuCommand(855211291 --[[CMND_SET_PRIM_COLOR?]], a4, a5, a6, r * a7, g * a7, b * a7)
+      funcLuaMenuCommand(855211291, a4, a5, a6, r * a7, g * a7, b * a7)
     end
   end
   prim(a1, a2, 3974820126, a3)
@@ -238,11 +238,11 @@ end
 
 local function EVT_Allowed(skill)
   if evt_mode == "P" then            -- six-sense items: passive skills (not moves)
-    local okm = funcLuaCommand(2580586398 --[[CMND_GET_SOCCER_SKILL_INFO?]], skill, 9)
-    local p = funcLuaCommand(1448743477 --[[CMND_GET_PASSIVE_SKILL_INFO]], 0, skill)
+    local okm = funcLuaCommand(2580586398, skill, 9)
+    local p = funcLuaCommand(1448743477, 0, skill)
     return (not okm) and p ~= nil and p ~= false and p ~= 0
   end
-  local ok, cat = funcLuaCommand(2580586398 --[[CMND_GET_SOCCER_SKILL_INFO?]], skill, 9)
+  local ok, cat = funcLuaCommand(2580586398, skill, 9)
   local special = ok and cat == 8
   if (evt_mode == "S") ~= (special == true) then
     return false
@@ -313,7 +313,7 @@ function UpdateListItem(a1, a2, a3, a4, a5, a6, a7)
       -- 2026-09-25 (user): the carrier item wmm_evt is never listed (assignment is direct, and a player with a fusion
       -- cannot open this picker): its row is not drawn and cannot be chosen; the item data sorts it last in the tab
       usable = false
-      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, false)
+      funcLuaMenuCommand(711242136, a1, a2, false)
       EVT_ListState.RowZone(a1, a2, false)
     end
     if skill == EVT_MX.FUSION and not EVT_MX.fused then
@@ -417,7 +417,7 @@ local function EVT_PickCommit(src, a1, a2)
     pcall(EVT_ListState.RetailOnBack)        -- the retail back: saves the shown tab's filter
   end
   evt_pick = false
-  funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 2897322950 --[[ability_list_menu]])
+  funcLuaCommand(320421347, 2897322950 --[[ability_list_menu]])
 end
 
 -- keyboard/pad confirm arrives as OnEnter(list layer); a mouse click on a row can arrive as OnDecideFocus(item/list)
@@ -494,12 +494,12 @@ function EVT_ListState.PopupOpen()
   if EVT_ListState.popup_running then
     return true
   end
-  local okf, exists = pcall(funcLuaMenuCommand, 2231168902 --[[CMND_IS_EXIST_MENU_OBJECT]], EVT_ListState.FILTER_MENU)
+  local okf, exists = pcall(funcLuaMenuCommand, 2231168902, EVT_ListState.FILTER_MENU)
   if okf and exists == true then
     return true
   end
   if EVT_ListState.sort_open then
-    local okc, closed = pcall(funcLuaCommand, 1521844538 --[[CMND_IS_CLOSE_MENU_OBJECT]], EVT_ListState.SORT_WINDOW)
+    local okc, closed = pcall(funcLuaCommand, 1521844538, EVT_ListState.SORT_WINDOW)
     if okc and closed == false then
       return true
     end
@@ -510,7 +510,7 @@ function EVT_ListState.PopupOpen()
 end
 function EVT_ListState.LatchedKeyDown()
   for _, key in ipairs(EVT_ListState.LATCHED_KEYS) do
-    if funcLuaCommand(4265778440 --[[CMND_CHECK_INPUT_CMD]], 1332654303 --[[MENU_CTRL]], key) == true then
+    if funcLuaCommand(4265778440, 1332654303 --[[MENU_CTRL]], key) == true then
       return true
     end
   end
@@ -534,10 +534,24 @@ end
 function EVT_ListState.Quiet()
   return EVT_ListState.latched or EVT_ListState.PopupOpen()
 end
+-- a menu_text row (Character Reforged text\rows\skill_table.toml) with its <TAG>s filled from `values`; "" when missing
+function EVT_ListState.Text(id, values)
+  local ok, s = pcall(funcLuaCommand, 4074371074, id)
+  if not ok or type(s) ~= "string" then
+    return ""
+  end
+  for tag, v in pairs(values or {}) do
+    local text = tostring(v)
+    s = string.gsub(s, "<" .. tag .. ">", function()
+      return text
+    end)
+  end
+  return s
+end
 -- a list row's click zone and hover focus (on for a shown row, off for a hidden one)
 function EVT_ListState.RowZone(layer, instance, on)
   pcall(funcLuaMenuCommand, 855005857 --[[click zone]], layer, instance, on)
-  pcall(funcLuaMenuCommand, 2206938151 --[[CMND_SET_ON_CHANGE_FOCUS_MOUSE]], layer, instance, on)
+  pcall(funcLuaMenuCommand, 2206938151, layer, instance, on)
 end
 -- the move of list row `instance` becomes the focused move (a click decides that row)
 function EVT_ListState.FocusRowSkill(instance)
@@ -648,7 +662,7 @@ local EVT_DW = {
   MAX_WAIT = 90,
   ready = false, frames = 0, open_at = nil, held = {}, fills = 0}
 local function EVT_DW_Log(...)
-  pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "skill_slots", "detail gate", ...)
+  pcall(funcLuaCommand, 3661580131, "skill_slots", "detail gate", ...)
 end
 -- after a fill while the list is not open yet: remember what the fill wants shown, keep it all hidden
 local function EVT_DW_Hold()
@@ -658,10 +672,10 @@ local function EVT_DW_Hold()
   EVT_DW.fills = EVT_DW.fills + 1
   EVT_DW.held = {}
   for _, L in ipairs(EVT_DW.LAYERS) do
-    if funcLuaMenuCommand(262659071 --[[CMND_IS_EXIST_LAYER]], L)
-        and funcLuaMenuCommand(1262717583 --[[CMND_IS_LAYER_VISIBLE]], L, 0) == true then
+    if funcLuaMenuCommand(262659071, L)
+        and funcLuaMenuCommand(1262717583, L, 0) == true then
       EVT_DW.held[L] = true
-      funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, 0, false)
+      funcLuaMenuCommand(711242136, L, 0, false)
     end
   end
 end
@@ -676,7 +690,7 @@ local function EVT_DW_Step()
   EVT_DW.ready = true
   local shown = 0
   for L in pairs(EVT_DW.held) do
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], L, 0, true)
+    funcLuaMenuCommand(711242136, L, 0, true)
     shown = shown + 1
   end
   EVT_DW.held = {}
@@ -728,9 +742,8 @@ local function EVT_MxDetail(skill)
   funcLuaMenuCommand(2735666188, A, 2956552560 --[[_text_flavor02]], true, 0)
   funcLuaMenuCommand(3405944500, A, 2449339029 --[[_icon_fs_dmy01]], false, 0)
   if skill == EVT_MX.CREATE then
-    funcLuaMenuCommand(1083631230, A, 2915321899 --[[_text_fs01]], "Crear miximax", 0)
-    funcLuaMenuCommand(1083631230, A, 2956552560,
-      "Fusiona a este jugador con otro de tus jugadores: elige el compañero y una de sus supertécnicas.", 0)
+    funcLuaMenuCommand(1083631230, A, 2915321899 --[[_text_fs01]], EVT_ListState.Text(1872444433 --[[skill_table_mx_create]]), 0)
+    funcLuaMenuCommand(1083631230, A, 2956552560, EVT_ListState.Text(2731410717 --[[skill_table_mx_create_desc]]), 0)
     funcLuaMenuCommand(4176779611 --[[clear face icon]], A, 0, 3237726902 --[[icon_chr_dmy01]])
     funcLuaMenuCommand(3405944500, A, 478320441 --[[_icon_chr_dmy01]], false, 0)
     -- neutral band: the retail miximax band, element 01
@@ -739,24 +752,25 @@ local function EVT_MxDetail(skill)
   else
     local ok, a, b = pcall(funcLuaCommand, 4060384944, EVT_MX.pchara, 10)
     local pn = (ok and type(b) == "string") and b or ((ok and type(a) == "string") and a or "")
-    funcLuaMenuCommand(1083631230, A, 2915321899, "Miximax Trans: " .. pn, 0)
+    funcLuaMenuCommand(1083631230, A, 2915321899, EVT_ListState.Text(3893684919 --[[skill_table_mx_trans]], {VALUE = pn}), 0)
     local learn = skname(EVT_MX.m1)
     if EVT_MX.m2 ~= 0 then
-      learn = learn .. " y " .. skname(EVT_MX.m2)
+      learn = EVT_ListState.Text(1870497111 --[[skill_table_mx_two_moves]], {MOVE = learn, MOVE2 = skname(EVT_MX.m2)})
     end
-    funcLuaMenuCommand(1083631230, A, 2956552560, string.format("Fusión con %s. Aprende %s.", pn, learn), 0)
+    funcLuaMenuCommand(1083631230, A, 2956552560,
+      EVT_ListState.Text(845458079 --[[skill_table_mx_fusion_desc]], {NAME = pn, MOVE = learn}), 0)
     funcLuaMenuCommand(3405944500, A, 478320441, true, 0)
     local key = (EVT_MX.pface ~= nil and EVT_MX.pface ~= 0) and EVT_MX.pface or EVT_MX.pchara
-    pcall(funcLuaCommand, 3148141229 --[[CMND_EVT_APPEARANCE]], "skill_panel", key)   -- the partner on purpose
+    pcall(funcLuaCommand, 3148141229, "skill_panel", key)   -- the partner on purpose
     -- retail miximax window rule (UpdateMixiMaxDetailInfo, as the Supertécnicas panel): the type-12 face icon when
     -- it exists, else the plain chara icon (before: type 12 only, an empty portrait for a partner without one)
     if funcLuaMenuCommand(2208175668 --[[has a miximax face icon]], key) then
+      VRFW_FaceIcon.Forget(A, 0)                  -- no face of the shared function pending on this mesh
       funcLuaMenuCommand(346643487 --[[SwapLayerFaceIconTex]], A, 0, 478320441, 3237726902 --[[icon_chr_dmy01]],
         key, 0, 12, true, true, true, 5)
     else
-      pcall(SetDisableForceCharaInvalidUseTarget)
-      funcLuaMenuCommand(552280324, A, 0, false, 478320441, 3237726902, 0, 0, key)
-      pcall(SetEnableForceCharaInvalidUseTarget)
+      VRFW_FaceIcon.Forget(A, 0)                  -- drawn again on every fill: the retail fill may change the mesh
+      VRFW_FaceIcon.Face(A, 0, key, 478320441 --[[_icon_chr_dmy01]], 3237726902 --[[icon_chr_dmy01]])
     end
   end
 end
@@ -766,7 +780,7 @@ function UpdateSkillDetailWindow(a1, a2, a3)
   end
   EVT_Mark(EVT_BIT.DETAIL)
   EVT_RetailUpdateSkillDetailWindow(a1, a2, a3)
-  local okInfo = funcLuaCommand(2580586398 --[[CMND_GET_SOCCER_SKILL_INFO?]], a1, 9)
+  local okInfo = funcLuaCommand(2580586398, a1, 9)
   EVT_ListState.focus = (okInfo and type(a1) == "number") and a1 or 0
   local skill = EVT_U32(a1)
   if evt_pick and skill == EVT_MX.CREATE then
@@ -793,6 +807,9 @@ function Step()
     EVT_RetailStep()
   end
   pcall(EVT_DW_Step)
+  if VRFW_FaceIcon ~= nil and VRFW_FaceIcon.Pending() then
+    VRFW_FaceIcon.Settle()                        -- the miximax portrait shown once its face loaded
+  end
   EVT_ListState.frame = EVT_ListState.frame + 1
   if not evt_pick then
     return
@@ -809,7 +826,7 @@ function Step()
       funcLuaMenuCommand(306610847, EVT_LIST, 0)
       funcLuaMenuCommand(1778826357, EVT_ITEM, 0, true)
     end)
-    pcall(funcLuaCommand, 3661580131 --[[CMND_EVT_LOG]], "skill_slots", "hiper picker sort", 8,
+    pcall(funcLuaCommand, 3661580131, "skill_slots", "hiper picker sort", 8,
       "create owned", funcLuaCommand(2011560392, EVT_MX.CREATE))
   end
   if evt_frames < 10 then   -- ignore the Enter/click that opened the list on the slot screen
@@ -832,13 +849,13 @@ function Step()
     EVT_PSet(EVT_KEY_INV, evt_inv[focus] or 0)
     funcLuaCommand(1917805374, 2339718859 --[[sy0011]])
     evt_pick = false
-    funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 2897322950 --[[ability_list_menu]])
+    funcLuaCommand(320421347, 2897322950 --[[ability_list_menu]])
     return
   end
-  if funcLuaCommand(4265778440 --[[CMND_CHECK_INPUT_CMD?]], EVT_MENU_CTRL, EVT_CMD_ENTER) then
+  if funcLuaCommand(4265778440, EVT_MENU_CTRL, EVT_CMD_ENTER) then
     EVT_Mark(EVT_BIT.ENTER)
     EVT_PickEntry("Step-Enter", EVT_LIST, 0)
-  elseif funcLuaCommand(4265778440 --[[CMND_CHECK_INPUT_CMD?]], EVT_MENU_CTRL, EVT_CMD_ENTER_CLICK) then
+  elseif funcLuaCommand(4265778440, EVT_MENU_CTRL, EVT_CMD_ENTER_CLICK) then
     EVT_Mark(EVT_BIT.CLICK)
     local inside, instance = EVT_ListState.PointerOnFocusedRow()
     if inside == true then
@@ -857,13 +874,13 @@ function OnSetupLayer(a1, a2)
   end
   EVT_RetailOnSetupLayer(a1, a2)
   if evt_pick and a1 == 3078308064 --[[mainmenu90_05_content_guide_line01]] then
-    funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, true)
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], a1, 378156699 --[[_text_guide01]],
-      (evt_mode == "P" and "Elige una pasiva personalizada.") or
-      (evt_mode == "S" and ((EVT_MX.forbid and "Elige la hipertécnica. Modo Overdrive: este jugador no puede usar miximax.")
-        or (EVT_MX.prime and "Elige la hipertécnica. Una carta Prime no puede crear un miximax.")
-        or "Elige la hipertécnica. Crear miximax: fusiona con otro jugador.")) or
-      "Elige la supertécnica para la ranura.", a2)
+    funcLuaMenuCommand(711242136, a1, a2, true)
+    funcLuaMenuCommand(1083631230, a1, 378156699 --[[_text_guide01]],
+      EVT_ListState.Text((evt_mode == "P" and 769244992 --[[skill_table_pick_passive_guide]]) or
+        (evt_mode == "S" and ((EVT_MX.forbid and 3674558446 --[[skill_table_pick_hiper_overdrive_guide]])
+          or (EVT_MX.prime and 1284764890 --[[skill_table_pick_hiper_prime_guide]])
+          or 2862124531 --[[skill_table_pick_hiper_guide]])) or
+        3373336848 --[[skill_table_pick_move_guide]]), a2)
   end
 end
 
@@ -910,7 +927,7 @@ function OnBack(a1)
     return EVT_RetailOnBack(a1)
   end
   if evt_pick then
-    funcLuaCommand(3363400568, EVT_KEY_RESULT)
+    VRFW_Param.Clear(EVT_KEY_RESULT)
   end
   EVT_RetailOnBack(a1)
 end

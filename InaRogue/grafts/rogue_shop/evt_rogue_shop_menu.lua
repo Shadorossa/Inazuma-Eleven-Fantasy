@@ -1,7 +1,9 @@
 -- evt_rogue_shop_menu (plain Lua 5.2 source, Inazuma Fantasy, INAROGUE «Tienda»): docs/game/modes/inarogue-avatars.md.
 -- Opened by evt_inarogue_menu's «Tienda» tile (hook EVT_IR_EXTRA.shop of the rogue_shop graft) as a child menu.
--- A TABBED shop: TABS below lists every tab; only the implemented ones (ready = true) are shown and reachable
--- (Q / E = L1 / R1, Z / C = L2 / R2, or a click on the tab). Tab «Personajes»: a honeycomb of hexagons, one IE3
+-- A TABBED shop: one tab per shop of InaRogue's content/rogue/shop_tabs.toml (CMND_INAROGUE_RL_SHOP_TAB) whose page
+-- this screen has (PAGES), on the retail shop tab bar as shop_menu_buy's SetupSlotInfo builds it (the tabs attached to
+-- the bar, the declared retail icon type, the selected tab lit by the retail Focus animation, its name under the bar);
+-- L1 / R1 or a click on a tab switches. Tab «Avatares»: a honeycomb of hexagons, one IE3
 -- pixel-art avatar per hex (loader module rogue: CMND_EVT_RL_AVATAR_*; catalogue rogue\avatars.toml, the captains of
 -- the important teams), breathing (the runner's front idle, g0 dir 4). Two levels (06/10): the CAPTAIN of every IE3
 -- team (team hex lit when something of it is owned, gold when all of it, «owned / total» under it;
@@ -27,47 +29,46 @@
 -- Rule (position-cards.md §4b): no engine call at top level; funcLuaCommand only exists inside callbacks.
 INCLUDE("LUA_PROG_BASE")
 INCLUDE("LUA_SAVEDATA_MANAGEMENT_MENU_INC")   -- header helpers (soccer top inc) + general window inc
+INCLUDE("LUA_LISTVIEW_INC")                   -- the retail tab bar helpers (LISTVIEW.UpdateAttachTabNum, SetupTabIcon)
 
+-- texts: InaRogue text\rows\menu_text.toml / rogue_screens.toml (read with Text)
 local TXT = {
-  TITLE = "Tienda",
-  ASK_UNLOCK = "¿Desbloquear a %s (%s) por %d Puntos de rogue?\nTienes %d. Se equipará al momento.",
-  NO_POINTS = "Te faltan Puntos de rogue: %s cuesta %d y tienes %d.\nSe ganan en INAROGUE: partidos, jefes de fase y al terminar cada partida.",
-  NO_PHASE = "%s se desbloquea al llegar a la fase %d de INAROGUE.",
-  UNLOCKED = "¡%s desbloqueado! Ya eres tú en el mapa de ruta.",
-  ERROR = "No se pudo guardar (código %d). Los puntos se han devuelto.\nMira evt_loader\\loader.log.",
-  NOT_HERE = "La tienda solo vende dentro de la partida de INAROGUE.",
-  NO_ITEM = "No se encuentra el objeto «Puntos de rogue» (mira evt_loader\\loader.log).",
-  GOT = "+%d Puntos de rogue de tus partidas.",
-  TITLE_TEAM = "Tienda · %s",
+  TITLE = {3213284501 --[[evt_ir_shop_label]]},
+  ASK_UNLOCK = {3635100617 --[[InaRogue.shop.ask_unlock]]},
+  NO_POINTS = {4152559352 --[[InaRogue.shop.no_points]]},
+  NO_PHASE = {3894669358 --[[InaRogue.shop.no_phase]]},
+  UNLOCKED = {3201442849 --[[InaRogue.shop.unlocked]]},
+  ERROR = {2303103217 --[[InaRogue.shop.error]]},
+  NOT_HERE = {3637191827 --[[InaRogue.shop.not_here]]},
+  NO_ITEM = {838915938 --[[InaRogue.shop.no_item]]},
+  GOT = {1949505167 --[[InaRogue.shop.got]]},
 }
 
--- the shop's tabs, in order: `ready` = implemented (only those are shown); `label` = its name on the retail tab bar
-local TABS = {
-  {id = "chars", label = "Avatares", ready = true, icon = 3373293041 --[[icon_list_tab_datafile05: a bust]],
-   icon_off = 2484330717 --[[icon_list_tab_datafile05_off]]},
-  {id = "items", label = "Objetos", ready = false},
-  {id = "unlocks", label = "Mejoras", ready = false},
-}
+-- the shops this screen has a page for, by the tab id of content/rogue/shop_tabs.toml; a declared tab without a page
+-- is not shown
+local PAGE_AVATARS = "avatars"
+local PAGES = {[PAGE_AVATARS] = true}
 
 local MENU = 2441995583           -- crc32("evt_rogue_shop_menu")
 local KEY_RESULT = 3345670152     -- crc32("Tienda"): 0 back
 
 local RL = {
-  LOG = 3661580131,          -- CMND_EVT_LOG
-  LIST = 1398552888,         -- CMND_EVT_RL_AVATAR_LIST (-1) -> count, owned, current, default, enabled
+  LOG = @crc:CMND_EVT_LOG@,          -- CMND_EVT_LOG
+  LIST = @crc:CMND_EVT_RL_AVATAR_LIST@,         -- CMND_EVT_RL_AVATAR_LIST (-1) -> count, owned, current, default, enabled
                              --   (i) -> ok, id, name, team, texture, prefix, tier, price, owned, current, available, needPhase, unit
-  UNLOCK = 3186193813,       -- CMND_EVT_RL_AVATAR_UNLOCK (i, paid) -> code
-  SELECT = 2633969594,       -- CMND_EVT_RL_AVATAR_SELECT (i) -> code
-  TEAM = 3547621183,         -- CMND_EVT_RL_AVATAR_TEAM (-1) -> teamCount; (t, -1) -> ok, teamId, name, tier, captainIndex,
+  UNLOCK = @crc:CMND_EVT_RL_AVATAR_UNLOCK@,       -- CMND_EVT_RL_AVATAR_UNLOCK (i, paid) -> code
+  SELECT = @crc:CMND_EVT_RL_AVATAR_SELECT@,       -- CMND_EVT_RL_AVATAR_SELECT (i) -> code
+  TEAM = @crc:CMND_EVT_RL_AVATAR_TEAM@,         -- CMND_EVT_RL_AVATAR_TEAM (-1) -> teamCount; (t, -1) -> ok, teamId, name, tier, captainIndex,
                              --   memberCount, ownedCount; (t, j) -> ok, avatarIndex
-  POINTS = 622568634,        -- CMND_EVT_RL_POINTS () -> pending, earned, given, spent, itemKey, itemIdGuess, enabled, rogueActive
-  GIVEN = 3018215530,        -- CMND_EVT_RL_POINTS_GIVEN (n) -> code, pendingLeft
-  REG_FIND = 2175579023,     -- CMND_VRFW_REG_FIND ("item", key) -> id (-1)
-  ITEM_NUM = 2011560392,     -- CMND_GET_ITEM_NUM (item, false) -> count
-  ADD_ITEM = 1897915498,     -- CMND_ADD_ITEM_ONLY (item, n, window)
-  DEL_ITEM = 425598937,      -- CMND_DELETE_ITEM (item, n)
-  SAVE = 3673719958,         -- CMND_SYSTEM_AUTO_SAVE
-  SAVE_BUSY = 3324595690,    -- CMND_EVT_SLOT_BUSY
+  POINTS = @crc:CMND_EVT_RL_POINTS@,        -- CMND_EVT_RL_POINTS () -> pending, earned, given, spent, itemKey, itemIdGuess, enabled, rogueActive
+  GIVEN = @crc:CMND_EVT_RL_POINTS_GIVEN@,        -- CMND_EVT_RL_POINTS_GIVEN (n) -> code, pendingLeft
+  REG_FIND = @crc:CMND_VRFW_REG_FIND@,     -- CMND_VRFW_REG_FIND ("item", key) -> id (-1)
+  ITEM_NUM = @crc:CMND_GET_ITEM_NUM@,     -- CMND_GET_ITEM_NUM (item, false) -> count
+  ADD_ITEM = @crc:CMND_ADD_ITEM_ONLY@,     -- CMND_ADD_ITEM_ONLY (item, n, window)
+  DEL_ITEM = @crc:CMND_DELETE_ITEM@,      -- CMND_DELETE_ITEM (item, n)
+  SAVE = @crc:CMND_SYSTEM_AUTO_SAVE@,         -- CMND_SYSTEM_AUTO_SAVE
+  SAVE_BUSY = @crc:CMND_EVT_SLOT_BUSY@,    -- CMND_EVT_SLOT_BUSY
+  SHOP_TAB = @crc:CMND_INAROGUE_RL_SHOP_TAB@,     -- CMND_INAROGUE_RL_SHOP_TAB (-1) -> count; (i) -> ok, id, textId, retail tab icon type
 }
 
 
@@ -85,7 +86,8 @@ local L_RET = 2005383485        -- mainmenu01_10_return_arrow_button_guide
 -- device's L1 / R1 key glyphs at its ends) and the shop's currency pill (item icon + number)
 local L_TABBAR = 1887158505     -- cmn06_01_list_tab_attach    x3 (0 section header, 1 / 2 Q / E page glyphs)
 local L_PILL = 3286690296       -- shop01_04d_token_item_5dig  x1 (retail currency pill of shop_menu)
-local L_TABITEM = 4044286600    -- cmn06_20_list_tab_item      x1 (the section's tab inside the green bar)
+local L_TABITEM = 4044286600    -- cmn06_20_list_tab_item      x9 (one per shop, attached to the bar's instance 0)
+local TAB_SLOTS = 9             -- its instances (menus\rogue_shop.toml, the retail count)
 local L_HEX = 3418775405        -- evt_rogue_map_plat   x per       (455) hexagons
 local L_SHADOW = 846827650      -- evt_rogue_map_emb    x per       (457) shadows
 local L_PRICE = 4081246790      -- evt_rogue_map_tag    x per x 8   (458) per hex 0..6: price / lock / badge / the team
@@ -111,9 +113,10 @@ local TB = {
   -- the page keys: the command tags the text renderer turns into the active device's L2 / R2 glyph (Q / E on the
   -- keyboard; bb_pages' «<L2> Página n/N <R2>» line). Round 3 used system texts 1087561630 / 2667771517: Z / C (L1 / R1)
   KEY_L2 = "<CMD_FUNCL2>", KEY_R2 = "<CMD_FUNCR2>",
-  ICON_TEX = 1395458492,  -- #/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx
-  ICON_ON = 3229351341, ICON_OFF = 380437824,   -- icon_list_tab_dmy01_on / _off (cmn06_20 nodes)
   ICON_BASE = 4013273506,                        -- _icon_base01 (the tab item's plate)
+  ATTACH_RESET = 4233535095,                     -- (layer, idx, false): every attach row of an instance off
+  -- the tab item's retail «button» Focus animation (shop_menu_buy OnChangeFocus): in = the lit plate + «on» icon
+  PLAY_ANIM = @crc:CMND_PLAY_ANIME_TYPE@, ANIM_FOCUS = 2734777837, ANIM_SET_BUTTON = 973515837, ANIM_IN = 0, ANIM_OUT = 2,
   PLATE_MESH = 4025857287,                       -- _list_tab_base01 (the plate mesh)
   GLYPH_L = {181, 246}, GLYPH_R = {699, 246},    -- centres of _text_btn_l01 / _r01 (38 px boxes) in the layout
 }
@@ -125,30 +128,30 @@ local PILL = {
 }
 
 local C = {
-  TEXT = 1083631230, MESH_VISIBLE = 3405944500, LAYER_VISIBLE = 711242136,
+  TEXT = @crc:CMND_SET_MENU_TEXT_STRING@, MESH_VISIBLE = @crc:CMND_SET_MESH_VISIBLE@, LAYER_VISIBLE = @crc:CMND_SET_LAYER_VISIBLE@,
   SPRITE = 558735651,         -- (layer, textureCrc, spriteCrc, nodeCrc, 0, idx)
-  LOAD_TEX = 839427544,
-  SCALE = 3778714801,
-  POS = 1389957207,
-  ATTACH_TRACE = 1774843228,
-  OPEN_LAYER = 629267548,
-  FOCUS_ENABLE = 3518307824, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
+  LOAD_TEX = @crc:CMND_LOAD_MENU_RES_TEXTURE@,
+  SCALE = @crc:CMND_SET_LAYER_LOCAL_SCALE@,
+  POS = @crc:CMND_SET_LAYER_LOCAL_POS@,
+  ATTACH_TRACE = @crc:CMND_SET_LAYER_ATTACH_LOCATOR_TRACE@,
+  OPEN_LAYER = @crc:CMND_OPEN_LAYER@,
+  FOCUS_ENABLE = @crc:CMND_SET_ENABLE_CTRL_FOCUS@, FOCUS_SET = 3466097042, LIST_NUM = 3252599449,
   GUIDE_SET = 2209673388, GUIDE_CMD = 452337289, GUIDE_OPT = 1432240275,
-  SE = 1917805374, MENU_ACTIVE = 1558704558, CLOSE_MENU = 320421347,
+  SE = @crc:CMND_SND_PLAY_SE@, MENU_ACTIVE = 1558704558, CLOSE_MENU = @crc:CMND_CLOSE_MENU_OBJECT@,
   FADE = 609722083, FADE_DONE = 2259183189,
-  P_SET = 3860611758, P_CLEAR = 3363400568,
   MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
-  TEXT_VISIBLE = 1505208242,
-  PRIM_COLOR = 855211291,     -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b)
+  TEXT_VISIBLE = @crc:CMND_SET_MENU_TEXT_VISIBLE@,
+  PRIM_COLOR = @crc:CMND_SET_PRIM_COLOR@,     -- CMND_SET_PRIM_COLOR (layer, idx, meshCrc, r, g, b)
   TEXT_STYLE = 2333948100,    -- (layer, idx, textCrc, styleCrc)
-  TEXT_GET = 4074371074,      -- CMND_TEXT_GET (textId) -> string
-  PRIM_INDEX = 1927054058,    -- CMND_SEARCH_PRIM_INDEX (layer, idx, primCrc)
+  TEXT_GET = @crc:CMND_TEXT_GET@,      -- CMND_TEXT_GET (textId) -> string
+  PRIM_INDEX = @crc:CMND_SEARCH_PRIM_INDEX@,    -- CMND_SEARCH_PRIM_INDEX (layer, idx, primCrc)
   PRIM_NUM = 3609943765,      -- (layer, idx, prim, number): the pill's number
 }
 -- the mouse (the route map's way, evt_rogue_map_menu.lua MS): hit areas from the same layout (GPOS of the instances)
 local MS = {
   GPOS = 4002164178,          -- an instance's global position (the pointer zones: EVT_PointerNew below)
   HIT_ARROW = 50, HIT_DOT = 16,
+  HIT_TAB_W = 46, HIT_TAB_H = 26,   -- half the tab item's 92 x 52 plate
 }
 local MESH_QUAD = 312193881     -- the cmn01_10 quad's mesh
 local NODE_QUAD = 1909474081    -- icon_new01 (the cmn01_10 quad's sprite node)
@@ -211,7 +214,7 @@ local row_items = {}   -- [page][row] = {item indices left to right}
 local crest_left = {}  -- [slot] = crest redraws left (the crest atlas may still be loading when the hex is drawn)
 local CREST_RETRIES = 24
 local per, pages = 1, 1
-local tabs = {}        -- the shown tabs (TABS with ready)
+local tabs = {}        -- the shown tabs: {id, text, icon} of shop_tabs.toml with a page here (ReadTabs)
 local tab = 1
 local focus = 1
 local cam, cam_to = 0, 0
@@ -241,6 +244,19 @@ local function Log(...)
 end
 
 --@lib evt_menu_kit.lua#Call,Int,Hide
+
+-- a text row in the game's language with {1}.. filled ("" when missing)
+local function Text(key, ...)
+  local s = Call(@crc:CMND_TEXT_GET@, key[1])
+  if type(s) ~= "string" then
+    return ""
+  end
+  local a = table.pack(...)
+  return (s:gsub("{(%d)}", function(k)
+    local v = a[tonumber(k)]
+    return v == nil and "" or tostring(v)
+  end))
+end
 
 local function Place(layer, idx, x, y)
   funcLuaMenuCommand(C.POS, layer, x, -y, 0, idx)
@@ -688,6 +704,59 @@ end
 -- plate's centre in the layout), same height. The L1 / R1 (Z / C) tab keys only with two tabs or more (retail
 -- SetupSlotInfo hides them for one).
 local placed_log = false
+local lit_tab = nil    -- the tab whose item plays the Focus «in» (the lit one)
+
+-- the tab's name from its text row (content/rogue/shop_tabs.toml `text`)
+local function TabName(t)
+  if t == nil or type(t.text) ~= "number" or t.text == 0 then
+    return ""
+  end
+  local s = Call(C.TEXT_GET, t.text)
+  return type(s) == "string" and s or ""
+end
+
+local function PlayTabFocus(k, lit)
+  if tabs[k] == nil or tabs[k].icon == nil then
+    return
+  end
+  funcLuaMenuCommand(TB.PLAY_ANIM, L_TABITEM, k - 1, TB.ANIM_FOCUS, lit and TB.ANIM_IN or TB.ANIM_OUT,
+                     TB.ANIM_SET_BUTTON)
+end
+
+-- the shops' tabs on the bar, as retail shop_menu_buy SetupSlotInfo: the bar's attach set for that many tabs
+-- (LISTVIEW.UpdateAttachTabNum: tab item k hangs on the bar instance 0's k-th locator, so it follows the bar), each
+-- item with its retail tab icon type (LISTVIEW.SetupTabIcon) and visible, the selected one lit by the Focus «in»; with
+-- one tab the item keeps no plate (retail). The page glyph instances 1 / 2 of the bar hold no tab. Once per opening.
+local function SetupTabBar()
+  for i = 1, 2 do
+    funcLuaMenuCommand(TB.ATTACH_RESET, L_TABBAR, i, false)
+  end
+  local shown_tabs = 0
+  for _, t in ipairs(tabs) do
+    if t.icon ~= nil then
+      shown_tabs = shown_tabs + 1
+    end
+  end
+  if shown_tabs > 0 then
+    LISTVIEW.UpdateAttachTabNum(shown_tabs, L_TABBAR)
+  else
+    funcLuaMenuCommand(TB.ATTACH_RESET, L_TABBAR, 0, false)
+  end
+  for k = 1, TAB_SLOTS do
+    local t = tabs[k]
+    local show = t ~= nil and t.icon ~= nil
+    funcLuaMenuCommand(C.LAYER_VISIBLE, L_TABITEM, k - 1, show)
+    if show then
+      LISTVIEW.SetupTabIcon(L_TABITEM, k - 1, t.icon, true)
+      PlayTabFocus(k, k == tab)
+      if shown_tabs < 2 then
+        funcLuaMenuCommand(C.MESH_VISIBLE, L_TABITEM, TB.ICON_BASE, false, k - 1)
+      end
+    end
+  end
+  lit_tab = tab
+end
+
 local function DrawTabs()
   local t = tabs[tab]
   funcLuaMenuCommand(C.LAYER_VISIBLE, L_TABBAR, 0, t ~= nil)
@@ -695,16 +764,13 @@ local function DrawTabs()
     return
   end
   Place(L_TABBAR, 0, G.TAB_DX, 0)
-  funcLuaMenuCommand(C.TEXT, L_TABBAR, TB.TEXT, t.label, 0)
-  -- the section's tab inside the green bar (Nacho 07/10 round 4: «en la parte verde pon la sección»), as retail
-  -- SetupSlotInfo + LISTVIEW.SetupTabIcon: cmn06_20_list_tab_item with the tab's icon (on / off sprites), placed on
-  -- the plate's centre (TAB_DX + 440, 194; the item's layout is centred on its origin)
-  funcLuaMenuCommand(C.LAYER_VISIBLE, L_TABITEM, 0, t.icon ~= nil)
-  if t.icon ~= nil then
-    funcLuaMenuCommand(C.SPRITE, L_TABITEM, TB.ICON_TEX, t.icon, TB.ICON_ON, 0, 0)
-    funcLuaMenuCommand(C.SPRITE, L_TABITEM, TB.ICON_TEX, t.icon_off or t.icon, TB.ICON_OFF, 0, 0)
-    funcLuaMenuCommand(C.MESH_VISIBLE, L_TABITEM, TB.ICON_BASE, true, 0)
-    Place(L_TABITEM, 0, G.TAB_DX + G.TAB_CX, G.TAB_CY)
+  funcLuaMenuCommand(C.TEXT, L_TABBAR, TB.TEXT, TabName(t), 0)
+  if lit_tab ~= tab then         -- the selection moved: the old tab goes out, the new one in (retail OnChangeFocus)
+    if lit_tab ~= nil then
+      PlayTabFocus(lit_tab, false)
+    end
+    PlayTabFocus(tab, true)
+    lit_tab = tab
   end
   local keys = #tabs >= 2
   if keys then
@@ -736,9 +802,9 @@ local function UpdateGuideLine()
 end
 
 local function UpdateTitle()
-  local title = TXT.TITLE
+  local title = Text(TXT.TITLE)
   if level == "members" and list[1] ~= nil then
-    title = string.format(TXT.TITLE_TEAM, list[1].team or "")
+    title = title .. " · " .. (list[1].team or "")
   end
   funcLuaMenuCommand(C.TEXT, L_HEADER, 1220590795 --[[_text_sub_title02]], title, 0)
   funcLuaMenuCommand(C.SPRITE, L_HEADER, 3139293835 --[[#/menu/220_img/evt_rogue/evt_rogue_mode.g4tx]], 2610480106 --[[evt_rogue_mode_plate: INAROGUE's phoenix plate]], MODE_ICON_NODE, 0, 0)
@@ -812,26 +878,26 @@ end
 
 local function Unlock(a)
   if not rogue_active then
-    Message(TXT.NOT_HERE)
+    Message(Text(TXT.NOT_HERE))
     return
   end
   if not a.avail then
     funcLuaCommand(C.SE, SE_NG)
-    Message(string.format(TXT.NO_PHASE, a.name, a.phase))
+    Message(Text(TXT.NO_PHASE, a.name, a.phase))
     return
   end
   local id = ReadItemId()
   if id == nil then
-    Message(TXT.NO_ITEM)
+    Message(Text(TXT.NO_ITEM))
     return
   end
   ReadBalance()
   if balance < a.price then
     funcLuaCommand(C.SE, SE_NG)
-    Message(string.format(TXT.NO_POINTS, a.name, a.price, balance))
+    Message(Text(TXT.NO_POINTS, a.name, a.price, balance))
     return
   end
-  if not Ask(string.format(TXT.ASK_UNLOCK, a.name, a.team, a.price, balance)) then
+  if not Ask(Text(TXT.ASK_UNLOCK, a.name, a.team, a.price, balance)) then
     return
   end
   local before = balance
@@ -845,7 +911,7 @@ local function Unlock(a)
       Call(RL.ADD_ITEM, id, before - after, false)
     end
     ReadBalance()
-    Message(string.format(TXT.ERROR, -1))
+    Message(Text(TXT.ERROR, -1))
     return
   end
   local code = Int(Call(RL.UNLOCK, a.i, a.price))
@@ -855,20 +921,20 @@ local function Unlock(a)
       Call(RL.ADD_ITEM, id, a.price, false)  -- refund
     end
     ReadBalance()
-    Message(string.format(TXT.ERROR, code))
+    Message(Text(TXT.ERROR, code))
     return
   end
   Equip(a)
   RequestSave()
   Refresh()
-  Message(string.format(TXT.UNLOCKED, a.name))
+  Message(Text(TXT.UNLOCKED, a.name))
 end
 
 -- every decide is logged (Nacho 07/10 round 2: «me abre el Wilds o equipos que no corresponden»): the item index,
 -- its page and instance, and the team / avatar it opens
 local function Decide(src)
   local a = list[focus]
-  if a == nil or tabs[tab] == nil or tabs[tab].id ~= "chars" then
+  if a == nil or tabs[tab] == nil or tabs[tab].id ~= PAGE_AVATARS then
     return
   end
   if a.kind == "team" then
@@ -938,19 +1004,36 @@ local function SwitchTab(d)
   DrawAll()
 end
 
+-- a click on a tab of the bar
+local function SelectTab(k)
+  if tabs[k] == nil or k == tab then
+    return
+  end
+  tab = k
+  funcLuaCommand(C.SE, SE_OK)
+  DrawAll()
+end
+
 -- ---- the mouse / free cursor: the shared pointer helper (docs/game/ui/mouse-support.md §5) ----------------------------
 -- zones = the drawn hexes (a DX x DY box around each instance: the staggered rows tile the grid without overlap), the
--- page arrows, the page dots and the L2 / R2 glyphs beside them; hover by movement focuses, click decides, wheel =
--- page. The pad / keys own the cursor until the pointer really moves (Ptr.KeyStep in the key moves): pad Aceptar never
--- decides the hex under a resting pointer.
+-- page arrows, the page dots and the L2 / R2 glyphs beside them, the shops' tabs on the bar (a click switches); hover by
+-- movement focuses, click decides, wheel = page. The pad / keys own the cursor until the pointer really moves
+-- (Ptr.KeyStep in the key moves): pad Aceptar never decides the hex under a resting pointer.
 --@lib evt_menu_kit.lua#Pointer
 local Ptr = EVT_PointerNew()
-local ZONE_PREV, ZONE_NEXT, ZONE_DOT = "page_prev", "page_next", "dot"
+local ZONE_PREV, ZONE_NEXT, ZONE_DOT, ZONE_TAB = "page_prev", "page_next", "dot", "tab"
 
 local function DeclareZones()
   Ptr.Begin()
   for s, i in pairs(shown) do
     Ptr.Inst(L_HEX, s, G.DX / 2, G.DY / 2, i)
+  end
+  if #tabs >= 2 then
+    for k, t in ipairs(tabs) do
+      if t.icon ~= nil then
+        Ptr.Inst(L_TABITEM, k - 1, MS.HIT_TAB_W, MS.HIT_TAB_H, ZONE_TAB .. k)
+      end
+    end
   end
   if pages <= 1 then
     return
@@ -993,6 +1076,8 @@ local function PollMouse()
     GoPage(PageOf(focus) - 1)
   elseif z == ZONE_NEXT then
     GoPage(PageOf(focus) + 1)
+  elseif type(z) == "string" and z:sub(1, #ZONE_TAB) == ZONE_TAB then
+    SelectTab(tonumber(z:sub(#ZONE_TAB + 1)))
   elseif type(z) == "string" and z:sub(1, #ZONE_DOT) == ZONE_DOT then
     GoPage(DotStart() + tonumber(z:sub(#ZONE_DOT + 1)))
   elseif type(z) == "number" then
@@ -1008,24 +1093,40 @@ local function OpenFlow()
   DrawBalance()
   UpdateGuideLine()
   if got > 0 then
-    Message(string.format(TXT.GOT, got))
+    Message(Text(TXT.GOT, got))
+  end
+end
+
+-- the shops' tabs: content/rogue/shop_tabs.toml in its order (CMND_INAROGUE_RL_SHOP_TAB), those with a page here;
+-- InaRogue's scripts answering none (switched off): the avatars page alone, with no tab icon
+local function ReadTabs()
+  tabs = {}
+  for i = 0, Int(Call(RL.SHOP_TAB, -1)) - 1 do
+    local ok, id, text, icon = Call(RL.SHOP_TAB, i)
+    if ok == true and type(id) == "string" then
+      if PAGES[id] and #tabs < TAB_SLOTS then
+        tabs[#tabs + 1] = {id = id, text = text, icon = type(icon) == "number" and icon or nil}
+      else
+        Log("shop tab without a page here", id)
+      end
+    end
+  end
+  if #tabs == 0 then
+    tabs[1] = {id = PAGE_AVATARS, text = 0}
+    Log("no shop tab declared: the avatars page alone")
   end
 end
 
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------
 function OnInit()
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_UI)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_MAP)
   funcLuaMenuCommand(C.LOAD_TEX, TEX_MARKER)
   funcLuaMenuCommand(C.LOAD_TEX, "#/menu/200_icon/02_icon_item/icon_item10.g4tx")   -- the pill's icon
-  funcLuaMenuCommand(C.LOAD_TEX, "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx")   -- the tab icon
-  tabs = {}
-  for _, t in ipairs(TABS) do
-    if t.ready then
-      tabs[#tabs + 1] = t
-    end
-  end
+  funcLuaMenuCommand(C.LOAD_TEX, "#/menu/200_icon/16_icon_list_tab/<LG>/icon_list_tab.g4tx")   -- the tab icons
+  ReadTabs()
+  lit_tab = nil
   tab, focus, anim, shown, ready = 1, 1, {}, {}, false
   open_guard = 20
   level, cur_team, back, cache, tex_asked = "teams", nil, nil, {}, {}
@@ -1039,7 +1140,9 @@ local function OpenOwnLayers()
   for i = 0, 2 do                 -- 0 the section header, 1 / 2 the Q / E page glyphs
     funcLuaMenuCommand(C.OPEN_LAYER, L_TABBAR, i)
   end
-  funcLuaMenuCommand(C.OPEN_LAYER, L_TABITEM, 0)
+  for k = 0, TAB_SLOTS - 1 do      -- the shops' tabs (SetupTabBar shows the declared ones)
+    funcLuaMenuCommand(C.OPEN_LAYER, L_TABITEM, k)
+  end
   funcLuaMenuCommand(C.OPEN_LAYER, L_PILL, 0)
   for i = 0, UI_DOT0 + G.MAX_DOTS - 1 do
     funcLuaMenuCommand(C.OPEN_LAYER, L_UI, i)
@@ -1102,6 +1205,7 @@ function OnOpenLayer(a1, a2)
     funcLuaMenuCommand(C.ATTACH_TRACE, a1, 0, CUR, false)
     funcLuaMenuCommand(C.POS, a1, -4000, 4000, 0, 0)
     ReadBalance()
+    SetupTabBar()
     DrawAll()
     UpdateButtonGuide()
     ready = true

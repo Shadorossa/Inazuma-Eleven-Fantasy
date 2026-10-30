@@ -120,9 +120,10 @@ local EVT_IR = {
   FADE = 609722083, FADE_DONE = 2259183189, FADE_BUSY = 2736534827, PRE_RESET = 3015544382,
   CLOSE_MENU = 320421347, MENU_ACTIVE = 1558704558, CURSOR = 24113234, LAYER_VISIBLE = 711242136,
   MSG_OPEN = 2289627655, MSG_BUSY = 898725220, MSG_DONE = 682363669,
-  T_BUSY = "El juego está guardando o cargando. Inténtalo de nuevo en unos segundos.",
-  T_REFUSED = "No se ha podido cambiar de partida (mira loader.log).",
-  T_LOAD_FAILED = "No se han podido cargar los datos. Se mantiene la partida actual.",
+  -- texts: InaRogue text\rows\rogue_screens.toml, read with EVT_IR_Text
+  T_BUSY = {2466320948 --[[InaRogue.title.busy]]},
+  T_REFUSED = {1374421309 --[[InaRogue.title.refused]]},
+  T_LOAD_FAILED = {3765270005 --[[InaRogue.title.load_failed]]},
   -- the INAROGUE session (loader module rogue::session, inarogue-no-game.md §8-§9)
   SS_BEGIN = 105439923,       -- CMND_EVT_RL_SESSION_BEGIN (kind 0 INAROGUE / 1 test) -> ok, code, KiB, ms
   SS_END = 2582020426,        -- CMND_EVT_RL_SESSION_END (mode) -> closed, code, dirtyBlocks, ms
@@ -137,7 +138,8 @@ local EVT_IR = {
   -- equipo» / a match inside the overlay): its banner (MI EQUIPO, NIVEL DEL EQUIPO, VICTORIAS) shows INAROGUE's game,
   -- so leaving the overlay rebuilds the title from the player's game (EVT_IR_MarkTitle, EVT_IR_AfterSession)
   title_in_session = false,
-  T_SESSION_LOST = "No se ha podido recuperar tu partida en memoria.\nEl juego se reiniciará: tu partida guardada no ha cambiado.",
+  T_SESSION_LOST = {1050510512 --[[InaRogue.title.session_lost]]},
+  TEXT_GET = 4074371074,      -- CMND_TEXT_GET (text id) -> the text in the game's language
 }
 
 function EVT_IR_Call(cmd, ...) -- EVT INAROGUE
@@ -164,6 +166,12 @@ end
 function EVT_IR_InRogueSlot() -- EVT INAROGUE
   local rs, act = EVT_IR_Slots()
   return rs ~= nil and act == rs
+end
+
+-- a text row in the game's language ("" when missing)
+function EVT_IR_Text(key) -- EVT INAROGUE
+  local s = EVT_IR_Call(EVT_IR.TEXT_GET, key[1])
+  return type(s) == "string" and s or ""
 end
 
 function EVT_IR_Message(text) -- EVT INAROGUE
@@ -205,7 +213,7 @@ function EVT_IR_Switch(k) -- EVT INAROGUE
     EVT_IR_Log("session open without INAROGUE's save: closing it first")
     if not EVT_IR_SessionLeave() then
       EVT_IR_SessionLost(sslot)
-      return false, EVT_IR.T_SESSION_LOST
+      return false, EVT_IR_Text(EVT_IR.T_SESSION_LOST)
     end
     if k == sslot then
       return "session"
@@ -215,7 +223,7 @@ function EVT_IR_Switch(k) -- EVT INAROGUE
   if sopen == true and sswapped then
     if not EVT_IR_SessionLeave() then
       EVT_IR_SessionLost(sslot)
-      return false, EVT_IR.T_SESSION_LOST
+      return false, EVT_IR_Text(EVT_IR.T_SESSION_LOST)
     end
     if k == sslot then
       return "session"
@@ -235,12 +243,12 @@ function EVT_IR_Switch(k) -- EVT INAROGUE
     end
   end
   if EVT_IR_Call(EVT_IR.BUSY) == true then
-    return false, EVT_IR.T_BUSY
+    return false, EVT_IR_Text(EVT_IR.T_BUSY)
   end
   local exists = EVT_IR_Call(EVT_IR.INFO, k) == true
   if EVT_IR_Call(EVT_IR.RELOAD, k) ~= true then
     EVT_IR_Log("reload refused", k)
-    return false, EVT_IR.T_REFUSED
+    return false, EVT_IR_Text(EVT_IR.T_REFUSED)
   end
   EVT_IR_Log("switch to slot", k, "has game", exists)
   funcLuaCommand(EVT_IR.FADE, 1, 0.25)       -- INAROGUE already faded to black before closing: this keeps it black
@@ -270,7 +278,7 @@ function EVT_IR_Switch(k) -- EVT INAROGUE
       funcLuaCommand(EVT_IR.LOAD_HEADER)
       EVT_IR_WaitJob()
       funcLuaCommand(EVT_IR.FADE, 0, 0.3)
-      return false, EVT_IR.T_LOAD_FAILED
+      return false, EVT_IR_Text(EVT_IR.T_LOAD_FAILED)
     end
     funcLuaCommand(EVT_IR.APPLY)
   else
@@ -298,8 +306,8 @@ end
 
 -- After INAROGUE closed (inside EVT_CustomItemCoroutine): true = the coroutine must end here (switch / request sent)
 function EVT_IR_AfterMenu() -- EVT INAROGUE
-  local r = funcLuaCommand(2947612279, EVT_IR.KEY) and funcLuaCommand(3522198769, EVT_IR.KEY) or 0
-  funcLuaCommand(3363400568, EVT_IR.KEY)
+  local r = VRFW_Param.Has(EVT_IR.KEY) and VRFW_Param.Get(EVT_IR.KEY) or 0
+  VRFW_Param.Clear(EVT_IR.KEY)
   evt_ir_frames = 0
   if r == 4 or r == 5 then
     local rs, act, ret = EVT_IR_Slots()
@@ -313,7 +321,7 @@ function EVT_IR_AfterMenu() -- EVT INAROGUE
       if sw == "session" then
         EVT_IR_AfterSession(r == 4)
       else
-        EVT_IR_Message(why or EVT_IR.T_REFUSED)
+        EVT_IR_Message(why or EVT_IR_Text(EVT_IR.T_REFUSED))
       end
     end
   elseif r == 7 then
@@ -325,7 +333,7 @@ function EVT_IR_AfterMenu() -- EVT INAROGUE
     -- 11:11). Cleared before INAROGUE reopens on cancel, so its own open is still the single fade-in.
     evt_ir_busy = true
     funcLuaCommand(EVT_IR.FADE, 0, 0.3)       -- INAROGUE faded out before it closed: the slot screen fades in
-    funcLuaCommand(3363400568, EVT_IR.SS_KEY)
+    VRFW_Param.Clear(EVT_IR.SS_KEY)
     funcLuaCommand(433545986, EVT_IR.SS_MENU)
     coroutine.yield()
     coroutine.yield()
@@ -333,8 +341,8 @@ function EVT_IR_AfterMenu() -- EVT INAROGUE
       coroutine.yield()
     end
     evt_ir_busy = false
-    local k = funcLuaCommand(2947612279, EVT_IR.SS_KEY) and funcLuaCommand(3522198769, EVT_IR.SS_KEY) or 0
-    funcLuaCommand(3363400568, EVT_IR.SS_KEY)
+    local k = VRFW_Param.Has(EVT_IR.SS_KEY) and VRFW_Param.Get(EVT_IR.SS_KEY) or 0
+    VRFW_Param.Clear(EVT_IR.SS_KEY)
     EVT_IR_Log("slot screen result", k)
     if type(k) == "number" and k >= 2 and k <= 3 then
       evt_ir_busy = true
@@ -343,7 +351,7 @@ function EVT_IR_AfterMenu() -- EVT INAROGUE
       if sw == "session" then
         EVT_IR_AfterSession(false)
       else
-        EVT_IR_Message(why or EVT_IR.T_REFUSED)
+        EVT_IR_Message(why or EVT_IR_Text(EVT_IR.T_REFUSED))
       end
     end
   elseif r == 8 then
@@ -503,10 +511,10 @@ function EVT_IR_SessionEnter() -- EVT INAROGUE
     if not EVT_IR_SessionReload() then
       local _, _, _, _, slot = EVT_IR_SessionState()
       EVT_IR_SessionLost(slot)
-      return false, EVT_IR.T_SESSION_LOST
+      return false, EVT_IR_Text(EVT_IR.T_SESSION_LOST)
     end
   end
-  return false, EVT_IR.T_REFUSED
+  return false, EVT_IR_Text(EVT_IR.T_REFUSED)
 end
 
 -- Leave: INAROGUE's game kept in memory for the next entry, the normal game back from its image (S5 when that fails).
@@ -525,7 +533,7 @@ end
 -- Nothing brought the normal game back: its file is intact (sink), so the game restarts into it.
 function EVT_IR_SessionLost(slot) -- EVT INAROGUE
   EVT_IR_Log("session lost: restart into slot", slot)
-  EVT_IR_Message(EVT_IR.T_SESSION_LOST)
+  EVT_IR_Message(EVT_IR_Text(EVT_IR.T_SESSION_LOST))
   if type(slot) == "number" and slot >= 2 then
     EVT_IR_Call(EVT_IR.RESTART, slot)
   end
@@ -544,7 +552,7 @@ function EVT_IR_AfterSession(entered) -- EVT INAROGUE
       -- Nacho 07/10: back from INAROGUE the title still showed INAROGUE's team / level / wins as if slot 4 were
       -- loaded. The game in memory is the player's again (END restored it), but this title was drawn from
       -- INAROGUE's game: rebuild it from the player's game (no file load: GAME_RESET keeps the game in memory)
-      if funcLuaCommand(2947612279, EVT_IR.TB_DEFER) == true then
+      if VRFW_Param.Has(EVT_IR.TB_DEFER) then
         EVT_IR_Log("exit: a top-bar target is waiting: its own reset rebuilds the title")
         return
       end
@@ -617,7 +625,7 @@ function EVT_IR_SeamlessEnter() -- EVT INAROGUE
     evt_ir_frames = 0
     return true
   end
-  if why ~= nil and why ~= "no_game" and why ~= EVT_IR.T_REFUSED then
+  if why ~= nil and why ~= "no_game" and why ~= EVT_IR_Text(EVT_IR.T_REFUSED) then
     EVT_IR_Message(why)   -- the session was lost and the game restarts into the normal slot
   end
   return false
@@ -639,7 +647,8 @@ function EVT_IR_Ask(text) -- EVT INAROGUE
 end
 
 -- [rogue] session_debug: the in-game checklist of inarogue-no-game.md §8.7 on the INAROGUE button, title only. A TEST
--- session (kind 1) keeps the normal game loaded: image + sink only. true = handled (INAROGUE does not open).
+-- session (kind 1) keeps the normal game loaded: image + sink only. true = handled (INAROGUE does not open). A
+-- developer tool (the key is off by default): its dialogs are developer text in English, like the log lines it writes.
 function EVT_IR_SessionDebug() -- EVT INAROGUE
   local open, _, debug, swapped = EVT_IR_SessionState()
   if debug ~= true or EVT_IR_InRogueSlot() then
@@ -654,44 +663,44 @@ function EVT_IR_SessionDebug() -- EVT INAROGUE
     EVT_IR_Message(table.concat(t, " "))
   end
   if open ~= true then
-    if not EVT_IR_Ask("[Prueba de sesión, §8.7]\n¿Abrir la lista de pruebas? (No = abrir INAROGUE)") then
+    if not EVT_IR_Ask("[Session test, §8.7]\nOpen the test list? (No = open INAROGUE)") then
       return false
     end
-    if EVT_IR_Ask("1. BEGIN de prueba: imagen de la partida + sumidero (la partida sigue cargada).\n¿Empezar?") then
+    if EVT_IR_Ask("1. Test BEGIN: game image + sink (the game stays loaded).\nStart?") then
       local ok, code, kib, ms = EVT_IR_Call(EVT_IR.SS_BEGIN, 1)
-      say("BEGIN: ok", ok, "código", code, "|", kib, "KiB |", ms, "ms")
-      if ok == true and EVT_IR_Ask("2. DISK_CHECK: ¿el fichero es igual a la imagen?") then
+      say("BEGIN: ok", ok, "code", code, "|", kib, "KiB |", ms, "ms")
+      if ok == true and EVT_IR_Ask("2. DISK_CHECK: is the file equal to the image?") then
         local r, same, n = EVT_IR_Call(EVT_IR.SS_DISK)
-        say("DISK_CHECK: leído", r, "| igual", same, "| bloques distintos", n)
+        say("DISK_CHECK: read", r, "| same", same, "| blocks differing", n)
       end
       if ok == true then
-        say("3. Ahora guarda en modos del juego (Mi equipo, un partido VS, la tienda): cada guardado se descarta.\n" ..
-            "Después vuelve al título y pulsa Inarogue otra vez.")
+        say("3. Now save in game modes (My team, a VS match, the shop): every save is discarded.\n" ..
+            "Then go back to the title and press Inarogue again.")
       end
-    elseif EVT_IR_Ask("9. ORPHAN: ¿abrir una sesión de prueba y cerrarla como huérfana?") then
+    elseif EVT_IR_Ask("9. ORPHAN: open a test session and close it as an orphan?") then
       local ok = EVT_IR_Call(EVT_IR.SS_BEGIN, 1)
       local was, code = EVT_IR_Call(EVT_IR.SS_ORPHAN)
-      say("ORPHAN: begin", ok, "| abierta", was, "| código", code)
+      say("ORPHAN: begin", ok, "| open", was, "| code", code)
     end
     return true
   end
   if swapped then
-    say("Hay una sesión de INAROGUE abierta: sal de INAROGUE primero.")
+    say("An INAROGUE session is open: leave INAROGUE first.")
     return true
   end
-  if EVT_IR_Ask("4. END(2): lista en loader.log lo que cambió, sin restaurar.\n¿Hacerlo?") then
+  if EVT_IR_Ask("4. END(2): list what changed in loader.log, no restore.\nDo it?") then
     local closed, code, n, ms = EVT_IR_Call(EVT_IR.SS_END, 2)
-    say("END(2): cerrada", closed, "| código", code, "| bloques distintos", n, "|", ms, "ms")
+    say("END(2): closed", closed, "| code", code, "| blocks differing", n, "|", ms, "ms")
     if closed == true then
       return true
     end
   end
-  if EVT_IR_Ask("5. END(0): restaurar la imagen y verificar.\n(No = paso 7: recargar la ranura desde el fichero)") then
+  if EVT_IR_Ask("5. END(0): restore the image and verify.\n(No = step 7: reload the slot from the file)") then
     local closed, code, n, ms = EVT_IR_Call(EVT_IR.SS_END, 0)
-    say("END(0): cerrada", closed, "| código", code, "| bloques distintos", n, "|", ms, "ms\n" ..
-        "6. Comprueba la plantilla / monedas / objeto, guarda normal y reinicia el juego.")
-  elseif EVT_IR_Ask("7. Recarga en el sitio (S5, sin GAME_RESET).\n¿Hacerlo?") then
-    say("S5: cerrada", EVT_IR_SessionReload())
+    say("END(0): closed", closed, "| code", code, "| blocks differing", n, "|", ms, "ms\n" ..
+        "6. Check the team / coins / item, save normally and restart the game.")
+  elseif EVT_IR_Ask("7. Reload in place (S5, no GAME_RESET).\nDo it?") then
+    say("S5: closed", EVT_IR_SessionReload())
   end
   return true
 end

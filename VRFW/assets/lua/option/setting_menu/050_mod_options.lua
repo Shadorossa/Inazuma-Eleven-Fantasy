@@ -53,8 +53,8 @@ VRFW_OPT_PARENT = {}                    -- row key -> key of its parent row (`pa
 VRFW_OPT_HAS_CHILD = {}                 -- row key -> true: some row names it as its parent
 VRFW_OPT_TAB_IDX = nil                  -- strip index of the mod tab for this opening (false = no tab)
 VRFW_OPT_C = {                          -- crc32 of the plugin's commands (CMND_VRFW_OPTION_*; the CMND_EVT_OPT_* aliases log a deprecation)
-  TAB = 2106271505, VIEW = 2795212795, CELL = 2481038231, ROWS = 1391317204, ROW = 2321060550,
-  GET = 4082322029, SET = 3900457409, STEP = 467655241, TEXT = 1676510130
+  TAB = VRFW_Cmd.VRFW_OPTION_TAB, VIEW = 2795212795, CELL = VRFW_Cmd.VRFW_OPTION_CELL, ROWS = VRFW_Cmd.VRFW_OPTION_ROWS, ROW = VRFW_Cmd.VRFW_OPTION_ROW,
+  GET = VRFW_Cmd.VRFW_OPTION_GET, SET = VRFW_Cmd.VRFW_OPTION_SET, STEP = VRFW_Cmd.VRFW_OPTION_STEP, TEXT = VRFW_Cmd.VRFW_OPTION_TEXT
 }
 VRFW_OPT_TITLE_ID = 2653374959          -- crc32("mod_options.tab_title")
 VRFW_OPT_UNAVAILABLE_ID = 516770612     -- crc32("mod_options.unavailable")
@@ -62,17 +62,17 @@ VRFW_OPT_ICON = 13                      -- LISTVIEW.SetupTabIcon type 13 = icon_
 VRFW_OPT_PV = {handle = 0, key = nil, paused = false, frame = 0, key_down = false, input = true}
 VRFW_OPT_PV_HAS = {}                    -- row key -> true / false: some value of the row has a preview
 VRFW_OPT_PV_C = {
-  PREVIEW = 673309330,                 -- crc32("CMND_VRFW_OPTION_PREVIEW"): (key, value, lang) -> bgm id | false; (key) -> any?
-  LANG = 477234096,                    -- CMND_GET_LANGUAGE_CODE (retail)
-  SND_PLAY = 3073642526, SND_STOP = 1357633554, SND_PLAYING = 1372088528,
-  BGM_PAUSE = 214589648, BGM_RESUME = 52227211,
-  CHECK_INPUT = 4265778440, MENU_CTRL = 1332654303,
+  PREVIEW = VRFW_Cmd.VRFW_OPTION_PREVIEW,                 -- crc32("CMND_VRFW_OPTION_PREVIEW"): (key, value, lang) -> bgm id | false; (key) -> any?
+  LANG = VRFW_Cmd.GET_LANGUAGE_CODE,                    -- CMND_GET_LANGUAGE_CODE (retail)
+  SND_PLAY = VRFW_Cmd.SND_PLAY, SND_STOP = VRFW_Cmd.SND_STOP, SND_PLAYING = 1372088528,
+  BGM_PAUSE = VRFW_Cmd.BGM_PAUSE, BGM_RESUME = VRFW_Cmd.BGM_RESUME,
+  CHECK_INPUT = VRFW_Cmd.CHECK_INPUT_CMD, MENU_CTRL = 1332654303,
   KEY = 3170216173,                    -- CMD_FUNC2: pad Select / View / touch pad, keyboard Tab
   CLICK = 1651523701,                  -- CMD_ENTER_CLICK (left mouse button, but also Enter / A)
   LEFT = 218912913,                    -- CMD_EVT_MOUSE_LEFT (the left mouse button alone; an input of the mod)
   ENTER = 1981080283,                  -- CMD_ENTER (Enter / A, never the mouse)
   POINTER = 558229292,                 -- funcLuaMenuCommand () -> mouse x, y
-  MESH_POS = 499270986,                -- CMND_GET_MESH_GLOBAL_POSITION(layer, idx, node) -> x, y, z
+  MESH_POS = VRFW_Cmd.GET_MESH_GLOBAL_POSITION,                -- CMND_GET_MESH_GLOBAL_POSITION(layer, idx, node) -> x, y, z
   PLAY_MARK = "  ▶", STOP_MARK = "  ■"     -- UTF-8 literals (Lua 5.2 has no \u escape)
 }
 
@@ -85,7 +85,7 @@ function VRFW_SET_Call(cmd, ...)        -- a loader / plugin command; nil when i
 end
 function VRFW_OPT_Text(id, fallback)    -- menu_text row in the game's language, else the fallback
   if type(id) == "number" and id ~= 0 then
-    local ok, s = pcall(funcLuaCommand, 4074371074 --[[CMND_TEXT_GET]], id)
+    local ok, s = pcall(funcLuaCommand, VRFW_Cmd.TEXT_GET, id)
     if ok and type(s) == "string" and s ~= "" then
       return s
     end
@@ -197,7 +197,7 @@ end
 function VRFW_OPT_Tab()                 -- strip index of the mod tab, or false (asked once per opening of the menu)
   if VRFW_OPT_TAB_IDX == nil then
     local n = 4
-    local ok, p = pcall(funcLuaCommand, 3472223911 --[[CMND_GET_APP_PLATFORM?]])
+    local ok, p = pcall(funcLuaCommand, VRFW_Cmd.GET_APP_PLATFORM)
     if ok and p == 1 then              -- the retail strip hides the graphics tab there
       n = 3
     end
@@ -338,29 +338,29 @@ function VRFW_OPT_ShowText(a1, s, a3, a4) -- value text + both arrows, the look 
   funcLuaMenuCommand(2158717427, 3344436024, 4203144987 --[[_pos_arrow01]], true, a1)
   funcLuaMenuCommand(3404096044, 3344436024, a1, 2475420648, true)
   funcLuaMenuCommand(3404096044, 3344436024, a1, 2234738066, true)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 569341911, s, a1)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 2795244008, s, a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 569341911, s, a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 2795244008, s, a1)
   if a3 then
-    funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], 3344436024, a1, 1203080170, 0, 3627544126)
+    funcLuaMenuCommand(VRFW_Cmd.PLAY_ANIME_TYPE, 3344436024, a1, 1203080170, 0, 3627544126)
   elseif a4 then
-    funcLuaMenuCommand(3781155141 --[[CMND_PLAY_ANIME_TYPE]], 3344436024, a1, 3183130249, 0, 3627544126)
+    funcLuaMenuCommand(VRFW_Cmd.PLAY_ANIME_TYPE, 3344436024, a1, 3183130249, 0, 3627544126)
   end
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], 3344436024, 2475420648, true, a1)
-  funcLuaMenuCommand(3405944500 --[[CMND_SET_MESH_VISIBLE]], 3344436024, 2234738066, true, a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, 3344436024, 2475420648, true, a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MESH_VISIBLE, 3344436024, 2234738066, true, a1)
 end
 function VRFW_OPT_Dim(a1, alpha)        -- the retail «disabled» look (UpdateListContentText's flag): alpha of the cell texts
-  funcLuaMenuCommand(4231609516, 3344436024, a1, 0, alpha)
+  funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_MODEL_ALPHA, 3344436024, a1, 0, alpha)
   for _, t in ipairs({861591609, 3778835256, 569341911, 2795244008, 75769867, 702348360}) do
-    funcLuaMenuCommand(1126837159, 3344436024, a1, t, alpha)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_ALPHA, 3344436024, a1, t, alpha)
   end
 end
 function VRFW_OPT_ChildLook(a1, label)  -- the retail child row (UpdateListContentCustomText): └ + inset plate, label in list04
   funcLuaMenuCommand(2158717427, 3344436024, 2894095071 --[[_pos_summary01]], false, a1)
   funcLuaMenuCommand(2158717427, 3344436024, 898184037 --[[_pos_summary02]], true, a1)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 861591609 --[[_text_option_list01_on]], "", a1)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 3778835256 --[[_text_option_list01_off]], "", a1)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 75769867 --[[_text_option_list04_on]], label, a1)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 702348360 --[[_text_option_list04_off]], label, a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 861591609 --[[_text_option_list01_on]], "", a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 3778835256 --[[_text_option_list01_off]], "", a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 75769867 --[[_text_option_list04_on]], label, a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 702348360 --[[_text_option_list04_off]], label, a1)
 end
 function VRFW_OPT_IsChild(id)           -- a child row whose parent is on the tab
   local p = VRFW_OPT_PARENT[id]
@@ -461,12 +461,12 @@ function VRFW_OPT_Mark(a1, key)         -- row name + «  ▶» (current value h
     s = label .. VRFW_OPT_PV_C.PLAY_MARK
   end
   if VRFW_OPT_IsChild(key) then           -- a child row: its label is list04
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 75769867 --[[_text_option_list04_on]], s, a1)
-    funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 702348360 --[[_text_option_list04_off]], s, a1)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 75769867 --[[_text_option_list04_on]], s, a1)
+    funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 702348360 --[[_text_option_list04_off]], s, a1)
     return
   end
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 861591609 --[[_text_option_list01_on]], s, a1)
-  funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 3344436024, 3778835256 --[[_text_option_list01_off]], s, a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 861591609 --[[_text_option_list01_on]], s, a1)
+  funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 3344436024, 3778835256 --[[_text_option_list01_off]], s, a1)
 end
 function VRFW_OPT_Remark(key)           -- redraw the mark of the cells showing row `key`
   for cell, _ in pairs(VRFW_SET_LABELS) do
@@ -565,7 +565,7 @@ function VRFW_OPT_PreviewStep()         -- per frame: the preview key, the end o
   if down and not VRFW_OPT_PV.key_down and VRFW_OPT_InView() then
     local id = VRFW_SET_Focused()
     if id ~= nil and VRFW_OPT_HasPreview(id) and not VRFW_OPT_PreviewPlay(id) then
-      funcLuaCommand(3073642526 --[[CMND_SND_PLAY?]], 2086672038 --[[sy0003]])
+      funcLuaCommand(VRFW_Cmd.SND_PLAY, 2086672038 --[[sy0003]])
     end
   end
   VRFW_OPT_PV.key_down = down
@@ -609,7 +609,7 @@ if VRFW_Host ~= nil then
           LISTVIEW.UpdateAttachTabNum(k + 1, a1)
         else
           if a2 == k then
-            funcLuaMenuCommand(711242136 --[[CMND_SET_LAYER_VISIBLE]], a1, a2, true)
+            funcLuaMenuCommand(VRFW_Cmd.SET_LAYER_VISIBLE, a1, a2, true)
             LISTVIEW.SetupTabIcon(a1, a2, VRFW_OPT_ICON, true)
           end
           funcLuaMenuCommand(3252599449, a1, k + 1)
@@ -625,7 +625,7 @@ if VRFW_Host ~= nil then
         local ok, idx = pcall(funcLuaMenuCommand, 2603265800, a1)
         if ok and idx == k then
           LISTVIEW.SetFocusFromHeaderToList(a1, 2081113831)
-          funcLuaMenuCommand(1083631230 --[[CMND_SET_MENU_TEXT_STRING?]], 601987949, 2303671242, VRFW_OPT_Text(VRFW_OPT_TITLE_ID, "Mod options"), 0)
+          funcLuaMenuCommand(VRFW_Cmd.SET_MENU_TEXT_STRING, 601987949, 2303671242, VRFW_OPT_Text(VRFW_OPT_TITLE_ID, "Mod options"), 0)
           return
         end
       end
@@ -681,9 +681,9 @@ if VRFW_Host ~= nil then
       local id, idx = VRFW_SET_Focused()
       if id ~= nil or (idx ~= nil and VRFW_OPT_IsModCell(idx)) then
         if VRFW_SET_LAST_OK then
-          funcLuaCommand(3073642526 --[[CMND_SND_PLAY?]], 3791946501 --[[sy0004]])
+          funcLuaCommand(VRFW_Cmd.SND_PLAY, 3791946501 --[[sy0004]])
         else
-          funcLuaCommand(3073642526 --[[CMND_SND_PLAY?]], 2086672038 --[[sy0003]])
+          funcLuaCommand(VRFW_Cmd.SND_PLAY, 2086672038 --[[sy0003]])
         end
         VRFW_SET_LAST_OK = true
         return 0
@@ -697,21 +697,21 @@ if VRFW_Host ~= nil then
       local id, idx = VRFW_SET_Focused()
       if id ~= nil and VRFW_OPT_HasPreview(id) and VRFW_OPT_ClickOnMark(idx, id) then -- click on the ▶ side: preview
         if not VRFW_OPT_PreviewPlay(id) then
-          funcLuaCommand(3073642526 --[[CMND_SND_PLAY?]], 2086672038 --[[sy0003]])
+          funcLuaCommand(VRFW_Cmd.SND_PLAY, 2086672038 --[[sy0003]])
         end
         return
       end
       if id ~= nil then
         if VRFW_SET_Toggle(id, 1) then
-          funcLuaCommand(3073642526 --[[CMND_SND_PLAY?]], 3848881948 --[[sy0000]])
+          funcLuaCommand(VRFW_Cmd.SND_PLAY, 3848881948 --[[sy0000]])
         else
-          funcLuaCommand(3073642526 --[[CMND_SND_PLAY?]], 2086672038 --[[sy0003]])
+          funcLuaCommand(VRFW_Cmd.SND_PLAY, 2086672038 --[[sy0003]])
         end
         VRFW_SET_Show(idx, id, false, true)
         return
       end
       if idx ~= nil and VRFW_OPT_IsModCell(idx) then
-        funcLuaCommand(3073642526 --[[CMND_SND_PLAY?]], 2086672038 --[[sy0003]])
+        funcLuaCommand(VRFW_Cmd.SND_PLAY, 2086672038 --[[sy0003]])
         return
       end
     end

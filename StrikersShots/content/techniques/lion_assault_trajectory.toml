@@ -1,0 +1,24 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Rugido de león (Lion Assault, whs02710) and of the moves with the same cut-in,
+# Rugido de Doruga (Doruga Assault, whs02711) and Rugido de Goliger (Goliger Assault, whs02712), cut-in ev60_02710.
+#
+# In the cut-in's last shot (c0400) the ball is struck out of the fire swirls in one straight line. Flight: straight
+# and level at 3.0 m into the goal, the swirls round the ball clear of the pitch (research/scripts/lion_assault_ball_fx.py
+# FLIGHT_H: keep the two equal). unblockable = false: the game's block rules (this mod changes no block rule). Heights
+# are the ball centre over the pitch (m); points count from the kick; one point = a level flight; straight = true: one
+# straight line from the kick to the goal at that height.
+
+# Rugido de león (whs02710).
+[[edit]]
+target = "whs02710"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }
+
+# Rugido de Doruga (whs02711).
+[[edit]]
+target = "whs02711"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }
+
+# Rugido de Goliger (whs02712).
+[[edit]]
+target = "whs02712"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

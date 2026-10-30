@@ -5,7 +5,8 @@
 -- format, its players' cards and each one's mini-challenge), [[NewRecruitment.PachangaChallenge]] (the challenge types:
 -- check, params, text) and [[NewRecruitment.PachangaTechniqueList]] (technique lists the checks read).
 -- While an armed pachanga's match runs, every player's challenge is followed from the VRFW match events (event-driven);
--- at match_end the players whose challenge was met are the result. Game Lua side:
+-- at match_end the players whose challenge was met are the result; won / lost and the score are the game's own
+-- (VRFW MatchResult.last, signal vrfw.match_result: penalties and forfeits included). Game Lua side:
 -- assets\lua\vs_route_town_menu\new_recruitment_pachangas.lua.
 -- | Command | Args | Returns |
 -- |---|---|---|
@@ -26,13 +27,10 @@ NewRecruitment = NewRecruitment or {}
 local P = {}
 
 local FOLDER = "content/pachangas"
-local function info(...) VRFW.log("pachangas:", ...) end
-local function warn(...) VRFW.warn("pachangas:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("pachangas")
 
-local function crc(s)
-  local f = VRFW.crc32 or (VRFW.ui and VRFW.ui.crc32)
-  return f(s) % 4294967296
-end
+local crc = VRFW.crc32
 
 local ZONES = nil      -- { { name, node, title, stadium, pachangas = { … } } … }
 local LEVEL = { scale = "data", min = 1, max = 200, row_level = 0 }   -- zones.toml [NewRecruitment.PachangaLevel]
@@ -42,7 +40,7 @@ local BY_KEY = {}      -- pachanga key -> pachanga
 local TYPES = {}       -- challenge type name -> { name, check, params, text }
 local LISTS = {}       -- technique list name -> { [skill id] = true }
 local LIVE = nil       -- the armed pachanga's match: see arm()
-local PLAYED = nil     -- { key, gf, ga, won, met = { card … } } until read
+local PLAYED = nil     -- { key, gf, ga, won, met = { card … }, judged } until read
 
 local function id_of(text)
   if type(text) == "number" then return math.floor(text) % 4294967296 end
@@ -468,6 +466,30 @@ VRFW.on("goal", function(ev)
   return nil
 end)
 
+-- the game's judge of a finished match onto a pachanga's record: won and the score (the goal events' count stays for
+-- the challenges)
+local function judge(record, result)
+  record.won = result.outcome == "win"
+  record.gf = tonumber(result.score_for) or record.gf
+  record.ga = tonumber(result.score_against) or record.ga
+  record.judged = true
+end
+
+-- the game's own result (VRFW MatchResult.last), published before or after match_end: onto the running pachanga, or
+-- onto the one just played when match_end came first
+VRFW.on("signal:vrfw.match_result", function()
+  local results = rawget(_G, "MatchResult")
+  local last = type(results) == "table" and results.last or nil
+  if type(last) ~= "table" then return nil end
+  if LIVE and not LIVE.armed then
+    LIVE.result = last
+  elseif PLAYED and not PLAYED.judged then
+    judge(PLAYED, last)
+    info(string.format("%s judged: %s %d-%d", PLAYED.key, tostring(last.outcome), PLAYED.gf, PLAYED.ga))
+  end
+  return nil
+end)
+
 VRFW.on("match_end", function(ev)
   if not LIVE or LIVE.armed then return nil end
   moment({ kind = "end" })
@@ -475,8 +497,10 @@ VRFW.on("match_end", function(ev)
   for _, pl in ipairs(LIVE.players) do
     if pl.met then met[#met + 1] = pl.card end
   end
-  PLAYED = { key = LIVE.key, level = LIVE.level, gf = LIVE.gf, ga = LIVE.ga, won = LIVE.gf > LIVE.ga, met = met }
-  info(string.format("%s over: %d-%d, %d challenge(s) met", LIVE.key, LIVE.gf, LIVE.ga, #met))
+  PLAYED = { key = LIVE.key, level = LIVE.level, gf = LIVE.gf, ga = LIVE.ga, won = false, met = met, judged = false }
+  if LIVE.result then judge(PLAYED, LIVE.result) end
+  info(string.format("%s over: %d-%d, %d challenge(s) met%s", LIVE.key, PLAYED.gf, PLAYED.ga, #met,
+    PLAYED.judged and "" or " (the game's result not seen yet)"))
   LIVE = nil
   return nil
 end)

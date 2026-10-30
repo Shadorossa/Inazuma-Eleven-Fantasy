@@ -25,3 +25,22 @@ return = "menus"
 pass = "challenge"
 passed_key = "office.{tag}.{sub}"
 before = [{ op = "fade_encounter", frames = 120 }]
+
+# the same trial when no active pachanga team is set: the player's active match team (the VS team the other modes use)
+# plays its five, untouched; the office's TrialFriendlyActiveTeam (content\contact_maps\office.toml), picked by the
+# framework's VRFW_MATCH.pachanga_team
+[[friendly]]
+id = "new_recruitment_office_trial_active_team"
+name = "Recruitment office trial (active team)"
+game = "sbtl_rojiura_01"
+ruleset = "if_pachanga_5v5"
+team = "current"
+kit_from_11 = true
+pre_match = true
+rival_home = true
+challenge = "ctx"
+save = "sink"
+return = "menus"
+pass = "challenge"
+passed_key = "office.{tag}.{sub}"
+before = [{ op = "fade_encounter", frames = 120 }]

@@ -56,7 +56,7 @@ local function UtilXsLineupStep(prev)
       util_xs_close_now = false
       local ok, err = pcall(function()
         CloseCommonTimer()
-        funcLuaCommand(320421347 --[[CMND_CLOSE_MENU_OBJECT]], 1853845420 --[[soccer_battle_setting_flow_vs_menu]])
+        funcLuaCommand(@crc:CMND_CLOSE_MENU_OBJECT@, 1853845420 --[[soccer_battle_setting_flow_vs_menu]])
       end)
       UTIL_XS.Log("lineup group closed (direct jump)", tostring(ok), tostring(err))
       return

@@ -10,8 +10,8 @@ ShopRedirects = ShopRedirects or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("shop_redirects:", ...) end
-local function warn(...) VRFW.warn("shop_redirects:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("shop_redirects")
 
 local PAIRS = {}  -- { from, to }: a number (shop id) or a text (shop key)
 local SCREENS = {} -- { from, set crc }: the shop opens the contact map screen on that set
@@ -74,7 +74,7 @@ local function start()
     if w.kind == "shop" then
       PAIRS[#PAIRS + 1] = { from, w.target }
     else
-      SCREENS[#SCREENS + 1] = { from, VRFW.ui.crc32(w.target) % 4294967296 }
+      SCREENS[#SCREENS + 1] = { from, VRFW.crc32(w.target) }
     end
   end
   if #PAIRS == 0 and #SCREENS == 0 then

@@ -7,6 +7,11 @@
 # Sprite names / places as Inazuma Fantasy shipped them (the Lua and the office icons name them).
 schema = "VRFW.image/1"
 
+[[texture]]
+atlas = "#/menu/200_icon/better_qol_own/better_qol_icon_common.g4tx"
+name = "better_qol_icon_common"
+size = [252, 64]
+
 # the framework's screens (Mods panel: technique / character lists and editors) show this icon for the elements the
 # game has none of (VR-Framework [[VRFW.ElementIcon]] of the image type): void (element 5 moves, characters) and neutral
 # (element 0 characters). Without Utilities those show no icon.
@@ -26,39 +31,39 @@ name = "icon_common"
 size = [1192, 1180]
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/better_qol_own/better_qol_icon_common.g4tx"
 name = "icon_cmd_type00"
-texture = "icon_common"
-x = 4
-y = 1112
+texture = "better_qol_icon_common"
+x = 68
+y = 0
 size = [64, 64]
 recipe = "cmd"
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/better_qol_own/better_qol_icon_common.g4tx"
 name = "icon_cmd_on_type00"
-texture = "icon_common"
-x = 72
-y = 1112
+texture = "better_qol_icon_common"
+x = 0
+y = 0
 size = [64, 64]
 recipe = "cmd_on"
 
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/better_qol_own/better_qol_icon_common.g4tx"
 name = "icon_focus_type00"
-texture = "icon_common"
-x = 140
-y = 1112
+texture = "better_qol_icon_common"
+x = 136
+y = 0
 size = [64, 64]
 recipe = "focus"
 
 # the bare ensō with its glow: our own picture
 [[sprite]]
-atlas = "#/menu/200_icon/15_icon_common/icon_common.g4tx"
+atlas = "#/menu/200_icon/better_qol_own/better_qol_icon_common.g4tx"
 name = "icon_type00"
-texture = "icon_common"
-x = 208
-y = 1112
+texture = "better_qol_icon_common"
+x = 204
+y = 0
 png = "neutral/icon_type00.png"
 
 # ---- own parts --------------------------------------------------------------------------------------------------------

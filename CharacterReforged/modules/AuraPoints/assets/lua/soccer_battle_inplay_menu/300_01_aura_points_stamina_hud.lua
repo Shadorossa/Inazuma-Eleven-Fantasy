@@ -87,19 +87,19 @@ local PE_RATE_RED = 2546116024 --[[hp_bar_red]]
 local PE_MESH_LABEL = 1257514352 --[[_gtxt_stamina01]]
 local PE_MESH_EMPTY = 2609329121 --[[_hp_empty01]]
 local PE_MESH_BAR = 2043683848 --[[_hp_bar02]]
-local PE_CMND_POS = 1389957207 --[[CMND_SET_LAYER_LOCAL_POS]]
-local PE_CMND_SCALE = 3778714801 --[[CMND_SET_LAYER_LOCAL_SCALE]]
-local PE_CMND_VISIBLE = 711242136 --[[CMND_SET_LAYER_VISIBLE]]
-local PE_CMND_IS_VISIBLE = 1262717583 --[[CMND_IS_LAYER_VISIBLE]]
-local PE_CMND_OPEN = 629267548 --[[CMND_OPEN_LAYER]]
-local PE_CMND_IS_OPEN = 2640875187 --[[CMND_IS_OPEN_LAYER]]
-local PE_CMND_IS_LOADING = 3057768039 --[[CMND_IS_LOADING_LAYER]]
-local PE_CMND_SUSPEND = 1073735467 --[[CMND_SUSPEND_LAYER]]
+local PE_CMND_POS = 1389957207
+local PE_CMND_SCALE = 3778714801
+local PE_CMND_VISIBLE = 711242136
+local PE_CMND_IS_VISIBLE = 1262717583
+local PE_CMND_OPEN = 629267548
+local PE_CMND_IS_OPEN = 2640875187
+local PE_CMND_IS_LOADING = 3057768039
+local PE_CMND_SUSPEND = 1073735467
 local PE_CMND_IS_SUSPENDED = 15180
 local PE_CMND_RATE_INIT = 541357333
 local PE_CMND_RATE = 1595998683
-local PE_CMND_MESH_VISIBLE = 3405944500 --[[CMND_SET_MESH_VISIBLE]]
-local PE_CMND_PRIM_COLOR = 855211291 --[[CMND_SET_PRIM_COLOR]]
+local PE_CMND_MESH_VISIBLE = 3405944500
+local PE_CMND_PRIM_COLOR = 855211291
 local PE_CMND_LAYOUT_TO_POS = 1192474820 --[[layout offset -> layer position offset (retail UpdateScreenOutCtrlCharaIcon)]]
 -- the retail gauge frame _hp_base01: top-left (94, -816), 476 x 44 (layout units, y up); its centre:
 local PE_FRAME_CX, PE_FRAME_CY, PE_FRAME_W, PE_FRAME_H = 332, -838, 476, 44
@@ -114,11 +114,11 @@ local PE_LABEL = 52290927
 local PE_MESH_FRAME = 1837325853 --[[_hp_base01]]
 local PE_TEX_TAG = 2270199711
 local PE_TEX_FRAME = 538967808 --[[hp_base01: the frame's texture slot]]
-local PE_CMND_PRIM_ALPHA = 2219773080 --[[CMND_SET_PRIM_ALPHA]]
+local PE_CMND_PRIM_ALPHA = 2219773080
 local PE_CMND_SWAP_TEX = 558735651 --[[swap a mesh texture: (layer, atlas, new sprite, old sprite, 0, instance)]]
-local PE_ATLAS = 1191797350 --[[#/menu/02_btl/btl06/btl06_13/<LG>/btl06_13.g4tx]]
+local PE_ATLAS = 641552684 --[[#/menu/02_btl/aura_points_hud/<LG>/aura_points_hud.g4tx: the mod's own atlas]]
 local PE_TEX_FILL = 1460691304 --[[hp_bar02: the fill's texture slot]]
--- the gloss sprites stamina_points_gloss_00 .. _47 of the btl06_13 atlas (research/scripts/hud_gloss_build.py): the band
+-- the gloss sprites stamina_points_gloss_00 .. _47 of the mod's own atlas (research/scripts/hud_gloss_build.py): the band
 -- centred at EVT_GLOSS_C0 + (EVT_GLOSS_C1 - EVT_GLOSS_C0) * k / 47 of the fill's width
 EVT_GLOSS = {
   1971569257, 42267391, 2609750853, 3968504787,
@@ -266,7 +266,7 @@ end
 
 local function PE_ShowLayer(l)
   if PE_Cmd(PE_CMND_IS_SUSPENDED, l) == true then
-    PE_Cmd(537389555 --[[CMND_RESUME_LAYER]], l)
+    PE_Cmd(537389555, l)
   end
   PE_Cmd(PE_CMND_VISIBLE, l, 0, true)
 end

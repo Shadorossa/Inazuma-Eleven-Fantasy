@@ -11,17 +11,14 @@ PoseRow = PoseRow or {}
 
 local D = require "lib/declarations"
 
-local function info(...) VRFW.log("pose_row:", ...) end
-local function warn(...) VRFW.warn("pose_row:", ...) end
+require "VRFW/lib/basics"
+local GameText = require "VRFW/lib/game_text"
+local info, warn = VRFW.logger("pose_row")
 
-local function crc(s)
-  local f = VRFW.crc32 or (VRFW.ui and VRFW.ui.crc32)
-  return f(s) % 4294967296
-end
+local crc = VRFW.crc32
 
 local ROWS = nil         -- key crc -> declaration served
 local LAYOUT = nil       -- content\defaults\pose_row.toml
-local NAMES = { lang = nil, of = {} }
 
 local function text_id(s)
   if type(s) ~= "string" or s == "" then return 0 end
@@ -61,41 +58,6 @@ local function load_rows()
   return ROWS
 end
 
--- `[kanji/kana]` furigana markup reduced to the kanji
-local function strip(s)
-  return (s:gsub("%[([^/%]]*)/[^%]]*%]", "%1"))
-end
-
-local function lang_of(code)
-  local c = type(code) == "number" and math.floor(code) or nil
-  if c and c >= 0 and type(VRFW.files.game_languages) == "function" then
-    local ok, t = pcall(VRFW.files.game_languages)
-    local l = ok and type(t) == "table" and t[c + 1] or nil
-    if type(l) == "string" then return l end
-  end
-  return "en"
-end
-
--- the names of these text ids in `lang` (chara_text; en when the language has none), cached per language
-local function names(lang, ids)
-  if NAMES.lang ~= lang then NAMES = { lang = lang, of = {} } end
-  local need = {}
-  for _, id in ipairs(ids) do
-    if NAMES.of[id] == nil then need[#need + 1] = id end
-  end
-  if #need == 0 then return NAMES.of end
-  local ok, rows = pcall(VRFW.files.text_rows, "data/common/text/" .. lang .. "/chara_text.cfg.bin", need)
-  if (not ok or type(rows) ~= "table") and lang ~= "en" then
-    ok, rows = pcall(VRFW.files.text_rows, "data/common/text/en/chara_text.cfg.bin", need)
-  end
-  for _, id in ipairs(need) do
-    local r = ok and type(rows) == "table" and rows[id] or nil
-    local s = r and r[0]
-    NAMES.of[id] = (type(s) == "string" and s ~= "") and strip(s) or ""
-  end
-  return NAMES.of
-end
-
 -- CMND_VRFW_POSE_ROW(key crc) -> the declaration
 function PoseRow.Get(key)
   return load_rows()[math.floor(tonumber(key) or 0) % 4294967296]
@@ -110,7 +72,7 @@ function PoseRow.Cards(code, ...)
     out[i] = { name = "", position = card and card.position or 0, text = ch and ch.name_text or 0 }
     if out[i].text ~= 0 then texts[#texts + 1] = out[i].text end
   end
-  local of = names(lang_of(code), texts)
+  local of = GameText.chara_names(texts, GameText.language(code))
   for _, o in ipairs(out) do
     o.name = of[o.text] or ""
     o.text = nil

@@ -22,8 +22,8 @@ local PATH_F00 = "common/event/ev99/ev99_97020/ev99_97020_c000101_s00_p00_c0010.
 -- the four body rigs with packs (CHARA_BODY_INFO skeletons); anything else plays as c000101
 local RIGS = { "c000101", "c000201", "c000301", "c000401" }
 
-local function info(...) VRFW.log("aura_reworked miximax: scene:", ...) end
-local function warn(...) VRFW.warn("aura_reworked miximax: scene:", ...) end
+require "VRFW/lib/basics"
+local info, warn = VRFW.logger("aura_reworked miximax: scene")
 
 local function u32le(s, at)
   local a, b, c, d = s:byte(at + 1, at + 4)

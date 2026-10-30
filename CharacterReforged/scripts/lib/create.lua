@@ -47,15 +47,12 @@ local A = CharacterReforged
 A.Create = A.Create or {}
 local K = A.Create  -- (functions declared by full name: vrfw check finds the command handlers by text)
 
-local function u32(v)
-  if type(v) == "boolean" then return v and 1 or 0 end
-  v = tonumber(v) or 0
-  if v < 0 then v = v + 4294967296 end
-  return math.floor(v) % 4294967296
-end
+local Id = require "VRFW/lib/ids"
+local u32 = Id.u32
 
-local function hex(v) return string.format("0x%08X", u32(v)) end
-local function info(...) VRFW.log("create:", ...) end
+local hex = Id.hex
+require "VRFW/lib/basics"
+local info = VRFW.logger("create")
 
 local MOD = "character_reforged"
 local PLACE_FAILED = -2

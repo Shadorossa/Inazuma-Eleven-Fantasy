@@ -1,0 +1,12 @@
+# Character Reforged: its own atlas character_reforged_titles (the page titles evt_gtxt_psmoves01 / _psequip01 /
+# evt_gtxt_hiper01: content\images\menu\00_soccer\soccer11\soccer11_05.toml) on the screens that show them: the
+# player plate's Hipertécnica page (graft plate_hiper_plate) and the skill table's set preview (graft pset_preview).
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "personal_plate_menu"
+res = ["#/menu/00_soccer/soccer11/character_reforged_titles/<LG>/character_reforged_titles.g4tx"]
+
+[[patch]]
+menu = "evt_skill_slot_menu"
+res = ["#/menu/00_soccer/soccer11/character_reforged_titles/<LG>/character_reforged_titles.g4tx"]

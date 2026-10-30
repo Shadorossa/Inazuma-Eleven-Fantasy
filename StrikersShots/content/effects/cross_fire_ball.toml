@@ -1,0 +1,43 @@
+# «Fuego cruzado» (Cross Fire; whs00950 fire shot and whs03400 wind shot, the same two-player combo, plus Inazuma
+# Fantasy's whs00950_or / whs03400_or; cut-ins ev60_00950 / ev60_03400, both playing ev60009500): while the ball flies
+# to the goal it wears the cut-in's last shot (c0500, held at frame 396 from the aura's first frame): the red-orange
+# fire and pale-blue ice ribbons coiled round the ball (a flat spiral facing along the flight, with depth copies), the
+# orange / blue glow and its white core on the ball (camera-facing), the sparks round the coils and the fire and ice
+# trails braided into a widening tube behind the ball, x0.35 (coils ~2.2 m across, trails ~5.5 m). The coils and the
+# braided trails spin about the flight at the cut-in's own rates (whole turns per loop), their textures flowing.
+# The trails come out of the kick point as the ball flies (distance clock, never stretched) and fade out at their end.
+# The object is ev6095cf00 (effect/event/ev60/ev6095cf00/), built by research/scripts/cross_fire_ball_fx.py from
+# ev60009500; docs/game/media/cross-fire-ball-fx.md.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# One object, two triggers: each copies the special-shot aura row of its element (fire: like = "ega0075c"; wind:
+# like = "ega0075b"): CB_SkillShootBallAura turns +Z along the ball's velocity every frame; the distance clock
+# (anchor = "kick", drift 0.75 m a frame) reveals the trails from the kick point.
+# Flight: content\techniques\cross_fire_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "cross_fire_fire"
+from = "ega0075c"
+object = "effect/event/ev60/ev6095cf00/ev6095cf00.objbin"
+
+[[effect]]
+name = "cross_fire_wind"
+from = "ega0075b"
+object = "effect/event/ev60/ev6095cf00/ev6095cf00.objbin"
+
+[[shot_aura]]
+name = "cross_fire_fire"
+when = { techniques = ["whs00950", "whs00950_or"] }
+aura = "cross_fire_fire"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75
+
+[[shot_aura]]
+name = "cross_fire_wind"
+when = { techniques = ["whs03400", "whs03400_or"] }
+aura = "cross_fire_wind"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75
