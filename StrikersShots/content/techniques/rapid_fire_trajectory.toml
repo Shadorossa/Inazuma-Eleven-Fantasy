@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Fuego rápido (Rapid Fire, whs02470, cut-in ev60_02470): one straight level line from
+# the kick point to the goal, the ball at 3.0 m the whole way (its fire rings, up to ~2.7 m round the flight, stay clear
+# of the grass). Heights are the ball centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Fuego rápido (whs02470).
+[[edit]]
+target = "whs02470"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

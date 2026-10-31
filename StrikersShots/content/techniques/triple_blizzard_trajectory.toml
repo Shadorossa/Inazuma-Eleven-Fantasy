@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Ventisca triple (Triple Blizzard, whs02950 and whs02950_or, the same cut-in
+# ev60_02950; the variant covered by the base move's rule).
+#
+# Measured: the last cut (c0500) is a slow-motion close-up, the ball 3.47 m up drifting 1.5 m sideways and down to
+# 2.87 m. Flight (owner's rule 2026-10-24: every aura shot a straight level line, <= 3 m): one straight level line from
+# the kick point to the goal, the ball centre at 3.0 m the whole way, so the ice sheaths round it (2.4 m in radius) and
+# the wind lines (2.6 m) stay clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Ventisca triple (whs02950).
+[[edit]]
+target = "whs02950"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

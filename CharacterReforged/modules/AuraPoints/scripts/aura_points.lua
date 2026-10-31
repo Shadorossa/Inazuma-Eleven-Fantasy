@@ -104,6 +104,7 @@ end
 --   AuraPoints.Team (team): cost (the pools apply to it); key 255: armour_blocks_keshin_move.
 -- A record is written when one of its fields changed (once per frame at most).
 local recs = {}
+local pair_recs = {}   -- [name][hdl][id] = the record of the key { hdl, id } (found without building its key)
 
 local function rec_of(name, key)
   local t = recs[name]
@@ -111,35 +112,65 @@ local function rec_of(name, key)
     t = {}
     recs[name] = t
   end
-  local k = type(key) == "table" and table.concat(key, ":") or tostring(key)
+  local k = type(key) == "table" and table.concat(key, ":") or key
   local r = t[k]
   if not r then
-    r = { key = key, fields = {}, dirty = false }
+    r = { key = key, fields = {}, dirty = false, name = name, rec_key = k }
     t[k] = r
   end
   return r
 end
 
-local function rset(name, key, field, value)
-  local r = rec_of(name, key)
+-- the records with a changed field since the last flush (the flush walks only these)
+local dirty_recs = {}
+
+local function set_field(r, field, value)
   if r.fields[field] ~= value then
     r.fields[field] = value
-    r.dirty = true
+    if not r.dirty then
+      r.dirty = true
+      dirty_recs[#dirty_recs + 1] = r
+    end
   end
 end
 
+local function rset(name, key, field, value) set_field(rec_of(name, key), field, value) end
+
 local function pset(hdl, field, value) rset("AuraPoints.Player", hdl, field, value) end
-local function pairset(hdl, id, field, value) rset("AuraPoints.Pair", { hdl, id }, field, value) end
+local function pairset(hdl, id, field, value)
+  local name = "AuraPoints.Pair"
+  local by_name = pair_recs[name]
+  if by_name == nil then
+    by_name = {}
+    pair_recs[name] = by_name
+  end
+  local by_hdl = by_name[hdl]
+  if by_hdl == nil then
+    by_hdl = {}
+    by_name[hdl] = by_hdl
+  end
+  local r = by_hdl[id]
+  if r == nil or recs[name] == nil or recs[name][r.k] ~= r then
+    r = rec_of(name, { hdl, id })
+    r.k = hdl .. ":" .. id
+    by_hdl[id] = r
+  end
+  set_field(r, field, value)
+end
 local function teamset(team, field, value) rset("AuraPoints.Team", team, field, value) end
 
 local function flush_records()
-  for name, t in pairs(recs) do
-    for _, r in pairs(t) do
-      if r.dirty then
-        r.dirty = false
-        local v = next(r.fields) ~= nil and r.fields or nil
-        pcall(VRFW.native.table_set, name, r.key, v)
-      end
+  local n = #dirty_recs
+  if n == 0 then return end
+  for i = 1, n do
+    local r = dirty_recs[i]
+    dirty_recs[i] = nil
+    local t = recs[r.name]
+    -- (a record of a table cleared since it changed is not written)
+    if r.dirty and t and t[r.rec_key] == r then
+      r.dirty = false
+      local v = next(r.fields) ~= nil and r.fields or nil
+      pcall(VRFW.native.table_set, r.name, r.key, v)
     end
   end
 end
@@ -166,6 +197,8 @@ end
 
 local function clear_match_tables()
   spent_marked = {}
+  pair_recs = {}
+  dirty_recs = {}
   for _, n in ipairs({ "AuraPoints.Player", "AuraPoints.Pair", "AuraPoints.Team" }) do
     recs[n] = {}
     pcall(VRFW.native.table_clear, n)
@@ -347,14 +380,23 @@ local function aura_rule(fn, ...)
   return nil
 end
 
--- the other mods' inputs for one player (rule flags)
+-- the other mods' inputs for one player (rule flags; their names kept per handle)
+local FLAG_NAMES = {}
+local function flags_of(hdl)
+  local n = FLAG_NAMES[hdl]
+  if n == nil then
+    n = { cost = "aura_points.cost_pct." .. hdl, exempt = "aura_points.exempt." .. hdl, free = "aura_points.armour_free." .. hdl }
+    FLAG_NAMES[hdl] = n
+  end
+  return n
+end
 local function cost_factor(hdl)
-  local v = flag("aura_points.cost_pct." .. hdl)
+  local v = flag(flags_of(hdl).cost)
   if v > 0 then return v / 100 end
   return 1.0
 end
-local function exempt(hdl) return flag("aura_points.exempt." .. hdl) ~= 0 end
-local function armour_free(hdl) return flag("aura_points.armour_free." .. hdl) ~= 0 end
+local function exempt(hdl) return flag(flags_of(hdl).exempt) ~= 0 end
+local function armour_free(hdl) return flag(flags_of(hdl).free) ~= 0 end
 
 -- (ok, mine, cost) of a pool move of player p now (nil = not a pool move now): the running pool covers its share
 local function pool_move_check(p, skill)
@@ -424,10 +466,11 @@ local function aura_step(p, actor, a, unit, live, dt)
   local in_play = frame.in_play
   local tr = p.tr
   local ctx = nil
-  local cut = cost_factor(hdl)
   local free_armour = armour and armour_free(hdl)
 
   if applies(team) and (keshin or armour or soul) and not exempt(hdl) then
+    -- the other mods' cost cut (a rule flag): read only while a spirit runs, the one place it scales
+    local cut = cost_factor(hdl)
     local aura_id = armour and a.meta_skill or a.summon_skill
     local k = pool_aura_of(aura_id)
     if k then
@@ -574,14 +617,26 @@ local function aura_step(p, actor, a, unit, live, dt)
   p.slot_pool = slot_pool_of(unit) or p.slot_pool
 end
 
+local NO_MOVES = {}   -- (read only)
+local POOL_FIELDS = { "spirit", "armour", "soul", "cost", "left" }
+
 -- the tables the AuraCostCheck answers read, for one player
 local function publish(p)
   local hdl = p.hdl
   local ctx = p.ctx
   local cs_armour_on = ctx and ctx.armour and not ctx.soul
   -- the running spirit's own moves (lib/route.lua): only they are paid from its pool (peg_cover) and, CS, refused under
-  -- its armour (own_blocked); his other moves keep the tension
-  local own = ROUTE.own_moves(A, ctx)
+  -- its armour (own_blocked); his other moves keep the tension. (They follow the running aura and its pool: kept while
+  -- both stay the same.)
+  local own
+  if not ctx then
+    own = NO_MOVES
+  elseif p.own_mvs ~= nil and p.own_aura == ctx.aura and p.own_pool == ctx.key then
+    own = p.own_mvs
+  else
+    own = ROUTE.own_moves(A, ctx)
+  end
+  p.own_aura, p.own_pool = ctx and ctx.aura, ctx and ctx.key
   local blocked_on = cs_armour_on and P.armour_blocks_keshin_move()
   local cover = nil
   if ctx and not (cs_armour_on and P.armour_moves_free()) then
@@ -645,8 +700,11 @@ local function publish(p)
     pset(hdl, "soul", ctx.soul and 1 or 0)
     pset(hdl, "cost", ctx.move_cost)
     pset(hdl, "left", v and math.floor(v.cur * 100 + 0.5) / 100 or 0)
-  else
-    for _, f in ipairs({ "spirit", "armour", "soul", "cost", "left" }) do pset(hdl, f, nil) end
+    p.pool_fields = true
+  elseif p.pool_fields then
+    -- (cleared once when the spirit is gone: they stay unset until the next one)
+    for _, f in ipairs(POOL_FIELDS) do pset(hdl, f, nil) end
+    p.pool_fields = false
   end
 end
 
@@ -654,7 +712,7 @@ local UNIT_REREAD_MS = 2000
 
 local function step_player(p, actor, a)
   -- his match unit (aura bits, move slots): every frame while a spirit runs or was running, else every UNIT_REREAD_MS
-  local now = VRFW.now()
+  local now = frame.now
   local running = a.summon_state == 2 or a.meta_state == 4 or a.meta_state == 5
   local tracked = p.tr.keshin or p.tr.armour or p.tr.soul
   local unit = nil
@@ -676,9 +734,29 @@ local function step_player(p, actor, a)
   aura_step(p, actor, a, unit, live, frame.dt)
 end
 
+-- the match's actors this frame and the actor table (nil outside a match): the library's reused list when it has one
+local function frame_actors()
+  if Actors.frame then return Actors.frame() end
+  local base = Actors.base()
+  if not base then return nil, nil end
+  return Actors.list(), base
+end
+
+local NO_MATCH = {}     -- (read only)
+local actor_recs = {}   -- [actor table index] = the table read_struct fills again every frame
+-- the record of a player without a spirit (filled again for each one: hdl, team and the two states; no spirit, so the
+-- step reads nothing else of it)
+local IDLE_ACTOR = { hdl = 0, team = 0xFF, summon_state = 0, meta_state = 0, in_play = 0, summon_skill = 0, meta_skill = 0,
+  summon_full = 0, meta_full = 0 }
+-- a player without a spirit is stepped at this rate, not every frame (his slot pool and a fusion partner's cover change
+-- slowly); a frame cap keeps him stepped while the clock stands
+local IDLE_STEP_MS = 100
+local IDLE_STEP_MAX_FRAMES = 12
+local tick_no = 0
+
 VRFW.on("tick", function(ev)
   if not P.any() then return nil end
-  local m = ev.match or {}
+  local m = ev.match or NO_MATCH
   frame.state = m.soccer_state or 0
   frame.half = m.half or 0
   frame.clock = m.clock or 0
@@ -690,10 +768,37 @@ VRFW.on("tick", function(ev)
   frame_update()
   if not seen.in_match or seen.ended then return nil end
   cost_teams()
-  if not Actors.base() then return nil end
-  for _, entry in ipairs(Actors.list()) do
+  local list, base = frame_actors()
+  if not base then return nil end
+  frame.now = VRFW.now()
+  -- every actor's summon / meta state in two reads: the whole record only for a player whose spirit runs or just ended
+  local summon = Actors.field and Actors.field("ApActor", "summon_state", base)
+  local meta = summon and Actors.field("ApActor", "meta_state", base)
+  local now = frame.now
+  tick_no = tick_no + 1
+  for _, entry in ipairs(list) do
     local actor = entry.address
-    local a = VRFW.mem.read_struct("ApActor", actor)
+    local a = nil
+    local skip = false
+    if meta then
+      local ss, ms = summon[entry.index + 1], meta[entry.index + 1]
+      local q = players[entry.handle]
+      local tr = q and q.tr
+      if ss ~= 2 and ms ~= 4 and ms ~= 5 and not (tr and (tr.keshin or tr.armour or tr.soul)) then
+        -- (no spirit: his step reads only these two states)
+        a = IDLE_ACTOR
+        a.hdl, a.team, a.summon_state, a.meta_state = entry.handle, entry.team, ss, ms
+        -- (and runs at IDLE_STEP_MS while no spirit of his runs)
+        skip = q ~= nil and q.ctx == nil and q.team == entry.team and q.idle_due ~= nil and now < q.idle_due
+          and now >= q.idle_from and tick_no - q.idle_tick < IDLE_STEP_MAX_FRAMES
+      end
+    end
+    if skip then
+      a = nil
+    elseif a == nil then
+      a = VRFW.mem.read_struct("ApActor", actor, actor_recs[entry.index])
+      if a then actor_recs[entry.index] = a end
+    end
     if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == entry.index and a.team <= 1 then
       local p = players[a.hdl]
       if not p then
@@ -703,6 +808,13 @@ VRFW.on("tick", function(ev)
       p.team = a.team
       step_player(p, actor, a)
       publish(p)
+      if a == IDLE_ACTOR and p.ctx == nil then
+        -- the next idle step (the first one spread over the players so they do not all step on the same frame)
+        local spread = p.idle_due == nil and (entry.index % 5) * (IDLE_STEP_MS / 5) or 0
+        p.idle_due, p.idle_from, p.idle_tick = now + IDLE_STEP_MS + spread, now, tick_no
+      else
+        p.idle_due = nil
+      end
     end
   end
   flush_records()

@@ -344,10 +344,27 @@ function PL.BoardMoveAt(p)
   end
   return EVT_U32(funcLuaCommand(C.INV_ITEM, inv, 0))
 end
+-- the move an empty position `p` (0-5) takes: board cell `p`, else learn list slot p + 1 once its level is reached
+-- (board cells 3-5 open only through the retail board screen, which is gone; the match's list_board_fill does the same)
+function PL.FillMoveAt(p)
+  local id = PL.BoardMoveAt(p)
+  if id ~= 0 or p == nil or p < 0 or p >= EVT_NORMAL_NUM then
+    return id
+  end
+  local ls = PL.Learnset()
+  local m, need = ls.skill[p + 1] or 0, ls.lv[p + 1] or 0
+  if m == 0 then
+    return 0
+  end
+  if need > 1 and (funcLuaCommand(C.CHARA_GET, n, 0) or 0) < need then
+    return 0
+  end
+  return m
+end
 -- the technique board cell `p` adds to the rows, 0 for none: never an aura, never a move already in the match list or
 -- shown by an earlier empty position (the dedupe of CharacterReforged.EffectiveSkillSet)
 function PL.BoardTechniqueAt(p)
-  local id = PL.BoardMoveAt(p)
+  local id = PL.FillMoveAt(p)
   if id == 0 or PL.IsSpecialCached(id) then
     return 0
   end
@@ -357,7 +374,7 @@ function PL.BoardTechniqueAt(p)
   end
   for q = 0, p - 1 do
     local listed = funcLuaCommand(C.GET_SKILL, n, q)
-    if (listed == nil or listed == 0) and PL.BoardMoveAt(q) == id then
+    if (listed == nil or listed == 0) and PL.FillMoveAt(q) == id then
       return 0
     end
   end
@@ -1379,15 +1396,6 @@ function PL.TensionOff(L)
   VRFW_UI.MovePlate.TensionOff(L, 0)             -- the shared gauge (VRFW_UI.MovePlate, 66_ui_plates.lua)
 end
 
--- peg = EVT_HC.PegInfo of the aura (keshin / armour / totem): the gauge in the PEG look, the move's cost in PEG / SP
--- 2026-10-12 (Nacho: a move-rank book on one move showed +1 on every move plate): the retail SetupCharaSkillItem
--- reads the evolution grade at skill_list[inst] = its row INSTANCE; our rows draw any move at instance 0 / k. The fix
--- is the VR-Framework's shared move plate since 2026-10-13 (VRFW_UI.MovePlate.Graded: the move's OWN grade; every
--- screen with a move plate uses it). Returns pcall's ok, err.
-function PL.SkillItem(chara, move, inst)
-  return VRFW_UI.MovePlate.Graded(chara, move, inst, SetupCharaSkillItem, chara, move or 0, inst, false)
-end
-
 function PL.MoveRow(L, move, team_info, idx, no_tension, owner, peg)
   local R = PL.L_HROW
   idx = idx or 0
@@ -1806,19 +1814,12 @@ function OnFunction(a1, a2)
     EVT_OpenOriginalBoard()
   elseif a1 == 4109882573 or a1 == 1141890006 then
     -- 4109882573 = CMD_FUNC3 (Y): «Restablecer» (owner 2026-10-19: the only row action on this key)
-    -- 1141890006 = CMD_FUNC4 (X): partner picker of a combo move (EVT_CPK.Open; docs/game/mechanics/combo-partners.md)
+    -- 1141890006 = CMD_FUNC4 (X): the declared X action of graft skill_table_host (docs/game/mechanics/combo-partners.md)
     local row = funcLuaMenuCommand(C.FOCUS_IDX, L_ROW)
     local ok_row = row ~= nil and row >= 0 and row < EVT_ROW_NUM and n14 ~= L_BTN and not EVT_IsLocked(row)
     if a1 == 1141890006 then
-      -- X: Inazuma Fantasy's own partner picker when its block is here; otherwise the key belongs to the declared
-      -- X action of graft skill_table_host (Utilities' partner picker), which takes it before this function. Nothing
-      -- declared: X does nothing (2026-10-14, owner: no sound, no guide entry)
-      local skill = ok_row and PL.RowMove(row) or 0
-      if EVT_CPK ~= nil and skill ~= 0 and EVT_CPK.Needs(row, skill) then
-        evt_co = coroutine.create(function()
-          EVT_CPK.Open(row, skill)
-        end)
-      end
+      -- X: the declared X action of graft skill_table_host (Utilities' partner picker) takes the key before this
+      -- function. Nothing declared: X does nothing (2026-10-14, owner: no sound, no guide entry)
     elseif ok_row and not EVT_IsPrime() and not PL.IdolFixed(row) then
       evt_co = coroutine.create(function()
         EVT_ResetCoroutine(row)
@@ -1844,6 +1845,7 @@ function OnBack(a1)
     return
   end
   PL.closeLog = 60                        -- 2026-10-06: the next 60 frames log the close state (Step)
+  PL.board_closing = true                 -- the close starts: no panel redraw until the screen opens again
   pcall(funcLuaCommand, C.EVT_LOG, "skill_slots", "back: retail OnBack", "closing before",
     tostring(funcLuaCommand(C.CLOSING_MENU, EVT_MENU)), "closed before", tostring(funcLuaCommand(C.CLOSED_MENU, EVT_MENU)))
   EVT_RetailOnBack(a1)

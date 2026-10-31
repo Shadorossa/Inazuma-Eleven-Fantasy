@@ -12,7 +12,10 @@
 --   team_config id) names the team that dresses that card instead (its uniform first, e.g. a mod card's own team);
 -- * the page shows his set as the match plays it (CMND_VRFW_TEAM_MEMBER_MOVES: his loadout's special moves and auras,
 --   all available, never padlocked by a learn level): the move, learn table, learn level, board and skill set reads
---   of the plate answer from it; VRFW_PlateMember.SkillSet() gives its aura / mix for the pages that show them.
+--   of the plate answer from it; VRFW_PlateMember.SkillSet(hdl) gives its aura / mix for the pages that show them.
+-- * a team editor's temporary player (VRFW_TeamEditor.TemporaryCard, any mode's team screen: a career club, a league
+--   team) shows his card's set as the match plays it: his card's own learn list (CMND_VRFW_CHARACTER_LEARNSET; moves
+--   above his level padlocked by the plate's learn level read), its auras in the aura / mix slots; the same builder.
 -- Without the parameters nothing changes. No engine call at load time.
 VRFW_PlateMember = type(VRFW_PlateMember) == "table" and VRFW_PlateMember or {}
 if VRFW_PlateMember.Gear == nil then
@@ -122,6 +125,7 @@ if VRFW_PlateMember.SkillSet == nil then
   local M = VRFW_PlateMember
   M.MC = {
     MOVES = VRFW_Cmd.VRFW_TEAM_MEMBER_MOVES,                  -- CMND_VRFW_TEAM_MEMBER_MOVES(team, slot) -> found, 6 moves, 6 levels
+    LEARNSET = VRFW_Cmd.VRFW_CHARACTER_LEARNSET,              -- CMND_VRFW_CHARACTER_LEARNSET(charaStHdl) -> ok, {9 moves}, {9 levels}
     GET_SKILL = 903078840,              -- (charaStHdl, list position 0-5) -> move
     LEARNABLE = 3475351727,             -- (charaStHdl) -> ok, {move per slot}, {learn level per slot}
     LEARN_LEVEL = VRFW_Cmd.VRFW_CHARACTER_LEARN_LEVEL,              -- CMND_VRFW_CHARACTER_LEARN_LEVEL(charaStHdl, move) -> level needed, player's level
@@ -131,15 +135,103 @@ if VRFW_PlateMember.SkillSet == nil then
     LOG = VRFW_Cmd.EVT_LOG,                   -- CMND_EVT_LOG
   }
   M.MIX_TYPES = {[2] = true, [6] = true} -- aura types of the mix slot: Mix-Max, mode change
+  M.ROWS = 6
   M.set = nil                           -- {key, moves, aura, mix, aura_from, mix_from, rows, techniques}
+  M.temporary = {}                      -- charaStHdl -> false: a handle that is no team editor temporary player
 
   local function U32(v) return VRFW_Id.u32(v) end
 
+  -- THE set builder of a shown team member and of a team editor's temporary player: `moves` in their order (auras
+  -- included) -> the first keshin / totem / armour in the aura slot, the first Mix-Max / «Modo cambio» in the mix slot,
+  -- the other moves on the rows (at most 6, in order); `position(i)` = the list position the plate reads move i at
+  local function Build(call, set, moves, position)
+    for i, m in ipairs(moves) do
+      local okc, known, category = pcall(call, M.MC.SKILL_INFO, m, 9)
+      if m ~= 0 and okc and known and category == 8 then
+        local okt, kt, kind = pcall(call, M.MC.SKILL_INFO, m, 13)
+        if okt and kt and M.MIX_TYPES[kind] then
+          if set.mix == 0 then set.mix, set.mix_from = m, i - 1 end
+        elseif set.aura == 0 then
+          set.aura, set.aura_from = m, i - 1
+        end
+      elseif m ~= 0 and #set.techniques < M.ROWS then
+        set.techniques[#set.techniques + 1] = m
+        set.rows[#set.rows + 1] = position(i, #set.techniques)
+      end
+    end
+    return set
+  end
+
+  local function NewSet(key)
+    return {key = key, found = false, moves = {}, rows = {}, techniques = {}, aura = 0, mix = 0, aura_from = -1,
+      mix_from = -1}
+  end
+
+  -- the card of a team editor's temporary player (VRFW_TeamEditor.TemporaryCard: a parameter the editor sets while its
+  -- session runs, so any menu VM reads it); nil = a player of the save. A "no" is kept while this plate lives; a
+  -- "yes" is asked again (the session's end clears it, and the game may give the handle to a player of the save then).
+  local function TemporaryCard(hdl)
+    if type(hdl) ~= "number" or hdl == 0 or M.temporary[hdl] == false then
+      return nil
+    end
+    local editor = VRFW_TeamEditor
+    local ok, card = false, nil
+    if type(editor) == "table" and type(editor.TemporaryCard) == "function" then
+      ok, card = pcall(editor.TemporaryCard, hdl)
+    end
+    if ok and type(card) == "number" and card ~= 0 then
+      return card
+    end
+    M.temporary[hdl] = false
+    return nil
+  end
+
+  -- a team editor's temporary player: his card's set as the match plays it (the card's own learn list,
+  -- CMND_VRFW_CHARACTER_LEARNSET: what a team member row without a loadout plays), read with the commands under every
+  -- handler (VRFW_Host.RealCommand); a move above the player's level stays on its row and the plate's learn level read
+  -- (not answered here) padlocks it, the list read answers 0 there (the match holds it back)
+  local function TemporarySet(hdl)
+    local card = TemporaryCard(hdl)
+    if card == nil then
+      return nil
+    end
+    local key = "temporary:" .. tostring(hdl) .. ":" .. tostring(card)
+    if M.set ~= nil and M.set.key == key then
+      return M.set.found and M.set or nil
+    end
+    local real = (type(VRFW_Host) == "table" and type(VRFW_Host.RealCommand) == "function") and VRFW_Host.RealCommand
+      or funcLuaCommand
+    local set = NewSet(key)
+    M.set = set                         -- a read below that comes back through the hook answers the game's own
+    local ok, answered, moves, levels = pcall(real, M.MC.LEARNSET, hdl)
+    if ok and answered == true and type(moves) == "table" then
+      local list = {}
+      for k = 1, 9 do
+        list[#list + 1] = U32(moves[k])
+      end
+      set.found = true
+      Build(real, set, list, function(_, row) return row - 1 end)
+      local okl, _, level = pcall(real, M.MC.LEARN_LEVEL, hdl, set.techniques[1] or 0)
+      level = (okl and tonumber(level)) or 0
+      for i = 1, M.ROWS do
+        local m = set.techniques[i] or 0
+        local need = 0
+        for k = 1, 9 do
+          if list[k] == m and type(levels) == "table" then need = tonumber(levels[k]) or 0 end
+        end
+        set.moves[i] = (m ~= 0 and (need <= 1 or level >= need)) and m or 0
+      end
+    end
+    pcall(real, M.MC.LOG, "VRFW plate member", string.format("temporary player %s (card 0x%08X): %s", tostring(hdl),
+      card % 4294967296, set.found and string.format("his card's learn list: %d technique(s), aura 0x%08X, mix 0x%08X",
+        #set.techniques, set.aura, set.mix) or "no learn list answered (the game's own reads)"))
+    return set.found and set or nil
+  end
+
   -- the named member's set ({moves[1..6], aura, mix, ...}); nil = no member, or he plays his card's own list
-  function M.Set(call)
+  local function MemberSet(call)
     local team, slot = M.Member()
     if team == nil then
-      M.set = nil
       return nil
     end
     local key = tostring(team) .. ":" .. tostring(slot)
@@ -147,25 +239,15 @@ if VRFW_PlateMember.SkillSet == nil then
       return M.set.found and M.set or nil
     end
     local r = {pcall(call, M.MC.MOVES, team, slot)}
-    local set = {key = key, found = r[1] == true and r[2] == true, moves = {}, rows = {}, techniques = {},
-                 aura = 0, mix = 0, aura_from = -1, mix_from = -1}
+    local set = NewSet(key)
+    set.found = r[1] == true and r[2] == true
     if set.found then
+      local list = {}
       for i = 1, 6 do
-        local m = U32(r[2 + i])
-        set.moves[i] = m
-        local okc, known, category = pcall(call, M.MC.SKILL_INFO, m, 9)
-        if m ~= 0 and okc and known and category == 8 then
-          local okt, kt, kind = pcall(call, M.MC.SKILL_INFO, m, 13)
-          if okt and kt and M.MIX_TYPES[kind] then
-            if set.mix == 0 then set.mix, set.mix_from = m, i - 1 end
-          elseif set.aura == 0 then
-            set.aura, set.aura_from = m, i - 1
-          end
-        elseif m ~= 0 then
-          set.rows[#set.rows + 1] = i - 1
-          set.techniques[#set.techniques + 1] = m
-        end
+        list[i] = U32(r[2 + i])
+        set.moves[i] = list[i]
       end
+      Build(call, set, list, function(i) return i - 1 end)
     end
     M.set = set
     -- one line per member shown: what the page answers from
@@ -175,27 +257,44 @@ if VRFW_PlateMember.SkillSet == nil then
     return set.found and set or nil
   end
 
-  -- {aura, mix, aura_from, mix_from} of the named member's set; nil = none named
-  function M.SkillSet()
+  -- the set the plate shows for `hdl`: a named team member's (any handle: the plate shows that member), else the team
+  -- editor's temporary player's (only that handle); nil = the game's own reads
+  function M.Set(call, hdl)
+    local team = M.Member()
+    if team ~= nil then
+      return MemberSet(call), false
+    end
+    return TemporarySet(hdl), true
+  end
+
+  -- {aura, mix, aura_from, mix_from} of the set shown for card `hdl` (the named member's, a temporary player's); nil = none
+  function M.SkillSet(hdl)
     if type(funcLuaCommand) ~= "function" then
       return nil
     end
-    local set = M.Set(funcLuaCommand)
+    local set = M.Set(funcLuaCommand, hdl)
     if set == nil then
       return nil
     end
     return {aura = set.aura, mix = set.mix, aura_from = set.aura_from, mix_from = set.mix_from}
   end
 
-  -- while a member is named, the plate's set reads answer from his loadout (every other command is the game's)
+  -- while a member is named / a temporary player is read, the plate's set reads answer from his set (every other
+  -- command is the game's); a temporary player keeps the game's learn table and learn level (his own level)
   local answer = {
     [M.MC.GET_SKILL] = function(set, a, b)
       return set.moves[(tonumber(b) or -1) + 1] or 0
     end,
-    [M.MC.LEARNABLE] = function()
+    [M.MC.LEARNABLE] = function(set, a, b, nxt, temporary)
+      if temporary then
+        return nxt(M.MC.LEARNABLE, a, b)
+      end
       return false
     end,
-    [M.MC.LEARN_LEVEL] = function(set, a, b, nxt)
+    [M.MC.LEARN_LEVEL] = function(set, a, b, nxt, temporary)
+      if temporary then
+        return nxt(M.MC.LEARN_LEVEL, a, b)
+      end
       local ok, need, level = pcall(nxt, M.MC.LEARN_LEVEL, a, b)
       return 0, (ok and level) or 1
     end,
@@ -213,11 +312,11 @@ if VRFW_PlateMember.SkillSet == nil then
     end,
   }
   -- installed when the menu starts (OnInit: the engine's funcLuaCommand exists then), once per VM. M.Set's own
-  -- reads (moves, move info, log) are not hooked here, so they go through the global.
+  -- reads (moves, learn list, move info, log) are not hooked here, so they go through the global.
   local function answer_member(nxt, cmd, a, b, ...)
-    local ok, set = pcall(M.Set, funcLuaCommand)
+    local ok, set, temporary = pcall(M.Set, funcLuaCommand, a)
     if ok and set ~= nil then
-      return answer[cmd](set, a, b, nxt)
+      return answer[cmd](set, a, b, nxt, temporary)
     end
     return nxt(cmd, a, b, ...)
   end
@@ -235,6 +334,7 @@ if VRFW_PlateMember.SkillSet == nil then
     VRFW_Host.on("personal_plate_menu", "OnInit", {id = "vrfw.plate_member.install", phase = "before", create = true,
       fn = function()
         M.set = nil
+        M.temporary = {}
         M.Install()
       end})
   end

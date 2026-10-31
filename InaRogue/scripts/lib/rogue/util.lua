@@ -44,7 +44,6 @@ function U.mul32(a, b)
   return (alo * blo + ((ahi * blo + alo * bhi) % 65536) * 65536) % U.TWO32
 end
 
-function U.add32(a, b) return (a + b) % U.TWO32 end
 U.xor = bxor
 U.band = band
 U.lshift = lshift

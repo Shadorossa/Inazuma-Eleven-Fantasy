@@ -1,0 +1,18 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Trueno de primavera (Spring Thunderclap, whs10010 and whs10010_or, same cut-in
+# ev60_10010).
+#
+# In the cut-in's last cut (c0050) the ball is struck out of the dust cloud and runs low and level into the goal
+# (0.56-0.79 m). Flight: straight and level at 0.75 m into the goal. unblockable = false: the game's block rules (this
+# mod changes no block rule). Heights are the ball centre over the pitch (m); points count from the kick; one point = a
+# level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Trueno de primavera (whs10010).
+[[edit]]
+target = "whs10010"
+trajectory = { points = [[0.0, 0.75]], straight = true, unblockable = false }
+
+# Trueno de primavera (whs10010_or).
+[[edit]]
+target = "whs10010_or"
+trajectory = { points = [[0.0, 0.75]], straight = true, unblockable = false }

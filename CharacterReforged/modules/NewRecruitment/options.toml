@@ -1,11 +1,13 @@
 schema = "VRFW.option/2"
-# New Recruitment › where new players are signed (owner request 2026-10-23), on the Mods screen's «Ajustes» of the mod
-# and in Opciones › «Opciones de mods» (format: docs/app/mod-options.md §3). Value file:
+# New Recruitment › how new players are signed (owner requests 2026-10-23 and 2026-10-31), on the Mods screen's
+# «Ajustes» of the mod and in Opciones › «Opciones de mods» (format: docs/app/mod-options.md §3). Value file:
 # <data dir>\mod_options\new_recruitment.json. Read live by assets\lua\_all\new_recruitment_album.lua
-# (NewRecruitment.RecruitSource / RecruitFrom): «Pachangas» = the pachanga zones of the Chronicle board ask to join
-# (assets\lua\vs_route_town_menu\new_recruitment_pachangas.lua), «Álbum» = A on a player the club does not have in
-# BetterQoL's «Álbum de jugadores» signs him after a Sí / No question (the pachangas still play, nobody joins after
-# them), «Ambos» = both. Without BetterQoL the album choice has no screen to work in.
+# (NewRecruitment.RecruitSource / RecruitFrom): «Pachangas + Oficina» = the pachanga zones of the Chronicle board ask to
+# join (assets\lua\vs_route_town_menu\new_recruitment_pachangas.lua) and the Mercado's recruitment office sells
+# players (content\contact_maps\office.toml); «Álbum» = A on a player the club does not have in BetterQoL's «Álbum de
+# jugadores» signs him after a Sí / No question, and neither the pachanga points (content\board_groups\pachangas.toml
+# `hidden`) nor the office's Mercado bar (assets\lua\market_menu\new_recruitment_office_bar.lua) appear. Without
+# BetterQoL the album choice has no screen to work in.
 
 [[option]]
 id = "recruit_source"                          # row key new_recruitment.recruit_source
@@ -13,9 +15,8 @@ type = "list"
 label = "option_recruit_source"                # text\keys.toml, 9 languages
 help = "option_recruit_source_help"
 values = [
-    { value = 0, name = "recruit_pachangas", text = "Pick-up matches" },
-    { value = 1, name = "recruit_album", text = "Player album" },
-    { value = 2, name = "recruit_both", text = "Both" },
+    { value = 0, name = "recruit_pachangas_office", text = "Pick-up matches + Office" },
+    { value = 1, name = "recruit_album", text = "Album" },
 ]
-default = 0                                    # the behaviour before the option: pachangas
+default = 0                                    # the behaviour before the option: pachangas and the office
 order = 100

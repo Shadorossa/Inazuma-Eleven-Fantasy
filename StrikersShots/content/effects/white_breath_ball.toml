@@ -1,0 +1,37 @@
+# «Aliento blanco» (White Breath, whs01870; wind shot of one player, cut-in ev60_01870), in two effects:
+# * white_breath_spirit (object ev6187wk00, `ground_effect`): the cut-in's white wyvern (keshin k000290, its cut-in
+#   shading, x1.2) standing still behind the kicker, frozen in its cut-in pose with its mouth open toward the goal,
+#   the breath beam's narrow first part and the glows coming out of its mouth, fixed on the pitch; it fades out 3.5-4 s
+#   after the kick;
+# * white_breath (object ev6187wb00, the ball aura on the distance clock): the pale-gold arrowhead of light round the
+#   ball, the breath beam behind it running back to the wyvern's piece at the kick point (one beam from the wyvern's
+#   mouth into the head, never stretched) and the three widening streak cones (two of them turning about the beam as in
+#   the cut-in) coming out of the kick point, x0.6,
+# instead of the plain wind special-shot aura (ega0075b). Left out: the dragon-light backdrop, the 10 m rings at the
+# beam's origin, the particle field and the white-out.
+# Built by research/scripts/white_breath_ball_fx.py from ev60018700 and chr/_keshin/k000290.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\white_breath_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "white_breath"
+from = "ega0075b"
+object = "effect/event/ev60/ev6187wb00/ev6187wb00.objbin"
+
+[[effect]]
+name = "white_breath_spirit"
+from = "ega0021"
+object = "effect/event/ev60/ev6187wk00/ev6187wk00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "white_breath"
+when = { techniques = ["whs01870"] }
+aura = "white_breath"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "white_breath_spirit" }

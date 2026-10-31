@@ -42,8 +42,8 @@ name = "wears_eq_sh1106601"
 items = ["eq_sh1106601"]
 
 [[VRFW.MoveFamily]]
-name = "family_shields"
-families = ["HissatsuReforged.Shields"]
+name = "family_penguin"
+families = ["HissatsuReforged.Penguin"]
 
 [[VRFW.TechniquePower]]
 name = "power_5"
@@ -82,17 +82,16 @@ value = 4
 name = "wears_eq_sh1104501"
 items = ["eq_sh1104501"]
 
-[[VRFW.MoveFamily]]
-name = "family_pegasus"
-families = ["HissatsuReforged.Pegasus"]
+[[VRFW.MoveSpeed]]
+name = "speed_4"
+percent = 4
+
+[[VRFW.HasBall]]
+name = "has_ball"
 
 [[VRFW.Wears]]
 name = "wears_eq_sh1104701"
 items = ["eq_sh1104701"]
-
-[[VRFW.MoveSpeed]]
-name = "speed_4"
-percent = 4
 
 [[VRFW.Trigger]]
 name = "on_dash"
@@ -120,16 +119,13 @@ items = ["eq_sh1106501"]
 name = "wears_eq_sh1102101"
 items = ["eq_sh1102101"]
 
-[[VRFW.HasBall]]
-name = "has_ball"
-
 [[VRFW.Wears]]
 name = "wears_eq_sh1102501"
 items = ["eq_sh1102501"]
 
-[[VRFW.MoveFamily]]
-name = "family_northernice"
-families = ["HissatsuReforged.NorthernIce"]
+[[VRFW.MoveElement]]
+name = "element_wind"
+elements = ["wind"]
 
 [[VRFW.Wears]]
 name = "wears_eq_sh1103501"
@@ -168,33 +164,40 @@ value = 4
 name = "wears_eq_sh1100701"
 items = ["eq_sh1100701"]
 
-[[VRFW.MoveFamily]]
-name = "family_occult"
-families = ["HissatsuReforged.Occult"]
+[[VRFW.TechniquePower]]
+name = "power_4_dribble"
+kinds = ["dribble"]
+value = 4
 
 [[VRFW.Wears]]
 name = "wears_eq_sh042001"
 items = ["eq_sh042001"]
 
 [[VRFW.MoveFamily]]
-name = "family_divinepower"
-families = ["HissatsuReforged.DivinePower"]
+name = "family_godhand"
+families = ["HissatsuReforged.GodHand"]
 
 [[VRFW.Wears]]
 name = "wears_eq_sh041701"
 items = ["eq_sh041701"]
 
-[[VRFW.MoveFamily]]
-name = "family_majingiant"
-families = ["HissatsuReforged.MajinGiant"]
+[[VRFW.Score]]
+name = "score_leading"
+states = ["leading"]
+
+[[VRFW.Stat]]
+name = "stat_kick_physical_pct_4"
+stats = ["kick", "physical"]
+mode = "percent"
+value = 4
 
 [[VRFW.Wears]]
 name = "wears_eq_sh042401"
 items = ["eq_sh042401"]
 
-[[VRFW.MoveFamily]]
-name = "family_beasts"
-families = ["HissatsuReforged.Beasts"]
+[[VRFW.MoveKind]]
+name = "kind_block"
+kinds = ["block"]
 
 [[VRFW.Wears]]
 name = "wears_eq_sh042301"
@@ -212,6 +215,10 @@ families = ["HissatsuReforged.Dragon"]
 name = "wears_eq_sh041801"
 items = ["eq_sh041801"]
 
+[[VRFW.TensionCost]]
+name = "cost_m8"
+percent = -8
+
 [[VRFW.Wears]]
 name = "wears_eq_sh031701"
 items = ["eq_sh031701"]
@@ -224,10 +231,6 @@ items = ["eq_sh031601"]
 name = "wears_eq_sh031501"
 items = ["eq_sh031501"]
 
-[[VRFW.MoveFamily]]
-name = "family_penguin"
-families = ["HissatsuReforged.Penguin"]
-
 [[VRFW.Wears]]
 name = "wears_eq_sh030801"
 items = ["eq_sh030801"]
@@ -237,20 +240,25 @@ name = "wears_eq_sh030501"
 items = ["eq_sh030501"]
 
 [[VRFW.MoveFamily]]
-name = "family_legendarybirds"
-families = ["HissatsuReforged.LegendaryBirds"]
+name = "family_phoenix"
+families = ["HissatsuReforged.Phoenix"]
 
 [[VRFW.Wears]]
 name = "wears_eq_sh111401"
 items = ["eq_sh111401"]
 
+[[VRFW.Trigger]]
+name = "on_goal"
+on = "goal"
+by = "self"
+
+[[VRFW.Tension]]
+name = "tension_6"
+units = 6
+
 [[VRFW.Wears]]
 name = "wears_eq_sh051701"
 items = ["eq_sh051701"]
-
-[[VRFW.MoveFamily]]
-name = "family_aliuspower"
-families = ["HissatsuReforged.AliusPower"]
 
 [[VRFW.Wears]]
 name = "wears_eq_sh061501"
@@ -268,9 +276,10 @@ items = ["eq_sh060401"]
 name = "wears_eq_sh060601"
 items = ["eq_sh060601"]
 
-[[VRFW.MoveFamily]]
-name = "family_legendaryweapons"
-families = ["HissatsuReforged.LegendaryWeapons"]
+[[VRFW.TechniquePower]]
+name = "power_4_shoot"
+kinds = ["shoot"]
+value = 4
 
 [[VRFW.Wears]]
 name = "wears_eq_sh060301"
@@ -287,6 +296,12 @@ items = ["eq_sh080501"]
 [[VRFW.Wears]]
 name = "wears_eq_sh021301"
 items = ["eq_sh021301"]
+
+[[VRFW.Stat]]
+name = "stat_control_technique_pct_4"
+stats = ["control", "technique"]
+mode = "percent"
+value = 4
 
 [[VRFW.Wears]]
 name = "wears_eq_sh021501"
@@ -308,29 +323,13 @@ items = ["eq_sh070301"]
 name = "wears_eq_sh070801"
 items = ["eq_sh070801"]
 
-[[VRFW.MoveFamily]]
-name = "family_greatwalls"
-families = ["HissatsuReforged.GreatWalls"]
-
 [[VRFW.Wears]]
 name = "wears_eq_sh070401"
 items = ["eq_sh070401"]
 
-[[VRFW.TensionCost]]
-name = "cost_m8"
-percent = -8
-
-[[VRFW.MoveKind]]
-name = "kind_block"
-kinds = ["block"]
-
 [[VRFW.Wears]]
 name = "wears_eq_sh112101"
 items = ["eq_sh112101"]
-
-[[VRFW.MoveElement]]
-name = "element_wind"
-elements = ["wind"]
 
 [[VRFW.Wears]]
 name = "wears_eq_sh112901"
@@ -388,10 +387,6 @@ items = ["eq_mi0108101"]
 name = "wears_eq_mi0107201"
 items = ["eq_mi0107201"]
 
-[[VRFW.MoveFamily]]
-name = "family_ninjaarts"
-families = ["HissatsuReforged.NinjaArts"]
-
 [[VRFW.Wears]]
 name = "wears_eq_mi0107401"
 items = ["eq_mi0107401"]
@@ -407,6 +402,12 @@ items = ["eq_mi0105001"]
 [[VRFW.Wears]]
 name = "wears_eq_mi0106001"
 items = ["eq_mi0106001"]
+
+[[VRFW.Stat]]
+name = "stat_technique_agility_pct_4"
+stats = ["technique", "agility"]
+mode = "percent"
+value = 4
 
 [[VRFW.Wears]]
 name = "wears_eq_mi0106101"
@@ -429,8 +430,8 @@ name = "wears_eq_mi0107101"
 items = ["eq_mi0107101"]
 
 [[VRFW.MoveFamily]]
-name = "family_inazumapower"
-families = ["HissatsuReforged.InazumaPower"]
+name = "family_lightningbreak"
+families = ["HissatsuReforged.LightningBreak"]
 
 [[VRFW.Wears]]
 name = "wears_eq_mi0107301"
@@ -459,10 +460,6 @@ items = ["eq_mi0100401"]
 [[VRFW.Wears]]
 name = "wears_eq_mi0100801"
 items = ["eq_mi0100801"]
-
-[[VRFW.MoveFamily]]
-name = "family_godhand"
-families = ["HissatsuReforged.GodHand"]
 
 [[VRFW.Wears]]
 name = "wears_eq_mi0108001"
@@ -527,6 +524,11 @@ items = ["eq_ac0108101"]
 name = "wears_eq_ac0107701"
 items = ["eq_ac0107701"]
 
+[[VRFW.TechniquePower]]
+name = "power_4_chain_shoot"
+kinds = ["chain_shoot"]
+value = 4
+
 [[VRFW.Wears]]
 name = "wears_eq_ac0107601"
 items = ["eq_ac0107601"]
@@ -535,14 +537,13 @@ items = ["eq_ac0107601"]
 name = "wears_eq_ac0104701"
 items = ["eq_ac0104701"]
 
+[[VRFW.MoveKind]]
+name = "kind_long_shoot"
+kinds = ["long_shoot"]
+
 [[VRFW.Wears]]
 name = "wears_eq_ac0104901"
 items = ["eq_ac0104901"]
-
-[[VRFW.TechniquePower]]
-name = "power_4_shoot"
-kinds = ["shoot"]
-value = 4
 
 [[VRFW.Wears]]
 name = "wears_eq_ac0103401"
@@ -576,10 +577,6 @@ items = ["eq_ac0105501"]
 name = "wears_eq_ac0103001"
 items = ["eq_ac0103001"]
 
-[[VRFW.Score]]
-name = "score_leading"
-states = ["leading"]
-
 [[VRFW.Stat]]
 name = "stat_pressure_physical_pct_4"
 stats = ["pressure", "physical"]
@@ -597,15 +594,6 @@ items = ["eq_ac0101701"]
 [[VRFW.Wears]]
 name = "wears_eq_ac0102701"
 items = ["eq_ac0102701"]
-
-[[VRFW.Trigger]]
-name = "on_goal"
-on = "goal"
-by = "self"
-
-[[VRFW.Tension]]
-name = "tension_6"
-units = 6
 
 [[VRFW.Wears]]
 name = "wears_eq_ac0104801"
@@ -642,6 +630,10 @@ items = ["eq_sp0102301"]
 [[VRFW.Wears]]
 name = "wears_eq_sp0107501"
 items = ["eq_sp0107501"]
+
+[[VRFW.TensionCost]]
+name = "cost_m5"
+percent = -5
 
 [[VRFW.Wears]]
 name = "wears_eq_sp0105301"
@@ -702,6 +694,10 @@ items = ["eq_sp0101801"]
 [[VRFW.Wears]]
 name = "wears_eq_sp0102101"
 items = ["eq_sp0102101"]
+
+[[VRFW.MoveKind]]
+name = "kind_chain_shoot"
+kinds = ["chain_shoot"]
 
 [[VRFW.Wears]]
 name = "wears_eq_sp0107901"
@@ -816,10 +812,6 @@ value = 3
 name = "set_thunder_3"
 set = "BetterEquipment.Thunder"
 pieces = 3
-
-[[VRFW.TensionCost]]
-name = "cost_m5"
-percent = -5
 
 [[VRFW.WearsSet]]
 name = "set_sleek_4"
@@ -950,11 +942,6 @@ pieces = 3
 name = "set_mountainpath_3"
 set = "BetterEquipment.MountainPath"
 pieces = 3
-
-[[VRFW.TechniquePower]]
-name = "power_4_dribble"
-kinds = ["dribble"]
-value = 4
 
 [[VRFW.WearsSet]]
 name = "set_tide_4"

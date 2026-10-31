@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Vuelo de fénix (Firebird Flight, whs02360, cut-in ev60_02360).
+#
+# Measured: in the last cut (c0400) the ball leaves 15.8 m up and eases down to 10.2 m. Flight (owner's rule
+# 2026-10-24: every aura shot a straight level line, <= 3 m): one straight level line from the kick point to the goal,
+# the ball centre at 2.9 m the whole way, so the beating fire wings (down to 2.7 m under the ball at the bottom of the
+# beat) stay clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Vuelo de fénix (whs02360).
+[[edit]]
+target = "whs02360"
+trajectory = { points = [[0.0, 2.9]], straight = true, unblockable = false }

@@ -15,11 +15,14 @@
 -- * OnChangeFocus of the tab item (around): the name of an extra tab (its menu_text row, or its series' name).
 -- Hooks for a mod (set at load, read inside the callbacks): VRFW_FMT_HOOKS[<mod>] = {count = fn(n, tabs) -> n shown
 -- (only fewer: the first ones are kept, a tab's index is its routeType), text = fn(id, name) -> name};
--- VRFW_FMT_Index(id) = the tab index of an extra tab. Without the framework DLL every command fails and the retail 9 tabs stay.
+-- VRFW_FMT_Index(id) = the tab index of an extra tab. cap = fn() -> {offset, width} for a bar sprite with other end caps. Without the framework DLL every command fails and the retail 9 tabs stay.
 -- * Section pages (docs/framework/team-sections.md): when the kept tabs fill more than one page of the bar, L2 / R2
 --   (OnFunction vrfw_fm_section_page_prev / _next) turn the page, the bar shows that page's tabs, the saved tab byte
 --   holds the tab index (not the slot), and the L2 / R2 glyphs sit at the bar's two ends (placed in Step only until the
---   bar stops moving). One page = everything above, unchanged.
+--   bar stops moving). The focused tab keeps its selected look (Focus animation in) after a page turn, on opening the
+--   screen (only the focused slot's instance, when it opens) and when the class popup closes. One page = everything
+--   above, unchanged.
+-- * The first list row of each opening logs the team name answer it is drawn with (`VRFW fm_tabs row …`).
 -- No engine call at load time.
 
 VRFW_FMT_HOOKS = VRFW_FMT_HOOKS or {}
@@ -56,25 +59,19 @@ local FMT = {
   SECTION_NEXT = 2244491134, -- CMD_FUNCTION vrfw_fm_section_page_next (R2 row)
   SECTION_SLOTS = VRFW_Cmd.VRFW_FM_SECTION_SLOTS, -- CMND_VRFW_FM_SECTION_SLOTS (index of slot 0, ...) -> live
   KEYS = 2626711995,         -- vrfw_fm_section_keys (2 x team00_40_change_page_guide)
-  KEY_TEXT = 378156699,      -- _text_guide01
-  KEY_BUTTON = 950238781,    -- _text_btn01
-  KEY_PLATE_BASE = 3491851413, -- _win_guide_base01
   KEY_LEFT = "<CMD_FUNCL2>", KEY_RIGHT = "<CMD_FUNCR2>",   -- the engine draws the bound button of the device in use
-  KEY_TEXT_CX = 102,         -- the change-page plate is right-anchored: its glyph's centre from the plate's origin
-  KEY_PRIORITY = 700,
-  KEY_TRIES = 300,           -- Step calls the glyph placement waits for the layer at most
-  EXIST = VRFW_Cmd.IS_EXIST_LAYER,
-  OPEN = VRFW_Cmd.OPEN_LAYER,
-  IS_OPEN = VRFW_Cmd.IS_OPEN_LAYER,
-  LOADING = VRFW_Cmd.IS_LOADING_LAYER,
-  MESH_POS = VRFW_Cmd.GET_MESH_GLOBAL_POSITION, -- (layer, instance, mesh) -> x, y (screen px, y up)
-  LOCAL_POS = VRFW_Cmd.SET_LAYER_LOCAL_POS,      -- (layer, x, y, z, instance)
-  PRIORITY = VRFW_Cmd.SET_DRAW_PRIORITY,         -- (layer, instance, priority, children)
-  TEXT_PLATE = VRFW_Cmd.UPDATE_TEXT_PLATE,       -- (layer, instance, text node)
+  PLAY_ANIME = VRFW_Cmd.PLAY_ANIME_TYPE,   -- CMND_PLAY_ANIME_TYPE (layer, instance, type, 0 in / 2 out, set)
+  ANIME_FOCUS = 2734777837,  -- Focus: the tab's selected look (blue plate, lit icon)
+  ANIME_SET_BUTTON = 973515837, -- button
   page = nil,                -- the shown page (nil / 1 = the retail page)
   focus_pending = false,
+  GAME_TEAM = 2204933160,    -- (game) -> has, the team of the game's first row
+  TEAM_INFO = 2151743654,    -- (team, 2) -> has, the team's name
+  row_logged = false,
+  focus_slot = nil,          -- the bar's focused slot as set by the screen (FOCUS_SET at opening, page turns, focus moves)
+  opening = false,           -- true while the retail OnOpenLayer of a tab instance runs
   retail_icon = {},          -- slot -> the retail SetupTabIcon call of that instance (to show page 1 again)
-  keys = { opened = false, pending = false, tries = 0, set = false },
+  keys = VRFW_TabBarCaps.New(),  -- the L2 / R2 prompts in the bar's end caps (menu_engine VRFW_TabBarCaps)
   tabs = nil,                -- {{index, id, text, series, atlas, icon, off, itype}, ...} read once (first callback)
   logs = 0,
 }
@@ -343,99 +340,74 @@ local function FMT_ShowPage(p)
   FMT_Log("page", p, "of", FMT_Pages(), "slots", n)
 end
 
+-- the focused tab drawn selected (its Focus animation in). The engine plays it only when the bar's focus moves; a
+-- page change re-shows and re-skins the instances, so a focus that stays on the same slot (or one set while the bar
+-- was being rebuilt) kept the unselected look. `slot` nil = the bar's focused slot (the one the screen set; the
+-- engine's answer only when none is known).
+local function FMT_FocusLook(slot)
+  slot = slot or FMT.focus_slot
+  if slot == nil then
+    local ok, s = pcall(funcLuaMenuCommand, FMT.FOCUSED, FMT.TAB_ITEM)
+    slot = ok and s or nil
+  end
+  if type(slot) ~= "number" or slot < 0 then
+    return
+  end
+  pcall(funcLuaMenuCommand, FMT.PLAY_ANIME, FMT.TAB_ITEM, slot, FMT.ANIME_FOCUS, 0, FMT.ANIME_SET_BUTTON)
+end
+
 -- the bar's focus on `slot`; the list is rebuilt by the retail OnChangeFocus (called here when the engine does not
 -- call it for a focus it already had)
 local function FMT_Focus(slot)
   FMT.focus_pending = true
+  FMT.focus_slot = slot
   funcLuaMenuCommand(FMT.FOCUS_SET, FMT.TAB_ITEM, slot)
   if FMT.focus_pending and type(OnChangeFocus) == "function" then
     OnChangeFocus(FMT.TAB_ITEM, slot)
   end
+  FMT_FocusLook(slot)
 end
 
--- the L2 / R2 glyphs at the bar's two ends (two copies of the change-page plate, only the key glyph shown), placed
--- from the tab icons' own screen positions: one icon pitch left of the first and right of the last
-local function FMT_Mesh(...)
-  local ok, x, y = pcall(funcLuaMenuCommand, FMT.MESH_POS, ...)
-  if ok and type(x) == "number" and type(y) == "number" and (x ~= 0 or y ~= 0) then
-    return x, y
-  end
-  return nil
-end
-
-local function FMT_PlaceKeys()
-  local K = FMT.keys
-  K.tries = K.tries + 1
-  if K.tries > FMT.KEY_TRIES then
-    K.pending = false
-    FMT_Log("page keys not placed")
-    return
-  end
-  for i = 0, 1 do
-    local ok, open = pcall(funcLuaMenuCommand, FMT.IS_OPEN, FMT.KEYS, i)
-    if not ok or open ~= true then
-      return
+-- the L2 / R2 prompts, one in each grey end cap of the bar, hugging the bar's ends (VRFW_TabBarCaps, menu_engine 56_tab_bar_caps.lua):
+-- two copies of the change-page plate, only the key glyph shown, placed from the tab slots of page 1. A mod whose bar
+-- sprite has other caps says so: VRFW_FMT_HOOKS[<mod>].cap = fn() -> {offset, width} (px from the bar's centre to the
+-- cap's centre, the cap's width) or nil.
+local function FMT_CapSpec()
+  local spec = {
+    Layer = FMT.KEYS,
+    Slots = {Layer = FMT.TAB_ITEM, First = 0, Last = FMT_Page1Total() - 1},
+    LeftText = FMT.KEY_LEFT, RightText = FMT.KEY_RIGHT,
+    EdgeInset = 4,   -- L2 hugs the left end of the bar, R2 the right end
+    CapOffset = 459, CapWidth = 118,   -- the bar sprite's caps run from the blue part's end (400) to the sprite's end (518)
+    ScreenLeft = 0,  -- the retail bar's left cap is cut by the screen edge: L2 stays on screen
+    Symmetric = true, -- R2 mirrors L2 about the bar's centre
+  }
+  for _, h in pairs(VRFW_FMT_HOOKS) do
+    if type(h) == "table" and type(h.cap) == "function" then
+      local ok, c = pcall(h.cap)
+      if ok and type(c) == "table" and type(c.offset) == "number" then
+        spec.CapOffset, spec.CapWidth = c.offset, c.width
+        break
+      end
     end
   end
-  local okl, loading = pcall(funcLuaMenuCommand, FMT.LOADING, FMT.KEYS)
-  if okl and loading == true then
-    return
-  end
-  local last = FMT_Page1Total() - 1
-  local x0, y0 = FMT_Mesh(FMT.TAB_ITEM, 0, FMT.ICON_BASE)
-  local x1 = FMT_Mesh(FMT.TAB_ITEM, 1, FMT.ICON_BASE)
-  local xl = FMT_Mesh(FMT.TAB_ITEM, last, FMT.ICON_BASE)
-  if x0 == nil or x1 == nil or xl == nil then
-    return
-  end
-  local pitch = x1 - x0
-  local at = { x0 - pitch, xl + pitch }
-  if K.at ~= nil and math.abs(K.at[1] - at[1]) < 0.5 and math.abs(K.at[2] - at[2]) < 0.5 and math.abs(K.y - y0) < 0.5 then
-    K.pending = false          -- the bar stopped moving (its open animation is over)
-    return
-  end
-  K.at, K.y = at, y0
-  for i = 0, 1 do
-    if not K.set then
-      funcLuaMenuCommand(FMT.LAYER_VISIBLE, FMT.KEYS, i, true)
-      funcLuaMenuCommand(FMT.MESH_VISIBLE, FMT.KEYS, FMT.KEY_PLATE_BASE, false, i)
-      funcLuaMenuCommand(FMT.SET_TEXT, FMT.KEYS, FMT.KEY_BUTTON, "", i)
-      funcLuaMenuCommand(FMT.SET_TEXT, FMT.KEYS, FMT.KEY_TEXT, i == 0 and FMT.KEY_LEFT or FMT.KEY_RIGHT, i)
-      funcLuaMenuCommand(FMT.TEXT_PLATE, FMT.KEYS, i, FMT.KEY_TEXT)
-      funcLuaMenuCommand(FMT.PRIORITY, FMT.KEYS, i, FMT.KEY_PRIORITY, true)
-    end
-    -- the plate is right-anchored: its glyph sits KEY_TEXT_CX right of the plate's origin
-    funcLuaMenuCommand(FMT.LOCAL_POS, FMT.KEYS, at[i + 1] + FMT.KEY_TEXT_CX, y0, 0, i)
-  end
-  if not K.set then
-    K.set = true
-    FMT_Log("page keys at", math.floor(at[1]), math.floor(at[2]), math.floor(y0))
-  end
+  return spec
 end
 
 local function FMT_OpenKeys()
-  local K = FMT.keys
-  if K.opened then
-    return
-  end
-  K.opened = true
-  local ok, exist = pcall(funcLuaMenuCommand, FMT.EXIST, FMT.KEYS)
-  if not ok or exist ~= true then
-    FMT_Log("no page key layer")
-    return
-  end
-  for i = 0, 1 do
-    pcall(funcLuaMenuCommand, FMT.OPEN, FMT.KEYS, i)
-  end
-  K.pending, K.tries = true, 0
+  VRFW_TabBarCaps.Open(FMT.keys, FMT_CapSpec())
+end
+
+local function FMT_PlaceKeys()
+  VRFW_TabBarCaps.Step(FMT.keys, FMT_CapSpec())
 end
 
 if VRFW_Host ~= nil then
   VRFW_Host.on("soccer_vs_cpu_list_menu", "OnInit", {
     id = "menu_engine.free_match_tabs", phase = "before",
     fn = function()
-      FMT.page, FMT.focus_pending = nil, false
-      FMT.keys = { opened = false, pending = false, tries = 0, set = false }
+      FMT.page, FMT.focus_pending, FMT.focus_slot, FMT.opening, FMT.row_logged = nil, false, nil, false, false
+      FMT.keys = VRFW_TabBarCaps.New()
     end,
   })
 
@@ -445,31 +417,42 @@ if VRFW_Host ~= nil then
       if a1 ~= FMT.TAB_ITEM then
         return nxt(a1, ...)
       end
+      local instance = ...
       local total = FMT_Page1Total()
       local pages = FMT_Pages()
       local cmd = funcLuaMenuCommand
       funcLuaMenuCommand = function(id, b1, b2, ...)
-        if id == FMT.FOCUS_SET and b1 == FMT.TAB_ITEM and type(b2) == "number" and b2 >= total then
-          -- the saved byte holds a tab index: its page and slot, else a tab this bar does not have (a mod switched
-          -- off, the office) opens the first tab
-          local t = pages > 1 and FMT_Tab(b2) or nil
-          if t ~= nil and (t.page or 1) > 1 then
-            if FMT.page ~= t.page then
-              FMT_ShowPage(t.page)       -- its calls pass through this wrapper unchanged (no FOCUS_SET)
+        if id == FMT.FOCUS_SET and b1 == FMT.TAB_ITEM and type(b2) == "number" then
+          if b2 >= total then
+            -- the saved byte holds a tab index: its page and slot, else a tab this bar does not have (a mod switched
+            -- off, the office) opens the first tab
+            local t = pages > 1 and FMT_Tab(b2) or nil
+            if t ~= nil and (t.page or 1) > 1 then
+              if FMT.page ~= t.page then
+                FMT_ShowPage(t.page)       -- its calls pass through this wrapper unchanged (no FOCUS_SET)
+              end
+              b2 = t.slot
+            else
+              FMT_Log("saved tab", b2, "-> 0")
+              pcall(funcLuaCommand, FMT.SET_TEMP_BYTE, FMT.SAVED_TAB, 0)
+              b2 = 0
             end
-            b2 = t.slot
-          else
-            FMT_Log("saved tab", b2, "-> 0")
-            pcall(funcLuaCommand, FMT.SET_TEMP_BYTE, FMT.SAVED_TAB, 0)
-            b2 = 0
           end
+          FMT.focus_slot = b2
         end
         return cmd(id, b1, b2, ...)
       end
+      FMT.opening = true
       local r = table.pack(pcall(nxt, a1, ...))
+      FMT.opening = false
       funcLuaMenuCommand = cmd
       if pages > 1 then
         FMT_OpenKeys()
+        -- the retail code opens the bar one instance at a time: only the focused slot's instance gets the selected
+        -- look, once, when it opens (the engine's focus answer is not settled while the instances open)
+        if r[1] and FMT.focus_slot ~= nil and (instance == FMT.focus_slot or type(instance) ~= "number") then
+          FMT_FocusLook(FMT.focus_slot)
+        end
       end
       if not r[1] then
         error(r[2], 0)
@@ -513,6 +496,9 @@ if VRFW_Host ~= nil then
         funcLuaMenuCommand(FMT.LAYER_VISIBLE, a1, a2, a2 < #list)
         if a2 < #list then
           FMT_ApplySlot(a2)
+          if a2 == FMT.focus_slot then
+            FMT_FocusLook(a2)
+          end
         end
       end
       return table.unpack(r, 2, r.n)
@@ -527,6 +513,9 @@ if VRFW_Host ~= nil then
       end
       FMT.focus_pending = false
       local okf, slot = pcall(funcLuaMenuCommand, FMT.FOCUSED, a1)
+      if okf and type(slot) == "number" and not FMT.opening then
+        FMT.focus_slot = slot      -- a focus move on the bar (Z / C, pointer)
+      end
       local index = okf and FMT_SlotIndex(slot) or nil
       local t = type(index) == "number" and index >= FMT.RETAIL and FMT_Tab(index) or nil
       local r
@@ -558,6 +547,35 @@ if VRFW_Host ~= nil then
       local step = a1 == FMT.SECTION_NEXT and 1 or -1
       FMT_ShowPage(((FMT.page or 1) - 1 + step) % pages + 1)
       FMT_Focus(0)
+    end,
+  })
+
+  -- the class (difficulty) popup closed: the retail code switches the screen's input back on, which leaves the bar's
+  -- focused tab unselected on a paged bar
+  VRFW_Host.on("soccer_vs_cpu_list_menu", "OpenClassSelect", {
+    id = "menu_engine.free_match_tabs", phase = "after",
+    fn = function()
+      if FMT_Pages() > 1 then
+        FMT_FocusLook(nil)
+      end
+    end,
+  })
+
+  -- the first list row of each opening: the name answer the retail UpdateItem draws (one log line per opening)
+  VRFW_Host.on("soccer_vs_cpu_list_menu", "UpdateItem", {
+    id = "menu_engine.free_match_tabs.row_name", phase = "after",
+    fn = function(r, a1, a2, a3)
+      if FMT.row_logged or type(a3) ~= "number" or a3 == 0 then
+        return
+      end
+      FMT.row_logged = true
+      local okt, hast, team = pcall(funcLuaCommand, FMT.GAME_TEAM, a3)
+      local has, name = nil, nil
+      if okt and hast then
+        local okn
+        okn, has, name = pcall(funcLuaCommand, FMT.TEAM_INFO, team, 2)
+      end
+      FMT_Log("row", a2, "game", a3, "team", team, "name", has, type(name) == "string" and #name or "-")
     end,
   })
 

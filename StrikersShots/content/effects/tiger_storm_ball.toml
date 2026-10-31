@@ -1,0 +1,24 @@
+# «Tiger Storm» («Tormenta del tigre», whs01020 and whs01020_or, same cut-in; fire shot of two players, cut-in
+# ev60_01020): while the ball flies to the goal it keeps the look of the cut-in's last cut (c0500): the eight fire rings
+# stacked round it, the tiger silhouette cards, the swirls and the flame aura on it, the two fire sheets and four fire
+# trails streaming ~15 m behind it, coming out of the kick point as the ball moves away (never stretched, a soft 3 m
+# rear end) and fading out at their far end. The cut-in's tiger (waza model ev60_00960) is left out (owner 2026-10-23).
+# Replaces the plain fire special-shot aura (ega0075c).
+# The object is ev6102ts00 (effect/event/ev60/ev6102ts00/), built by research/scripts/tiger_storm_ball_fx.py from the
+# cut-in's effect object ev60010200 (docs/game/media/tiger-storm-ball-fx.md). Flight:
+# content\techniques\tiger_storm_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "tiger_storm"
+from = "ega0075c"
+object = "effect/event/ev60/ev6102ts00/ev6102ts00.objbin"
+
+[[shot_aura]]
+name = "tiger_storm"
+when = { techniques = ["whs01020", "whs01020_or"] }
+aura = "tiger_storm"
+like = "ega0075c"
+# its kick-point part stays on the kicker: the clip runs on the ball's distance from the kick point
+anchor = "kick"
+drift = 0.75

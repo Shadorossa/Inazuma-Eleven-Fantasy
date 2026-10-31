@@ -1,0 +1,43 @@
+# Career Mode: the career screen's panels (a NEW atlas #/menu/220_img/career_panels/career_panels.g4tx), made at build from the PLAYER'S own
+# game files: the inner box of the retail white panel (team00_21b item_win_base02, 920 x 320: its body x 20-899,
+# y 20-297, corners rounded 10 px, a drop shadow around it) and of the navy one (win05_43 win_settings_base01,
+# 908 x 568: body x 24-883, y 24-548). The box starts 12 px inside the body, past the round corners, so the gradient and
+# the inner shapes stay and the edges are straight; the screen stretches the sprite to the panel (evt_career_menu.lua
+# ART.white / ART.navy). The mod ships no game pixel.
+schema = "VRFW.image/1"
+
+[[recipe]]
+name = "panel_white"
+game = "#/menu/102_team/team00/team00_21b/team00_21b.g4tx"
+sprite = "item_win_base02"
+ops = [{ op = "crop", box = [32, 32, 888, 286] }]
+
+[[recipe]]
+name = "panel_navy"
+game = "#/menu/10_win/win05/win05_43/win05_43.g4tx"
+sprite = "win_settings_base01"
+ops = [{ op = "crop", box = [36, 36, 872, 537] }]
+
+[[texture]]
+atlas = "#/menu/220_img/career_panels/career_panels.g4tx"
+name = "career_panels"
+# both sides a multiple of 4 (the texture is block compressed; the game draws nothing from other sizes)
+size = [856, 760]
+
+[[sprite]]
+atlas = "#/menu/220_img/career_panels/career_panels.g4tx"
+name = "career_panel_white"
+texture = "career_panels"
+x = 0
+y = 0
+size = [856, 254]
+recipe = "panel_white"
+
+[[sprite]]
+atlas = "#/menu/220_img/career_panels/career_panels.g4tx"
+name = "career_panel_navy"
+texture = "career_panels"
+x = 0
+y = 256
+size = [836, 501]
+recipe = "panel_navy"

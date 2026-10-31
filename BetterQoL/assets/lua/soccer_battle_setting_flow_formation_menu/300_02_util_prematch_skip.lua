@@ -144,7 +144,7 @@ function OnLayerLoadCompleted(...)
   local go = UTIL_XS.Get(UTIL_XS.GO) == 1
   local jump = go and UTIL_XS.Get(UTIL_XS.JUMP) == 1
   if go then
-    pcall(funcLuaCommand, UTIL_XS.PARAM_SET, UTIL_XS_RIVAL_SHOWN, 0, true)
+    VRFW_Param.Set(UTIL_XS_RIVAL_SHOWN, true, "plain")
     pcall(funcLuaCommand, UTIL_XS_MATCH_BGM)
     UTIL_XS.Log("match BGM started (lineup screens skipped)")
     if UTIL_XS.Get(UTIL_XS.COVER) == 1 then

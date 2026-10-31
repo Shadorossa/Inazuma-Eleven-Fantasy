@@ -24,7 +24,7 @@ passive = { kind = "element_power", element = "void", value = 4, why = "N: theme
 
 [[item]]  # Zapatillas regias / Regal Shoes
 item = "eq_sh1106701"
-passive = { kind = "family_power", family = "Shields", value = 5, why = "T: themed on king (Shields)" }
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on king (Emperor Penguin)" }
 
 [[item]]  # Botas del crepúsculo / Demonic Twilight Boots
 item = "eq_sh1106801"
@@ -55,7 +55,7 @@ passive = { kind = "technique_power", move_kind = "block", value = 4, why = "N: 
 [[item]]  # Botas de Pegaso / Pegasus Boots
 item = "eq_sh1104701"
 element = "wind"
-passive = { kind = "family_power", family = "Pegasus", value = 5, why = "T: themed on pegasus (Pegasus)" }
+passive = { kind = "move_speed", when = "ball", value = 4, why = "T: Pegasus (gallops with the ball)" }
 
 [[item]]  # Tacos para esprintar / Dashing Cleats
 item = "eq_sh1104901"
@@ -63,7 +63,7 @@ passive = { kind = "move_speed", when = "dash", value = 4, why = "N: para esprin
 
 [[item]]  # Botas reales / Imperial Boots
 item = "eq_sh1105701"
-passive = { kind = "family_power", family = "Shields", value = 5, why = "T: themed on king (Shields)" }
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on king (Emperor Penguin)" }
 
 [[item]]  # Zapatillas de la disciplina / Orderly Shoes
 item = "eq_sh1105901"
@@ -101,7 +101,7 @@ passive = { kind = "engine_passive", effect = "fouls", value = -8, why = "N: de 
 [[item]]  # Botas glaciar / Glacier Boots
 item = "eq_sh1103501"
 element = "mountain"
-passive = { kind = "family_power", family = "NorthernIce", value = 5, why = "T: themed on ice (Northern Ice)" }
+passive = { kind = "element_power", element = "wind", value = 4, why = "T: ice (the game's ice moves are Wind)" }
 
 [[item]]  # Botas abrasadoras / Scorching Boots
 item = "eq_sh1103601"
@@ -163,7 +163,7 @@ passive = { kind = "engine_passive", effect = "fouls", value = -8, why = "N: del
 [[item]]  # Botas Oscuridad Ancestral / Ancient Darkness Boots
 item = "eq_sh042001"
 element = "team"
-passive = { kind = "family_power", family = "Occult", value = 5, why = "T: themed on shadow (Occult)" }
+passive = { kind = "technique_power", move_kind = "dribble", value = 4, why = "T: shadow (dribble past)" }
 
 [[item]]  # Botas Equipo Zero / Team Zero Boots
 item = "eq_sh042101"
@@ -180,17 +180,17 @@ element = "team"
 [[item]]  # Botas Monte Olimpo / Mount Olympus Boots
 item = "eq_sh041701"
 element = "team"
-passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on god (God Hand)" }
 
 [[item]]  # Botas Cuerno Demoníaco / Demon's Horn Boots
 item = "eq_sh042401"
 element = "team"
-passive = { kind = "family_power", family = "MajinGiant", value = 5, why = "T: themed on devil (Majin Giant)" }
+passive = { kind = "stat_when", stats = ["kick", "physical"], score = "leading", value = 4, why = "T: demon (demonic power)" }
 
 [[item]]  # Botas Colmillo del Norte / Northern Fang Boots
 item = "eq_sh042301"
 element = "team"
-passive = { kind = "family_power", family = "Beasts", value = 5, why = "T: themed on wolf (Wild Beasts)" }
+passive = { kind = "recast", move_kind = "block", value = -8, why = "T: wolf (the fang bites again)" }
 
 [[item]]  # Zapatillas Alpino (GO) / Alpine Boots (GO)
 item = "eq_sh041301"
@@ -212,7 +212,7 @@ passive = { kind = "element_power", element = "void", value = 4, why = "N: theme
 [[item]]  # Botas Dragon Link / Dragon Link Boots
 item = "eq_sh041801"
 element = "team"
-passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragon Crash)" }
 
 [[item]]  # Botas Espejismo / Mirage Boots
 item = "eq_sh041501"
@@ -265,7 +265,7 @@ element = "team"
 [[item]]  # Botas Ángel Oscuro / Dark Angels Boots
 item = "eq_sh031701"
 element = "team"
-passive = { kind = "family_power", family = "Occult", value = 5, why = "T: themed on shadow (Occult)" }
+passive = { kind = "tension_cost", move_kind = "dribble", value = -8, why = "T: shadow (dark angel, evasion)" }
 
 [[item]]  # Botas Equipo Ogro / Team Ogre Boots
 item = "eq_sh031001"
@@ -286,12 +286,12 @@ element = "team"
 [[item]]  # Botas Dark Team / Devil Army Z Boots
 item = "eq_sh031601"
 element = "team"
-passive = { kind = "family_power", family = "MajinGiant", value = 5, why = "T: themed on devil (Majin Giant)" }
+passive = { kind = "tension_on", event = "duel_won", value = 3, why = "T: demon (Dark Team, rough duels)" }
 
 [[item]]  # Zapatillas Sky Team / Apostles from the Sky Greaves
 item = "eq_sh031501"
 element = "team"
-passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on god (God Hand)" }
 
 [[item]]  # Botas Knights of Queen / Queen's Knights Boots
 item = "eq_sh030601"
@@ -312,7 +312,7 @@ element = "team"
 [[item]]  # Botas Emperadores / Empire Boots
 item = "eq_sh030801"
 element = "team"
-passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on king (Penguins)" }
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on king (Emperor Penguin)" }
 
 [[item]]  # Botas Brocken Brigade / Brocken Brigade Boots
 item = "eq_sh032201"
@@ -341,7 +341,7 @@ element = "team"
 [[item]]  # Botas dragontinas / Fire Dragon Boots
 item = "eq_sh030501"
 element = "team"
-passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragon Crash)" }
 
 [[item]]  # Botas Neo Japón / Neo National Boots
 item = "eq_sh030201"
@@ -422,7 +422,7 @@ element = "team"
 [[item]]  # Botas Gaviotas FC / Seagull FC Boots
 item = "eq_sh111401"
 element = "team"
-passive = { kind = "family_power", family = "LegendaryBirds", value = 5, why = "T: themed on bird (Legendary Birds)" }
+passive = { kind = "family_power", family = "Phoenix", value = 5, why = "T: themed on bird (The Phoenix)" }
 
 [[item]]  # Botas Twinford / Twinford Boots
 item = "eq_sh110901"
@@ -431,7 +431,7 @@ element = "team"
 [[item]]  # Zapatillas Aullido Lunar / Lunar Howl Shoes
 item = "eq_sh051701"
 element = "team"
-passive = { kind = "family_power", family = "Beasts", value = 5, why = "T: themed on wolf (Wild Beasts)" }
+passive = { kind = "tension_on", event = "goal", value = 6, why = "T: wolf (the howl after a goal)" }
 
 [[item]]  # Zapatillas Nosfanáticos / Nosfanatica Shoes
 item = "eq_sh051801"
@@ -500,7 +500,7 @@ element = "team"
 [[item]]  # Botas Supernova / Supernova Shoes
 item = "eq_sh061501"
 element = "team"
-passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on star (Alius Power)" }
+passive = { kind = "technique_power", move_kind = "long_shoot", value = 4, why = "T: star (a supernova from afar)" }
 
 [[item]]  # Botas Dinastía Galáctica / Space Rankers Shoes
 item = "eq_sh061601"
@@ -537,17 +537,17 @@ element = "team"
 [[item]]  # Botas Dragones de Fuego (GO 3) / Fire Dragon Boots (GO 3)
 item = "eq_sh060101"
 element = "team"
-passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragon Crash)" }
 
 [[item]]  # Botas Muay Tigers / Muay Tigers Boots
 item = "eq_sh060401"
 element = "team"
-passive = { kind = "family_power", family = "Beasts", value = 5, why = "T: themed on tiger (Wild Beasts)" }
+passive = { kind = "stat_when", stats = ["kick", "physical"], score = "trailing", value = 4, why = "T: tiger (Muay Thai strength)" }
 
 [[item]]  # Botas Storm Wolves / Storm Wolves Boots
 item = "eq_sh060601"
 element = "team"
-passive = { kind = "family_power", family = "Beasts", value = 5, why = "T: themed on wolf (Wild Beasts)" }
+passive = { kind = "move_speed", value = 3, why = "T: wolf (the pack hunts)" }
 
 [[item]]  # Botas Big Waves (GO 3) / Big Waves Boots (GO 3)
 item = "eq_sh060201"
@@ -556,7 +556,7 @@ element = "team"
 [[item]]  # Botas Cimitarras / Shamshir Boots
 item = "eq_sh060301"
 element = "team"
-passive = { kind = "family_power", family = "LegendaryWeapons", value = 5, why = "T: themed on sword (Legendary Weapons)" }
+passive = { kind = "technique_power", move_kind = "shoot", value = 4, why = "T: sword (shot power)" }
 
 [[item]]  # Botas Earth Eleven / Earth Eleven Boots
 item = "eq_sh061701"
@@ -613,7 +613,7 @@ element = "team"
 [[item]]  # Botas Demonios Brillantes / Fallen Angels Boots
 item = "eq_sh080301"
 element = "team"
-passive = { kind = "family_power", family = "MajinGiant", value = 5, why = "T: themed on devil (Majin Giant)" }
+passive = { kind = "element_power", element = "fire", value = 4, why = "T: demon (hellfire)" }
 
 [[item]]  # Botas Bailarines Eternos / Eternal Dancers Boots
 item = "eq_sh080401"
@@ -622,12 +622,12 @@ element = "team"
 [[item]]  # Botas Ejército del Fénix Árabe / Arabian Firebirds Boots
 item = "eq_sh080501"
 element = "team"
-passive = { kind = "family_power", family = "LegendaryBirds", value = 5, why = "T: themed on phoenix (Legendary Birds)" }
+passive = { kind = "family_power", family = "Phoenix", value = 5, why = "T: themed on phoenix (The Phoenix)" }
 
 [[item]]  # Botas Emperadores Oscuros / Dark Emperors Boots
 item = "eq_sh021301"
 element = "team"
-passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on shadow (Penguins)" }
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on shadow (Emperor Penguin)" }
 
 [[item]]  # Botas Génesis / Genesis Boots
 item = "eq_sh021201"
@@ -652,7 +652,7 @@ element = "team"
 [[item]]  # Zapatillas Polvo de Diamantes / Diamond Dust Shoes
 item = "eq_sh021501"
 element = "team"
-passive = { kind = "family_power", family = "NorthernIce", value = 5, why = "T: themed on ice (Northern Ice)" }
+passive = { kind = "stat_when", stats = ["control", "technique"], score = "leading", value = 4, why = "T: ice (Diamond Dust, cold control)" }
 
 [[item]]  # Botas Mary Times / Mary Times Boots
 item = "eq_sh020901"
@@ -673,7 +673,7 @@ element = "team"
 [[item]]  # Botas Claustro Sagrado / Cloister Divinity Boots
 item = "eq_sh020401"
 element = "team"
-passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on god (God Hand)" }
 
 [[item]]  # Botas Alpino / Alpine Boots
 item = "eq_sh020201"
@@ -690,7 +690,7 @@ element = "team"
 [[item]]  # Botas Zeus / Zeus Boots
 item = "eq_sh011001"
 element = "team"
-passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on god (God Hand)" }
 
 [[item]]  # Botas Kirkwood / Kirkwood Boots
 item = "eq_sh010901"
@@ -764,7 +764,7 @@ element = "team"
 [[item]]  # Zapatillas Zeus (Ares) / Zeus Shoes (Ares)
 item = "eq_sh070801"
 element = "team"
-passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on god (God Hand)" }
 
 [[item]]  # Botas Polaris / Polestar Boots
 item = "eq_sh070201"
@@ -797,7 +797,7 @@ element = "team"
 [[item]]  # Botas Bastión / Rampart Boots
 item = "eq_sh070401"
 element = "team"
-passive = { kind = "family_power", family = "GreatWalls", value = 5, why = "T: themed on wall (Great Walls)" }
+passive = { kind = "technique_power", move_kind = "block", value = 4, why = "T: wall (rampart)" }
 
 [[item]]  # Botas Barcelona Orb / Barcelona Orb Boots
 item = "eq_sh071601"
@@ -866,12 +866,12 @@ passive = { kind = "tension_on", event = "duel_won", value = 3, why = "U: Ray of
 [[item]]  # Pulsera del abismo / Abyss Bracelet
 item = "eq_mi0107201"
 element = "void"
-passive = { kind = "family_power", family = "Occult", value = 5, why = "T: themed on shadow (Occult)" }
+passive = { kind = "recast", move_kind = "dribble", value = -8, why = "T: shadow (the abyss swallows again)" }
 
 [[item]]  # Brazalete de las sombras / Umbra Bangle
 item = "eq_mi0107401"
 element = "void"
-passive = { kind = "family_power", family = "NinjaArts", value = 5, why = "T: themed on shadow (Ninja Arts)" }
+passive = { kind = "move_speed", when = "dash", value = 4, why = "T: ninja / shadow (vanishing dash)" }
 
 [[item]]  # Pulsera luz de luna / Moonlight Bracelet
 item = "eq_mi0107701"
@@ -890,11 +890,11 @@ passive = { kind = "stat_when", stats = ["kick", "technique"], score = "trailing
 [[item]]  # Brazalete sombrío / Shadow Bangle
 item = "eq_mi0106101"
 element = "void"
-passive = { kind = "family_power", family = "NinjaArts", value = 5, why = "T: themed on shadow (Ninja Arts)" }
+passive = { kind = "stat_when", stats = ["technique", "agility"], score = "trailing", value = 4, why = "T: ninja / shadow (strikes from behind)" }
 
 [[item]]  # Pulsera cósmica / Cosmic Bracelet
 item = "eq_mi0106601"
-passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on star (Alius Power)" }
+passive = { kind = "recast", move_kind = "shoot", value = -8, why = "T: cosmos (shots return faster)" }
 
 [[item]]  # Pulsera de la victoria / Bracelet of Victory
 item = "eq_mi0103001"
@@ -922,12 +922,12 @@ passive = { kind = "element_power", element = "fire", value = 4, why = "N: theme
 [[item]]  # Pulsera de nube de trueno / Thundercloud Bracelet
 item = "eq_mi0107301"
 element = "wind"
-passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+passive = { kind = "family_power", family = "LightningBreak", value = 5, why = "T: themed on thunder (Inazuma Break)" }
 
 [[item]]  # Pulsera del relámpago / Lightning Bracelet
 item = "eq_mi0105101"
 element = "wind"
-passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+passive = { kind = "family_power", family = "LightningBreak", value = 5, why = "T: themed on thunder (Inazuma Break)" }
 
 [[item]]  # Brazalete del héroe / Hero Bangle
 item = "eq_mi0105201"
@@ -1028,7 +1028,7 @@ passive = { kind = "technique_power", move_kind = "punch", value = 4, why = "N: 
 item = "eq_mi0104501"
 position = "GK"
 element = "wind"
-passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on rock (Alius Power)" }
+passive = { kind = "technique_power", move_kind = "punch", value = 4, why = "T: meteor (keeper gloves, meteor punch)" }
 
 [[item]]  # Guantes potentes / Power Gloves
 item = "eq_mi0104701"
@@ -1102,7 +1102,7 @@ passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "N: del
 [[item]]  # Colgante de cometa / Comet Pendant
 item = "eq_ac0107601"
 element = "wind"
-passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on star (Alius Power)" }
+passive = { kind = "technique_power", move_kind = "chain_shoot", value = 4, why = "T: comet (the tail of a chain shot)" }
 
 [[item]]  # Collar Chrono Stone / Chrono Stone Necklace
 item = "eq_ac0104701"
@@ -1111,7 +1111,7 @@ passive = { kind = "recast", move_kind = "block", value = -8, why = "U: Chrono S
 [[item]]  # Collar meteoro / Meteor Necklace
 item = "eq_ac0104901"
 element = "wind"
-passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on rock (Alius Power)" }
+passive = { kind = "tension_cost", move_kind = "long_shoot", value = -8, why = "T: meteor (falls from afar)" }
 
 [[item]]  # Collar carmesí / Crimson Necklace
 item = "eq_ac0105301"
@@ -1146,11 +1146,11 @@ passive = { kind = "element_power", element = "fire", value = 4, why = "N: theme
 [[item]]  # Collar de Kerauno / Keraunos Necklace
 item = "eq_ac0107301"
 element = "wind"
-passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+passive = { kind = "family_power", family = "LightningBreak", value = 5, why = "T: themed on thunder (Inazuma Break)" }
 
 [[item]]  # Colgante de halcón / Hawk Pendant
 item = "eq_ac0102601"
-passive = { kind = "family_power", family = "LegendaryBirds", value = 5, why = "T: themed on bird (Legendary Birds)" }
+passive = { kind = "family_power", family = "Phoenix", value = 5, why = "T: themed on bird (The Phoenix)" }
 
 [[item]]  # Colgante fraterno / Promise Pendant
 item = "eq_ac0103801"
@@ -1163,7 +1163,7 @@ element = "fire"
 [[item]]  # Collar de nube de trueno / Thundercloud Necklace
 item = "eq_ac0107501"
 element = "wind"
-passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+passive = { kind = "family_power", family = "LightningBreak", value = 5, why = "T: themed on thunder (Inazuma Break)" }
 
 [[item]]  # Collar del atleta Neo / Neo Athlete's Necklace
 item = "eq_ac0105201"
@@ -1176,7 +1176,7 @@ element = "wind"
 [[item]]  # Colgante del trueno / Lightning Pendant
 item = "eq_ac0105501"
 element = "wind"
-passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+passive = { kind = "family_power", family = "LightningBreak", value = 5, why = "T: themed on thunder (Inazuma Break)" }
 
 [[item]]  # Collar de la paz / Peace Necklace
 item = "eq_ac0106801"
@@ -1267,7 +1267,7 @@ element = "fire"
 
 [[item]]  # Capa de rey / King's Mantle
 item = "eq_ac0105101"
-passive = { kind = "family_power", family = "Shields", value = 5, why = "T: themed on king (Shields)" }
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on king (Emperor Penguin)" }
 
 [[item]]  # Brazalete Omega / Omega Bangle
 item = "eq_sp0105201"
@@ -1310,7 +1310,7 @@ passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "U: noo
 [[item]]  # Vendaje oscuro / Shroud of Darkness
 item = "eq_sp0105401"
 element = "void"
-passive = { kind = "family_power", family = "Occult", value = 5, why = "T: themed on shadow (Occult)" }
+passive = { kind = "element_power", element = "void", value = 4, why = "T: shadow (darkness = Void)" }
 
 [[item]]  # Delantal de la tienda de ramen / Ramen Shop Apron
 item = "eq_sp0106301"
@@ -1344,7 +1344,7 @@ passive = { kind = "recast", move_kind = "dribble", value = -8, why = "U: Kidou'
 [[item]]  # Parche demoníaco / Demonbind Eyepatch
 item = "eq_sp0105301"
 element = "void"
-passive = { kind = "family_power", family = "MajinGiant", value = 5, why = "T: themed on devil (Majin Giant)" }
+passive = { kind = "tension_cost", value = -5, why = "T: demon (the demonbind pact)" }
 
 [[item]]  # Gafas de velocidad / Speed Glasses
 item = "eq_sp0106801"
@@ -1362,7 +1362,7 @@ passive = { kind = "recast", move_kind = "dribble", value = -8, why = "U: back-a
 [[item]]  # Gafas celestiales / Celestial Glasses
 item = "eq_sp0104001"
 element = "wind"
-passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on god (God Hand)" }
 
 [[item]]  # Gafas de sol de rebelde / Rebel Sunglasses
 item = "eq_sp0100701"
@@ -1390,21 +1390,21 @@ passive = { kind = "aura_points", effect = "gp_drain", value = -6, why = "U: ode
 [[item]]  # Réplica de néctar / Ambrosia Replica
 item = "eq_sp0105801"
 element = "mountain"
-passive = { kind = "family_power", family = "DivinePower", value = 5, why = "T: themed on god (Divine Power)" }
+passive = { kind = "family_power", family = "GodHand", value = 5, why = "T: themed on god (God Hand)" }
 
 [[item]]  # Cúpula de nieve del pingüino / Penguin Snow Dome
 item = "eq_sp0107201"
-passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on penguin (Penguins)" }
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on penguin (Emperor Penguin)" }
 
 [[item]]  # Amuleto de gaviota / Seagull Charm
 item = "eq_sp0106501"
 element = "wind"
-passive = { kind = "family_power", family = "LegendaryBirds", value = 5, why = "T: themed on bird (Legendary Birds)" }
+passive = { kind = "family_power", family = "Phoenix", value = 5, why = "T: themed on bird (The Phoenix)" }
 
 [[item]]  # Amuleto relámpago / Lightning Charm
 item = "eq_sp0107101"
 element = "wind"
-passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+passive = { kind = "family_power", family = "LightningBreak", value = 5, why = "T: themed on thunder (Inazuma Break)" }
 
 [[item]]  # Amuleto estelar / Cloudbound Charm
 item = "eq_sp0103101"
@@ -1420,7 +1420,7 @@ passive = { kind = "stat_when", stats = ["pressure", "physical"], score = "leadi
 
 [[item]]  # Amuleto de pingüino / Penguin Charm
 item = "eq_sp0101001"
-passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on penguin (Penguins)" }
+passive = { kind = "family_power", family = "Penguin", value = 5, why = "T: themed on penguin (Emperor Penguin)" }
 
 [[item]]  # Almohada de castella / Castella Cushion
 item = "eq_sp0101801"
@@ -1440,7 +1440,7 @@ passive = { kind = "stat_when", stats = ["kick", "technique"], score = "trailing
 
 [[item]]  # Anillo estelar / Starlit Ring
 item = "eq_sp0107901"
-passive = { kind = "family_power", family = "AliusPower", value = 5, why = "T: themed on star (Alius Power)" }
+passive = { kind = "recast", move_kind = "chain_shoot", value = -8, why = "T: star (a trail of stars)" }
 
 [[item]]  # Anillo de metal / Metal Ring
 item = "eq_sp0103901"
@@ -1454,7 +1454,7 @@ passive = { kind = "element_power", element = "fire", value = 4, why = "N: theme
 [[item]]  # Anillo de nube de truenos / Thundercloud Ring
 item = "eq_sp0107701"
 element = "wind"
-passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+passive = { kind = "family_power", family = "LightningBreak", value = 5, why = "T: themed on thunder (Inazuma Break)" }
 
 [[item]]  # Anillo lirio del valle / Lily of the Valley Ring
 item = "eq_sp0106601"
@@ -1463,7 +1463,7 @@ element = "forest"
 [[item]]  # Anillo de trueno / Thunderbolt Ring
 item = "eq_sp0106901"
 element = "wind"
-passive = { kind = "family_power", family = "InazumaPower", value = 5, why = "T: themed on thunder (Inazuma Power)" }
+passive = { kind = "family_power", family = "LightningBreak", value = 5, why = "T: themed on thunder (Inazuma Break)" }
 
 [[item]]  # Anillo oxidado / Rusted Ring
 item = "eq_sp0101501"
@@ -1485,7 +1485,7 @@ passive = { kind = "move_speed", value = 3, why = "U: caravan" }
 [[item]]  # Llavero de dragón / Dragon Keychain
 item = "eq_sp0102801"
 element = "fire"
-passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragon Crash)" }
 
 [[item]]  # Llavero del valiente / Fiery Keychain
 item = "eq_sp0102001"
@@ -1494,12 +1494,12 @@ element = "fire"
 [[item]]  # Pegatina de Pegaso / Pegasus Sticker
 item = "eq_sp0107601"
 element = "wind"
-passive = { kind = "family_power", family = "Pegasus", value = 5, why = "T: themed on pegasus (Pegasus)" }
+passive = { kind = "tension_cost", move_kind = "shoot", value = -8, why = "T: Pegasus (the Pegasus shots)" }
 
 [[item]]  # Pegatina de dragón / Dragon Sticker
 item = "eq_sp0102501"
 element = "fire"
-passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragons)" }
+passive = { kind = "family_power", family = "Dragon", value = 5, why = "T: themed on dragon (Dragon Crash)" }
 
 [[item]]  # Pegatina de la compra / Shopping Sticker
 item = "eq_sp0104801"

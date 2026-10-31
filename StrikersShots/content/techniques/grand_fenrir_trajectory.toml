@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Gran lobo (Grand Fenrir, whs01060, cut-in ev60_01060): one straight level line from
+# the kick point to the goal, the ball at 2.0 m the whole way (the flame cone, up to 1.7 m round its axis, and the
+# twisting ribbons stay clear of the grass). Heights are the ball centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Gran lobo (whs01060).
+[[edit]]
+target = "whs01060"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

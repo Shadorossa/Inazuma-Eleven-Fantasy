@@ -1,0 +1,27 @@
+# «Ventisca triple» (Triple Blizzard, whs02950 and whs02950_or, same cut-in; wind shot of three players, cut-in
+# ev60_02950): while the ball flies to the goal it wears the cut-in's last cut (c0500, held at its end, frame 598,
+# from the aura's first frame): the ice head round the ball with its turning ice cones, the ice wind sheaths, the wind
+# swirls, the blizzard puffs and the long turning wind lines (eased into 2.6 m round the flight), coming out of the
+# kick point as the ball flies (never stretched, soft rear end), each part fading out at its far end, x1, instead of
+# the plain wind special-shot aura (ega0075b). Left out: the frozen ground patch with its ice crystals and the
+# camera-front blizzard.
+# The object is ev6295tz00 (effect/event/ev60/ev6295tz00/), built by research/scripts/triple_blizzard_ball_fx.py from
+# ev60029500.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\triple_blizzard_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "triple_blizzard"
+from = "ega0075b"
+object = "effect/event/ev60/ev6295tz00/ev6295tz00.objbin"
+
+[[shot_aura]]
+name = "triple_blizzard"
+when = { techniques = ["whs02950", "whs02950_or"] }
+aura = "triple_blizzard"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

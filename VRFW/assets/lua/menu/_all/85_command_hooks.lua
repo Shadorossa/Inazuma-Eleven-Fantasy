@@ -121,6 +121,33 @@ if VRFW_Host.HookCommand == nil then
     return list
   end
 
+  -- a call without a command id (a caller's constant that does not exist): logged once per caller, then the call
+  -- goes to the command function as it is
+  local last_nil_caller = nil
+  local function note_nil_command(s)
+    local where = "?"
+    if debug and debug.traceback then
+      local ok, tb = pcall(debug.traceback, "", 3)
+      if ok and type(tb) == "string" then
+        local frames = {}
+        for line in tb:gmatch("[^\n]+") do
+          line = line:gsub("^%s+", "")
+          if line ~= "" and line ~= "stack traceback:" then
+            frames[#frames + 1] = line
+            if #frames == 3 then
+              break
+            end
+          end
+        end
+        where = table.concat(frames, " <- ")
+      end
+    end
+    if where ~= last_nil_caller then
+      last_nil_caller = where
+      log(s.name, "called with a nil command id from", where)
+    end
+  end
+
   -- handler k of the chain, then the command function under the dispatcher
   local function run(s, list, k, real, ...)
     local h = list[k]
@@ -174,6 +201,10 @@ if VRFW_Host.HookCommand == nil then
       local c = ...
       if s.pending[1] ~= nil then
         flush_pending(s)
+      end
+      if c == nil then
+        note_nil_command(s)
+        return real(...)
       end
       if s.passing ~= nil and s.passing == c then
         return real(...)             -- a dispatcher above already ran the handlers of this call

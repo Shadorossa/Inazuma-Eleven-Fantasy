@@ -1,0 +1,15 @@
+# Schema of the skill board locks: a game state in which no player's moves, auras or mix can be changed. While a lock
+# holds, the skill board's move / aura / mix lists refuse Accept (rows greyed, the lock's text on the Accept guide
+# entry), the skill table opens read-only and the hyper commands screen stays view only; viewing still works.
+# Unknown keys, wrong types or out-of-range values leave the declaration out with a warning.
+schema = "VRFW.decl_schema/1"
+kind = "VRFW.skill_board_lock/1"
+folder = "content/skill_board_lock"
+
+[entry.SkillBoardLock]
+doc = "while the game_state key `state` is 1, the skill board screens are view only (CMND_VRFW_SKILL_BOARD_LOCK answers true)"
+name = { type = "name", required = true, doc = "key <mod>.<name> (a-z 0-9 _)" }
+state = { type = "string", required = true, doc = "a game_state key (any mod's, e.g. one of its [[VRFW.State]]) that is 1 while the lock holds" }
+text = { type = "string", default = "vrfw_skill_board_locked", doc = "the menu_text row id shown on the locked screens (the declaring mod's own row, e.g. \"<Prefix>.SkillBoardLocked\")" }
+dock_only = { type = "bool", default = false, doc = "true: the lock holds only while a team editor dock is open (VRFW_TeamEditor.Foreign())" }
+when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

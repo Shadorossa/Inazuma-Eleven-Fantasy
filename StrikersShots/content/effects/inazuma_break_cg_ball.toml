@@ -1,0 +1,25 @@
+# «Ruptura relámpago CG» (Inazuma Break CG, whs03380; wind shot, cut-in ev60_03380): while the ball flies to the goal
+# it wears the cut-in's last shot (c0070, held at frame 612 from the aura's first frame): the ball in its yellow glow
+# with the white core, the soft yellow halo shell round it, the yellow / blue bolts crackling on and off round the ball
+# (the small ones on it and the long strike bolts, their root moved onto the ball, fading out ~1.4 m off it) and the two
+# light cards on it, all camera-facing (billboards) and centred on the ball; behind it the cut-in's long white-yellow
+# flame trail (~15 m, straight), coming out of the kick point as the ball flies and fading out at its rear end. The
+# strike's flash ring stays out (one burst expanding away from the ball).
+# The object is ev6338cg00 (effect/event/ev60/ev6338cg00/), built by research/scripts/inazuma_break_cg_ball_fx.py from
+# ev60033800.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\inazuma_break_cg_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "inazuma_break_cg"
+from = "ega0075b"
+object = "effect/event/ev60/ev6338cg00/ev6338cg00.objbin"
+
+[[shot_aura]]
+name = "inazuma_break_cg"
+when = { techniques = ["whs03380"] }
+aura = "inazuma_break_cg"
+like = "ega0075b"

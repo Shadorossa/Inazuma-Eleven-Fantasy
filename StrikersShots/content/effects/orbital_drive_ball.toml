@@ -1,0 +1,28 @@
+# «Remate orbital» (Orbital Drive, whs02620; wind shot, cut-in ev60_02620): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0700): the ball burning in a cyan-white glow with a violet halo,
+# wrapped in violet psychic lightning, dragging the straight glowing band of its zigzag (violet edge, cyan and blue
+# body, white core) behind it, instead of the plain special-shot aura. The object is ev6026od00
+# (effect/event/ev60/ev6026od00/), built by research/scripts/orbital_drive_ball_fx.py from the cut-in's effect object
+# ev60026200: c0700 held at frame 394 (the end of the band's straight leg), ball at the origin raised 0.14 m to its
+# centre, +Z along the band, x1.5; the band crossed with soft copies (same look from the touchline), coming out of the
+# kick point by distance and fading out softly at its rear.
+# Left out: the zigzag's other legs, the kick, hand lines, smoke and the landing burst.
+# Its flight: content\techniques\orbital_drive_trajectory.toml (level at 2.0 m).
+# The trigger copies the special-shot aura row the automatic aura used (like = "ega0075b"): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "orbital_drive"
+from = "ega0075b"
+object = "effect/event/ev60/ev6026od00/ev6026od00.objbin"
+
+[[shot_aura]]
+name = "orbital_drive"
+when = { techniques = ["whs02620"] }
+aura = "orbital_drive"
+like = "ega0075b"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

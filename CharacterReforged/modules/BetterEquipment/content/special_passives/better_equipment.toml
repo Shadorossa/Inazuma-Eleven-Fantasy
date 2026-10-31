@@ -17,10 +17,10 @@ blocks = ["wears_eq_sh1106301", "score_trailing", "stat_kick_technique_pct_4"]
 name = "item_eq_sh1106601"
 blocks = ["wears_eq_sh1106601", "element_void", "power_4"]
 
-# eq_sh1106701: T: themed on king (Shields)
+# eq_sh1106701: T: themed on king (Emperor Penguin)
 [[VRFW.Passive]]
 name = "item_eq_sh1106701"
-blocks = ["wears_eq_sh1106701", "family_shields", "power_5"]
+blocks = ["wears_eq_sh1106701", "family_penguin", "power_5"]
 
 # eq_sh1104401: N: Shinobi
 [[VRFW.Passive]]
@@ -37,20 +37,20 @@ blocks = ["wears_eq_sh1104201", "speed_3"]
 name = "item_eq_sh1104501"
 blocks = ["wears_eq_sh1104501", "power_4_block"]
 
-# eq_sh1104701: T: themed on pegasus (Pegasus)
+# eq_sh1104701: T: Pegasus (gallops with the ball)
 [[VRFW.Passive]]
 name = "item_eq_sh1104701"
-blocks = ["wears_eq_sh1104701", "family_pegasus", "power_5"]
+blocks = ["wears_eq_sh1104701", "has_ball", "speed_4"]
 
 # eq_sh1104901: N: para esprintar (dashing)
 [[VRFW.Passive]]
 name = "item_eq_sh1104901"
 blocks = ["wears_eq_sh1104901", "on_dash", "stack_2s", "speed_4"]
 
-# eq_sh1105701: T: themed on king (Shields)
+# eq_sh1105701: T: themed on king (Emperor Penguin)
 [[VRFW.Passive]]
 name = "item_eq_sh1105701"
-blocks = ["wears_eq_sh1105701", "family_shields", "power_5"]
+blocks = ["wears_eq_sh1105701", "family_penguin", "power_5"]
 
 # eq_sh1106501: D: «serie centrada en la movilidad»
 [[VRFW.Passive]]
@@ -67,10 +67,10 @@ blocks = ["wears_eq_sh1102101", "score_trailing", "stat_kick_technique_pct_4"]
 name = "item_eq_sh1102501"
 blocks = ["wears_eq_sh1102501", "has_ball", "speed_4"]
 
-# eq_sh1103501: T: themed on ice (Northern Ice)
+# eq_sh1103501: T: ice (the game's ice moves are Wind)
 [[VRFW.Passive]]
 name = "item_eq_sh1103501"
-blocks = ["wears_eq_sh1103501", "family_northernice", "power_5"]
+blocks = ["wears_eq_sh1103501", "element_wind", "power_4"]
 
 # eq_sh1103601: N: abrasadoras (scorching)
 [[VRFW.Passive]]
@@ -102,140 +102,140 @@ blocks = ["wears_eq_sh1100501", "speed_3"]
 name = "item_eq_sh1100701"
 blocks = ["wears_eq_sh1100701", "power_4_long_shoot"]
 
-# eq_sh042001: T: themed on shadow (Occult)
+# eq_sh042001: T: shadow (dribble past)
 [[VRFW.Passive]]
 name = "item_eq_sh042001"
-blocks = ["wears_eq_sh042001", "family_occult", "power_5"]
+blocks = ["wears_eq_sh042001", "power_4_dribble"]
 
-# eq_sh041701: T: themed on god (Divine Power)
+# eq_sh041701: T: themed on god (God Hand)
 [[VRFW.Passive]]
 name = "item_eq_sh041701"
-blocks = ["wears_eq_sh041701", "family_divinepower", "power_5"]
+blocks = ["wears_eq_sh041701", "family_godhand", "power_5"]
 
-# eq_sh042401: T: themed on devil (Majin Giant)
+# eq_sh042401: T: demon (demonic power)
 [[VRFW.Passive]]
 name = "item_eq_sh042401"
-blocks = ["wears_eq_sh042401", "family_majingiant", "power_5"]
+blocks = ["wears_eq_sh042401", "score_leading", "stat_kick_physical_pct_4"]
 
-# eq_sh042301: T: themed on wolf (Wild Beasts)
+# eq_sh042301: T: wolf (the fang bites again)
 [[VRFW.Passive]]
 name = "item_eq_sh042301"
-blocks = ["wears_eq_sh042301", "family_beasts", "power_5"]
+blocks = ["wears_eq_sh042301", "kind_block", "recast_m8"]
 
 # eq_sh041201: N: themed on moon (no technique family since families v2)
 [[VRFW.Passive]]
 name = "item_eq_sh041201"
 blocks = ["wears_eq_sh041201", "element_void", "power_4"]
 
-# eq_sh041801: T: themed on dragon (Dragons)
+# eq_sh041801: T: themed on dragon (Dragon Crash)
 [[VRFW.Passive]]
 name = "item_eq_sh041801"
 blocks = ["wears_eq_sh041801", "family_dragon", "power_5"]
 
-# eq_sh031701: T: themed on shadow (Occult)
+# eq_sh031701: T: shadow (dark angel, evasion)
 [[VRFW.Passive]]
 name = "item_eq_sh031701"
-blocks = ["wears_eq_sh031701", "family_occult", "power_5"]
+blocks = ["wears_eq_sh031701", "kind_dribble", "cost_m8"]
 
-# eq_sh031601: T: themed on devil (Majin Giant)
+# eq_sh031601: T: demon (Dark Team, rough duels)
 [[VRFW.Passive]]
 name = "item_eq_sh031601"
-blocks = ["wears_eq_sh031601", "family_majingiant", "power_5"]
+blocks = ["wears_eq_sh031601", "on_duel_won", "tension_3"]
 
-# eq_sh031501: T: themed on god (Divine Power)
+# eq_sh031501: T: themed on god (God Hand)
 [[VRFW.Passive]]
 name = "item_eq_sh031501"
-blocks = ["wears_eq_sh031501", "family_divinepower", "power_5"]
+blocks = ["wears_eq_sh031501", "family_godhand", "power_5"]
 
-# eq_sh030801: T: themed on king (Penguins)
+# eq_sh030801: T: themed on king (Emperor Penguin)
 [[VRFW.Passive]]
 name = "item_eq_sh030801"
 blocks = ["wears_eq_sh030801", "family_penguin", "power_5"]
 
-# eq_sh030501: T: themed on dragon (Dragons)
+# eq_sh030501: T: themed on dragon (Dragon Crash)
 [[VRFW.Passive]]
 name = "item_eq_sh030501"
 blocks = ["wears_eq_sh030501", "family_dragon", "power_5"]
 
-# eq_sh111401: T: themed on bird (Legendary Birds)
+# eq_sh111401: T: themed on bird (The Phoenix)
 [[VRFW.Passive]]
 name = "item_eq_sh111401"
-blocks = ["wears_eq_sh111401", "family_legendarybirds", "power_5"]
+blocks = ["wears_eq_sh111401", "family_phoenix", "power_5"]
 
-# eq_sh051701: T: themed on wolf (Wild Beasts)
+# eq_sh051701: T: wolf (the howl after a goal)
 [[VRFW.Passive]]
 name = "item_eq_sh051701"
-blocks = ["wears_eq_sh051701", "family_beasts", "power_5"]
+blocks = ["wears_eq_sh051701", "on_goal", "tension_6"]
 
-# eq_sh061501: T: themed on star (Alius Power)
+# eq_sh061501: T: star (a supernova from afar)
 [[VRFW.Passive]]
 name = "item_eq_sh061501"
-blocks = ["wears_eq_sh061501", "family_aliuspower", "power_5"]
+blocks = ["wears_eq_sh061501", "power_4_long_shoot"]
 
-# eq_sh060101: T: themed on dragon (Dragons)
+# eq_sh060101: T: themed on dragon (Dragon Crash)
 [[VRFW.Passive]]
 name = "item_eq_sh060101"
 blocks = ["wears_eq_sh060101", "family_dragon", "power_5"]
 
-# eq_sh060401: T: themed on tiger (Wild Beasts)
+# eq_sh060401: T: tiger (Muay Thai strength)
 [[VRFW.Passive]]
 name = "item_eq_sh060401"
-blocks = ["wears_eq_sh060401", "family_beasts", "power_5"]
+blocks = ["wears_eq_sh060401", "score_trailing", "stat_kick_physical_pct_4"]
 
-# eq_sh060601: T: themed on wolf (Wild Beasts)
+# eq_sh060601: T: wolf (the pack hunts)
 [[VRFW.Passive]]
 name = "item_eq_sh060601"
-blocks = ["wears_eq_sh060601", "family_beasts", "power_5"]
+blocks = ["wears_eq_sh060601", "speed_3"]
 
-# eq_sh060301: T: themed on sword (Legendary Weapons)
+# eq_sh060301: T: sword (shot power)
 [[VRFW.Passive]]
 name = "item_eq_sh060301"
-blocks = ["wears_eq_sh060301", "family_legendaryweapons", "power_5"]
+blocks = ["wears_eq_sh060301", "power_4_shoot"]
 
-# eq_sh080301: T: themed on devil (Majin Giant)
+# eq_sh080301: T: demon (hellfire)
 [[VRFW.Passive]]
 name = "item_eq_sh080301"
-blocks = ["wears_eq_sh080301", "family_majingiant", "power_5"]
+blocks = ["wears_eq_sh080301", "element_fire", "power_4"]
 
-# eq_sh080501: T: themed on phoenix (Legendary Birds)
+# eq_sh080501: T: themed on phoenix (The Phoenix)
 [[VRFW.Passive]]
 name = "item_eq_sh080501"
-blocks = ["wears_eq_sh080501", "family_legendarybirds", "power_5"]
+blocks = ["wears_eq_sh080501", "family_phoenix", "power_5"]
 
-# eq_sh021301: T: themed on shadow (Penguins)
+# eq_sh021301: T: themed on shadow (Emperor Penguin)
 [[VRFW.Passive]]
 name = "item_eq_sh021301"
 blocks = ["wears_eq_sh021301", "family_penguin", "power_5"]
 
-# eq_sh021501: T: themed on ice (Northern Ice)
+# eq_sh021501: T: ice (Diamond Dust, cold control)
 [[VRFW.Passive]]
 name = "item_eq_sh021501"
-blocks = ["wears_eq_sh021501", "family_northernice", "power_5"]
+blocks = ["wears_eq_sh021501", "score_leading", "stat_control_technique_pct_4"]
 
-# eq_sh020401: T: themed on god (Divine Power)
+# eq_sh020401: T: themed on god (God Hand)
 [[VRFW.Passive]]
 name = "item_eq_sh020401"
-blocks = ["wears_eq_sh020401", "family_divinepower", "power_5"]
+blocks = ["wears_eq_sh020401", "family_godhand", "power_5"]
 
-# eq_sh011001: T: themed on god (Divine Power)
+# eq_sh011001: T: themed on god (God Hand)
 [[VRFW.Passive]]
 name = "item_eq_sh011001"
-blocks = ["wears_eq_sh011001", "family_divinepower", "power_5"]
+blocks = ["wears_eq_sh011001", "family_godhand", "power_5"]
 
 # eq_sh070301: N: themed on moon (no technique family since families v2)
 [[VRFW.Passive]]
 name = "item_eq_sh070301"
 blocks = ["wears_eq_sh070301", "element_void", "power_4"]
 
-# eq_sh070801: T: themed on god (Divine Power)
+# eq_sh070801: T: themed on god (God Hand)
 [[VRFW.Passive]]
 name = "item_eq_sh070801"
-blocks = ["wears_eq_sh070801", "family_divinepower", "power_5"]
+blocks = ["wears_eq_sh070801", "family_godhand", "power_5"]
 
-# eq_sh070401: T: themed on wall (Great Walls)
+# eq_sh070401: T: wall (rampart)
 [[VRFW.Passive]]
 name = "item_eq_sh070401"
-blocks = ["wears_eq_sh070401", "family_greatwalls", "power_5"]
+blocks = ["wears_eq_sh070401", "power_4_block"]
 
 # eq_sh112101: L: VR elite boots
 [[VRFW.Passive]]
@@ -287,15 +287,15 @@ blocks = ["wears_eq_sh045401", "element_forest", "power_4"]
 name = "item_eq_mi0108101"
 blocks = ["wears_eq_mi0108101", "on_duel_won", "tension_3"]
 
-# eq_mi0107201: T: themed on shadow (Occult)
+# eq_mi0107201: T: shadow (the abyss swallows again)
 [[VRFW.Passive]]
 name = "item_eq_mi0107201"
-blocks = ["wears_eq_mi0107201", "family_occult", "power_5"]
+blocks = ["wears_eq_mi0107201", "kind_dribble", "recast_m8"]
 
-# eq_mi0107401: T: themed on shadow (Ninja Arts)
+# eq_mi0107401: T: ninja / shadow (vanishing dash)
 [[VRFW.Passive]]
 name = "item_eq_mi0107401"
-blocks = ["wears_eq_mi0107401", "family_ninjaarts", "power_5"]
+blocks = ["wears_eq_mi0107401", "on_dash", "stack_2s", "speed_4"]
 
 # eq_mi0107701: N: themed on moon (no technique family since families v2)
 [[VRFW.Passive]]
@@ -312,15 +312,15 @@ blocks = ["wears_eq_mi0105001", "element_fire", "power_4"]
 name = "item_eq_mi0106001"
 blocks = ["wears_eq_mi0106001", "score_trailing", "stat_kick_technique_pct_4"]
 
-# eq_mi0106101: T: themed on shadow (Ninja Arts)
+# eq_mi0106101: T: ninja / shadow (strikes from behind)
 [[VRFW.Passive]]
 name = "item_eq_mi0106101"
-blocks = ["wears_eq_mi0106101", "family_ninjaarts", "power_5"]
+blocks = ["wears_eq_mi0106101", "score_trailing", "stat_technique_agility_pct_4"]
 
-# eq_mi0106601: T: themed on star (Alius Power)
+# eq_mi0106601: T: cosmos (shots return faster)
 [[VRFW.Passive]]
 name = "item_eq_mi0106601"
-blocks = ["wears_eq_mi0106601", "family_aliuspower", "power_5"]
+blocks = ["wears_eq_mi0106601", "kind_shoot", "recast_m8"]
 
 # eq_mi0103101: U: Genesis (Aliea)
 [[VRFW.Passive]]
@@ -337,15 +337,15 @@ blocks = ["wears_eq_mi0107501", "power_4_block"]
 name = "item_eq_mi0107101"
 blocks = ["wears_eq_mi0107101", "element_fire", "power_4"]
 
-# eq_mi0107301: T: themed on thunder (Inazuma Power)
+# eq_mi0107301: T: themed on thunder (Inazuma Break)
 [[VRFW.Passive]]
 name = "item_eq_mi0107301"
-blocks = ["wears_eq_mi0107301", "family_inazumapower", "power_5"]
+blocks = ["wears_eq_mi0107301", "family_lightningbreak", "power_5"]
 
-# eq_mi0105101: T: themed on thunder (Inazuma Power)
+# eq_mi0105101: T: themed on thunder (Inazuma Break)
 [[VRFW.Passive]]
 name = "item_eq_mi0105101"
-blocks = ["wears_eq_mi0105101", "family_inazumapower", "power_5"]
+blocks = ["wears_eq_mi0105101", "family_lightningbreak", "power_5"]
 
 # eq_mi0105901: N: de la pasión
 [[VRFW.Passive]]
@@ -397,10 +397,10 @@ blocks = ["wears_eq_mi0107901", "family_godhand", "power_5"]
 name = "item_eq_mi0104801"
 blocks = ["wears_eq_mi0104801", "power_4_punch"]
 
-# eq_mi0104501: T: themed on rock (Alius Power)
+# eq_mi0104501: T: meteor (keeper gloves, meteor punch)
 [[VRFW.Passive]]
 name = "item_eq_mi0104501"
-blocks = ["wears_eq_mi0104501", "family_aliuspower", "power_5"]
+blocks = ["wears_eq_mi0104501", "power_4_punch"]
 
 # eq_mi0104701: N: potentes (power gloves)
 [[VRFW.Passive]]
@@ -427,20 +427,20 @@ blocks = ["wears_eq_ac0108101", "on_duel_won", "tension_3"]
 name = "item_eq_ac0107701"
 blocks = ["wears_eq_ac0107701", "on_keeper_save", "tension_4"]
 
-# eq_ac0107601: T: themed on star (Alius Power)
+# eq_ac0107601: T: comet (the tail of a chain shot)
 [[VRFW.Passive]]
 name = "item_eq_ac0107601"
-blocks = ["wears_eq_ac0107601", "family_aliuspower", "power_5"]
+blocks = ["wears_eq_ac0107601", "power_4_chain_shoot"]
 
 # eq_ac0104701: U: Chrono Stone
 [[VRFW.Passive]]
 name = "item_eq_ac0104701"
 blocks = ["wears_eq_ac0104701", "kind_block", "recast_m8"]
 
-# eq_ac0104901: T: themed on rock (Alius Power)
+# eq_ac0104901: T: meteor (falls from afar)
 [[VRFW.Passive]]
 name = "item_eq_ac0104901"
-blocks = ["wears_eq_ac0104901", "family_aliuspower", "power_5"]
+blocks = ["wears_eq_ac0104901", "kind_long_shoot", "cost_m8"]
 
 # eq_ac0103401: N: de poder (power)
 [[VRFW.Passive]]
@@ -452,30 +452,30 @@ blocks = ["wears_eq_ac0103401", "power_4_shoot"]
 name = "item_eq_ac0107201"
 blocks = ["wears_eq_ac0107201", "element_fire", "power_4"]
 
-# eq_ac0107301: T: themed on thunder (Inazuma Power)
+# eq_ac0107301: T: themed on thunder (Inazuma Break)
 [[VRFW.Passive]]
 name = "item_eq_ac0107301"
-blocks = ["wears_eq_ac0107301", "family_inazumapower", "power_5"]
+blocks = ["wears_eq_ac0107301", "family_lightningbreak", "power_5"]
 
-# eq_ac0102601: T: themed on bird (Legendary Birds)
+# eq_ac0102601: T: themed on bird (The Phoenix)
 [[VRFW.Passive]]
 name = "item_eq_ac0102601"
-blocks = ["wears_eq_ac0102601", "family_legendarybirds", "power_5"]
+blocks = ["wears_eq_ac0102601", "family_phoenix", "power_5"]
 
 # eq_ac0103801: U: Promise pendant
 [[VRFW.Passive]]
 name = "item_eq_ac0103801"
 blocks = ["wears_eq_ac0103801", "on_duel_won", "tension_3"]
 
-# eq_ac0107501: T: themed on thunder (Inazuma Power)
+# eq_ac0107501: T: themed on thunder (Inazuma Break)
 [[VRFW.Passive]]
 name = "item_eq_ac0107501"
-blocks = ["wears_eq_ac0107501", "family_inazumapower", "power_5"]
+blocks = ["wears_eq_ac0107501", "family_lightningbreak", "power_5"]
 
-# eq_ac0105501: T: themed on thunder (Inazuma Power)
+# eq_ac0105501: T: themed on thunder (Inazuma Break)
 [[VRFW.Passive]]
 name = "item_eq_ac0105501"
-blocks = ["wears_eq_ac0105501", "family_inazumapower", "power_5"]
+blocks = ["wears_eq_ac0105501", "family_lightningbreak", "power_5"]
 
 # eq_ac0103001: N: huracán
 [[VRFW.Passive]]
@@ -502,10 +502,10 @@ blocks = ["wears_eq_ac0102701", "element_fire", "power_4"]
 name = "item_eq_ac0104801"
 blocks = ["wears_eq_ac0104801", "on_goal", "tension_6"]
 
-# eq_ac0105101: T: themed on king (Shields)
+# eq_ac0105101: T: themed on king (Emperor Penguin)
 [[VRFW.Passive]]
 name = "item_eq_ac0105101"
-blocks = ["wears_eq_ac0105101", "family_shields", "power_5"]
+blocks = ["wears_eq_ac0105101", "family_penguin", "power_5"]
 
 # eq_sp0105201: U: Omega
 [[VRFW.Passive]]
@@ -527,10 +527,10 @@ blocks = ["wears_eq_sp0105701", "speed_3"]
 name = "item_eq_sp0106201"
 blocks = ["wears_eq_sp0106201", "score_trailing", "stat_kick_technique_pct_4"]
 
-# eq_sp0105401: T: themed on shadow (Occult)
+# eq_sp0105401: T: shadow (darkness = Void)
 [[VRFW.Passive]]
 name = "item_eq_sp0105401"
-blocks = ["wears_eq_sp0105401", "family_occult", "power_5"]
+blocks = ["wears_eq_sp0105401", "element_void", "power_4"]
 
 # eq_sp0102301: N: de la motivación
 [[VRFW.Passive]]
@@ -542,10 +542,10 @@ blocks = ["wears_eq_sp0102301", "on_duel_won", "tension_3"]
 name = "item_eq_sp0107501"
 blocks = ["wears_eq_sp0107501", "kind_dribble", "recast_m8"]
 
-# eq_sp0105301: T: themed on devil (Majin Giant)
+# eq_sp0105301: T: demon (the demonbind pact)
 [[VRFW.Passive]]
 name = "item_eq_sp0105301"
-blocks = ["wears_eq_sp0105301", "family_majingiant", "power_5"]
+blocks = ["wears_eq_sp0105301", "cost_m5"]
 
 # eq_sp0106801: N: de velocidad (speed)
 [[VRFW.Passive]]
@@ -557,10 +557,10 @@ blocks = ["wears_eq_sp0106801", "speed_3"]
 name = "item_eq_sp0106001"
 blocks = ["wears_eq_sp0106001", "kind_dribble", "recast_m8"]
 
-# eq_sp0104001: T: themed on god (Divine Power)
+# eq_sp0104001: T: themed on god (God Hand)
 [[VRFW.Passive]]
 name = "item_eq_sp0104001"
-blocks = ["wears_eq_sp0104001", "family_divinepower", "power_5"]
+blocks = ["wears_eq_sp0104001", "family_godhand", "power_5"]
 
 # eq_sp0108101: U + N: cumulonimbo
 [[VRFW.Passive]]
@@ -572,25 +572,25 @@ blocks = ["wears_eq_sp0108101", "element_wind", "power_4"]
 name = "item_eq_sp0108001"
 blocks = ["wears_eq_sp0108001", "kind_catch", "cost_m8"]
 
-# eq_sp0105801: T: themed on god (Divine Power)
+# eq_sp0105801: T: themed on god (God Hand)
 [[VRFW.Passive]]
 name = "item_eq_sp0105801"
-blocks = ["wears_eq_sp0105801", "family_divinepower", "power_5"]
+blocks = ["wears_eq_sp0105801", "family_godhand", "power_5"]
 
-# eq_sp0107201: T: themed on penguin (Penguins)
+# eq_sp0107201: T: themed on penguin (Emperor Penguin)
 [[VRFW.Passive]]
 name = "item_eq_sp0107201"
 blocks = ["wears_eq_sp0107201", "family_penguin", "power_5"]
 
-# eq_sp0106501: T: themed on bird (Legendary Birds)
+# eq_sp0106501: T: themed on bird (The Phoenix)
 [[VRFW.Passive]]
 name = "item_eq_sp0106501"
-blocks = ["wears_eq_sp0106501", "family_legendarybirds", "power_5"]
+blocks = ["wears_eq_sp0106501", "family_phoenix", "power_5"]
 
-# eq_sp0107101: T: themed on thunder (Inazuma Power)
+# eq_sp0107101: T: themed on thunder (Inazuma Break)
 [[VRFW.Passive]]
 name = "item_eq_sp0107101"
-blocks = ["wears_eq_sp0107101", "family_inazumapower", "power_5"]
+blocks = ["wears_eq_sp0107101", "family_lightningbreak", "power_5"]
 
 # eq_sp0103801: U: castella earrings
 [[VRFW.Passive]]
@@ -602,7 +602,7 @@ blocks = ["wears_eq_sp0103801", "has_ball", "speed_4"]
 name = "item_eq_sp0104501"
 blocks = ["wears_eq_sp0104501", "score_leading", "stat_pressure_physical_pct_4"]
 
-# eq_sp0101001: T: themed on penguin (Penguins)
+# eq_sp0101001: T: themed on penguin (Emperor Penguin)
 [[VRFW.Passive]]
 name = "item_eq_sp0101001"
 blocks = ["wears_eq_sp0101001", "family_penguin", "power_5"]
@@ -617,25 +617,25 @@ blocks = ["wears_eq_sp0101801", "on_duel_won", "tension_3"]
 name = "item_eq_sp0102101"
 blocks = ["wears_eq_sp0102101", "score_trailing", "stat_kick_technique_pct_4"]
 
-# eq_sp0107901: T: themed on star (Alius Power)
+# eq_sp0107901: T: star (a trail of stars)
 [[VRFW.Passive]]
 name = "item_eq_sp0107901"
-blocks = ["wears_eq_sp0107901", "family_aliuspower", "power_5"]
+blocks = ["wears_eq_sp0107901", "kind_chain_shoot", "recast_m8"]
 
 # eq_sp0107401: N: themed on sun (no technique family since families v2)
 [[VRFW.Passive]]
 name = "item_eq_sp0107401"
 blocks = ["wears_eq_sp0107401", "element_fire", "power_4"]
 
-# eq_sp0107701: T: themed on thunder (Inazuma Power)
+# eq_sp0107701: T: themed on thunder (Inazuma Break)
 [[VRFW.Passive]]
 name = "item_eq_sp0107701"
-blocks = ["wears_eq_sp0107701", "family_inazumapower", "power_5"]
+blocks = ["wears_eq_sp0107701", "family_lightningbreak", "power_5"]
 
-# eq_sp0106901: T: themed on thunder (Inazuma Power)
+# eq_sp0106901: T: themed on thunder (Inazuma Break)
 [[VRFW.Passive]]
 name = "item_eq_sp0106901"
-blocks = ["wears_eq_sp0106901", "family_inazumapower", "power_5"]
+blocks = ["wears_eq_sp0106901", "family_lightningbreak", "power_5"]
 
 # eq_sp0108201: U: bunny keychain
 [[VRFW.Passive]]
@@ -647,17 +647,17 @@ blocks = ["wears_eq_sp0108201", "score_leading", "stat_pressure_physical_pct_4"]
 name = "item_eq_sp0107001"
 blocks = ["wears_eq_sp0107001", "speed_3"]
 
-# eq_sp0102801: T: themed on dragon (Dragons)
+# eq_sp0102801: T: themed on dragon (Dragon Crash)
 [[VRFW.Passive]]
 name = "item_eq_sp0102801"
 blocks = ["wears_eq_sp0102801", "family_dragon", "power_5"]
 
-# eq_sp0107601: T: themed on pegasus (Pegasus)
+# eq_sp0107601: T: Pegasus (the Pegasus shots)
 [[VRFW.Passive]]
 name = "item_eq_sp0107601"
-blocks = ["wears_eq_sp0107601", "family_pegasus", "power_5"]
+blocks = ["wears_eq_sp0107601", "kind_shoot", "cost_m8"]
 
-# eq_sp0102501: T: themed on dragon (Dragons)
+# eq_sp0102501: T: themed on dragon (Dragon Crash)
 [[VRFW.Passive]]
 name = "item_eq_sp0102501"
 blocks = ["wears_eq_sp0102501", "family_dragon", "power_5"]

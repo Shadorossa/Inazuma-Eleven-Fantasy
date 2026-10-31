@@ -154,7 +154,8 @@ if CharacterReforged.Page == nil then
 
   -- THE projection of a saved card while the option shows the new set (scripts\mix_slots.lua
   -- CMND_CHARACTERREFORGED_PROJECT_SKILL_SET, the rule the skill table and the match use): { aura, mix, aura_from,
-  -- mix_from }; a team member the player page previews: his team set's (VRFW_PlateMember.SkillSet); nil = the option
+  -- mix_from }; a team member the player page previews or a team editor's temporary player: the set the match plays
+  -- for him (VRFW_PlateMember.SkillSet); nil = the option
   -- on Victory Road, no answer (Character Reforged's scripts off) or no such card. Every
   -- place that shows a player's aura / mix (the Hiper page, the page's form badge, the 3D model's forms) reads this.
   Page.CMD_PROJECT = 2177163225            -- crc32("CMND_CHARACTERREFORGED_PROJECT_SKILL_SET")
@@ -213,9 +214,10 @@ if CharacterReforged.Page == nil then
     if not EngineReady() or type(card) ~= "number" or card == 0 or not Page.SkillSetOn() then
       return nil
     end
-    -- a team member previewed on the player page (the VR-Framework's plate member): his set as the match plays it
+    -- a team member previewed on the player page, or a team editor's temporary player (a career club's, a league
+    -- team's; the VR-Framework's plate member): his set as the match plays it
     if type(VRFW_PlateMember) == "table" and type(VRFW_PlateMember.SkillSet) == "function" then
-      local okm, member = pcall(VRFW_PlateMember.SkillSet)
+      local okm, member = pcall(VRFW_PlateMember.SkillSet, card)
       if okm and type(member) == "table" then
         return member
       end

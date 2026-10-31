@@ -80,7 +80,7 @@ local function M(name, ...)
   return funcLuaMenuCommand(K(name), ...)
 end
 
--- ---- the pools (the [[screen]] rows: change both together) ------------------------------------------------------------
+-- ---- the pools (their instance counts N are the [[screen]] rows', read from the engine: ReadCounts) ---------------------
 local POOL_NAME = {
   line = "vrfw_bracket_line",       -- connector pieces, score digits (quads of vrfw_bracket / vrfw_bracket_num)
   row_l = "vrfw_bracket_row_l",     -- a team plate, crest left of the name (left side; the champion's)
@@ -90,8 +90,8 @@ local POOL_NAME = {
   icon = "vrfw_bracket_icon",       -- the champion's crown (a tree without the retail trophy)
   stadium_panel = "vrfw_bracket_stadium",   -- the final stadium's panel (a two-line copy of the round panel)
 }
-local N = { line = 330, row_l = 33, row_r = 32, box = 36, crest = 32, icon = 1, stadium_panel = 1 }
-local ROW_CHAMP = 32              -- row_l instance of the champion's plate
+local N = {}
+local ROW_CHAMP = -1              -- row_l instance of the champion's plate: the pool's last one (ReadCounts)
 
 -- the retail art's layers (retail layer names: the base attaches them by name) and their retail draw priorities
 local RETAIL_NAME = {
@@ -1282,6 +1282,17 @@ function VRFW_Bracket_Skip()
   AnimFinish("skipped")
 end
 
+-- the instances the engine created of each pool (the [[screen]] rows) and the instances to wait for (the retail art's too)
+local function ReadCounts()
+  S.need = 1 + 1 + 1 + #RL.lines + RETAIL.STARS + 8 + 4 + 2 + 1
+  for k, l in pairs(L) do
+    local n = M("LAYER_NUM", l)
+    N[k] = type(n) == "number" and n or 0
+    S.need = S.need + N[k]
+  end
+  ROW_CHAMP = N.row_l - 1
+end
+
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------------
 function OnInit()
   Layers()
@@ -1294,10 +1305,7 @@ function OnInit()
   S.drawn, S.want, S.stuck, S.emb, S.strip, S.prio, S.crest_prio, S.lifted = false, true, false, {}, {}, {}, {}, {}
   S.anim, S.logged, S.retail_ok = nil, {}, nil
   S.animate = ParamInt("busy") ~= nil
-  for _, n in pairs(N) do
-    S.need = S.need + n
-  end
-  S.need = S.need + 1 + 1 + 1 + #RL.lines + RETAIL.STARS + 8 + 4 + 2 + 1
+  ReadCounts()
 end
 
 -- every instance hidden as the engine sets it up (opened with the menu's group); one set up after the page was drawn:
@@ -1309,6 +1317,9 @@ function OnSetupLayer(a1, a2)
     return
   end
   local i = a2 or 0
+  if pool and i >= (N[pool] or 0) then
+    ReadCounts()
+  end
   if pool then
     Hide(a1, i)
   else

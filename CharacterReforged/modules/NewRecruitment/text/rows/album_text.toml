@@ -1,5 +1,6 @@
-# New Recruitment › signing a player from BetterQoL's «Álbum de jugadores» (option «Fichajes» = «Álbum» or «Ambos»;
+# New Recruitment › signing a player from BetterQoL's «Álbum de jugadores» (option «Fichajes» = «Álbum»;
 # assets\lua\_all\new_recruitment_album.lua). Rows of menu_text, read by id = crc32(row id); «%s» = the player's name.
+# The price rule: config.toml [album].
 # After a signing the pachangas' line new_recruitment_pachangas_join_done («¡%s se ha unido a tu equipo!») is shown.
 schema = "VRFW.text/2"
 table = "menu_text"
@@ -17,17 +18,30 @@ ja = "スカウト"
 zh_hans = "招募"
 zh_hant = "招募"
 
+# «%s» = the player's name, then «%d» = the price, «%d» = the points the player has (always in this order)
 [[row]]
-id = "new_recruitment_album_ask"
-es = "¿Quieres fichar a %s?"
-en = "Do you want to recruit %s?"
-fr = "Veux-tu recruter %s ?"
-de = "Möchtest du %s verpflichten?"
-it = "Vuoi ingaggiare %s?"
-pt = "Queres contratar %s?"
-ja = "%sをスカウトしますか？"
-zh_hans = "要招募%s吗？"
-zh_hant = "要招募%s嗎？"
+id = "new_recruitment_album_ask_price"
+es = "¿Quieres fichar a %s por %d puntos de amistad? (tienes %d)"
+en = "Do you want to recruit %s for %d Friendship Points? (you have %d)"
+fr = "Veux-tu recruter %s pour %d points d'amitié ? (tu en as %d)"
+de = "Möchtest du %s für %d Freundschaftspunkte verpflichten? (du hast %d)"
+it = "Vuoi ingaggiare %s per %d punti amicizia? (ne hai %d)"
+pt = "Queres contratar %s por %d pontos de amizade? (tens %d)"
+ja = "%sを友情ポイント%dでスカウトしますか？（所持：%d）"
+zh_hans = "要招募%s吗？需要%d友情点数（你有%d）"
+zh_hant = "要招募%s嗎？需要%d友情點數（你有%d）"
+
+[[row]]
+id = "new_recruitment_album_not_enough"
+es = "No tienes puntos de amistad suficientes para fichar a %s: cuesta %d y tienes %d."
+en = "You do not have enough Friendship Points to recruit %s: it costs %d and you have %d."
+fr = "Tu n'as pas assez de points d'amitié pour recruter %s : il coûte %d et tu en as %d."
+de = "Du hast nicht genug Freundschaftspunkte, um %s zu verpflichten: Er kostet %d, du hast %d."
+it = "Non hai abbastanza punti amicizia per ingaggiare %s: costa %d e ne hai %d."
+pt = "Não tens pontos de amizade suficientes para contratar %s: custa %d e tens %d."
+ja = "%sをスカウトするには友情ポイントが足りません：必要%d、所持%d。"
+zh_hans = "友情点数不足，无法招募%s：需要%d，你有%d。"
+zh_hant = "友情點數不足，無法招募%s：需要%d，你有%d。"
 
 [[row]]
 id = "new_recruitment_album_owned"

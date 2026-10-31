@@ -4,7 +4,9 @@
 -- sequence, CMND_RESERVE_SOCCER, the caller's menu closed), with no hop through the title or another menu, and comes
 -- back to the SAME hub afterwards: a friendly declared with return = "menus" (no game reset; the soccer state's own way
 -- reopens the hub with the in-memory game; friendly_way_back closes the friendly there, sink off, the hub's play mode
--- back). Any mod (a training field, a custom friendly) calls it from its own menu code:
+-- back; when the soccer state goes to an empty field instead, friendly_way_back's menus net resets straight into the
+-- scene root recorded here, params vrfw_match_way_back_menu / _friendly). Any mod (a training field, a custom friendly)
+-- calls it from its own menu code:
 --
 --   local ok, why = VRFW_MATCH.start{
 --     friendly = "<friendly id>",       -- a [[friendly]] with return = "menus" (save = "sink" keeps the file untouched)
@@ -26,6 +28,9 @@
 -- why (no friendly executor in this menu, a launch already running). The launch steps log under «VRFW match_start»
 -- with the frames they took (the hops: request -> reserved). Leaving a running match the retail way:
 -- CMND_VRFW_MATCH_EXIT (VRFW_MATCH.exit()). Defines functions only: no engine call at load time.
+--
+-- From a menu opened over the title (play mode 6, M.title_bound()): refused (the title is no menu scene, a match
+-- reserved there never starts). A mode that plays matches opens its menu as a scene root (title row `root_menu`).
 --
 -- The hand-over: the engine starts a reserved match only once the menu scene's ROOT closes (the menu opened as the
 -- scene's first menu: retail check 2119959601, true in its OnInit). A caller that is the root closes itself. A caller
@@ -55,9 +60,15 @@ do
     SCENE_END_WAIT = 769636339, -- (seconds) the retail wait before a root closes for a reserved match
     VS_SET = VRFW_Cmd.GET_VS_USE_TEAM_SET,       -- CMND_GET_VS_USE_TEAM_SET -> the active match team's set
     FIVE_CHECK = 1538643580,   -- (set, 1, false) the retail member check of a set's 5v5 team: 1..10 = incomplete
+    GET_PLAY_MODE = VRFW_Cmd.GET_PLAY_GAME_MODE,  -- CMND_GET_PLAY_GAME_MODE -> play mode (6 = the title)
   }
+  local TITLE_PLAY_MODE = 6         -- the title: no menu scene, a match reserved here never starts
   local PARAM_SCENE_ROOT = 2082985882 -- crc32("vrfw_match_start_scene_root"): menu id of the scene's root
   local PARAM_HAND_OVER = 3190064600  -- crc32("vrfw_match_start_hand_over"): menu id of the caller to close
+  -- the way back target of the running friendly (read by 11_friendly_title_net.lua): the scene root the game must
+  -- reopen after the match, and crc32 of the friendly id it belongs to
+  local PARAM_WAY_BACK_MENU = 3244649355      -- crc32("vrfw_match_way_back_menu")
+  local PARAM_WAY_BACK_FRIENDLY = 1563930864  -- crc32("vrfw_match_way_back_friendly")
   local HAND_OVER_TIMEOUT = 600       -- frames the caller waits for the root to take the hand-over
   local ROOT_WAIT = 120               -- frames the root waits for each step of its close
   local SCENE_END_SECONDS = 1.5
@@ -178,6 +189,16 @@ do
     end
     log("start", tostring(friendly), "game", tostring(spec.game), "set", tostring(set), "from play mode", tostring(mode),
       "frame", M.frames)
+    -- the way back target: the scene root (the caller itself when it is the root)
+    local back_to = nil
+    if root ~= nil and menu_exists(root) then
+      back_to = root
+    elseif M.is_root then
+      back_to = M.self_menu
+    end
+    param_set(PARAM_WAY_BACK_MENU, back_to)
+    param_set(PARAM_WAY_BACK_FRIENDLY, back_to ~= nil and type(friendly) == "string" and VRFW_Crc32(friendly) or nil)
+    log("way back target", tostring(back_to))
     local ok, why = P.start(friendly, {
       game = spec.game, difficulty = spec.difficulty, stadium = spec.stadium, set = set, rival = spec.rival,
       tag = spec.tag, sub = spec.sub, objective = spec.objective,
@@ -192,6 +213,8 @@ do
     })
     if not ok then
       log("start failed", tostring(why))
+      param_set(PARAM_WAY_BACK_MENU, nil)
+      param_set(PARAM_WAY_BACK_FRIENDLY, nil)
       pcall(funcLuaCommand, C.CALLER, "")
       pcall(funcLuaCommand, C.OVERRIDE, "")
       if type(spec.play_mode) == "number" and type(mode) == "number" and mode >= 0 then
@@ -282,6 +305,15 @@ do
     return -1
   end
 
+  -- a menu opened over the title (play mode 6, not a scene root): the title is no menu scene, so nothing would ever
+  -- start a match reserved here (endless loading screen)
+  function M.title_bound()
+    local okm, mode = pcall(funcLuaCommand, C.GET_PLAY_MODE)
+    if not okm or mode ~= TITLE_PLAY_MODE then return false end
+    local okr, root = pcall(funcLuaMenuCommand, C.IS_SCENE_ROOT)
+    return not (okr and root == true)
+  end
+
   -- the launch from this menu (see the header). true, or false + why.
   function M.start(spec)
     if type(spec) ~= "table" or type(spec.friendly) ~= "string" then return false, "no friendly" end
@@ -297,6 +329,10 @@ do
     end
     -- black at once: no menu is seen until the match; `black = false`: the friendly's intro shows instead (no
     -- forced black over it: the retail encounter transition, then the match loading)
+    if M.title_bound() then
+      log("refused: a menu over the title (no menu scene starts a match reserved here)")
+      return false, "title"
+    end
     local black = spec.black ~= false
     if black then pcall(funcLuaCommand, C.FADE, 1, 0) end
     M.frames, M.black = 0, black

@@ -1,7 +1,7 @@
-# Descriptions of formations the game left in Japanese in every language whose text is a real description (the
-# placeholders, only the formation's name, are generated into formation_names.toml by
-# research/scripts/utilities_formation_names.py, which stops when a real one is missing here). Translated from the
-# game's Japanese text in the wording of the offered formations' descriptions. Format: docs/game/engine/text-engine.md §2.
+# Descriptions of formations the game left in Japanese in every language whose text is a real description, translated
+# from the game's Japanese text in the wording of the offered formations' descriptions (the placeholders, only the
+# formation's name, get a description built from the layout in content/formations/unlocked_formation_texts.toml).
+# Format: docs/game/engine/text-engine.md §2.
 schema = "VRFW.text/2"
 table = "item_text"
 

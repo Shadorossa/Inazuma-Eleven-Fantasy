@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Cabezazo kung-fu (Kung Fu Header, whs00290, cut-in ev60_00290): one straight level
+# line from the kick point to the goal, the ball low over the pitch (its centre at 0.6 m the whole way: the cut-in drives
+# it at ~0.5 m; its pink outer shell, 0.48 m round the ball, stays clear of the grass). Heights are the ball centre over
+# the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Cabezazo kung-fu (whs00290).
+[[edit]]
+target = "whs00290"
+trajectory = { points = [[0.0, 0.6]], straight = true, unblockable = false }

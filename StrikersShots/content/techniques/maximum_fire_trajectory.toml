@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Fuego supremo (Maximum Fire, whs01370, cut-in ev60_01370): one straight level line
+# from the kick point to the goal, skimming the pitch as in the cut-in (the aura's origin 0.31 m up, the ball's centre
+# 0.45 m: the flames it drags lie just over the grass, over its burning track). Heights are the aura's origin over the
+# pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Fuego supremo (whs01370).
+[[edit]]
+target = "whs01370"
+trajectory = { points = [[0.0, 0.31]], straight = true, unblockable = false }

@@ -57,6 +57,7 @@ local function special_icon()
 end
 
 local roster = nil       -- { entries = { e … }, by_base = { [base] = e }, of_param = { [param] = e } }
+local bases = {}         -- [lang] = the language's names of the roster: { name rows, team rows, series rows, keys, sorted }
 local names = {}         -- [lang] = { group spec, name rows, team rows, series rows, groups, sorted }
 local view = nil         -- the opening's language state
 local view_owned = nil   -- the club's cards read at the opening (owned())
@@ -386,7 +387,7 @@ local function ensure_roster()
     local _, signature = hidden_rarities(album_declarations())
     if signature ~= roster.hidden_signature then
       info("hidden rarities changed (" .. tostring(roster.hidden_signature) .. " -> " .. signature .. "): roster rebuilt")
-      roster, names = nil, {}
+      roster, names, bases = nil, {}, {}
     end
   end
   if roster == nil then
@@ -511,6 +512,39 @@ local chars, fold, fold_char = Fold.chars, Fold.fold_upper, Fold.fold_upper
 
 local UTF8_CHAR = "[%z\1-\127\194-\244][\128-\191]*"
 
+-- the roster's names in one language (its text files read once per language): built at a save load for the game's
+-- language, else at the first opening
+local function language_base(lang)
+  local B = bases[lang]
+  if B then
+    return B
+  end
+  local ids = roster_text_ids()
+  local crows = text_rows(lang, T.CHARA, ids.chara)
+  B = { name = {}, key = {}, team_rows = text_rows(lang, T.TEAM, ids.other), series_rows = text_rows(lang, T.SERIES_TEXT, ids.other) }
+  for _, e in ipairs(roster.entries) do
+    local n = text_of(crows, e.name_text) or ""
+    B.name[e] = n
+    B.key[e] = fold(n)
+  end
+  -- sorted by name, then base: plain string keys (key, NUL, base) sort without a Lua comparator
+  local sort_keys, of_sort_key = {}, {}
+  for _, e in ipairs(roster.entries) do
+    if B.name[e] ~= "" then
+      local k = B.key[e] .. "\0" .. string.format("%010d", e.base)
+      sort_keys[#sort_keys + 1] = k
+      of_sort_key[k] = e
+    end
+  end
+  table.sort(sort_keys)
+  B.sorted = {}
+  for i, k in ipairs(sort_keys) do
+    B.sorted[i] = of_sort_key[k]
+  end
+  bases[lang] = B
+  return B
+end
+
 -- the language's state: names, the «Nombre» groups (spec: first letters of each group, split by «,»)
 local function language(code, spec, other_label, special_label)
   local lang = lang_of(code)
@@ -521,30 +555,9 @@ local function language(code, spec, other_label, special_label)
   if L and L.spec == spec and L.other == other_label and L.special == special_label then
     return L
   end
-  local ids = roster_text_ids()
-  local crows = text_rows(lang, T.CHARA, ids.chara)
-  local trows = text_rows(lang, T.TEAM, ids.other)
-  local srows = text_rows(lang, T.SERIES_TEXT, ids.other)
-  L = { lang = lang, spec = spec, other = other_label, special = special_label, name = {}, key = {}, team_rows = trows, series_rows = srows }
-  for _, e in ipairs(roster.entries) do
-    local n = text_of(crows, e.name_text) or ""
-    L.name[e] = n
-    L.key[e] = fold(n)
-  end
-  -- sorted by name, then base: plain string keys (key, NUL, base) sort without a Lua comparator
-  local sort_keys, of_sort_key = {}, {}
-  for _, e in ipairs(roster.entries) do
-    if L.name[e] ~= "" then
-      local k = L.key[e] .. "\0" .. string.format("%010d", e.base)
-      sort_keys[#sort_keys + 1] = k
-      of_sort_key[k] = e
-    end
-  end
-  table.sort(sort_keys)
-  local sorted = {}
-  for i, k in ipairs(sort_keys) do
-    sorted[i] = of_sort_key[k]
-  end
+  local B = language_base(lang)
+  local trows, srows, sorted = B.team_rows, B.series_rows, B.sorted
+  L = { lang = lang, spec = spec, other = other_label, special = special_label, name = B.name, key = B.key, team_rows = trows, series_rows = srows }
   local groups, of_char = {}, {}
   for g in spec:gmatch("[^,]+") do
     local cs = chars(g)
@@ -705,3 +718,14 @@ end
 -- ---------------------------------------------------------------------------------------------- start
 
 ensure_roster()
+
+-- a save load (behind the loading screen) builds the names of the game's language: the first opening only groups them
+VRFW.on("slot_load", function()
+  local ok, lang = pcall(VRFW.files.game_language)
+  if ok and type(lang) == "string" and lang ~= "" and roster ~= nil and bases[lang] == nil then
+    local okb, e = pcall(language_base, lang)
+    if not okb then
+      warn("names of " .. lang .. " not built at the save load (" .. tostring(e) .. ")")
+    end
+  end
+end)

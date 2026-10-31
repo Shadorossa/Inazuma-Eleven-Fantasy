@@ -1,0 +1,26 @@
+# «Zero Magnum» (whs01680, no-element shot for 2 players, cut-in ev60_01680): while the ball flies to the goal it rides
+# inside the cut-in's cyan cannon beam (the last cut c0500, the beam fired out of the cannon mouth, held at frame 437,
+# the texture flow running on): the cannon mouth (its glowing discs and dark swirl rings) and the white-yellow spike
+# stay at the kick point, the beam runs from the mouth to just past the ball without stretching (its textures laid
+# along the pitch), drawn round its centre line so it has depth from every match camera, its front end fading out.
+# The object is ev6168zm00 (assets\data\{common,dx11}\effect\event\ev60\ev6168zm00\), built by
+# research/scripts/zero_magnum_ball_fx.py from ev60016800; docs/game/media/zero-magnum-ball-fx.md. Its flight:
+# content\techniques\zero_magnum_trajectory.toml.
+# The trigger copies the void special-shot aura's row (like = "ega0075e"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame. The objects under assets\data are generated on the author's PC from the game's own
+# cut-in effects (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "zero_magnum"
+from = "ega0075e"
+object = "effect/event/ev60/ev6168zm00/ev6168zm00.objbin"
+
+[[shot_aura]]
+name = "zero_magnum"
+when = { techniques = ["whs01680"] }
+aura = "zero_magnum"
+like = "ega0075e"
+# its kick-point part stays on the kicker: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

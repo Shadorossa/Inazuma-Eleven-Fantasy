@@ -6,13 +6,13 @@ key_id = "HissatsuLevelUp"
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Hissatsu Level Up"
-version = "1.18.0"
+version = "1.21.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Special moves level up the classic way: each player's move grows with the times he uses it in matches (a curve you can change in config.toml), with a «levels up» banner when it does. The last level needs the Ultimate Evolution Manual (Inazuma Eleven GO Galaxy's notebook, sold in the general shop); a game item becomes the Technique Upgrade (+1 level). A player can no longer carry the same special move twice, whatever board you use. From G5 on, some moves play the cut-in of their evolution. Works with the VR-Framework alone."
 priority = 0
 tags = ["Techniques", "Gameplay"]
-updated = "2026-10-30"
+updated = "2026-10-31"
 # 1.10.0 (owner 2026-10-23): an embedded module of Hissatsu Reforged (research/mods/HissatsuReforged/modules/
 # HissatsuLevelUp/); its id, key id, prefix, save blob, item ids and texts unchanged
 # This mod's own names (TOML keys [HissatsuLevelUp.X], Lua HissatsuLevelUp.X, commands CMND_HISSATSULEVELUP_*, text ids

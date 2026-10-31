@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Disparo doble (Fission and Fusion, whs01980, cut-in ev60_01980): one straight level
+# line from the kick point to the goal, the ball at 2.0 m the whole way (in the cut-in at 1.13 m; its ripple cone,
+# ~1.5 m round the ball, and its shock rings, scaled to ~2 m round it, stay clear of the grass). Heights are the ball
+# centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Disparo doble (whs01980).
+[[edit]]
+target = "whs01980"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

@@ -3,6 +3,7 @@ schema = "VRFW.option/2"
 
 [[option]]
 id = "voice_pack"
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 # Values: "None" plus the installed voice packs; custom row driven by lua/setting_menu/110_voice_pack.lua.
 type = "lua"
 label = "voice_pack"
@@ -22,6 +23,7 @@ order = 101
 # the other values are published at boot from the enabled mods' [[VRFW.MenuMusic]] themes. Hidden when none is declared.
 [[option]]
 id = "menu_music"
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "list"
 hook = "menu_music"
 label = "menu_music"

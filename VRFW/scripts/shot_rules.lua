@@ -1,6 +1,6 @@
 -- Shot / zone rules (content/shot_rules/*.toml, schema VRFW.shot_rule/1); native side: content/game/shot_rules.toml.
 --   * [[VRFW.ZoneArea]] area = "penalty_box" / "goal_area" (both teams; user_area / rival_area per side when the match has a user side):
---     IsInZoneArea / IsInAnyZoneArea are answered natively; this script refreshes their data once per match frame:
+--     IsInZoneArea / IsInAnyZoneArea are answered natively; this script refreshes their data 10 times a second on the match clock:
 --       - table ShotZone.Box: team 0 / 1 = the area that team attacks, 10 / 11 = the field's halves 0 / 1 ({ x0, x1, z0, z1 } with margin; team records add { cz, sg, hz });
 --         a side on "retail" gets the game's full-width band past the zone line (zoneLineFieldRateZ) as its rectangle;
 --       - scale: the box's width (about its centre) and depth (from the goal line toward the centre) x this, before the margin;
@@ -167,11 +167,16 @@ start()
 
 local chain_published, play_flags_off = false, nil
 
+local EXTRA = { [0] = 0, [1] = 0 }   -- the extras of the last read (one table, filled again)
+local EXTRA_KEYS = nil               -- the state keys <extra>.0 / <extra>.1
+
 local function extras()
-  local out = { [0] = 0, [1] = 0 }
+  local out = EXTRA
+  out[0], out[1] = 0, 0
   if not ZONE or not ZONE.extra then return out end
+  if not EXTRA_KEYS then EXTRA_KEYS = { [0] = ZONE.extra .. ".0", [1] = ZONE.extra .. ".1" } end
   for t = 0, 1 do
-    local ok, v = pcall(VRFW.state, ZONE.extra .. "." .. t)
+    local ok, v = pcall(VRFW.state, EXTRA_KEYS[t])
     v = ok and tonumber(v) or 0
     if v ~= v or v < 0 then v = 0 end
     out[t] = v
@@ -179,16 +184,38 @@ local function extras()
   return out
 end
 
+-- the field record's f32 values in one read (every f32 offset of the layout is 4-aligned): a function offset -> value,
+-- nil when they cannot be read at once (then they are read one by one)
+local FIELD_SPAN = nil   -- f32 count from the record's start, false = the layout is not 4-aligned
+local function field_values(f, L)
+  if FIELD_SPAN == nil then
+    local offs = { L.half_z, L.centre_z }
+    local last = L.boxes + 3 * L.box
+    for _, k in ipairs({ L.box_x0, L.box_z0, L.box_x1, L.box_z1, L.box_cz }) do offs[#offs + 1] = last + k end
+    local top, aligned = 0, L.box % 4 == 0 and L.boxes % 4 == 0
+    for _, o in ipairs(offs) do
+      if o % 4 ~= 0 then aligned = false end
+      top = math.max(top, o)
+    end
+    FIELD_SPAN = aligned and (top / 4 + 1) or false
+  end
+  if not FIELD_SPAN then return nil end
+  local ok, arr = pcall(VRFW.mem.read_array, "f32", f, FIELD_SPAN)
+  if not ok or type(arr) ~= "table" then return nil end
+  return function(at) return arr[(at - f) / 4 + 1] end
+end
+
 local function read_field()
   local f = global("shot_zone_field")
   local L = layout()
   if not f or not L or (rd("u8", f + L.valid) or 0) == 0 then return nil end
-  local field = { half_z = rd("f32", f + L.half_z), centre_z = rd("f32", f + L.centre_z), boxes = {} }
+  local get = field_values(f, L) or function(at) return rd("f32", at) end
+  local field = { half_z = get(f + L.half_z), centre_z = get(f + L.centre_z), boxes = {} }
   if not field.half_z or not field.centre_z then return nil end
   for i = 0, 3 do
     local a = f + L.boxes + i * L.box
-    local b = { x0 = rd("f32", a + L.box_x0), z0 = rd("f32", a + L.box_z0), x1 = rd("f32", a + L.box_x1),
-      z1 = rd("f32", a + L.box_z1), cz = rd("f32", a + L.box_cz) }
+    local b = { x0 = get(a + L.box_x0), z0 = get(a + L.box_z0), x1 = get(a + L.box_x1),
+      z1 = get(a + L.box_z1), cz = get(a + L.box_cz) }
     if not (b.x0 and b.z0 and b.x1 and b.z1 and b.cz) then return nil end
     field.boxes[i + 1] = b
   end
@@ -260,7 +287,15 @@ local function kind_of(team, user)
   return ZONE.area
 end
 
--- keys read by the retail answers: the play controller flags address (every frame), line address and switch (once)
+-- the last value written to each per-match state key (written again only when it changes)
+local PUBLISHED = {}
+local function publish(key, value)
+  if PUBLISHED[key] == value and value ~= nil then return end
+  PUBLISHED[key] = value
+  pcall(VRFW.state.set, key, value)
+end
+
+-- keys read by the retail answers: the play controller flags address (every refresh), line address and switch (once)
 local function publish_chain()
   if not chain_published then
     chain_published = true
@@ -285,10 +320,21 @@ local function publish_chain()
       retail and "the game's own area (chain_area = \"retail\")" or "the box", play_flags_off or 0))
   end
   local ctrl = global("shot_zone_play_ctrl")
-  pcall(VRFW.state.set, KEY_PLAY_FLAGS, (ctrl and play_flags_off) and (ctrl + play_flags_off) or 0)
+  publish(KEY_PLAY_FLAGS, (ctrl and play_flags_off) and (ctrl + play_flags_off) or 0)
 end
 
 local last_sig, field_logs, filled = nil, 0, false
+local SIG_NOW = {}   -- this frame's inputs of the zone boxes (one table, filled again)
+
+-- the inputs changed since the boxes were written last (NaN equals NaN: an unchanged unreadable value)
+local function sig_changed(now, n)
+  if last_sig == nil then return true end
+  for i = 1, n do
+    local a, b = now[i], last_sig[i]
+    if a ~= b and not (a ~= a and b ~= b) then return true end
+  end
+  return false
+end
 
 local function clear()
   if filled then
@@ -303,8 +349,8 @@ local function fmt_box(b)
 end
 
 local function refresh(ev)
-  pcall(VRFW.state.set, KEY_BALL, global("shot_zone_ball"))
-  pcall(VRFW.state.set, KEY_SETPIECE, global("shot_zone_setpiece"))
+  publish(KEY_BALL, global("shot_zone_ball"))
+  publish(KEY_SETPIECE, global("shot_zone_setpiece"))
   publish_chain()
   local field = read_field()
   if not field or not (field.half_z > 0) then
@@ -318,9 +364,11 @@ local function refresh(ev)
   local user = ev and ev.match and ev.match.user_team
   local k0, k1 = kind_of(0, user), kind_of(1, user)
   local line = zone_line() or 0
-  local sig = table.concat({ s0, s1, field.centre_z, field.half_z, b1.x0, b1.z0, b1.x1, b1.z1, b2.x0, b2.z0, b2.x1, b2.z1, ex[0], ex[1], k0, k1, line }, ",")
-  if sig == last_sig then return end
-  last_sig = sig
+  local sig = SIG_NOW
+  sig[1], sig[2], sig[3], sig[4], sig[5], sig[6], sig[7], sig[8] = s0, s1, field.centre_z, field.half_z, b1.x0, b1.z0, b1.x1, b1.z1
+  sig[9], sig[10], sig[11], sig[12], sig[13], sig[14], sig[15], sig[16], sig[17] = b2.x0, b2.z0, b2.x1, b2.z1, ex[0], ex[1], k0, k1, line
+  if not sig_changed(sig, 17) then return end
+  last_sig = { table.unpack(sig, 1, 17) }
   -- the field half a team attacks gets that team's rectangle (IsInAnyZoneArea); a half nobody attacks: `area`
   local entries, halves, parts = {}, {}, {}
   for team, s in pairs({ [0] = s0, [1] = s1 }) do
@@ -375,21 +423,45 @@ end
 
 -- ---- events
 
+-- the zone data and the long-shot flags change slowly (pointers per match, attack signs per half, mod flags):
+-- they are read at REFRESH_SECONDS on the match clock (or every REFRESH_FRAMES frames while the clock stands still)
+local REFRESH_SECONDS, REFRESH_FRAMES = 0.1, 10
+local since_refresh, frames_since_refresh = REFRESH_SECONDS, REFRESH_FRAMES
+
+local function refresh_due(ev)
+  local m = ev and ev.match
+  local dt = m and tonumber(m.dt) or 0
+  if dt ~= dt or dt < 0 then dt = 0 end
+  since_refresh, frames_since_refresh = since_refresh + dt, frames_since_refresh + 1
+  if since_refresh < REFRESH_SECONDS and frames_since_refresh < REFRESH_FRAMES then return false end
+  since_refresh, frames_since_refresh = 0, 0
+  return true
+end
+
 if ZONE or #LONG_FLAGS > 0 then
   VRFW.on("tick", function(ev)
+    if not refresh_due(ev) then return nil end
     if ZONE then refresh(ev) end
     if #LONG_FLAGS > 0 then
       local want, flag = long_wanted()
-      set_long(want, want and ("flag " .. flag) or "flags off")
+      if want ~= long_on then set_long(want, want and ("flag " .. flag) or "flags off") end
     end
     return nil
   end)
   VRFW.on("match_end", function()
+    since_refresh, frames_since_refresh = REFRESH_SECONDS, REFRESH_FRAMES
+    PUBLISHED = {}
     if ZONE then clear() end
     if #LONG_FLAGS > 0 then set_long(false, "match end") end
     return nil
   end)
+  VRFW.on("match_start", function()
+    since_refresh, frames_since_refresh = REFRESH_SECONDS, REFRESH_FRAMES
+    PUBLISHED = {}
+    return nil
+  end)
   VRFW.on("game_reset", function()
+    PUBLISHED = {}
     if #LONG_FLAGS > 0 then set_long(false, "title") end
     return nil
   end)

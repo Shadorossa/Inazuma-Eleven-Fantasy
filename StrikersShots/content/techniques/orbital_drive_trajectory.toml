@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Remate orbital (Orbital Drive, whs02620, cut-in ev60_02620): one straight level line
+# from the kick point to the goal, the ball at 2.0 m the whole way (the cut-in zigzags the ball up and down in the air;
+# the straight band behind it stays clear of the grass).
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); one point = a level flight; straight = true: one straight line from the kick to the goal at that height.
+
+# Remate orbital (whs02620).
+[[edit]]
+target = "whs02620"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

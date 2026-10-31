@@ -336,11 +336,6 @@ function UpdateListItem(a1, a2, a3, a4, a5, a6, a7)
     if skill ~= 0 and EVT_MX.chara ~= 0 and not EVT_MxCompatible(skill) then
       usable = false                            -- a retail miximax of another player: greyed (normal name, no suffix)
     end
-    -- 2026-10-07: an aura with a `compatible` list the base is not in (the retail mode changes, «Modo Serio» …) is
-    -- listed greyed and refused (graft aura_compat, the one rule source; the loader no longer hides it)
-    if skill ~= 0 and type(EVT_AC) == "table" and EVT_AC.PickAllowed ~= nil and not EVT_AC.PickAllowed(skill) then
-      usable = false
-    end
     if EVT_MX.forbid and (skill == EVT_MX.CREATE or skill == EVT_MX.FUSION or EVT_MX.COMPAT[skill] ~= nil) then
       usable = false                            -- «Modo Overdrive»: no miximax for this player (greyed)
     end
@@ -387,8 +382,7 @@ local function EVT_PickCommit(src, a1, a2)
     funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2086672038)
     return
   end
-  if skill == EVT_MX.FUSION or (EVT_MX.chara ~= 0 and not EVT_MxCompatible(skill))
-      or (type(EVT_AC) == "table" and EVT_AC.PickAllowed ~= nil and not EVT_AC.PickAllowed(skill)) then
+  if skill == EVT_MX.FUSION or (EVT_MX.chara ~= 0 and not EVT_MxCompatible(skill)) then
     funcLuaCommand(@crc:CMND_SND_PLAY_SE@, 2086672038 --[[sy0003]])
     return
   end

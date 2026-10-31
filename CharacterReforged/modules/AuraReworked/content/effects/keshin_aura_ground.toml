@@ -1,0 +1,11 @@
+# The keshin auras of the game (ega_k*: the translucent spirit behind a player with his keshin out) stand on the root
+# on the pitch instead of the hip joint: they follow the player's position and facing only, upright, at the height
+# they had over the grass (the hip's rest height of each body type is added to their up offset). On the hip they bent,
+# dropped and turned with every pose (kneeling, falls, dives).
+schema = "VRFW.effect/1"
+
+[[chr_place]]
+name = "keshin_aura_ground"
+effects = ["ega_k*"]
+bone = "c_global_0_0"
+keep_height = true

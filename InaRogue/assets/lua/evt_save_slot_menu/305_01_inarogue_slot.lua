@@ -39,7 +39,7 @@ do
   VRFW_SS_RESERVED.inarogue = {
     row = "INAROGUE",
     title = "INAROGUE",
-    ask = T(437172294 --[[InaRogue.slot.ask]]),
+    ask = false,   -- A on the card loads slot 4 at once: the run in progress continues, «new run» is in the menu
     -- InaRogue's own atlas: content/images/menu/220_img/evt_rogue/evt_slot_rogue.toml (image recipes made from the
     -- player's game files at the first start)
     art = {

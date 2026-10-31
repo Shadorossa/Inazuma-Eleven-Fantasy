@@ -27,3 +27,7 @@ name = "stargazer"
 when = { techniques = ["whs02590"] }
 aura = "stargazer"
 like = "ega0075b"
+# the streaks grow out of the kick point: the clip runs on the ball's distance from it (0.75 m a frame, the
+# generator's GROW; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

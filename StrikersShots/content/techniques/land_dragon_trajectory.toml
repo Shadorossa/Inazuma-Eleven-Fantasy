@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Dragón terrestre (Land Dragon, whs00670, cut-in ev60_00670).
+#
+# Measured: the event ball (b000001 slot s00) of ev60_00670 c0500 rolls low along +Z (0.2-0.35 m over the pitch)
+# with the dragon slithering beside it, rising to 1.0 m at the end (392).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal at 1.0 m, the dragon's head (its jaw at the ball, as in the cut-in) with its belly on the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are over the pitch (m); the
+# height is held.
+
+# Dragón terrestre (whs00670).
+[[edit]]
+target = "whs00670"
+trajectory = { points = [[0.0, 1.0]], straight = true, unblockable = false }

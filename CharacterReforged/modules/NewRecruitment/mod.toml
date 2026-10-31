@@ -3,13 +3,13 @@ former_ids = ["new_recruitment"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Classic Recruitment"
-version = "1.35.0"
+version = "1.37.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). No player spirits from anywhere: no spirit drops in any match, none from rewards, gifts, boxes, events or a retired player, and the drop-rate list shows only its items tab (players come from scouting and the other recruit paths); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove the duplicate players of the current save (never a card the club cannot release, which is always the copy kept). The Chronicle gacha «Universo del jugador» is covered (its menu row, hidden with no gap left under BetterUI, its hub map point removed (no marker, no zone) the Tab shortcut of the Chronicle board and any way in doing nothing). The Chronicle board's «Quitar aparición de ÍDOLOS ya obtenidos» toggle is gone (its guide entry and its key). The recruitment office («Oficina de fichajes», the Mercado bar of «El atrio de los indomables»): every team you have beaten has a page in it, and its players are signed for «fichas» (the element spirits of their element) at the old office's prices and levels (its requirements, players at a level, items, trial matches, are kept but off: config.toml [office] requirements; the trials stay playable), shown as the team's lineup on a pitch; a signed player can be released («Dimitir», fichas back), one page per character, built from the game's own teams and matches. The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with Classic Cards a recruited player is its 5★ card. An option chooses where you sign players: the pick-up matches, the Clubroom's Player album (A on a player you do not have) or both."
+description = "One copy per character, as in the classic Inazuma Eleven games: a save duplicated into another slot, or a save when it is loaded, keeps one card per character (the best copy; the others are merged into it and give back element spirits; a backup of the save is kept before its first change). No player spirits from anywhere: no spirit drops in any match, none from rewards, gifts, boxes, events or a retired player, and the drop-rate list shows only its items tab (players come from scouting and the other recruit paths); the spirit screen and its «!» notices are gone; a save duplicated into another slot loses its player spirits (the original save keeps them) and Options › «Ajustar save» can remove the duplicate players of the current save (never a card the club cannot release, which is always the copy kept). The Chronicle gacha «Universo del jugador» is covered (its menu row, hidden with no gap left under BetterUI, its hub map point removed (no marker, no zone) the Tab shortcut of the Chronicle board and any way in doing nothing). The Chronicle board's «Quitar aparición de ÍDOLOS ya obtenidos» toggle is gone (its guide entry and its key). The recruitment office («Oficina de fichajes», the Mercado bar of «El atrio de los indomables»): every team you have beaten has a page in it, and its players are signed for «fichas» (the element spirits of their element) at the old office's prices and levels (its requirements, players at a level, items, trial matches, are kept but off: config.toml [office] requirements; the trials stay playable), shown as the team's lineup on a pitch; a signed player can be released («Dimitir», fichas back), one page per character, built from the game's own teams and matches. The team planner counts any owned copy of a character. A mode's own save (INAROGUE) keeps the game's rules. Works with the VR-Framework and Character Reforged; with Classic Cards a recruited player is its 5★ card. An option chooses how you sign players: the pick-up matches and the Recruitment Office, or the Clubroom's Player album (A on a player you do not have; the pick-up matches and the office are then gone)."
 priority = 0
 tags = ["Characters", "Gameplay"]
-updated = "2026-10-30"
+updated = "2026-10-31"
 # 1.34.0: Comment links to existing docs
 # This mod's own names (TOML keys [NewRecruitment.X], Lua NewRecruitment.X); never VRFW.
 prefix = "NewRecruitment"
@@ -68,6 +68,14 @@ folder = "NewRecruitment"
 # backup blobs are Character Reforged's. No save import is needed.
 # vr_framework 2.4.32: [VRFW.DropList.Spirits]; 2.4.36: the slot_duplicate event; 2.4.40: the save tools.
 # character_reforged 1.7.8: the duplicate rules' apply_on_load.
+# 1.37.0 (owner 2026-10-31): a signing from the album costs «Puntos de amistad» (tk_hr000008): config.toml [album]
+# (base + per_level × the join level) × the shown card's rarity factor (the game sells no player for that currency),
+# asked through CMND_NEWRECRUITMENT_ALBUM_PRICE (scripts\album_price.lua); the question shows the price and the
+# balance, too few points = a message and nothing signed, «Sí» takes the points then signs (VRFW_Recruit.Recruit price).
+# 1.36.0 (owner 2026-10-31): option «Fichajes» with two values: 0 «Pachangas + Oficina» (default, as before) and
+# 1 «Álbum» (A in BetterQoL's album signs the player; the pachanga points stay hidden: content\board_groups\
+# pachangas.toml `hidden`, VRFW board groups; the office's Mercado bar leaves the list: assets\lua\market_menu\
+# new_recruitment_office_bar.lua). The old value 2 «Ambos» reads as 0.
 # 1.23.0 (owner 2026-10-23): option «Fichajes» (options.toml new_recruitment.recruit_source: Pachangas / Álbum /
 # Ambos, default Pachangas). «Álbum»: A on a player the club does not have in BetterQoL's «Álbum de jugadores»
 # asks «¿Quieres fichar a X?» and signs him through VRFW_Recruit.Recruit at the team's level (an entry of
@@ -143,7 +151,7 @@ folder = "NewRecruitment"
 # match, its result from match_end, the won pachangas: save key won.<pachanga>); assets\lua\vs_route_town_menu\
 # new_recruitment_pachangas.lua (the board side: a pachanga played through the VRFW match start service; on a win its
 # players the club does not have join it, VRFW_Recruit, one copy per character).
-requires = ["VRFW>=2.260.0", "CharacterReforged>=1.7.8"]
+requires = ["VRFW>=2.376.0", "CharacterReforged>=1.7.8"]
 conflicts = []
 loader_modules = ["lua_bridge"]
 # its scripts answer game Lua commands (content\game\pachangas.toml: CMND_NEWRECRUITMENT_PACHANGA_*)

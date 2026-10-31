@@ -23,3 +23,9 @@ fields = { Uniform = { at = 0x290, type = "u32" }, UniformItem = { at = 0x294, t
 name = "CMND_VRFW_TEAM_SET_KIT"
 handler = "TeamEditor.SetKit"
 needs = ["Team.SetStruct", "TeamEditorParty", "TeamEditorTeamInfo"]
+
+# (chara handle, share 0..1) -> ok, the EXP inside his level now: the character's EXP bar at that share of his current
+# level (record + 8, never a level-up): a mode's progress shown on the team screen's temporary players
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_MEMBER_EXP"
+handler = "TeamEditor.MemberExp"

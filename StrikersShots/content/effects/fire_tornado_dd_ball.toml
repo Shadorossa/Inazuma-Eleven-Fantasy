@@ -1,0 +1,28 @@
+# «Tornado de fuego DD» (Fire Tornado DD, whs01760 and whs01760_or, same cut-in; fire shot of two players, cut-in
+# ev60_01760): while the ball flies to the goal after the cut-in it keeps the look of the cut-in's last cut (c0040,
+# frame 346): the fire swirl round the ball (flame domes, flame wave, flame cone, fire streak), the spiralling fire
+# tube behind it with the fire rings along it, the three light ribbons along the path and the flickering fire chunks
+# shed along the tube. Everything is in its final state from the aura's first frame; the tube, rings, ribbons and
+# chunks come out of the kick point as the ball moves away (distance clock), never stretched, with a soft 3 m fade at
+# the kick point. The object is ev6176dd00 (effect/event/ev60/ev6176dd00/), built by
+# research/scripts/fire_tornado_dd_ball_fx.py from the cut-in's effect object ev60017600: c0040 held at frame 346,
+# ball at the origin flying +Z (the cut-in's 30 deg dive turned level), x1. Left out: the fire flowing into the ball,
+# the kick's fire bar and chunks, the kick flash and the screen fade (they stay at the kick point in the cut-in).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Its flight:
+# content\techniques\fire_tornado_dd_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fire_tornado_dd"
+from = "ega0075c"
+object = "effect/event/ev60/ev6176dd00/ev6176dd00.objbin"
+
+[[shot_aura]]
+name = "fire_tornado_dd"
+when = { techniques = ["whs01760", "whs01760_or"] }
+aura = "fire_tornado_dd"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

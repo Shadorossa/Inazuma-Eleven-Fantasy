@@ -1,6 +1,6 @@
 -- EVT rogue_coaches (docs/game/modes/inarogue.md «Entrenadores»): the coach selector before a NEW run, and the run
 -- coach's start items. Appended at the END of evt_inarogue_menu (graft rogue_coaches), so the menu's top-level locals
--- (NewRun, OpenChild, Call, Int, Log, Message, C, P_GET) are in scope: NewRun is a local function the menu's
+-- (NewRun, OpenChild, Call, Int, Log, Message, C) are in scope: NewRun is a local function the menu's
 -- «Empezar» / «Nueva partida» call through its upvalue, so assigning it here wraps both. Nothing here calls the engine
 -- at load time.
 do
@@ -43,11 +43,11 @@ do
     NewRun = function(...)
       local n, _, _, enabled = Call(CO.LIST, -1)
       if enabled == true and Int(n) > 0 then
-        funcLuaCommand(C.P_CLEAR, CO.KEY)
-        funcLuaCommand(C.P_SET, CO.KEY, 0, 9, 1)
+        VRFW_Param.Clear(CO.KEY)
+        VRFW_Param.Set(CO.KEY, 9)
         OpenChild(CO.MENU, T(CO.MISSING))
-        local r = Int(Call(P_GET, CO.KEY))
-        funcLuaCommand(C.P_CLEAR, CO.KEY)
+        local r = Int(VRFW_Param.Get(CO.KEY))
+        VRFW_Param.Clear(CO.KEY)
         Log("coach selector result", r)
         if r == 0 then
           return                     -- Atrás: no new run

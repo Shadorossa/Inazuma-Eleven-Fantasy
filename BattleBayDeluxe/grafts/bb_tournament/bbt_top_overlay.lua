@@ -4,9 +4,8 @@ BattleBayDeluxe = type(BattleBayDeluxe) == "table" and BattleBayDeluxe or {}
 
 -- ------------------------------------------------------------------------------------------------ the overlay
 
--- 1.5.22 (owner log 18:32 on «Modos de juego»: every bracket layer open0=false vis0=false): CMND_OPEN_LAYER does
--- not open them there. On a host with vis_only (the hub: its layers are opened with the menu's group, hidden at
--- setup by bbt_hub.lua) «open» / «close» = visible / invisible.
+-- 1.5.22: on a host whose bracket layers are opened with the menu's group, CMND_OPEN_LAYER does not open them: with
+-- vis_only «open» / «close» = visible / invisible.
 local function bbt_open_layer(l, i)
   if BattleBayDeluxe.TournamentHost.vis_only then
     funcLuaMenuCommand(@crc:CMND_SET_LAYER_VISIBLE@, l, i, true)

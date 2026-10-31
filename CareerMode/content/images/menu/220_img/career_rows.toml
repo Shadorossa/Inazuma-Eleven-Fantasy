@@ -1,0 +1,100 @@
+# Career Mode: the setup screen's row plates (a NEW atlas #/menu/220_img/career_rows/career_rows.g4tx), made at build from the PLAYER'S
+# own game files: the retail list plate (save01_02 list_base_s01_off / _on, 312 x 84) cut in three: its left end
+# (x 0-100), a plain middle (x 100-200) and its right end (x 200-312). The screen draws the ends at their own size
+# and stretches the middle between them (evt_career_menu.lua SETUP.Plate). The mod ships no game pixel.
+schema = "VRFW.image/1"
+
+[[recipe]]
+name = "row_off_left"
+game = "#/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "list_base_s01_off"
+ops = [{ op = "crop", box = [0, 0, 100, 84] }]
+
+[[recipe]]
+name = "row_off_middle"
+game = "#/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "list_base_s01_off"
+ops = [{ op = "crop", box = [100, 0, 200, 84] }]
+
+[[recipe]]
+name = "row_off_right"
+game = "#/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "list_base_s01_off"
+ops = [{ op = "crop", box = [200, 0, 312, 84] }]
+
+[[recipe]]
+name = "row_on_left"
+game = "#/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "list_base_s01_on"
+ops = [{ op = "crop", box = [0, 0, 100, 84] }]
+
+[[recipe]]
+name = "row_on_middle"
+game = "#/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "list_base_s01_on"
+ops = [{ op = "crop", box = [100, 0, 200, 84] }]
+
+[[recipe]]
+name = "row_on_right"
+game = "#/menu/51_save/save01/save01_02/save01_02.g4tx"
+sprite = "list_base_s01_on"
+ops = [{ op = "crop", box = [200, 0, 312, 84] }]
+
+[[texture]]
+atlas = "#/menu/220_img/career_rows/career_rows.g4tx"
+name = "career_rows"
+size = [312, 168]
+
+[[sprite]]
+atlas = "#/menu/220_img/career_rows/career_rows.g4tx"
+name = "career_row_off_left"
+texture = "career_rows"
+x = 0
+y = 0
+size = [100, 84]
+recipe = "row_off_left"
+
+[[sprite]]
+atlas = "#/menu/220_img/career_rows/career_rows.g4tx"
+name = "career_row_off_middle"
+texture = "career_rows"
+x = 100
+y = 0
+size = [100, 84]
+recipe = "row_off_middle"
+
+[[sprite]]
+atlas = "#/menu/220_img/career_rows/career_rows.g4tx"
+name = "career_row_off_right"
+texture = "career_rows"
+x = 200
+y = 0
+size = [112, 84]
+recipe = "row_off_right"
+
+[[sprite]]
+atlas = "#/menu/220_img/career_rows/career_rows.g4tx"
+name = "career_row_on_left"
+texture = "career_rows"
+x = 0
+y = 84
+size = [100, 84]
+recipe = "row_on_left"
+
+[[sprite]]
+atlas = "#/menu/220_img/career_rows/career_rows.g4tx"
+name = "career_row_on_middle"
+texture = "career_rows"
+x = 100
+y = 84
+size = [100, 84]
+recipe = "row_on_middle"
+
+[[sprite]]
+atlas = "#/menu/220_img/career_rows/career_rows.g4tx"
+name = "career_row_on_right"
+texture = "career_rows"
+x = 200
+y = 84
+size = [112, 84]
+recipe = "row_on_right"

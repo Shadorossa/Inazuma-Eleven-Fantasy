@@ -1,0 +1,18 @@
+# Texts of the skill board lock (lua\menu\_all\92_skill_board_lock.lua): the default text of a [[VRFW.SkillBoardLock]]
+# without its own `text`, shown on the Accept guide entry of the locked screens. The screens ask CMND_TEXT_GET(crc32(id)).
+
+schema = "VRFW.text/2"
+table = "menu_text"
+
+# A lock without its own text holds.
+[[row]]
+id = "vrfw_skill_board_locked"
+es = "Bloqueado en este modo"
+en = "Locked in this mode"
+fr = "Bloqué dans ce mode"
+de = "In diesem Modus gesperrt"
+it = "Bloccato in questa modalità"
+pt = "Bloqueado neste modo"
+ja = "このモードでは変更不可"
+zh_hans = "此模式下无法更改"
+zh_hant = "此模式下無法更改"

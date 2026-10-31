@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tornado de fuego DD (Fire Tornado DD, whs01760 and whs01760_or, same cut-in
+# ev60_01760; whs01760_or is covered by the base move's rule).
+#
+# In the cut-in's last cut (c0040) the ball is kicked off a 9.86 m perch and comes down a straight ~30 deg line; the
+# aura is turned onto the match flight. Flight: straight and level at 2.3 m into the goal (the fire rings, up to
+# 2.2 m round the flight, stay over the grass). unblockable = false: the game's block rules (this mod changes no
+# block rule). Heights are the ball centre over the pitch (m); points count
+# from the kick; one point = a level flight; straight = true: one straight line from the kick to the goal at that
+# height.
+
+# Tornado de fuego DD (whs01760).
+[[edit]]
+target = "whs01760"
+trajectory = { points = [[0.0, 2.3]], straight = true, unblockable = false }

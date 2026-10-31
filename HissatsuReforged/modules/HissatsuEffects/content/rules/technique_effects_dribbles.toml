@@ -129,26 +129,6 @@ text = "HissatsuEffects.te_rho10050"
 when = { technique = ["rho10050"], score = "trailing" }
 do = { power_mult = 1.12 }
 
-# Círculo de hielo (who00750)
-[[rule]]
-id = "te_who00750_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00750"
-when = { technique = ["who00750"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00750_family_2"
-on = "move_power"
-when = { technique = ["who00750"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00750_family_3"
-on = "move_power"
-when = { technique = ["who00750"], team_family = { family = "HissatsuReforged.NorthernIce", count = { min = 3 } } }
-do = { power_mult = 1.03 }
-
 # Truco balonazo (who00690)
 [[rule]]
 id = "te_who00690"
@@ -164,26 +144,6 @@ on = "move_power"
 text = "HissatsuEffects.te_who00550"
 when = { technique = ["who00550"], element = "forest" }
 do = { power_mult = 1.12 }
-
-# Entrada tormentosa (who00220)
-[[rule]]
-id = "te_who00220_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00220"
-when = { technique = ["who00220"], team_family = { family = "HissatsuReforged.Speed", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00220_family_2"
-on = "move_power"
-when = { technique = ["who00220"], team_family = { family = "HissatsuReforged.Speed", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00220_family_3"
-on = "move_power"
-when = { technique = ["who00220"], team_family = { family = "HissatsuReforged.Speed", count = { min = 3 } } }
-do = { power_mult = 1.03 }
 
 # Campo de fuerza (who00480)
 [[rule]]
@@ -240,26 +200,6 @@ on = "move_power"
 text = "HissatsuEffects.te_who00500"
 when = { technique = ["who00500"], half = 2, score = "trailing" }
 do = { power_mult = 1.15 }
-
-# Danza del viento (who00530)
-[[rule]]
-id = "te_who00530_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00530"
-when = { technique = ["who00530"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00530_family_2"
-on = "move_power"
-when = { technique = ["who00530"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00530_family_3"
-on = "move_power"
-when = { technique = ["who00530"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 3 } } }
-do = { power_mult = 1.03 }
 
 # Guardia acrobática (who00870)
 [[rule]]
@@ -377,26 +317,6 @@ text = "HissatsuEffects.te_who00080"
 when = { technique = ["who00080"], near = { who = "opponents", radius_m = 8.0, count = { min = 2 } } }
 do = { power_mult = 1.12 }
 
-# Entrada huracán (who00020)
-[[rule]]
-id = "te_who00020_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00020"
-when = { technique = ["who00020"], team_family = { family = "HissatsuReforged.Speed", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00020_family_2"
-on = "move_power"
-when = { technique = ["who00020"], team_family = { family = "HissatsuReforged.Speed", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00020_family_3"
-on = "move_power"
-when = { technique = ["who00020"], team_family = { family = "HissatsuReforged.Speed", count = { min = 3 } } }
-do = { power_mult = 1.03 }
-
 # Regate aurora (who00290)
 [[rule]]
 id = "te_who00290"
@@ -452,26 +372,6 @@ on = "move_power"
 text = "HissatsuEffects.te_who00470"
 when = { technique = ["who00470"], half = 2, score = "level" }
 do = { power_mult = 1.15 }
-
-# Torbellino dragón (who00030)
-[[rule]]
-id = "te_who00030_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00030"
-when = { technique = ["who00030"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 1 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who00030_family_2"
-on = "move_power"
-when = { technique = ["who00030"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 2 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who00030_family_3"
-on = "move_power"
-when = { technique = ["who00030"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 3 } } }
-do = { power_mult = 1.04 }
 
 # Patada canguro (who00490)
 [[rule]]
@@ -603,26 +503,6 @@ text = "HissatsuEffects.te_who00330"
 when = { technique = ["who00330"], zone = { x = [-40.0, -20.0], both_sides = true, frame = "team" }, score = "leading" }
 do = { power_mult = 1.12 }
 
-# Ojo del huracán (who00980)
-[[rule]]
-id = "te_who00980_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00980"
-when = { technique = ["who00980"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00980_family_2"
-on = "move_power"
-when = { technique = ["who00980"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00980_family_3"
-on = "move_power"
-when = { technique = ["who00980"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 3 } } }
-do = { power_mult = 1.03 }
-
 # Avance flamígero (who00270)
 [[rule]]
 id = "te_who00270"
@@ -735,20 +615,6 @@ text = "HissatsuEffects.te_who00580"
 when = { technique = ["who00580"], zone = { x = [-40.0, -20.0], both_sides = true, frame = "team" }, score = "level" }
 do = { power_mult = 1.12 }
 
-# Salto lunar (who00230)
-[[rule]]
-id = "te_who00230_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00230"
-when = { technique = ["who00230"], team_family = { family = "HissatsuReforged.Circus", count = { min = 1 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who00230_family_2"
-on = "move_power"
-when = { technique = ["who00230"], team_family = { family = "HissatsuReforged.Circus", count = { min = 2 } } }
-do = { power_mult = 1.04 }
-
 # Teleportación (who00410)
 [[rule]]
 id = "te_who00410"
@@ -788,46 +654,6 @@ on = "move_power"
 text = "HissatsuEffects.te_who00090"
 when = { technique = ["who00090"], near = { who = "teammates", radius_m = 12.0, count = 0 }, score = "level" }
 do = { power_mult = 1.12 }
-
-# Remolino cortante (who00180)
-[[rule]]
-id = "te_who00180_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00180"
-when = { technique = ["who00180"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00180_family_2"
-on = "move_power"
-when = { technique = ["who00180"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00180_family_3"
-on = "move_power"
-when = { technique = ["who00180"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 3 } } }
-do = { power_mult = 1.03 }
-
-# Trance melódico (who00830)
-[[rule]]
-id = "te_who00830_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00830"
-when = { technique = ["who00830"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00830_family_2"
-on = "move_power"
-when = { technique = ["who00830"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00830_family_3"
-on = "move_power"
-when = { technique = ["who00830"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 3 } } }
-do = { power_mult = 1.03 }
 
 # Ignición (who00510)
 [[rule]]
@@ -884,46 +710,6 @@ on = "move_power"
 text = "HissatsuEffects.te_who01040"
 when = { technique = ["who01040"], zone = { z = [-55.0, 0.0], frame = "team" }, score = "trailing" }
 do = { power_mult = 1.12 }
-
-# Espada de Atlas (who01280)
-[[rule]]
-id = "te_who01280_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who01280"
-when = { technique = ["who01280"], team_family = { family = "HissatsuReforged.LegendaryWeapons", count = { min = 1 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who01280_family_2"
-on = "move_power"
-when = { technique = ["who01280"], team_family = { family = "HissatsuReforged.LegendaryWeapons", count = { min = 2 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who01280_family_3"
-on = "move_power"
-when = { technique = ["who01280"], team_family = { family = "HissatsuReforged.LegendaryWeapons", count = { min = 3 } } }
-do = { power_mult = 1.04 }
-
-# Entrada relampagueante (who01400)
-[[rule]]
-id = "te_who01400_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who01400"
-when = { technique = ["who01400"], team_family = { family = "HissatsuReforged.Speed", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who01400_family_2"
-on = "move_power"
-when = { technique = ["who01400"], team_family = { family = "HissatsuReforged.Speed", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who01400_family_3"
-on = "move_power"
-when = { technique = ["who01400"], team_family = { family = "HissatsuReforged.Speed", count = { min = 3 } } }
-do = { power_mult = 1.03 }
 
 # Paipay gigante (who00450)
 [[rule]]
@@ -1061,26 +847,6 @@ text = "HissatsuEffects.te_who00360"
 when = { technique = ["who00360", "who00360_or"], partners = { count = 2, distinct_elements = true } }
 do = { power_mult = 1.12 }
 
-# Tornado venenoso (who00400)
-[[rule]]
-id = "te_who00400_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00400"
-when = { technique = ["who00400"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00400_family_2"
-on = "move_power"
-when = { technique = ["who00400"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00400_family_3"
-on = "move_power"
-when = { technique = ["who00400"], team_family = { family = "HissatsuReforged.Whirlwinds", count = { min = 3 } } }
-do = { power_mult = 1.03 }
-
 # Estampida en línea (who01050)
 [[rule]]
 id = "te_who01050"
@@ -1128,26 +894,6 @@ on = "tension_pay"
 text = "HissatsuEffects.te_who01320"
 when = { technique = ["who01320"], half = 2, score = "level" }
 do = { cost_mult = 0.8 }
-
-# Contragolpe de halcón (who10120)
-[[rule]]
-id = "te_who10120_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who10120"
-when = { technique = ["who10120"], team_family = { family = "HissatsuReforged.LegendaryBirds", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who10120_family_2"
-on = "move_power"
-when = { technique = ["who10120"], team_family = { family = "HissatsuReforged.LegendaryBirds", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who10120_family_3"
-on = "move_power"
-when = { technique = ["who10120"], team_family = { family = "HissatsuReforged.LegendaryBirds", count = { min = 3 } } }
-do = { power_mult = 1.03 }
 
 # Descodificación (who00260)
 [[rule]]
@@ -1205,26 +951,6 @@ text = "HissatsuEffects.te_who10160"
 when = { technique = ["who10160"], zone = { z = [0.0, 55.0], frame = "team" } }
 do = { cost_mult = 0.8 }
 
-# Ritmo eléctrico (who10170)
-[[rule]]
-id = "te_who10170_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who10170"
-when = { technique = ["who10170"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who10170_family_2"
-on = "move_power"
-when = { technique = ["who10170"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who10170_family_3"
-on = "move_power"
-when = { technique = ["who10170"], team_family = { family = "HissatsuReforged.MusicDance", count = { min = 3 } } }
-do = { power_mult = 1.03 }
-
 # Niebla venenosa (who00120)
 [[rule]]
 id = "te_who00120"
@@ -1256,46 +982,6 @@ on = "tension_pay"
 text = "HissatsuEffects.te_who00880"
 when = { technique = ["who00880"], zone = { z = [0.0, 55.0], frame = "team" } }
 do = { cost_mult = 0.8 }
-
-# Lazos de oscuridad (who00890)
-[[rule]]
-id = "te_who00890_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00890"
-when = { technique = ["who00890"], team_family = { family = "HissatsuReforged.WildFlora", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00890_family_2"
-on = "move_power"
-when = { technique = ["who00890"], team_family = { family = "HissatsuReforged.WildFlora", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who00890_family_3"
-on = "move_power"
-when = { technique = ["who00890"], team_family = { family = "HissatsuReforged.WildFlora", count = { min = 3 } } }
-do = { power_mult = 1.03 }
-
-# Rayo celeste (who00920)
-[[rule]]
-id = "te_who00920_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who00920"
-when = { technique = ["who00920"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 1 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who00920_family_2"
-on = "move_power"
-when = { technique = ["who00920"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 2 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who00920_family_3"
-on = "move_power"
-when = { technique = ["who00920"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 3 } } }
-do = { power_mult = 1.04 }
 
 # Hoz de remolino (who01080)
 [[rule]]
@@ -1369,20 +1055,6 @@ text = "HissatsuEffects.te_who01350"
 when = { technique = ["who01350"], rival = { element = "wind" } }
 do = { power_mult = 1.12 }
 
-# Placaje de oso lunar (who01351)
-[[rule]]
-id = "te_who01351_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who01351"
-when = { technique = ["who01351"], team_family = { family = "HissatsuReforged.Beasts", count = { min = 1 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who01351_family_2"
-on = "move_power"
-when = { technique = ["who01351"], team_family = { family = "HissatsuReforged.Beasts", count = { min = 2 } } }
-do = { power_mult = 1.04 }
-
 # Placaje de grifo (who01352)
 [[rule]]
 id = "te_who01352"
@@ -1398,26 +1070,6 @@ on = "tension_pay"
 text = "HissatsuEffects.te_who01360"
 when = { technique = ["who01360"], element = "void" }
 do = { cost_mult = 0.8 }
-
-# Salto de antílope oscuro (who01361)
-[[rule]]
-id = "te_who01361_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who01361"
-when = { technique = ["who01361"], team_family = { family = "HissatsuReforged.Stampede", count = { min = 1 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who01361_family_2"
-on = "move_power"
-when = { technique = ["who01361"], team_family = { family = "HissatsuReforged.Stampede", count = { min = 2 } } }
-do = { power_mult = 1.03 }
-
-[[rule]]
-id = "te_who01361_family_3"
-on = "move_power"
-when = { technique = ["who01361"], team_family = { family = "HissatsuReforged.Stampede", count = { min = 3 } } }
-do = { power_mult = 1.03 }
 
 # Salto de Pamerio (who01362)
 [[rule]]
@@ -1450,46 +1102,6 @@ on = "tension_pay"
 text = "HissatsuEffects.te_who01380"
 when = { technique = ["who01380"], half_fraction_from = "2/3", score = "leading" }
 do = { cost_mult = 0.8 }
-
-# Carga de pegaso (who01390)
-[[rule]]
-id = "te_who01390_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who01390"
-when = { technique = ["who01390"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 1 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who01390_family_2"
-on = "move_power"
-when = { technique = ["who01390"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 2 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who01390_family_3"
-on = "move_power"
-when = { technique = ["who01390"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 3 } } }
-do = { power_mult = 1.04 }
-
-# Carga de pegaso rojo (who01391)
-[[rule]]
-id = "te_who01391_family_1"
-on = "move_power"
-text = "HissatsuEffects.te_who01391"
-when = { technique = ["who01391"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 1 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who01391_family_2"
-on = "move_power"
-when = { technique = ["who01391"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 2 } } }
-do = { power_mult = 1.04 }
-
-[[rule]]
-id = "te_who01391_family_3"
-on = "move_power"
-when = { technique = ["who01391"], team_family = { family = "HissatsuReforged.Pegasus", count = { min = 3 } } }
-do = { power_mult = 1.04 }
 
 # Embestida bufalina (who01460)
 [[rule]]

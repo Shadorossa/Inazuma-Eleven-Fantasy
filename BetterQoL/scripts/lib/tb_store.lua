@@ -130,10 +130,6 @@ local function mask_of(st, f)
   return m
 end
 
-function S.stored_mask(st)
-  return mask_of(st, function(b) return b.content == "stored" end)
-end
-
 function S.used_mask(st)
   return mask_of(st, function(b) return b.content ~= "empty" end)
 end

@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Balón rodante (Run Ball Run, whs00250, cut-in ev60_00250): one straight level line
+# from the kick point to the goal, the ball skimming the pitch (0.11 m the whole way, its centre ~0.25 m: the cut-in
+# rolls it along the ground; its glowing shell, 0.23 m round the ball's centre, stays clear of the grass). Heights are
+# the trajectory's (m over the pitch); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Balón rodante (whs00250).
+[[edit]]
+target = "whs00250"
+trajectory = { points = [[0.0, 0.11]], straight = true, unblockable = false }

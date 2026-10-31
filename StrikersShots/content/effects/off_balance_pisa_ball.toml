@@ -1,0 +1,40 @@
+# «Desequilibrio de Pisa» (Off-Balance Pisa Kick, whs03030; mountain shot, cut-in ev60_03030): while the ball flies to
+# the goal after the cut-in it keeps the look of the cut-in's last cut (c0600), in two effects:
+# * off_balance_pisa (object ev6030pk00, `aura`): the magenta ring discs tumbling round the ball, its white core
+#   lightning and spiky star crackling (a new pose every few frames, as in the cut-in), its magenta glows (facing the
+#   camera from every side) and the thin magenta-white trail straight behind it, out of the kick point, fading out
+#   softly 16 m behind the ball;
+# * off_balance_pisa_tower (object ev6030pt00, `ground_effect`): the cut-in's leaning tower at its own size (~30 m),
+#   standing behind the kicker (its leaning top 3 m behind the kick point), tipping toward the goal behind the ball
+#   (eased in like a fall) and stopping 85 % of the way down, never touching the pitch; it holds there until the aura
+#   ends. Its first 32 clip frames (the fall) are fitted to the flight: the 85 % is reached as the ball reaches the goal.
+# Built by research/scripts/off_balance_pisa_ball_fx.py from the cut-in's effect object ev60030300 (c0600 held at
+# frame 455, the ball model's centre (0.14 m over the aura origin) at its centre, +Z along the flight, x1; the trail is the cut-in's falling trail laid straight) and
+# the tower model chr/_waza/ev60_03030. Left out: the lightning bolts left along the cut-in's path, the sky, clouds
+# and tower smoke. Its flight: content\techniques\off_balance_pisa_trajectory.toml (level at 1.2 m).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "off_balance_pisa"
+from = "ega0075a"
+object = "effect/event/ev60/ev6030pk00/ev6030pk00.objbin"
+
+[[effect]]
+name = "off_balance_pisa_tower"
+from = "ega0021"
+object = "effect/event/ev60/ev6030pt00/ev6030pt00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "off_balance_pisa"
+when = { techniques = ["whs03030"] }
+aura = "off_balance_pisa"
+like = "ega0075a"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+# the tower's fall (its first 32 frames) is fitted to the flight: it ends as the ball reaches the goal, long or short
+ground_effect = { effect = "off_balance_pisa_tower", fit = { replay = 32, mode = "rate" } }

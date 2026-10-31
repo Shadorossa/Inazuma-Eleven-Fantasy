@@ -1,0 +1,29 @@
+# «Relámpago volcánico» (Volcanic Lightning, whs02570; fire shot, cut-in ev60_02570): while the ball flies to the goal
+# after the cut-in it keeps the look of the cut-in's shot cut (c0500): the ball burning in a small spiky fire head with
+# a cone of dark-red volcanic smoke glowing orange at its edge streaming behind it and cyan lightning bolts crackling
+# round the cone, instead of the plain special-shot aura. The object is ev6025vl00 (effect/event/ev60/ev6025vl00/),
+# built by research/scripts/volcanic_lightning_ball_fx.py from the cut-in's effect object ev60025700: c0500 held at
+# frame 420, ball at the origin raised 0.14 m to its centre, +Z along the ball's way, x0.4; the smoke cone given
+# two copies turned +-60 deg about the flight (same look from behind), the cone and the bolts coming out of the kick
+# point by distance, the cone fading out softly at its rear, the bolts flickering as in the cut.
+# Left out: the volcano scene, the kicker's sparks and kick fire, the smoke rings left on the pitch, the fire flakes
+# and the far 20 m bolt.
+# Its flight: content\techniques\volcanic_lightning_trajectory.toml (level at 2.6 m).
+# The trigger copies the special-shot aura row the automatic aura used (like = "ega0075c"): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "volcanic_lightning"
+from = "ega0075c"
+object = "effect/event/ev60/ev6025vl00/ev6025vl00.objbin"
+
+[[shot_aura]]
+name = "volcanic_lightning"
+when = { techniques = ["whs02570"] }
+aura = "volcanic_lightning"
+like = "ega0075c"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

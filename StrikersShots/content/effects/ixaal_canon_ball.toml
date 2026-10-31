@@ -1,18 +1,19 @@
 # «Cañonazo de Ixaal» (Ixaal Canon, whs02730, wind), cut-in ev60_02730: while the ball flies to the goal the cut-in's
 # last shot (c0300) keeps firing as a kamehameha:
-# Ixaal stays at the kick point in its firing pose (upright, its cut-in shading, swaying gently), the cannon's rounded
-# mouth with its muzzle ring and shock rings in front of it on the flight line, and the beam (its sheath, waves, lines,
+# Ixaal stands behind the kick point in its firing pose (upright, its cut-in shading, still), the cannon's rounded
+# mouth with its muzzle ring and shock rings just in front of the kick point on the flight line, and the beam (its sheath, waves, lines,
 # zigzag last waves, core and power grains, textures flowing) runs from there to the ball, narrowing into the power
 # sphere with the ball at its centre. Every part on the flight axis, nothing in the grass (the beam eased under 2.6 m
 # about the flight), x0.35.
 # The beam comes out of the kick point as the ball flies (distance clock, its textures laid along the pitch, never
 # stretched).
-# The object is ev6273ic00 (effect/event/ev60/ev6273ic00/), built by research/scripts/ixaal_canon_ball_fx.py from
-# ev60027300 and Ixaal's model a000260.
+# Two objects built by research/scripts/ixaal_canon_ball_fx.py from ev60027300 and Ixaal's model a000260: ev6273ic00
+# (the ball aura: the beam and its head) and ev6273ic01 (`ground_effect`, fixed at the kick point: Ixaal and the
+# cannon's mouth; owner 2026-10-31: creatures behind the kicker are ground effects, nothing else behind the kick point).
 # Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
 # effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
 # The trigger copies the wind special-shot aura row (like); the distance clock (anchor = "kick", drift 0.75 m a
-# frame) keeps the muzzle and Ixaal on the kick point. Flight: content\techniques\ixaal_canon_trajectory.toml.
+# frame) brings the beam out of the kick point. Flight: content\techniques\ixaal_canon_trajectory.toml.
 # Its twin «Cañonazo de Vairaas» (whs02731, Vairaas at the cannon): content\effects\vairaas_canon_ball.toml.
 schema = "VRFW.effect/1"
 
@@ -21,6 +22,12 @@ name = "ixaal_canon"
 from = "ega0075b"
 object = "effect/event/ev60/ev6273ic00/ev6273ic00.objbin"
 
+[[effect]]
+name = "ixaal_canon_totem"
+from = "ega0021"
+object = "effect/event/ev60/ev6273ic01/ev6273ic01.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
 [[shot_aura]]
 name = "ixaal_canon"
 when = { techniques = ["whs02730"] }
@@ -28,3 +35,4 @@ aura = "ixaal_canon"
 like = "ega0075b"
 anchor = "kick"
 drift = 0.75
+ground_effect = { effect = "ixaal_canon_totem" }

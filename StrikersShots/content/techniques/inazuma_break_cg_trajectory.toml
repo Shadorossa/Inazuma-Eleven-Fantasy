@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Ruptura relámpago CG (Inazuma Break CG, whs03380, cut-in ev60_03380).
+#
+# Measured: the event ball (b000001 slot s01) of ev60_03380 c0070 is held 4.28 m up, struck at effect frame 604 and
+# flies level along +Z (4.28 m the whole way).
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.60 m the whole way, so the glow, the bolts round the ball (~1.4 m in radius, their
+# faded ends) and the flame trail behind it stay clear of the grass. unblockable = false: the game's block rules (this
+# mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Ruptura relámpago CG (whs03380).
+[[edit]]
+target = "whs03380"
+trajectory = { points = [[0.0, 1.60]], straight = true, unblockable = false }

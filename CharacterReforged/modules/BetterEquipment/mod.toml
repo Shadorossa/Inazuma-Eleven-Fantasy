@@ -12,7 +12,7 @@
 id = "BetterEquipment"
 # the English fallback; the Mods screen shows the text keys mod_name / mod_description (text\keys.toml)
 name = "Better Equipment"
-version = "1.17.0"
+version = "1.20.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Every equipment item is worth the same: its two raises add up to the strongest bonus of the game's equipment (70 with Inazuma Fantasy, 40 without) and it lowers one stat by a seventh of that, so items differ by shape, not power. A player whose position or element matches the item gets +15 % of its raises (+25 % with both). 67 sets give stats and effects for 2 to 4 pieces worn (an item may be in several sets; a worn piece counts for one). Themed and named items have one passive: their family of special moves +5 % power, their element's moves, tension cost, recharge, move speed, tension per duel, save or goal, stats while trailing or leading. Needs Character Reforged; the passives need Signature Passives and the move families Hissatsu Reforged."
@@ -21,7 +21,7 @@ prefix = "BetterEquipment"
 folder = "BetterEquipment"
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-30"
+updated = "2026-10-31"
 # VRFW 2.171.0: [edit.scale_stats], [[VRFW.EquipmentSet]], VRFW.item.equipped / set_members / equipment_scale, Wears /
 # WearsSet / MoveFamily of Signature Passives (Character Reforged 1.43.0)
 # VRFW 2.195.0: the passive engine (kinds VRFW.passive_block/1, VRFW.passive/1) runs the item and set passives

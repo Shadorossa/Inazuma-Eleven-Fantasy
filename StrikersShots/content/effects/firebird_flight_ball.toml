@@ -1,0 +1,41 @@
+# «Vuelo de fénix» (Firebird Flight, whs02360; fire shot, cut-in ev60_02360), in two effects:
+# * the ball aura (ev6236ff00): while the ball flies to the goal it wears the cut-in's last shot (c0400) with the
+#   phoenix's fire wings fully open, from the aura's first frame: the red / yellow / white lights round the ball
+#   (round from every side) and its fire waves, the fire wings beating on one whole beat over and over, the fire band
+#   behind the ball and the fire grains it sheds coming out of the kick point as the ball flies (never stretched, soft
+#   rear end), x0.45, instead of the plain fire special-shot aura (ega0075c). Left out: the kick's hits, the wings'
+#   closing waves, the fire sheets drifting along the whole way (reaching far ahead of the ball), the space backdrop.
+#   The trigger copies the fire special-shot aura's row (like = "ega0075c");
+# * the keshin behind the kicker (ev6236fk00): the cut-in's keshin in its pose at the cut's end (arms and wings open),
+#   x0.4, hovering 0.3 m over the pitch, its front 1 m behind the kicker, fading out over 3 s: the rule's ground effect
+#   (ground_effect), pinned on the pitch where the shot was struck (position and the flight's yaw only): upright
+#   whatever the kicker does after the kick, killed when the shot ends. The other keshin of this cut-in:
+#   firebird_flight_ball_variants.toml.
+# Both built by research/scripts/firebird_flight_ball_fx.py from the cut-in's effect object ev60023600.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# Flight: content\techniques\firebird_flight_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "firebird_flight"
+from = "ega0075c"
+object = "effect/event/ev60/ev6236ff00/ev6236ff00.objbin"
+
+# the keshin behind the kicker: the ground effect (the plain shot aura's row ega0021, on the ball's trail slot), its
+# origin the kick point on the pitch, +Z along the flight
+[[effect]]
+name = "firebird_flight_stand"
+from = "ega0021"
+object = "effect/event/ev60/ev6236fk00/ev6236fk00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "firebird_flight"
+when = { techniques = ["whs02360"] }
+aura = "firebird_flight"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75
+# the keshin standing on the pitch behind the kick point (its fade is 3 s)
+ground_effect = { effect = "firebird_flight_stand" }

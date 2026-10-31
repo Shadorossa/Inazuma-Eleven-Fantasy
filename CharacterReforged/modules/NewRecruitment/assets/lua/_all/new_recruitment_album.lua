@@ -1,8 +1,10 @@
--- New Recruitment › where players are recruited (option «Fichajes», options.toml row new_recruitment.recruit_source):
--- 0 «Pachangas» (the default: the pachanga zones of the Chronicle board, assets\lua\vs_route_town_menu\
--- new_recruitment_pachangas.lua), 1 «Álbum» (BetterQoL's «Álbum de jugadores»: A on a player the club does not have
--- asks «¿Quieres fichar a X?» and he joins on «Sí»), 2 «Ambos». Read live (no restart).
--- * NewRecruitment.RecruitSource() -> 0 / 1 / 2;  NewRecruitment.RecruitFrom(where) -> "pachangas" / "album" allowed.
+-- New Recruitment › how players are recruited (option «Fichajes», options.toml row new_recruitment.recruit_source):
+-- 0 «Pachangas + Oficina» (the default: the pachanga zones of the Chronicle board, assets\lua\vs_route_town_menu\
+-- new_recruitment_pachangas.lua, and the Mercado's recruitment office), 1 «Álbum» (BetterQoL's «Álbum de jugadores»:
+-- A on a player the club does not have asks «¿Quieres fichar a X?» and he joins on «Sí»; the pachanga points and the
+-- office's Mercado bar are gone: content\board_groups\pachangas.toml `hidden`, assets\lua\market_menu\
+-- new_recruitment_office_bar.lua). Read live (no restart); any other saved value counts as 0.
+-- * NewRecruitment.RecruitSource() -> 0 / 1;  NewRecruitment.RecruitFrom(where) -> "pachangas" / "office" / "album" allowed.
 -- * NewRecruitment.Ask(s) / Notice(s) / Say(id, name): the game's question / notice window (Sí / No, «%s» = the name),
 --   used inside a coroutine (they yield until the window is answered and closed); the pachangas' join scene uses them.
 -- * The album action: one entry of BetterQoL.AlbumActions (BetterQoL's export, docs/game/ui/album.md §5): offered while
@@ -17,13 +19,16 @@ if NewRecruitment.RecruitSource == nil then
   local A = {
     OPTION_GET = 4082322029,                 -- CMND_VRFW_OPTION_GET (row key) -> value
     OPTION_KEY = "new_recruitment.recruit_source",
-    DEFAULT = 0,                             -- options.toml default: pachangas
-    FROM = {pachangas = {[0] = true, [2] = true}, album = {[1] = true, [2] = true}},
+    DEFAULT = 0,                             -- options.toml default: pachangas + office
+    ALBUM = 1,                               -- options.toml value «Álbum»
+    FROM = {pachangas = {[0] = true}, office = {[0] = true}, album = {[1] = true}},
     TEXT = 4074371074,                       -- CMND_TEXT_GET
     LOG = 3661580131,
     MSG_OPEN = 2289627655, MSG_KIND = 2351835063, MSG_RESULT = 1523741473, MSG_DONE = 682363669, MSG_BUSY = 898725220,
     -- text\rows\album_text.toml (menu_text rows) and the pachangas' «%s joined» line
-    GUIDE = 2414122637 --[[new_recruitment_album_guide]], ASK = 1868475591 --[[new_recruitment_album_ask]],
+    PRICE = 411664439,                       -- CMND_NEWRECRUITMENT_ALBUM_PRICE (rarity, level) -> item id, count
+    GUIDE = 2414122637 --[[new_recruitment_album_guide]], ASK = 2442356306 --[[new_recruitment_album_ask_price]],
+    POOR = 4077283073 --[[new_recruitment_album_not_enough]],
     OWNED = 2127430293 --[[new_recruitment_album_owned]], FULL = 1165105549 --[[new_recruitment_album_full]],
     FAILED = 1534386840 --[[new_recruitment_album_failed]], DONE = 290976732 --[[new_recruitment_pachangas_join_done]],
   }
@@ -39,7 +44,7 @@ if NewRecruitment.RecruitSource == nil then
     if type(funcLuaCommand) ~= "function" then return A.DEFAULT end
     local value, held = call(A.OPTION_GET, A.OPTION_KEY)
     if value == false then value = held end
-    return (type(value) == "number" and (value == 0 or value == 1 or value == 2)) and value or A.DEFAULT
+    return value == A.ALBUM and A.ALBUM or A.DEFAULT
   end
 
   function NewRecruitment.RecruitFrom(where)
@@ -83,7 +88,15 @@ if NewRecruitment.RecruitSource == nil then
     return ok and s or t
   end
 
-  -- the album action (BetterQoL.AlbumActions): row = {base, param, name, owned}
+  -- text `id` of the game's language with «%s» = name, then «%d» = cost, «%d» = balance
+  function NewRecruitment.SayPrice(id, name, cost, balance)
+    local t = call(A.TEXT, id)
+    t = type(t) == "string" and t or ""
+    local ok, s = pcall(string.format, t, name or "", math.floor(cost or 0), math.floor(balance or 0))
+    return ok and s or t
+  end
+
+  -- the album action (BetterQoL.AlbumActions): row = {base, param, name, owned, level, rarity}
   A.action = {
     id = "NewRecruitment.Recruit",
     guide = A.GUIDE,
@@ -104,12 +117,25 @@ if NewRecruitment.RecruitSource == nil then
         NewRecruitment.Notice(NewRecruitment.Say(A.FULL, name))
         return false
       end
-      if not NewRecruitment.Ask(NewRecruitment.Say(A.ASK, name)) then
+      local level = type(R.TeamLevel) == "function" and R.TeamLevel() or 1
+      -- the price (config.toml [album], scripts\album_price.lua) and what the player has of its currency
+      local item, cost = call(A.PRICE, tonumber(row.rarity) or 0, level)
+      local price = (type(item) == "number" and type(cost) == "number" and cost > 0) and {item = item, count = cost} or nil
+      local balance = price and R.Items(price.item) or 0
+      if price and balance < price.count then
+        NewRecruitment.Notice(NewRecruitment.SayPrice(A.POOR, name, price.count, balance))
         return false
       end
-      local level = type(R.TeamLevel) == "function" and R.TeamLevel() or 1
-      local ok, err = R.Recruit{param = row.param, level = level}
-      pcall(funcLuaCommand, A.LOG, "NewRecruitment album recruit", row.param, level, ok == true and "joined" or tostring(err))
+      if not NewRecruitment.Ask(NewRecruitment.SayPrice(A.ASK, name, price and price.count or 0, balance)) then
+        return false
+      end
+      local ok, err = R.Recruit{param = row.param, level = level, price = price}
+      pcall(funcLuaCommand, A.LOG, "NewRecruitment album recruit", row.param, level, price and price.count or 0,
+        ok == true and "joined" or tostring(err))
+      if err == "price" then
+        NewRecruitment.Notice(NewRecruitment.SayPrice(A.POOR, name, price and price.count or 0, R.Items(price.item)))
+        return false
+      end
       if ok == true then
         NewRecruitment.Notice(NewRecruitment.Say(A.DONE, name))
         return true

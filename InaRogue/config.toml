@@ -15,12 +15,10 @@ slot = 4
 grant_without_role = true
 # highest tier the Fichaje / rival recruits / Tienda offer, by phase: [from_phase, tier]
 recruit_tiers = [[1, 2], [3, 3], [6, 4], [9, 5]]
-# INAROGUE as an OVERLAY on the player's own slot (docs/game/engine/save-overlay-session.md; Nacho 2026-10-07: «no
-# debería pasarse a la 4ª ranura»): entering INAROGUE never switches the save slot. The player's game stays the loaded
-# slot (kept as a memory image, its file never written meanwhile); INAROGUE's game and data are swapped in from its own
-# storage (slot 4's file + modloader_saves\slot4\inarogue) and every INAROGUE save goes there; leaving restores
-# the player's game from memory. false = the old slot-4 switch (black fade + GAME_RESET), same data.
-session_entry = true
+# The overlay session (docs/game/engine/save-overlay-session.md) is not used since 2026-10-31: INAROGUE is entered only
+# by loading slot 4 from the slot screen (docs/game/modes/inarogue-own-scene-plan.md). Kept off for one version so a
+# session journal left open by an older version is still closed at boot; removed in a later cleanup.
+session_entry = false
 # Debug: true = CMND_EVT_RL_SESSION_BEGIN accepts the test session (kind 1, the debug checklist); false refuses it.
 session_debug = false
 # Debug (docs/game/modes/inarogue.md §8.10): true = every INAROGUE player card (tier 1-5 of the draw pool, no coach /

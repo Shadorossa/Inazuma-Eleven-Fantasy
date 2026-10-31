@@ -1,0 +1,25 @@
+# «The Typhoon» («Gran tifón», whs00990, wind shot, cut-in ev60_00990): while the ball flies to the goal it sits in the
+# cut-in's blue spiky wind head with its white core, ringed by the six white wind rings, and draws the cut-in's long
+# wind-and-water band behind it (blue glow, blue water, bright core, white spray edges and white wave rings flowing
+# back): the look of the last cut (c0030, held at frame 330, while the aura still rides on the ball) laid straight
+# behind the ball at its own length, coming out of the kick point and fading out at its far end.
+# The object is ev6009ty00 (assets\data\{common,dx11}\effect\event\ev60\ev6009ty00\), built by
+# research/scripts/the_typhoon_ball_fx.py from ev60009900. Its flight: content\techniques\the_typhoon_trajectory.toml.
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame. The objects under assets\data are generated on the author's PC from the game's own
+# cut-in effects (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "the_typhoon"
+from = "ega0075b"
+object = "effect/event/ev60/ev6009ty00/ev6009ty00.objbin"
+
+[[shot_aura]]
+name = "the_typhoon"
+when = { techniques = ["whs00990"] }
+aura = "the_typhoon"
+like = "ega0075b"
+# the band comes out of the kick point: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

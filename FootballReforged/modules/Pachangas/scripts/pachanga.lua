@@ -5,23 +5,25 @@
 --
 -- * The templates are native: every user dock (logical team set 2..12) holds a 5v5 team in teamInfo[1] next to its
 --   11v11 team (teamInfo[0]); Utilities' team bank pages swap them with the docks. The active «Partido» team is the
---   retail vsUseTeamSet; the active «Pachanga» team has no retail byte, so it is kept in blob pachanga.json of the slot
---   (owner pachangas; Inazuma Fantasy's copy is imported once: content\game\save_import.toml), one entry per team bank page (the page mounted by Utilities,
---   game_state utilities.team_banks.mounted): {"version": 1, "slot": 2, "active": {"1": 5}, "vs_restore": 4,
---   "split": {"1": [3, 4]}}.
+--   retail vsUseTeamSet; the active «Pachanga» team is always its pair, the 5v5 team of the same dock (since 1.13.0;
+--   no own pointer). Blob pachanga.json of the slot (owner pachangas; Inazuma Fantasy's copy is imported once:
+--   content\game\save_import.toml): {"version": 1, "slot": 2, "vs_restore": 4, "mirrored": {"1": [3, 4]}}, per team
+--   bank page (the page mounted by Utilities, game_state utilities.team_banks.mounted). The "active" map and the
+--   "split" marks of older files are ignored on load and dropped at the next write (the 5v5 teams live in the save).
 -- * vs_restore: the vsUseTeamSet to put back after a «Desafío de fichaje» (kept on disk: a crash or a title return can
---   still restore it). split: per page, the docks whose 5v5 team was checked once (an auto-copy of the 11v11 team is
---   emptied the first time a dock 02+ is shown in Pachanga).
+--   still restore it). mirrored: per page, the docks whose 5v5 team was brought to the mirror rule once (the old-save
+--   migration of CMND_PACHANGAS_MIRROR).
+-- * Mirror rule (1.14.0): the 5v5 team of dock N holds exactly the players of its 11v11 team (positions 0..15); its
+--   five starters are filled from them by the 5v5 formation's positions and can be rearranged among them only.
 --
 -- | Command | Args | Returns |
 -- |---|---|---|
 -- | CMND_EVT_PACHANGA_INFO | – | ok, active dock (-1 none), 5v5 members of it, bank (1-based), slot |
--- | CMND_EVT_PACHANGA_SET | dock (2..12, -1 = none) | ok, code |
+-- | CMND_EVT_PACHANGA_SET | dock (2..12) | ok, code (only the active match dock is accepted: the pair is fixed) |
 -- | CMND_EVT_PACHANGA_TEAM | – | ok, dock, formation dword, team name, n, handle x n (the active 5v5 team) |
 -- | CMND_EVT_PACHANGA_VS | op (1 remember, 0 take, 2 peek), vs set | ok, vs set (-1 none) |
 -- | CMND_EVT_PACHANGA_FLAGS | – | fixed (dock bits put back on 11v11 / 5v5 members; -1 = not ready) |
--- | CMND_EVT_PACHANGA_INIT | dock | members removed (-1 = not ready / not a dock) |
--- | CMND_EVT_PACHANGA_SPLIT | dock | removed (5v5 auto-copy emptied), 0 = kept / already checked, -1 = n/a |
+-- | CMND_PACHANGAS_MIRROR | dock, 5v5 formation id | changes (-1 = n/a), players removed, players added (the mirror rule) |
 -- | CMND_EVT_PACHANGA_TEAMSWAP | dock, on (1 / 0) | ok, swapped dock (-1 none): 11v11 <-> 5v5 members for the team bonuses screen |
 --
 -- Team-set layout (v7.1.2): a set is 0x874 bytes = 3 teams of 0x2D0 (name 0x80, member k at 0x80 + k * 0x10: handle,
@@ -40,11 +42,19 @@ local FIRST_DOCK, LAST_DOCK, DOCKS, MAX_BANKS = 2, 12, 11, 32
 local SET_SIZE, TEAM_SIZE, MEMBERS, MEMBER_LIST, MEMBER_STRIDE = 0x874, 0x2D0, 29, 0x80, 0x10
 local NAME_LEN, TEAM_FIELDS_FROM, TEAM_FIELDS_TO, COUNTERS, TEAMS = 0x80, 0x250, 0x2C8, 0x2C8, 3
 local PARTY_SET_DATA, PLAY_MODE, PLAY_MODE_STORY = 0x17B8, 0x2CAC6F, 2
+-- party block: vsUseTeamSet, the active match team set (CMND_GET_VS_USE_TEAM_SET)
+local PARTY_VS_SET = 0x9F10
 -- character record: organizedTeamFlag (u16, bit = logical team set)
 local REC_TEAM_FLAG = 0x1EC
 -- team fields: the captain's card and handle (TeamInfo +0x2A0 / +0x2A4)
 local CAPTAIN_PARAM, CAPTAIN_HDL = 0x2A0, 0x2A4
-local C = { OK = 0, BAD_ARGS = 1, NOT_READY = 2, STORY = 3, EXCEPTION = 7 }
+local C = { OK = 0, BAD_ARGS = 1, NOT_READY = 2, STORY = 3, PAIRED = 4, EXCEPTION = 7 }
+-- member entry: the position byte (0 keeper, 1..4 the other 5v5 starters, 5..15 bench, 16..18 managers, 19 coach)
+local MEMBER_POSITION, STARTERS, PLAYER_POSITIONS, MATCH_STARTERS = 0xE, 5, 16, 11
+-- the game's formations (placements by positionNo, positionId = the place's role)
+local FORMATION_STEM = "data/common/gamedata/formation/formation_config"
+-- main positions as chara_param numbers them (the formation's roles are mapped to the same numbers)
+local GOALKEEPER, FORWARD, MIDFIELDER, DEFENDER = 1, 2, 3, 4
 
 require "VRFW/lib/basics"
 require "VRFW/lib/save_doc"
@@ -106,7 +116,7 @@ end
 local function is_rogue() return VRFW.slots.ready() and VRFW.slots.active() == rogue_slot() end
 
 local function is_dock(set) return set >= FIRST_DOCK and set <= LAST_DOCK end
--- docks 02..11 (logical 3..12) have their own 5v5 team; dock 01 (set 2) keeps the retail link
+-- docks 02..11 (logical 3..12): the place / move filters keep each call on its own team; dock 01 (set 2) keeps the retail link
 local function is_independent(set) return set > FIRST_DOCK and set <= LAST_DOCK end
 
 -- the live address of logical team set `l`
@@ -187,42 +197,9 @@ local function clear_member(addr, t, k)
   return h
 end
 
--- the 5v5 team (team 1) is only the retail auto-copy of the 11v11 team: not empty, the same players (any order)
-local function is_auto_copy(addr)
-  local a, b = team_handles(addr, 0), team_handles(addr, 1)
-  if #b == 0 or #a ~= #b then return false end
-  table.sort(a)
-  table.sort(b)
-  for i = 1, #a do
-    if a[i] ~= b[i] then return false end
-  end
-  return true
-end
-
--- empty the 5v5 template (team 1) of the set at addr: { {slot, handle, clear_bit}… } of the removed members (clear_bit
--- = the player is not in the 11v11 team of the same dock); the dock bits go first when `bits` (logical set)
-local function clear_pachanga(addr, bits)
-  local team0 = {}
-  for _, h in ipairs(team_handles(addr, 0)) do team0[h] = true end
-  local gone = {}
-  for k = 0, MEMBERS - 1 do
-    local h = member_handle(addr, 1, k)
-    if h ~= 0 then gone[#gone + 1] = { k, h, not team0[h] } end
-  end
-  if bits then
-    for _, g in ipairs(gone) do
-      if g[3] then set_bit(addr + member_off(1, g[1]), bits, false) end
-    end
-  end
-  for _, g in ipairs(gone) do clear_member(addr, 1, g[1]) end
-  recount(addr, 1)
-  recount_team_info(addr + TEAM_SIZE)
-  return gone
-end
-
 -- ---------------------------------------------------------------------------------------- pachanga.json
 
-local function fresh(s) return { slot = s, active = {}, vs_restore = nil, split = {} } end
+local function fresh(s) return { slot = s, vs_restore = nil, mirrored = {} } end
 
 local function bank_ok(k)
   local b = tonumber(k)
@@ -233,35 +210,35 @@ end
 local function decode(j, s)
   if tonumber(j.slot) ~= s then return nil, "written for slot " .. tostring(j.slot) .. ", not slot " .. s end
   local f = fresh(s)
-  if type(j.active) == "table" then
-    for k, v in pairs(j.active) do
-      v = tonumber(v)
-      if bank_ok(k) and v and is_dock(v) then f.active[tostring(tonumber(k))] = v end
-    end
+  if type(j.active) == "table" and next(j.active) ~= nil then
+    info("slot " .. s .. ": stored active pachanga choice ignored (the active 5-a-side team is the active match team's pair)")
+  end
+  if type(j.split) == "table" and next(j.split) ~= nil then
+    info("slot " .. s .. ": old split marks ignored (the 5-a-side teams follow their match team's players)")
   end
   local v = tonumber(j.vs_restore)
   if v and v >= 0 and v < 16 then f.vs_restore = v end
-  if type(j.split) == "table" then
-    for k, list in pairs(j.split) do
+  if type(j.mirrored) == "table" then
+    for k, list in pairs(j.mirrored) do
       if bank_ok(k) and type(list) == "table" then
         local seen, out = {}, {}
         for _, x in pairs(list) do
           x = tonumber(x)
-          if x and is_independent(x) and not seen[x] then seen[x] = true out[#out + 1] = x end
+          if x and is_dock(x) and not seen[x] then seen[x] = true out[#out + 1] = x end
         end
         table.sort(out)
-        if #out > 0 then f.split[tostring(tonumber(k))] = out end
+        if #out > 0 then f.mirrored[tostring(tonumber(k))] = out end
       end
     end
   end
   return f
 end
 
--- an unusable file is left as it is (the next change writes a new one): no active pachanga team meanwhile
+-- an unusable file is left as it is (the next change writes a new one)
 local STORE = VRFW.save.doc(BLOB, {
   version = VERSION,
   decode = decode,
-  encode = function(f) return { version = VERSION, slot = f.slot, active = f.active, vs_restore = f.vs_restore, split = f.split } end,
+  encode = function(f) return { version = VERSION, slot = f.slot, vs_restore = f.vs_restore, mirrored = f.mirrored } end,
   default = fresh,
   pretty = true,
   aside = false,
@@ -285,20 +262,108 @@ end
 
 local function bank_key(b) return tostring(b + 1) end
 
-local function is_split(f, b, l)
-  for _, x in ipairs(f.split[bank_key(b)] or {}) do
+-- the active pachanga dock: the dock of the active match team (a pending trial / friendly VS swap counts its saved
+-- team), nil when that set is not a user dock
+local function active_dock(f)
+  local v = f.vs_restore
+  if v == nil then
+    local party = global("pt_party")
+    v = party and rd("u8", party + PARTY_VS_SET)
+  end
+  if v and is_dock(v) then return v end
+  return nil
+end
+
+-- ---------------------------------------------------------------------------------------- the mirror rule
+
+-- the formation_config file key (the plain file, else its language / version variants)
+local function formation_key()
+  local plain = FORMATION_STEM .. ".cfg.bin"
+  local ok, k = pcall(VRFW.table.keys, plain)
+  if ok and type(k) == "table" and #k > 0 then return plain end
+  return FORMATION_STEM .. "_*.cfg.bin"
+end
+
+-- a placement's positionId as a main position: 1 keeper, 2-3 defence, 4-7 midfield, else forward
+local function role_of(position_id)
+  if position_id == 1 then return GOALKEEPER end
+  if position_id == 2 or position_id == 3 then return DEFENDER end
+  if position_id >= 4 and position_id <= 7 then return MIDFIELDER end
+  return FORWARD
+end
+
+-- formation id -> { [positionNo] = main position } (nil = not readable); read once per formation
+local roles_cache = {}
+local function formation_roles(id)
+  if roles_cache[id] == nil then
+    local ok, out = pcall(function()
+      local key = formation_key()
+      local places = VRFW.table.raw(key, "m_SoccerFormPlacementInfoList")
+      for _, r in ipairs(VRFW.table.raw(key, "m_SoccerFormationInfoList")) do
+        if type(r.formId) == "number" and math.floor(r.formId) % 4294967296 == id then
+          local s = r.placementInfo
+          if type(s) ~= "table" or type(s.start) ~= "number" or type(s.count) ~= "number" then return false end
+          local roles = {}
+          for k = s.start + 1, s.start + s.count do
+            local p = places[k]
+            if p and type(p.positionNo) == "number" then
+              roles[math.floor(p.positionNo) % 256] = role_of(type(p.positionId) == "number" and p.positionId or 0)
+            end
+          end
+          return roles
+        end
+      end
+      return false
+    end)
+    if not ok then warn(string.format("formation 0x%08X: roles not read (%s)", id, tostring(out))) end
+    roles_cache[id] = ok and out or false
+  end
+  return roles_cache[id] or nil
+end
+
+-- a handle's main position (chara_param), level and card; 0, 0, 0 when unknown
+local function player_info(h)
+  local ok, r = pcall(VRFW.chara.record, h)
+  if not ok or type(r) ~= "table" then return 0, 0, 0 end
+  local card = math.floor(tonumber(r.param) or 0) % 4294967296
+  local okc, c = pcall(VRFW.chara.card, card)
+  local pos = okc and type(c) == "table" and tonumber(c.position) or 0
+  return math.floor(pos) % 256, tonumber(r.level) or 0, card
+end
+
+-- the member entries of team t: [k] = { k, h, pos, at }
+local function entries(addr, t)
+  local v = {}
+  for k = 0, MEMBERS - 1 do
+    local at = addr + member_off(t, k)
+    v[k] = { k = k, h = rd("u32", at) or 0, pos = rd("u8", at + MEMBER_POSITION) or 255, at = at }
+  end
+  return v
+end
+
+local function is_mirrored(f, b, l)
+  for _, x in ipairs(f.mirrored[bank_key(b)] or {}) do
     if x == l then return true end
   end
   return false
 end
 
-local function mark_split(f, b, l)
-  if b >= MAX_BANKS or not is_independent(l) or is_split(f, b, l) then return false end
-  local v = f.split[bank_key(b)] or {}
+local function mark_mirrored(f, b, l)
+  if b >= MAX_BANKS or not is_dock(l) or is_mirrored(f, b, l) then return false end
+  local v = f.mirrored[bank_key(b)] or {}
   v[#v + 1] = l
   table.sort(v)
-  f.split[bank_key(b)] = v
+  f.mirrored[bank_key(b)] = v
   return true
+end
+
+local function cards_text(list)
+  local out = {}
+  for _, h in ipairs(list) do
+    local _, _, card = player_info(h)
+    out[#out + 1] = string.format("0x%08X", card)
+  end
+  return table.concat(out, " ")
 end
 
 -- ---------------------------------------------------------------------------------------- commands
@@ -307,38 +372,29 @@ end
 function Pachangas.Info()
   if not ready() then return false end
   local s, b = slot(), bank()
-  local active = with_pt(s).active[bank_key(b)]
+  local active = active_dock(with_pt(s))
   local members = 0
   local addr = active and set_addr(active)
   if addr then members = #team_handles(addr, 1) end
   return true, active or -1, members, b + 1, s
 end
 
--- CMND_EVT_PACHANGA_SET(dock | -1) -> ok, code
+-- CMND_EVT_PACHANGA_SET(dock) -> ok, code: the active pachanga team is the active match team's pair, so only that dock
+-- is accepted (nothing is stored); the dock's «Set as active team» sets the match team (retail) instead
 function Pachangas.Set(set)
   set = int(set, -1)
   if not ready() then return false, C.NOT_READY end
   if is_story() then return false, C.STORY end
-  local s, b = slot(), bank()
-  local f = with_pt(s)
-  local key = bank_key(b)
-  local changed
-  if set < 0 then
-    changed = f.active[key] ~= nil
-    f.active[key] = nil
-  elseif is_dock(set) then
-    changed = f.active[key] ~= set
-    f.active[key] = set
-  else
+  if not is_dock(set) then
     warn("PACHANGA_SET " .. set .. " refused, code " .. C.BAD_ARGS)
     return false, C.BAD_ARGS
   end
-  if changed and not pt_write(f) then
-    warn("PACHANGA_SET " .. set .. " refused, code " .. C.EXCEPTION)
-    return false, C.EXCEPTION
+  local active = active_dock(with_pt(slot()))
+  if active ~= set then
+    warn(string.format("PACHANGA_SET dock %02d refused, code %d: the active pachanga team follows the active match team (%s)",
+      dock_no(set), C.PAIRED, active and string.format("dock %02d", dock_no(active)) or "none"))
+    return false, C.PAIRED
   end
-  info("slot " .. s .. " bank " .. (b + 1) .. ": active pachanga team = "
-    .. (set < 0 and "none" or string.format("dock %02d (logical %d)", dock_no(set), set)) .. (changed and "" or " (unchanged)"))
   return true, C.OK
 end
 
@@ -346,7 +402,7 @@ end
 -- dock is chosen and its 5v5 team has players (the Lua still checks the retail validity)
 function Pachangas.Team()
   if not ready() then return false, -1 end
-  local set = with_pt(slot()).active[bank_key(bank())]
+  local set = active_dock(with_pt(slot()))
   if not set then return false, -1 end
   local addr = set_addr(set)
   if not addr then return false, set end
@@ -368,7 +424,7 @@ end
 -- ok = a dock is chosen. The pachanga join scene (docs/game/modes/pachanga-join-scene.md) puts this captain on stage.
 function Pachangas.Captain()
   if not ready() then return false, 0, 0 end
-  local set = with_pt(slot()).active[bank_key(bank())]
+  local set = active_dock(with_pt(slot()))
   if not set then return false, 0, 0 end
   local addr = set_addr(set)
   if not addr then return false, 0, 0 end
@@ -448,45 +504,173 @@ function Pachangas.Flags()
   return fixed
 end
 
--- CMND_EVT_PACHANGA_INIT(dock) -> members removed: empties the 5v5 template of a dock whose 5v5 team is not a 5v5 team
--- yet (the Lua then sets a 5v5 formation and the name); removed players not in the dock's 11v11 team lose the dock bit
-function Pachangas.Init(set)
+-- CMND_PACHANGAS_MIRROR(dock, 5v5 formation) -> changes, removed, added. The 5v5 team (team 1) of a user dock holds
+-- exactly the players of its 11v11 team (team 0, positions 0..15); coach and managers are the dock graft's (PT.link).
+-- * a 5v5 player who is not in the 11v11 team leaves it (his dock bit goes when he is in no team of the dock);
+-- * an 11v11 player missing from the 5v5 team joins it (his team-0 entry copied, a free position);
+-- * an empty starter position (0..4) takes the best fitting player of the pool: the formation's role of that position
+--   first (main position), then an 11v11 starter, then the higher level, then the 11v11 position order; the rest of
+--   the pool sits on the bench (positions 5..15);
+-- * the first time per bank page and dock (old saves, new templates): a five with a player outside the 11v11 team is
+--   refilled whole, else kept; one log line per dock changed.
+function Pachangas.Mirror(set, formation)
   set = int(set, -1)
-  if not ready() or is_rogue() or not is_dock(set) then return -1 end
+  formation = int(formation, 0) % 4294967296
+  if not ready() or not is_dock(set) or is_story() or is_rogue() then return -1, 0, 0 end
   local addr = set_addr(set)
-  if not addr then return -1 end
-  local gone = clear_pachanga(addr, set)
-  info(string.format("dock %02d (logical %d): 5v5 template emptied (%d member(s) removed)", dock_no(set), set, #gone))
-  return #gone
-end
-
--- CMND_EVT_PACHANGA_SPLIT(dock) -> removed: the first time a dock 02+ is shown in Pachanga (per page), a 5v5 team that
--- is only the retail auto-copy of its 11v11 team is emptied; the dock is then marked and never checked again
-function Pachangas.Split(set)
-  set = int(set, -1)
-  if not ready() or not is_independent(set) or is_story() or is_rogue() then return -1 end
+  if not addr then return -1, 0, 0 end
   local s, b = slot(), bank()
   local f = with_pt(s)
-  if is_split(f, b, set) then return 0 end
-  local addr = set_addr(set)
-  if not addr then return -1 end
-  local removed = 0
-  if is_auto_copy(addr) then
-    -- every player of the copy is also in the 11v11 team: no dock bit changes
-    removed = #clear_pachanga(addr, nil)
+  local first = not is_mirrored(f, b, set)
+  local a, e = entries(addr, 0), entries(addr, 1)
+  local pool, in_a, order = {}, {}, {}
+  for k = 0, MEMBERS - 1 do
+    local x = a[k]
+    if x.h ~= 0 then
+      in_a[x.h] = true
+      if x.pos < PLAYER_POSITIONS and not pool[x.h] then
+        pool[x.h] = x
+        order[#order + 1] = x
+      end
+    end
   end
-  local dirty = mark_split(f, b, set)
-  local dropped = false
-  if removed > 0 and f.active[bank_key(b)] == set then
-    f.active[bank_key(b)] = nil
-    dropped = true
-    dirty = true
+  table.sort(order, function(p, q) return p.pos < q.pos end)
+  local refill = false
+  if first then
+    for k = 0, MEMBERS - 1 do
+      local x = e[k]
+      if x.h ~= 0 and x.pos < STARTERS and not pool[x.h] then refill = true end
+    end
   end
-  if dirty then pt_write(f) end
-  if dropped then info("slot " .. s .. " bank " .. (b + 1) .. ": active pachanga team cleared (its 5v5 team was emptied)") end
-  info(string.format("slot %d bank %d dock %02d (logical %d): 5v5 team %s", s, b + 1, dock_no(set), set,
-    removed > 0 and ("was the 11v11 auto-copy: emptied (" .. removed .. " player(s))") or "kept (its own team)"))
-  return removed
+  -- players outside the pool leave (the dock bit first, while the entry still names him)
+  local removed, added, moved = {}, {}, 0
+  for k = 0, MEMBERS - 1 do
+    local x = e[k]
+    if x.h ~= 0 and x.pos < PLAYER_POSITIONS and not pool[x.h] then
+      if not in_a[x.h] then set_bit(x.at, set, false) end
+      removed[#removed + 1] = x.h
+      clear_member(addr, 1, k)
+      x.h = 0
+    end
+  end
+  local in_b, taken = {}, {}
+  for k = 0, MEMBERS - 1 do
+    local x = e[k]
+    if x.h ~= 0 then
+      in_b[x.h] = true
+      if x.pos < PLAYER_POSITIONS and taken[x.pos] == nil then taken[x.pos] = x end
+    end
+  end
+  -- the players that need a position: the old five when it is refilled, then the pool players missing
+  local need = {}
+  if refill then
+    for p = 0, STARTERS - 1 do
+      if taken[p] then
+        need[#need + 1] = { h = taken[p].h, entry = taken[p], src = pool[taken[p].h] }
+        taken[p] = nil
+      end
+    end
+  end
+  for _, x in ipairs(order) do
+    if not in_b[x.h] then need[#need + 1] = { h = x.h, src = x } end
+  end
+  local free = {}
+  for k = 0, MEMBERS - 1 do
+    if e[k].h == 0 then free[#free + 1] = e[k] end
+  end
+  -- candidate c takes position p: an entry of the 5v5 team moves, a missing player gets a free entry
+  local function place(c, p)
+    if c.entry then
+      wr("u8", c.entry.at + MEMBER_POSITION, p)
+      c.entry.pos = p
+      taken[p] = c.entry
+      moved = moved + 1
+      return true
+    end
+    local x = table.remove(free, 1)
+    if not x then return false end
+    for o = 0, MEMBER_STRIDE - 4, 4 do wr("u32", x.at + o, rd("u32", c.src.at + o) or 0) end
+    wr("u8", x.at + MEMBER_POSITION, p)
+    x.h, x.pos = c.h, p
+    taken[p] = x
+    added[#added + 1] = c.h
+    return true
+  end
+  local roles = formation ~= 0 and formation_roles(formation) or nil
+  local facts = {}
+  local function fact(h)
+    if not facts[h] then
+      local pos, lv = player_info(h)
+      facts[h] = { pos = pos, lv = lv }
+    end
+    return facts[h]
+  end
+  -- empty starter positions: candidates = the players needing a position + the bench
+  for p = 0, STARTERS - 1 do
+    if taken[p] == nil then
+      local cands = {}
+      for _, c in ipairs(need) do
+        if not c.done then cands[#cands + 1] = c end
+      end
+      for q = STARTERS, PLAYER_POSITIONS - 1 do
+        local x = taken[q]
+        if x and pool[x.h] then cands[#cands + 1] = { h = x.h, entry = x, src = pool[x.h], bench = q } end
+      end
+      local want = (roles and roles[p]) or (p == 0 and GOALKEEPER or nil)
+      local best, key = nil, nil
+      for _, c in ipairs(cands) do
+        local i = fact(c.h)
+        local k = {
+          (want and i.pos == want) and 1 or 0,
+          (c.src and c.src.pos < MATCH_STARTERS) and 1 or 0,
+          i.lv,
+          -(c.src and c.src.pos or PLAYER_POSITIONS),
+        }
+        local better = best == nil
+        if not better then
+          for j = 1, #k do
+            if k[j] ~= key[j] then
+              better = k[j] > key[j]
+              break
+            end
+          end
+        end
+        if better then best, key = c, k end
+      end
+      if best then
+        if best.bench then taken[best.bench] = nil end
+        if place(best, p) then best.done = true end
+      end
+    end
+  end
+  -- the rest of the pool on the bench, in 11v11 order
+  for _, c in ipairs(need) do
+    if not c.done then
+      local p = nil
+      for q = STARTERS, PLAYER_POSITIONS - 1 do
+        if taken[q] == nil then
+          p = q
+          break
+        end
+      end
+      if p == nil or not place(c, p) then
+        warn(string.format("dock %02d: no free 5v5 place for card 0x%08X", dock_no(set), select(3, player_info(c.h))))
+      end
+      c.done = true
+    end
+  end
+  local changes = #removed + #added + moved
+  if changes > 0 then
+    recount(addr, 1)
+    recount_team_info(addr + TEAM_SIZE)
+  end
+  if first and mark_mirrored(f, b, set) then pt_write(f) end
+  if changes > 0 then
+    info(string.format("slot %d bank %d dock %02d: 5v5 team %s: removed %d [%s], added %d [%s], starters placed %d",
+      s, b + 1, dock_no(set), first and (refill and "migrated (old five refilled)" or "migrated (five kept)")
+        or "follows the 11v11 team", #removed, cards_text(removed), #added, cards_text(added), moved))
+  end
+  return changes, #removed, #added
 end
 
 -- ---------------------------------------------------------------------------------------- team bonuses of a Pachanga team
@@ -547,12 +731,13 @@ function Pachangas.OnGameReset()
   return false
 end
 
--- ---------------------------------------------------------------------------------------- independent 5v5 teams
+-- ---------------------------------------------------------------------------------------- one team per place / move
 
 -- Retail keeps the two teams of a dock linked: the place / move command 193693077(toSet, pos, fromSet, hdl, team)
 -- (0xC35A80) removes a player from ALL teams of the set he leaves (0xD9EDF0) and AddMemberToSet 0xD9F1C0 also adds a
 -- player added to team 0 to team 1. From dock 02 on (logical sets 3..12) that side effect is undone around every call
--- (filters PachangaSplitPre / PachangaSplitPost): the team the call is NOT about is put back as it was. Dock 01 (set 2)
+-- (filters PachangaSplitPre / PachangaSplitPost): the team the call is NOT about is put back as it was, and the dock
+-- graft's CMND_PACHANGAS_MIRROR then brings the 5v5 team to the 11v11 team's players (positions it chooses). Dock 01 (set 2)
 -- keeps the retail link (the story's behaviour, same players); only calls about team 0 or 1 (team 2, the RPG party,
 -- stays retail); never in the story nor in the INAROGUE save (its teams stay linked, docs/game/modes/inarogue.md §20).
 
@@ -641,5 +826,5 @@ function Pachangas.SplitPost(args, results)
 end
 
 if ENABLED then
-  info("active (5v5 templates of the team dock; the active pachanga team is kept per Utilities team bank page)")
+  info("active (5v5 templates of the team dock; the active pachanga team is the active match team's pair)")
 end

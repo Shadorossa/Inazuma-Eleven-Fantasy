@@ -2,6 +2,12 @@
 # hub screen evt_career_menu (assets\lua\screens\evt_career_menu.lua).
 schema = "VRFW.game/1"
 
+# 1 while the career's team screen is up, else 0: set by scripts\career.lua, read by the VR-Framework's skill board
+# lock
+# (content\skill_board_lock\career.toml)
+[[VRFW.State]]
+key = "careermode.skill_board_locked"
+
 [[VRFW.Command]]
 # -> table { ok, why, clubs, career = { team, season, phase, out } or nil }
 name = "CMND_CAREERMODE_STATE"
@@ -13,14 +19,30 @@ name = "CMND_CAREERMODE_DRAW"
 handler = "CareerMode.Draw"
 
 [[VRFW.Command]]
-# team -> table { ok, why }: a new career with that club (the slot's old career put aside)
+# (team, market, backing step, negotiation, activity, sacking) -> table { ok, why }: a new career with that club and
+# the setup screen's options (the slot's old career put aside)
 name = "CMND_CAREERMODE_START"
 handler = "CareerMode.Start"
 
 [[VRFW.Command]]
-# -> table { ok }: the slot's career put aside
+# team -> table: the setup screen of a new career with that club (its first budget, the options' presets)
+name = "CMND_CAREERMODE_SETUP"
+handler = "CareerMode.Setup"
+
+[[VRFW.Command]]
+# [career k] -> table { ok, why }: career k of the save slot (the active one without k) put aside
 name = "CMND_CAREERMODE_ABANDON"
 handler = "CareerMode.Abandon"
+
+[[VRFW.Command]]
+# -> table { ok, slots = { { career, used, summary } }, active, count, game_slot }: the save slot's careers
+name = "CMND_CAREERMODE_SLOTS"
+handler = "CareerMode.Slots"
+
+[[VRFW.Command]]
+# career k -> table { ok, why, career }: career k becomes the active one (career = it holds a career)
+name = "CMND_CAREERMODE_USE"
+handler = "CareerMode.Use"
 
 [[VRFW.Command]]
 # language code -> table { ok, why, team, season, phase, out, next, calendar, table, tables, squad, form, tabs,
@@ -57,6 +79,13 @@ handler = "CareerMode.Disarm"
 # -> { ok, why, result }: the round played with the club's match simulated (or a round the club has no match in)
 name = "CMND_CAREERMODE_SIM"
 handler = "CareerMode.Sim"
+
+[[VRFW.Command]]
+# (mode: 1 = one day, 2 = up to the match day) -> { ok, why, day, match_day, stop }: the career walks towards its next
+# match a day at a time (each day: the market's share of the round), stopping early on an offer ("offer") or the
+# transfer window opening / closing ("window_open" / "window_close")
+name = "CMND_CAREERMODE_DAY"
+handler = "CareerMode.Day"
 
 [[VRFW.Command]]
 # -> { ok, why, pots = { { team ids } }, leagues = { { team ids } }, team }: the draw of the leagues
@@ -108,3 +137,117 @@ handler = "CareerMode.ClubCallUpPick"
 # -> { ok, why }: the club's call-up kept (full, with its goalkeepers)
 name = "CMND_CAREERMODE_CLUB_CALLUP_CONFIRM"
 handler = "CareerMode.ClubCallUpConfirm"
+
+[[VRFW.Command]]
+# -> { ok, why, team, formation, members = { { position, card } … }, name, emblem, kit, coach, tactics }: the player's
+# club for the game's team screen (the hub's «Plantilla» page, VRFW_TeamEditor team page mode): its match players in
+# the lineup's positions and its record as last left there (0 / "" = the club's own)
+name = "CMND_CAREERMODE_CLUB_DOCK"
+handler = "CareerMode.ClubDock"
+
+[[VRFW.Command]]
+# (formation, "position:card,…") -> { ok, why }: the order and formation left in the team dock, kept as the club's
+# lineup for its next matches
+name = "CMND_CAREERMODE_CLUB_DOCK_SET"
+handler = "CareerMode.ClubDockSet"
+
+[[VRFW.Command]]
+# (name, emblem, kit, coach, "tactic,tactic,tactic") -> { ok }: the club's record as left in the «Plantilla» page (the
+# game's team screen), worn in its next matches
+name = "CMND_CAREERMODE_CLUB_LOOK_SET"
+handler = "CareerMode.ClubLookSet"
+
+[[VRFW.Command]]
+# (language code, view "buy" / "offers" / "listed", position 0-4, source "all" / "clubs" / "free" / "affordable" / "club",
+# first row, sort "level" / "price" / "value" / "potential" / "form", club, search) -> the transfer market's rows from
+# `first`. search = «key=value;…» of «Fichar»: name (part of the name, any case), club, lmin / lmax (media), pot
+# (lowest potential), pmax (highest price), series (source series type), free = 1, afford = 1
+# { ok, why, open, window, money, squad, max_squad, offers, listed, total, first, rows, series, clubs, steps[, pricing] }
+name = "CMND_CAREERMODE_MARKET"
+handler = "CareerMode.Market"
+
+[[VRFW.Command]]
+# (card) -> { ok, why, text }: a player bought at his asking price (only while a transfer window is open)
+name = "CMND_CAREERMODE_MARKET_BUY"
+handler = "CareerMode.MarketBuy"
+
+[[VRFW.Command]]
+# (card) -> { ok, why }: one of the club's players listed for sale / taken off the list
+name = "CMND_CAREERMODE_MARKET_LIST"
+handler = "CareerMode.MarketList"
+
+[[VRFW.Command]]
+# (card, status "transfer" / "loan" / "blocked"; the status he has already: back to none) -> { ok, why, text }: one of
+# the club's players listed for sale, listed for loan or blocked
+name = "CMND_CAREERMODE_MARKET_STATUS"
+handler = "CareerMode.MarketStatus"
+
+[[VRFW.Command]]
+# (offer index, accept 1 / 0) -> { ok, why, text }: an offer received for a listed player accepted or refused
+name = "CMND_CAREERMODE_MARKET_ANSWER"
+handler = "CareerMode.MarketAnswer"
+
+[[VRFW.Command]]
+# (card, offer; 0 = the talk's state only) -> { ok, why, text, talk = { club, start, ask, last, round, rounds, patience
+# (0..1), reply "open" / "counter" / "low" / "walked" / "accepted", offer, step, big, money[, fee] } }: the transfer talks
+# for a club's player (only while a transfer window is open; the talk is kept in the career until it closes)
+name = "CMND_CAREERMODE_MARKET_TALK"
+handler = "CareerMode.MarketTalk"
+
+[[VRFW.Command]]
+# (card, level, language code) -> { ok, description, stats = { { stat, value }, … }, stat_max }: the market's player
+# page (his description, his stats at that level)
+name = "CMND_CAREERMODE_MARKET_PLAYER"
+handler = "CareerMode.MarketPlayer"
+
+[[VRFW.Command]]
+# (offer index, amount) -> { ok, why, text[, talk = { reply "pending", day, tries, rounds }] }: «Negociar», the
+# player's asking price for a transfer offer received; the bidder answers in a few days (no talk = the offer was taken
+# as it was)
+name = "CMND_CAREERMODE_MARKET_COUNTER"
+handler = "CareerMode.MarketNegotiate"
+
+[[VRFW.Command]]
+# (language code[, first, count]) -> { ok, items = { { id, kind, tag, date, head, body, card, team, from, amount,
+# action, role, clips, seen } }, total, unseen, rev, picture }: the career's news, newest first (scripts\lib\news.lua)
+name = "CMND_CAREERMODE_NEWS"
+handler = "CareerMode.News"
+
+[[VRFW.Command]]
+# (id) -> { ok }: the news up to that id seen
+name = "CMND_CAREERMODE_NEWS_SEEN"
+handler = "CareerMode.NewsSeen"
+
+[[VRFW.Command]]
+# -> { ok, why, at }: the active career written to its file now (the «Ajustes» tab's «Guardar progreso»; with its
+# autosave on every change of the career is also written when it happens); at = the time of the write
+name = "CMND_CAREERMODE_SAVE"
+handler = "CareerMode.Save"
+
+[[VRFW.Command]]
+# (on) -> { ok, why, autosave, at }: the active career's autosave on / off (the «Ajustes» tab's checkbox; kept in the
+# career's file, written now); off = the career is written only by CMND_CAREERMODE_SAVE
+name = "CMND_CAREERMODE_AUTOSAVE"
+handler = "CareerMode.AutoSave"
+
+[[VRFW.Command]]
+# (emblem id) -> { ok, key, colour }: a crest's texture key (menu/200_icon/01_icon_emblem/<key>.g4tx, 512 px; the club
+# pick's big crest) and its colour bucket (content/career/emblem_colours.toml, "" when unknown; the news card's gradient)
+name = "CMND_CAREERMODE_EMBLEM_KEY"
+handler = "CareerMode.EmblemKey"
+
+[[VRFW.Command]]
+# () -> { ok, why, items = { { index, kind "superliga" / "league" / "bracket" / "worldcup", key "superliga" / "league<l>" /
+# "frontier" / "worldcup", league (its number, 0 otherwise) } }, default }: the competitions in the order of «Torneos»
+# (the index CMND_CAREERMODE_STANDINGS and CMND_CAREERMODE_STATS take; L2 / R2 go through them), default = shown first
+name = "CMND_CAREERMODE_COMPETITIONS"
+handler = "CareerMode.Competitions"
+
+[[VRFW.Command]]
+# (competition index, sort "goals" / "rating" / "saves" / "clean" / "mvp", first row, rows (at most [stats] max_rows),
+# language code) -> { ok, why, index, kind, key, sort, total, first, rows = { { rank, card, name, team, position (1 GK,
+# 2 FW, 3 MF, 4 DF), matches, goals, saves, clean_sheets, rating (0..10, one decimal), mvp } } }: the season's player
+# stats of that competition, best first; only players with a non-zero value of the order are listed («rating» from
+# [stats] rating_min_matches matches). Sorted once per round; the World Cup has none
+name = "CMND_CAREERMODE_STATS"
+handler = "CareerMode.Stats"

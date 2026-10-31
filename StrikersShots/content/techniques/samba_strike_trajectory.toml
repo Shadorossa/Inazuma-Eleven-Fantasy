@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Golpe de samba (Samba Strike, whs01090, cut-in ev60_01090).
+#
+# Measured: the event ball (b000001 slot s01) of ev60_01090 c0400 comes down from ~8.6 m (frame 280) and runs almost
+# level over 310-332 (0.60 -> 0.32 m) at ~19 m/s.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line): one straight level line from the kick point
+# to the goal, the ball centre at 1.5 m the whole way: the swirl round the ball reaches ~0.5 m and its glow ~1.3 m, so
+# the cut-in's ground-level run is raised to keep them off the grass. unblockable = false: the game's block rules (this
+# mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Golpe de samba (whs01090).
+[[edit]]
+target = "whs01090"
+trajectory = { points = [[0.0, 1.50]], straight = true, unblockable = false }

@@ -40,7 +40,7 @@ game = "Match.PlayControl"
 name = "shot_zone_line"
 game = "Shot.ZoneLineFieldRate"
 
-# State keys read by the zone and chain answers: ball, set piece and the play controller flags address are refreshed every match frame; line and
+# State keys read by the zone and chain answers: ball, set piece and the play controller flags address are refreshed 10 times a second; line and
 # chain_retail are set once.
 [[VRFW.State]]
 key = "vrfw.shot_zone.ball"

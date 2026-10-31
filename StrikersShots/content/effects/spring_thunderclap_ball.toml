@@ -1,0 +1,27 @@
+# «Trueno de primavera» (Spring Thunderclap, whs10010 and whs10010_or, same cut-in; wind shot of two players, cut-in
+# ev60_10010): while the ball flies to the goal it keeps the look of the cut-in's last cut (c0050, the ball struck out of
+# the dust cloud), held at its end state from the first frame: the purple comet round the ball (jerking about the flight
+# as in the cut-in, the ball's lightning blinking on it) and the beam of purple lightning behind it (thunder ribbons,
+# light lines, black core line) coming out of the kick point as the ball flies (one piece, never stretched, one smooth
+# fade at the kick point), its bolts crackling on its front part; x3 of the cut-in size; instead of the plain wind
+# special-shot aura (ega0075b).
+# The object is ev61001st0 (effect/event/ev60/ev61001st0/), built by research/scripts/spring_thunderclap_ball_fx.py from
+# the cut-in's effect object ev60100100 (docs/game/media/spring-thunderclap-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"). Flight:
+# content\techniques\spring_thunderclap_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "spring_thunderclap"
+from = "ega0075b"
+object = "effect/event/ev60/ev61001st0/ev61001st0.objbin"
+
+[[shot_aura]]
+name = "spring_thunderclap"
+when = { techniques = ["whs10010", "whs10010_or"] }
+aura = "spring_thunderclap"
+like = "ega0075b"
+anchor = "kick"
+drift = 0.75

@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Desequilibrio de Pisa (Off-Balance Pisa Kick, whs03030, cut-in ev60_03030): one
+# straight level line from the kick point to the goal, the ball centre at 1.2 m the whole way (the cut-in's ball falls
+# from the top of the tower to ~0.8 m; its glows and spiky star stay clear of the grass). Heights are the ball centre
+# over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Desequilibrio de Pisa (whs03030).
+[[edit]]
+target = "whs03030"
+trajectory = { points = [[0.0, 1.2]], straight = true, unblockable = false }

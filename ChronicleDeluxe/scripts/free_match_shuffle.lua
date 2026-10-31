@@ -62,22 +62,29 @@ local function wr(ty, at, v)
   return (pcall(VRFW.mem.write, ty, at, v))
 end
 
+local TABLE_KEYS = {}      -- stem -> the table key read (once per session)
 local function table_key(stem)
+  if TABLE_KEYS[stem] then return TABLE_KEYS[stem] end
   local plain = stem .. ".cfg.bin"
   local ok, k = pcall(VRFW.table.keys, plain)
-  if ok and type(k) == "table" and #k > 0 then return plain end
-  return stem .. "_*.cfg.bin"
+  local key = (ok and type(k) == "table" and #k > 0) and plain or (stem .. "_*.cfg.bin")
+  TABLE_KEYS[stem] = key
+  return key
 end
 
--- the shuffled teams of the served team_config (read once per session)
+-- the shuffled teams of the served team_config (read once per session; an unreadable table is read again next time)
+local TEAMS_UNREADABLE_WARNED = false
 local function teams()
   if TEAMS then return TEAMS end
-  TEAMS = {}
   local ok, rows = pcall(VRFW.table.rows, "team/team")
   if not ok or type(rows) ~= "table" then
-    warn("team_config not readable (" .. tostring(rows) .. "): no team is shuffled")
-    return TEAMS
+    if not TEAMS_UNREADABLE_WARNED then
+      TEAMS_UNREADABLE_WARNED = true
+      warn("team_config not readable (" .. tostring(rows) .. "): no team is shuffled")
+    end
+    return {}
   end
+  TEAMS = {}
   for _, r in ipairs(rows) do
     local key = r.key or r[2]
     local id = r.id or r[1]
@@ -303,6 +310,15 @@ function FmShuffle.Deal()
   DIRTY = failed and TRIES < MAX_TRIES
   return n
 end
+
+-- the team list and the shuffled teams' formations are read when a slot loads (off the game thread), so the free-match
+-- list's first deal does not read team_config and formation_config on the game thread
+VRFW.on("slot_load", function()
+  for _, t in ipairs(teams()) do
+    if not formation(t.formation) then FORMS[t.formation] = nil end   -- not readable yet: read again at the deal
+  end
+  return nil
+end)
 
 VRFW.on("match_end", function()
   DIRTY, TRIES = true, 0

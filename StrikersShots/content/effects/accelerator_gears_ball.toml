@@ -1,0 +1,28 @@
+# «Engranajes aceleradores» (Accelerator Gears, whs02090; mountain shot, cut-in ev60_02090): while the ball flies to
+# the goal after the cut-in it keeps the look of the cut-in's last cut (c0300): the white-hot ball in its blue halo,
+# crackling with cyan lightning arcs, and the blue-white beam of its way trailing straight behind it, instead of the
+# plain mountain special-shot aura. The object is ev6020ag00 (effect/event/ev60/ev6020ag00/), built by
+# research/scripts/accelerator_gears_ball_fx.py from the cut-in's effect object ev60020900: c0300 at frame 392, ball
+# at the origin, +Z along the flight, x1, raised 0.14 m to the ball's centre; halo and core faced to the camera (round
+# from every side), the arcs replaying the cut-in's crackle from the first frame, the beam (~6 m) coming out of the
+# kick point and fading out softly at its rear.
+# Left out: the floating gold gears of the backdrop, the earlier legs of the zigzag way and the hit sparks at the
+# bounces. Its flight: content\techniques\accelerator_gears_trajectory.toml (level at 1.8 m).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "accelerator_gears"
+from = "ega0075a"
+object = "effect/event/ev60/ev6020ag00/ev6020ag00.objbin"
+
+[[shot_aura]]
+name = "accelerator_gears"
+when = { techniques = ["whs02090"] }
+aura = "accelerator_gears"
+like = "ega0075a"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

@@ -548,8 +548,8 @@ end
 PL.HsPrevEquip = EVT_Equip
 function EVT_Equip(row, skill, inv_hint, cur)
   if row == 0 then
-    if skill == PL.MX_FUSION and funcLuaCommand(C.P_HAS, PL.MX_KEY_DEL) then
-      funcLuaCommand(C.P_CLEAR, PL.MX_KEY_DEL)
+    if skill == PL.MX_FUSION and VRFW_Param.Has(PL.MX_KEY_DEL) then
+      VRFW_Param.Clear(PL.MX_KEY_DEL)
       PL.MxClear()
       if PL.HsMix() == PL.MX_FUSION then
         PL.HsMixPut(0)
@@ -557,7 +557,7 @@ function EVT_Equip(row, skill, inv_hint, cur)
       return
     end
     if skill == PL.MX_CREATE then
-      funcLuaCommand(C.P_CLEAR, PL.MX_KEY_DEL)
+      VRFW_Param.Clear(PL.MX_KEY_DEL)
       funcLuaMenuCommand(C.MENU_ACTIVE, EVT_MENU, false)
       PL.MxFlow()
       if PL.mx_done == true then
@@ -670,12 +670,6 @@ function UpdateEquipListItem(a1)
   if not ok then
     pcall(EVT_Call, C.EVT_LOG, "skill_slots", "hiper split row error", tostring(err))
   end
-end
-
--- no chain: the miximax panel has no «aura that comes with it» view any more
-function PL.MxAura2()
-  PL.mx_aura = nil
-  funcLuaMenuCommand(C.LAYER_VISIBLE, PL.L_AURA2, 0, false)
 end
 
 -- the panel of the Hiper row: the aura slot, R3 = the mix slot (a mix-only row shows the mix slot)

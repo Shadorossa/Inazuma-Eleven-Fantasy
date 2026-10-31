@@ -1522,10 +1522,27 @@ function PL.BoardMoveAt(p)
   end
   return EVT_U32(funcLuaCommand(C.INV_ITEM, inv, 0))
 end
+-- the move an empty position `p` (0-5) takes: board cell `p`, else learn list slot p + 1 once its level is reached
+-- (board cells 3-5 open only through the retail board screen, which is gone; the match's list_board_fill does the same)
+function PL.FillMoveAt(p)
+  local id = PL.BoardMoveAt(p)
+  if id ~= 0 or p == nil or p < 0 or p >= EVT_NORMAL_NUM then
+    return id
+  end
+  local ls = PL.Learnset()
+  local m, need = ls.skill[p + 1] or 0, ls.lv[p + 1] or 0
+  if m == 0 then
+    return 0
+  end
+  if need > 1 and (funcLuaCommand(C.CHARA_GET, n, 0) or 0) < need then
+    return 0
+  end
+  return m
+end
 -- the technique board cell `p` adds to the rows, 0 for none: never an aura, never a move already in the match list or
 -- shown by an earlier empty position (the dedupe of CharacterReforged.EffectiveSkillSet)
 function PL.BoardTechniqueAt(p)
-  local id = PL.BoardMoveAt(p)
+  local id = PL.FillMoveAt(p)
   if id == 0 or PL.IsSpecialCached(id) then
     return 0
   end
@@ -1535,7 +1552,7 @@ function PL.BoardTechniqueAt(p)
   end
   for q = 0, p - 1 do
     local listed = funcLuaCommand(C.GET_SKILL, n, q)
-    if (listed == nil or listed == 0) and PL.BoardMoveAt(q) == id then
+    if (listed == nil or listed == 0) and PL.FillMoveAt(q) == id then
       return 0
     end
   end
@@ -2869,15 +2886,6 @@ function PL.TensionOff(L)
   VRFW_UI.MovePlate.TensionOff(L, 0)             -- the shared gauge (VRFW_UI.MovePlate, 66_ui_plates.lua)
 end
 
--- peg = EVT_HC.PegInfo of the aura (keshin / armour / totem): the gauge in the PEG look, the move's cost in PEG / SP
--- 2026-10-12 (Nacho: a move-rank book on one move showed +1 on every move plate): the retail SetupCharaSkillItem
--- reads the evolution grade at skill_list[inst] = its row INSTANCE; our rows draw any move at instance 0 / k. The fix
--- is the VR-Framework's shared move plate since 2026-10-13 (VRFW_UI.MovePlate.Graded: the move's OWN grade; every
--- screen with a move plate uses it). Returns pcall's ok, err.
-function PL.SkillItem(chara, move, inst)
-  return VRFW_UI.MovePlate.Graded(chara, move, inst, SetupCharaSkillItem, chara, move or 0, inst, false)
-end
-
 function PL.MoveRow(L, move, team_info, idx, no_tension, owner, peg)
   local R = PL.L_HROW
   idx = idx or 0
@@ -3296,19 +3304,12 @@ function OnFunction(a1, a2)
     EVT_OpenOriginalBoard()
   elseif a1 == 4109882573 or a1 == 1141890006 then
     -- 4109882573 = CMD_FUNC3 (Y): «Restablecer» (owner 2026-10-19: the only row action on this key)
-    -- 1141890006 = CMD_FUNC4 (X): partner picker of a combo move (EVT_CPK.Open; docs/game/mechanics/combo-partners.md)
+    -- 1141890006 = CMD_FUNC4 (X): the declared X action of graft skill_table_host (docs/game/mechanics/combo-partners.md)
     local row = funcLuaMenuCommand(C.FOCUS_IDX, L_ROW)
     local ok_row = row ~= nil and row >= 0 and row < EVT_ROW_NUM and n14 ~= L_BTN and not EVT_IsLocked(row)
     if a1 == 1141890006 then
-      -- X: Inazuma Fantasy's own partner picker when its block is here; otherwise the key belongs to the declared
-      -- X action of graft skill_table_host (Utilities' partner picker), which takes it before this function. Nothing
-      -- declared: X does nothing (2026-10-14, owner: no sound, no guide entry)
-      local skill = ok_row and PL.RowMove(row) or 0
-      if EVT_CPK ~= nil and skill ~= 0 and EVT_CPK.Needs(row, skill) then
-        evt_co = coroutine.create(function()
-          EVT_CPK.Open(row, skill)
-        end)
-      end
+      -- X: the declared X action of graft skill_table_host (Utilities' partner picker) takes the key before this
+      -- function. Nothing declared: X does nothing (2026-10-14, owner: no sound, no guide entry)
     elseif ok_row and not EVT_IsPrime() and not PL.IdolFixed(row) then
       evt_co = coroutine.create(function()
         EVT_ResetCoroutine(row)
@@ -3334,6 +3335,7 @@ function OnBack(a1)
     return
   end
   PL.closeLog = 60                        -- 2026-10-06: the next 60 frames log the close state (Step)
+  PL.board_closing = true                 -- the close starts: no panel redraw until the screen opens again
   pcall(funcLuaCommand, C.EVT_LOG, "skill_slots", "back: retail OnBack", "closing before",
     tostring(funcLuaCommand(C.CLOSING_MENU, EVT_MENU)), "closed before", tostring(funcLuaCommand(C.CLOSED_MENU, EVT_MENU)))
   EVT_RetailOnBack(a1)
@@ -6005,8 +6007,8 @@ end
 -- ---- wrappers ---------------------------------------------------------------------------------------------------
 PL.PrevInit2 = OnInit
 function OnInit()
-  if funcLuaCommand(C.P_HAS, 813466851) then       -- formation id (team dock; kept for the six-sense menu)
-    PL.formation = funcLuaCommand(C.P_GET, 813466851)
+  if VRFW_Param.Has(813466851) then       -- formation id (team dock; kept for the six-sense menu)
+    PL.formation = VRFW_Param.Get(813466851)
   end
   PL.PrevInit2()
 end
@@ -6174,10 +6176,10 @@ PL.RO_GUIDE = 651715743 --[[skill_table_readonly_guide]]
 
 PL.PrevInit = OnInit
 function OnInit()
-  if funcLuaCommand(C.P_HAS, PL.KEY_READONLY) then
-    local v = funcLuaCommand(C.P_GET, PL.KEY_READONLY)
+  if VRFW_Param.Has(PL.KEY_READONLY) then
+    local v = VRFW_Param.Get(PL.KEY_READONLY)
     PL.readonly = v == true or v == 1
-    funcLuaCommand(C.P_CLEAR, PL.KEY_READONLY)
+    VRFW_Param.Clear(PL.KEY_READONLY)
   end
   PL.PrevInit()
 end
@@ -6295,12 +6297,6 @@ function PL.SSFocus(e)
   else
     pcall(EVT_DetailHide)
   end
-end
-
--- menu_text row, or the Spanish text while the rows are not installed
-function PL.TxtOr(id, fallback)
-  local s = PL.Txt(id)
-  return s ~= "" and s or fallback
 end
 
 -- the screen's header title (retail: SwapSoccerTopCommonHeaderByHeaderType of soccer_top_menu, as OnInit sets it),
@@ -6849,10 +6845,10 @@ function PL.MxDirectPick(row)
   if row ~= 0 or not PL.MX_BANK or n == nil or n == 0 or PL.MxStub() then
     return false
   end
-  if not funcLuaCommand(C.P_HAS, EVT_KEY_RESULT) or funcLuaCommand(C.P_HAS, PL.MX_KEY_DEL) then
+  if not VRFW_Param.Has(EVT_KEY_RESULT) or VRFW_Param.Has(PL.MX_KEY_DEL) then
     return false
   end
-  return EVT_U32(funcLuaCommand(C.P_GET, EVT_KEY_RESULT) or 0) == PL.MX_CREATE
+  return EVT_U32(VRFW_Param.Get(EVT_KEY_RESULT) or 0) == PL.MX_CREATE
 end
 
 -- the screen back after a direct «Crear miximax» that did not reach the bank (refusal, error, old list)
@@ -6902,7 +6898,7 @@ function PL.MxPreBlack(what, secs)
     return
   end
   local okr, h = pcall(funcLuaCommand, 3185911119, PL.MX_BANK_RESULT)
-  if not okr or type(h) ~= "number" or h == 0 or not funcLuaCommand(C.P_HAS, PL.MX_BANK_MOVE) then
+  if not okr or type(h) ~= "number" or h == 0 or not VRFW_Param.Has(PL.MX_BANK_MOVE) then
     return
   end
   local okc, ctx = pcall(PL.MxSceneContext)
@@ -6926,7 +6922,7 @@ end
 -- open the retail bank (graft mx_bank) for this player and wait for it: seen (it opened), the chosen handle (0 = none)
 function PL.BankRun(what)
   pcall(funcLuaCommand, 2565779025, PL.MX_BANK_RESULT, 0)
-  funcLuaCommand(C.P_CLEAR, PL.MX_BANK_MOVE)
+  VRFW_Param.Clear(PL.MX_BANK_MOVE)
   PL.mx_bank_move = 0
   P_Set(PL.MX_BANK_KEY, n)
   funcLuaMenuCommand(C.MENU_ACTIVE, EVT_MENU, false)
@@ -6952,11 +6948,11 @@ function PL.BankRun(what)
     coroutine.yield()
   end
   PL.MxPreBlack(what, 0)                           -- picked as it closed: black before this screen resumes
-  funcLuaCommand(C.P_CLEAR, PL.MX_BANK_KEY)
+  VRFW_Param.Clear(PL.MX_BANK_KEY)
   pcall(funcLuaCommand, PL.MX_CMD.BANK_MODE, 0)     -- the bank graft clears it too; never leave the filter on
-  if funcLuaCommand(C.P_HAS, PL.MX_BANK_MOVE) then
-    PL.mx_bank_move = EVT_U32(funcLuaCommand(C.P_GET, PL.MX_BANK_MOVE) or 0)
-    funcLuaCommand(C.P_CLEAR, PL.MX_BANK_MOVE)
+  if VRFW_Param.Has(PL.MX_BANK_MOVE) then
+    PL.mx_bank_move = EVT_U32(VRFW_Param.Get(PL.MX_BANK_MOVE) or 0)
+    VRFW_Param.Clear(PL.MX_BANK_MOVE)
   end
   funcLuaMenuCommand(C.MENU_RESUME, EVT_MENU)
   coroutine.yield()
@@ -7147,8 +7143,8 @@ PL.MX_KEY_FUSED = 1894840368          -- pick block: the fusion aura "Miximax" i
 -- Eliminar on the fusion entry undoes the fusion; everything else is the normal equip
 PL.MxPrevEquip = EVT_Equip
 function EVT_Equip(row, skill, inv_hint, cur)
-  local del = funcLuaCommand(C.P_HAS, PL.MX_KEY_DEL)
-  funcLuaCommand(C.P_CLEAR, PL.MX_KEY_DEL)
+  local del = VRFW_Param.Has(PL.MX_KEY_DEL)
+  VRFW_Param.Clear(PL.MX_KEY_DEL)
   if row == 0 and del and skill == PL.MX_FUSION then
     PL.MxClear()
     if EVT_Skill(0) == PL.MX_FUSION then
@@ -7255,9 +7251,9 @@ function PL.MxSceneTopBar(hide)
   if type(VRFW_TopBarHide) == "function" then
     pcall(VRFW_TopBarHide, hide)
   elseif hide then
-    pcall(funcLuaCommand, C.P_SET, 1455983968 --[[vrfw_top_bar_hidden]], 0, 1, 1)
-  elseif funcLuaCommand(C.P_HAS, 1455983968) == true then
-    pcall(funcLuaCommand, C.P_CLEAR, 1455983968)
+    VRFW_Param.Set(1455983968 --[[vrfw_top_bar_hidden]], 1)
+  elseif VRFW_Param.Has(1455983968) == true then
+    VRFW_Param.Clear(1455983968)
   end
 end
 PL.MX_SCENE_DOCK = 937147172            -- soccer_team_dock_menu
@@ -7427,9 +7423,9 @@ function PL.MxScenePreload(h)
   while wait < PL.MX_SCENE_PRELOAD_MAX * 2 do
     coroutine.yield()
     wait = wait + 1
-    if funcLuaCommand(C.P_HAS, PL.MX_SCENE_MV_READY) then
-      ready = funcLuaCommand(C.P_GET, PL.MX_SCENE_MV_READY)
-      funcLuaCommand(C.P_CLEAR, PL.MX_SCENE_MV_READY)
+    if VRFW_Param.Has(PL.MX_SCENE_MV_READY) then
+      ready = VRFW_Param.Get(PL.MX_SCENE_MV_READY)
+      VRFW_Param.Clear(PL.MX_SCENE_MV_READY)
       break
     end
   end
@@ -7860,11 +7856,11 @@ function EVT_PickCoroutine(row)
     return
   end
   if row == 0 then
-    funcLuaCommand(C.P_CLEAR, PL.MX_KEY_DEL)
-    funcLuaCommand(C.P_CLEAR, PL.MX_KEY_PRIME)
-    funcLuaCommand(C.P_CLEAR, PL.MX_KEY_FUSED)
+    VRFW_Param.Clear(PL.MX_KEY_DEL)
+    VRFW_Param.Clear(PL.MX_KEY_PRIME)
+    VRFW_Param.Clear(PL.MX_KEY_FUSED)
     for _, k in ipairs({PL.MX_KEY_PCHARA, PL.MX_KEY_M1, PL.MX_KEY_M2, 3808658029}) do
-      funcLuaCommand(C.P_CLEAR, k)
+      VRFW_Param.Clear(k)
     end
     P_Set(PL.MX_KEY_BASE, n)                     -- the picker checks the retail miximaxes against this player
     if EVT_IsPrime() then
@@ -7996,7 +7992,7 @@ function PL.MxDetail(f, team_info)
   -- one gained move (rule 2026-09-25): its row + TENSIÓN, then the description (page 3)
   funcLuaMenuCommand(2158717427, A, 622567014 --[[_pos_page03]], true, 0)
   -- 2026-09-25 (user rule, hiper-match-slot.md §16.28 / §16.31): no text under a miximax (the gains live in the
-  -- plate's Atributos L3 view) and no empty quote bar; that space holds the second aura header (PL.MxAura2)
+  -- plate's Atributos L3 view) and no empty quote bar; that space holds the second aura header (PL.L_AURA2)
   funcLuaMenuCommand(C.TEXT, A, 2956552560 --[[_text_flavor02]], "", 0)
   funcLuaMenuCommand(2735666188, A, 2956552560, false, 0)
   funcLuaMenuCommand(C.MESH_VISIBLE, A, 728354709, false, 0)
@@ -8258,9 +8254,9 @@ end
 -- before the Hiper picker opens: «Crear nuevo cambio» owned (the native list only lists owned items), one copy of
 -- every carrier of this player's changes, and the pick block's data (count + partner chara per change)
 function PL.McPrepare()
-  funcLuaCommand(C.P_CLEAR, PL.MC_KEY_N)
+  VRFW_Param.Clear(PL.MC_KEY_N)
   for _, k in ipairs(PL.MC_KEY_C) do
-    funcLuaCommand(C.P_CLEAR, k)
+    VRFW_Param.Clear(k)
   end
   if not PL.McLive() or n == nil or n == 0 then
     pcall(EVT_Call, C.EVT_LOG, "skill_slots", "mode change picker", "off", "live", tostring(PL.McLive()), "hdl",
@@ -8285,7 +8281,7 @@ function PL.McBankPick()
   end
   P_Set(PL.MC_BANK_KEY, 1)
   local seen, h = PL.BankRun("mode change bank")
-  funcLuaCommand(C.P_CLEAR, PL.MC_BANK_KEY)
+  VRFW_Param.Clear(PL.MC_BANK_KEY)
   PL.mx_bank_move = 0
   if not seen then
     return nil
@@ -9111,8 +9107,8 @@ end
 PL.HsPrevEquip = EVT_Equip
 function EVT_Equip(row, skill, inv_hint, cur)
   if row == 0 then
-    if skill == PL.MX_FUSION and funcLuaCommand(C.P_HAS, PL.MX_KEY_DEL) then
-      funcLuaCommand(C.P_CLEAR, PL.MX_KEY_DEL)
+    if skill == PL.MX_FUSION and VRFW_Param.Has(PL.MX_KEY_DEL) then
+      VRFW_Param.Clear(PL.MX_KEY_DEL)
       PL.MxClear()
       if PL.HsMix() == PL.MX_FUSION then
         PL.HsMixPut(0)
@@ -9120,7 +9116,7 @@ function EVT_Equip(row, skill, inv_hint, cur)
       return
     end
     if skill == PL.MX_CREATE then
-      funcLuaCommand(C.P_CLEAR, PL.MX_KEY_DEL)
+      VRFW_Param.Clear(PL.MX_KEY_DEL)
       funcLuaMenuCommand(C.MENU_ACTIVE, EVT_MENU, false)
       PL.MxFlow()
       if PL.mx_done == true then
@@ -9233,12 +9229,6 @@ function UpdateEquipListItem(a1)
   if not ok then
     pcall(EVT_Call, C.EVT_LOG, "skill_slots", "hiper split row error", tostring(err))
   end
-end
-
--- no chain: the miximax panel has no «aura that comes with it» view any more
-function PL.MxAura2()
-  PL.mx_aura = nil
-  funcLuaMenuCommand(C.LAYER_VISIBLE, PL.L_AURA2, 0, false)
 end
 
 -- the panel of the Hiper row: the aura slot, R3 = the mix slot (a mix-only row shows the mix slot)
@@ -9802,24 +9792,6 @@ function PL.CrShownSlots()
   return aura, mix
 end
 
--- one loader.log line per shown player whose list holds hidden auras (kept; the 6 rows show the special moves)
-PL.proj_logged = {}
-function PL.ProjectionLog()
-  if n == nil or n == 0 or PL.proj_logged[n] then
-    return
-  end
-  PL.proj_logged[n] = true
-  local hidden = {}
-  for p = 0, EVT_NORMAL_NUM - 1 do
-    local id = EVT_ListSkill(p)
-    if id ~= 0 and EVT_IsSpecial(id) then
-      hidden[#hidden + 1] = string.format("%d %s", p + 1, EVT_Name(id))
-    end
-  end
-  if #hidden > 0 then
-    EVT_Log("projection", "player", string.format("%08X", EVT_U32(n)), "hidden on list positions (kept):", table.concat(hidden, ", "))
-  end
-end
 PL.ProjPrevEquip = EVT_Equip
 function EVT_Equip(row, skill, inv_hint, cur)
   local displaced = nil
@@ -9951,9 +9923,9 @@ function EVT_PickCoroutine(row)
   local slot = PL.CrSlotOf(row)
   P_Set(PL.CR_KEY_BOARD, slot == 7 and EVT_HIPER_SLOT or ((slot >= 1 and slot <= 6) and EVT_ListPos(slot) or -1))
   local ok, err = pcall(PL.CrPrevPick, row)
-  funcLuaCommand(C.P_CLEAR, PL.CR_KEY_SLOT)
-  funcLuaCommand(C.P_CLEAR, PL.CR_KEY_CHARA)
-  funcLuaCommand(C.P_CLEAR, PL.CR_KEY_BOARD)
+  VRFW_Param.Clear(PL.CR_KEY_SLOT)
+  VRFW_Param.Clear(PL.CR_KEY_CHARA)
+  VRFW_Param.Clear(PL.CR_KEY_BOARD)
   if not ok then
     error(err, 0)
   end
@@ -10176,14 +10148,6 @@ function EVT_RestoreCoroutine(row)
   end
   return r
 end
--- the Hiper row can be emptied by Eliminar (hold) when a half shows something, its own slot or a fallback
-function PL.RowRemovable(row)
-  if row ~= 0 then
-    return false
-  end
-  local okS, aura, mix = pcall(PL.CrShownSlots)
-  return okS and ((aura or 0) ~= 0 or (mix or 0) ~= 0)
-end
 
 -- Restablecer (tap) on the aura half with its own slot empty: a shown list fallback goes as with Eliminar; nothing to
 -- restore and nothing shown: the error sound, no board write
@@ -10276,6 +10240,60 @@ function EVT_ResetCoroutine(row)
   EVT_FocusRow(0)
 end
 -- ===== Hiper row: Restablecer / Eliminar END =====
+
+-- ===== Board close guard =====
+-- Once Back starts this screen's close (skill_slots OnBack sets PL.board_closing), the detail panels are not redrawn:
+-- a redraw during the close (Left / Right or the pointer on the Hiper row, a focus event of a closing layer, the focus
+-- resync) opened the Hiper panel and its move row again, the menu waited for those layers to close and the previous
+-- screen never came back. Cleared when the screen opens (OnInit).
+PL.board_closing = false
+
+PL.CgPrevInit = OnInit
+function OnInit(...)
+  PL.board_closing = false
+  return PL.CgPrevInit(...)
+end
+
+PL.CgPrevChangeFocus = OnChangeFocus
+function OnChangeFocus(...)
+  if PL.board_closing then
+    return
+  end
+  return PL.CgPrevChangeFocus(...)
+end
+
+PL.CgPrevItemInfo = UpdateEquipItemInfo
+function UpdateEquipItemInfo(...)
+  if PL.board_closing then
+    return
+  end
+  return PL.CgPrevItemInfo(...)
+end
+
+PL.CgPrevOpen = PL.Open
+function PL.Open(...)
+  if PL.board_closing then
+    return
+  end
+  return PL.CgPrevOpen(...)
+end
+
+PL.CgPrevHsPollR3 = PL.HsPollR3
+function PL.HsPollR3(...)
+  if PL.board_closing or PL.CgPrevHsPollR3 == nil then
+    return
+  end
+  return PL.CgPrevHsPollR3(...)
+end
+
+PL.CgPrevFocusResync = PL.FocusResync
+function PL.FocusResync(...)
+  if PL.board_closing or PL.CgPrevFocusResync == nil then
+    return
+  end
+  return PL.CgPrevFocusResync(...)
+end
+-- ===== Board close guard END =====
 
 -- ===== EVT ss2_pc_rows BEGIN ===== (research/grafts/ss2_pc_rows, docs/game/mechanics/pasivas-configurables.md §10)
 -- Supertécnicas screen (evt_skill_slot_menu, built by ss2_menus): its list picker (custom passive, role, set) uses
@@ -11215,8 +11233,7 @@ end
 --     id = "<id>", text = "<guide text row>",                         CMD_FUNC1); the first entry whose function says
 --     action = { lua = "<Prefix>.<Function>" }                        «available» takes the key and the guide entry
 --   [[entry]] host = "character_reforged.skill_table.x_action"       the same on X (CMD_FUNC4; 2026-10-14: Utilities'
---     (same fields)                                                  partner picker of combination moves); not taken
---                                                                     while Inazuma Fantasy's own block (EVT_CPK) is here
+--     (same fields)                                                  partner picker of combination moves)
 --   [[entry]] host = "character_reforged.skill_table.footer_button"  the button between «Set de jugador» and «Pasiva
 --     id = "<id>", text = "<label text row>",                        personalizada» (layer evt_cmn03_07_btn_train,
 --     action = { lua = "<Prefix>.<Function>" }                        content\menus\skill_table.toml): ONE slot, the
@@ -11841,9 +11858,6 @@ do
   -- the first action of `host` (default: the row actions) available on the focused row: entry, ctx
   function SkillTable.RowAction(host)
     host = host or SkillTable.ROW_HOST
-    if host == SkillTable.X_HOST and rawget(_ENV, "EVT_CPK") ~= nil then
-      return nil                                   -- Inazuma Fantasy's own X (its partner picker) answers alone
-    end
     for _, entry in ipairs(SkillTable.Entries(host)) do
       local ctx = SkillTable.RowContext(entry)
       if ctx == nil then

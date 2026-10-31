@@ -810,8 +810,8 @@ target = "team"
 trait = "ievr_b_trait_forest"
 
 [[VRFW.MoveFamily]]
-name = "ievr_b_family_legendaryweapons"
-families = ["HissatsuReforged.LegendaryWeapons"]
+name = "ievr_b_family_multiple"
+families = ["HissatsuReforged.Multiple"]
 
 [[VRFW.TechniquePower]]
 name = "ievr_b_techniquepower_self_10"
@@ -902,8 +902,8 @@ percent = 5
 target = "team"
 
 [[VRFW.MoveFamily]]
-name = "ievr_b_family_illusions"
-families = ["HissatsuReforged.Illusions"]
+name = "ievr_b_family_rebound"
+families = ["HissatsuReforged.Rebound"]
 
 [[VRFW.Trait]]
 name = "ievr_b_trait_keshin"
@@ -1003,9 +1003,10 @@ side = "opponents"
 max = 3
 others = true
 
-[[VRFW.MoveFamily]]
-name = "ievr_b_family_beasts"
-families = ["HissatsuReforged.Beasts"]
+[[VRFW.Trigger]]
+name = "ievr_b_when_goal_by_self"
+on = "goal"
+by = "self"
 
 [[VRFW.Trait]]
 name = "ievr_b_trait_quiz_society"
@@ -1089,12 +1090,12 @@ name = "ievr_b_by_fire"
 trait = "ievr_b_trait_fire"
 
 [[VRFW.Trait]]
-name = "ievr_b_trait_firetornado"
-families = ["HissatsuReforged.FireTornado"]
+name = "ievr_b_trait_trianglez"
+families = ["HissatsuReforged.TriangleZ"]
 
 [[VRFW.Count]]
-name = "ievr_b_count_firetornado_team_max3"
-trait = "ievr_b_trait_firetornado"
+name = "ievr_b_count_trianglez_team_max3"
+trait = "ievr_b_trait_trianglez"
 side = "team"
 max = 3
 others = true
@@ -1289,9 +1290,19 @@ trait = "ievr_b_trait_speedster"
 side = "opponents"
 others = false
 
-[[VRFW.MoveFamily]]
-name = "ievr_b_family_eventhorizon"
-families = ["HissatsuReforged.EventHorizon"]
+[[VRFW.Half]]
+name = "ievr_b_half_1"
+halves = [1]
+
+[[VRFW.Move]]
+name = "ievr_b_move_whd00870"
+moves = ["whd00870"]
+
+[[VRFW.TechniquePower]]
+name = "ievr_b_techniquepower_self_15"
+value = 15
+target = "self"
+mode = "percent"
 
 [[VRFW.TechniquePower]]
 name = "ievr_b_techniquepower_self_dribble_3"
@@ -1337,9 +1348,26 @@ trait = "ievr_b_trait_solaria_zeus"
 side = "team"
 others = false
 
-[[VRFW.MoveFamily]]
-name = "ievr_b_family_inazumapower"
-families = ["HissatsuReforged.InazumaPower"]
+[[VRFW.Trait]]
+name = "ievr_b_trait_divine"
+tags = ["divine"]
+
+[[VRFW.Count]]
+name = "ievr_b_count_divine_team_max3"
+trait = "ievr_b_trait_divine"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.Move]]
+name = "ievr_b_move_whs02210"
+moves = ["whs02210"]
+
+[[VRFW.TechniquePower]]
+name = "ievr_b_techniquepower_self_5"
+value = 5
+target = "self"
+mode = "percent"
 
 [[VRFW.Count]]
 name = "ievr_b_count_solaria_zeus_team_max3"
@@ -1347,6 +1375,20 @@ trait = "ievr_b_trait_solaria_zeus"
 side = "team"
 max = 3
 others = true
+
+[[VRFW.Score]]
+name = "ievr_b_score_level"
+states = ["level"]
+
+[[VRFW.Move]]
+name = "ievr_b_move_whs01070_whs01040"
+moves = ["whs01070", "whs01040"]
+
+[[VRFW.TechniquePower]]
+name = "ievr_b_techniquepower_self_12"
+value = 12
+target = "self"
+mode = "percent"
 
 [[VRFW.Present]]
 name = "ievr_b_present_solaria_zeus_team"
@@ -1365,6 +1407,16 @@ value = 2
 mode = "percent"
 stats = ["physical"]
 target = "self"
+
+[[VRFW.Trigger]]
+name = "ievr_b_when_technique_result_won_by_self"
+on = "technique_result"
+arg = "won"
+by = "self"
+
+[[VRFW.Move]]
+name = "ievr_b_move_who00420"
+moves = ["who00420"]
 
 [[VRFW.MoveSpeed]]
 name = "ievr_b_movespeed_team_6_solaria_zeus"
@@ -1396,6 +1448,17 @@ value = 2
 kinds = ["shoot"]
 target = "team"
 mode = "percent"
+
+[[VRFW.Present]]
+name = "ievr_b_present_brain_team"
+trait = "ievr_b_trait_brain"
+side = "team"
+min = 1
+others = true
+
+[[VRFW.Move]]
+name = "ievr_b_move_whd00900"
+moves = ["whd00900"]
 
 [[VRFW.Present]]
 name = "ievr_b_present_space_laboratory_team"
@@ -1437,8 +1500,8 @@ target = "self"
 shooter_trait = "ievr_b_trait_beast"
 
 [[VRFW.MoveFamily]]
-name = "ievr_b_family_pegasus"
-families = ["HissatsuReforged.Pegasus"]
+name = "ievr_b_family_triangle"
+families = ["HissatsuReforged.Triangle"]
 
 [[VRFW.By]]
 name = "ievr_b_by_space_laboratory"
@@ -1513,10 +1576,6 @@ name = "ievr_b_movespeed_team_3_go1"
 percent = 3
 target = "team"
 trait = "ievr_b_trait_go1"
-
-[[VRFW.Trait]]
-name = "ievr_b_trait_divine"
-tags = ["divine"]
 
 [[VRFW.Count]]
 name = "ievr_b_count_divine_team_max4"
@@ -1765,12 +1824,6 @@ side = "team"
 max = 3
 others = true
 
-[[VRFW.Trigger]]
-name = "ievr_b_when_technique_result_won_by_self"
-on = "technique_result"
-arg = "won"
-by = "self"
-
 [[VRFW.By]]
 name = "ievr_b_by_tea_ceremony_club"
 trait = "ievr_b_trait_tea_ceremony_club"
@@ -1789,6 +1842,10 @@ others = true
 [[VRFW.MoveFamily]]
 name = "ievr_b_family_godhand"
 families = ["HissatsuReforged.GodHand"]
+
+[[VRFW.Move]]
+name = "ievr_b_move_who00760_whs00960"
+moves = ["who00760", "whs00960"]
 
 [[VRFW.By]]
 name = "ievr_b_by_tennis_club"
@@ -1925,6 +1982,13 @@ percent = 6
 target = "team"
 trait = "ievr_b_trait_volleyball_club"
 
+[[VRFW.SetPiece]]
+name = "ievr_b_own_set_piece"
+
+[[VRFW.Move]]
+name = "ievr_b_move_whs00960"
+moves = ["whs00960"]
+
 [[VRFW.Trait]]
 name = "ievr_b_trait_wall"
 tags = ["wall"]
@@ -2023,6 +2087,10 @@ trait = "ievr_b_trait_wind_orchestra_club"
 side = "team"
 max = 3
 others = true
+
+[[VRFW.Half]]
+name = "ievr_b_half_2"
+halves = [2]
 
 [[VRFW.By]]
 name = "ievr_b_by_wind_orchestra_club"

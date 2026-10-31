@@ -31,9 +31,7 @@ end
 -- next mode loads under white and fades in from it (the flash). The retail hub buttons go black -> black. So while the
 -- screen is already fully black (2259183189 covered, 3249777136(0) black), that one call becomes the black fade
 -- 609722083 with the same arguments: nothing changes on screen and the next menu fades in from black (retail top
--- menus fade in with the colour they find). A press on a visible title (retail) keeps the white fade. Inazuma
--- Fantasy's graft modes_hub does the same (EVT_MH_TitleIsBlack, mh_title_main.lua): when it is there, this wrapper
--- leaves the call to it.
+-- menus fade in with the colour they find). A press on a visible title (retail) keeps the white fade.
 function BetterQoL.TopBar.TitleIsBlack()
   return funcLuaCommand(2259183189) == true and funcLuaCommand(3249777136, 0) == true
 end
@@ -42,9 +40,6 @@ do
   local fade = SwitchCaseTitleFade
   if type(fade) == "function" then
     function SwitchCaseTitleFade(...)
-      if type(EVT_MH_TitleIsBlack) == "function" then
-        return fade(...)
-      end
       local ok, black = pcall(BetterQoL.TopBar.TitleIsBlack)
       if not ok or not black then
         return fade(...)

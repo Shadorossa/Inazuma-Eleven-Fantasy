@@ -93,6 +93,7 @@ do
     IRD.flush_unwrapped()
     local rs, act = call(IRD.SLOT)
     IRD.on = type(rs) == "number" and rs == act
+    IRD.checked = true
     if IRD.on then
       IRD.run = call(IRD.RUN_INFO) == true
       IRD.set = call(IRD.GET_VS) or 0
@@ -678,7 +679,13 @@ do
 
   -- Pachangas asks the dock's owner each time (its OnInit may wrap this one): INAROGUE owns the dock in its save
   EVT_DOCK_OWNERS = type(EVT_DOCK_OWNERS) == "table" and EVT_DOCK_OWNERS or {}
-  EVT_DOCK_OWNERS.inarogue = function() return IRD.check() end
+  -- the loaded slot never changes while the dock is open: asked once per dock VM (Pachangas asks it on every switch test)
+  EVT_DOCK_OWNERS.inarogue = function()
+    if not IRD.checked then
+      IRD.check()
+    end
+    return IRD.on
+  end
 
   IRD.wrap("OnInit", function(orig)
     return function(...)

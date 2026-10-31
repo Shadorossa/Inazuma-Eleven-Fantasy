@@ -7,9 +7,11 @@
 -- currency counters. Retail child screens of a hub use the hub's header and guide instead of their own; a framework
 -- screen has its own, so the hub hides its chrome while the screen is up:
 --
---   VRFW_HubYield(on, by)   in the HUB's VM (the screen calls it there: funcLuaCommand(830228314, hub menu,
---                           "VRFW_HubYield", on, its own menu crc)). on = true: every visible instance of the hub's
---                           chrome layers is hidden and remembered; on = false: exactly those are shown again.
+--   VRFW_HubYield(on, by[, extra])   in the HUB's VM (the screen calls it there: funcLuaCommand(830228314, hub menu,
+--                           "VRFW_HubYield", on, its own menu crc[, extra])). on = true: every visible instance of the
+--                           hub's chrome layers is hidden and remembered; on = false: exactly those are shown again.
+--                           extra = "layer,layer,..." (layer names of that hub) hidden with the chrome: the layers a
+--                           screen that does not cover the whole screen in the normal pass (a 3D model card) must hide.
 --
 -- The layers are the retail hub chrome every hub header screen shares (one list, not per hub); a hub without one of
 -- them answers 0 instances and is skipped. Callers: vrfw_contact_map_menu (graft contact_map).
@@ -29,13 +31,16 @@ if VRFW_HubYield == nil then
   }
   VRFW_HubYieldState = Y
 
-  function VRFW_HubYield(on, by)
+  function VRFW_HubYield(on, by, extra)
     if on then
       if Y.hidden ~= nil then
         return 0
       end
       Y.hidden = {}
-      for _, layer in ipairs(Y.LAYERS) do
+      local layers = {}
+      for _, layer in ipairs(Y.LAYERS) do layers[#layers + 1] = layer end
+      for name in tostring(extra or ""):gmatch("[^,%s]+") do layers[#layers + 1] = VRFW_Crc32(name) end
+      for _, layer in ipairs(layers) do
         local ok, n = pcall(funcLuaMenuCommand, Y.LAYER_NUM, layer)
         if ok and type(n) == "number" then
           for idx = 0, n - 1 do

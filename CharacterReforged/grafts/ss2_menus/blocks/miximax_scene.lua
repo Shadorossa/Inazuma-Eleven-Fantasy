@@ -68,9 +68,9 @@ function PL.MxSceneTopBar(hide)
   if type(VRFW_TopBarHide) == "function" then
     pcall(VRFW_TopBarHide, hide)
   elseif hide then
-    pcall(funcLuaCommand, C.P_SET, 1455983968 --[[vrfw_top_bar_hidden]], 0, 1, 1)
-  elseif funcLuaCommand(C.P_HAS, 1455983968) == true then
-    pcall(funcLuaCommand, C.P_CLEAR, 1455983968)
+    VRFW_Param.Set(1455983968 --[[vrfw_top_bar_hidden]], 1)
+  elseif VRFW_Param.Has(1455983968) == true then
+    VRFW_Param.Clear(1455983968)
   end
 end
 PL.MX_SCENE_DOCK = 937147172            -- soccer_team_dock_menu
@@ -240,9 +240,9 @@ function PL.MxScenePreload(h)
   while wait < PL.MX_SCENE_PRELOAD_MAX * 2 do
     coroutine.yield()
     wait = wait + 1
-    if funcLuaCommand(C.P_HAS, PL.MX_SCENE_MV_READY) then
-      ready = funcLuaCommand(C.P_GET, PL.MX_SCENE_MV_READY)
-      funcLuaCommand(C.P_CLEAR, PL.MX_SCENE_MV_READY)
+    if VRFW_Param.Has(PL.MX_SCENE_MV_READY) then
+      ready = VRFW_Param.Get(PL.MX_SCENE_MV_READY)
+      VRFW_Param.Clear(PL.MX_SCENE_MV_READY)
       break
     end
   end
@@ -673,11 +673,11 @@ function EVT_PickCoroutine(row)
     return
   end
   if row == 0 then
-    funcLuaCommand(C.P_CLEAR, PL.MX_KEY_DEL)
-    funcLuaCommand(C.P_CLEAR, PL.MX_KEY_PRIME)
-    funcLuaCommand(C.P_CLEAR, PL.MX_KEY_FUSED)
+    VRFW_Param.Clear(PL.MX_KEY_DEL)
+    VRFW_Param.Clear(PL.MX_KEY_PRIME)
+    VRFW_Param.Clear(PL.MX_KEY_FUSED)
     for _, k in ipairs({PL.MX_KEY_PCHARA, PL.MX_KEY_M1, PL.MX_KEY_M2, 3808658029}) do
-      funcLuaCommand(C.P_CLEAR, k)
+      VRFW_Param.Clear(k)
     end
     P_Set(PL.MX_KEY_BASE, n)                     -- the picker checks the retail miximaxes against this player
     if EVT_IsPrime() then
@@ -809,7 +809,7 @@ function PL.MxDetail(f, team_info)
   -- one gained move (rule 2026-09-25): its row + TENSIÓN, then the description (page 3)
   funcLuaMenuCommand(2158717427, A, 622567014 --[[_pos_page03]], true, 0)
   -- 2026-09-25 (user rule, hiper-match-slot.md §16.28 / §16.31): no text under a miximax (the gains live in the
-  -- plate's Atributos L3 view) and no empty quote bar; that space holds the second aura header (PL.MxAura2)
+  -- plate's Atributos L3 view) and no empty quote bar; that space holds the second aura header (PL.L_AURA2)
   funcLuaMenuCommand(C.TEXT, A, 2956552560 --[[_text_flavor02]], "", 0)
   funcLuaMenuCommand(2735666188, A, 2956552560, false, 0)
   funcLuaMenuCommand(C.MESH_VISIBLE, A, 728354709, false, 0)

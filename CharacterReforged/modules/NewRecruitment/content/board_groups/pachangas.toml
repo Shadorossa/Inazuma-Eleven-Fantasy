@@ -4,12 +4,14 @@
 # New Recruitment › the pachanga zone points as one hideable board group (the framework's board groups,
 # docs/framework/route-board.md §9): Utilities' X on the Chronicle board hides / shows them. Its chain «pachangas» is the
 # ModManager «Cadenas» chain of every mod's pachanga points (declared by the first mod in load order, extended by the others).
+# `hidden`: with the option «Fichajes» on «Álbum» (options.toml recruit_source = 1) the points are never drawn.
 schema = "VRFW.board_group/1"
 if_mod = "football_reforged"
 
 [[VRFW.BoardGroup]]
 name = "pachanga_points"
 hideable = true
+hidden = { option = "new_recruitment.recruit_source", equals = 1 }
 chain = "pachangas"
 title = "new_recruitment_pachangas_title"
 nodes = [

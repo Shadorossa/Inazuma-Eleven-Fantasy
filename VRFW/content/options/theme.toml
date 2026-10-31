@@ -3,6 +3,7 @@ schema = "VRFW.option/2"
 
 [[option]]
 id = "ui_theme"                               # row key theme_engine.ui_theme
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "list"
 label = "ui_theme"                            # text key
 help = "ui_theme_help"

@@ -51,21 +51,34 @@ local function rd(ty, at)
   return nil
 end
 
--- After a title return: nothing listed yet, recorded rows are dropped, declared shops apply again
+-- After a title return: nothing listed yet, recorded rows are dropped, declared shops apply again. The framework's
+-- event game_reset says it (the title return that counts the state key vrfw.game_resets); a script without events
+-- (an older framework) compares that key on each call instead.
 local seen_epoch = nil
+local reset_by_event = false
+-- Per row (address): the row's static verdict for a failed condition; per shop rows block: the rows' items and lineup
+-- flags (game data, read once). Dropped with the recorded rows and when the shop list is replaced.
+local row_verdicts, shop_lists = {}, {}
+local function reset_rows()
+  locked_rows, locked_items, inst_row = {}, {}, {}
+  row_verdicts, shop_lists = {}, {}
+  shops = {}
+  for id, r in pairs(DECLARED) do shops[id] = r end
+  all_rule = DECLARED_ALL
+end
 local function check_reset()
+  if reset_by_event then return end
   local ok, e = pcall(VRFW.state.get, KEY_RESETS)
   if not ok then e = nil end
   if e ~= seen_epoch then
-    if seen_epoch ~= nil then
-      locked_rows, locked_items, inst_row = {}, {}, {}
-      shops = {}
-      for id, r in pairs(DECLARED) do shops[id] = r end
-      all_rule = DECLARED_ALL
-    end
+    if seen_epoch ~= nil then reset_rows() end
     seen_epoch = e
   end
 end
+reset_by_event = pcall(VRFW.on, "game_reset", function()
+  reset_rows()
+  return nil
+end)
 
 -- ---------------------------------------------------------------------------------------------- conditions
 
@@ -74,6 +87,9 @@ local function payload_of(blob)
   if rd("u8", blob) ~= 0 then return nil end
   local n = rd("u16", blob + 1) or 0
   if n == 0 or n > MAX_BLOB then return nil end
+  -- the bytes in one guarded read (one read per byte when the block is not readable at once)
+  local ok, arr = pcall(VRFW.mem.read_array, "u8", blob + 3, n)
+  if ok and type(arr) == "table" and #arr == n then return arr end
   local p = {}
   for i = 1, n do
     local b = rd("u8", blob + 2 + i)
@@ -158,9 +174,30 @@ end
 local function twin_visible(shop, row, item)
   local rows, n = rd("ptr", shop + SHOP_ROWS), rd("u32", shop + SHOP_COUNT)
   if not rows or not n then return false end
-  for i = 0, math.min(n, 4096) - 1 do
+  n = math.min(n, 4096)
+  -- every row's item and lineup flag in two reads, kept per rows block (one read per row when not readable at once)
+  local items, lineups
+  local list = shop_lists[rows]
+  if list and list.n == n then
+    items, lineups = list.items, list.lineups
+  elseif n > 0 then
+    local oki, a = pcall(VRFW.mem.read_array, "u32", rows + ROW_ITEM, n, ROW_STRIDE)
+    local okl, b = pcall(VRFW.mem.read_array, "u8", rows + ROW_LINEUP, n, ROW_STRIDE)
+    if oki and okl and type(a) == "table" and type(b) == "table" then
+      items, lineups = a, b
+      shop_lists[rows] = { n = n, items = a, lineups = b }
+    end
+  end
+  for i = 0, n - 1 do
     local r = rows + i * ROW_STRIDE
-    if r ~= row and rd("u32", r + ROW_ITEM) == item and rd("u8", r + ROW_LINEUP) == 0 then
+    local it, lu
+    if items then
+      it, lu = items[i + 1], lineups[i + 1]
+    else
+      it = r ~= row and rd("u32", r + ROW_ITEM) or nil
+      lu = it == item and rd("u8", r + ROW_LINEUP) or nil
+    end
+    if r ~= row and it == item and lu == 0 then
       local c = rd("ptr", r + ROW_COND)
       if not c or c == 0 then return true end
       if eval(c) then return true end
@@ -171,13 +208,31 @@ end
 
 -- ---------------------------------------------------------------------------------------------- hooks
 
+-- the static part of a failed row's verdict: false = never listed as locked (no rule, another item, not compiled, a
+-- hidden or kept flag), else the decoded condition { kind, a, b }
+local function row_verdict(blob, shop_id, item)
+  local rule = shops[shop_id] or all_rule
+  if not rule then return false end
+  if rule.items and not rule.items[item] then return false end
+  local p = payload_of(blob)
+  if not p then return false end
+  if HIDE_FLAG and mentions(p, HIDE_FLAG) then return false end
+  for _, f in ipairs(rule.keep) do
+    if mentions(p, f) then return false end
+  end
+  return decode(p)
+end
+
 -- EvalCondition of a shop row (r14 = the row, rbx = SHOP_INFO), after the game's answer
 local function row_cond_post(ev)
   check_reset()
+  local passed = ev.ret ~= 0 and ev.ret ~= false
+  -- a holding condition only clears recorded rows: nothing recorded, nothing to read
+  if passed and next(locked_rows) == nil and next(locked_items) == nil then return nil end
   local blob, row, shop = ev.args[1], ev.regs.r14, ev.regs.rbx
   local row_id = rd("u32", row) or 0
   local item = rd("u32", row and row + ROW_ITEM) or 0
-  if ev.ret ~= 0 and ev.ret ~= false then
+  if passed then
     if row_id ~= 0 then
       locked_rows[row_id] = nil
       locked_items[item] = nil
@@ -186,22 +241,19 @@ local function row_cond_post(ev)
   end
   if row_id == 0 then return nil end
   local shop_id = rd("u32", shop) or 0
-  local rule = shops[shop_id] or all_rule
-  if not rule then return nil end
-  if rule.items and not rule.items[item] then return nil end
-  local p = payload_of(blob)
-  if not p then return nil end
-  if HIDE_FLAG and mentions(p, HIDE_FLAG) then return nil end
-  for _, f in ipairs(rule.keep) do
-    if mentions(p, f) then return nil end
+  local v = row and row_verdicts[row]
+  if not v or v.blob ~= blob or v.row_id ~= row_id or v.item ~= item or v.shop_id ~= shop_id then
+    v = { blob = blob, row_id = row_id, item = item, shop_id = shop_id, cond = row_verdict(blob, shop_id, item) }
+    if row then row_verdicts[row] = v end
   end
+  if not v.cond then return nil end
   if item ~= 0 and twin_visible(shop, row, item) then return nil end
-  local cond = decode(p)
+  local cond = v.cond
   locked_rows[row_id] = cond
   if item ~= 0 then locked_items[item] = cond end
   hits = hits + 1
   if hits == 1 then
-    info(string.format("shop 0x%08X row 0x%08X (item 0x%08X) listed as locked (first hit; %s)", shop_id, row_id, item, rule.key))
+    info(string.format("shop 0x%08X row 0x%08X (item 0x%08X) listed as locked (first hit; %s)", shop_id, row_id, item, (shops[shop_id] or all_rule).key))
   end
   return { ret = 1 }
 end
@@ -308,6 +360,7 @@ function ShopRows.Shops(...)
   if #ids > 0 then
     shops = {}
     all_rule = nil
+    row_verdicts = {}
     for _, id in ipairs(ids) do shops[id] = DECLARED[id] or { key = "CMND_VRFW_SHOP_LOCK_SHOPS", keep = {}, items = nil } end
     info(string.format("CMND_VRFW_SHOP_LOCK_SHOPS: %d shop(s) until the title (live %s)", #ids, tostring(LIVE)))
   end

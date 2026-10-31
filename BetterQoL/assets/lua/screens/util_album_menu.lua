@@ -896,7 +896,7 @@ Accept = function(by_pointer)
   if r == nil or type(acts) ~= "table" then return end
   for _, a in ipairs(acts) do
     if Offered(a) then
-      local row = { base = r.base, param = r.param, name = r.name, owned = r.owned, level = r.level }
+      local row = { base = r.base, param = r.param, name = r.name, owned = r.owned, level = r.level, rarity = r.rarity }
       S.task = coroutine.create(function() return a.Run(row) end)
       Log("action", tostring(a.id), "param", r.param)
       return

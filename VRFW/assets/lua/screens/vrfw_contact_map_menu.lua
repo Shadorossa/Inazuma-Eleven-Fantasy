@@ -3277,11 +3277,11 @@ function CmPages.GhostAsk(i)
     return
   end
   funcLuaCommand(C.SE, SE_DECIDE)
-  funcLuaCommand(C.P_SET, 4261573565 --[[vrfw_window_yes_text]], 0, T.GO, 1)
-  funcLuaCommand(C.P_SET, 1121728934 --[[vrfw_window_no_text]], 0, T.CLOSE, 1)
+  VRFW_Param.Set(4261573565 --[[vrfw_window_yes_text]], T.GO)
+  VRFW_Param.Set(1121728934 --[[vrfw_window_no_text]], T.CLOSE)
   local go = Ask(text)
-  funcLuaCommand(C.P_CLEAR, 4261573565)
-  funcLuaCommand(C.P_CLEAR, 1121728934)
+  VRFW_Param.Clear(4261573565)
+  VRFW_Param.Clear(1121728934)
   if not go then
     return
   end
@@ -3868,7 +3868,7 @@ end
 function OnInit()
   OT.f, OT.lines, OT.setup, OT.ev = 0, 0, {}, {}
   OtNote("init")
-  funcLuaCommand(C.P_CLEAR, KEY_RESULT)
+  VRFW_Param.Clear(KEY_RESULT)
   -- the art the mods declare for this screen (VRFW_ScreenArt; the plain atlas vrfw_plain is in the menu's res): its
   -- atlases asked now (Tex: Step redraws when they are in); one line naming the roles drawn plain
   art, plain_tint = VRFW_ScreenArt.Get(ART_SCREEN), {}
@@ -3890,9 +3890,9 @@ function OnInit()
     VRFW_FaceIcon.Forget(layer)   -- the busts are built again from scratch
   end
   HUB.menu, HUB.on, BUST.key, BUST.chara = nil, false, {}, {}
-  if funcLuaCommand(C.P_EXISTS, KEY_PARENT) then
-    local parent = Int(funcLuaCommand(C.P_GET, KEY_PARENT))
-    funcLuaCommand(C.P_CLEAR, KEY_PARENT)
+  if VRFW_Param.Has(KEY_PARENT) then
+    local parent = Int(VRFW_Param.Get(KEY_PARENT))
+    VRFW_Param.Clear(KEY_PARENT)
     HUB.menu = parent ~= 0 and parent or nil
   end
   focus = {list = 1, zones = 1, grid = 1, network = 1, shop = 1}
@@ -4006,9 +4006,9 @@ function OnInit()
   end
   STATUS.card = nil
   local set = 0
-  if funcLuaCommand(C.P_EXISTS, KEY_SET) then
-    set = Int(funcLuaCommand(C.P_GET, KEY_SET))
-    funcLuaCommand(C.P_CLEAR, KEY_SET)
+  if VRFW_Param.Has(KEY_SET) then
+    set = Int(VRFW_Param.Get(KEY_SET))
+    VRFW_Param.Clear(KEY_SET)
   end
   if VRFW_Recruit == nil then
     Log("error", "VRFW_Recruit missing (the menu part's lua\\_all\\62_recruit.lua did not run in this VM)")
@@ -4017,9 +4017,9 @@ function OnInit()
   VRFW_Recruit.Refresh()                        -- the club counts of the element / position requirements, fresh
   CmPages.direct = nil
   CmPages.trail, CmPages.going, CmPages.all = {}, false, false
-  if funcLuaCommand(C.P_EXISTS, 3811836272 --[[vrfw_contact_game]]) then
-    CmPages.direct = Int(funcLuaCommand(C.P_GET, 3811836272))
-    funcLuaCommand(C.P_CLEAR, 3811836272)
+  if VRFW_Param.Has(3811836272 --[[vrfw_contact_game]]) then
+    CmPages.direct = Int(VRFW_Param.Get(3811836272))
+    VRFW_Param.Clear(3811836272)
     if CmPages.direct == 0 then
       CmPages.direct = nil
     end

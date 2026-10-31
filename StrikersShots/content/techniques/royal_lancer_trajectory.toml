@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Lancero real (Royal Lancer, whs02890, cut-in ev60_02890): one straight level line
+# from the kick point to the goal, the ball at 2.0 m the whole way (the cut-in's lance flies level; its torn wind
+# shells widen to ~2 m below the ball at the trail's rear and stay clear of the grass from this height). Heights are
+# the ball centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Lancero real (whs02890).
+[[edit]]
+target = "whs02890"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

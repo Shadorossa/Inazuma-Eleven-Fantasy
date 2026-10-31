@@ -51,10 +51,6 @@ function M.key(hdl)
   return string.format("%08X", M.u32(hdl))
 end
 
-function M.list_handle(i)
-  return bit32.bor(M.LIST_HDL_BASE, band(i, M.LIST_HDL_MAX))
-end
-
 -- index (0-based) of a list row handle, nil for any other handle
 function M.list_index(hdl)
   if band(hdl, bit32.bnot(M.LIST_HDL_MAX)) == M.LIST_HDL_BASE then return band(hdl, M.LIST_HDL_MAX) end

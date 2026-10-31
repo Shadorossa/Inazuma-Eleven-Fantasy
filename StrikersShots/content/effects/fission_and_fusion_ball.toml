@@ -1,0 +1,29 @@
+# «Disparo doble» (Fission and Fusion, whs01980; void shot, cut-in ev60_01980): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last cut (c0030, the red and the blue shot fused into one): the white
+# spiky star on the ball with its cone of white-blue blade flames and ripple arcs, the cone of white-cyan light rays
+# trailing behind it with the soft white glows strung along its path, and the blue cone-shaped shock rings it sends
+# out every 10 frames (each one stays where it was sent out, grows and fades), instead of the plain void special-shot
+# aura. The object is ev6019ff00 (effect/event/ev60/ev6019ff00/), built by
+# research/scripts/fission_and_fusion_ball_fx.py from the cut-in's effect object ev60019800: c0030 held at frame 285,
+# ball at the origin, +Z along the flight, x1, raised 0.14 m to the ball's centre; the head is whole from the first
+# frame, the ray cone and the glows come out of the kick point and the cone fades out softly ~9 m behind the ball.
+# Left out: the two shots of the earlier cuts, the red and blue fusion auras and the radial speed-line backdrop.
+# Its flight: content\techniques\fission_and_fusion_trajectory.toml (level at 2.0 m).
+# The trigger copies the void special-shot aura's row (like = "ega0085e"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fission_and_fusion"
+from = "ega0085e"
+object = "effect/event/ev60/ev6019ff00/ev6019ff00.objbin"
+
+[[shot_aura]]
+name = "fission_and_fusion"
+when = { techniques = ["whs01980"] }
+aura = "fission_and_fusion"
+like = "ega0085e"
+# the ray cone, the glows and the rings come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

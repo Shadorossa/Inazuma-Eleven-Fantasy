@@ -1,0 +1,23 @@
+# «Fire Lemonade» («Granizado de fuego», whs02850, forest shot, cut-in ev60_02850): the end of the cut-in's shot cut
+# (c0030) on the ball: the ball in the nose of its yellow-orange flame comet with its white glow, wrapped in green flame
+# leaves, and behind it the thin yellow flame band with green flame wisps curling round it, laid straight behind the
+# ball along the flight at the cut-in's own shape and length (~5.5 m), coming out of the kick point as the ball moves
+# away (on the distance clock, never stretched) and fading out at its far end.
+# The object under assets\data is generated on the author's PC from the game's own cut-in effect ev60028500 by
+# research/scripts/fire_lemonade_ball_fx.py (never committed: research/mods/StrikersShots/README.md). Its flight:
+# content\techniques\fire_lemonade_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fire_lemonade"
+from = "ega0075d"
+object = "effect/event/ev60/ev6028fl00/ev6028fl00.objbin"
+
+[[shot_aura]]
+name = "fire_lemonade"
+when = { techniques = ["whs02850"] }
+aura = "fire_lemonade"
+like = "ega0075d"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

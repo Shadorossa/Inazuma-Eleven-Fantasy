@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Zero Magnum (whs01680, cut-in ev60_01680).
+#
+# Measured: in the last cut (c0500) the ball is fired out of the cannon mouth high in the air and flies 41.5 m along
+# the line of fire (research/scripts/zero_magnum_ball_fx.py). Flight (owner's rule 2026-10-24: every aura shot a
+# straight level line, <= 3 m): one straight level line from the kick point to the goal, the ball centre at 1.8 m the
+# whole way, so the cannon mouth at the kick point and the beam round the ball stay clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Zero Magnum (whs01680).
+[[edit]]
+target = "whs01680"
+trajectory = { points = [[0.0, 1.8]], straight = true, unblockable = false }

@@ -29,12 +29,38 @@ national_exclude = [
     "bbcr_legend_orion_02_bb",  # Selección Mundial
     "bbcr_legend_orion_08_bb",  # Neo Japón Implacable
 ]
+# clubs the player cannot pick for a new career (team keys); they still play in the career as rivals (owner 2026-10-31)
+pick_exclude = []
+# a career club whose name another club has too (another era's team: content/career/clubs.toml versions that share
+# fewer than [squads] merge_overlap of their players) shows this tag of its series after its name, «Royal Academy (GO)»
+series_tags = { IE1 = "IE", IE2 = "IE2", IE3 = "IE3", GO1 = "GO", GO2 = "Chrono Stone", GO3 = "Galaxy", ARES = "Ares",
+    ORION = "Orion", ORIGINAL = "Original", VICTORY = "Victory Road" }
+# teams that are no part of a career at all (team keys, owner 2026-10-31): no club to pick, in no competition (the next
+# clubs of the club order take their places), and their players that no other team has are in no squad and no market
+# pool. A career started before keeps them in its competitions
+career_exclude = [
+    "bbcr_go2_2100_bb",         # Inazuma Japón Legendario
+    "bbcr_original_0200_bb",    # Zanark Outsiders
+    "bbcr_ie2_2000_bb",         # Emperadores Oscuros
+]
 
-# The club strength the draw's pots use: the Battle Bay rating table (any mod may ship it); a club it does not rate
-# gets the median. Without the table every club has the same rating.
+# The club strength (the simulated matches, so the SuperLiga order and the pots, and the stars of the club pick and the
+# hub): the ratings an exported function answers ("<Prefix>.<Function>", team id -> rating): Battle Bay Deluxe's rating
+# table (any mod may ship it, its header checked by Battle Bay Deluxe); a club it does not rate gets the median. When it
+# rates none of the clubs, fallback = "best_players" rates every club from its players (its career squad, a national
+# side its roster): `base` + the mean strength_column of its best `count` players x `scale`. The simulation uses the
+# ratio of two ratings: chara_param `rank` is the growth rank of the game's stat table (0 most players, 3 the main
+# characters, Hero 4, Diamond 5), so 100 + 10 per rank puts the strongest clubs about 1.5x the weakest, near the ratio
+# of their Lv99 stats. "" = every club the same rating. source = "levels" (owner 2026-10-30): a club's rating is the mean
+# match level (career level + form, [levels]) of its best `count` players, a goalkeeper among them; recalculated after
+# every round. The national sides and the clubs before a career keep the rules above.
 [ratings]
-table = "data/common/gamedata/team/evt_bb_team_rating.cfg.bin"
-rows = "EVT_BB_RATING"
+source = "levels"
+fallback = "best_players"
+strength_column = "rank"
+count = 11
+base = 100
+scale = 10
 
 # Squads (docs/game/mods/career-mode-proposal.md §9): every player exists once in a career. A player shared by several
 # clubs belongs to the earliest one by order_file (generated from game data: research/scripts/
@@ -44,35 +70,84 @@ rows = "EVT_BB_RATING"
 # (same_game_first); with free_need_team only characters of some belong team (chara_base), not townsfolk; drawn once
 # per career.
 [squads]
-order_file = "scripts/data/club_order.toml"
+order_file = "content/career/club_order.toml"
 min_players = 11
 fill_to = 16
 # the career's clubs (owner 2026-10-30): which teams are one club (versions merged) and which are no club
-clubs_file = "scripts/data/career_clubs.toml"
+clubs_file = "content/career/clubs.toml"
+# a version of clubs_file joins its club only when at least this share of the smaller roster's players are in both
+# (owner 2026-10-31: the same name with other players, another era's team, is a club of its own)
+merge_overlap = 0.3
 strength_column = "rank"
 strength_reach = 5
 same_game_first = true
+# a player in several teams belongs to a team of his own game (his card's series) first, then by order_file (owner
+# 2026-10-31: Victory Road characters in their Victory Road club, not in an older game's team they also appear in)
+home_own_game_first = true
 free_need_team = true
+# The squad cap (owner 2026-10-31: 21 = 11 starters + two bench columns of 5): a club holds max_players players at
+# most and signs nobody while full (the market, the talks, free players, the AI clubs). A running career's player club
+# over it keeps its players and only sells (at the career's start the players on a roster row stay, then the bench by
+# strength; the rest are free players), max_managers managers and max_coaches coach
+# (the career's clubs keep their team's own staff: no staff is signed today)
+max_players = 21
+# The cards no career has (owner 2026-10-31): exclude_no_face = cards whose character has no face icon of its own
+# (data/dx11/menu/200_icon/10_icon_chr/face/<chara_base name>_l.g4tx in no game or mod file: the engine draws Mark
+# Evans' face, the transformation bodies and placeholders); exclude_aura_types = the aura variant cards of these
+# aura_skill_config types (0 keshin, 1 armed, 2 miximax, 3 totem). Left out of the free players and of every new
+# career's squads; a running career drops them from the other clubs' squads once (the player's club keeps them).
+exclude_no_face = true
+exclude_aura_types = [2]
+# exclude_staff = every card of a character with a coach or manager card (owner 2026-10-31: staff, never a player)
+exclude_staff = true
+max_managers = 3
+max_coaches = 1
+# «Equipo» (owner 2026-10-31: no loading transition): the game's team screen stays open, hidden, between visits of the
+# tab while the hub is up (L1 / R1 switch at once); it closes before a match, a day, a save, a market deal or leaving
+# the hub. false (the default) = it opens and closes on every visit; true is off for now: on L1 / R1 the hidden screen
+# stayed drawn and the menu took no input (install 397)
+keep_team_screen = false
+# «Equipo»: A on a player card opens its popup («PERSONAJE»: move, equipment, abilities...) right on the team screen,
+# Y opens the player page (VRFW_TeamEditor spec.inline_card_actions). false = A opens the game's lineup screen and its
+# popup, as the game does. Off (owner 2026-10-31, install 408): the hidden lineup screen still drew its layers
+# half-transparent over «Equipo» and the popup, with a second cursor
+team_screen_card_actions = false
 
 # The season (§8). SuperLiga: every club, a Swiss system of `rounds` rounds (no rival twice, home and away balanced);
 # the first `qualify` go on (a multiple of the league count; the rest of the season is simulated when the player's club
-# is out).
+# is out). 6 leagues of 14 (owner 2026-10-31: two more leagues so more clubs go on): a season whose leagues were dealt
+# before keeps them; one still in the SuperLiga deals the new ones.
 [superliga]
 rounds = 12
-qualify = 56
+qualify = 84
 
 # The qualified clubs in pots of `count` (SuperLiga order), one club of each pot per league: `count` leagues. double =
 # home and away (26 matchdays with 14 clubs).
 [leagues]
-count = 4
+count = 6
 double = true
+
+# The pots' colours (pot k = colour k, cycled past the last): the strip left of each place in the SuperLiga table (the
+# pot that place goes to in the draw) and the header strip of each pot on the draw screen. The swatches are built from
+# this list (research/scripts/career_tint_art.py: rerun it after a change).
+[pots]
+colours = ["#D93A3A", "#E8782A", "#E3B21F", "#9BC23A", "#2FA65A", "#1FA59A", "#23A8D9", "#2F6FD6", "#5B4BC9",
+    "#9A4CC4", "#D14FA3", "#8A5A3C", "#6E7B8C", "#2C3E50"]
 
 # Fútbol Frontier: places 1..direct_places of each league go straight to the knockout rounds; places playoff_places
 # (first to last) play a single-match play-off (best against worst of another league). Every knockout match is single,
-# the final too (a draw goes to penalties). Direct clubs + play-off winners must be a power of two. The round after the
+# the final too (a draw goes to penalties). When direct clubs + play-off winners are no power of two (6 leagues: 12 + 12),
+# the knockout takes the largest one below (16): the direct clubs, and play-off matches between the best ranked clubs
+# of the play-off places (place, then points per match, goal difference, goals), the best against the worst. The round after the
 # play-off is drawn when the Frontier starts: each direct club against the winner of a play-off match, never one with a
 # club of its own league when the draw allows it.
 [frontier]
+# entrants (owner 2026-10-31: «tiene que haber 8tavos»): the Fútbol Frontier starts with a round of `entrants` clubs
+# (a power of two; 0 = the play-off rule below): places 1..entrants / leagues of every league, then the best clubs of
+# the next place (place, then points per match, goal difference, goals) until it is full (6 leagues: places 1-5 and
+# the two best 6th). Round 1 pairs the best ranked against the worst (the league winners against the last ones in),
+# with another league whenever it can. A Frontier already drawn keeps its rounds.
+entrants = 32
 direct_places = 2
 playoff_places = [3, 6]
 
@@ -89,7 +164,192 @@ playoff_places = [3, 6]
 # refuses, a sale would leave it short). CareerMode.CanSell checks it for every sale between clubs.
 min_squad_to_sell = 12
 
+# The transfer market (the hub's «Mercado» tab, scripts\lib\market.lua). Money is the mode's own: `unit` is one
+# «value point». A player's value = unit × value_curve(his strength, [squads] strength_column, as a share 0-1 of the
+# career's players and the free ones); his club asks value × ask_starter (one of its best 11 by strength) or
+# × ask_reserve; a free player costs value × free_agent_fee. Every club starts with unit × start_budget_by_rank(its
+# place among the clubs by rating, 0 = the best .. 1 = the last) and earns unit × income_per_round each round played.
+# A club holds [squads] max_players at most (a full squad can only sell). Inside a window, each round: at most
+# ai_deals_per_round AI deals (a club below need_by_position [GK, FW, MF, DF] at a position signs the strongest player
+# of it it can pay with ai_spend_share of its money, among ai_sample players drawn), and each player the club listed
+# gets a bid with the chance bid_chance (value × bid_range(a draw)). The offers lapse when the window closes.
+[market]
+# the mode's money is shown as this game item: its icon (sprite currency_item of the atlas currency_atlas) and its
+# name. tk_bb000001 = «Puntos de pasión» with Inazuma Fantasy (it renames the item and replaces its icon), the
+# retail «Medalla rara BB» without it
+currency_item = "tk_bb000001"
+currency_atlas = "#/menu/200_icon/02_icon_item/icon_item10.g4tx"
+unit = 1000000
+value_curve = [[0.0, 0.1], [0.5, 0.4], [0.9, 1.2], [1.0, 2.5]]
+start_budget_by_rank = [[0.0, 3.0], [0.5, 1.5], [1.0, 0.6]]
+# Prices (scripts\lib\market.lua). A player's value = [levels.value] (his level, the room to his potential, form,
+# recent rise, position) x unit. The price his club asks = value x his role there (ask_star: its best star_count
+# players by level + form; ask_starter: its best `starters`; ask_reserve: the rest) x the club's stature
+# (stature_by_rank: by its rank among the clubs by rating, 0 = the best) x need_ask when it has no more players at his
+# position than need_by_position x the career's negotiation option. A free player's fee = free_agent_fee x his value.
+# Amounts are rounded by price_round ([from, step]: amounts from `from` up are rounded to `step`). The values are
+# worked out again each day of the career (a round, a month of levels); price_batch = values worked out per market
+# call while a day's list is priced.
+ask_star = 1.6
+star_count = 3
+starters = 11
+ask_starter = 1.35
+ask_reserve = 1.0
+stature_by_rank = [[0.0, 1.2], [0.5, 1.0], [1.0, 0.85]]
+need_ask = 1.25
+free_agent_fee = 0.25
+price_round = [[0, 1000], [100000, 5000], [1000000, 25000], [10000000, 100000]]
+price_batch = 1200
+# the most time (ms) a market call spends working the list out (values, rows, names) before it answers with its
+# progress; the screen asks again the next frame
+work_ms = 8
+income_per_round = 0.05
+ai_deals_per_round = 6
+ai_spend_share = 0.5
+ai_sample = 40
+need_by_position = [2, 4, 5, 5]
+bid_chance = 0.35
+bid_range = [[0.0, 0.85], [1.0, 1.15]]
+# a player on no list (not blocked, no offer waiting) gets a bid now and then: unlisted_bid_chance a round, the bid
+# value × unlisted_bid_range(a draw) (above his value: he was not for sale). A blocked player gets none
+unlisted_bid_chance = 0.04
+unlisted_bid_range = [[0.0, 1.1], [1.0, 1.4]]
+# a player listed for loan gets a loan offer with the chance loan_offer_chance a round: a fee of value ×
+# loan_fee_range(a draw), paid by the borrower, and a length drawn from loan_lengths ("window" = until the next
+# transfer window closes, "season" = until the season's end). He plays for the borrower and comes back on that day;
+# every loan ends when a new season starts
+loan_offer_chance = 0.35
+loan_fee_range = [[0.0, 0.05], [1.0, 0.15]]
+loan_lengths = ["window", "season"]
+log_size = 30
+# the «Buscar» list: rows on screen
+rows_per_page = 14
+# The «Buscar» search (owner 2026-10-31, mock-up Mercado 2 A): a name is searched among the players' names in the
+# game's language, named name_batch players per call the first time; the media rows step by
+# search_level_step between search_level_low and search_level_high; the price row's limits (money)
+name_batch = 150
+search_level_step = 1
+search_level_low = 40
+search_level_high = 99
+search_prices = [500000, 1000000, 2000000, 3000000, 5000000, 8000000, 10000000, 15000000, 20000000, 30000000, 50000000]
+# The transfer talks for a club's player (owner 2026-10-31, mock-up Mercado 2 A). The club's lowest price (its floor) =
+# its asking price x talk_floor_<role> (star / starter / reserve), x talk_poor_floor when its money is under
+# talk_poor_units x unit. Patience (both sides, owner 2026-10-31): a club starts a talk with talk_patience; each offer
+# (or ask) costs it talk_patience_cost (points: the gap to what it accepts as a share, 0 = at it -> the patience used)
+# x its demand (its stature by rating rank, +- talk_demand_noise drawn per save and club); at 0 it breaks off. An
+# offer at its ask, or at the floor within talk_accept_gap (share of the ask) of it or with its patience under
+# talk_accept_patience x the start, buys him. Else the club counters (its ask comes down talk_give of the gap to the
+# offer; under talk_low_share x the floor: «too low»). The first offer shown = talk_first_offer x the ask; the offer
+# moves in steps of talk_step_share x the ask (talk_big_steps of them with L2 / R2). An offer received: the player may ask more; the bidder pays up to talk_bid_max x its first
+# An offer received («Negociar»): the player asks more and the bidder answers after talk_reply_days [min, max] days
+# (seeded per save): it pays up to talk_bid_max x the larger of its first offer and the player's value (and its money);
+# an ask within that is agreed; an ask over it costs its patience (the gap = ask / that most - 1), and with none left it
+# walks away; else it bids again talk_sell_give of the way to the ask (points: the gap as a share of its bid -> the
+# share given, +- talk_sell_jitter).
+talk_patience = 1.0
+talk_patience_cost = [[0.0, 0.06], [0.1, 0.15], [0.25, 0.35], [0.5, 0.65], [1.0, 1.3]]
+talk_demand_noise = 0.15
+talk_accept_patience = 0.35
+talk_low_share = 0.8
+talk_give = 0.4
+talk_accept_gap = 0.04
+talk_floor_star = 0.95
+talk_floor_starter = 0.85
+talk_floor_reserve = 0.75
+talk_poor_units = 1.0
+talk_poor_floor = 0.9
+talk_first_offer = 0.85
+talk_step_share = 0.02
+talk_big_steps = 10
+talk_bid_max = 1.2
+talk_reply_days = [1, 3]
+talk_sell_give = [[0.0, 0.6], [0.5, 0.45], [1.0, 0.25]]
+talk_sell_jitter = 0.15
+
+# the new career's options, picked on the setup screen after the club (kept in the career, c.options):
+# * market_default: the transfer market on (the «Mercado» tab, AI deals, bids); off = the squads stay as built
+# * backing_steps: the financial backing (the mode's money) added to the club's first budget; backing_default and
+#   backing_jump (LB / RB) are steps of that list (1-based)
+# * [[setup.negotiation]]: how the AI clubs deal with the player: ask = × the price they ask him, bid = × their bids for
+#   his listed players, bid_chance = × the chance of a bid
+# * [[setup.activity]]: the AI clubs' market: deals = their deals per round inside a window, bid_chance = × the
+#   chance of a bid
+# * sacking_default: the board sacks the manager who misses its objectives at the season's end
+[setup]
+market_default = true
+backing_steps = [0, 100000, 250000, 500000, 1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000, 250000000]
+backing_default = 1
+backing_jump = 3
+negotiation_default = 2
+activity_default = 3
+sacking_default = true
+
+[[setup.negotiation]]
+id = "easy"
+text = "NegotiationEasy"
+ask = 0.8
+bid = 1.15
+bid_chance = 1.3
+
+[[setup.negotiation]]
+id = "normal"
+text = "NegotiationNormal"
+ask = 1.0
+bid = 1.0
+bid_chance = 1.0
+
+[[setup.negotiation]]
+id = "hard"
+text = "NegotiationHard"
+ask = 1.25
+bid = 0.85
+bid_chance = 0.7
+
+[[setup.activity]]
+id = "off"
+text = "ActivityOff"
+deals = 0
+bid_chance = 0.0
+
+[[setup.activity]]
+id = "low"
+text = "ActivityLow"
+deals = 3
+bid_chance = 0.6
+
+[[setup.activity]]
+id = "normal"
+text = "ActivityNormal"
+deals = 6
+bid_chance = 1.0
+
+[[setup.activity]]
+id = "high"
+text = "ActivityHigh"
+deals = 10
+bid_chance = 1.4
+
+# The board's objectives each season (scripts\lib\board.lua), from the club's place in the career's rating order (rank /
+# clubs, 1 = the best): the first band whose top_share holds it. superliga_share = the SuperLiga place asked, as a share
+# of the clubs; league = the league place asked (0 = none); frontier = the Fútbol Frontier round to reach (Playoff,
+# Round16, Quarter, Semi, Final, Champion; empty = none). The board warns once the SuperLiga is over and after
+# warn_league_after of the league's matchdays. Missing the league objective and one other sacks the manager at the
+# season's end when the career's «sacking» option is on.
+[board]
+# a band's SuperLiga target (superliga_share x the clubs) never lies past the places that go on to the leagues
+warn_league_after = 0.5
+bands = [
+    { top_share = 0.08, superliga_share = 0.1, league = 2, frontier = "Semi" },
+    { top_share = 0.2, superliga_share = 0.25, league = 3, frontier = "Quarter" },
+    { top_share = 0.4, superliga_share = 0.4, league = 6, frontier = "Round16" },
+    { top_share = 0.6, superliga_share = 0.55, league = 9, frontier = "Round32" },
+    { top_share = 1.0, superliga_share = 0.8, league = 12, frontier = "" },
+]
+
 [calendar]
+# «Fechas»: each competition's colour on the month's match days and on the season's line (names of the career
+# screen's colours, the career_tint atlas: navy, direct, cut, gold, orange, win, loss, ...)
+competition_colours = { superliga = "navy", league = "direct", frontier = "orange", worldcup = "loss", window = "cut" }
 first_year = 2026
 season_start = "08-01"
 first_match = { month = 8, weekday = "sat", nth = -1 }
@@ -124,8 +384,8 @@ advance = 2
 squad = 16
 keepers = 2
 # every player's nationality: the country of the national team rosters that hold him, then this file's players
-# ([country] <id> = [cards or chara keys]) for players of no national roster or a different country
-nationality_file = "scripts/data/nationalities.toml"
+# ([[CareerMode.Nationality]] country, players = [cards or chara keys]) for players of no national roster or a different country
+nationality_file = "content/career/nationalities.toml"
 
 # The countries (owner 2026-10-30): a country's national teams by team key; the first one plays the World Cup (name,
 # crest, kit); the call-up pool is every player of that nationality. pool_teams: teams whose players also have the
@@ -227,6 +487,18 @@ pool_teams = [
 # at most max_goals; a knockout draw goes to penalties, won by the stronger club more often (rating ^ penalties_power);
 # the shoot-out's kicks: each one scored with penalty_kick, penalty_kicks a club before sudden death.
 # The ratings are the club ratings of [ratings].
+# The season's player stats per competition («Torneos»: CMND_CAREERMODE_STATS): a goalkeeper keeps a clean sheet when
+# on the pitch clean_sheet_minutes or more and his club concedes none; rating = rating_base + mean match score x
+# rating_scale (0..10), listed from rating_min_matches matches; max_rows = the most rows a call answers
+[stats]
+clean_sheet_minutes = 60
+rating_base = 6.0
+rating_scale = 2.0
+rating_min_matches = 3
+max_rows = 50
+# «Torneos»: the club's best players shown under the stats list
+club_rows = 3
+
 [sim]
 goals = 1.35
 power = 1.2
@@ -252,6 +524,9 @@ trophy_signal = "BattleBayDeluxe.TrophyPlay"
 # goalkeepers among them
 squad_size = 19
 keepers = 2
+# the level the career levels count from on the slot teams' member rows (CMND_VRFW_TEAM_MEMBER_LEVELS base): 0 = the
+# team record's level (the stand-in copies the club's)
+level_base = 0
 
 # Club families: the team names of this language tell two versions of one club apart («… A» / «… B»)
 [family]
@@ -280,19 +555,182 @@ stars_min = 1.0
 stars_max = 5.0
 stars_step = 0.5
 best_players = 5
+# with [ratings] source = "levels": the stars from the club's rating on a fixed scale (rating -> stars, in steps of
+# stars_step; owner 2026-10-30), not from its place in the league
+stars_by_rating = [[62, 1.0], [67, 2.0], [72, 3.0], [77, 4.0], [83, 5.0]]
 
-# The hub: rows per page of the calendar and of a table, the last results shown as form chips, and its tabs in order
+# The careers of a save slot: the title menu offers `slots` of them (career 1 is the save blob career.json, the
+# single career of earlier versions; career k the blob career_<k>.json).
+[careers]
+slots = 4
+
+# The hub: rows per page of the calendar and of a table, the last results shown on «Forma» (2 rows) and as form chips, and its tabs in order
 # (L1 / R1). A tab is a page id the screen draws (home, calendar, competition, squad) with its label text
 # (text\rows\career.toml CareerMode.<text>), its icon (a sprite of the retail tab icon atlas icon_list_tab) and, when it
-# shows only in some phases of the season, `phases` (superliga, pots, league, frontier, worldcup, over). A page id the
-# screen does not know shows «coming soon».
+# shows only in some phases of the season, `phases` (superliga, pots, league, frontier, worldcup, over); `callup = true`
+# shows it only while the club's squad is larger than [match] squad_size. «squad» is the game's own team screen with
+# the club (formation, starters and bench, kit, crest, coach, tactics, player pages), «callup» the players its matches
+# take. A page id the screen does not know shows «coming soon».
 [hub]
+# tabs: `text` = the tab bar's short label (at most 8 letters, 4 wide characters: 7 tabs share the bar)
 rows_per_page = 10
 table_rows = 18
-form_matches = 5
+form_matches = 10
+# «Continuar» / «Ir al partido» walk the days one at a time: the frames each day takes (about 0.4 s at 24)
+day_step_frames = 24
 tabs = [
-    { id = "home", text = "TabHome", icon = "icon_list_tab_town01" },
-    { id = "calendar", text = "TabCalendar", icon = "icon_list_tab_history01" },
-    { id = "competition", text = "TabCompetition", icon = "icon_list_tab_vroad01" },
-    { id = "squad", text = "TabSquad", icon = "icon_list_tab_uniform01" },
+    { id = "home", text = "TabBarHome", icon = "icon_list_tab_town01" },
+    { id = "calendar", text = "TabBarCalendar", icon = "icon_list_tab_history01" },
+    { id = "competition", text = "TabBarCompetition", icon = "icon_list_tab_vroad01" },
+    { id = "squad", text = "TabBarSquad", icon = "icon_list_tab_uniform01" },
+    { id = "callup", text = "TabBarCallUp", icon = "icon_list_tab_coach01", callup = true },
+    { id = "market", text = "TabBarMarket", icon = "icon_list_tab_ticket01", phases = ["superliga", "pots", "league", "frontier"], market = true },
+    { id = "settings", text = "TabBarSettings", icon = "icon_list_tab_option01" },
 ]
+
+# «Noticias» (scripts\lib\news.lua): the news kept per career (newest first), the rival clubs' deals shown per day of
+# the market, and each picture's pose: per role, the clips tried in order ("pack:clip" of the player's own motion set,
+# common/chr/<set>/<set>_<pack>.g4pk); the first one his motion set holds is played, the stand when none
+# (VRFW_ModelCard, docs/framework/model-card.md). Roles: celebrate (a signing, a win, a title, the lead), let_down (a
+# loss, a place lost, out of a cup), proud (a sale, a star of the club), stand (an offer, a draw). Every role tries the
+# game's celebration motions first (goal celebrations, bond emotes), the menu poses last (unused while picture.static).
+# The picture (owner 2026-10-31: «el modelo nunca puede sobresalir del rectángulo», «estático»): static = the stand
+# only, no clip played; fit = the whole model inside the card's image area (VRFW [fit] envelope): the card minus side px
+# on the left and right, top px under its top (top_transfer on a transfer card, under its crests) and bottom px over its
+# bottom (the tag, title and body band); centre = the body's centre as a part of the area's width.
+[news]
+keep = 40
+# the feed shows the items of the last max_age_days career days (from the career's date)
+max_age_days = 4
+ai_transfers_per_round = 3
+
+[news.poses]
+celebrate = ["p250:Bイベガンダレス喜び飛び跳ね1L", "p030:戦1ゴール後その場喜び2L", "p400:キズナエモート飛び跳ね1L", "p250:Bイベゴール後その場喜び2L", "p030:戦1ゴール後その場喜び1L", "p010:VS画面ポーズ1L"]
+let_down = ["p030:戦1ゴール後その場がっかり1L", "p250:Bイベ落胆小1L", "p060:NPCうなだれ立ち1L"]
+proud = ["p250:Bイベガンダレス喜びガッツ1L", "p030:戦1ゴール後その場喜び2L", "p400:キズナエモート飛び跳ね1L", "p030:戦1ゴール後その場喜び1L", "p010:ステータスポーズ豪快1L"]
+stand = ["p400:キズナエモート応援立ち1L", "p010:ステータスポーズ陽気1L", "p010:VS画面ポーズ1L"]
+
+[news.picture]
+static = true
+fit = true
+centre = 0.5
+side = 14
+top = 14
+top_transfer = 128
+bottom = 232
+
+# The players' career levels (owner 2026-10-30; docs/game/mods/career-mode-levels.md): every player of a career has a
+# level 1-99 («media») of his own, kept in the career, never in the game's save. The starting level: a quality score
+# (quality_weights: chara_param growth rank out of rank_max, fame = how many of the career's source teams hold the person,
+# up to fame_cap more than one, and the stats of his position at level 99 from the game's growth table) as a share of
+# the career's players (0 the lowest .. 1 the highest), put on start_curve (every player 60-94, most of them 60-75, the
+# best ones near 94; 99 only by growth). The potential: the starting level + a seeded draw in [minimum, maximum] of the
+# potential_margin row of his share ([share from, minimum, maximum]), at most max_level. In a match each player plays at
+# his match level = level + form (the engine level of his member row, apply_in_match).
+[levels]
+quality_weights = { rank = 0.55, fame = 0.20, stats = 0.25 }
+rank_max = 5
+fame_cap = 4
+start_curve = [[0.0, 60], [0.50, 67], [0.80, 74], [0.93, 81], [0.98, 87], [0.995, 91], [1.0, 94]]
+potential_margin = [[0.0, 3, 12], [0.80, 3, 9], [0.98, 2, 6]]
+max_level = 99
+min_level = 1
+apply_in_match = true
+# the level the game gives a club's player outside a match (owner 2026-10-31: «el nivel de los jugadores se rige por
+# las medias»): his member row in the club's team and the team screen («Equipo», its team level the mean of them).
+# "level" = his career level («media»), "match" = level + form; within min_level..max_level
+squad_level = "level"
+
+# the position's stats (growth table columns <stat>_99, main position order 1 GK, 2 FW, 3 MF, 4 DF), the chara_param
+# columns of the stat modifiers (0-based), the growth key columns (main position, growth pattern, growth rank) and the
+# engine's stat rule at level 99 (+rarity_bonus per rarity step, mod_stage per modifier point; docs/game/mechanics/
+# stats-system.md)
+growth_table = "data/common/gamedata/character/growth_table_config_*.cfg.bin"
+growth_list = "m_growthTableMainList"
+# the starting levels of every card a career can hold, generated from these rules by
+# research/scripts/career_levels_build.py (run it again after changing the quality rules, start_curve or the clubs);
+# a card missing from it is computed at run time with the same rules when he is first asked for
+initial_file = "content/career/initial_levels.toml"
+position_stats = [["Ag", "Ps"], ["Kc", "Cr"], ["Tc", "Cr"], ["Pr", "Ps"]]
+stat_mod_columns = { Kc = 29, Cr = 30, Tc = 31, Pr = 32, Ps = 33, It = 34, Ag = 35 }
+position_column = 3
+pattern_column = 7
+growth_rank_column = 9
+rarity_step = 4
+rarity_bonus = 0.1
+mod_stage = 20
+# The form (-3..+3): the weighted mean of the last form_matches match scores (form_weights, oldest first) x 3 /
+# form_scale; 0 with fewer than form_min_played matches played.
+form_matches = 5
+form_weights = [1, 1, 2, 2, 3]
+form_scale = 1.0
+form_min_played = 2
+# The progression, at the end of every month of the calendar (one season: owner 2026-10-30): a club player gains
+# growth_per_month x his share of the month's minutes x (potential - level) / growth_gap (at most 1) + form_bonus[form
+# -3..+3] when he played; he loses bench_decline when his share is below bench_share, and bad_form_decline after two
+# months in a row with form -2 or worse. A free player loses free_decline a month ± a seeded free_drift (training on his
+# own). Every whole point moves the level (never above the potential). A regular starter gains ~4-6 in a season, an
+# unused one loses ~3-4, a free player ~1-2.
+growth_per_month = 0.55
+growth_gap = 5
+form_bonus = [-0.3, -0.2, -0.1, 0.0, 0.1, 0.2, 0.3]
+bench_share = 0.15
+bench_decline = 0.4
+bad_form_decline = 0.4
+free_decline = 0.15
+free_drift = 0.35
+history_months = 6
+# a level change is news (CareerMode.LevelNews) for the player's club, or for others reaching news_min_level or moving
+# news_min_change at once; the last news_keep are kept
+news_min_level = 80
+news_min_change = 2
+news_keep = 30
+
+# The EXP bar under «Nv.» on the team screen («Equipo») and its player pages (owner 2026-10-31): how close each player
+# is to his next career level change. A player's way = the points kept from the past months (+1 = one level up at the
+# month's end, -1 = one down; [levels] growth_per_month, form_bonus, bench / bad form declines) + this month's so far
+# (with_month, once his club has played in it). The bar: `neutral` (0.5 = half) = no change on the way, full = a level
+# up near, empty = a level down near; the same at his potential (no rise) and at min_level (no fall).
+[levels.exp_bar]
+neutral = 0.5
+with_month = true
+
+# A match's score of a player (form): the result (win / draw / loss) x his share of 90 minutes, + goal per goal, save
+# per keeper save, technique per move used (at most technique_cap), duel per duel won (at most duel_cap), red per red
+# card, conceded per goal against (goalkeepers and defenders); at most ± score_cap. The player's own matches: the match
+# engine's events; the simulated ones: the best `starters` by match level play 90', sim_bench_subs bench players
+# sub_minutes, the goals go to the players on the pitch by sim_goal_weights (GK, FW, MF, DF) x level, and each score gets
+# a draw within ± sim_noise_by_position.
+[levels.form]
+win = 0.5
+draw = 0.0
+loss = -0.5
+goal = 0.6
+save = 0.25
+technique = 0.05
+technique_cap = 0.3
+duel = 0.03
+duel_cap = 0.3
+conceded = -0.15
+red = -0.6
+score_cap = 1.5
+starters = 11
+sim_bench_subs = 3
+sub_minutes = 30
+sim_goal_weights = [0, 5, 3, 1]
+sim_noise_by_position = [0.2, 0.4, 0.4, 0.3]
+
+# A player's market value in value points ([market] unit): value_curve(level) x min(pot_cap, 1 + pot_weight x
+# (potential - level)) x (1 + form_weight x form) x (1 + trend_weight x the levels gained in the last trend_months
+# months, within trend_min..trend_max) x position (by main position: GK, FW, MF, DF). CareerMode.PlayerValue(card)
+# answers it (the transfer market reads it).
+[levels.value]
+value_curve = [[40, 0.02], [50, 0.05], [60, 0.15], [65, 0.28], [70, 0.5], [75, 0.85], [80, 1.5], [85, 3.0], [88, 4.5], [90, 6.0], [94, 10.0], [99, 20.0]]
+pot_weight = 0.04
+pot_cap = 1.5
+form_weight = 0.05
+trend_weight = 0.04
+trend_min = 0.8
+trend_max = 1.3
+trend_months = 3
+position = [0.85, 1.15, 1.05, 0.95]

@@ -1,0 +1,16 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tornado dragón (Dragon Tornado, whs00350, cut-in ev60_00350; Inazuma Fantasy declares
+# its whs00350_or's own).
+#
+# Measured (research/scripts/shot_trajectory_from_cutin.py --points --move dragon_tornado): the effect joint
+# a_aura1_null_cns_f (the ball's fire; the event ball is parked out of sight in c0600) of ev60003500 c0600 is shot at
+# effect frame ~425 from 11.39 m and dives, steepening, to the pitch 22.2 m on.
+# Flight (owner's rule 2026-10-24: every aura shot a straight level line, at most 3 m high): one straight level line
+# from the kick point to the goal, the ball centre at 2.50 m the whole way, so the red dragon coiling round it (1 m
+# helix radius) never reaches the grass. unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Tornado dragón (whs00350).
+[[edit]]
+target = "whs00350"
+trajectory = { points = [[0.0, 2.50]], straight = true, unblockable = false }

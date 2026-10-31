@@ -12,4 +12,5 @@ nodes = { type = "strings", required = true, doc = "the [[VRFW.RouteNode]] Names
 hideable = { type = "bool", default = true, doc = "the hide switch hides these nodes" }
 chain = { type = "string", doc = "a shared chain id (a-z 0-9 _, no mod prefix): the ModManager «Cadenas» section shows every group of every mod with this id as ONE chain of board nodes; the first mod in load order declares it (its title), the others add their nodes. No effect in game" }
 title = { type = "string", ref = "text_key", doc = "with chain: the text row id of the chain's title (the declaring mod's text rows)" }
+hidden = { type = "when", doc = "conditions under which these nodes are always hidden (not drawn, not focusable), asked each time a board opens: e.g. { option = \"<mod>.<row>\", equals = 1 }; the hide switch does not show them" }
 when = { type = "when", doc = "conditions on the declaring mod's config: all must hold, else the declaration is left out" }

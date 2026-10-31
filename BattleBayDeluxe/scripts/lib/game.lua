@@ -90,25 +90,6 @@ function G.eval(cond)
   return U.truthy(v)
 end
 
--- the teams of the enjoy table whose unlock condition is not met right now; nil = the table or the evaluator is not
--- available. The Draft leaves their squads out (when the «win it to unlock it» rule names them).
-function G.locked_teams()
-  if not VRFW.is_on("EvalCondition") then
-    return nil
-  end
-  local rows = G.enjoy_rows()
-  if not rows then
-    return nil
-  end
-  local out = {}
-  for _, r in ipairs(rows) do
-    if r.team ~= 0 and r.cond ~= 0 and G.eval(r.cond) ~= true then
-      out[r.team] = true
-    end
-  end
-  return out
-end
-
 -- the VR-Framework's «win it to unlock it» rule (docs/framework/bb-pages.md §8): -1 not under it, 0 locked,
 -- 1 unlocked; nil when the BB pages service is not there
 function G.unlock_rule(team)

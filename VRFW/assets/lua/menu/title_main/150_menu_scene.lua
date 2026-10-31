@@ -37,11 +37,6 @@ local MT = {
   WHITE_FADE = 4011714927,
   BLACK_FADE = 609722083,
   FADE_DONE = 2259183189,
-  SAVE_WORKING = 1979970074,
-  CARRY = VRFW_Cmd.VRFW_SLOT_CARRY,        -- CMND_VRFW_SLOT_CARRY (1 keep, 0 drop) -> kept, KiB, play s, players, why
-  TB_DIRECT = VRFW_Cmd.VRFW_MENU_TOPBAR_DIRECT,    -- CMND_VRFW_MENU_TOPBAR_DIRECT () -> true: the reset goes straight into the next state
-  GAME_RESET = VRFW_Cmd.GAME_RESET,   -- CMND_GAME_RESET
-  NO_PRESS_START = 937976662, -- (true) the next title opens the main menu at once
   CHRONICLE_WAIT = 53570903, -- param vrfw_menu_scene_chronicle_wait (value = ms of the push-in): Modo Crónica straight to the map
   CHRONICLE_ITEM = 130186018, -- the title's «Modo Crónica» item
   PICK_WAIT = 2171674033,    -- param vrfw_menu_scene_pick_wait (ms of the push-in): a menu_pick hotspot pressed its tile
@@ -87,29 +82,10 @@ local function MT_Leave()
   MT_Clear(MT.LEAVE_WHITE)
   MT_Clear(MT.HUD_OFF)          -- the picked mode's field HUD is the game's
   MT_Call(MT.SET, "leaving", "a mode was picked: reset straight into it, the map goes with the old rpg scene")
-  for _ = 1, 300 do
-    if MT_Call(MT.SAVE_WORKING) ~= true then break end
-    coroutine.yield()
-  end
-  local okc, kept, kib, play, players, why = pcall(funcLuaCommand, MT.CARRY, 1)
-  if not okc or kept ~= true then
-    MT_Log("leave: no carry (", tostring(okc and why or kept), "): the map is dropped by a reset to the retail title")
-    MT_Call(MT.SET, "failed", "title_main: no carry for the straight reset (" .. tostring(okc and why or kept) .. ")")
-    MT_Call(MT.NO_PRESS_START, true)
-    MT_Call(MT.GAME_RESET)
-    for _ = 1, MT.STILL_HERE do coroutine.yield() end
-    MT_Log("leave: still here", MT.STILL_HERE, "frames after the reset: the retail hand-over runs (the map stays loaded)")
-    return false
-  end
-  MT_Log("leave: game kept in memory", kib, "KiB, play", play, "s,", players, "players; reset")
-  MT_Call(MT.GAME_RESET)
-  local okd, r = pcall(funcLuaCommand, MT.TB_DIRECT)
-  if okd and r == true then
-    MT_Log("leave: straight reset: the new rpg scene opens the picked mode (no title, no map)")
-  else
-    pcall(funcLuaCommand, MT.CARRY, 0)
-    MT_Log("leave: straight reset refused (", tostring(r), "): the retail title after the reset (the map is gone)")
-    MT_Call(MT.SET, "failed", "title_main: straight reset refused (" .. tostring(r) .. ")")
+  -- the state the title wrote kept; no carry = the reset to the retail title (VRFW_Reset, _all/04_reset.lua)
+  local how = VRFW_Reset.straight({ log = function(text) MT_Log("leave:", text) end })
+  if how ~= "straight" then
+    MT_Call(MT.SET, "failed", "title_main: no straight reset (the retail title after the reset, the map is gone)")
   end
   for _ = 1, MT.STILL_HERE do coroutine.yield() end
   MT_Log("leave: still here", MT.STILL_HERE, "frames after the reset: the retail hand-over runs (the map stays loaded)")

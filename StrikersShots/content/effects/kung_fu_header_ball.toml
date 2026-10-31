@@ -1,0 +1,28 @@
+# «Cabezazo kung-fu» (Kung Fu Header, whs00290; forest shot, cut-in ev60_00290): while the headed ball flies low to
+# the goal after the cut-in it keeps the look of the cut-in's last cut (c0600): the pink glowing sphere round the ball
+# (its red, pink and white shells with their texture flow and the white lightning squiggles) with its two soft pink
+# glows, and the skirt of sandy dust it ploughs up on the pitch under and behind it, instead of the plain forest
+# special-shot aura. The object is ev6029kf00 (effect/event/ev60/ev6029kf00/), built by
+# research/scripts/kung_fu_header_ball_fx.py from the cut-in's effect object ev60002900: c0600 held at frame 283,
+# ball at the origin, +Z along the flight, x1; the sphere is whole from the first frame, the glows face the camera
+# (round from every side), the dust sits on the pitch, comes out of the kick point and fades out softly ~4.7 m behind
+# the ball. Left out: the jump, the kick, the rings and the speed-line backdrop of the earlier cuts. Its flight:
+# content\techniques\kung_fu_header_trajectory.toml (level, low over the pitch at 0.6 m).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "kung_fu_header"
+from = "ega0075d"
+object = "effect/event/ev60/ev6029kf00/ev6029kf00.objbin"
+
+[[shot_aura]]
+name = "kung_fu_header"
+when = { techniques = ["whs00290"] }
+aura = "kung_fu_header"
+like = "ega0075d"
+# the dust comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

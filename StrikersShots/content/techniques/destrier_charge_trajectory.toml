@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Carga al galope (Destrier Charge, whs01910, cut-in ev60_01910): one straight
+# level line from the kick point to the goal, the ball centre at 1.4 m the whole way (the cut-in's ball rises 0.5 ->
+# 1.4 m; the ray cone round the ball's way clears the grass). Heights are the ball centre over the pitch (m); the height
+# is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Carga al galope (whs01910).
+[[edit]]
+target = "whs01910"
+trajectory = { points = [[0.0, 1.4]], straight = true, unblockable = false }

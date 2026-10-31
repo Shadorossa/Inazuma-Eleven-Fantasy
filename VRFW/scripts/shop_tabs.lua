@@ -28,6 +28,7 @@ local MARK = 0x56540000
 local BY_KEY = {}  -- shop key -> rule (declared by key, bound to an id by the menu)
 local BY_ID = {}   -- shop id -> rule { split, tabs = { { subs = set, icon, text, key } … }, sub_tab = sub -> tab index }
 local LIVE = false
+local SPLIT_SLOTS = {}  -- slot type of every split game tab: the other tabs' rows leave the row test at once
 local hits = 0
 
 local Id = require "lib/ids"
@@ -75,7 +76,7 @@ end
 -- the builder's row test: r9d = the slot type of the tab being built
 local function row_test(ev)
   local slot = u32(ev.regs.r9)
-  if slot == 0 then return nil end
+  if slot == 0 or not (SPLIT_SLOTS[slot] or (slot > MARK and slot <= MARK + TABS_MAX)) then return nil end
   local view = ev.regs.r13
   local shop = rd("u32", view and view + VIEW_SHOP)
   local rule = shop and BY_ID[shop]
@@ -144,6 +145,7 @@ local function start()
     else
       local id = s:match("^%s*0[xX]%x+%s*$") and D.id_of(s) or nil
       if id then BY_ID[id] = r else BY_KEY[s] = r end
+      SPLIT_SLOTS[u32(r.split)] = true
       n = n + 1
     end
   end

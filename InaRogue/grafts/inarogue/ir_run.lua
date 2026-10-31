@@ -281,10 +281,10 @@ end
 -- the map, and the match it may reserve (result 3): the launch happens here, one level above the map
 function IRM_OpenMap()
   while true do
-    funcLuaCommand(C.P_CLEAR, KEY_MAP_RESULT)
-    OpenChild(MAP_MENU, T(TXT.NO_MAP), function() return Int(Call(P_GET, KEY_MAP_RESULT)) == 4 end)
-    local r = Int(Call(P_GET, KEY_MAP_RESULT))
-    funcLuaCommand(C.P_CLEAR, KEY_MAP_RESULT)
+    VRFW_Param.Clear(KEY_MAP_RESULT)
+    OpenChild(MAP_MENU, T(TXT.NO_MAP), function() return Int(VRFW_Param.Get(KEY_MAP_RESULT)) == 4 end)
+    local r = Int(VRFW_Param.Get(KEY_MAP_RESULT))
+    VRFW_Param.Clear(KEY_MAP_RESULT)
     if r == 3 then
       IRM_LaunchMatch()
       return
@@ -308,9 +308,9 @@ function IRM_VsPreview()
     return "map"
   end
   for _, k in ipairs({VS.KEY, VS.KEY_RESULT}) do
-    funcLuaCommand(C.P_CLEAR, k)
+    VRFW_Param.Clear(k)
   end
-  funcLuaCommand(C.P_SET, VS.KEY, 0, node + 1, 1)
+  VRFW_Param.Set(VS.KEY, node + 1)
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
   ShowOwnLayers(false)
   funcLuaCommand(C.OPEN_MENU, VS.ENEMY_MENU)
@@ -325,9 +325,9 @@ function IRM_VsPreview()
   if funcLuaMenuCommand(C.EXIST_MENU, VS.ENEMY_MENU) then
     funcLuaCommand(C.CLOSE_MENU, VS.ENEMY_MENU)
   end
-  local go = shown and Int(Call(P_GET, VS.KEY_RESULT)) == 1
+  local go = shown and Int(VRFW_Param.Get(VS.KEY_RESULT)) == 1
   for _, k in ipairs({VS.KEY, VS.KEY_RESULT}) do
-    funcLuaCommand(C.P_CLEAR, k)
+    VRFW_Param.Clear(k)
   end
   RestoreOwnLayers()
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
@@ -356,9 +356,8 @@ function IRM_VsPreview()
   DK.Open(DK.R_PLAY)          -- the dock opens black and starts the match (rogue_dock); see DK.R_PLAY
 end
 
--- CMND_RESERVE_SOCCER for the match the run file holds (stage 3): the retail VS CPU sequence (roguelite-mode.md
--- §1.2). The result flags are zeroed first; the evt_rl_* trigger writes them during the match. This menu closes with
--- result 8 and the title keeps it closed while the engine starts the match (inarogue_title: EVT_IR_AfterMenu).
+-- The match the run file holds (stage 3) is launched by the pre-match team dock (its friendly inarogue_5v5 /
+-- inarogue_11v11 reserves it; the evt_rl_* trigger writes the result flags during the match).
 -- the rival of a random-team node (InaRogue's pool slot rows): its roster, name, crest and kit are written into the slot
 -- team right before the match (VR-Framework random team service, docs/framework/random-team.md §4). Nothing to do for
 -- any other rival; never at chunk load.
@@ -383,32 +382,16 @@ function IRM_LaunchMatch(from_dock)
     return
   end
   rival = type(rival) == "string" and rival or "?"
-  -- slot 4 (§20 M3): the retail "Plantilla de equipo" is the pre-match screen and launches the match itself (its Back
-  -- asks «¿Jugar ya?»): the engine only starts a reserved match when the mode's top menu closes, and the dock is the
-  -- top menu the title reserved; this menu is only a child of title_menu_2 (the 28/09 log: "match did not start")
-  if SL.rogue then
-    Log("match", Int(node), "game", game, "rival", rival, "level", Int(level), "-> the pre-match team dock")
-    DK.Open(DK.R_MATCH)
+  -- the retail "Plantilla de equipo" is the pre-match screen and launches the match itself (its Back asks «¿Jugar
+  -- ya?»; §20 M3). The engine starts a reserved match only when the scene's top menu closes: the dock is that menu (its
+  -- own scene root, DK.Open)
+  if not SL.rogue then
+    Log("launch refused: the INAROGUE save is not the loaded game")
+    Message(T(TXT.MATCH_FAIL))
     return
   end
-  for _, f in ipairs({MT.F_RESULT, MT.F_GF, MT.F_GA, MT.F_PROBE}) do
-    Call(MT.SET_BYTE, f, 0)
-  end
-  Call(MT.SET_BYTE, MT.F_STATE, 2)
-  Log("launch match: node", Int(node), "game", game, "diff", Int(diff), "stadium", tostring(stadium), "level", Int(level), "rival", rival)
-  if not SL.rogue then
-    Message(T(TXT.MATCH_GO, rival, Int(level)))
-  end
-  Call(RL_LAUNCH, 1)
-  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
-  if BrightFadeAllMenu ~= nil then
-    pcall(BrightFadeAllMenu, 2721617045 --[[fade_menu_encount]], true)
-  end
-  Call(MT.PRE_MATCH, game)
-  Call(MT.DIFF_HELPER, Int(diff))
-  local r = Call(MT.RESERVE, game, Int(stadium), Int(diff))
-  Log("RESERVE_SOCCER returned", tostring(r), "- closing INAROGUE (result 8)")
-  Close(8)
+  Log("match", Int(node), "game", game, "rival", rival, "level", Int(level), "-> the pre-match team dock")
+  DK.Open(DK.R_MATCH)
 end
 
 -- §20 M4: a loot roll of the loader -> the INAROGUE save. Gear / moves are game items (retail add + the retail «item

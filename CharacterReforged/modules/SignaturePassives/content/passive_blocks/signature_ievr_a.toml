@@ -362,21 +362,17 @@ name = "ievr_a_when_foul_suffered_by_self"
 on = "foul_suffered"
 by = "self"
 
-[[VRFW.Trait]]
-name = "ievr_a_trait_inazumapower"
-families = ["HissatsuReforged.InazumaPower"]
+[[VRFW.Score]]
+name = "ievr_a_score_trailing"
+states = ["trailing"]
 
-[[VRFW.Count]]
-name = "ievr_a_count_inazumapower_team_max3"
-trait = "ievr_a_trait_inazumapower"
-side = "team"
-max = 3
-others = true
+[[VRFW.Move]]
+name = "ievr_a_move_whk00680_whk00700"
+moves = ["whk00680", "whk00700"]
 
 [[VRFW.TechniquePower]]
-name = "ievr_a_techniquepower_self_punch_4"
-value = 4
-kinds = ["punch"]
+name = "ievr_a_techniquepower_self_12"
+value = 12
 target = "self"
 mode = "percent"
 
@@ -429,9 +425,15 @@ side = "opponents"
 max = 3
 others = true
 
-[[VRFW.MoveFamily]]
-name = "ievr_a_family_eventhorizon"
-families = ["HissatsuReforged.EventHorizon"]
+[[VRFW.Move]]
+name = "ievr_a_move_whs02020"
+moves = ["whs02020"]
+
+[[VRFW.TechniquePower]]
+name = "ievr_a_techniquepower_self_5"
+value = 5
+target = "self"
+mode = "percent"
 
 [[VRFW.KeeperShotPower]]
 name = "ievr_a_keepershotpower_self_minus8"
@@ -865,6 +867,13 @@ max = 3
 others = true
 
 [[VRFW.TechniquePower]]
+name = "ievr_a_techniquepower_self_punch_4"
+value = 4
+kinds = ["punch"]
+target = "self"
+mode = "percent"
+
+[[VRFW.TechniquePower]]
 name = "ievr_a_techniquepower_self_catch_3"
 value = 3
 kinds = ["catch"]
@@ -950,9 +959,18 @@ side = "team"
 max = 3
 others = true
 
-[[VRFW.MoveFamily]]
-name = "ievr_a_family_legendaryweapons"
-families = ["HissatsuReforged.LegendaryWeapons"]
+[[VRFW.SetPiece]]
+name = "ievr_a_own_set_piece"
+
+[[VRFW.Move]]
+name = "ievr_a_move_whs02220"
+moves = ["whs02220"]
+
+[[VRFW.TechniquePower]]
+name = "ievr_a_techniquepower_self_15"
+value = 15
+target = "self"
+mode = "percent"
 
 [[VRFW.Count]]
 name = "ievr_a_count_fire_team_max4"
@@ -972,20 +990,23 @@ target = "self"
 name = "ievr_a_by_nagumohara"
 trait = "ievr_a_trait_nagumohara"
 
-[[VRFW.Trait]]
-name = "ievr_a_trait_northernice"
-families = ["HissatsuReforged.NorthernIce"]
+[[VRFW.Move]]
+name = "ievr_a_move_whk10010_whk00790"
+moves = ["whk10010", "whk00790"]
 
-[[VRFW.Count]]
-name = "ievr_a_count_northernice_team_max3"
-trait = "ievr_a_trait_northernice"
-side = "team"
-max = 3
-others = true
+[[VRFW.TechniquePower]]
+name = "ievr_a_techniquepower_self_10"
+value = 10
+target = "self"
+mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ievr_a_family_inazumapower"
-families = ["HissatsuReforged.InazumaPower"]
+[[VRFW.Half]]
+name = "ievr_a_half_1"
+halves = [1]
+
+[[VRFW.Move]]
+name = "ievr_a_move_whs10130"
+moves = ["whs10130"]
 
 [[VRFW.Trigger]]
 name = "ievr_a_when_technique_result_won_by_self"
@@ -1067,12 +1088,12 @@ side = "opponents"
 others = false
 
 [[VRFW.Trait]]
-name = "ievr_a_trait_majingiant"
-families = ["HissatsuReforged.MajinGiant"]
+name = "ievr_a_trait_triangle"
+families = ["HissatsuReforged.Triangle"]
 
 [[VRFW.Count]]
-name = "ievr_a_count_majingiant_team_max3"
-trait = "ievr_a_trait_majingiant"
+name = "ievr_a_count_triangle_team_max3"
+trait = "ievr_a_trait_triangle"
 side = "team"
 max = 3
 others = true
@@ -1099,16 +1120,27 @@ target = "team"
 trait = "ievr_a_trait_mountain"
 mode = "percent"
 
-[[VRFW.Score]]
-name = "ievr_a_score_trailing"
-states = ["trailing"]
-
 [[VRFW.TechniquePower]]
 name = "ievr_a_techniquepower_self_shoot_10"
 value = 10
 kinds = ["shoot"]
 target = "self"
 mode = "percent"
+
+[[VRFW.Trait]]
+name = "ievr_a_trait_dancer"
+tags = ["dancer"]
+
+[[VRFW.Count]]
+name = "ievr_a_count_dancer_team_max3"
+trait = "ievr_a_trait_dancer"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.Move]]
+name = "ievr_a_move_who00750"
+moves = ["who00750"]
 
 [[VRFW.By]]
 name = "ievr_a_by_wall"
@@ -1161,6 +1193,10 @@ value = 6
 kinds = ["dribble"]
 target = "self"
 mode = "percent"
+
+[[VRFW.MoveFamily]]
+name = "ievr_a_family_twinboost"
+families = ["HissatsuReforged.TwinBoost"]
 
 [[VRFW.Count]]
 name = "ievr_a_count_wall_team_max4"
@@ -1221,10 +1257,6 @@ trait = "ievr_a_trait_trickster"
 name = "ievr_a_family_godhand"
 families = ["HissatsuReforged.GodHand"]
 
-[[VRFW.MoveFamily]]
-name = "ievr_a_family_divinepower"
-families = ["HissatsuReforged.DivinePower"]
-
 [[VRFW.Trait]]
 name = "ievr_a_trait_mountain_fw"
 elements = ["mountain"]
@@ -1247,20 +1279,25 @@ trait = "ievr_a_trait_noble_brain"
 side = "team"
 others = false
 
-[[VRFW.Trait]]
-name = "ievr_a_trait_divinepower"
-families = ["HissatsuReforged.DivinePower"]
+[[VRFW.Move]]
+name = "ievr_a_move_whs01010"
+moves = ["whs01010"]
 
-[[VRFW.By]]
-name = "ievr_a_by_divinepower"
-trait = "ievr_a_trait_divinepower"
-
-[[VRFW.Stat]]
-name = "ievr_a_stat_self_technique_4"
-value = 4
+[[VRFW.TechniquePower]]
+name = "ievr_a_techniquepower_team_12"
+value = 12
+target = "team"
 mode = "percent"
-stats = ["technique"]
-target = "self"
+
+[[VRFW.Holder]]
+name = "ievr_a_holder_acrobat_opponents"
+trait = "ievr_a_trait_acrobat"
+side = "opponents"
+others = false
+
+[[VRFW.Move]]
+name = "ievr_a_move_whd00980"
+moves = ["whd00980"]
 
 [[VRFW.TechniquePower]]
 name = "ievr_a_techniquepower_self_shoot_6"
@@ -1291,9 +1328,22 @@ kinds = ["long_shoot"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ievr_a_family_greatwalls"
-families = ["HissatsuReforged.GreatWalls"]
+[[VRFW.Count]]
+name = "ievr_a_count_wall_team_max5"
+trait = "ievr_a_trait_wall"
+side = "team"
+max = 5
+others = true
+
+[[VRFW.Move]]
+name = "ievr_a_move_whk00230"
+moves = ["whk00230"]
+
+[[VRFW.TechniquePower]]
+name = "ievr_a_techniquepower_self_3"
+value = 3
+target = "self"
+mode = "percent"
 
 [[VRFW.Trait]]
 name = "ievr_a_trait_noble_captain"
@@ -1305,6 +1355,10 @@ trait = "ievr_a_trait_noble_captain"
 side = "team"
 min = 1
 others = true
+
+[[VRFW.Move]]
+name = "ievr_a_move_who00640_whs00310"
+moves = ["who00640", "whs00310"]
 
 [[VRFW.Trait]]
 name = "ievr_a_trait_mountain_df_own_team"
@@ -1333,15 +1387,9 @@ mode = "percent"
 stats = ["kick"]
 target = "self"
 
-[[VRFW.Trait]]
-name = "ievr_a_trait_eventhorizon"
-families = ["HissatsuReforged.EventHorizon"]
-
-[[VRFW.TensionCost]]
-name = "ievr_a_tensioncost_team_minus5_eventhorizon"
-percent = -5
-target = "team"
-trait = "ievr_a_trait_eventhorizon"
+[[VRFW.Move]]
+name = "ievr_a_move_who00850"
+moves = ["who00850"]
 
 [[VRFW.Trait]]
 name = "ievr_a_trait_own_group"
@@ -1375,6 +1423,10 @@ side = "team"
 max = 4
 others = true
 
+[[VRFW.MoveFamily]]
+name = "ievr_a_family_multiple"
+families = ["HissatsuReforged.Multiple"]
+
 [[VRFW.Count]]
 name = "ievr_a_count_trickster_any_max4"
 trait = "ievr_a_trait_trickster"
@@ -1388,19 +1440,37 @@ on = "block_won"
 by = "self"
 
 [[VRFW.Trait]]
-name = "ievr_a_trait_legendaryweapons"
-families = ["HissatsuReforged.LegendaryWeapons"]
+name = "ievr_a_trait_rookie"
+tags = ["rookie"]
 
 [[VRFW.Count]]
-name = "ievr_a_count_legendaryweapons_team_max3"
-trait = "ievr_a_trait_legendaryweapons"
+name = "ievr_a_count_rookie_team_max3"
+trait = "ievr_a_trait_rookie"
 side = "team"
 max = 3
 others = true
 
-[[VRFW.By]]
-name = "ievr_a_by_legendaryweapons"
-trait = "ievr_a_trait_legendaryweapons"
+[[VRFW.Move]]
+name = "ievr_a_move_who01030"
+moves = ["who01030"]
+
+[[VRFW.Trigger]]
+name = "ievr_a_when_duel_won_by_self"
+on = "duel_won"
+by = "self"
+
+[[VRFW.Stat]]
+name = "ievr_a_stat_self_intelligence_4"
+value = 4
+mode = "percent"
+stats = ["intelligence"]
+target = "self"
+
+[[VRFW.RecastTime]]
+name = "ievr_a_recasttime_self_dribble_minus10"
+percent = -10
+kinds = ["dribble"]
+target = "self"
 
 [[VRFW.Holder]]
 name = "ievr_a_holder_wind_team"
@@ -1415,12 +1485,9 @@ percent = -6
 target = "self"
 shooter_trait = "ievr_a_trait_trickster"
 
-[[VRFW.Count]]
-name = "ievr_a_count_eventhorizon_team_max3"
-trait = "ievr_a_trait_eventhorizon"
-side = "team"
-max = 3
-others = true
+[[VRFW.Move]]
+name = "ievr_a_move_whk00430"
+moves = ["whk00430"]
 
 [[VRFW.Trait]]
 name = "ievr_a_trait_back_alley_kickers"
@@ -1480,6 +1547,34 @@ kinds = ["catch"]
 target = "self"
 mode = "percent"
 
+[[VRFW.Stat]]
+name = "ievr_a_stat_self_technique_4"
+value = 4
+mode = "percent"
+stats = ["technique"]
+target = "self"
+
+[[VRFW.Trait]]
+name = "ievr_a_trait_rebel"
+tags = ["rebel"]
+
+[[VRFW.KeeperShotPower]]
+name = "ievr_a_keepershotpower_self_minus8_2"
+side = "keeper"
+percent = -8
+target = "self"
+shooter_trait = "ievr_a_trait_rebel"
+
+[[VRFW.Move]]
+name = "ievr_a_move_whs00740"
+moves = ["whs00740"]
+
+[[VRFW.TechniquePower]]
+name = "ievr_a_techniquepower_team_10"
+value = 10
+target = "team"
+mode = "percent"
+
 [[VRFW.By]]
 name = "ievr_a_by_beast"
 trait = "ievr_a_trait_beast"
@@ -1505,9 +1600,15 @@ mode = "percent"
 stats = ["physical"]
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "ievr_a_family_pegasus"
-families = ["HissatsuReforged.Pegasus"]
+[[VRFW.Holder]]
+name = "ievr_a_holder_trickster_team"
+trait = "ievr_a_trait_trickster"
+side = "team"
+others = false
+
+[[VRFW.Move]]
+name = "ievr_a_move_whs01200"
+moves = ["whs01200"]
 
 [[VRFW.Trait]]
 name = "ievr_a_trait_ai_academy"
@@ -1539,6 +1640,16 @@ target = "team"
 trait = "ievr_a_trait_ai_academy"
 mode = "percent"
 
+[[VRFW.Trait]]
+name = "ievr_a_trait_multiple"
+families = ["HissatsuReforged.Multiple"]
+
+[[VRFW.TensionCost]]
+name = "ievr_a_tensioncost_team_minus5_multiple"
+percent = -5
+target = "team"
+trait = "ievr_a_trait_multiple"
+
 [[VRFW.TechniquePower]]
 name = "ievr_a_techniquepower_opponents_dribble_minus2"
 value = -2
@@ -1559,9 +1670,9 @@ trait = "ievr_a_trait_trickster"
 side = "opponents"
 others = false
 
-[[VRFW.By]]
-name = "ievr_a_by_majingiant"
-trait = "ievr_a_trait_majingiant"
+[[VRFW.Move]]
+name = "ievr_a_move_who00650"
+moves = ["who00650"]
 
 [[VRFW.Count]]
 name = "ievr_a_count_trickster_team_max4"
@@ -1590,9 +1701,13 @@ kinds = ["long_shoot"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ievr_a_family_earthshaker"
-families = ["HissatsuReforged.Earthshaker"]
+[[VRFW.Score]]
+name = "ievr_a_score_level"
+states = ["level"]
+
+[[VRFW.Move]]
+name = "ievr_a_move_whs00750"
+moves = ["whs00750"]
 
 [[VRFW.Trait]]
 name = "ievr_a_trait_lawcrest"
@@ -1636,6 +1751,31 @@ trait = "ievr_a_trait_mystic"
 side = "team"
 others = false
 
+[[VRFW.Count]]
+name = "ievr_a_count_beast_opponents_max3"
+trait = "ievr_a_trait_beast"
+side = "opponents"
+max = 3
+others = true
+
+[[VRFW.Move]]
+name = "ievr_a_move_who00550"
+moves = ["who00550"]
+
+[[VRFW.Trait]]
+name = "ievr_a_trait_noble"
+tags = ["noble"]
+
+[[VRFW.Holder]]
+name = "ievr_a_holder_noble_team"
+trait = "ievr_a_trait_noble"
+side = "team"
+others = false
+
+[[VRFW.Move]]
+name = "ievr_a_move_whd00910"
+moves = ["whd00910"]
+
 [[VRFW.Stat]]
 name = "ievr_a_stat_self_agility_4"
 value = 4
@@ -1667,40 +1807,57 @@ others = true
 name = "ievr_a_by_brain"
 trait = "ievr_a_trait_brain"
 
+[[VRFW.Move]]
+name = "ievr_a_move_whd00890"
+moves = ["whd00890"]
+
 [[VRFW.Holder]]
 name = "ievr_a_holder_forest_team"
 trait = "ievr_a_trait_forest"
 side = "team"
 others = false
 
-[[VRFW.Trait]]
-name = "ievr_a_trait_greatwalls"
-families = ["HissatsuReforged.GreatWalls"]
-
-[[VRFW.Count]]
-name = "ievr_a_count_greatwalls_team_max3"
-trait = "ievr_a_trait_greatwalls"
-side = "team"
-max = 3
-others = true
+[[VRFW.TensionGain]]
+name = "ievr_a_tensiongain_team_3"
+percent = 3
+target = "team"
 
 [[VRFW.Trait]]
-name = "ievr_a_trait_rookie"
-tags = ["rookie"]
+name = "ievr_a_trait_female"
+gender = "female"
 
-[[VRFW.Count]]
-name = "ievr_a_count_rookie_team_max3"
-trait = "ievr_a_trait_rookie"
+[[VRFW.Present]]
+name = "ievr_a_present_female_team"
+trait = "ievr_a_trait_female"
 side = "team"
-max = 3
+min = 1
 others = true
 
-[[VRFW.TechniquePower]]
-name = "ievr_a_techniquepower_opponents_shoot_minus2"
-value = -2
-kinds = ["shoot"]
+[[VRFW.Move]]
+name = "ievr_a_move_whd00010_whd00910"
+moves = ["whd00010", "whd00910"]
+
+[[VRFW.Zone]]
+name = "ievr_a_zone_own_half"
+z = [-200.0, 0.0]
+frame = "team"
+
+[[VRFW.Move]]
+name = "ievr_a_move_whd00530"
+moves = ["whd00530"]
+
+[[VRFW.Move]]
+name = "ievr_a_move_whk00460_whk00890"
+moves = ["whk00460", "whk00890"]
+
+[[VRFW.Move]]
+name = "ievr_a_move_whd01000"
+moves = ["whd01000"]
+
+[[VRFW.MoveSpeed]]
+name = "ievr_a_movespeed_opponents_minus3"
+percent = -3
 target = "opponents"
-mode = "percent"
 
 [[VRFW.Holder]]
 name = "ievr_a_holder_brain_opponents"

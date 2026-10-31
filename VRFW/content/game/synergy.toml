@@ -47,3 +47,10 @@ handler = "Synergy.CmdPanel"
 [[VRFW.Command]]
 name = "CMND_VRFW_SYNERGY_SHOP_CONDITIONS"   # () -> bool
 handler = "Synergy.ShopConditions"
+
+# Used by the synergy rows (lua\synergy\_all\30_synergy_rows.lua): the menu measured the row places of a panel layout
+# (2 or 3 rows) of its menu (the row builder's menu id); from then on that menu's rows the menu draws itself are written as
+# 0 to the game's row builder, and every panel hands the kept row places back (a menu opened again has none of its own).
+[[VRFW.Command]]
+name = "CMND_VRFW_SYNERGY_LAYOUT_KNOWN"   # (layout, menu id, places "dx,dy,scale;...") -> true
+handler = "Synergy.CmdLayoutKnown"

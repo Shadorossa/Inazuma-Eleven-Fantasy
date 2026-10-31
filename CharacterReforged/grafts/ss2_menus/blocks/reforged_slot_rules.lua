@@ -67,9 +67,9 @@ function EVT_PickCoroutine(row)
   local slot = PL.CrSlotOf(row)
   P_Set(PL.CR_KEY_BOARD, slot == 7 and EVT_HIPER_SLOT or ((slot >= 1 and slot <= 6) and EVT_ListPos(slot) or -1))
   local ok, err = pcall(PL.CrPrevPick, row)
-  funcLuaCommand(C.P_CLEAR, PL.CR_KEY_SLOT)
-  funcLuaCommand(C.P_CLEAR, PL.CR_KEY_CHARA)
-  funcLuaCommand(C.P_CLEAR, PL.CR_KEY_BOARD)
+  VRFW_Param.Clear(PL.CR_KEY_SLOT)
+  VRFW_Param.Clear(PL.CR_KEY_CHARA)
+  VRFW_Param.Clear(PL.CR_KEY_BOARD)
   if not ok then
     error(err, 0)
   end

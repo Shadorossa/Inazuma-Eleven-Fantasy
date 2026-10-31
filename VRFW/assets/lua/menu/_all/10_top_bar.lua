@@ -136,8 +136,6 @@ if VRFW_TopBar == nil then
     TB_TITLE = {VRFW_Cmd.VRFW_MENU_TOPBAR_TITLE, VRFW_Cmd.VRFW_MENU_TOPBAR_TITLE},
     AUTO_SAVE = VRFW_Cmd.SYSTEM_AUTO_SAVE, FADE = 609722083, FADE_DONE = 2259183189, BUSY = 2736534827,
     GAME_RESET = VRFW_Cmd.GAME_RESET,
-    BGM_STOP = VRFW_Cmd.BGM_STOP, TITLE_MODE = 3718253404 --[[the title's mode value (OnEnter)]],
-    TB_DIRECT = VRFW_Cmd.VRFW_MENU_TOPBAR_DIRECT,
     CARRY = VRFW_Cmd.VRFW_SLOT_CARRY,
   }
   C.NAV = {C.UP, C.DOWN, C.LEFT, C.RIGHT}
@@ -1014,35 +1012,10 @@ if VRFW_TopBar == nil then
     funcLuaCommand(C.FADE, 1, 0.3)
     while not funcLuaCommand(C.FADE_DONE) do coroutine.yield() end
     while funcLuaCommand(C.BUSY) do coroutine.yield() end
-    funcLuaCommand(C.BGM_STOP, 2)
-    funcLuaMenuCommand(3479138216, d.vs and 0 or d.menu)
-    funcLuaCommand(937976662, true)
-    funcLuaCommand(419468738, d.vs)
-    funcLuaCommand(1507811093, d.vs)
-    funcLuaCommand(C.TITLE_MODE, d.mode)
-    -- the auto-save's job done first (the carry refuses while a save / load job is pending); 5 s at most
-    for _ = 1, 300 do
-      if funcLuaCommand(C.SAVE_WORKING) ~= true then break end
-      coroutine.yield()
-    end
-    -- the game kept in memory across the reset (the save engine's carry); refused = no straight start
-    local okc, kept, kib, play, players, why = pcall(funcLuaCommand, C.CARRY, 1)
-    if okc and kept == true then
-      Log("direct: load requested: slot kept in memory", kib, "KiB, play", play, "s,", players, "players")
-    else
-      Log("direct: no carry (", tostring(okc and why or kept), "): the title round trip")
-    end
-    local straight = false
     Log("reset straight into", d.vs and "the VS menu" or tostring(d.menu), "title mode", d.mode)
-    funcLuaCommand(C.GAME_RESET)
-    if okc and kept == true then
-      local okd, r = pcall(funcLuaCommand, C.TB_DIRECT)
-      straight = okd and r == true
-      if not straight then
-        pcall(funcLuaCommand, C.CARRY, 0)
-        Log("direct refused (", tostring(r), "): the title round trip")
-      end
-    end
+    -- the auto-save's job done, the game kept in memory, the next state, the reset (VRFW_Reset, 04_reset.lua)
+    local straight = VRFW_Reset.straight({ menu = d.menu, vs = d.vs, title_mode = d.mode, bgm_stop = true,
+      log = function(text) Log("direct:", text) end }) == "straight"
     if straight then
       P(K.DIRECT, CRC32(e.key))
       Log("direct: no title, the next state opens", tostring(e.key), "(InitState loads the kept slot first)")

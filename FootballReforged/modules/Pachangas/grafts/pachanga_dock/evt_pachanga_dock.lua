@@ -5,9 +5,9 @@
 --   The selector switches IN PLACE (v3): the pitch layers are closed and built again for the other kind; the dock never
 --   closes (a closed standalone dock lets the field under it start). Going back to 11v11 needs the loader
 --   (CMND_EVT_PACHANGA_UPVAL: two INCLUDE locals have no setter).
--- * Active teams: «Partido» = the retail VS team (vsUseTeamSet); «Pachanga» = loader team_banks
---   (CMND_EVT_PACHANGA_*, evt_loader\pachanga_slot<N>.json, one per bank). «Establecer como equipo activo» sets the one of
---   the type on screen; the dock number check mark, the header mark and the selector's help line show them.
+-- * Active teams: «Partido» = the retail VS team (vsUseTeamSet); «Pachanga» = always its pair, the 5v5 team of the same
+--   dock (CMND_EVT_PACHANGA_INFO answers it). «Establecer como equipo activo» in either type sets the VS team, so both
+--   follow; the dock number check mark, the header mark and the selector's help line show them.
 -- * Only in the standalone dock (opened from the title) outside INAROGUE / story / Crónica; elsewhere the row is grey.
 -- * The first rows are the format rows, one per enabled format of EVT_PT_KINDS (the one declaration of the formats):
 --   «11v11», «5v5». Up / down move between them as in any list, right leaves the list as the retail list does, Accept
@@ -17,9 +17,12 @@
 --   «Partido» | «Pachanga» (PT.layoutCols, doc §18).
 -- * 2026-09-30 (doc §9): the two templates of a dock share name, emblem, kit, supertácticas, coach and managers
 --   (PT.link); leaving the dock puts the Partido team of the visit back in vsUseTeamSet (PT.leave).
+-- * Pachangas 1.14.0 (doc §20): the 5v5 team of dock N holds exactly the players of its 11v11 team; its five is filled
+--   from them and rearranged among them only (PT.mirror -> CMND_PACHANGAS_MIRROR, from PT.link).
 -- Uses the file locals t, t2, n, n4, n5, n10, n11, flag3, flag4 (graft.toml expect). Wraps once per definition (EVT_PT_WRAPPED).
 -- Nothing calls funcLuaCommand / funcLuaMenuCommand at chunk load.
 @BONUS5@
+--@lib evt_menu_kit.lua#Pointer
 do
   if EVT_PACHANGA == nil then
     EVT_PACHANGA = true              -- false: retail list (with «Equipar todo») and no selector
@@ -29,7 +32,6 @@ do
   end
   local PT = {
     INFO = @crc:CMND_EVT_PACHANGA_INFO@,       -- -> ok, active dock (-1), 5v5 members, bank (1-based), slot
-    SET = @crc:CMND_EVT_PACHANGA_SET@,         -- (dock | -1) -> ok, code
     VS = @crc:CMND_EVT_PACHANGA_VS@,           -- (op 0 take / 1 remember / 2 peek, vs) -> ok, vs
     FLAGS = @crc:CMND_EVT_PACHANGA_FLAGS@,     -- -> dock bits put back
     VERSION = @crc:CMND_EVT_LOADER_VERSION@,            -- CMND_EVT_LOADER_VERSION -> api, module mask
@@ -41,8 +43,7 @@ do
     KEY_MODE = @crc:evt_pachanga_mode@,        -- type the next dock opens with (value + 1)
     KEY_DOCK = @crc:evt_pachanga_dock@,        -- dock the next dock opens on
     UPVAL = @crc:CMND_EVT_PACHANGA_UPVAL@,     -- (fn, expect, value, ...) -> upvalues changed (-1 = not available)
-    INIT = @crc:CMND_EVT_PACHANGA_INIT@,       -- (dock) -> 5v5 members removed (the template is emptied)
-    SPLIT = @crc:CMND_EVT_PACHANGA_SPLIT@,     -- (dock) -> players removed: a 5v5 team that is the 11v11 auto-copy
+    MIRROR = @crc:CMND_PACHANGAS_MIRROR@,      -- (dock, 5v5 formation) -> changes, removed, added: the 5v5 team = the 11v11 players
     FORM_BOX = 3286546665,           -- team00_12_formation_style: the FORMACIÓN box (formation picker)
     KEY_PF = {@crc:evt_pf_menu@, @crc:evt_pf_group@},   -- formation screen VMs: 5v5 mode for dock (pachanga_formation)
     KEY_PF11 = {@crc:evt_pf11_menu@, @crc:evt_pf11_group@},   -- same VMs: 11v11 mode for dock (Partido, 2026-09-30)
@@ -60,6 +61,7 @@ do
     -- a 5v5 team's formation when it has none of the 5v5 formations (VRFW_Formation): the story's first one
     FORM5_DEFAULT = 712431653,
     VALID = 1538643580,              -- (set, team, false) -> 0 = the team can play (retail member check)
+    CAN_ACTIVE = 1104634465,         -- (set, team) -> the retail «can be the active team» rule
     GET_VS = @crc:CMND_GET_VS_USE_TEAM_SET@, SET_VS = @crc:CMND_SET_VS_USE_TEAM_SET@,
     ROW = 13, EQUIP_ALL = 10,        -- list item kinds (t): the first format row (format col c = ROW + c - 1), retail «Equipar todo»
     LIST = 3367997069,               -- team01_02_list_item
@@ -73,7 +75,7 @@ do
     T = {
       MATCH = @crc:evt_pt_row_match@, PACHANGA = @crc:evt_pt_row_pachanga@, HELP = @crc:evt_pt_row_help@,
       LINE = @crc:evt_pt_active_line@, NONE = @crc:evt_pt_none@, NOW = @crc:evt_pt_now_active@,
-      NEED5 = @crc:evt_pt_need_five@, ONLY_TITLE = @crc:evt_pt_only_title@, NO_LOADER = @crc:evt_pt_no_loader@,
+      NEED5 = @crc:evt_pt_need_five@, NEED_MATCH = @crc:evt_pt_need_match@, POOL_ONLY = @crc:evt_pt_pool_only@, ONLY_TITLE = @crc:evt_pt_only_title@, NO_LOADER = @crc:evt_pt_no_loader@,
       HEADER = @crc:evt_pt_header@,
       KIND_11 = @crc:evt_pt_kind_11@, KIND_7 = @crc:evt_pt_kind_7@, KIND_5 = @crc:evt_pt_kind_5@,
       KIND_3 = @crc:evt_pt_kind_3@, KIND_LOCKED = @crc:evt_pt_kind_locked@,
@@ -153,7 +155,7 @@ do
     return type(s) == "number" and s >= 2 and s <= 12
   end
 
-  -- loader module team_banks present -> PT.loader, PT.active (the active pachanga dock of the mounted bank, -1 none)
+  -- Pachangas' script present -> PT.loader, PT.active (the active pachanga dock = the VS dock's pair, -1 none)
   function PT.refresh()
     PT.loader, PT.active, PT.bank = false, -1, 1
     local ok, api, mods = pcall(funcLuaCommand, PT.VERSION)
@@ -442,22 +444,29 @@ do
   -- ================================================================================================================
   -- The format columns (docs/game/ui/pachanga-templates.md §18): when the list starts with exactly two format rows,
   -- they share the list's first row as two cells side by side, «Partido» left and «Pachanga» right, and the rows under
-  -- them move up one row. Only node transforms of this menu's layer instances: the list's slot locators
-  -- (team01_01_list_item_locator: list instance i hangs from _atc_list<i + 1>) and the two cells' plates. The cells
-  -- stay the list's instances 0 and 1, so focus, cursor, decide and the refusals are the list's own.
+  -- them move up one row. Only node transforms of this menu's layer instances: the list's slot joints
+  -- (team01_01_list_item_locator: list instance i hangs from _atc_pachangas_slot<i + 1>, a child of _atc_list<i + 1>
+  -- that no animation drives; Pachangas' content\menus\pachanga_dock.toml adds them, because the locator's «Open»
+  -- animation keys every _atc_listNN each frame and a write on those never shows) and the two cells' plates and pointer
+  -- zones. The cells stay the list's instances 0 and 1, so focus, cursor, decide and the refusals are the list's own.
   -- Keys: left / right between the cells (left is a function row of Pachangas' content\menus\pachanga_dock.toml; right
   -- on the right cell is the retail move to the pitch); down from a cell = the next row; up from the next row = the cell
   -- the focus last had (first: the left one); up from a cell = nothing.
-  -- Geometry in list-row units (team01_02 layout): plate x -97..471, 72 tall (its 392 x 72 sprite drawn 568 wide),
-  -- text left-aligned at x 47, cursor x -19..45, a focused row slides 30 to the right (_mt_list_in_01); rows 66 apart.
-  -- The cells' plates are their own sprites (Pachangas content\images\menu\102_team\team01\team01_02.toml: the
-  -- row's plate with its two slanted end caps and a shorter middle, made at build from the game's team01_02.g4tx),
-  -- drawn at the full rows' stretch so their slanted edges keep the full rows' angle. The left cell's left edge and the
-  -- right cell's right edge are the full rows' edges; the gap between the cells (about 38) takes the left cell's slide.
+  -- Geometry in row units (team01_02 layout, 1 unit = 1 sprite px): plate quad x -97..471 (568 wide), 72 tall, text
+  -- left-aligned at x 47, cursor x -19..45, rows 66 apart. The plate sprite (392 x 72) is a nine-slice: px 0..144 and
+  -- 148..392 drawn at their own size, px 144..148 stretched over the rest, so the plate's slanted ends are drawn 1:1.
+  -- The cells' sprites (Pachangas content\images\menu\102_team\team01\team01_02.toml) are that full row cut along one
+  -- slanted seam whose edges are the plate's own ends: the left cell is the row's x -97..291, the right cell its
+  -- x 83..471, each 388 units, a 392 px sprite with the plate's nine-slice guides, drawn on a quad 388 wide (the
+  -- stretched band gets 0 units), so every pixel is drawn 1:1 and the two cells together are the full row with one
+  -- 12-unit slanted gap. The quads, the pointer zones and the slots stay on the row's grid; each cell's instance moves
+  -- so its label is centred on its half (the cursor keeps its place before the label). The cells never slide on focus
+  -- (their Active «in» is played as «out», the rest pose: Active only moves _pos_base01).
   PT.C = {
     LOCATOR = @crc:team01_01_list_item_locator@,
-    SLOTS = {@crc:_atc_list01@, @crc:_atc_list02@, @crc:_atc_list03@, @crc:_atc_list04@, @crc:_atc_list05@,
-             @crc:_atc_list06@, @crc:_atc_list07@, @crc:_atc_list08@, @crc:_atc_list09@},
+    SLOTS = {@crc:_atc_pachangas_slot01@, @crc:_atc_pachangas_slot02@, @crc:_atc_pachangas_slot03@,
+             @crc:_atc_pachangas_slot04@, @crc:_atc_pachangas_slot05@, @crc:_atc_pachangas_slot06@,
+             @crc:_atc_pachangas_slot07@, @crc:_atc_pachangas_slot08@, @crc:_atc_pachangas_slot09@},
     ATLAS = 4262264508 --[[crc32 #/menu/102_team/team01/team01_02/team01_02.g4tx]],
     SWAP = 558735651,                -- (layer, atlas, sprite, texture node, 0, idx): the sprite of a quad -> drawn
     -- the plate quads: mesh node, texture node (= the game's sprite), the left / right cell's sprite
@@ -467,61 +476,125 @@ do
       {@crc:_list_base01_ok@, @crc:list_base01_ok@, @crc:pachangas_cell_left_ok@, @crc:pachangas_cell_right_ok@},
       {@crc:_list_base01_ol@, @crc:list_base01_ol@, @crc:pachangas_cell_left_ol@, @crc:pachangas_cell_right_ol@},
     },
-    ROW_LEFT = -97, ROW_RIGHT = 471, ROW_WIDTH = 568, ROW_HEIGHT = 72, PITCH = 66, SPRITE_WIDTH = 392,
-    -- shift = the cell's instance offset from the first slot; sprite = its sprite's width (px); the left cell starts at
-    -- the row's left edge, the right cell ends at the row's right edge (in its own instance's units)
-    CELLS = {{shift = 0, sprite = 200}, {shift = 255, sprite = 166}},
-    SPLIT = 211,                     -- the pointer's border between the cells (first slot units)
+    ROW_LEFT = -97, ROW_WIDTH = 568, ROW_HEIGHT = 72, PITCH = 66,
+    -- the cells (index 1 = left, 2 = right), row units: quad left edge (the cell sprite's x 0), the plate's visible
+    -- span at mid-height (the seam's edges and the plate's ends), the pointer zone (left edge, width: the two zones
+    -- meet in the middle of the seam)
+    CELL_QUAD = 388,
+    CELL_X = {-97, 83},
+    CELL_SHOWN = {{-83, 181}, {193, 456}},
+    CELL_ZONE = {{-97, 284}, {187, 284}},
+    TEXT_X = 47, CURSOR_X = -19,     -- the label's left edge and the cursor's left edge (instance units)
+    EDGE_GAP = 0,                    -- the cursor never starts left of its cell's slanted edge (at mid-height)
+    TEXT_ON = 931545948 --[[_text_list01_on]],
+    TEXT_SIZE = @crc:CMND_GET_MENU_TEXT_RECT_SIZE@,   -- (layer, idx, text node, string) -> width (units)
+    TOUCH = @crc:_touch_list01@,     -- the row's pointer zone (MenuCollisionSetting node: its scale = the zone)
+    PLAY_ANIME = 3781155141, ACTIVE = 1286797620, ANIME_OUT = 2,   -- CMND_PLAY_ANIME_TYPE, type Active, mode «out»
+    BUTTON_SET = 973515837,          -- the «button» animation set of the row
     NODE_POS = 2575768773,           -- (layer, idx, node, axis 0 x / 1 y, value): node local translation
     NODE_SCALE = 2885415772,         -- (layer, idx, node, sx, sy): a mesh node's scale = its size
-    MESH_GPOS = 499270986,           -- CMND_GET_MESH_GLOBAL_POSITION (layer, idx, node) -> x, y
-    POINTER = 558229292,             -- the pointer (x, y down; compared as x, -y with global positions)
+    LAYER_GPOS = 4002164178,         -- (layer, idx) -> a layer instance's global x, y (y up)
+    MOVED = 3272825600,              -- () -> true: the pointer moved this frame
     FOCUS_ACTIVE = 102308320, FOCUS_SET = 3466097042, FOCUS_MARK = 1778826357,
     CURSOR_LOC = 381797568, CURSOR = 3313461902,
     CHECK_INPUT = 4265778440, CTRL = 1332654303, MOUSE_LEFT = 218912913,   -- CMND_CHECK_INPUT_CMD, CMD_EVT_MOUSE_LEFT
+    ARROWS = {1197218715, 3259546669, 2765147006, 2075023265},            -- CMD_UP / DOWN / LEFT / RIGHT
     FN_LEFT = @crc:pachangas_dock_left@,   -- OnFunction of CMD_LEFT on the list (content\menus\pachanga_dock.toml)
     ARG_RIGHT = 2682339866,          -- OnChangeFocus argument of CMD_RIGHT on the list
   }
   PT.cols = false                    -- the columns are drawn
   PT.lastCell = 0                    -- the cell the focus last had (0 left, 1 right)
+  PT.shift = {0, 0}                  -- the cells' instance x on the row (slot joint x)
+  PT.labelWidths = {}                -- label -> measured width
 
   -- the list starts with exactly two format rows
   function PT.colsOn()
     return EVT_PACHANGA == true and (n or 0) >= 2 and PT.colAt(0) ~= nil and PT.colAt(1) ~= nil and PT.colAt(2) == nil
   end
 
-  -- cell i (0 left, 1 right): its plate's left x and width in its own instance's units
-  function PT.cellBox(i)
-    local C = PT.C
-    local width = C.CELLS[i + 1].sprite * C.ROW_WIDTH / C.SPRITE_WIDTH
-    if i == 0 then
-      return C.ROW_LEFT, width
+  -- while the columns are drawn, the cells' Active «in» (the focus slide of _pos_base01) is played as «out» (the rest
+  -- pose), so a focused cell keeps its place in the row (VRFW_Host command hook, registered once per script state)
+  function PT.holdCells()
+    if PT.cellHook or type(VRFW_Host) ~= "table" or type(VRFW_Host.HookCommand) ~= "function" then
+      return
     end
-    return C.ROW_RIGHT - C.CELLS[2].shift - width, width
+    PT.cellHook = true
+    local C = PT.C
+    VRFW_Host.HookCommand(C.PLAY_ANIME, function(nxt, id, layer, index, kind, mode, ...)
+      if PT.cols and layer == PT.LIST and (index == 0 or index == 1) and kind == C.ACTIVE and mode ~= C.ANIME_OUT then
+        return nxt(id, layer, index, kind, C.ANIME_OUT, ...)
+      end
+      return nxt(id, layer, index, kind, mode, ...)
+    end, "Pachangas.dock_cells_still", {menu = true})
   end
 
-  -- the slot locators and the cells' plates for the columns, or back to the retail list
+  -- a label's width in row units: the game's measure on the row's text node, else 19 a Latin / 34 a CJK character
+  function PT.labelWidth(i, s)
+    if PT.labelWidths[s] ~= nil then
+      return PT.labelWidths[s]
+    end
+    local ok, w = pcall(funcLuaMenuCommand, PT.C.TEXT_SIZE, PT.LIST, i, PT.C.TEXT_ON, s)
+    if not ok or type(w) ~= "number" or w <= 0 then
+      w = 0
+      for k = 1, #s do
+        local b = s:byte(k)
+        if b < 0x80 or (b >= 0xC0 and b < 0xE0) then
+          w = w + 19
+        elseif b >= 0xE0 then
+          w = w + 34
+        end
+      end
+    end
+    PT.labelWidths[s] = w
+    return w
+  end
+
+  -- cell i's instance x on the row: its label centred on the cell's visible plate, the cursor kept off the edge
+  function PT.cellShift(i)
+    local C = PT.C
+    local shown = C.CELL_SHOWN[i + 1]
+    local width = PT.labelWidth(i, PT.rowText(PT.colAt(i)))
+    local x = (shown[1] + shown[2]) / 2 - width / 2 - C.TEXT_X
+    return math.max(x, shown[1] + C.EDGE_GAP - C.CURSOR_X)
+  end
+
+  -- the slot locators and the cells' plates / zones for the columns, or back to the retail list
   function PT.layoutCols()
     local on = PT.colsOn()
     if not on and not PT.cols then
       return
     end
     local C = PT.C
+    if on then
+      PT.holdCells()
+      PT.shift = {PT.cellShift(0), PT.cellShift(1)}
+    end
     for s = 1, #C.SLOTS do
       local x, y = 0, 0
+      if on and s <= 2 then
+        x = PT.shift[s]
+      end
       if on and s >= 2 then
         y = C.PITCH
-        if s == 2 then
-          x = C.CELLS[2].shift
-        end
       end
-      pcall(funcLuaMenuCommand, C.NODE_POS, C.LOCATOR, 0, C.SLOTS[s], 0, x)
+      local okX, wrote = pcall(funcLuaMenuCommand, C.NODE_POS, C.LOCATOR, 0, C.SLOTS[s], 0, x)
       pcall(funcLuaMenuCommand, C.NODE_POS, C.LOCATOR, 0, C.SLOTS[s], 1, y)
+      if s <= 2 and (not okX or wrote == false) and PT.slotLogged ~= true then
+        PT.slotLogged = true
+        PT.log("format columns: slot joint not written (layout without the Pachangas slots?)", s, tostring(wrote))
+      end
     end
     for i = 0, 1 do
-      local left, width = C.ROW_LEFT, C.ROW_WIDTH
+      local left, width, zoneLeft, zoneWidth = C.ROW_LEFT, C.ROW_WIDTH, C.ROW_LEFT, C.ROW_WIDTH
       if on then
-        left, width = PT.cellBox(i)
+        local shift = PT.shift[i + 1]
+        left, width = C.CELL_X[i + 1] - shift, C.CELL_QUAD
+        zoneLeft, zoneWidth = C.CELL_ZONE[i + 1][1] - shift, C.CELL_ZONE[i + 1][2]
+      end
+      pcall(funcLuaMenuCommand, C.NODE_POS, PT.LIST, i, C.TOUCH, 0, zoneLeft)
+      pcall(funcLuaMenuCommand, C.NODE_SCALE, PT.LIST, i, C.TOUCH, zoneWidth, C.ROW_HEIGHT)
+      if on then
+        pcall(funcLuaMenuCommand, C.PLAY_ANIME, PT.LIST, i, C.ACTIVE, C.ANIME_OUT, C.BUTTON_SET)
       end
       for _, q in ipairs(C.PLATES) do
         local sprite = on and q[3 + i] or q[2]
@@ -535,7 +608,7 @@ do
       end
     end
     if on ~= PT.cols then
-      PT.log("format columns", on and "on" or "off", "rows", n)
+      PT.log("format columns", on and "on" or "off", "rows", n, "cells at", PT.shift[1], PT.shift[2])
     end
     PT.cols = on
   end
@@ -545,10 +618,22 @@ do
     return ok and r == true
   end
 
+  -- the menu's pointer helper (evt_menu_kit Pointer: zones, pointer position, key / pointer lead)
+  function PT.pointer()
+    if PT.ptr == nil then
+      PT.ptr = EVT_PointerNew()
+    end
+    return PT.ptr
+  end
+
   -- the list's focus onto instance `to`, as the engine's own step: the cursor, the focus mark, then the dock's
-  -- OnChangeFocus (run by the engine's echo, else here) for the row animations and the help line
+  -- OnChangeFocus (run by the engine's echo, else here) for the row animations and the help line. quiet = a pointer
+  -- step (no sound; the pointer keeps the lead), else a key step (the pointer's resting place becomes the baseline)
   function PT.stepTo(to, quiet)
     local C = PT.C
+    if not quiet then
+      PT.pointer().KeyStep()
+    end
     if PT.listIndex() == to then
       return
     end
@@ -594,42 +679,61 @@ do
     return false
   end
 
-  -- the cell under the pointer (0 / 1), nil = the pointer is not on the first row
+  -- the cell under the pointer (0 / 1), nil = the pointer is not on the first row. The two cells are declared as
+  -- pointer zones (screen px) from the cells' instances as drawn: their global positions and the row units between
+  -- them give the scale, the zones are CELL_ZONE (the same boxes as the engine's zones of the cells).
   function PT.cellUnder()
     local C = PT.C
-    local okP, px, py = pcall(funcLuaMenuCommand, C.POINTER)
-    local okA, ax, ay = pcall(funcLuaMenuCommand, C.MESH_GPOS, C.LOCATOR, 0, C.SLOTS[1])
-    local okB, bx = pcall(funcLuaMenuCommand, C.MESH_GPOS, C.LOCATOR, 0, C.SLOTS[2])
-    if not (okP and okA and okB) or type(px) ~= "number" or type(py) ~= "number" or type(ax) ~= "number"
-        or type(ay) ~= "number" or type(bx) ~= "number" then
+    local P = PT.pointer()
+    local okA, ax, ay = pcall(funcLuaMenuCommand, C.LAYER_GPOS, PT.LIST, 0)
+    local okB, bx = pcall(funcLuaMenuCommand, C.LAYER_GPOS, PT.LIST, 1)
+    if not (okA and okB) or type(ax) ~= "number" or type(ay) ~= "number" or type(bx) ~= "number" then
       return nil
     end
-    local k = (bx - ax) / C.CELLS[2].shift   -- global units per row unit
+    local apart = PT.shift[2] - PT.shift[1]
+    local k = apart ~= 0 and (bx - ax) / apart or 0   -- screen px per row unit
     if k < 0.05 or k > 20 then
       return nil
     end
-    local ux, uy = (px - ax) / k, (-py - ay) / k
-    if math.abs(uy) > C.ROW_HEIGHT / 2 then
-      return nil
+    P.Begin()
+    for i = 0, 1 do
+      local zone = C.CELL_ZONE[i + 1]
+      P.Rect(ax + (zone[1] - PT.shift[1]) * k, -ay - C.ROW_HEIGHT / 2 * k, zone[2] * k, C.ROW_HEIGHT * k, i)
     end
-    if ux >= C.ROW_LEFT and ux < C.SPLIT then
-      return 0
-    elseif ux >= C.SPLIT and ux <= C.ROW_RIGHT then
-      return 1
-    end
-    return nil
+    local x, y = P.Pos()
+    local z = x ~= nil and P.At(x, y) or nil
+    return z and z.id or nil
   end
 
-  -- a pointer move that focused one cell while the pointer is over the other (the engine's hit zones of the two cells
-  -- overlap: they keep the full row's width): the focus goes to the cell under the pointer
-  function PT.pointerCell()
-    local okP, px, py = pcall(funcLuaMenuCommand, PT.C.POINTER)
-    if not okP or type(px) ~= "number" or type(py) ~= "number" then
-      return
+  -- the pointer moved since the last look (the engine's «moved», or a new position without an arrow key: the free
+  -- cursor moves the pointer without the flag); the position read becomes the baseline
+  function PT.pointerMoved()
+    local C = PT.C
+    local P = PT.pointer()
+    local x, y = P.Pos()
+    if x == nil then
+      return false
     end
-    local moved = PT.px ~= nil and (math.abs(px - PT.px) > 1 or math.abs(py - PT.py) > 1)
-    PT.px, PT.py = px, py
-    if not moved then
+    local okM, flag = pcall(funcLuaMenuCommand, C.MOVED)
+    local moved = okM and flag == true
+    if not moved and P.x ~= nil and (math.abs(x - P.x) > 1 or math.abs(y - P.y) > 1) then
+      moved = true
+      for _, cmd in ipairs(C.ARROWS) do
+        local ok, down = pcall(funcLuaCommand, C.CHECK_INPUT, C.CTRL, cmd)
+        if ok and down == true then
+          moved = false
+          break
+        end
+      end
+    end
+    P.x, P.y = x, y
+    return moved
+  end
+
+  -- the pointer moved over the list (the engine's OnMouseMove / OnChangeFocus of a hover): the focus goes to the cell
+  -- under the pointer
+  function PT.pointerCell()
+    if not PT.cols or not PT.colsOn() or PT.busy or PT.co ~= nil or not PT.pointerMoved() then
       return
     end
     local c = PT.cellUnder()
@@ -640,6 +744,9 @@ do
 
   -- a mouse click on the first row: the cell under the pointer (nil = not a click there)
   function PT.clickCell()
+    if not PT.cols or not PT.colsOn() then
+      return nil
+    end
     local ok, down = pcall(funcLuaCommand, PT.C.CHECK_INPUT, PT.C.CTRL, PT.C.MOUSE_LEFT)
     if not ok or down ~= true then
       return nil
@@ -751,7 +858,8 @@ do
     return c
   end
 
-  -- «Establecer como equipo activo» in pachanga mode
+  -- «Establecer como equipo activo» in pachanga mode: the dock becomes the VS team (retail setter), so its 11v11 and 5v5
+  -- teams are both the active ones (the active pachanga team is the VS dock's pair)
   function PT.setActive()
     if n4 == n5 then
       return
@@ -765,8 +873,8 @@ do
       funcLuaCommand(PT.SOUND, PT.SE_NG)
       return
     end
-    -- complete = the 5 starters (Nacho 2026-09-28: bench / support are optional). The retail «can be the active team»
-    -- rule (1104634465) is not used: it answered false for dock 01 with 5 starters + 11 on the bench.
+    -- complete 5v5 = the 5 starters (Nacho 2026-09-28: bench / support are optional). The retail «can be the active
+    -- team» rule (1104634465) answers false for a 5v5 dock 01 with 5 starters + 11 on the bench: not used for kind 1.
     local starters = PT.starters(n5)
     local code = funcLuaCommand(PT.VALID, n5, 1, false)
     if starters < 5 or (type(code) == "number" and code > 0 and code < 11) then
@@ -775,12 +883,17 @@ do
       PT.message(PT.text("NEED5"))
       return
     end
-    local ok, r, c = pcall(funcLuaCommand, PT.SET, n5)
-    if not ok or r ~= true then
-      PT.log("set refused", n5, tostring(r), tostring(c))
+    -- the 11v11 team of the pair must pass the retail Partido rule, as the Partido «Establecer como equipo activo»
+    local ok11, can11 = pcall(funcLuaCommand, PT.CAN_ACTIVE, n5, 0)
+    if ok11 and can11 == false then
+      PT.log("match team not valid", n5)
       funcLuaCommand(PT.SOUND, PT.SE_NG)
+      PT.message(PT.text("NEED_MATCH"))
       return
     end
+    funcLuaCommand(PT.SET_VS, n5)
+    PT.keepVs()                      -- the new VS team is the one PT.leave keeps
+    PT.refresh()
     PT.active = n5
     n4 = n5
     funcLuaCommand(PT.SOUND, PT.SE_OK)
@@ -793,7 +906,7 @@ do
     PT.message(PT.text("NOW", {n = string.format("%02d", n5 - 1), team = name}))
     pcall(SetActiveDockBackground, true)
     pcall(SetVisibleHeaderTeamDoc, true, n5)
-    PT.log("active pachanga", n5)
+    PT.log("active team (match + pachanga)", n5)
   end
 
   -- the kind keys of the formation screen / plate (both kinds): none may outlive the screen they were left for
@@ -819,14 +932,10 @@ do
     return ok and r == 0
   end
 
-  -- Docks 02+ (sets 3..12): the 5v5 team is independent of the 11v11 team (Nacho 2026-09-28; the loader keeps them
-  -- apart in the place / move command). The first time such a dock is shown in Pachanga, a 5v5 team that is only the
-  -- retail auto-copy of its 11v11 team is emptied (CMND_EVT_PACHANGA_SPLIT, once per dock and bank). Dock 01 (set 2)
-  -- keeps the retail link: same players in both teams.
+  -- The 5v5 team of every dock holds the players of its 11v11 team (doc §20): PT.mirror, run by PT.link.
   -- A dock's 5v5 template that is not a 5v5 team yet (its teamInfo[1] never used: in saves it can hold an old copy of
-  -- the 11v11 team with an 11v11 formation, which the 5v5 field draws as 5 starters + a pile of bench cards) becomes an
-  -- empty 5v5 template: no members (loader; not dock 01), the story's 5v5 formation, the 11v11 team's name.
-  -- true = changed. A template emptied here gets the dock's shared identity back at once (PT.link, §9).
+  -- the 11v11 team with an 11v11 formation) gets the story's 5v5 formation and the 11v11 team's name (PT.form5).
+  -- true = changed; a changed template gets the dock's shared identity and players at once (PT.link, §9).
   function PT.ensure5(set)
     local changed = PT.ensure5core(set)
     if changed and type(PT.link) == "function" then
@@ -839,28 +948,37 @@ do
     if not PT.isDock(set) or not PT.loader then
       return false
     end
-    local changed = false
     PT.clearTS(set)
-    if set ~= 2 then
-      local okS, n = pcall(funcLuaCommand, PT.SPLIT, set)
-      if okS and type(n) == "number" and n > 0 then
-        changed = true
-        PT.log("5v5 team split from the 11v11 team", set, n)
-        PT.refresh()
-      end
-    end
+    return (PT.form5(set))
+  end
+
+  -- a 5v5 formation for team 1 of `set`: changed, the 5v5 formation id
+  function PT.form5(set)
     local ok, f = funcLuaCommand(PT.GET_INFO, set, 1, 4)
     if ok and VRFW_Formation.IsFiveASide(f) ~= false then
-      return changed
+      return false, f
     end
-    local r = set ~= 2 and funcLuaCommand(PT.INIT, set) or 0
     funcLuaCommand(PT.SET_INFO, set, 1, 3, PT.FORM5_DEFAULT)
     local ok2, name = funcLuaCommand(PT.GET_INFO, set, 0, 6)
     if ok2 and type(name) == "string" and name ~= "" then
       funcLuaCommand(PT.SET_INFO, set, 1, 0, name)
     end
-    PT.log("5v5 template initialised", set, tostring(f), tostring(r))
-    return true
+    PT.log("5v5 template initialised", set, tostring(f))
+    return true, PT.FORM5_DEFAULT
+  end
+
+  -- the 5v5 team of `set` brought to its 11v11 team's players: changed, players removed, players added
+  function PT.mirror(set)
+    if not PT.loader or not PT.isDock(set) then
+      return false, 0, 0
+    end
+    local changed, f = PT.form5(set)
+    local ok, n, out, inn = pcall(funcLuaCommand, PT.MIRROR, set, type(f) == "number" and f or 0)
+    if ok and type(n) == "number" and n > 0 then
+      PT.log("5v5 players follow the match team", set, n, tostring(out), tostring(inn))
+      return true, tonumber(out) or 0, tonumber(inn) or 0
+    end
+    return changed, 0, 0
   end
 
   -- the dock's own L1 / R1 refresh (as UTIL_TB.refresh) plus the list labels
@@ -1339,6 +1457,11 @@ do
         end
       end
     end
+    local mirrored, out, inn = PT.mirror(set)
+    if mirrored then
+      did[#did + 1] = "players>5v5"
+      PT.poolFix = (PT.poolFix or 0) + out + inn
+    end
     -- the synced state: what both templates hold now; a field still apart (a refused write) is not recorded, so the
     -- next sync takes the Partido value again instead of reading the refusal as a Pachanga edit
     if #did > 0 then
@@ -1385,6 +1508,7 @@ do
 
   -- the dock on screen, after something may have edited it (child menu, name, bank): redraw when it changed
   function PT.linkShown()
+    PT.poolFix = 0
     local ok, r = pcall(PT.link, n5)
     if not ok then
       PT.llog("error", n5, tostring(r))
@@ -1397,6 +1521,10 @@ do
         pcall(PT.hideTS)
         PT.marks()
         PT.header()
+        -- a player put in from outside the match team, or one of its players taken out, was undone
+        if PT.poolFix > 0 then
+          PT.say(PT.text("POOL_ONLY"))
+        end
       end
     end
   end
@@ -1498,7 +1626,7 @@ do
       end
       PT.flags()
       PT.pick, PT.child = nil, false
-      PT.cols, PT.lastCell, PT.px, PT.py = false, 0, nil, nil
+      PT.cols, PT.lastCell, PT.labelWidths, PT.ptr = false, 0, {}, nil
       PT.log("open", PT.pachanga() and "pachanga" or "partido", "dock", n5, "active", n4, "pachanga", PT.active,
         "loader", tostring(PT.loader))
       return table.unpack(r, 1, r.n)
@@ -1590,8 +1718,8 @@ do
         return
       end
       local r = PT.pack(orig(a1, a2, ...))
-      if a1 == PT.LIST and a2 ~= PT.C.ARG_RIGHT and PT.cols and PT.colsOn() and PT.listActive() then
-        PT.pointerCell()
+      if a1 == PT.LIST and a2 ~= PT.C.ARG_RIGHT and PT.listActive() then
+        PT.pointerCell()             -- a hover that focused the list: the cell under the pointer
       end
       if PT.cols and (n6 == 0 or n6 == PT.LIST) then
         local i = PT.listIndex()
@@ -1605,6 +1733,17 @@ do
       end
       if EVT_PACHANGA and PT.rowFocused() then
         PT.activeLine()              -- on a format row: the active teams line (or why it cannot switch)
+      end
+      return table.unpack(r, 1, r.n)
+    end
+  end)
+
+  -- the engine's pointer callback over the dock's zones: on the columns, the focus follows the cell under the pointer
+  PT.wrap("OnMouseMove", function(orig)
+    return function(a1, a2, ...)
+      local r = PT.pack(orig(a1, a2, ...))
+      if a1 == PT.LIST and (a2 == 0 or a2 == 1) and PT.listActive() then
+        PT.pointerCell()
       end
       return table.unpack(r, 1, r.n)
     end
@@ -1631,7 +1770,7 @@ do
       -- message by PT.gate; the message opens from Step
       local col = EVT_PACHANGA and a1 == PT.LIST and PT.colAt(a2) or nil
       if col ~= nil and PT.cols and PT.colsOn() then
-        -- a click on the columns: the cell under the pointer (the two cells' hit zones overlap)
+        -- a click on the columns: the cell under the pointer
         local c = PT.clickCell()
         if c ~= nil and c ~= a2 then
           PT.stepTo(c, true)
@@ -1663,6 +1802,12 @@ do
         kind = t[a2 + 1]
       end
       local rowCol = PT.colOfKind(kind)
+      if rowCol ~= nil and PT.pick == nil then
+        local c = PT.clickCell()     -- a mouse click on the columns: the cell under the pointer
+        if c ~= nil then
+          rowCol = PT.colAt(c) or rowCol
+        end
+      end
       if rowCol ~= nil then
         local col = PT.pick or rowCol  -- a decide without our OnEnter (a mouse click): the clicked row's format
         PT.pick = nil
@@ -1760,6 +1905,7 @@ do
       local r = PT.pack(orig(a1, a2, ...))
       if a1 == PT.ACTIVE_FUNC and not PT.pachanga() then
         PT.keepVs()                  -- «Establecer como equipo activo» in Partido: the new VS team is the one to keep
+        PT.refresh()                 -- its pair is now the active pachanga team
       end
       if PT.pachanga() and a1 == PT.PAGE_FUNC then
         if PT.ensure5(n5) then

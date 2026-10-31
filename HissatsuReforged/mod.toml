@@ -30,13 +30,13 @@ former_ids = ["hissatsu_reforged"]
 name = "Hissatsu Reforged"
 prefix = "HissatsuReforged"
 folder = "HissatsuReforged"
-version = "1.19.0"
+version = "1.21.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "Rebalances the game's special moves: new minimum and maximum power, tension cost and recast time for 683 of the game's moves. The power each grade adds stays the game's. A move with two properties (long shot and counter shot) shows both icons in every move list and on its card. Special moves can land a critical hit that multiplies their power (both teams), and the Breach team build becomes the Critical build: more critical chance for its team instead of breaches at the keeper. The base of the special-move mods: Hissatsu Effects and Hissatsu Level Up are its modules."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-30"
+updated = "2026-10-31"
 # 1.2.0 (owner 2026-10-23: «HissatsuEffects y HissatsuLevelUp deben ir como módulos de HissatsuReforged»): both are
 # embedded modules (modules\HissatsuEffects\, modules\HissatsuLevelUp\); their ids, prefixes, saves and texts unchanged
 # vr_framework 2.4.13: the technique type's [[edit]] (power_min / power_max / tp / recast), the technique engine's move

@@ -6,7 +6,7 @@
 -- (the engine sets up ~844 per open menu, docs/game/ui/menu-layer-limits.md §2.1-2.3; that menu is at ~780 with
 -- Utilities' 269), so they live in this menu of their own: a display-only child menu (registry priority 0: it never
 -- takes the pad; no input layer, no focus group) that the overlay (graft bb_tournament, bbt_top.lua BBT_GroupsShow)
--- opens over its host (bb_stadium_top_menu or Inazuma Fantasy's soccer_top_menu) while the group page is shown and
+-- opens over its host (bb_stadium_top_menu) while the group page is shown and
 -- closes when another page is shown or the overlay closes. The host keeps the keys (L1 / R1, Enter, Back), its header
 -- title («Fase de grupos · Jornada N de 3») and the bracket's background; this menu only draws the cards + legend.
 -- Handshake: VRFW_ChildMenu (VRFW menu\_all\89_child_menu.lua; parameters evt_bbd_tn_groups_page, the view page to
@@ -26,8 +26,8 @@
 -- bars, separators, points cells, header strokes, form dots) 190, evt_bbd_gt_row (551, the team row object) 64,
 -- evt_bbd_gt_txt (553) 322, evt_bbd_gt_face (552: the top scorers' minifaces, VRFW_FaceIcon; one a row of the
 -- scorers page) 12 = 654 instances
--- (16 tiny cards: 16 + 49 + 178 + 64 + 322; 8 compact: 8 + 25 + 189 + 32 + 294). Change the counts in both places
--- (N below).
+-- (16 tiny cards: 16 + 49 + 178 + 64 + 322; 8 compact: 8 + 25 + 189 + 32 + 294). The counts are only in the menu file:
+-- this script reads them from the engine (CMND_GET_CREATE_LAYER_NUM, ReadCounts).
 -- 1.45.0: the league's standings pages (view kind "league", DrawLeague) in this same menu: one card of up to
 -- [league] rows_per_page teams on the bracket's plates (the player's in the gold frame); a 12-row page uses card 1,
 -- band 1, mark ~84, row 12, txt ~125.
@@ -42,7 +42,7 @@ local NODE_QUAD = 1909474081       -- icon_new01 (the quad node of cmn01_10)
 local MESH_QUAD = 312193881        -- _icon_new01
 local Q = 36                       -- the quad's own size (px at scale 1)
 
--- the layers and their instance counts (the [[screen]] rows: change both together)
+-- the layers; their instance counts (N) are the [[screen]] rows', read from the engine (ReadCounts)
 local L = {
   card = 2214017804,   -- evt_bbd_gt_card (546)
   band = 3711697204,   -- evt_bbd_gt_band (547)
@@ -51,7 +51,7 @@ local L = {
   txt = 1088291469,    -- evt_bbd_gt_txt (553, evt_bbd_tn_txt)
   face = 2432161976,   -- evt_bbd_gt_face (552, evt_bbd_tn_face: the list character card, portrait only)
 }
-local N = { card = 16, band = 50, mark = 190, row = 64, txt = 322, face = 12 }
+local N = {}
 local NAMES = { card = "card", band = "band", mark = "mark", row = "row", txt = "txt", face = "face" }
 local KEY_OF = {}
 for k, l in pairs(L) do
@@ -62,7 +62,7 @@ local C = {
   VISIBLE = 711242136, POS = 1389957207, SCALE = 3778714801, SPRITE = 558735651, PRIM_COLOR = 855211291,
   MESH_VISIBLE = 3405944500, TEXT = 1083631230, TEXT_VISIBLE = 1505208242, TEXT_STYLE = 2333948100,
   TEXT_GET = 4074371074,
-  LAYER_NUM = 1175615627,      -- CMND_GET_CREATE_LAYER_NUM?
+  LAYER_NUM = 1175615627,      -- CMND_GET_CREATE_LAYER_NUM (layer) -> instances created
   MODEL_ALPHA = 4231609516, TEXT_ALPHA = 1126837159,
   CROSS_CALL = 830228314,      -- (menu, function name, ...): a function of another menu's Lua
 }
@@ -1313,16 +1313,15 @@ local function DrawSquad(v)
   S.mode = string.format("squad: %d members", #rows)
 end
 
--- the instances set up per pool against the counts: "card 16/16, …", short pools
+-- the instances set up per pool against the engine's counts: "card 16/16, …", short pools
 local function SetupText()
   local parts, short = {}, 0
   for k, n in pairs(N) do
-    local got = funcLuaMenuCommand(C.LAYER_NUM, L[k])
-    got = type(got) == "number" and got or -1
+    local got = S.per[L[k]] or 0
     if got < n then
       short = short + 1
     end
-    parts[#parts + 1] = string.format("%s %d/%d (set up %d)", NAMES[k], got, n, S.per[L[k]] or 0)
+    parts[#parts + 1] = string.format("%s %d/%d", NAMES[k], got, n)
   end
   table.sort(parts)
   return table.concat(parts, ", "), short
@@ -1410,6 +1409,16 @@ local function OnRedraw(page)
   S.want = true
 end
 
+-- the instances the engine created of each pool (the [[screen]] rows) and their sum, the instances to wait for
+local function ReadCounts()
+  S.need = 0
+  for k, l in pairs(L) do
+    local n = funcLuaMenuCommand(C.LAYER_NUM, l)
+    N[k] = type(n) == "number" and n or 0
+    S.need = S.need + N[k]
+  end
+end
+
 -- ---- engine callbacks -----------------------------------------------------------------------------------------------
 function OnInit()
   Handshake = VRFW_ChildMenu.Child(MENU, { prefix = "evt_bbd_tn_groups_", on_redraw = OnRedraw, on_close = OnClose,
@@ -1420,9 +1429,7 @@ function OnInit()
   if VRFW_FaceIcon ~= nil then
     VRFW_FaceIcon.Forget(L.face)
   end
-  for _, n in pairs(N) do
-    S.need = S.need + n
-  end
+  ReadCounts()
 end
 
 -- every instance hidden and parked as the engine sets it up (opened with the menu's group); one set up after the page
@@ -1430,6 +1437,9 @@ end
 function OnSetupLayer(a1, a2)
   if KEY_OF[a1] == nil then
     return
+  end
+  if (a2 or 0) >= (N[KEY_OF[a1]] or 0) then
+    ReadCounts()
   end
   Hide(a1, a2 or 0)
   local k = tostring(a1) .. ":" .. tostring(a2)

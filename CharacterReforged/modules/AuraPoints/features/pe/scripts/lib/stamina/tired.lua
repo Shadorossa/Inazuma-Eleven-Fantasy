@@ -40,31 +40,40 @@ function M.in_range(r, range)
 end
 
 -- One frame of a player's track (`t = { tired, run, idle_until, next_idle }`). facts = { ratio, eligible, has_ball,
--- idle_state, now (s) }; rng() -> [0, 1).
+-- idle_state, now (s) }; has_ball may be a function (asked only when the pause needs it); rng() -> [0, 1). The
+-- { run = i } answer is the track's own table, valid until its next step.
+local function reset_idle(t)
+  t.idle_until = 0
+  t.next_idle = 0
+end
+
 function M.step(t, cfg, f, rng)
-  local function reset_idle()
-    t.idle_until = 0
-    t.next_idle = 0
-  end
   if not cfg.enabled or not f.eligible or #cfg.run_sets == 0 then
     t.tired = false
     if not cfg.reroll_match then t.run = nil end
-    reset_idle()
+    reset_idle(t)
     return "off"
   end
   if t.tired then t.tired = f.ratio <= cfg.run_recover else t.tired = f.ratio < cfg.run_below end
   if not t.tired then
     if not cfg.reroll_match then t.run = nil end
-    reset_idle()
+    reset_idle(t)
     return "off"
   end
   if not t.run or t.run > #cfg.run_sets then t.run = M.draw_run(cfg, rng()) end
-  local run = { run = t.run }
+  local run = t.answer
+  if run == nil then
+    run = {}
+    t.answer = run
+  end
+  run.run = t.run
   if cfg.idle_set:match("^%s*$") or f.ratio > cfg.idle_at + M.IDLE_EPS then
-    reset_idle()
+    reset_idle(t)
     return run
   end
-  if f.has_ball then
+  local has_ball = f.has_ball
+  if type(has_ball) == "function" then has_ball = has_ball() end
+  if has_ball then
     -- the ball ends a pause at once; the next one waits a whole interval
     if t.idle_until > 0 then
       t.idle_until = 0

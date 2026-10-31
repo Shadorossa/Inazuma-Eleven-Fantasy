@@ -3,13 +3,13 @@ former_ids = ["inazuma_fantasy_2"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml).
 name = "Inazuma Fantasy"
-version = "1.27.0"
+version = "1.31.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Inazuma Fantasy. The Market has three shops of its own, priced in Passion Points (the BB Rare Medal renamed; the Victory Star becomes Friendship Points): a «General Store» with every ticket (Kizuna areas, stadiums), consumable, name plate, kit, team emblem (but the crests a Chronicle battle gives), Kizuna decoration, sticker and title the game's shops sell (the titles at their Chronicle collection costs); a «Training Shop» with every piece of player equipment, special tactic, synergy and keshin / miximax / soul move; and «Special Moves», one tab per move type (shot, dribble, block, catch). Those rows leave the game's shops, player spirits and premade Diamonds are no longer sold, and the game's Market shops, left empty, leave the Market, and every menu entry of them (Chronicle, Vs, Kizuna and other mode menus) opens the General Store; the story shops keep theirs. Every match also pays Friendship and Passion Points at its end (amounts in config.toml). Nine Idol cards of the earlier Inazuma Fantasy replace the game's Idol cards of the same players (same card ids). Every shop lists what it does not sell yet with a padlock and what unlocks it. The title screen shows the Inazuma Fantasy logo and its own press-start key art. Formations: the 16 eleven-a-side formations of Inazuma Eleven 3 that Victory Road lacks (Gemini, Epsilon, Genesis, Orpheus, Little Gigantes, Ogre, Chaos...) and the 10 five-a-side B- formations of GO Galaxy, with their original layouts made left / right symmetric; the 15 IE1-era formations Victory Road has by name only (Death Zone, Heaven's Gate, Phalanx...) get their real layouts. Better QoL's unlocked formations lists the eleven-a-side ones in the formation picker. «Partido libre» gets an «Inazuma Eleven Fantasy» section on its second page (L2 / R2) with four teams of the mod: Leyenda Viva, Llama Eterna, Punishment and Crossed Japan, at levels 50, 125 and 200."
+description = "Inazuma Fantasy. The Market has three shops of its own, priced in Passion Points (the BB Rare Medal renamed; the Victory Star becomes Friendship Points): a «General Store» with every ticket (Kizuna areas, stadiums), consumable, name plate, kit, team emblem (but the crests a Chronicle battle gives), Kizuna decoration, sticker and title the game's shops sell (the titles at their Chronicle collection costs); a «Training Shop» with every piece of player equipment, special tactic, synergy and keshin / miximax / soul move; and «Special Moves», one tab per move type (shot, dribble, block, catch). Those rows leave the game's shops, player spirits and premade Diamonds are no longer sold, and the game's Market shops, left empty, leave the Market, and every menu entry of them (Chronicle, Vs, Kizuna and other mode menus) opens the General Store; the story shops keep theirs. Every match also pays Friendship and Passion Points at its end (amounts in config.toml). Nine Idol cards of the earlier Inazuma Fantasy replace the game's Idol cards of the same players (same card ids). Every shop lists what it does not sell yet with a padlock and what unlocks it. The title screen shows the Inazuma Fantasy logo and its own press-start key art. «Partido libre» gets an «Inazuma Eleven Fantasy» section on its second page (L2 / R2) with two teams of the mod, Punishment and Crossed Japan, at levels 50, 99 and 200."
 priority = 0
 tags = ["Gameplay"]
-updated = "2026-10-30"
+updated = "2026-10-31"
 prefix = "InazumaFantasy"
 folder = "InazumaFantasy"
 # A new mod (2026-10-14). The earlier Inazuma Fantasy (id inazuma_fantasy) is kept apart in research/mods/_aside/; this
@@ -50,19 +50,13 @@ folder = "InazumaFantasy"
 #   content\gacha\chronicle_deluxe_kizuna_coin.toml   «Tezcat (Mixi Max Arion)» in Chronicle Deluxe's board gacha (1.8.0;
 #                                       nothing without Chronicle Deluxe); content\base_tables\gamedata\soccer\soccer_drop_config.toml:
 #                                       his character in that gacha's drop-rate list (1.10.0, if_mod chronicle_deluxe)
-#   content\formations\series_formations.toml   GENERATED (research/scripts/inazuma_fantasy_formations_build.py): the
-#                                       IE3 / Galaxy formations Victory Road lacks and the real layouts of its 15 IE1-era
-#                                       formations (names only in the game); every layout left / right symmetric (lone
-#                                       centre players on the axis; only B- Left / Right Wing one-sided); a formation
-#                                       within 0.1 field units of one the player can already pick (line by line, mirrored
-#                                       too) is left out, the more iconic one kept (13 IE3 ones, e.g. F-Dark Emperors)
-#                                       slots in the game's line order (keeper, back line, midfield, forwards), mirrored
-#                                       pairs exact, menu cards (bustup_pos) in role rows; research/scripts/
-#                                       formation_layout_check.py checks it and draws the menu layouts (--sheet)
+#   (1.31.0) the IE3 / Galaxy formations moved to Better QoL (BetterQoL\content\formations\series_formations.toml)
 # Graft (research/grafts): inazuma_fantasy_general_store (the Mercado entries, market_menu: its four shops first, a retail
 # shop whose every row is hidden left out).
 # lua_early: the graft is a merge-path patch of market_menu; early, the later wrappers of that script stay on top of it.
 lua_early = true
+# 1.30.0: the free-match section's classes are INAZUMA Nv. 50, ZONA LETAL Nv. 99 and Nv. 200 (rows 6 / 7 / 9), as Chronicle Deluxe's.
+# 1.29.0: the free-match section lists only Punishment and Crossed Japan; the Leyenda Viva and Llama Eterna teams are removed.
 # 1.27.0 (VRFW 2.274.0: section pages): the «Inazuma Eleven Fantasy» section on page 2 of «Partido libre»
 # (content\teams\free_match_section.toml) with Leyenda Viva, Llama Eterna, Punishment (ported from the earlier IF)
 # and Crossed Japan, classes 7 / 8 / 9 at Nv. 50 / 125 / 200, listed from the start.

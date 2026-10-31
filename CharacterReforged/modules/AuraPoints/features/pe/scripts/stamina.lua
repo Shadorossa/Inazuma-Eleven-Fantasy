@@ -140,7 +140,7 @@ end
 
 local seen = { in_match = false, ended = false, scene = 0, half = 0, clock = 0, end_half = 0 }
 local match_no = 0
-local frame = { state = 0, half = 0, clock = 0, half_len = 0, user = 0xFF, mi = nil, dt = 0 }
+local frame = { state = 0, half = 0, clock = 0, half_len = 0, user = 0xFF, mi = nil, dt = 0, now = 0 }
 local players = {}      -- hdl -> player record (this match)
 local slots = {}        -- hdl -> the extra slot state this frame (VRFW.extra_slot.players(): swap, fusion)
 local match_start_ms = 0
@@ -150,6 +150,9 @@ local function rng() return VRFW.match.rng() or math.random() end
 
 local function new_player(hdl)
   return {
+    -- the other mods' input flags of this player (rule flags, see cost_cut / armour_free)
+    flags = { cost = "aura_points.cost_pct." .. hdl, cost_old = "stamina_points.cost_pct." .. hdl,
+      free = "aura_points.armour_free." .. hdl, free_old = "stamina_points.armour_free." .. hdl },
     hdl = hdl, team = 0xFF, slot = nil, member = nil, chara = 0, param = 0, pos = 0xFF, fisico = 0,
     unit_ms = -REREAD_MS, tags = nil, tags_param = 0,
     tr = { keshin = false, armour = false, miximax = false, cut_keshin = false, cut_armour = false, cut_mx = false,
@@ -172,7 +175,7 @@ local function rec_of(name, key)
     t = {}
     recs[name] = t
   end
-  local k = type(key) == "table" and table.concat(key, ":") or tostring(key)
+  local k = type(key) == "table" and table.concat(key, ":") or key
   local r = t[k]
   if not r then
     r = { key = key, fields = {}, dirty = false }
@@ -254,14 +257,14 @@ local function level_ratio(p, pe)
 end
 
 -- the other mods' inputs for one player (rule flags; the mod Stamina Points' old names are read too)
-local function cost_cut(hdl)
-  local v = flag("aura_points.cost_pct." .. hdl)
-  if not (v and v > 0) then v = flag("stamina_points.cost_pct." .. hdl) end
+local function cost_cut(p)
+  local v = flag(p.flags.cost)
+  if not (v and v > 0) then v = flag(p.flags.cost_old) end
   if v and v > 0 then return math.min(v, 100) / 100 end
   return 1.0
 end
-local function armour_free(hdl)
-  return flag("aura_points.armour_free." .. hdl) ~= 0 or flag("stamina_points.armour_free." .. hdl) ~= 0
+local function armour_free(p)
+  return flag(p.flags.free) ~= 0 or flag(p.flags.free_old) ~= 0
 end
 
 -- the part of a multiplier above 1 cut to f (a cut never makes a transformation cheaper than no transformation)
@@ -324,9 +327,12 @@ local function boundary(f)
 end
 
 local last_state = 0
+local BOUNDARY_FACTS = { half = 0, scene = 0, clock = 0, state = 0 }   -- (filled again every frame)
 
 local function frame_update()
-  local b = boundary({ half = frame.half_len ~= 0 and frame.half or 0, scene = frame.scene, clock = frame.clock, state = frame.state })
+  local bf = BOUNDARY_FACTS
+  bf.half, bf.scene, bf.clock, bf.state = frame.half_len ~= 0 and frame.half or 0, frame.scene, frame.clock, frame.state
+  local b = boundary(bf)
   if b == "new" then
     if seen.in_match and not seen.ended then end_match("ended (new match detected)") end
     seen = { in_match = true, ended = false, scene = frame.scene, half = frame.half, clock = frame.clock, end_half = 0 }
@@ -358,12 +364,15 @@ local function member_info(p, unit)
   end
 end
 
+local NO_TAGS = {}   -- (read only)
+local NO_SLOT = {}   -- (read only)
+
 -- his trait tags (asked once per card)
 local function tags_of(p)
-  if p.param == 0 then return {} end
+  if p.param == 0 then return NO_TAGS end
   if p.tags and p.tags_param == p.param then return p.tags end
   local ok, tags = pcall(VRFW.traits.of, p.param)
-  if not ok or tags == nil then return {} end
+  if not ok or tags == nil then return NO_TAGS end
   p.tags, p.tags_param = tags, p.param
   local e = C.effect(AC.traits, tags, {})
   if #e.tags > 0 then
@@ -384,21 +393,28 @@ end
 
 -- One player's transformations this frame. Returns obs.
 local function aura_step(p, actor, a, unit, pe)
-  local obs = { mult = 1.0, keshin = false, armour = false, miximax = false, effect = nil, pe_free = false, pe_charge = 0 }
+  -- (his own table, filled again every frame)
+  local obs = p.obs
+  if obs == nil then
+    obs = {}
+    p.obs = obs
+  end
+  obs.mult, obs.keshin, obs.armour, obs.miximax, obs.effect, obs.pe_free, obs.pe_charge = 1.0, false, false, false, nil, false, 0
   local hdl, team = p.hdl, p.team
-  local now = now_ms()
-  local cut = cost_cut(hdl)
+  local now = frame.now
   local attr = unit and unit.attr or 0
   local ss, ms = a.summon_state, a.meta_state
   local meta_run = ms == 4 or ms == 5
   local keshin = band(attr, 1) ~= 0 and ss == 2
   local armour = band(attr, 2) ~= 0 and meta_run
-  local free_armour = armour and armour_free(hdl)
-  local es = slots[hdl] or {}
+  local free_armour = armour and armour_free(p)
+  local es = slots[hdl] or NO_SLOT
   local mode_change = es.swap == true
   local mx_meta = band(attr, 4) ~= 0 and meta_run and band(attr, 2) == 0 and not mode_change
   local mx_slot = (es.fusion or 0) ~= 0
   local miximax = mx_meta or mx_slot
+  -- the other mods' cost cut: read only when a transformation runs (it scales only a transformation's PE)
+  local cut = (keshin or armour or miximax) and cost_cut(p) or 1.0
   local ok_team = applies(team)
   local in_play = frame.state == IN_PLAY
   -- out of PE in play: his mix slot's miximax is spent for the match (VRFW.extra_slot.spent: no RB plate, start refused)
@@ -413,8 +429,13 @@ local function aura_step(p, actor, a, unit, pe)
   end
   -- character traits ([pe.trait.*]): his tags and the keshins behind his running auras
   local tags = tags_of(p)
-  local auras = { keshin and a.summon_skill or 0, armour and (A.spirit(a.meta_skill) or a.meta_skill) or 0 }
-  local effect = C.effect(AC.traits, tags, auras)
+  local aura1, aura2 = keshin and a.summon_skill or 0, armour and (A.spirit(a.meta_skill) or a.meta_skill) or 0
+  -- (the same tags and auras give the same effect: worked out again only when one of them changed)
+  local effect = p.effect
+  if effect == nil or p.effect_tags ~= tags or p.effect_aura1 ~= aura1 or p.effect_aura2 ~= aura2 then
+    effect = C.effect(AC.traits, tags, { aura1, aura2 })
+    p.effect, p.effect_tags, p.effect_aura1, p.effect_aura2 = effect, tags, aura1, aura2
+  end
   obs.effect = effect
   local gauge_free = effect.aura_rule and not effect.gauge_drain
   local battery = p.battery and p.battery.phase == "pending"
@@ -661,7 +682,7 @@ local function battery_step(p, pe, obs)
   if not p.battery then
     if not e or not e.battery or not pe or not (pe.max > 0 and pe.cur <= 0.002 * pe.max + 1e-4) or frame.state ~= IN_PLAY then return end
     if not p.member then return end
-    p.battery = { phase = "pending", member = p.member, since = now_ms(), clip = e.clip, hold = e.hold, hold_after_ms = e.hold_after_ms,
+    p.battery = { phase = "pending", member = p.member, since = frame.now, clip = e.clip, hold = e.hold, hold_after_ms = e.hold_after_ms,
       keep_armour = e.keep_armour, hold_started = false, last_apply = 0, bit_set = false, logged_wait = false }
     info(string.format("battery: actor %s T%d s%s (traits %s): PE %.1f/%.0f%s: OUT OF BATTERY%s", hex(p.hdl), p.team, tostring(p.slot),
       table.concat(e.tags, ","), pe.cur, pe.max, (obs.keshin or obs.armour) and " with an aura out" or "", obs.keshin and ": the spirit is dismissed first" or ""))
@@ -674,7 +695,7 @@ local function battery_step(p, pe, obs)
   elseif obs.keshin then wait = "his keshin is still out"
   elseif has_ball(p.hdl) then wait = "he has the ball" end
   if wait then
-    if not b.logged_wait and now_ms() - b.since > 1500 then
+    if not b.logged_wait and frame.now - b.since > 1500 then
       b.logged_wait = true
       info(string.format("battery: actor %s: the kneel waits: %s", hex(p.hdl), wait))
     end
@@ -769,48 +790,81 @@ function R.tired_reset()
   end
 end
 
-local function apply_set(p, set, what)
+-- the log text of a tired step: his tag, then `what` (written only when a line is logged)
+local function tired_line(p, ratio, what)
+  return string.format("T%d s%s%s PE %.0f %%", p.team, tostring(p.slot), p.team == frame.user and "*" or "", ratio * 100) .. what
+end
+
+-- a set already on is sent again only after this long (the battery's own re-apply rate)
+local LOCOMOTION_REAPPLY_MS = 500
+
+local function apply_set(p, set, ratio, what)
+  if p.loco == set and frame.now - (p.loco_ms or 0) < LOCOMOTION_REAPPLY_MS and frame.now >= (p.loco_ms or 0) then return end
+  p.loco_ms = frame.now
   local ok, code, text = pcall(VRFW.locomotion.set, p.hdl, set)
   if not ok or code < 0 then
     p.loco_err = p.loco_err or {}
     local c = ok and code or -99
     if not p.loco_err[c] then
       p.loco_err[c] = true
-      warn(string.format("tired_motion: actor %s: set %s: %s", hex(p.hdl), what, tostring(ok and text or code)))
+      warn(string.format("tired_motion: actor %s: set %s: %s", hex(p.hdl), tired_line(p, ratio, what), tostring(ok and text or code)))
     end
     p.loco = nil
     return
   end
-  if p.loco ~= set and code == 1 then info(string.format("tired_motion: actor %s: %s", hex(p.hdl), what)) end
+  if p.loco ~= set and code == 1 then info(string.format("tired_motion: actor %s: %s", hex(p.hdl), tired_line(p, ratio, what))) end
   p.loco = (code == 1) and set or nil
 end
 
+-- VRFW.locomotion.known per set name (the sets are built once per start: asked once)
+local KNOWN_SETS = {}
+local function set_known(set)
+  local k = KNOWN_SETS[set]
+  if k == nil then
+    k = VRFW.locomotion.known(set) == true
+    KNOWN_SETS[set] = k
+  end
+  return k
+end
+
+local IDLE_STATES = {}   -- [soccer state] = true: TM.idle_states as a set
+for _, s in ipairs(TM.idle_states) do IDLE_STATES[s] = true end
+
+-- the facts of one tired step: one table, filled again for each player; whether he has the ball is asked only when
+-- the pause needs it
+local TIRED_FACTS = { ratio = 1, eligible = false, has_ball = false, idle_state = false, now = 0 }
+local TIRED_HDL = 0
+local function tired_has_ball() return has_ball(TIRED_HDL) end
+
 local function tired_step(p, ratio)
   if not TM.enabled then return end
-  local eligible = (TM.keepers or p.pos ~= 0) and (TM.cpu or p.team == frame.user)
-  local idle_state = false
-  for _, s in ipairs(TM.idle_states) do if s == frame.state then idle_state = true end end
-  local w = T.step(p.tired, TM, { ratio = ratio, eligible = eligible, has_ball = has_ball(p.hdl), idle_state = idle_state, now = now_ms() / 1000 }, rng)
-  local tag = string.format("T%d s%s%s PE %.0f %%", p.team, tostring(p.slot), p.team == frame.user and "*" or "", ratio * 100)
+  local f = TIRED_FACTS
+  f.ratio = ratio
+  f.eligible = (TM.keepers or p.pos ~= 0) and (TM.cpu or p.team == frame.user)
+  TIRED_HDL = p.hdl
+  f.has_ball = tired_has_ball
+  f.idle_state = IDLE_STATES[frame.state] == true
+  f.now = frame.now / 1000
+  local w = T.step(p.tired, TM, f, rng)
   if w == "off" then
     tired_off(p)
   elseif w == "idle" then
-    if TM.idle_set:match("^%s*$") or not VRFW.locomotion.known(TM.idle_set) then
+    if TM.idle_set:match("^%s*$") or not set_known(TM.idle_set) then
       p.pause = false
     else
       p.pause = true
-      apply_set(p, TM.idle_set, tag .. ": exhausted pause " .. TM.idle_set)
+      apply_set(p, TM.idle_set, ratio, ": exhausted pause " .. TM.idle_set)
     end
   else
     p.pause = false
     local set = TM.run_sets[w.run]
-    if not set or not VRFW.locomotion.known(set) then
+    if not set or not set_known(set) then
       set = nil
       for _, s in ipairs(TM.run_sets) do
-        if VRFW.locomotion.known(s) then set = s break end
+        if set_known(s) then set = s break end
       end
     end
-    if set then apply_set(p, set, tag .. ": tired run " .. set) else tired_off(p) end
+    if set then apply_set(p, set, ratio, ": tired run " .. set) else tired_off(p) end
   end
 end
 
@@ -838,7 +892,7 @@ end
 
 local function step_player(p, actor, a)
   local hdl = p.hdl
-  local now = now_ms()
+  local now = frame.now
   local running = a.summon_state == 2 or a.meta_state == 4 or a.meta_state == 5
   local tracked = p.tr.keshin or p.tr.armour or p.tr.miximax or p.tr.out_run
   local unit = nil
@@ -904,8 +958,36 @@ local function step_player(p, actor, a)
   return obs, pe
 end
 
+-- the match's actors this frame and the actor table (nil outside a match): the library's reused list when it has one
+local function frame_actors()
+  if Actors.frame then return Actors.frame() end
+  local base = Actors.base()
+  if not base then return nil, nil end
+  return Actors.list(), base
+end
+
+local NO_MATCH = {}     -- (read only)
+local actor_recs = {}   -- [actor table index] = the table read_struct fills again every frame
+-- the record of a player without a transformation (filled again for each one: hdl, team and the two states; the step
+-- reads nothing else of it then)
+local IDLE_ACTOR = { hdl = 0, team = 0xFF, summon_state = 0, meta_state = 0, in_play = 0, summon_skill = 0, meta_skill = 0,
+  summon_full = 0, meta_full = 0 }
+local tick_no = 0       -- the frames walked (p.seen_tick: on the pitch this frame)
+-- a player without a transformation (nothing running, nothing tracked, no battery) is stepped at this rate, not every
+-- frame: his PE, tired motion and battery check change slowly; a frame cap keeps him stepped while the clock stands
+local IDLE_STEP_MS = 100
+local IDLE_STEP_MAX_FRAMES = 12
+-- the extra slot plates' states (VRFW.extra_slot.players) are read at the same rate
+local SLOT_READ_MS = 100
+local slots_read_ms, slots_read_tick = nil, 0
+
+-- the extra slot state of a player that needs his whole actor record (a fusion miximax or a mode change runs)
+local function slot_busy(es)
+  return es ~= nil and ((es.fusion or 0) ~= 0 or es.swap == true)
+end
+
 VRFW.on("tick", function(ev)
-  local m = ev.match or {}
+  local m = ev.match or NO_MATCH
   local mi = global("sp_match")
   frame.mi = mi
   frame.state = m.soccer_state or 0
@@ -914,17 +996,51 @@ VRFW.on("tick", function(ev)
   frame.user = mi and (rd("u8", mi + MI_USER_TEAM) or 0xFF) or 0xFF
   frame.clock = m.clock or 0
   frame.dt = m.dt or 0
+  frame.now = now_ms()
   frame.scene = global("sp_scene") or 0
   if not mi or frame.scene == 0 then return nil end
   frame_update()
   if not seen.in_match then return nil end
-  if not Actors.base() then return nil end
-  local okp, sl = pcall(VRFW.extra_slot.players)
-  slots = (okp and type(sl) == "table") and sl or {}
-  local live_now = {}
-  for _, entry in ipairs(Actors.list()) do
+  local list, base = frame_actors()
+  if not base then return nil end
+  tick_no = tick_no + 1
+  local now = frame.now
+  if slots_read_ms == nil or now - slots_read_ms >= SLOT_READ_MS or now < slots_read_ms
+    or tick_no - slots_read_tick >= IDLE_STEP_MAX_FRAMES then
+    local okp, sl = pcall(VRFW.extra_slot.players)
+    slots = (okp and type(sl) == "table") and sl or NO_SLOT
+    slots_read_ms, slots_read_tick = now, tick_no
+  end
+  -- every actor's summon / meta state in two reads: the whole record only for a player whose transformation runs, just
+  -- ended or whose extra slot runs a fusion / mode change
+  local summon = Actors.field and Actors.field("SpActor", "summon_state", base)
+  local meta = summon and Actors.field("SpActor", "meta_state", base)
+  for _, entry in ipairs(list) do
     local actor = entry.address
-    local a = VRFW.mem.read_struct("SpActor", actor)
+    local a = nil
+    local skip = false
+    if meta and not slot_busy(slots[entry.handle]) then
+      local ss, ms = summon[entry.index + 1], meta[entry.index + 1]
+      local q = players[entry.handle]
+      local tr = q and q.tr
+      if ss ~= 2 and ms ~= 4 and ms ~= 5 and not (tr and (tr.keshin or tr.armour or tr.miximax or tr.out_run)) then
+        -- (no transformation: his step reads only these two states)
+        a = IDLE_ACTOR
+        a.hdl, a.team, a.summon_state, a.meta_state = entry.handle, entry.team, ss, ms
+        -- (and runs at IDLE_STEP_MS while nothing else of his is going on)
+        if q and not q.battery and q.team == entry.team and q.idle_due and now < q.idle_due and now >= q.idle_from
+          and tick_no - q.idle_tick < IDLE_STEP_MAX_FRAMES then
+          skip = true
+          q.seen_tick = tick_no
+        end
+      end
+    end
+    if skip then
+      a = nil
+    elseif a == nil then
+      a = VRFW.mem.read_struct("SpActor", actor, actor_recs[entry.index])
+      if a then actor_recs[entry.index] = a end
+    end
     if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == entry.index and a.team <= 1 then
       local p = players[a.hdl]
       if not p then
@@ -932,7 +1048,7 @@ VRFW.on("tick", function(ev)
         players[a.hdl] = p
       end
       p.team = a.team
-      live_now[a.hdl] = true
+      p.seen_tick = tick_no
       if seen.ended then
         tired_off(p)
       else
@@ -946,12 +1062,19 @@ VRFW.on("tick", function(ev)
           tired_off(p)
         end
       end
+      if a == IDLE_ACTOR then
+        -- the next idle step (the first one spread over the players so they do not all step on the same frame)
+        local spread = p.idle_due == nil and (entry.index % 5) * (IDLE_STEP_MS / 5) or 0
+        p.idle_due, p.idle_from, p.idle_tick = now + IDLE_STEP_MS + spread, now, tick_no
+      else
+        p.idle_due = nil
+      end
     end
   end
   flush_records()
   -- players no longer on the pitch: nothing of theirs stays applied
-  for hdl, p in pairs(players) do
-    if not live_now[hdl] and not p.battery then tired_off(p) end
+  for _, p in pairs(players) do
+    if p.seen_tick ~= tick_no and not p.battery then tired_off(p) end
   end
   return nil
 end)

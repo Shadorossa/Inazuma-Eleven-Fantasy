@@ -564,8 +564,8 @@ id_kind3 = 4
 # between two of these live play states (a restart, a half, a substitution happen out of them), after a
 # metamorphosis / summon command (command type `aura_command` of event_build), a declared form's start / end
 # (transform), a match resource event (a spirit pool emptied) and the signal `vrfw.passives.refresh` (a mod that
-# grants passives or changes a lineup may send it). Spirits and granted passives are checked again on every answered
-# event.
+# grants passives or changes a lineup may send it). Spirits and granted passives are checked again after an answered
+# event (at most once per frame).
 [refresh]
 live_states = [9, 14, 15, 16]
 aura_command = 22

@@ -18,3 +18,7 @@ file = "spirit_purge.lua"
 [[script]]
 file = "pachangas.lua"
 allow = ["save"]
+
+# The album price (scripts\album_price.lua): reads config.toml only.
+[[script]]
+file = "album_price.lua"

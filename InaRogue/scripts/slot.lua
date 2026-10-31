@@ -6,7 +6,6 @@
 --
 --   CMND_EVT_SLOT_ROGUE()            -> rogueSlot, active, returnSlot, rogueHasGame
 --   CMND_EVT_SLOT_ROGUE_RESET()      -> ok, code (the slot file backed up and removed, the slot's mod data to the trash)
---   CMND_EVT_SLOT_ROGUE_RETURN(n)    -> ok («back» from the INAROGUE save goes to slot n = 2..3, 0 = the slot screen)
 --   CMND_EVT_S1P_LOAD()              -> ok, chapter, subPhase (the locked slot's progress; only inside the INAROGUE save)
 --   CMND_EVT_S1P_FLAG(bank, i)       -> value (bank 0 global bit flag, 1 global byte flag, 9 soccer-game clear bit)
 --   CMND_EVT_S1P_CHRON(kind, i)      -> byte (kind 0 clear / 1 lock / 2 new; -1 past the end)
@@ -20,7 +19,6 @@ require "VRFW/lib/basics"
 local info, warn, err = VRFW.logger("save_slots")
 
 local ROGUE_SLOT = math.floor(U.ROGUE_SLOT)
-local NORMAL_SLOTS = 3
 local ON = true   -- the slot service is the framework's: always there
 
 -- the story phase status: +0x08 the saved record, +0x14058 the live one; +4 / +8 of each = next / checked-free phase
@@ -83,15 +81,6 @@ function InaRogue.Slot.Info()
   local ret = r and (select(2, pcall(VRFW.slots.return_slot)) or 0) or 0
   local okh, has = pcall(VRFW.slots.used, ROGUE_SLOT)
   return ROGUE_SLOT, active(), tonumber(ret) or 0, r and okh and has == true
-end
-
-function InaRogue.Slot.Return(n)
-  if not ON then return nil end
-  n = int(n) or 0
-  local v = (n >= 2 and n <= NORMAL_SLOTS) and n or 0
-  local ok, done = pcall(VRFW.slots.set_return_slot, v)
-  info("INAROGUE return target = " .. (v == 0 and "the slot screen" or ("slot " .. v)))
-  return ok and done == true
 end
 
 function InaRogue.Slot.Reset()
@@ -200,17 +189,19 @@ end
 
 -- ------------------------------------------------------------------------------------------------ filters
 
--- «avatar created» / «title tutorial seen» read as set in the INAROGUE save
+-- «avatar created» / «title tutorial seen» read as set in the INAROGUE save (the game reads its global bit flags many
+-- times per frame: the flag id is looked at first, the slot only for these two)
 function InaRogue.Slot.AvatarFlag(id)
-  if not ON or not in_rogue() then return false end
+  if not ON then return false end
   id = int(id)
   if id ~= FLAG_AVATAR_DONE and id ~= FLAG_TITLE_TUTORIAL_SEEN then return false end
+  if not in_rogue() then return false end
   return true, true
 end
 
 -- the first-run team step is done in the INAROGUE save
 function InaRogue.Slot.FirstRun(k)
-  if not ON or not in_rogue() or int(k) ~= 1 then return false end
+  if not ON or int(k) ~= 1 or not in_rogue() then return false end
   return true, false
 end
 

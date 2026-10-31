@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Granizado de fuego (Fire Lemonade, whs02850), cut-in ev60_02850.
+#
+# In the cut-in (c0030) the ball flies off in its flame comet, dipping and climbing along a curve; where its aura is
+# kept (frame 316, research/scripts/fire_lemonade_ball_fx.py FLIGHT_HEIGHT) the ball is 1.2 m over the pitch. Flight:
+# straight and level at that height into the goal, the trail running straight behind the ball.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); points count from the kick; one point = a level flight; straight = true: one straight line from the kick
+# to the goal at that height.
+
+# Granizado de fuego (whs02850).
+[[edit]]
+target = "whs02850"
+trajectory = { points = [[0.0, 1.2]], straight = true, unblockable = false }

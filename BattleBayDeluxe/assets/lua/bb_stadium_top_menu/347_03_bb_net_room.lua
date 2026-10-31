@@ -6,7 +6,7 @@
 -- room list) are never opened then (the framework's online guard also refuses them). With only UI mods or none,
 -- BBN_Entry returns false and the caller runs its retail flow. Appended to two menus:
 --   bb_stadium_top_menu  the «Multijugador» row's decide (bbn_room.lua wraps OnDecideFocus)
---   soccer_top_menu      «Modos de juego»'s BB «Multi» box (Inazuma Fantasy's modes_hub calls BBN_Entry(host) before
+--   soccer_top_menu      a BB «Multi» box of that menu (none at present) calls BBN_Entry(host) before
 --                        its retail online steps; the host table gives that menu's header and its network_menu wait)
 -- Runs in the decide coroutine (sub windows and message windows wait with coroutine.yield). Globals only (BattleBayDeluxe.NetRoom,
 -- BBN_*); nothing runs at chunk load.

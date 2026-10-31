@@ -3,13 +3,14 @@ former_ids = ["character_reforged"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "Character Reforged"
-version = "1.101.0"
+version = "1.113.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
+# 1.113.0 (VRFW 2.400.0): «Quitar equipaciones ocultas» and the duplicate passes use the VR-Framework's save_tree / save_kits libraries.
 description = "The shared base of the mods split out of Inazuma Fantasy: every character's own stats (Lv 200 values, growth, level curve), moveset (4 special moves + aura) and the level cap 200 (config.toml [level] cap, 99..999: EXP and stats follow it); the custom pairing / creation flow of the aura mods (All Miximaxed, Custom Change Mode, Spirit & Stamina Points, All Keshin Armed), the pairing rules as data and the common texts; the one-row player header of the player page («Ficha» and every screen with the player header: portrait, nickname and «SIGUIENTE» gone; name, element, position, gender, level and number on one band) with a slot where other mods hang their pieces (Stamina Points: the max PE); the paged player page (PERFIL with the player's 3D model and description, ATRIBUTOS with the stats as gauge rows and the Normal / Miximax view, SUPERTÉCNICAS, the Hiper page of the new set's aura / mix slots, Pasivas, the page dots; other mods add their values through its slots); the optional skill table (6 special moves + an aura slot + a mix slot; off by default, row «Tabla de habilidades» of the mod options); the duplicate-players hook (a save duplicated into another slot gets the duplicate rules other mods declare: one card per character with Classic Cards; a rule may ask for the same pass on every load of a player slot, after a one-time backup of that save). The ídolos' «Equipación del momento»: each Ídolo and Diamond card wears the kit of its moment (its team's kit of its era, derived from the game's tables, or the moment_kit its card declares) in matches, menus, face icons and Kizuna town, switched on or off per player in «Equipamiento». Works with the VR-Framework alone."
 priority = 0
 tags = ["Gameplay", "Characters"]
-updated = "2026-10-30"
+updated = "2026-10-31"
 # 1.96.0: Comment links to existing docs
 # 1.82.0 (2026-10-29): module Signature Passives 1.14.0: the own passives of the 9 design docs (IE1 to IEVR), with
 # tension gain, stamina recovery, shots blocked, fouls suffered, chain shots, set pieces and «the only <trait>».
@@ -28,6 +29,9 @@ folder = "CharacterReforged"
 # 130_lineup_pages.lua, VRFW_PlayerPages.ShowWhen of vr_framework 2.4.242: no dot, no empty page)
 # 1.9.0 (Nacho 2026-10-19): the player page's model in front of the band on BetterMenu's roster again, through the
 # framework's capture quad binding (VRFW.render.capture_bind of vr_framework 2.5.0)
+# 1.108.0 (owner 2026-10-31): content\transforms\aura_stack.toml [rules] stack = keshin, aura, miximax, armour: the
+# Mix-Max starts while a keshin, an armour, a totem or an awakening power is out (under the armour: the armour keeps
+# its look and time, the fusion adds its stats and partner moves and ends with it; VRFW 2.357.0)
 # 1.33.0 (owner 2026-10-24): module Aura Reworked 1.10.0: the totem's skill carousel inside the cut-in of its own
 # move (a screen of its own, VRFW.ui.open_menu of VRFW 2.151.0), replacing the reel under the scoreboard
 # 1.32.0 (owner 2026-10-24): content\transforms\aura_stack.toml [rules] stack = keshin, aura, miximax: the Mix-Max
@@ -51,7 +55,7 @@ folder = "CharacterReforged"
 # 1.15.0 (owner 2026-10-22): the voice fill groups a character by its Japanese and English names, an adult bank
 # only takes adult banks' cues and a youth bank youth banks' (chara_base age group), and a technique's other keys come
 # from the bank's own cue of it (God Hand whk00010 -> whk00480, whk01710; vr_framework 2.44.0)
-requires = ["VRFW>=2.260.0"]
+requires = ["VRFW>=2.400.0"]
 conflicts = []
 # hook / state: the per-character stats (content\game\stats.toml: GetCharaParamStatus, the specialty type, the
 # run speed; scripts\stats.lua's state keys); memory: the card records / board slots it reads (and the board branch it keeps on branch 1 while the new set is

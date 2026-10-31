@@ -11,6 +11,7 @@
 # (docs/refactor/aura-mods-split.md «Skill table», the 6 + 1 + 1 mapping).
 [[option]]
 id = "skill_set_view"                         # row key character_reforged.skill_set_view
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "toggle"
 label = "skill_set_view"                      # text\keys.toml, 9 languages
 help = "skill_set_view_help"

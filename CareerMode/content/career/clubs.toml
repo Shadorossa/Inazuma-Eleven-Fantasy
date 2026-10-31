@@ -1,0 +1,114 @@
+schema = "CareerMode.career/1"
+
+# Career mode: the career's clubs (config.toml [squads] clubs_file; kind CareerMode.career/1,
+# content/types/career.toml). Edit freely.
+# Every career team (Battle Bay Deluxe's clubs and the game's own Battle Bay teams, config.toml [teams]) is a club of its
+# own unless listed here:
+# * [[CareerMode.Club]]: one club made of several versions of a team. `key` = the team that gives the club its name,
+#   crest, kit and roster rows; `versions` = the other teams whose players join its squad (a person once; each player
+#   still belongs to the earliest version that has him, content/career/club_order.toml). The versions are no clubs of
+#   their own.
+# * [[CareerMode.NoClub]]: a team that is no career club (its players go to the other clubs that have them, else to
+#   the free players).
+# * [[CareerMode.GameClub]]: a team of the game's team table (no source mod declares it) that is a career club:
+#   `key` its team_config key, `name_text` (optional) another team_text name for it, `series` its series (the
+#   [[team]] series names, for its tag next to a same-name club). Its place in the club order: content/career/
+#   club_order.toml.
+# A club enters a career with config.toml [squads] min_players own players or more; the squad keeps every own player
+# (it may pass fill_to) and a match takes [match] squad_size of them.
+
+[[CareerMode.NoClub]]
+key = "bb_10_team_omega_2.0"   # Protocolo Omega 2.0: Élite Omega is the club (owner)
+
+[[CareerMode.NoClub]]
+key = "bbcr_go2_0100_bb"   # Protocolo Omega
+
+[[CareerMode.NoClub]]
+key = "bbcr_go2_0800_bb"   # Protocolo Omega 3.0
+
+[[CareerMode.Club]]
+key = "bb_01_team_raimon"            # Raimon (the game's Battle Bay team)
+versions = [
+    "bbcr_legend_ie1_01_bb",          # Raimon 1
+    "bbcr_legend_ie1_10_bb",          # Neo Raimon
+    "bbcr_legend_ie2_10_bb",          # Suplentes del Raimon
+    "bb_08_team_raimon_go",           # Raimon revolucionario
+    "bbcr_legend_go1_10_bb",          # Segundo equipo del Raimon
+]
+
+[[CareerMode.Club]]
+key = "bb_03_team_zeus"              # Zeus (the game's Battle Bay team)
+versions = [
+    "bbcr_legend_ie1_09_bb",          # Ultra Zeus
+    "bbcr_ares_0600_bb",              # Zeus (Ares)
+]
+
+[[CareerMode.Club]]
+key = "bb_02_team_empire"            # Royal Academy (the game's Battle Bay team)
+versions = [
+    "bbcr_ie2_0800_bb",               # Royal Academy Redux
+    "bbcr_legend_ie2_04_bb",          # Neo Royal Academy
+    "bbcr_go1_0600_bb",               # Royal Academy (GO)
+    "bbcr_ares_0500_bb",              # Royal Academy (Ares)
+    "bbcr_victory_0505_bb",           # Royal Academy (Victory Road)
+]
+
+[[CareerMode.Club]]
+key = "bbcr_ie1_0200_bb"             # Inazuma Kids FC
+versions = ["bbcr_go1_0200_bb"]      # Inazuma Kids FC (GO)
+
+[[CareerMode.Club]]
+key = "bbcr_ie1_0500_bb"             # Brain
+versions = ["bbcr_ares_0400_bb"]     # Brain (Ares)
+
+[[CareerMode.Club]]
+key = "bbcr_ie1_1100_bb"             # Kirkwood
+versions = ["bbcr_go1_1100_bb", "bbcr_ares_0305_bb"]   # Kirkwood (GO, Ares)
+
+[[CareerMode.Club]]
+key = "bbcr_legend_ie1_05_bb"        # Fase previa FF A
+versions = ["bbcr_legend_ie1_11_bb"] # Fase previa FF B
+
+[[CareerMode.Club]]
+key = "bbcr_legend_ie1_12_bb"        # Fase nacional FF A
+versions = ["bbcr_legend_ie1_08_bb"] # Fase nacional FF B
+
+[[CareerMode.Club]]
+key = "bbcr_ie2_0400_bb"             # Alpino
+versions = ["bbcr_go1_1000_bb", "bbcr_ares_0705_bb"]   # Alpino (GO, Ares)
+
+[[CareerMode.Club]]
+key = "bbcr_ie2_1800_bb"             # Caos
+versions = ["bbcr_legend_ie2_08_bb"] # Nuevo Caos
+
+[[CareerMode.Club]]
+key = "bbcr_legend_ie2_02_bb"        # Alius A
+versions = ["bbcr_legend_ie2_05_bb"] # Alius B
+
+[[CareerMode.Club]]
+key = "bbcr_legend_ie2_06_bb"        # Selección nacional A
+versions = ["bbcr_legend_ie2_11_bb"] # Selección nacional B
+
+[[CareerMode.Club]]
+key = "bbcr_legend_ie3_03_bb"        # Ángeles del Caos
+versions = ["bbcr_legend_go1_13_bb"] # Ángeles del Caos Zero
+
+[[CareerMode.Club]]
+key = "bb_24_team_senshinjapan_a"    # Inazuma Japón Implacable A
+versions = ["bb_25_team_senshinjapan_b"]   # Inazuma Japón Implacable B
+
+# South Cirrus (owner 2026-10-31): the game's Chronicle team «South Cirrus Junior High», named «South Cirrus»; the
+# Battle Bay South Cirrus A / B / C are no clubs
+[[CareerMode.GameClub]]
+key = "tm_cro_victory_0700"          # South Cirrus Junior High
+name_text = 0xA45F87A7               # team_text «<MNT:NAGUMOHARA>» (South Cirrus)
+series = "VICTORY"
+
+[[CareerMode.NoClub]]
+key = "bb_14_team_nagumoharaA"       # South Cirrus A
+
+[[CareerMode.NoClub]]
+key = "bb_15_team_nagumoharaB"       # South Cirrus B
+
+[[CareerMode.NoClub]]
+key = "bb_16_team_nagumoharaC"       # South Cirrus C

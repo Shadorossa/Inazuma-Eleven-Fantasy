@@ -146,14 +146,32 @@ end
 -- the qualified clubs (SuperLiga order) into pots of `count` (pot k = places (k-1)*count+1 .. k*count) and `count`
 -- leagues with one club of each pot; two clubs of one family never share a league when a swap inside the pot avoids
 -- it. -> pots = { { ids } }, leagues = { { ids } } (league l holds the l-th club of every shuffled pot, pot order)
+-- the pot of the qualified place `place` (1-based, SuperLiga order) with `count` leagues and `qualified` clubs going
+-- through: places 1..count fill pot 1, the next count pot 2, ...; nil past the qualified places
+function M.pot_of(place, count, qualified)
+  if count < 1 or place < 1 or place > floor(qualified / count) * count then return nil end
+  return floor((place - 1) / count) + 1
+end
+
+-- the swatch of pot k among `colours` pot colours (config.toml [pots]: cycled past the last): its TINT name
+function M.pot_tint(pot, colours)
+  if pot == nil or colours < 1 then return nil end
+  return "pot" .. ((pot - 1) % colours + 1)
+end
+
 function M.deal(qualified, count, family, rng)
   local pots, leagues = {}, {}
   for l = 1, count do leagues[l] = {} end
-  for k = 1, floor(#qualified / count) do
+  for i, t in ipairs(qualified) do
+    local k = M.pot_of(i, count, #qualified)
+    if k then
+      pots[k] = pots[k] or {}
+      pots[k][#pots[k] + 1] = t
+    end
+  end
+  for k = 1, #pots do
     local pot = {}
-    for i = 1, count do pot[i] = qualified[(k - 1) * count + i] end
-    pots[k] = {}
-    for i, t in ipairs(pot) do pots[k][i] = t end
+    for i, t in ipairs(pots[k]) do pot[i] = t end
     rng:shuffle(pot)
     for l = 1, count do
       local fam = family[pot[l]]
@@ -189,10 +207,38 @@ end
 
 -- ------------------------------------------------------------------------------------------------ Fútbol Frontier
 
+-- the largest power of two not over n (1 for n < 2)
+local function power_below(n)
+  local p = 1
+  while p * 2 <= n do p = p * 2 end
+  return p
+end
+M.power_below = power_below
+
+-- clubs of several leagues ranked against each other: by place, then points per match, goal difference, goals for,
+-- league order. list = { { team, league, place } }, rows[l][place] = standing row (Competition.standings)
+local function ranked(list, rows)
+  local function row(x) return rows and rows[x.league] and rows[x.league][x.place] or {} end
+  local function per_match(r) return (r.points or 0) / math.max(1, r.played or 0) end
+  table.sort(list, function(a, b)
+    if a.place ~= b.place then return a.place < b.place end
+    local ra, rb = row(a), row(b)
+    if per_match(ra) ~= per_match(rb) then return per_match(ra) > per_match(rb) end
+    if (ra.goal_diff or 0) ~= (rb.goal_diff or 0) then return (ra.goal_diff or 0) > (rb.goal_diff or 0) end
+    if (ra.goals_for or 0) ~= (rb.goals_for or 0) then return (ra.goals_for or 0) > (rb.goals_for or 0) end
+    return a.league < b.league
+  end)
+  return list
+end
+
 -- the play-off round: place p of league l against place (low + high - p) of league l + (p - low + 1) (another league
 -- whenever there are two or more); the better place plays at home. standings = { [l] = { team ids by place } }
 -- -> { { home, away, league_home, league_away } } (place `low` first, league order), direct = { { team, league, place } }
-function M.frontier_entry(standings, cfg)
+-- When the direct clubs and the play-off winners are no power of two (a league count with a factor 3), the knockout
+-- takes the largest power of two below: the direct clubs, then play-off matches between the best ranked clubs of the
+-- play-off places (`ranked`: the best against the worst, another league whenever it can); too many direct clubs: the
+-- best ranked of them and no play-off. rows = { [l] = { standing rows by place } } for the ranking
+local function frontier_regular(standings, cfg)
   local n = #standings
   local direct, playoff = {}, {}
   for p = 1, cfg.direct_places do
@@ -210,6 +256,87 @@ function M.frontier_entry(standings, cfg)
       if a and b then playoff[#playoff + 1] = { a, b, l, o } end
     end
   end
+  return playoff, direct
+end
+
+-- the knockout of `cfg.entrants` clubs (round 1 = the round of that many): places 1..k of every league (k = entrants /
+-- leagues), then the best ranked clubs of place k + 1 (`ranked`) until the count is full (a power of two, the largest
+-- one the leagues fill). Round 1 pairs the best ranked against the worst (league winners first), with another league
+-- whenever it can. standings / rows as in frontier_entry -> { { home, away, league_home, league_away } } (seed order)
+function M.frontier_draw(standings, cfg, rows)
+  local n = #standings
+  if n == 0 then return {} end
+  local per = floor((cfg.entrants or 0) / n)
+  local list, extra = {}, {}
+  for l = 1, n do
+    for p = 1, per do
+      local t = standings[l][p]
+      if t then list[#list + 1] = { team = t, league = l, place = p } end
+    end
+    local t = standings[l][per + 1]
+    if t then extra[#extra + 1] = { team = t, league = l, place = per + 1 } end
+  end
+  ranked(extra, rows)
+  local fill = (cfg.entrants or 0) - #list
+  for i = 1, math.min(fill, #extra) do list[#list + 1] = extra[i] end
+  ranked(list, rows)
+  local want = power_below(#list)
+  for i = #list, want + 1, -1 do list[i] = nil end
+  local high, low = {}, {}
+  for i = 1, floor(#list / 2) do high[i], low[i] = list[i], list[#list + 1 - i] end
+  for i = 1, #high do
+    if low[i].league == high[i].league then
+      for j = i + 1, #low do
+        if low[j].league ~= high[i].league and low[i].league ~= high[j].league then
+          low[i], low[j] = low[j], low[i]
+          break
+        end
+      end
+    end
+  end
+  local out = {}
+  for i = 1, #high do out[i] = { high[i].team, low[i].team, high[i].league, low[i].league } end
+  return out
+end
+
+function M.frontier_entry(standings, cfg, rows)
+  local playoff, direct = frontier_regular(standings, cfg)
+  local size = #direct + #playoff
+  local want = power_below(size)
+  if size < 2 or want == size then return playoff, direct end
+  direct = ranked(direct, rows)
+  if #direct >= want then
+    for i = #direct, want + 1, -1 do direct[i] = nil end
+    table.sort(direct, function(a, b) if a.place ~= b.place then return a.place < b.place end return a.league < b.league end)
+    return {}, direct
+  end
+  local need = want - #direct
+  local pool = {}
+  for p = cfg.playoff_places[1], cfg.playoff_places[2] do
+    for l = 1, #standings do
+      local t = standings[l][p]
+      if t then pool[#pool + 1] = { team = t, league = l, place = p } end
+    end
+  end
+  ranked(pool, rows)
+  local n = math.min(#pool, 2 * need)
+  local high, low = {}, {}
+  for i = 1, floor(n / 2) do high[i], low[i] = pool[i], pool[n + 1 - i] end
+  -- the worst of the low half against the best of the high half; an away side of the home side's league swapped with
+  -- the next low one of another league
+  for i = 1, #high do
+    if low[i].league == high[i].league then
+      for j = i + 1, #low do
+        if low[j].league ~= high[i].league and low[i].league ~= high[j].league then
+          low[i], low[j] = low[j], low[i]
+          break
+        end
+      end
+    end
+  end
+  playoff = {}
+  for i = 1, #high do playoff[i] = { high[i].team, low[i].team, high[i].league, low[i].league } end
+  table.sort(direct, function(a, b) if a.place ~= b.place then return a.place < b.place end return a.league < b.league end)
   return playoff, direct
 end
 

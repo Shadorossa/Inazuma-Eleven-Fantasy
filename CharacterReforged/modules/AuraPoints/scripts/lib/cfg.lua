@@ -50,12 +50,6 @@ function M.points(t, parts)
     if keeper_home then return base * c.cs_armour_gk_zone_mult end
     return base
   end
-  -- does an aura of this auraType run on a pool (0 keshin, 1 armour: PEG; 3 totem: SP)
-  function c.pool_type(ty)
-    if ty == 0 or ty == 1 then return c.peg() end
-    if ty == 3 then return c.sp() end
-    return false
-  end
   return c
 end
 

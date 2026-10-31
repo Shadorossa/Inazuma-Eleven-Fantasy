@@ -149,6 +149,11 @@ local function ratings()
   return RATINGS
 end
 
+-- exported ([exports] functions): team id -> rating of the rating table after its header check; {} without one
+function BattleBayDeluxe.Ratings()
+  return ratings()
+end
+
 -- ------------------------------------------------------------------------------------------------ the draw
 
 -- the candidates: every row (table order) whose team is not the player's, not 0, not repeated, and unlocked: a row

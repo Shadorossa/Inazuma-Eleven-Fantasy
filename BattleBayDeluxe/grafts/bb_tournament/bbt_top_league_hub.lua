@@ -97,17 +97,11 @@ function BBT_HubTeamEditor()
   for _, l in ipairs(BattleBayDeluxe.TournamentHost.lists or {}) do
     funcLuaMenuCommand(@crc:CMND_SET_ENABLE_CTRL_FOCUS@, l, false)
   end
-  -- 1.68.0 (owner 2026-10-29: «Revisa el fondo también», the plain Battle Bay backdrop under the dock): the hub's own
-  -- background (vroad04_01_p1_bg, as BBT_Open places it; BBT_Close closed it) is open under the dock and stays open
-  -- for the hub that comes back after it
-  local G = BattleBayDeluxe.Tournament.G
-  local sy = (G.BG_BOTTOM - G.BG_TOP) / G.BG_H
-  bbt_open_layer(BattleBayDeluxe.Tournament.L.bg, 0)
-  funcLuaMenuCommand(BattleBayDeluxe.Tournament.C.SCALE, BattleBayDeluxe.Tournament.L.bg, 1, sy, 1, 0)
-  funcLuaMenuCommand(BattleBayDeluxe.Tournament.C.POS, BattleBayDeluxe.Tournament.L.bg, 0, -(G.BG_TOP - G.BG_Y * sy), 0, 0)
-  funcLuaMenuCommand(BattleBayDeluxe.Tournament.C.VISIBLE, BattleBayDeluxe.Tournament.L.bg, 0, true)
+  -- 1.92.0 (owner 2026-10-31: a plain grey screen under the dock): no hub band under the dock; the framework's editor
+  -- gives the dock the retail team screen background on this menu (BBT_Open places the band again for the hub)
   -- 1.67.0 (owner 2026-10-29): a league team is not one of the player's: the editor's foreign team mode (its own
-  -- coach, kit, emblem, tactics, synergies and stadium; no bank, no team switching, no active team)
+  -- coach, kit, emblem, tactics, synergies and stadium; no bank, no team switching, no active team; no coach = an
+  -- empty coach place)
   local own = sq.kind == "own"
   local res, why = VRFW_TeamEditor.Run({
     owner = "BattleBayDeluxe", host = BattleBayDeluxe.TournamentHost.menu, own = own, foreign = not own, members = sq.members,

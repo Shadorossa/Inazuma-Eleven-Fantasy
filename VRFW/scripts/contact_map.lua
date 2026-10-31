@@ -99,8 +99,7 @@ end
 -- ---------------------------------------------------------------------------------------------- own faces
 -- A player with no face icon of his own would be drawn with the default face, so such players are left out of every map.
 -- Derived from the data: the node's `Face`, else the internal name (chara_base `name`) of its `Base` / its card's base. Cannot tell: kept.
-local FACE_FILE = "data/dx11/menu/200_icon/10_icon_chr/face/%s_l.g4tx"
-local FACES = { has = {} }
+local Faces = require "VRFW/lib/faces"     -- the one own-face check (docs/framework/chara-index.md §2)
 
 -- The framework's shared character index (VRFW.chara): internal name and name text per chara_base id, chara_base id per card; asked per id and cached here.
 
@@ -134,10 +133,6 @@ local function chara_index()
   local ok, e = pcall(VRFW.chara.card, 0)     -- builds the shared index now (once per session for every script)
   if not ok then warn("character index not readable: " .. tostring(e)) end
   CHARA = {
-    name_of = lazy(function(b)
-      local c = character(b)
-      return c and c.name ~= "" and c.name or nil
-    end),
     text_of = lazy(function(b)
       local c = character(b)
       return c and u32(c.name_text) or nil
@@ -153,22 +148,10 @@ end
 
 -- true = an own face icon, false = none (the engine's default face), nil = cannot tell
 local function own_face(face, base, card)
-  if type(VRFW.files) ~= "table" or type(VRFW.files.game_file) ~= "function" then return nil end
-  local key = face ~= "" and face or nil
-  if key == nil then
-    local C = chara_index()
-    local b = base ~= 0 and base or C.base_of[card]
-    key = b and C.name_of[b] or nil
-    if key == nil then return nil end
-  end
-  local has = FACES.has[key]
-  if has == nil then
-    local ok, k, why = pcall(VRFW.files.game_file, string.format(FACE_FILE, key))
-    if not ok or (k == nil and why == "no host") then return nil end
-    has = k ~= nil
-    FACES.has[key] = has
-  end
-  return has
+  if face ~= "" then return Faces.of_name(face) end
+  local b = base ~= 0 and base or chara_index().base_of[card]
+  if b == nil then return nil end
+  return Faces.of_character(b)
 end
 
 -- ---------------------------------------------------------------------------------------------- excluded cards
@@ -607,7 +590,7 @@ local function load()
         if M.faceless ~= nil then
           if M.players == 0 then
             -- Every player of the map lacks a face: the face check is assumed wrong (for example, another game build); keep them.
-            warn(key .. ": no player has a face icon (" .. FACE_FILE .. "): the face check is skipped for this map")
+            warn(key .. ": no player has a face icon (VRFW/lib/faces): the face check is skipped for this map")
             for _, node in ipairs(M.faceless) do
               node.kind = "player"
               M.players = M.players + 1

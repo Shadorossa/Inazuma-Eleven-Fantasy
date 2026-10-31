@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Pingüinos de luz y sombra (Penguin Reckoning, whs03250, cut-in ev60_03250): one
+# straight level line from the kick point to the goal, the ball at 2.0 m the whole way (the cut-in's ball dives toward
+# the goal; the penguins gliding round it reach ~0.6 m below the ball and stay clear of the grass from this height).
+# Heights are the ball centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Pingüinos de luz y sombra (whs03250).
+[[edit]]
+target = "whs03250"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

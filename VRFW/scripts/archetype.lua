@@ -660,7 +660,21 @@ if ON then
       fire(1 - side, "conceded")
     end
   end)
+end
 
+-- the tick counts the live seconds without a shot (no_shot rules) and refreshes the effects: none of them declared,
+-- no per-frame handler
+local function needs_tick()
+  if ANY_FX then return true end
+  for _, x in ipairs(LIST) do
+    for _, r in ipairs(x.rules) do
+      if r.on == "no_shot" then return true end
+    end
+  end
+  return false
+end
+
+if ON and needs_tick() then
   VRFW.on("tick", function(ev)
     local m = ev.match or {}
     local dt = tonumber(m.dt) or 0

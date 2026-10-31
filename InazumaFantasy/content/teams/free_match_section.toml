@@ -3,10 +3,12 @@ schema = "VRFW.team/2"
 # page 2 (VR-Framework section pages, docs/framework/team-sections.md). Its icon is the outlined F
 # (content\images\menu\200_icon\16_icon_list_tab\icon_list_tab.toml), its name a menu_text row
 # (text\rows\free_match_section.toml).
-# Teams: the mod's own (content\teams\*.toml). Each is a new game of the section: the generic free match
+# Teams: the mod's own (content\teams\*.toml), named by the mod's key id inazuma_fantasy_2. Each is a new game of the section: the generic free match
 # fbtl_free_001's class-9 row against the team, listed from the start: its hidden piece takes the status of the first
-# Chronicle piece (fbtl_cro01_010_010), as the Cross section's piece does. The classes below make rows 7 / 8 from row 9
-# (class AI of each class) and set the levels.
+# Chronicle piece (fbtl_cro01_010_010), as the Cross section's piece does. The classes below are the three free-match
+# classes Chronicle Deluxe offers (its content\defaults\match_difficulty.toml): INAZUMA (6) Nv. 50, ZONA LETAL (7)
+# Nv. 99 and the Nv. 200 class (9). Rows 6 / 7 are made from row 9 (class AI of each class); RANGO DIVINO (8) is not
+# one of them.
 
 [[VRFW.FreeMatchTab]]
 Id = "fantasy"
@@ -18,13 +20,11 @@ Page = 2
 Template = "fbtl_free_001"
 Unlock = "fbtl_cro01_010_010"
 Teams = [
-  { Team = "InazumaFantasy.ct_ft_leyenda_viva" },
-  { Team = "InazumaFantasy.ct_ft_llama_eterna" },
-  { Team = "InazumaFantasy.ct_ft_punishment" },
-  { Team = "InazumaFantasy.ct_ft_crossed_japan" },
+  { Team = "inazuma_fantasy_2.ct_ft_punishment" },
+  { Team = "inazuma_fantasy_2.ct_ft_crossed_japan" },
 ]
 VRFW.Difficulties = [
-  { Difficulty = 7, Level = 50 },
-  { Difficulty = 8, Level = 125 },
+  { Difficulty = 6, Level = 50 },
+  { Difficulty = 7, Level = 99 },
   { Difficulty = 9, Level = 200 },
 ]

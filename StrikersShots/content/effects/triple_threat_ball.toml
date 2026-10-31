@@ -1,0 +1,28 @@
+# «Triple amenaza» (Triple Threat, whs01700, whs01700_mm and whs01700_or, same cut-in; mountain shot of three players,
+# cut-in ev60_01700): while the ball flies to the goal it wears the cut-in's last shot (c0500, held at frame 356, the
+# ball at full speed, from the aura's first frame): the blue wind aura round the ball with its bright blue streak and
+# its lightning crackling round it, the white wind tunnel behind it (its front fading in at the ball), the white wind
+# rings (round from every side) and the blue wind streams with their lightning, coming out of the kick point as the
+# ball flies (never stretched, soft rear end) and fading out at the far end, x1, instead of the plain mountain
+# special-shot aura (ega0075a). Left out: the 6-8 m black lightning jags, the kick-only flares and the radial-light
+# backdrop.
+# The object is ev6170tt00 (effect/event/ev60/ev6170tt00/), built by research/scripts/triple_threat_ball_fx.py from
+# ev60017000.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\triple_threat_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "triple_threat"
+from = "ega0075a"
+object = "effect/event/ev60/ev6170tt00/ev6170tt00.objbin"
+
+[[shot_aura]]
+name = "triple_threat"
+when = { techniques = ["whs01700", "whs01700_mm", "whs01700_or"] }
+aura = "triple_threat"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

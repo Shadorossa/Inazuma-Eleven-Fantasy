@@ -200,10 +200,10 @@ passive = "c08020090_pase_de_embestida"
 character = "c08020090"
 tags = ["speedster"]
 
-# Hwang Bull-gim: Torbellino de cuernos — power of the Storm-family techniques of every teammate +3 %
+# Hwang Bull-gim: Torbellino de cuernos — each dash he makes: Cyclone power +5 % (max 3, 20 s each)
 [[VRFW.Passive]]
 name = "c08020100_torbellino_de_cuernos"
-blocks = ["orion_other_family_whirlwinds", "orion_other_techniquepower_team_3", "orion_other_card_c08020100"]
+blocks = ["orion_other_when_dash_by_self", "orion_other_stack_max3_20s", "orion_other_move_whd00070", "orion_other_techniquepower_self_5", "orion_other_card_c08020100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -256,10 +256,10 @@ passive = "c08020130_cuerno_de_oro"
 character = "c08020130"
 tags = ["beast"]
 
-# Harh Bull-gull: Muro de fuego — power of the Wall-family techniques of every teammate +8 %
+# Harh Bull-gull: Muro de fuego — Ignited Steal power +5 % per Fire-element teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c08020140_muro_de_fuego"
-blocks = ["orion_other_family_greatwalls", "orion_other_techniquepower_team_8", "orion_other_card_c08020140"]
+blocks = ["orion_other_count_fire_team_max3", "orion_other_move_whd00480", "orion_other_techniquepower_self_5", "orion_other_card_c08020140"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -284,10 +284,10 @@ passive = "c11808010_sangre_de_toro_nuevo"
 character = "c11808010"
 tags = ["rebel", "rookie"]
 
-# Serge Atanas: Balón del Diablo — power of the Devil-family techniques of every teammate +8 %
+# Serge Atanas: Balón del Diablo — Devil Ball power +15 % while he holds the ball in the opponent half
 [[VRFW.Passive]]
 name = "c08030010_balon_del_diablo"
-blocks = ["orion_other_family_majingiant", "orion_other_techniquepower_team_8", "orion_other_card_c08030010"]
+blocks = ["orion_other_holds_ball", "orion_other_zone_opponent_half", "orion_other_move_who00650", "orion_other_techniquepower_self_15", "orion_other_card_c08030010"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -298,10 +298,10 @@ passive = "c08030010_balon_del_diablo"
 character = "c08030010"
 tags = ["striker", "rebel"]
 
-# Aster Roth: Caída del ocaso — power of the Shadow-family techniques of every teammate +4 %
+# Aster Roth: Caída del ocaso — Dimensional Deluge power +15 % in the second half
 [[VRFW.Passive]]
 name = "c08030020_caida_del_ocaso"
-blocks = ["orion_other_family_illusions", "orion_other_techniquepower_team_4", "orion_other_card_c08030020"]
+blocks = ["orion_other_half_2", "orion_other_move_whs02020", "orion_other_techniquepower_self_15", "orion_other_card_c08030020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -452,10 +452,10 @@ passive = "c08030120_entrada_infernal"
 character = "c08030120"
 tags = ["rebel"]
 
-# Zagan Barbatos: Fuego fatuo — power of the Thunder-family techniques of every teammate +3 %
+# Zagan Barbatos: Fuego fatuo — Will-o'-the-Wisp Shot power +15 % while a «Místico» teammate holds the ball
 [[VRFW.Passive]]
 name = "c08030130_fuego_fatuo"
-blocks = ["orion_other_family_inazumapower", "orion_other_techniquepower_team_3", "orion_other_card_c08030130"]
+blocks = ["orion_other_holder_mystic_team", "orion_other_move_whs01590", "orion_other_techniquepower_self_15", "orion_other_card_c08030130"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -718,10 +718,10 @@ passive = "c08050010_halcon_del_desierto"
 character = "c08050010"
 tags = ["captain", "wall"]
 
-# Osprey Al-Bahar: Muralla de las arenas — power of the Wall-family techniques of every teammate +8 %
+# Osprey Al-Bahar: Muralla de las arenas — his block power +6 % while his team is level
 [[VRFW.Passive]]
 name = "c08050020_muralla_de_las_arenas"
-blocks = ["orion_other_family_greatwalls", "orion_other_techniquepower_team_8", "orion_other_card_c08050020"]
+blocks = ["orion_other_score_level", "orion_other_techniquepower_self_block_6", "orion_other_card_c08050020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -830,10 +830,10 @@ passive = "c08050090_fuego_de_artificio"
 character = "c08050090"
 tags = ["cannon"]
 
-# Condor Al-Kundur: Picado del cóndor — power of the Bird-family techniques of every teammate +6 %
+# Condor Al-Kundur: Picado del cóndor — Condor Dive power +5 % per «Acróbata» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c08050100_picado_del_condor"
-blocks = ["orion_other_family_legendarybirds", "orion_other_techniquepower_team_6", "orion_other_card_c08050100"]
+blocks = ["orion_other_count_acrobat_team_max3", "orion_other_move_whs00240", "orion_other_techniquepower_self_5", "orion_other_card_c08050100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -872,10 +872,10 @@ passive = "c08050120_espejismo_de_arena"
 character = "c08050120"
 tags = ["rebel"]
 
-# Eagle Al-Suhra: Vuelo en bandada — his dribble power +3 % per Bird-family technique carried by a teammate on the pitch (max 3)
+# Eagle Al-Suhra: Vuelo en bandada — Flaming Firebird power of every teammate +10 %
 [[VRFW.Passive]]
 name = "c08050130_vuelo_en_bandada"
-blocks = ["orion_other_count_legendarybirds_team_max3", "orion_other_techniquepower_self_dribble_3", "orion_other_card_c08050130"]
+blocks = ["orion_other_move_whs03190", "orion_other_techniquepower_team_10", "orion_other_card_c08050130"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1026,10 +1026,10 @@ passive = "c08060080_disparo_del_heroe"
 character = "c08060080"
 tags = ["striker", "acrobat"]
 
-# Jimmy Wongfu: Águila vengadora — power of the Bird-family techniques of every teammate +6 %
+# Jimmy Wongfu: Águila vengadora — Avenging Eagle power +15 % while his team is behind
 [[VRFW.Passive]]
 name = "c08060090_aguila_vengadora"
-blocks = ["orion_other_family_legendarybirds", "orion_other_techniquepower_team_6", "orion_other_card_c08060090"]
+blocks = ["orion_other_score_trailing", "orion_other_move_whs03340", "orion_other_techniquepower_self_15", "orion_other_card_c08060090"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1586,10 +1586,10 @@ passive = "c08090080_triple_salida"
 character = "c08090080"
 tags = ["speedster"]
 
-# Boris Kaprichyov: Armadura de hielo — his block power +4 % per Ice-family technique carried by a teammate on the pitch (max 3)
+# Boris Kaprichyov: Armadura de hielo — his physical +4 % per «Muro» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c08090090_armadura_de_hielo"
-blocks = ["orion_other_count_northernice_team_max3", "orion_other_techniquepower_self_block_4", "orion_other_card_c08090090"]
+blocks = ["orion_other_count_wall_team_max3", "orion_other_stat_self_physical_4", "orion_other_card_c08090090"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1936,10 +1936,10 @@ passive = "c08110020_galope_gemelo"
 character = "c08110020"
 tags = ["speedster", "acrobat"]
 
-# Brandimarte Ruffo: Espada de Odín — power of the Sword-family techniques of every teammate +8 %
+# Brandimarte Ruffo: Espada de Odín — Odin Sword power +5 % per «Noble» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c08110030_espada_de_odin"
-blocks = ["orion_other_family_legendaryweapons", "orion_other_techniquepower_team_8", "orion_other_card_c08110030"]
+blocks = ["orion_other_count_noble_team_max3", "orion_other_move_whs01070", "orion_other_techniquepower_self_5", "orion_other_card_c08110030"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2454,10 +2454,10 @@ passive = "c08130090_tiro_patriota"
 character = "c08130090"
 tags = ["rebel", "beast"]
 
-# Ted Bryant: Carga de reserva — his catch power +3 % per teammate on the pitch carrying a Wall-family move (max 3)
+# Ted Bryant: Carga de reserva — teammates recover stamina 4 % faster in the last third of each half
 [[VRFW.Passive]]
 name = "c08130100_carga_de_reserva"
-blocks = ["orion_other_count_greatwalls_team_max3", "orion_other_techniquepower_self_catch_3", "orion_other_card_c08130100"]
+blocks = ["orion_other_clock_last_third", "orion_other_staminarecovery_team_4", "orion_other_card_c08130100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2496,10 +2496,10 @@ passive = "c08130120_disparo_en_espiral"
 character = "c08130120"
 tags = ["cannon", "striker"]
 
-# Petie Pooma: Doble ciclón — power of the Storm-family techniques of every teammate +3 %
+# Petie Pooma: Doble ciclón — Double Cyclone power +10 % (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c08130130_doble_ciclon"
-blocks = ["orion_other_family_whirlwinds", "orion_other_techniquepower_team_3", "orion_other_card_c08130130"]
+blocks = ["orion_other_move_whd00390", "orion_other_techniquepower_team_10", "orion_other_card_c08130130"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2636,10 +2636,10 @@ passive = "c11908040_ventisca_eterna"
 character = "c11908040"
 tags = ["noble", "brain"]
 
-# Yekaterina Stronov: Tornado oscuro — power of the Shadow-family techniques of every teammate +4 %
+# Yekaterina Stronov: Tornado oscuro — Dark Tornado power +15 % in the opponent half
 [[VRFW.Passive]]
 name = "c11908050_tornado_oscuro"
-blocks = ["orion_other_family_illusions", "orion_other_techniquepower_team_4", "orion_other_card_c11908050"]
+blocks = ["orion_other_zone_opponent_half", "orion_other_move_whs00430", "orion_other_techniquepower_self_15", "orion_other_card_c11908050"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]

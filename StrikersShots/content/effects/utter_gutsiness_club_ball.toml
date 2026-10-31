@@ -1,0 +1,28 @@
+# «Golf total» (Utter Gutsiness Club, whs00630; mountain shot, cut-in ev60_00630): while the ball flies to the goal it
+# keeps the look of the cut-in's flight cut (c0400): the ball in the spiky blue star with its blue glows and white
+# light, the two blue flame tongues streaming back from it and the white streaks of its way trailing straight behind
+# it, instead of the plain mountain special-shot aura. The object is ev6006gc00 (effect/event/ev60/ev6006gc00/), built
+# by research/scripts/utter_gutsiness_club_ball_fx.py from the cut-in's effect object ev60006300: c0400 at frame 253,
+# ball at the origin, +Z along the flight, x1, raised 0.14 m to the ball's centre; star and glows faced to the camera
+# (round from every side), the stars throbbing as in the cut-in, the flames crossed, the streaks (~14 m) unrolled
+# straight, coming out of the kick point and fading out softly at their rear.
+# Left out: the kick flash at the kicker's foot, the sparkle sheet spread along the cut-in's way and its backdrop
+# particles. Its flight: content\techniques\utter_gutsiness_club_trajectory.toml (level at 2.2 m).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "utter_gutsiness_club"
+from = "ega0075a"
+object = "effect/event/ev60/ev6006gc00/ev6006gc00.objbin"
+
+[[shot_aura]]
+name = "utter_gutsiness_club"
+when = { techniques = ["whs00630"] }
+aura = "utter_gutsiness_club"
+like = "ega0075a"
+# the streaks come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

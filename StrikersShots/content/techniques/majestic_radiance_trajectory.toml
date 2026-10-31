@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Fulgor majestuoso (Majestic Radiance, whs02260, cut-in ev60_02260): one straight
+# level line from the kick point to the goal, the ball at 1.2 m the whole way (the spear of light behind it, ~0.75 m
+# round its axis, stays clear of the grass). Heights are the ball centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Fulgor majestuoso (whs02260).
+[[edit]]
+target = "whs02260"
+trajectory = { points = [[0.0, 1.2]], straight = true, unblockable = false }

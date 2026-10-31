@@ -1,0 +1,25 @@
+# «Banana Shot» («Banana shot», whs01150, forest shot, cut-in ev60_01150): while the ball flies to the goal it is wrapped
+# in the cut-in's white wind swirls turning round it, inside its green / yellow glow (camera-facing, round from every
+# side), and draws the cut-in's green ribbon with its white core behind it: the ribbon of the last cut (c0200, held at
+# frame 212) unrolled straight behind the ball at its own length (~9 m, nothing stretched), as two crossed cards so it
+# shows from the touchline and from behind, coming out of the kick point and fading out at its far end.
+# The object is ev6015bs00 (assets\data\{common,dx11}\effect\event\ev60\ev6015bs00\), built by
+# research/scripts/banana_shot_ball_fx.py from ev60011500. Its flight: content\techniques\banana_shot_trajectory.toml.
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame. The objects under assets\data are generated on the author's PC from the game's own
+# cut-in effects (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "banana_shot"
+from = "ega0075d"
+object = "effect/event/ev60/ev6015bs00/ev6015bs00.objbin"
+
+[[shot_aura]]
+name = "banana_shot"
+when = { techniques = ["whs01150"] }
+aura = "banana_shot"
+like = "ega0075d"
+# the trail comes out of the kick point: the clip runs on the ball's distance from the kick point (docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

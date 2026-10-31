@@ -16,6 +16,7 @@ MatchExp = MatchExp or {}
 MatchResult = MatchResult or {}
 
 local D = require "lib/declarations"
+local ExpTable = require "lib/exp_table"
 
 local function info(text) VRFW.log("match_exp: " .. text) end
 local function warn(text) VRFW.warn("match_exp: " .. text) end
@@ -40,8 +41,6 @@ local CLEAR_STATUS, CLEAR_STATUS_SIZE = 0x15948, 300
 local CLEAR_DIFFICULTIES = { 1, 2, 3, 4, 10, 11 }
 
 local RULES = nil         -- the declarations in load order, compiled
-local NEED = nil          -- level -> needExp (the EXP from that level to the next)
-local RARITY_RATE = nil   -- rarity -> EXP rate
 local GAME_NAME = nil     -- game id -> name
 local PIECE_SLOT = nil    -- pieceId -> statusFlagIndex
 local RANKS = nil         -- the match ranks, best first
@@ -133,23 +132,9 @@ end
 
 -- level -> needExp and rarity -> rate (the served chara_exp_table_config: the mods' levels included)
 local function exp_tables()
-  if NEED ~= nil then return NEED, RARITY_RATE end
-  local key = "data/common/gamedata/character/chara_exp_table_config_*.cfg.bin"
-  local okN, needs = pcall(VRFW.table.raw, key, "m_charaExpTableList", { 1, 2 })
-  local okR, rates = pcall(VRFW.table.raw, key, "m_expRarityRateList", { 1, 2 })
-  if not okN or type(needs) ~= "table" or #needs == 0 then
-    warn("chara_exp_table_config is not readable (" .. tostring(needs) .. "): the game's match EXP")
-    return nil
-  end
-  NEED, RARITY_RATE = {}, {}
-  for _, r in ipairs(needs) do
-    local lv, n = int(tonumber(r[1]) or 0), tonumber(r[2]) or 0
-    if lv > 0 then NEED[lv] = n end
-  end
-  if okR and type(rates) == "table" then
-    for _, r in ipairs(rates) do RARITY_RATE[int(tonumber(r[1]) or -1)] = tonumber(r[2]) or 1 end
-  end
-  return NEED, RARITY_RATE
+  local need, rates = ExpTable.tables()
+  if need == nil then warn(tostring(rates) .. ": the game's match EXP") end
+  return need, rates
 end
 
 local function game_name(id)

@@ -1,0 +1,12 @@
+schema = "VRFW.game_modes/1"
+
+# Career Mode as a context of the current-mode service (docs/framework/services.md §2): entered when the hub
+# evt_career_menu opens (the root of the career's menu scene, content\menus\title_row.toml), left when the title opens
+# (leaving the hub resets to it; after a match the title opens and presses the career's button again). It stays the
+# current key over the career's matches (the friendly career_match, content\friendlies\career.toml) and the screens the
+# hub opens (Plantilla, player pages). Mods test it with is("careermode.career"); content\passive_config\career.toml
+# switches the player passives off in it.
+[[context]]
+key = "careermode.career"
+enter_menus = ["evt_career_menu"]
+leave_menus = ["title_menu_2"]

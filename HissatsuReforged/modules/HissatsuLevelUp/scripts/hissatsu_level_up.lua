@@ -781,20 +781,17 @@ local function sweep(slot)
   if sweep_pos > #saved then sweep_finish(slot, #saved) end
 end
 
-local function on_build(ev)
-  if not ON then return end
-  local obj, list = ev.args[1] or 0, ev.args[2] or 0
-  -- the save load rebuilds every saved character's list in a row: bulk reads keep one build to a few calls
-  local head = rd_array("u32", rd("ptr", obj + 8), REC_HEAD_WORDS)
-  local hdl = head and u32(head[1])
-  if not hdl or not is_chara_handle(hdl) then return end
+-- [list object handle] = { card = the object's card, own = saved owner, param = his card }: a team switch rebuilds
+-- every shown player's list many times; kept while the handle shows the same card, dropped at each menu open, save
+-- load and game reset
+local build_owners = {}
+
+local function build_owner(hdl, head)
+  local card = u32(head[2] or 0)
+  local o = build_owners[hdl]
+  if o and o.card == card then return o.own, o.param end
   local own = is_saved_handle(hdl) and hdl or owner(hdl, false)
-  if not own then return end
-  local list_words = rd_array("u64", list, 2)
-  if not list_words then return end
-  local entries, count = list_words[1], math.min(list_words[2], 16)
-  local words = count > 0 and rd_array("u32", entries, count * 2) or {}
-  if count > 0 and #words == 0 then return end
+  if not own then return nil end
   local param
   if own == hdl then
     param = u32(head[2])
@@ -802,6 +799,24 @@ local function on_build(ev)
     local r = record(own)
     param = r and u32(r.param) or 0
   end
+  build_owners[hdl] = { card = card, own = own, param = param }
+  return own, param
+end
+
+local function on_build(ev)
+  if not ON then return end
+  local obj, list = ev.args[1] or 0, ev.args[2] or 0
+  -- the save load rebuilds every saved character's list in a row: bulk reads keep one build to a few calls
+  local head = rd_array("u32", rd("ptr", obj + 8), REC_HEAD_WORDS)
+  local hdl = head and u32(head[1])
+  if not hdl or not is_chara_handle(hdl) then return end
+  local own, param = build_owner(hdl, head)
+  if not own then return end
+  local list_words = rd_array("u64", list, 2)
+  if not list_words then return end
+  local entries, count = list_words[1], math.min(list_words[2], 16)
+  local words = count > 0 and rd_array("u32", entries, count * 2) or {}
+  if count > 0 and #words == 0 then return end
   local declared = grades_of(param)
   local st = cur()
   local changes, seeded = {}, false
@@ -955,12 +970,97 @@ function HissatsuLevelUp.CanPlace(hdl, slot, item)
   if not BLOCK_DUP or hdl == 0 or item == 0 then return true, -1 end
   local r = record(hdl)
   if not r or not r.addr then return true, -1 end
+  -- the placed and the native inventory handles of the whole board in two reads (one per slot when not readable at once)
+  local placed = rd_array("u32", r.addr + REC_PLACED, BOARD_SLOTS)
+  local native = rd_array("u32", r.addr + REC_NATIVE, BOARD_SLOTS)
   for s = 0, BOARD_SLOTS - 1 do
     if same_set(slot, s) then
-      local inv = u32(rd("u32", r.addr + REC_PLACED + s * 4) or 0)
-      if inv == 0 then inv = u32(rd("u32", r.addr + REC_NATIVE + s * 4) or 0) end
+      local p = placed and placed[s + 1]
+      if not placed then p = rd("u32", r.addr + REC_PLACED + s * 4) end
+      local inv = u32(p or 0)
+      if inv == 0 then
+        local n = native and native[s + 1]
+        if not native then n = rd("u32", r.addr + REC_NATIVE + s * 4) end
+        inv = u32(n or 0)
+      end
       if inv ~= 0 and item_of(inv) == item then return false, s end
     end
+  end
+  return true, -1
+end
+
+-- The board menus ask CanEquip for every listed item each frame: H4 answers from caches. A character's record address
+-- (checked against its handle on every read) and the item ids of inventory handles are kept until a menu opens, a save
+-- loads, the title returns or CACHE_CALLS calls passed; a board's item ids are recomputed only when its handles change.
+local CACHE_CALLS = 4096
+local RECORD_WORDS = math.floor((REC_NATIVE + BOARD_SLOTS * 4) / 4)   -- handle .. the last native board handle
+local PLACED_WORD, NATIVE_WORD = math.floor(REC_PLACED / 4), math.floor(REC_NATIVE / 4)
+local inv_items, record_addrs, boards, cache_calls = {}, {}, {}, 0
+
+local function drop_board_caches()
+  inv_items, record_addrs, boards, cache_calls = {}, {}, {}, 0
+  return nil
+end
+
+local function cached_item(inv)
+  if inv == 0 then return 0 end
+  local item = inv_items[inv]
+  if item == nil then
+    item = item_of(inv)
+    inv_items[inv] = item
+  end
+  return item
+end
+
+-- the record words of `hdl` (handle .. board) in one read, nil when not readable
+local function record_words(hdl)
+  local addr = record_addrs[hdl]
+  local w = addr and rd_array("u32", addr, RECORD_WORDS)
+  if w and u32(w[1]) == hdl then return w end
+  local r = record(hdl)
+  addr = r and r.addr
+  w = addr and rd_array("u32", addr, RECORD_WORDS)
+  if not w or u32(w[1]) ~= hdl then
+    record_addrs[hdl] = nil
+    return nil
+  end
+  record_addrs[hdl] = addr
+  return w
+end
+
+-- the item ids on the 9 board slots of `hdl` ([slot] = item, 0 = empty), recomputed when a board handle changed
+local function board_items(hdl)
+  local w = record_words(hdl)
+  if not w then return nil end
+  local b = boards[hdl]
+  if b then
+    local same = true
+    for s = 1, BOARD_SLOTS do
+      if b.placed[s] ~= w[PLACED_WORD + s] or b.native[s] ~= w[NATIVE_WORD + s] then
+        same = false
+        break
+      end
+    end
+    if same then return b.items end
+  end
+  b = { placed = {}, native = {}, items = {} }
+  for s = 1, BOARD_SLOTS do
+    local p, n = w[PLACED_WORD + s], w[NATIVE_WORD + s]
+    b.placed[s], b.native[s] = p, n
+    local inv = u32(p or 0)
+    if inv == 0 then inv = u32(n or 0) end
+    b.items[s - 1] = cached_item(inv)
+  end
+  boards[hdl] = b
+  return b.items
+end
+
+-- TH.CanPlace from the caches; falls back to TH.CanPlace when the record is not readable at once
+local function can_place_cached(hdl, slot, item)
+  local items = board_items(hdl)
+  if not items then return TH.CanPlace(hdl, slot, item) end
+  for s = 0, BOARD_SLOTS - 1 do
+    if same_set(slot, s) and items[s] == item then return false, s end
   end
   return true, -1
 end
@@ -969,10 +1069,15 @@ local dup_refusals = 0
 
 local function on_can_equip(ev)
   if not BLOCK_DUP then return nil end
-  local hdl, inv, slot = u32(ev.args[1]), u32(ev.args[2]), band(ev.args[5] or 0xFF, 0xFF)
-  local item = item_of(inv)
-  if hdl == 0 or item == 0 then return nil end
-  local ok, other = TH.CanPlace(hdl, slot, item)
+  local args = ev.args
+  local hdl, inv = u32(args[1]), u32(args[2])
+  if hdl == 0 or inv == 0 then return nil end
+  cache_calls = cache_calls + 1
+  if cache_calls > CACHE_CALLS then drop_board_caches() end
+  local item = cached_item(inv)
+  if item == 0 then return nil end
+  local slot = band(args[5] or 0xFF, 0xFF)
+  local ok, other = can_place_cached(hdl, slot, item)
   if ok then return nil end
   dup_refusals = dup_refusals + 1
   if dup_refusals <= 50 then
@@ -1262,3 +1367,11 @@ VRFW.on("hook:HissatsuLevelUp.BuildSkillList:post", on_build)
 VRFW.on("hook:HissatsuLevelUp.MatchSkillInstall:post", on_install)
 VRFW.on("chara:moves:post", on_moves)
 VRFW.on("hook:HissatsuLevelUp.CanEquip:post", on_can_equip)
+-- the board caches of H4 follow the game: dropped at a menu open, a save load and a title return
+local function drop_caches()
+  build_owners = {}
+  return drop_board_caches()
+end
+VRFW.on("menu:open:post", drop_caches)
+VRFW.on("slot_load", drop_caches)
+VRFW.on("game_reset", drop_caches)

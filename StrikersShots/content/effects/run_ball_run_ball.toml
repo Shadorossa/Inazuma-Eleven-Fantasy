@@ -1,0 +1,30 @@
+# «Balón rodante» (Run Ball Run, whs00250; forest shot, cut-in ev60_00250): while the ball rolls to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0300): the glowing shell round the ball with its fan of cyan /
+# white spikes rising up and back, and the sandy dust puffs it throws up behind it, instead of the plain forest
+# special-shot aura. The object is ev6025rb00 (effect/event/ev60/ev6025rb00/), built by
+# research/scripts/run_ball_run_ball_fx.py from the cut-in's effect object ev60002500: c0300 held at its last frame
+# (354), the ball's root at the origin and the head round the ball's centre, +Z along the flight, x1; the shell and
+# the spikes are whole from the first frame; the dust puffs stay where the ball left them, growing, rising and fading out ~15 m behind it as in the cut-in, none
+# behind the kick point, their cards facing the camera (round from every side). Left out: the players' run and the
+# speed-line backdrop of the earlier cuts. Its flight: content\techniques\run_ball_run_trajectory.toml (level,
+# skimming the pitch at 0.11 m).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "run_ball_run"
+from = "ega0075d"
+object = "effect/event/ev60/ev6025rb00/ev6025rb00.objbin"
+
+[[shot_aura]]
+name = "run_ball_run"
+when = { techniques = ["whs00250"] }
+aura = "run_ball_run"
+like = "ega0075d"
+# the dust comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

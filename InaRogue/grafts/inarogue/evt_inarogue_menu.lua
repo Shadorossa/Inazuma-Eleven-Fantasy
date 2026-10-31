@@ -1,5 +1,6 @@
 -- evt_inarogue_menu (plain Lua 5.2 source, Expanded Victory Tool, INAROGUE phase 1: the mode's first menu).
--- Opened by the 9th button of the mode row (title_menu_2, "Inarogue") as a child menu, like the retail "Guardar".
+-- Opened by loading slot 4 from the slot screen, as the root of its own menu scene ([[VRFW.SaveSlot]] root_menu;
+-- docs/game/modes/inarogue-own-scene-plan.md). Back = the slot screen (IRM_Leave).
 -- Built by research/scripts/inarogue_build.py; every "1579384326" below is replaced by crc32(name).
 -- Screen (evt_inarogue_menu_setting, composed from two retail screens, docs/game/inarogue.md §2):
 --   Chronicle top menu (chronicle_mode_top_menu):  big picture buttons mainmenu90_11_..._middle x2, small list row
@@ -85,8 +86,8 @@ local VS = {
 local SAVE = {BUSY = @crc:CMND_EVT_SLOT_BUSY@, AUTO = @crc:CMND_SYSTEM_AUTO_SAVE@, FRAMES = 45, TRIES = 3}
 local KEY_MAP_RESULT = 1333012321   -- 0 back, 2 abandoned, 3 a match is reserved (launched here)
 -- the match loop (docs/game/modes/inarogue.md §14): the map reserves a match in the run file (stage 3); this menu
--- launches it with the retail VS calls and closes with result 8; after the match the title reopens INAROGUE (slot 4),
--- which reads the trigger's flags and resolves the node before the map opens again
+-- launches it through the pre-match team dock; after the match slot 4's title forwards straight into INAROGUE, which
+-- reads the trigger's flags and resolves the node before the map opens again
 local RL_RESUME = @crc:CMND_EVT_RL_RUN_RESUME@     -- () -> stage, node, kind, event, coin, game, diff, stadium, level, rival
 local RL_RESULT = @crc:CMND_EVT_RL_RUN_RESULT@     -- (result, gf, ga) -> code, outcome (1 cleared 2 run over 3 again), isBoss, frags, players
 local RL_RECORDED = @crc:CMND_INAROGUE_RL_RUN_RECORDED@  -- () -> result, gf, ga recorded at the match's end (0 none)
@@ -618,7 +619,7 @@ end
 -- OK-only message
 --@lib evt_menu_kit.lua#Message,Close
 local KitClose = Close
--- every way out of this menu (result 0 / 4-9) goes through here: Decide then leaves the native focus alone
+-- every close of this menu goes through here: Decide then leaves the native focus alone
 local function Close(result)
   LAYOUT.closed = true
   KitClose(result)
@@ -759,13 +760,11 @@ end
 
 -- ---- actions (docs/game/inarogue.md §4 says where each one goes next) --------------------------------------------
 -- ---- INAROGUE's own save, slot 4 (docs/game/modes/inarogue.md §13) ------------------------------------------------
--- The loader's slot info: in a normal slot INAROGUE only offers to enter slot 4 (result 4: the title switches); in
--- slot 4 Back offers "back to your game" (result 5) or the options (result 6).
--- leaving the menu for a slot switch: fade to black here, so the title under INAROGUE is never seen (the switch keeps
--- the black; the next INAROGUE / title fades in once)
-function IRM_FadeClose(result)
+-- The loader's slot info: INAROGUE runs only in slot 4, the root of its own menu scene (loaded from the slot screen).
+-- Before the reset into the team dock: fade to black here, this menu inactive (the dock fades the black away itself)
+function IRM_FadeOut()
   funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
-  funcLuaCommand(C.FADE, 1, 0.2)             -- §28: 0.35 -> 0.2 s (the switch / dock keep the black anyway)
+  funcLuaCommand(C.FADE, 1, 0.2)
   coroutine.yield()
   for _ = 1, 90 do
     if funcLuaCommand(C.FADE_DONE) then
@@ -773,7 +772,6 @@ function IRM_FadeClose(result)
     end
     coroutine.yield()
   end
-  Close(result)
 end
 
 function IRM_ReadSlots()
@@ -803,66 +801,26 @@ function IRM_FirstEntry()
   end
 end
 
-function IRM_EnterRogue()
-  if not SL.known then
-    Message(T(TXT.NO_SLOTS))
+-- Back (owner 2026-10-31): the slot screen over this menu (VRFW_Slots.screen). A slot picked there is loaded and the
+-- game resets into it; cancel or slot 4 again = INAROGUE stays. The run is already saved per node / stage (its files)
+-- and slot 4 by INAROGUE's saves: nothing to restore, the player's slot is a slot of its own.
+function IRM_Leave()
+  if type(VRFW_Slots) ~= "table" then
+    Log("leave: no VRFW_Slots (framework too old)")
     return
   end
-  -- §28 (Nacho, 30/09): no «¿Entrar en INAROGUE?» window; the guide line explains the single INAROGUE save
-  Log("enter slot", SL.slot, "from", SL.active, "has game", tostring(SL.has))
-  funcLuaCommand(C.SE, SE_DECIDE)
-  IRM_FadeClose(4)
-end
-
--- In-place entry (docs/game/engine/save-overlay-session.md; Nacho 07/10: «no debería pasarse a la 4ª ranura»): INAROGUE
--- is open in the player's slot without the overlay (the title's seamless entry did not run or was refused): the
--- INAROGUE save is swapped in right here under this open menu (CMND_EVT_RL_SESSION_BEGIN 0): no fade, no close, no
--- slot switch, no GAME_RESET. true = INAROGUE's game is the one in memory now (SL.rogue). Off ([rogue] session_entry =
--- false), no INAROGUE game yet or refused: false, and the caller keeps the old way (IRM_EnterRogue).
-function IRM_EnterInPlace()
-  local SS = {STATE = @crc:CMND_EVT_RL_SESSION_STATE@, BEGIN = @crc:CMND_EVT_RL_SESSION_BEGIN@,
-              SAVE_WORKING = 1979970074 --[[CMND_IS_SAVE_WORKING]]}   -- no new chunk local (the 200-local limit)
-  local sopen, _, _, _, _, enabled = Call(SS.STATE)
-  if sopen ~= false or enabled ~= true or not SL.known or SL.rogue or not SL.has then
-    return false
-  end
-  local k = 0                     -- BEGIN is refused while a save / load job runs: wait for it (bounded)
-  while funcLuaCommand(SS.SAVE_WORKING) and k < 600 do
-    k = k + 1
-    coroutine.yield()
-  end
-  local ok, code, kib, ms = Call(SS.BEGIN, 0)
-  Log("in-place entry: overlay begin", tostring(ok), code, kib, ms)
-  if ok ~= true then
-    return false
-  end
-  IRM_ReadSlots()
-  Log("in-place entry: INAROGUE's save is in memory over the player's slot", SL.ret, "- no slot switch", tostring(SL.rogue))
-  if not SL.rogue then
-    return false
-  end
-  Call(RL_NO_ROLE_ALL)
-  run = ReadRun()
-  RefreshItems()
-  IRM_FirstEntry()
-  return true
-end
-
--- Back in slot 4 (§28, Nacho 30/09): straight back, no «¿Volver a tu partida?» window; the same 0.2 s fade as the way in
-function IRM_LeaveRogue()
-  -- a seamless session (inarogue-no-game.md §10): the title swaps the normal game back in memory under itself, so
-  -- this closes like any child menu (no fade to black); 5 = back to the session's slot, whichever it is
-  local sopen, _, _, _, _, _, _, swapped = Call(@crc:CMND_EVT_RL_SESSION_STATE@)
-  if sopen == true and swapped == true then
-    Log("leave the session to slot", SL.ret)
-    funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
-    Close(5)
-  elseif SL.ret >= 2 then
-    Log("leave slot", SL.slot, "to", SL.ret)
-    IRM_FadeClose(5)
-  else
-    Log("leave slot", SL.slot, "to the slot screen")
-    IRM_FadeClose(7)
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, false)
+  Log("leave: the slot screen over INAROGUE")
+  local how, why = VRFW_Slots.screen({ shown = function() ShowOwnLayers(false) end,
+    log = function(...) Log("leave:", ...) end })
+  Log("leave: stays in INAROGUE (" .. tostring(how) .. ")")
+  RestoreOwnLayers()
+  UpdateGuideLine()
+  UpdateButtonGuide()
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+  LAYOUT.guard = 12               -- the Back that closed the slot screen must not open it again (Step counts down)
+  if how == false and type(why) == "string" and why ~= "" then
+    Message(why)
   end
 end
 
@@ -875,8 +833,9 @@ end
 
 local function Dispatch(it)
   Log("decide", it.id, "rogue slot", SL.rogue)
-  if not SL.rogue and it.id ~= "help" and IRM_EnterInPlace() then
-    Log("decide", it.id, "continues in INAROGUE's save (overlay, no slot switch)")
+  if not SL.rogue and it.id ~= "help" then
+    Log("decide", it.id, "refused: the INAROGUE save is not the loaded game (enter from the slot screen)")
+    return
   end
   if it.id == "help" then
     ShowHelp()
@@ -885,13 +844,9 @@ local function Dispatch(it)
     local x = type(EVT_IR_EXTRA) == "table" and EVT_IR_EXTRA.shop or nil
     if x ~= nil and type(x.open) == "function" then
       x.open()
-    elseif not SL.rogue then
-      IRM_EnterRogue()
     else
       Log("shop: no EVT_IR_EXTRA.shop hook (graft rogue_avatars) yet")
     end
-  elseif not SL.rogue and (it.id == "start" or it.id == "album" or it.id == "team" or it.id == "new") then
-    IRM_EnterRogue()
   elseif it.id == "new" then
     NewGame()                     -- §28
   elseif it.id == "team" then
@@ -966,8 +921,6 @@ end
 local match_after = false   -- the run file says a match is reserved (stage 3): the title reopened us after it
 
 function OnInit()
-  -- the title's press waits for this sign that the screen really runs (crc32("evt_inarogue_alive"))
-  VRFW_Param.Set(3151688232, 1)
   LAYOUT.frames = 0
   LAYOUT.closed = false
   LAYOUT.mouse = false
@@ -1330,7 +1283,7 @@ function OnBack(a1)
   end
   funcLuaCommand(C.SE, SE_BACK)
   if SL.rogue then
-    StartCo(IRM_LeaveRogue)       -- slot 4: the title only hosts INAROGUE
+    StartCo(IRM_Leave)            -- the scene's root: Back = the slot screen
     return 1
   end
   Close(0)

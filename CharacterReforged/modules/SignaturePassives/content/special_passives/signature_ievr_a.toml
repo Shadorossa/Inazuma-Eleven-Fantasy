@@ -438,10 +438,10 @@ passive = "c11250130_sueno_envenenado"
 character = "c11250130"
 tags = ["trickster", "mystic"]
 
-# Lars Luceafăr: Gigante que atrapa rayos — his punch power +4 % per teammate on the pitch carrying a Thunder-family move (max 3)
+# Lars Luceafăr: Gigante que atrapa rayos — High Voltage and Electric Trap power +12 % while his team is behind
 [[VRFW.Passive]]
 name = "c11250140_gigante_que_atrapa_rayos"
-blocks = ["ievr_a_count_inazumapower_team_max3", "ievr_a_techniquepower_self_punch_4", "ievr_a_card_c11250140"]
+blocks = ["ievr_a_score_trailing", "ievr_a_move_whk00680_whk00700", "ievr_a_techniquepower_self_12", "ievr_a_card_c11250140"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -508,10 +508,10 @@ passive = "c11220020_caida_del_ultimo_tercio"
 character = "c11220020"
 tags = ["striker", "cannon"]
 
-# Nebula Raime: Hijo de las estrellas — power of Star-family moves of every teammate +8 %
+# Nebula Raime: Hijo de las estrellas — Dimensional Deluge power +5 % per «Destroyers» group teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11220030_hijo_de_las_estrellas"
-blocks = ["ievr_a_family_eventhorizon", "ievr_a_techniquepower_team_8", "ievr_a_card_c11220030"]
+blocks = ["ievr_a_count_destroyers_team_max3", "ievr_a_move_whs02020", "ievr_a_techniquepower_self_5", "ievr_a_card_c11220030"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1642,10 +1642,10 @@ passive = "c11010070_calma_bajo_la_superficie"
 character = "c11010070"
 tags = ["brain", "speedster"]
 
-# Meridia Althoff: Crisantemo y acero — power of Sword-family moves of every teammate +8 %
+# Meridia Althoff: Crisantemo y acero — Chrysanthemum Katana power +15 % from set pieces
 [[VRFW.Passive]]
 name = "c11010170_crisantemo_y_acero"
-blocks = ["ievr_a_family_legendaryweapons", "ievr_a_techniquepower_team_8", "ievr_a_card_c11010170"]
+blocks = ["ievr_a_own_set_piece", "ievr_a_move_whs02220", "ievr_a_techniquepower_self_15", "ievr_a_card_c11010170"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1810,10 +1810,10 @@ passive = "c11010020_trueno_antes_de_la_lluvia"
 character = "c11010020"
 tags = ["speedster", "acrobat"]
 
-# Alix La Fontaine: Gracia sobre hielo — his block power +4 % per teammate on the pitch carrying an Ice-family move (max 3)
+# Alix La Fontaine: Gracia sobre hielo — Icy Grace and Crystal Barrier power +10 %
 [[VRFW.Passive]]
 name = "c11010030_gracia_sobre_hielo"
-blocks = ["ievr_a_count_northernice_team_max3", "ievr_a_techniquepower_self_block_4", "ievr_a_card_c11010030"]
+blocks = ["ievr_a_move_whk10010_whk00790", "ievr_a_techniquepower_self_10", "ievr_a_card_c11010030"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1824,10 +1824,10 @@ passive = "c11010030_gracia_sobre_hielo"
 character = "c11010030"
 tags = ["wall", "noble"]
 
-# Thierry Reyes: Relámpago de mediodía — power of Thunder-family moves of every teammate +8 %
+# Thierry Reyes: Relámpago de mediodía — Heavenly Thunder power +15 % in the first half
 [[VRFW.Passive]]
 name = "c11010040_relampago_de_mediodia"
-blocks = ["ievr_a_family_inazumapower", "ievr_a_techniquepower_team_8", "ievr_a_card_c11010040"]
+blocks = ["ievr_a_half_1", "ievr_a_move_whs10130", "ievr_a_techniquepower_self_15", "ievr_a_card_c11010040"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2090,10 +2090,10 @@ passive = "c11500390_control_compartido"
 character = "c11500390"
 tags = ["trickster", "acrobat"]
 
-# Emi Blanchett: Zona de muerte — his shoot power +4 % per teammate on the pitch carrying a Devil-family move (max 3)
+# Emi Blanchett: Zona de muerte — his shoot power +4 % per teammate on the pitch carrying a Triangle-family move (max 3)
 [[VRFW.Passive]]
 name = "c11500440_zona_de_muerte"
-blocks = ["ievr_a_count_majingiant_team_max3", "ievr_a_techniquepower_self_shoot_4", "ievr_a_card_c11500440"]
+blocks = ["ievr_a_count_triangle_team_max3", "ievr_a_techniquepower_self_shoot_4", "ievr_a_card_c11500440"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2188,10 +2188,10 @@ passive = "c11701060_sello_de_salto"
 character = "c11701060"
 tags = ["wall", "speedster"]
 
-# Ravyn Grooves: Escarcha rítmica — opponents' agility −2 % per teammate carrying an Ice-family move on the pitch (max 3)
+# Ravyn Grooves: Escarcha rítmica — Frosticle power +5 % per «Bailarín» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11701070_escarcha_ritmica"
-blocks = ["ievr_a_count_northernice_team_max3", "ievr_a_stat_opponents_agility_minus2", "ievr_a_card_c11701070"]
+blocks = ["ievr_a_count_dancer_team_max3", "ievr_a_move_who00750", "ievr_a_techniquepower_self_5", "ievr_a_card_c11701070"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2398,15 +2398,15 @@ passive = "c11702070_torre_de_lanzamiento"
 character = "c11702070"
 tags = ["wall", "speedster"]
 
-# Liam Tossarawn: Salto estelar — power of Star-family moves of every teammate +8 %
+# Liam Tossarawn: Salto combinado — power of Twin Boost-family moves of every teammate +8 %
 [[VRFW.Passive]]
-name = "c11702080_salto_estelar"
-blocks = ["ievr_a_family_eventhorizon", "ievr_a_techniquepower_team_8", "ievr_a_card_c11702080"]
+name = "c11702080_salto_combinado"
+blocks = ["ievr_a_family_twinboost", "ievr_a_techniquepower_team_8", "ievr_a_card_c11702080"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c11702080"
-passive = "c11702080_salto_estelar"
+passive = "c11702080_salto_combinado"
 
 [[VRFW.CharacterTags]]
 character = "c11702080"
@@ -2622,10 +2622,10 @@ passive = "c11703100_mano_divina_doble"
 character = "c11703100"
 tags = ["wall", "divine"]
 
-# Nadia Watershed: Tiempo del cielo II — Heaven-family moves power of every teammate +8 %
+# Nadia Watershed: Tiempo del cielo II — his move speed +3 % per «Acróbata» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11500490_tiempo_del_cielo_ii"
-blocks = ["ievr_a_family_divinepower", "ievr_a_techniquepower_team_8", "ievr_a_card_c11500490"]
+blocks = ["ievr_a_count_acrobat_team_max3", "ievr_a_movespeed_self_3", "ievr_a_card_c11500490"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2804,10 +2804,10 @@ passive = "c11704100_patron_de_bambu_ii"
 character = "c11704100"
 tags = ["wall", "beast"]
 
-# Corday Dremin: Bestia del trueno — power of Thunder-family moves of every teammate +8 %
+# Corday Dremin: Bestia del trueno — Thunder Beast power +12 % in the first half (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c11704110_bestia_del_trueno"
-blocks = ["ievr_a_family_inazumapower", "ievr_a_techniquepower_team_8", "ievr_a_card_c11704110"]
+blocks = ["ievr_a_half_1", "ievr_a_move_whs01010", "ievr_a_techniquepower_team_12", "ievr_a_card_c11704110"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2818,10 +2818,10 @@ passive = "c11704110_bestia_del_trueno"
 character = "c11704110"
 tags = ["striker", "speedster"]
 
-# Candace Mardipanz: Segador del cielo — each duel won by a teammate carrying a Heaven-family move: his technique +4 % (max 3, per half)
+# Candace Mardipanz: Segador del cielo — Hyper-Swiper power +15 % against «Acróbata» ball carriers
 [[VRFW.Passive]]
 name = "c11704120_segador_del_cielo"
-blocks = ["ievr_a_when_duel_won_by_teammate", "ievr_a_by_divinepower", "ievr_a_stack_max3_0s_per_half", "ievr_a_stat_self_technique_4", "ievr_a_card_c11704120"]
+blocks = ["ievr_a_holder_acrobat_opponents", "ievr_a_move_whd00980", "ievr_a_techniquepower_self_15", "ievr_a_card_c11704120"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2944,10 +2944,10 @@ passive = "c11100070_rafaga_sin_rumbo"
 character = "c11100070"
 tags = ["speedster", "acrobat"]
 
-# Yarkin Cittey: Tapia infinita — power of Wall-family moves of every teammate +8 %
+# Yarkin Cittey: Tapia infinita — Infinite Wall power +3 % per «Muro» teammate on the pitch (max 5)
 [[VRFW.Passive]]
 name = "c11100080_tapia_infinita"
-blocks = ["ievr_a_family_greatwalls", "ievr_a_techniquepower_team_8", "ievr_a_card_c11100080"]
+blocks = ["ievr_a_count_wall_team_max5", "ievr_a_move_whk00230", "ievr_a_techniquepower_self_3", "ievr_a_card_c11100080"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3070,10 +3070,10 @@ passive = "c11100500_cruce_de_caminos"
 character = "c11100500"
 tags = ["striker", "beast"]
 
-# Celeste Fairbourne: Plumas del cielo — power of Heaven-family moves of every teammate +8 %
+# Celeste Fairbourne: Plumas del cielo — Angel Ball and Divine Arrows power +12 % in the last third of each half
 [[VRFW.Passive]]
 name = "c11100510_plumas_del_cielo"
-blocks = ["ievr_a_family_divinepower", "ievr_a_techniquepower_team_8", "ievr_a_card_c11100510"]
+blocks = ["ievr_a_clock_last_third", "ievr_a_move_who00640_whs00310", "ievr_a_techniquepower_self_12", "ievr_a_card_c11100510"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3140,10 +3140,10 @@ passive = "c11707010_mano_rapida"
 character = "c11707010"
 tags = ["striker", "beast"]
 
-# Shena Ennigans: Eco de la recitadora — tension cost of every teammate carrying a Star-family move −5 %
+# Shena Ennigans: Eco de la recitadora — each successful Athena's Anthem by him: his team +1 tension (max 3 per half)
 [[VRFW.Passive]]
 name = "c11707020_eco_de_la_recitadora"
-blocks = ["ievr_a_tensioncost_team_minus5_eventhorizon", "ievr_a_card_c11707020"]
+blocks = ["ievr_a_when_technique_result_won_by_self", "ievr_a_move_who00850", "ievr_a_outcome_succeeds", "ievr_a_stack_max3_0s_per_half", "ievr_a_tension_1", "ievr_a_card_c11707020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3476,15 +3476,15 @@ passive = "c11708090_jaque_en_la_niebla"
 character = "c11708090"
 tags = ["wall", "mystic"]
 
-# Casper Forman: Telón de luna — power of Moon-family moves of every teammate +8 %
+# Casper Forman: Telón de clones — power of Multiple-family moves of every teammate +8 %
 [[VRFW.Passive]]
-name = "c11710010_telon_de_luna"
-blocks = ["ievr_a_family_eventhorizon", "ievr_a_techniquepower_team_8", "ievr_a_card_c11710010"]
+name = "c11710010_telon_de_clones"
+blocks = ["ievr_a_family_multiple", "ievr_a_techniquepower_team_8", "ievr_a_card_c11710010"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c11710010"
-passive = "c11710010_telon_de_luna"
+passive = "c11710010_telon_de_clones"
 
 [[VRFW.CharacterTags]]
 character = "c11710010"
@@ -3686,10 +3686,10 @@ passive = "c11700400_armadura_de_bambu"
 character = "c11700400"
 tags = ["wall", "beast"]
 
-# Matilde Pendlebury: Espada de la maestra — power of Sword-family moves of every teammate +8 %
+# Matilde Pendlebury: Espada de la maestra — Sword of the King power +5 % per «Novato» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11500290_espada_de_la_maestra"
-blocks = ["ievr_a_family_legendaryweapons", "ievr_a_techniquepower_team_8", "ievr_a_card_c11500290"]
+blocks = ["ievr_a_count_rookie_team_max3", "ievr_a_move_who01030", "ievr_a_techniquepower_self_5", "ievr_a_card_c11500290"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3756,10 +3756,10 @@ passive = "c11714040_golpe_de_relampago"
 character = "c11714040"
 tags = ["striker", "rebel"]
 
-# Readon Booke: Lectura del filo — opponents' technique −2 % per teammate carrying a Sword-family move on the pitch (max 3)
+# Readon Booke: Lectura del filo — his intelligence +4 % after each duel he wins (max 3, reset on a half)
 [[VRFW.Passive]]
 name = "c11714060_lectura_del_filo"
-blocks = ["ievr_a_count_legendaryweapons_team_max3", "ievr_a_stat_opponents_technique_minus2", "ievr_a_card_c11714060"]
+blocks = ["ievr_a_when_duel_won_by_self", "ievr_a_stack_max3_0s_per_half", "ievr_a_stat_self_intelligence_4", "ievr_a_card_c11714060"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3770,10 +3770,10 @@ passive = "c11714060_lectura_del_filo"
 character = "c11714060"
 tags = ["brain", "mystic"]
 
-# Wander Treeday: Marea negra del dojo — each duel won by a teammate carrying a Sword-family move: his block power +4 % (max 3, per half)
+# Wander Treeday: Marea negra del dojo — recast time of his dribbles −10 % while his team is behind
 [[VRFW.Passive]]
 name = "c11714070_marea_negra_del_dojo"
-blocks = ["ievr_a_when_duel_won_by_teammate", "ievr_a_by_legendaryweapons", "ievr_a_stack_max3_0s_per_half", "ievr_a_techniquepower_self_block_4", "ievr_a_card_c11714070"]
+blocks = ["ievr_a_score_trailing", "ievr_a_recasttime_self_dribble_minus10", "ievr_a_card_c11714070"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3924,10 +3924,10 @@ passive = "c11711050_espejo_encantado"
 character = "c11711050"
 tags = ["wall", "trickster"]
 
-# Clarissa Gimmich: Red de estrellas — his control +3 % per teammate on the pitch carrying a Star-family move (max 3)
+# Clarissa Gimmich: Red de estrellas — Procyon Net power +5 % per «Místico» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11711060_red_de_estrellas"
-blocks = ["ievr_a_count_eventhorizon_team_max3", "ievr_a_stat_self_control_3", "ievr_a_card_c11711060"]
+blocks = ["ievr_a_count_mystic_team_max3", "ievr_a_move_whk00430", "ievr_a_techniquepower_self_5", "ievr_a_card_c11711060"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4428,10 +4428,10 @@ passive = "c11700390_latido_artistico"
 character = "c11700390"
 tags = ["striker", "noble"]
 
-# Mireille Modelle: Puño de la justicia — his catch power +4 % per teammate on the pitch carrying a Sword-family move (max 3)
+# Mireille Modelle: Puño de la justicia — his punch power +8 % in the keeper battle against shots by «Rebelde» shooters
 [[VRFW.Passive]]
 name = "c11723010_puno_de_la_justicia"
-blocks = ["ievr_a_count_legendaryweapons_team_max3", "ievr_a_techniquepower_self_catch_4", "ievr_a_card_c11723010"]
+blocks = ["ievr_a_keepershotpower_self_minus8_2", "ievr_a_card_c11723010"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4456,10 +4456,10 @@ passive = "c11723020_pincelada_de_corazon"
 character = "c11723020"
 tags = ["wall", "captain"]
 
-# Bracker Grippe: Estallido cósmico — Star-family moves power of every teammate +8 %
+# Bracker Grippe: Estallido cósmico — Cosmic Blast power +10 % (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c11723030_estallido_cosmico"
-blocks = ["ievr_a_family_eventhorizon", "ievr_a_techniquepower_team_8", "ievr_a_card_c11723030"]
+blocks = ["ievr_a_move_whs00740", "ievr_a_techniquepower_team_10", "ievr_a_card_c11723030"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4904,10 +4904,10 @@ passive = "c11500400_control_compartido_ii_ii"
 character = "c11500400"
 tags = ["brain", "mystic"]
 
-# Biijiro Onoda: Alas de viñeta — power of Pegasus-family moves of every teammate +8 %
+# Biijiro Onoda: Alas de viñeta — Pegasus Shot power +15 % while a «Ilusionista» teammate holds the ball
 [[VRFW.Passive]]
 name = "c11700460_alas_de_vineta"
-blocks = ["ievr_a_family_pegasus", "ievr_a_techniquepower_team_8", "ievr_a_card_c11700460"]
+blocks = ["ievr_a_holder_trickster_team", "ievr_a_move_whs01200", "ievr_a_techniquepower_self_15", "ievr_a_card_c11700460"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5310,10 +5310,10 @@ passive = "c11700220_fan_numero_uno"
 character = "c11700220"
 tags = ["wall", "speedster"]
 
-# Dreamer Havenridge: Luz de escenario — tension cost of every teammate carrying a Moon-family move −5 %
+# Dreamer Havenridge: Luz de escenario — tension cost of every teammate carrying a Multiple-family move −5 %
 [[VRFW.Passive]]
 name = "c11700230_luz_de_escenario"
-blocks = ["ievr_a_tensioncost_team_minus5_eventhorizon", "ievr_a_card_c11700230"]
+blocks = ["ievr_a_tensioncost_team_minus5_multiple", "ievr_a_card_c11700230"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5506,10 +5506,10 @@ passive = "c11700500_balon_docil_ii_ii"
 character = "c11700500"
 tags = ["acrobat", "beast"]
 
-# Marcel Leapman: Bola del diablo — each duel won by a teammate carrying a Devil-family move: his technique +4 % (max 3, per half)
+# Marcel Leapman: Bola del diablo — each successful Devil Ball by him: his technique +4 % (max 3, per half)
 [[VRFW.Passive]]
 name = "c11700690_bola_del_diablo"
-blocks = ["ievr_a_when_duel_won_by_teammate", "ievr_a_by_majingiant", "ievr_a_stack_max3_0s_per_half", "ievr_a_stat_self_technique_4", "ievr_a_card_c11700690"]
+blocks = ["ievr_a_when_technique_result_won_by_self", "ievr_a_move_who00650", "ievr_a_outcome_succeeds", "ievr_a_stack_max3_0s_per_half", "ievr_a_stat_self_technique_4", "ievr_a_card_c11700690"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5856,10 +5856,10 @@ passive = "c11735090_ahorro_colectivo_ii"
 character = "c11735090"
 tags = ["wall", "beast"]
 
-# Gusmin Strelbard: Impulso de gaia — power of Rock-family moves of every teammate +8 %
+# Gusmin Strelbard: Impulso de gaia — Gaia Break power +12 % while his team is level (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c11735100_impulso_de_gaia"
-blocks = ["ievr_a_family_earthshaker", "ievr_a_techniquepower_team_8", "ievr_a_card_c11735100"]
+blocks = ["ievr_a_score_level", "ievr_a_move_whs00750", "ievr_a_techniquepower_team_12", "ievr_a_card_c11735100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6248,10 +6248,10 @@ passive = "c11040060_ultimo_disparo_ii"
 character = "c11040060"
 tags = ["striker", "rebel"]
 
-# Godfrey Shahmann: Finta de torero — his dribble power +3 % per teammate on the pitch carrying a Devil-family move (max 3)
+# Godfrey Shahmann: Finta de torero — Matador Feint power +5 % per opposing «Bestia» on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11040070_finta_de_torero"
-blocks = ["ievr_a_count_majingiant_team_max3", "ievr_a_techniquepower_self_dribble_3", "ievr_a_card_c11040070"]
+blocks = ["ievr_a_count_beast_opponents_max3", "ievr_a_move_who00550", "ievr_a_techniquepower_self_5", "ievr_a_card_c11040070"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6262,10 +6262,10 @@ passive = "c11040070_finta_de_torero"
 character = "c11040070"
 tags = ["brain", "trickster"]
 
-# Nico Kensee: Muro de la Atlántida — power of Wall-family moves of every teammate +8 %
+# Nico Kensee: Muro de la Atlántida — Wall of Atlantis power +15 % while a «Noble» teammate holds the ball
 [[VRFW.Passive]]
 name = "c11040080_muro_de_la_atlantida"
-blocks = ["ievr_a_family_greatwalls", "ievr_a_techniquepower_team_8", "ievr_a_card_c11040080"]
+blocks = ["ievr_a_holder_noble_team", "ievr_a_move_whd00910", "ievr_a_techniquepower_self_15", "ievr_a_card_c11040080"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6458,10 +6458,10 @@ passive = "c11737030_pases_limpios_para_todos_ii_ii_ii"
 character = "c11737030"
 tags = ["brain", "captain"]
 
-# Calix Virtus: Gran muralla virtual — power of Wall-family moves of every teammate +8 %
+# Calix Virtus: Gran muralla virtual — Great Wall power +5 % per «Bestia» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11737040_gran_muralla_virtual"
-blocks = ["ievr_a_family_greatwalls", "ievr_a_techniquepower_team_8", "ievr_a_card_c11737040"]
+blocks = ["ievr_a_count_beast_team_max3", "ievr_a_move_whd00890", "ievr_a_techniquepower_self_5", "ievr_a_card_c11737040"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6542,10 +6542,10 @@ passive = "c11737090_salto_de_nivel"
 character = "c11737090"
 tags = ["trickster", "mystic"]
 
-# Rico Falsettis: Voz de luna — power of Moon-family moves of every teammate +8 %
+# Rico Falsettis: Voz de luna — the team's tension gain +3 %
 [[VRFW.Passive]]
 name = "c11500410_voz_de_luna"
-blocks = ["ievr_a_family_eventhorizon", "ievr_a_techniquepower_team_8", "ievr_a_card_c11500410"]
+blocks = ["ievr_a_tensiongain_team_3", "ievr_a_card_c11500410"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6598,10 +6598,10 @@ passive = "c11732030_control_compartido_ii_ii_ii"
 character = "c11732030"
 tags = ["brain", "mystic"]
 
-# Renee Sirensong: Muro de sopranos — his block power +4 % per teammate on the pitch carrying a Wall-family move (max 3)
+# Renee Sirensong: Muro de sopranos — The Wall and Wall of Atlantis power +12 % while a female teammate is on the pitch
 [[VRFW.Passive]]
 name = "c11732040_muro_de_sopranos"
-blocks = ["ievr_a_count_greatwalls_team_max3", "ievr_a_techniquepower_self_block_4", "ievr_a_card_c11732040"]
+blocks = ["ievr_a_present_female_team", "ievr_a_move_whd00010_whd00910", "ievr_a_techniquepower_self_12", "ievr_a_card_c11732040"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6710,10 +6710,10 @@ passive = "c11732110_bambu_afinado"
 character = "c11732110"
 tags = ["wall", "beast"]
 
-# Hexine Cantation: Bloque de hielo coral — opponents' shoot power −2 % per teammate carrying an Ice-family move on the pitch (max 3)
+# Hexine Cantation: Bloque de hielo coral — Perfect Tower power +12 % in his own half (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c11732120_bloque_de_hielo_coral"
-blocks = ["ievr_a_count_northernice_team_max3", "ievr_a_techniquepower_opponents_shoot_minus2", "ievr_a_card_c11732120"]
+blocks = ["ievr_a_zone_own_half", "ievr_a_move_whd00530", "ievr_a_techniquepower_team_12", "ievr_a_card_c11732120"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6752,10 +6752,10 @@ passive = "c11700590_megalodon_de_las_olas"
 character = "c11700590"
 tags = ["speedster", "striker"]
 
-# Jella Fisker: Muro de hielo marino — opponents' shoot power −2 % per teammate carrying an Ice-family move on the pitch (max 3)
+# Jella Fisker: Muro de hielo marino — Ice Block and Bridge to Nowhere power +10 %
 [[VRFW.Passive]]
 name = "c11736010_muro_de_hielo_marino"
-blocks = ["ievr_a_count_northernice_team_max3", "ievr_a_techniquepower_opponents_shoot_minus2", "ievr_a_card_c11736010"]
+blocks = ["ievr_a_move_whk00460_whk00890", "ievr_a_techniquepower_self_10", "ievr_a_card_c11736010"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6808,10 +6808,10 @@ passive = "c11736040_balon_docil_ii_ii_ii"
 character = "c11736040"
 tags = ["brain", "beast"]
 
-# Barrac Kuda: Corriente eléctrica — his catch power +4 % per teammate on the pitch carrying a Thunder-family move (max 3)
+# Barrac Kuda: Corriente eléctrica — each successful Tesla Coil by him: opponents' move speed −3 % for 20 s (max 3)
 [[VRFW.Passive]]
 name = "c11736050_corriente_electrica"
-blocks = ["ievr_a_count_inazumapower_team_max3", "ievr_a_techniquepower_self_catch_4", "ievr_a_card_c11736050"]
+blocks = ["ievr_a_when_technique_result_won_by_self", "ievr_a_move_whd01000", "ievr_a_outcome_succeeds", "ievr_a_stack_max3_20s", "ievr_a_movespeed_opponents_minus3", "ievr_a_card_c11736050"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]

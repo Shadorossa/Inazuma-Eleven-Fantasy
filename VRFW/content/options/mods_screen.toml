@@ -4,6 +4,7 @@ schema = "VRFW.option/2"
 # Skips the boot logos and notices, going from language setup straight to the opening movie; applies at next start.
 [[option]]
 id = "skip_boot_screens"
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "toggle"
 label = "skip_boot_screens"
 help = "skip_boot_screens_help"

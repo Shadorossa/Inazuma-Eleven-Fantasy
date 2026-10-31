@@ -1,5 +1,5 @@
 -- Reads a service's declarations: every active mod's files of one kind (`<folder>\**\*.toml`, schema `<kind>`), each [[VRFW.<Entry>]] checked against
--- content\types\<type>.toml (VRFW.decl_schema/1) and its `when` conditions against the declaring mod's config; an invalid declaration is left out with one warning.
+-- content\types\<type>.toml (VRFW.decl_schema/1) and its `when` conditions against the declaring mod's config or a mod option; an invalid declaration is left out with one warning.
 --   local D = require "lib/declarations"
 --   local schema = D.schema("card_type")                      -- content\types\card_type.toml (nil, why)
 --   for _, d in ipairs(D.load(schema, warn)) do … end         -- { mod, file, entry, index, key, given, v }
@@ -36,18 +36,21 @@ end
 
 local function is_int(v) return type(v) == "number" and v == math.floor(v) end
 
-local COND_KEYS = { config = true, default = true, equals = true, ["not"] = true, above = true, below = true }
+local COND_KEYS = { config = true, option = true, default = true, equals = true, ["not"] = true, above = true, below = true }
 
 local function check_when(v)
   local list = v
-  if type(v) == "table" and v.config ~= nil then list = { v } end
-  if type(list) ~= "table" then return nil, "a condition { config = \"a.b\", default = …, equals / not / above / below = … } or a list of them" end
+  if type(v) == "table" and (v.config ~= nil or v.option ~= nil) then list = { v } end
+  if type(list) ~= "table" then return nil, "a condition { config = \"a.b\" or option = \"<mod>.<row>\", default = …, equals / not / above / below = … } or a list of them" end
   for i, c in ipairs(list) do
-    if type(c) ~= "table" or type(c.config) ~= "string" or c.config == "" then
-      return nil, string.format("condition #%d: config = \"<dotted path of the mod's config>\" is required", i)
+    if type(c) ~= "table" then return nil, string.format("condition #%d: not a table", i) end
+    local by_config = type(c.config) == "string" and c.config ~= ""
+    local by_option = type(c.option) == "string" and c.option ~= ""
+    if by_config == by_option then
+      return nil, string.format("condition #%d: one of config = \"<dotted path of the mod's config>\" or option = \"<mod>.<row>\" is required", i)
     end
     for k in pairs(c) do
-      if not COND_KEYS[k] then return nil, string.format("condition #%d: unknown key `%s` (config, default, equals, not, above, below)", i, tostring(k)) end
+      if not COND_KEYS[k] then return nil, string.format("condition #%d: unknown key `%s` (config, option, default, equals, not, above, below)", i, tostring(k)) end
     end
     if (c.above ~= nil and type(c.above) ~= "number") or (c.below ~= nil and type(c.below) ~= "number") then
       return nil, string.format("condition #%d: above / below take a number", i)
@@ -123,11 +126,28 @@ local function check_value(spec, v)
   return nil, "the schema's type `" .. tostring(t) .. "` is unknown"
 end
 
--- the conditions hold on mod `mod`'s merged config (a missing value = the condition's default)
+-- the current value of a mod option row (`<mod>.<row>`); a key naming a former id falls back to `mod`'s own row
+local function option_value(key, mod)
+  local ok, v = pcall(VRFW.option, key)
+  if (not ok or v == nil) and mod ~= nil then
+    ok, v = pcall(VRFW.option, tostring(mod) .. "." .. (key:match("([^.]+)$") or key))
+  end
+  if not ok then return nil end
+  return v
+end
+
+-- the conditions hold on mod `mod`'s merged config or on an option's current value (a missing value = the
+-- condition's default)
 function M.holds(mod, conds)
   for _, c in ipairs(conds or {}) do
-    local ok, v = pcall(VRFW.files.config, c.config, mod)
-    if not ok or v == nil then v = c.default end
+    local v
+    if c.option ~= nil then
+      v = option_value(c.option, mod)
+    else
+      local ok, value = pcall(VRFW.files.config, c.config, mod)
+      if ok then v = value end
+    end
+    if v == nil then v = c.default end
     if c.equals ~= nil then
       if v ~= c.equals then return false end
     elseif c["not"] ~= nil then

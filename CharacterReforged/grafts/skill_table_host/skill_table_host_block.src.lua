@@ -7,8 +7,7 @@
 --     id = "<id>", text = "<guide text row>",                         CMD_FUNC1); the first entry whose function says
 --     action = { lua = "<Prefix>.<Function>" }                        «available» takes the key and the guide entry
 --   [[entry]] host = "character_reforged.skill_table.x_action"       the same on X (CMD_FUNC4; 2026-10-14: Utilities'
---     (same fields)                                                  partner picker of combination moves); not taken
---                                                                     while Inazuma Fantasy's own block (EVT_CPK) is here
+--     (same fields)                                                  partner picker of combination moves)
 --   [[entry]] host = "character_reforged.skill_table.footer_button"  the button between «Set de jugador» and «Pasiva
 --     id = "<id>", text = "<label text row>",                        personalizada» (layer evt_cmn03_07_btn_train,
 --     action = { lua = "<Prefix>.<Function>" }                        content\menus\skill_table.toml): ONE slot, the
@@ -259,9 +258,6 @@ do
   -- the first action of `host` (default: the row actions) available on the focused row: entry, ctx
   function SkillTable.RowAction(host)
     host = host or SkillTable.ROW_HOST
-    if host == SkillTable.X_HOST and rawget(_ENV, "EVT_CPK") ~= nil then
-      return nil                                   -- Inazuma Fantasy's own X (its partner picker) answers alone
-    end
     for _, entry in ipairs(SkillTable.Entries(host)) do
       local ctx = SkillTable.RowContext(entry)
       if ctx == nil then

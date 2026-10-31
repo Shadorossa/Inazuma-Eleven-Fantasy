@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Triángulo letal triturador (Beyond the Death Zone, whs03180 and whs03180_or, same
+# cut-in ev60_03185; whs03180_or covered by the base move's rule).
+#
+# In the cut-in's last cut (c0500) the ball is shot out of the fifth triangle at the front of its purple energy beam
+# (research/scripts/beyond_the_death_zone_ball_fx.py). Flight: straight and level at 2.0 m into the goal (the beam's
+# widest part clear of the pitch). unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); points count from the kick; one point = a level flight;
+# straight = true: one straight line from the kick to the goal at that height.
+
+# Triángulo letal triturador (whs03180).
+[[edit]]
+target = "whs03180"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

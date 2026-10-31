@@ -62,3 +62,9 @@ handler = "NewRecruitment.PachangaBase"
 [[VRFW.Command]]
 name = "CMND_NEWRECRUITMENT_PACHANGA_LEVEL"
 handler = "NewRecruitment.PachangaLevel"
+
+# (card rarity, level) -> currency item id, count: the price of a signing from BetterQoL's album (scripts\album_price.lua,
+# config.toml [album])
+[[VRFW.Command]]
+name = "CMND_NEWRECRUITMENT_ALBUM_PRICE"
+handler = "NewRecruitment.AlbumPrice"

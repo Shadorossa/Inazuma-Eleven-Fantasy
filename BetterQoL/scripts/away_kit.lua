@@ -270,3 +270,55 @@ end
 
 -- built once while the framework starts (the tables the game loads are served by then)
 pair_map_now()
+
+-- ---------------------------------------------------------------------------------------------- save adjust
+
+-- «Quitar equipaciones de visitante» (Options › «Ajustar save», content\save_adjust\away_kits.toml): the kit items
+-- that only repeat another kit's away look (the game's «E. visitante …» items: key = the home kit item's key + `_<n>`,
+-- uniform = the home kit's away twin of the pair map above) leave the save: the teams wearing one go back to the home
+-- kit and the owned stacks are emptied (VRFW/lib/save_kits). The away look stays a press of Y in the kit picker.
+-- config.toml [away_kit] keep: item keys that stay (a team's own kit that happens to be such a twin).
+
+local SaveKits = require "VRFW/lib/save_kits"
+
+local away_items_cache
+
+-- { by_item = { [item id] = entry }, count }
+local function away_items()
+  if away_items_cache then return away_items_cache end
+  local cfg = (VRFW.files and VRFW.files.config and VRFW.files.config("away_kit")) or {}
+  local keep = {}
+  for _, key in ipairs(type(cfg.keep) == "table" and cfg.keep or {}) do
+    if type(key) == "string" then keep[key] = true end
+  end
+  local items = SaveKits.items()
+  local twins = pair_map_now()
+  local found = { by_item = {}, count = 0 }
+  for key, kit in pairs(items.by_key) do
+    local home = SaveKits.home_of(items, key)
+    if home and not keep[key] and kit.uniform ~= 0 and home.uniform ~= 0 and kit.uniform ~= home.uniform
+      and (twins[home.uniform] == kit.uniform or twins[kit.uniform] == home.uniform) then
+      found.by_item[kit.id] = SaveKits.entry(items, key)
+      found.count = found.count + 1
+    end
+  end
+  away_items_cache = found
+  return found
+end
+
+BetterQoL.SaveAdjust = BetterQoL.SaveAdjust or {}
+
+function BetterQoL.SaveAdjust.can_remove_away_kits()
+  local ok, found = pcall(away_items)
+  return ok and found.count > 0
+end
+
+function BetterQoL.SaveAdjust.remove_away_kits(tree, event)
+  local found = away_items()
+  if found.count == 0 then return { error = "no away-kit item in the kit list" } end
+  local report = SaveKits.remove(tree, found.by_item)
+  local line = string.format("save adjust: remove_away_kits (slot %s): %d away-kit item(s) removed of %d known (%s)",
+    tostring(event and event.slot), report.stacks, found.count, SaveKits.summary(report))
+  VRFW.log(line)
+  return { count = report.stacks, log = line }
+end

@@ -113,8 +113,7 @@ do
 
   -- the formation screen asked for the game's bank («Añadir del banco»): the retail «Banco» once it has closed
   function TP.BankRequest(from)
-    local ok, has = pcall(funcLuaCommand, TP.C.PARAM_HAS, TP.KEY_BANK)
-    if not ok or not has then
+    if not VRFW_Param.Has(TP.KEY_BANK) then
       return
     end
     -- OpenCharaBank waits for the bank to close: it needs the dock's coroutine (never the main thread)
@@ -123,8 +122,8 @@ do
       TP.Log("bank request seen at", from, "outside a coroutine: kept for the next one")
       return
     end
-    local set = funcLuaCommand(TP.C.PARAM_GET, TP.KEY_BANK)
-    funcLuaCommand(TP.C.PARAM_DEL, TP.KEY_BANK)
+    local set = VRFW_Param.Get(TP.KEY_BANK)
+    VRFW_Param.Clear(TP.KEY_BANK)
     local cur = squad()
     if type(OpenCharaBank) ~= "function" or (cur ~= nil and set ~= cur) then
       TP.Log("bank request of squad", tostring(set), "dropped (dock on", tostring(cur), ")")

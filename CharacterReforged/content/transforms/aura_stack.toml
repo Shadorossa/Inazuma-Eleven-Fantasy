@@ -1,10 +1,13 @@
 schema = "VRFW.transform/2"
 # Character Reforged › which forms of the new skill set's two slots run together on one player (docs/framework/
-# extra-slot.md §7.7, docs/framework/types/transform.md §3). The aura slot's spirit (a keshin, or a totem: kind
-# "aura") and the mix slot's fusion (a Mix-Max: kind "miximax") stack both ways: the fusion starts while the spirit is
-# out, and the spirit is summoned while the fusion runs. Each keeps its own costs, time and limits (the team limit,
-# the cooldown between auras, Aura Points' pools); the end of one does not end the other. No armour over the fusion
-# (an armour and a fusion share the engine's one metamorphosis). Merged over the other mods' rules key by key.
+# extra-slot.md §7.7, docs/framework/types/transform.md §3). The aura slot's spirit (a keshin, or a totem or an
+# awakening power: kind "aura") and the mix slot's fusion (a Mix-Max: kind "miximax") stack both ways: the fusion
+# starts while the spirit is out, and the spirit is summoned while the fusion runs. The armour stacks with the fusion
+# both ways too: the fusion starts while the armour is worn, and the armour is put on over a running fusion. The
+# armour keeps the engine's one metamorphosis (its look and time); the fusion adds its stats and partner moves under
+# it and ends with it. The spirit's move stays usable under its armour. Each keeps its own costs and limits (the team
+# limit, the cooldown between auras, Aura Points' pools); the end of the fusion does not end the spirit or the armour.
+# Merged over the other mods' rules key by key.
 
 [rules]
-stack = ["keshin", "aura", "miximax"]
+stack = ["keshin", "aura", "miximax", "armour"]

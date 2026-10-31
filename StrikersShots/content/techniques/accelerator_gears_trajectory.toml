@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Engranajes aceleradores (Accelerator Gears, whs02090, cut-in ev60_02090): one
+# straight level line from the kick point to the goal, the ball at 1.8 m the whole way (the cut-in ricochets it between
+# floating gears; its blue halo, ~1.2 m round the ball, stays clear of the grass). Heights are the ball centre over the
+# pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Engranajes aceleradores (whs02090).
+[[edit]]
+target = "whs02090"
+trajectory = { points = [[0.0, 1.8]], straight = true, unblockable = false }

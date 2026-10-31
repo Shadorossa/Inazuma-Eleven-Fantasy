@@ -6,7 +6,6 @@ local SET_BIT = 3258400760        -- CMND_SET_GLOBAL_BIT_FLAG
 local SET_BYTE = 187123515        -- CMND_SET_GLOBAL_BYTE_FLAG
 local LOG = 3661580131               -- CMND_EVT_LOG (loader; fails quietly without it)
 local CLOCK = 3441113678           -- CMND_EVT_CLOCK_MS (loader module office)
-local DT = 2215888030             -- frame delta seconds (prog_base WaitFrame)
 local F_DONE = {{v1}}           -- EVT_TRIAL_{{v2}} (bank-0 bit)
 local B_RESULT = 1236541897     -- EVT_TRIAL_RESULT: 1 running, 2 passed, 3 failed
 local B_SECS = 352766285         -- EVT_TRIAL_SECS: best seconds (hold) / goals / steals reached
@@ -27,34 +26,9 @@ local function Clock()
   end
   return nil
 end
-local function Poll()
-  polls = polls + 1
-  local dt = funcLuaCommand(DT)
-  if type(dt) ~= "number" then
-    dt = 0
-  end
-  dt_all = dt_all + dt
-  return dt
-end
-local function Since(ms0, dt0, polls0)
-  -- seconds since a mark: loader clock, else frame-delta sum, else polls / 60
-  local now = Clock()
-  if now ~= nil and ms0 ~= nil and ms0 > 0 then
-    return (now - ms0) / 1000, "clock"
-  end
-  if dt_all - dt0 > 0 then
-    return dt_all - dt0, "dt"
-  end
-  return (polls - polls0) / 60, "polls"
-end
 -- 2026-09-28: the rows of a trigger file fire ONCE per match (first test: one "hold start", never "hold lost"), so
 -- the objective is judged every frame by the match HUD (ofq_hud_1.lua: hold time, goals within the time, steals;
 -- bit + EVT_TRIAL_RESULT = 2 + EVT_TRIAL_SECS). These rows only log what they see (to learn when rows re-fire).
-local function Pass(how, secs, ...)
-  Log("row objective reached (the HUD decides)", how, secs, ...)
-end
-local function NoteSecs(v)
-end
 local function Init()
   done, polls, dt_all = false, 0, 0
   start_ms = Clock() or 0

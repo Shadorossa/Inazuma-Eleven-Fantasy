@@ -78,6 +78,8 @@
 -- `help` text; its `extra` layers (e.g. a picture) are kept on the button's place; placing runs only after the events
 -- that move the field (open, team switch, back from a child menu) until the button stays put; the spec's `step()`
 -- runs every Step (the mod's selector while it is open). Not with EVT_CHD_TACTICS.
+-- The team editor's icon buttons (VRFW_TeamEditor spec.icons, vrfw_team_icon): one row of up to 3 above that button,
+-- placed and focused the same way (CHD_ICONS, CHD.IconsPlace); with spec.hide_list the focus never stays on the list.
 -- Engine calls only inside callbacks. Kill switches: EVT_CHD_PANEL (panel + header + focus), EVT_CHD_CLIP (one gradient;
 -- false = each box squeezes the whole plate), EVT_CHD_ARROWS; EVT_UI_PRESET = "off" = all off.
 -- @@dock_panel_layout BEGIN (research/scripts/clean_hud_dock_panel.py --write; computed from the v7.1.2 layouts, not seen in game)
@@ -246,6 +248,8 @@ local CHD_DOCKNO = {  -- team01_05_team_dock_no: arrows x0.6 about their centres
 }
 local CHD_SLOT = {  -- another mod's picture button (BetterUI.AddDockButton): its centre (dx, dy) frame units from the lower synergy button, step = lower - upper synergy button
   step = -72.0, dx = 0.0, pdx = -139.0, dy = -384.5, h = 107.0, mesh = 4273639855, mx = -66.0, my = 36.0, mw = 132.0, mh = 72.0}  -- dx: the synergy column, pdx: the panel's centre; _synergy_top_base01: the default scale reference
+local CHD_ICONS = {  -- the team editor's icon buttons (vrfw_team_icon): their centre dy frame units from the lower synergy button, pdx the panel's centre, step between two, layer scale
+  dy = -292.6, pdx = -139.0, step = 132.8, scale = 0.9}
 -- @@dock_panel_layout END
 
 if EVT_CHD_PANEL == nil then
@@ -762,6 +766,20 @@ end
 -- focus (two items highlighted, in game 1.14.0). It is unmarked again for CHD_GHOST_STEPS Steps (CHD_Ghost): the
 -- engine's own focus-in of the shift can land after this Step.
 local CHD_GHOST_STEPS = 3
+-- the team's identity fixed by the dock's opener (VRFW_TeamEditor.Foreign().lock_identity, a team page): the crest,
+-- the team name, the kit and the home stadium button take no focus and no pointer. Read once per dock open (the dock
+-- runs in a VM of its own)
+CHD.LOCKED_LAYERS = {[1044086265] = true, [1922851874] = true, [3822105360] = true,   -- bar (crest), team name, kit
+  [72691397] = true}   -- home_stadium_dock_button (Home Stadium's button in this panel: the opener's stadium, fixed)
+function CHD.Locked()
+  if CHD.lock == nil then
+    local f = type(VRFW_TeamEditor) == "table" and type(VRFW_TeamEditor.Foreign) == "function"
+      and VRFW_TeamEditor.Foreign() or nil
+    CHD.lock = type(f) == "table" and f.tab == true and f.lock_identity == true
+  end
+  return CHD.lock
+end
+
 local function CHD_Go(from, fi, to, ti)
   if CHD.moves < 80 then
     CHD.moves = CHD.moves + 1
@@ -914,7 +932,7 @@ end
 -- (from, fi) -> the button, with its help line
 local function CHD_ToSlot(from, fi)
   local layer, spec = CHD_SlotLayer()
-  if layer == nil or not CHD.slot.placed then
+  if layer == nil or not CHD.slot.placed or (CHD.Locked() and CHD.LOCKED_LAYERS[layer]) then
     return false
   end
   CHD_Go(from, fi, layer, 0)
@@ -966,6 +984,9 @@ local function CHD_SlotArm()
   st.live, st.still = 1, 0
   for _, e in pairs(st.extra or {}) do
     e.wait = 0
+  end
+  if type(CHD.IconsArm) == "function" then
+    CHD.IconsArm()
   end
 end
 CHD.SlotArm = CHD_SlotArm
@@ -1060,6 +1081,236 @@ local function CHD_Unfocused(layer, idx)
   CHD_Cmd(CHD.FOCUS_MARK, layer, idx, false)
 end
 
+-- ---- the team editor's icon buttons (VRFW_TeamEditor spec.icons: vrfw_team_icon) -----------------------------------
+-- One row of up to 3 picture buttons right above another mod's button, centred on the panel (CHD_ICONS); each opens a
+-- dock list row's screen (VRFW lua\menu\soccer_team_dock_menu\130_foreign_team.lua). Placed like that button: from the
+-- synergy buttons' measured places, hidden until placed, after the events that move the field (CHD_SlotArm). Focus:
+-- LEFT / RIGHT between the icons (RIGHT of the last = the nearest card), UP = TÁCTICAS, DOWN = the button when it takes
+-- the focus, else FORMACIÓN; TÁCTICAS DOWN, FORMACIÓN UP (no button) and CONF. UP (no button) come to them. With
+-- spec.hide_list the list is off screen: a focus that lands on it (the dock's open, Back from a card, a retail row)
+-- goes to the first icon (no icons: back where it came from). Not with EVT_CHD_TACTICS.
+CHD.ICON = 330027688              -- vrfw_team_icon
+CHD.ICON_FN = {LEFT = 1602928933, RIGHT = 3162678559, UP = 3213729062, DOWN = 957527670}   -- vrfw_team_icon_left / ...
+CHD.ICON_MAX = 3                  -- vrfw_team_icon instances
+-- each instance hangs from a joint of its own on the pitch frame, under the lower synergy button's _atc_synergy02
+-- (BetterUI content/menus/team_icons_attach.toml: the frame's attach rows): the row is placed by writing those joints, so the
+-- instance's pointer zone and cursor locator move with it (a layer moved with CMND_SET_LAYER_LOCAL_POS keeps its
+-- zone and its cursor at the layout's place). {joint, x, y}: the joint and its translation in the layout (3 icons)
+CHD.ICON_JOINTS = {
+  {3112134118, -271.8, -292.6},   -- _atc_vrfw_icon01
+  {544617564, -139.0, -292.6},    -- _atc_vrfw_icon02
+  {1467024586, -6.2, -292.6},     -- _atc_vrfw_icon03
+}
+
+-- the pitch frame layer the icons hang from (the frame of this dock that has their joints), nil = none
+function CHD.IconFrame()
+  local I = CHD.Icons()
+  if I.frame == nil then
+    I.frame = false
+    for _, frame in ipairs(CHD.FRAMES) do
+      if CHD_G(frame, 0, CHD.ICON_JOINTS[1][1]) ~= nil then
+        I.frame = frame
+        break
+      end
+    end
+    CHD_Log("icons hang from " .. (I.frame and ("frame " .. tostring(I.frame)) or "no frame joint: layer moves"))
+  end
+  return I.frame or nil
+end
+
+-- the icons of this open (read once per dock VM: VRFW_TeamEditor.Foreign())
+function CHD.Icons()
+  if CHD.icons == nil then
+    local f = type(VRFW_TeamEditor) == "table" and type(VRFW_TeamEditor.Foreign) == "function"
+      and VRFW_TeamEditor.Foreign() or nil
+    local n = type(f) == "table" and type(f.icons) == "table" and #f.icons or 0
+    CHD.icons = {n = CHD_TacOn() and 0 or math.min(n, CHD.ICON_MAX), hide = type(f) == "table" and f.hide_list == true,
+      live = 1, still = 0, wait = 0, placed = false, spare = false, st = {}}
+    if n > 0 or CHD.icons.hide then
+      CHD_Log("icons: " .. CHD.icons.n .. ", list hidden " .. tostring(CHD.icons.hide))
+    end
+  end
+  return CHD.icons
+end
+
+function CHD.IconsShown()
+  local I = CHD.Icons()
+  return I.n > 0 and I.placed
+end
+
+-- the help line of icon i: its list row's name and description (VRFW_TeamEditor.IconHelp)
+function CHD.IconHelp(i)
+  local f = type(VRFW_TeamEditor) == "table" and VRFW_TeamEditor.IconHelp or nil
+  if type(f) ~= "function" then
+    return
+  end
+  local ok, text = pcall(f, i)
+  if ok and type(text) == "string" then
+    CHD_Cmd(CHD.SET_TEXT, CHD.GUIDE_LINE, CHD.GUIDE_NODE, text, 0)
+  end
+end
+
+-- (from, fi) -> icon i (clamped to the row), with its help line; false when the row is not shown
+function CHD.ToIcon(from, fi, i)
+  local I = CHD.Icons()
+  if not CHD.IconsShown() then
+    return false
+  end
+  i = math.max(0, math.min(i or 0, I.n - 1))
+  if from == CHD.ICON and fi ~= i then
+    CHD_Unfocus(CHD.ICON, fi)
+  end
+  CHD_Go(from, fi, CHD.ICON, i)
+  CHD.IconHelp(i)
+  return true
+end
+
+-- the focus landed on the hidden list: the first icon, else back to `from`
+function CHD.OffList(at, ai, from, fi)
+  if CHD.ToIcon(at, ai, 0) then
+    return
+  end
+  if from ~= nil and from ~= at then
+    CHD_Go(at, ai, from, fi or 0)
+  end
+end
+
+-- an icon's own input rows (OnFunction vrfw_team_icon_*): the cursor moves of the row
+function CHD.IconMove(fn)
+  local I = CHD.Icons()
+  if not CHD.IconsShown() or not CHD_Active(CHD.ICON) then
+    return
+  end
+  local i = CHD_Idx(CHD.ICON)
+  local moved = false
+  if fn == CHD.ICON_FN.LEFT then
+    moved = i > 0 and CHD.ToIcon(CHD.ICON, i, i - 1)
+  elseif fn == CHD.ICON_FN.RIGHT then
+    if i < I.n - 1 then
+      moved = CHD.ToIcon(CHD.ICON, i, i + 1)
+    else
+      local ci = CHD_CardFrom(4, CHD.ICON, i)
+      if ci ~= nil then
+        CHD_ToCard(CHD.ICON, i, ci)
+        moved = true
+      end
+    end
+  elseif fn == CHD.ICON_FN.UP then
+    if CHD_Open(CHD.TAC, 0) then
+      CHD_Go(CHD.ICON, i, CHD.TAC, 0)
+      moved = true
+    end
+  elseif fn == CHD.ICON_FN.DOWN then
+    if CHD_ToSlot(CHD.ICON, i) then
+      moved = true
+    elseif CHD_Open(CHD.FORM, 0) then
+      CHD_Go(CHD.ICON, i, CHD.FORM, 0)
+      moved = true
+    end
+  end
+  if moved then
+    CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
+  end
+end
+
+-- every Step while armed: each icon instance's plate centre onto its place in the row (global units, as the button),
+-- the unused instances hidden without pointer; once all stay put CHD_SLOT_STILL Steps placing stops until re-armed.
+-- The first time the row is placed with the list hidden, the focus leaves the list for the first icon.
+function CHD.IconsPlace()
+  local I = CHD.Icons()
+  if not I.spare and CHD_Open(CHD.ICON, 0) then
+    I.spare = true
+    for i = I.n, CHD_Num(CHD.ICON) - 1 do
+      CHD_Cmd(CHD.LAYER_VISIBLE, CHD.ICON, i, false)
+      CHD_Cmd(CHD.ZONE, CHD.ICON, i, false)
+    end
+  end
+  if I.n == 0 or I.live <= 0 then
+    return
+  end
+  local ux, uy = CHD_G(CHD.SYN_UPPER, 0, CHD.POS_BASE)
+  local lx, ly = CHD_G(CHD.SYN_LOWER, 0, CHD.POS_BASE)
+  if ux == nil or lx == nil then
+    return
+  end
+  local k = (ly - uy) / CHD_SLOT.step                     -- global units per field unit (y, signed)
+  if math.abs(k) < 0.05 then
+    return
+  end
+  local all = true
+  for i = 0, I.n - 1 do
+    local s = I.st[i]
+    if s == nil and CHD_Open(CHD.ICON, i) then
+      local j = CHD.ICON_JOINTS[i + 1]
+      s = {x = j and j[2] or 0, y = j and j[3] or 0, joint = j and CHD.IconFrame() and j[1] or nil, wait = 1,
+        placed = false}
+      I.st[i] = s
+      CHD_Cmd(CHD.LAYER_VISIBLE, CHD.ICON, i, false)
+      CHD_Cmd(CHD.LAYER_SCALE, CHD.ICON, CHD_ICONS.scale, CHD_ICONS.scale, 1, i)
+    end
+    if s == nil then
+      all = false
+    elseif s.wait > 0 then
+      s.wait = s.wait - 1
+      all = false
+    else
+      local bx, by = CHD_G(CHD.ICON, i, CHD.POS_BASE)
+      local mx, my = CHD_G(CHD.ICON, i, CHD_SLOT.mesh)
+      local kbx = bx ~= nil and mx ~= nil and (mx - bx) / CHD_SLOT.mx or 0   -- global units per layer unit (scaled)
+      local kby = bx ~= nil and mx ~= nil and (my - by) / CHD_SLOT.my or 0
+      if math.abs(kbx) < 0.05 or math.abs(kby) < 0.05 then
+        all = false
+      else
+        local tx = lx + (CHD_ICONS.pdx + (i - (I.n - 1) / 2) * CHD_ICONS.step) * math.abs(k)
+        local ty = ly + CHD_ICONS.dy * k
+        local dx, dy = (tx - bx) / kbx * CHD_ICONS.scale, (ty - by) / kby * CHD_ICONS.scale
+        if math.abs(dx) < 0.5 and math.abs(dy) < 0.5 then
+          if not s.placed then
+            s.placed = true
+            CHD_Cmd(CHD.LAYER_VISIBLE, CHD.ICON, i, true)
+          end
+        elseif s.joint ~= nil then
+          -- the joint moved (frame layout units: |k| global units per unit in x, k in y)
+          s.x, s.y, s.wait = s.x + (tx - bx) / math.abs(k), s.y + (ty - by) / k, 2
+          CHD_Cmd(CHD.NODE_POS, CHD.IconFrame(), 0, s.joint, 0, s.x)
+          CHD_Cmd(CHD.NODE_POS, CHD.IconFrame(), 0, s.joint, 1, s.y)
+          all = false
+        else
+          s.x, s.y, s.wait = s.x + dx, s.y + dy, 2
+          CHD_Cmd(CHD.LAYER_POS, CHD.ICON, s.x, s.y, 0, i)
+          all = false
+        end
+      end
+    end
+  end
+  if not all then
+    I.still = 0
+    return
+  end
+  I.still = I.still + 1
+  if I.still >= CHD_SLOT_STILL then
+    I.live = 0
+  end
+  if not I.placed then
+    I.placed = true
+    CHD_Log(string.format("icons placed (%d), list hidden %s", I.n, tostring(I.hide)))
+    if I.hide and CHD_Active(CHD.LIST) then
+      CHD.ToIcon(CHD.LIST, CHD_Idx(CHD.LIST), 0)
+    end
+  end
+end
+
+-- the events that move the field: place the icons again
+function CHD.IconsArm()
+  local I = CHD.icons
+  if I ~= nil then
+    I.live, I.still = 1, 0
+    for _, s in pairs(I.st) do
+      s.wait = 0
+    end
+  end
+end
+
 -- every Step: the header's pointer zones (engine zones = layout rectangles, docs/game/ui/ui-redesign.md «pointer zones
 -- do not follow node writes») matched to what is drawn, so hovering an item focuses that item:
 --   crest     its zone (_touch_emblem01 of BetterUI's team01_04_evt_bui layout) is on the header-mode crest: on only
@@ -1086,6 +1337,14 @@ function CHD.Zone(layer, off, why)
 end
 
 function CHD.HeaderZones()
+  if CHD.Locked() then
+    for layer in pairs(CHD.LOCKED_LAYERS) do
+      if CHD_Open(layer, 0) and CHD_Get(CHD.LAYER_ACTIVE, layer) ~= false then
+        CHD.Zone(layer, true, "the team's identity is fixed")
+      end
+    end
+    return
+  end
   CHD.zoneTick = (CHD.zoneTick or 0) + 1
   if CHD.zoneTick >= 30 then       -- a dock move / child menu switches every zone on again behind this cache
     CHD.zoneTick = 0
@@ -1256,8 +1515,18 @@ CHD_After("OnOpenLayer", function(a1, a2)
   if a1 ~= nil and a1 == CHD_SlotLayer() then
     CHD_Unfocused(a1, a2 or 0)    -- the dock button opens without the focused look (unless the focus is on it)
   end
-  if a1 == CHD.slot.layer or a1 == CHD.FRAMES[1] or a1 == CHD.FRAMES[2] or a1 == CHD.SYN_LOWER then
-    CHD.SlotArm()                 -- the button / field (11v11 / 5v5) opening: the dock slides in, place again
+  if a1 == CHD.ICON then
+    CHD_Unfocused(a1, a2 or 0)    -- the icon buttons open without the focused look (unless the focus is on them)
+    local I, s = CHD.Icons(), CHD.Icons().st[a2 or 0]
+    if (a2 or 0) >= I.n or s == nil or not s.placed then
+      CHD_Cmd(CHD.LAYER_VISIBLE, a1, a2 or 0, false)   -- hidden until placed; an unused one stays hidden
+    end
+    if (a2 or 0) >= I.n then
+      CHD_Cmd(CHD.ZONE, a1, a2 or 0, false)
+    end
+  end
+  if a1 == CHD.slot.layer or a1 == CHD.ICON or a1 == CHD.FRAMES[1] or a1 == CHD.FRAMES[2] or a1 == CHD.SYN_LOWER then
+    CHD.SlotArm()                 -- the button / icons / field (11v11 / 5v5) opening: the dock slides in, place again
   end
 end)
 -- the team switch and the dock back from a child menu move the field: place the button again
@@ -1294,6 +1563,11 @@ end)
 local chd_prev_change = rawget(_ENV, "OnChangeFocus")
 if type(chd_prev_change) == "function" then
   rawset(_ENV, "OnChangeFocus", function(a1, a2, ...)
+    if a1 == CHD.ICON and not CHD.busy then
+      local r = CHD_Pack(chd_prev_change(a1, a2, ...))
+      CHD.IconHelp(CHD_Idx(CHD.ICON))
+      return table.unpack(r, 1, r.n)
+    end
     if CHD.busy then
       CHD.echo = true
     elseif CHD_PanelOn() and (a2 == CHD.ARG_LEFT or a2 == CHD.ARG_RIGHT) and CHD_Active(a1) then
@@ -1396,6 +1670,8 @@ rawset(_ENV, "MoveFocusMtx", function(a1, a2, a3, ...)
       if a3 < 0 then
         if CHD_ToSlot(CHD.CONF, 0) then
           -- another mod's picture button above FORMACIÓN | CONF.
+        elseif CHD.ToIcon(CHD.CONF, 0, CHD.Icons().n - 1) then
+          -- the team editor's icon buttons (the last one, above CONF.)
         elseif CHD_Open(CHD.TAC, 0) then
           CHD_Go(CHD.CONF, 0, CHD.TAC, 0)
         end
@@ -1456,10 +1732,16 @@ CHD.FN = {UP = 2122449173, DOWN = 885050662, RIGHT = 3622053520}   -- betterui_d
 local chd_prev_fn = rawget(_ENV, "OnFunction")
 if type(chd_prev_fn) == "function" then
   rawset(_ENV, "OnFunction", function(a1, ...)
+    if a1 == CHD.ICON_FN.LEFT or a1 == CHD.ICON_FN.RIGHT or a1 == CHD.ICON_FN.UP or a1 == CHD.ICON_FN.DOWN then
+      CHD.IconMove(a1)
+      return
+    end
     if a1 == CHD.FN.UP or a1 == CHD.FN.DOWN or a1 == CHD.FN.RIGHT then
       local slot = CHD_SlotLayer()
       if slot ~= nil and CHD_Active(slot) then
-        if a1 == CHD.FN.UP and CHD_Open(CHD.TAC, 0) then
+        if a1 == CHD.FN.UP and CHD.ToIcon(slot, 0, 0) then
+          CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
+        elseif a1 == CHD.FN.UP and CHD_Open(CHD.TAC, 0) then
           CHD_Go(slot, 0, CHD.TAC, 0)
           CHD_Lc(CHD.SOUND, CHD.SE_MOVE)
         elseif a1 == CHD.FN.DOWN and CHD_Open(CHD.FORM, 0) then
@@ -1475,7 +1757,12 @@ if type(chd_prev_fn) == "function" then
       end
       return
     end
-    return chd_prev_fn(a1, ...)
+    local r = CHD_Pack(chd_prev_fn(a1, ...))
+    -- Back from a card gives the retail focus to the list (BackToTeamDockListItem): with the list hidden, the first icon
+    if CHD.Icons().hide and CHD_Active(CHD.LIST) then
+      CHD.OffList(CHD.LIST, CHD_Idx(CHD.LIST))
+    end
+    return table.unpack(r, 1, r.n)
   end)
 end
 
@@ -1570,8 +1857,17 @@ local function CHD_Redirect(sh, key)
   if not CHD_Active(t) then
     return
   end
-  -- TÁCTICAS DOWN / FORMACIÓN UP (a key, not the pointer): another mod's picture button between them
-  if key and ((f == CHD.TAC and t == CHD.FORM) or (f == CHD.FORM and t == CHD.TAC)) and CHD_ToSlot(t, ti) then
+  -- the list hidden (VRFW_TeamEditor spec.hide_list): the first icon, else back
+  if t == CHD.LIST and CHD.Icons().hide then
+    CHD.OffList(t, ti, f, fi)
+    return
+  end
+  -- TÁCTICAS DOWN (a key): the team editor's icons, else another mod's picture button
+  if key and f == CHD.TAC and t == CHD.FORM and (CHD.ToIcon(t, ti, 0) or CHD_ToSlot(t, ti)) then
+    return
+  end
+  -- FORMACIÓN UP (a key): another mod's picture button, else the icons
+  if key and f == CHD.FORM and t == CHD.TAC and (CHD_ToSlot(t, ti) or CHD.ToIcon(t, ti, 0)) then
     return
   end
   local hdr = CHD.hdr == "header"
@@ -1633,14 +1929,28 @@ if type(chd_prev_shift) == "function" then
       elseif a3 == CHD_SlotLayer() then
         CHD.shift = nil           -- onto another mod's picture button (the pointer): kept, with its help line
         CHD_SlotHelp(select(2, CHD_SlotLayer()))
+      elseif a3 == CHD.ICON then
+        CHD.shift = nil           -- onto an icon button (the pointer): kept, with its help line
+        CHD.IconHelp(a4)
       elseif (a1 == CHD.FORM or a1 == CHD.CONF) and (a3 == CHD.FORM or a3 == CHD.CONF) and CHD.PointerOnBox(a3) then
         CHD.shift = nil           -- the pointer's group switch onto the box under it: not a key move, kept as it is
       else
         CHD.shift = sh
       end
+      CHD.LockGuard(a1, a2)
     end
     return table.unpack(r, 1, r.n)
   end)
+end
+
+-- the focus landed on a fixed identity item (a key, the pointer or a redirect): back to `from` (another item)
+function CHD.LockGuard(from, fi)
+  local at = CHD.focusAt
+  if not CHD.Locked() or at == nil or not CHD.LOCKED_LAYERS[at] or CHD.LOCKED_LAYERS[from] then
+    return
+  end
+  CHD.shift = nil
+  CHD_Go(at, 0, from, fi or 0)
 end
 
 CHD_After("Step", function()
@@ -1651,6 +1961,7 @@ CHD_After("Step", function()
       local sh = CHD.shift
       CHD.shift = nil
       CHD_Redirect(sh)
+      CHD.LockGuard(sh[1], sh[2])
     end
     CHD_Poll()
     if CHD_ClipOn() then
@@ -1668,6 +1979,7 @@ CHD_After("Step", function()
   end
   if not CHD.busy then
     CHD_SlotPlace()
+    CHD.IconsPlace()
   end
   if not CHD.busy then
     CHD_Ghost()

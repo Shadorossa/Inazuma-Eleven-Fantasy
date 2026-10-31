@@ -1,0 +1,38 @@
+# The team editor's icon buttons (VRFW_TeamEditor spec.icons, docs/framework/team-editor.md «Icon buttons»): up to 3
+# picture buttons in «Plantilla de equipo» (soccer_team_dock_menu), each opening the screen of one dock list row.
+# vrfw_team_icon is a copy of the synergy button (team00_17_synergy_attachment_button: plate, focus outline, icon,
+# pointer zone, cursor locator); lua\menu\soccer_team_dock_menu\130_foreign_team.lua puts the spec's sprite of the hub
+# header atlas (mainmenu90_01) on its icon and runs its row. BetterUI's dock panel (graft ui_clean_dock_panel) places
+# the row and moves the cursor to and from it, so the layer is added only with BetterUI.
+# Input rows: ENTER (the row's screen), LEFT / RIGHT / UP / DOWN as CMD_FUNCTION vrfw_team_icon_left / _right / _up /
+# _down (the panel's cursor moves), the dock's function keys and back, as the synergy buttons have them.
+schema = "VRFW.menu/2"
+if_mod = "clean_hud"
+
+[[object]]
+name = "vrfw_team_icon"
+from = "team00_17_synergy_attachment_button"
+remove_block = ["MenuSynergyAttachmentButtonProperty"]   # no synergy item logic on the copy
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_layer = { name = "vrfw_team_icon", object = "vrfw_team_icon", count = 3, after = "team00_17_synergy_attachment_button_pillar", groups = [{ group = "soccer_team_dock_menu", flags = [0, 1, 0, 0, 1, 0], after = "team00_17_synergy_attachment_button_pillar" }], focus = { info = [973515837, 0, 0] } }
+res = ["#/menu/100_mainmenu/mainmenu90/mainmenu90_01/<LG>/mainmenu90_01.g4tx"]
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+add_cmd = [
+    { layer = "vrfw_team_icon", input = 1981080283, command = "CMD_ENTER", arg = 4108050209, arg2 = 4108050209, flag = 1 },
+    # LEFT / RIGHT / UP / DOWN: BetterUI's dock panel moves the cursor (OnFunction vrfw_team_icon_left / _right / _up / _down)
+    { layer = "vrfw_team_icon", input = 2765147006, command = "CMD_FUNCTION", arg = 1602928933, arg2 = 4108050209, flag = 1 },
+    { layer = "vrfw_team_icon", input = 2075023265, command = "CMD_FUNCTION", arg = 3162678559, arg2 = 4108050209, flag = 1 },
+    { layer = "vrfw_team_icon", input = 1197218715, command = "CMD_FUNCTION", arg = 3213729062, arg2 = 4108050209, flag = 1 },
+    { layer = "vrfw_team_icon", input = 3259546669, command = "CMD_FUNCTION", arg = 957527670, arg2 = 4108050209, flag = 1 },
+    { layer = "vrfw_team_icon", input = 3966226594, command = "CMD_FUNCTION", arg = 2294853123, arg2 = 2053629800, flag = 1 },
+    { layer = "vrfw_team_icon", input = 942075773, command = "CMD_FUNCTION", arg = 2294853123, arg2 = 3033167124, flag = 1 },
+    { layer = "vrfw_team_icon", input = 637335895, command = "CMD_FUNCTION", arg = 3620553157, arg2 = 4108050209, flag = 1 },
+    { layer = "vrfw_team_icon", input = 3421673595, command = "CMD_FUNCTION", arg = 4219711668, arg2 = 4108050209, flag = 1 },
+    { layer = "vrfw_team_icon", input = 1435897304, command = "CMD_FUNCTION", arg = 3702644710, arg2 = 4108050209, flag = 1 },
+    { layer = "vrfw_team_icon", input = 3473063670, command = "CMD_BACK", arg = 4108050209, arg2 = 4108050209, flag = 1 },
+    { layer = "vrfw_team_icon", input = 3011112225, command = "CMD_BACK", arg = 4108050209, arg2 = 4108050209, flag = 1 },
+]

@@ -437,17 +437,12 @@ end
 --     and the Decide hook (scripts\campaign.lua) draws the bracket and starts match 1. Refused while a Campaña runs.
 --     Torneo with a run: «Continuar el torneo» (the bracket, then Enter = next match) or «Nuevo torneo» (after a Yes /
 --     No the run is dropped and a new one starts: the grid at once); an ended run: «Ver el cuadro» / «Nuevo torneo».
---   * 1.5.18 (owner, 2026-10-12): the Torneo PANEL. The entry (this menu's Torneo row, or «Modos de juego»'s Torneo
---     tile: bbt_hub.lua runs this same file on that menu) opens the bracket and, centred over it, the window
+--   * 1.5.18 (owner, 2026-10-12): the Torneo PANEL. The entry (this menu's Torneo row) opens the bracket and, centred
+--     over it, the window
 --     «Continuar el torneo» (the next match) / «Ver el cuadro» (the bracket stays: L1 / R1 pages, Back closes) /
 --     «Nuevo torneo» (Yes / No while one runs, then the team grid); Back closes both and leaves the player where he
 --     was. No run: «Nuevo torneo» at once = the team grid. The screen it runs on is BattleBayDeluxe.TournamentHost (layers hidden under the
 --     bracket, the lists whose focus it takes, the header, the grid, the way back): this menu by default.
---   * 1.5.17 (owner, 2026-10-12): the Battle Bay rows are gone (Inazuma Fantasy's «Modos de juego» hides them, its
---     mh_bb.lua): this hub is entered through the «Torneo» tile of «Modos de juego» (or the top bar), whose row decide
---     runs here; with no run it goes STRAIGHT to the team grid (no window before it). While a Torneo flow runs here
---     the hub's way back to «Modos de juego» waits (EVT_MH_BB_HOLD.bb_tournament); after it (bracket closed, grid left,
---     window cancelled) the player is back on the tile.
 --   * Every opening of this menu (back from a match, entering the Battle Bay) first syncs the tournament
 --     (CMND_BBD_TOURN_SYNC with the rule engine's STATE of the last match): the result is recorded, the round's other
 --     matches simulated, the campaign block written for the next match (or zeroed: out / champion). This runs BEFORE
@@ -586,9 +581,8 @@ BattleBayDeluxe.Tournament.N = { line = 330, row_l = 33, row_r = 32, txt = 4, ic
 -- draw priority of a connector-pool quad by what it draws (the layer's own is the connectors' 549; a score box drawn
 -- on it where the menu has no box pool: 552, BattleBayDeluxe.Tournament.SHARE)
 BattleBayDeluxe.Tournament.PRIO = { line = 549, box = 552 }
--- 1.5.58: a pool this menu does not have (BattleBayDeluxe.Tournament.N[k] = 0) drawn on another pool of the same object, at its own draw
--- priority (BattleBayDeluxe.Tournament.PRIO[k]): { box = "line" } on «Modos de juego» (bbt_hub.lua BattleBayDeluxe.TournamentHost.share; the layer budget). None
--- here: this menu has every pool
+-- 1.5.58: a pool a host menu does not have (BattleBayDeluxe.Tournament.N[k] = 0) drawn on another pool of the same object, at its
+-- own draw priority (BattleBayDeluxe.Tournament.PRIO[k]), e.g. { box = "line" }. None here: this menu has every pool
 BattleBayDeluxe.Tournament.SHARE = {}
 BattleBayDeluxe.Tournament.ROW_CHAMP = 32                 -- row_l instance of the champion's plate
 BattleBayDeluxe.Tournament.ART = 2658588602               -- crc32("#/menu/220_img/bbd_tn/bbd_tn.g4tx"): the mod's drawings
@@ -689,8 +683,7 @@ BattleBayDeluxe.Tournament.TOP_LAYERS = {
   3687874606 --[[mainmenu90_24_tutorial_button]], 4096284290 --[[mainmenu90_24_02_play_guide_button]],
   429081730 --[[vs01_21_room_setting_button]], 2575749231 --[[vs11_01_next_stage_guide]],
 }
--- 1.5.18: the screen the Torneo runs on. This menu (the Battle Bay top menu) by default; «Modos de juego» sets its own
--- in bbt_hub.lua (appended after this file there). hide = layers made invisible under the bracket (every instance),
+-- 1.5.18: the screen the Torneo runs on (the Battle Bay top menu). hide = layers made invisible under the bracket (every instance),
 -- close = layers closed / reopened (the retail SwitchLayerOpenOrClose way), lists = control focus taken while the
 -- bracket is up, step = the top bar step answered here (nil: none)
 BattleBayDeluxe.TournamentHost = {
@@ -757,15 +750,6 @@ end
 BattleBayDeluxe.TournamentState = { open = false, view = nil, page = -1, want = false, frames = 0, co = nil, busy = false, step = false,
   sync = false, sync_frames = 0, emb = {}, used = {}, taken = {}, entry = false }
 
--- 1.5.17: «Modos de juego» (Inazuma Fantasy, mh_bb.lua) sends the player back to its tiles once this hub is idle; a
--- Torneo flow of this menu holds it (the bracket open or on its way, the entry / next-match coroutines, the sync,
--- the top bar step)
-EVT_MH_BB_HOLD = EVT_MH_BB_HOLD or {}
-EVT_MH_BB_HOLD.bb_tournament = function()
-  local S = BattleBayDeluxe.TournamentState
-  return S.open or S.entry or S.co ~= nil or S.want or S.step or S.sync or S.after_grid ~= nil
-end
-
 -- ------------------------------------------------------------------------------------------------ the sync
 
 -- the tournament takes the last match's result (the rule engine's STATE) before the retail OnInit reads the block
@@ -803,9 +787,8 @@ BattleBayDeluxe = type(BattleBayDeluxe) == "table" and BattleBayDeluxe or {}
 
 -- ------------------------------------------------------------------------------------------------ the overlay
 
--- 1.5.22 (owner log 18:32 on «Modos de juego»: every bracket layer open0=false vis0=false): CMND_OPEN_LAYER does
--- not open them there. On a host with vis_only (the hub: its layers are opened with the menu's group, hidden at
--- setup by bbt_hub.lua) «open» / «close» = visible / invisible.
+-- 1.5.22: on a host whose bracket layers are opened with the menu's group, CMND_OPEN_LAYER does not open them: with
+-- vis_only «open» / «close» = visible / invisible.
 local function bbt_open_layer(l, i)
   if BattleBayDeluxe.TournamentHost.vis_only then
     funcLuaMenuCommand(711242136, l, i, true)
@@ -1792,17 +1775,11 @@ function BBT_HubTeamEditor()
   for _, l in ipairs(BattleBayDeluxe.TournamentHost.lists or {}) do
     funcLuaMenuCommand(3518307824, l, false)
   end
-  -- 1.68.0 (owner 2026-10-29: «Revisa el fondo también», the plain Battle Bay backdrop under the dock): the hub's own
-  -- background (vroad04_01_p1_bg, as BBT_Open places it; BBT_Close closed it) is open under the dock and stays open
-  -- for the hub that comes back after it
-  local G = BattleBayDeluxe.Tournament.G
-  local sy = (G.BG_BOTTOM - G.BG_TOP) / G.BG_H
-  bbt_open_layer(BattleBayDeluxe.Tournament.L.bg, 0)
-  funcLuaMenuCommand(BattleBayDeluxe.Tournament.C.SCALE, BattleBayDeluxe.Tournament.L.bg, 1, sy, 1, 0)
-  funcLuaMenuCommand(BattleBayDeluxe.Tournament.C.POS, BattleBayDeluxe.Tournament.L.bg, 0, -(G.BG_TOP - G.BG_Y * sy), 0, 0)
-  funcLuaMenuCommand(BattleBayDeluxe.Tournament.C.VISIBLE, BattleBayDeluxe.Tournament.L.bg, 0, true)
+  -- 1.92.0 (owner 2026-10-31: a plain grey screen under the dock): no hub band under the dock; the framework's editor
+  -- gives the dock the retail team screen background on this menu (BBT_Open places the band again for the hub)
   -- 1.67.0 (owner 2026-10-29): a league team is not one of the player's: the editor's foreign team mode (its own
-  -- coach, kit, emblem, tactics, synergies and stadium; no bank, no team switching, no active team)
+  -- coach, kit, emblem, tactics, synergies and stadium; no bank, no team switching, no active team; no coach = an
+  -- empty coach place)
   local own = sq.kind == "own"
   local res, why = VRFW_TeamEditor.Run({
     owner = "BattleBayDeluxe", host = BattleBayDeluxe.TournamentHost.menu, own = own, foreign = not own, members = sq.members,
@@ -2933,7 +2910,7 @@ do
     if not okt then
       BBT_Logger().once("tree_menu_error", "bracket menu error", tostring(errt))
     end
-    -- 1.5.33: a bracket layer set up after the bracket opened (bbt_hub.lua OnSetupLayer hid it): the page again
+    -- 1.5.33: a bracket layer set up after the bracket opened (S.redraw): the page again
     if S.redraw then
       S.redraw = false
       if S.open and not S.champ then

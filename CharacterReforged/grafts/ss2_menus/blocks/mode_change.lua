@@ -91,9 +91,9 @@ end
 -- before the Hiper picker opens: «Crear nuevo cambio» owned (the native list only lists owned items), one copy of
 -- every carrier of this player's changes, and the pick block's data (count + partner chara per change)
 function PL.McPrepare()
-  funcLuaCommand(C.P_CLEAR, PL.MC_KEY_N)
+  VRFW_Param.Clear(PL.MC_KEY_N)
   for _, k in ipairs(PL.MC_KEY_C) do
-    funcLuaCommand(C.P_CLEAR, k)
+    VRFW_Param.Clear(k)
   end
   if not PL.McLive() or n == nil or n == 0 then
     pcall(EVT_Call, C.EVT_LOG, "skill_slots", "mode change picker", "off", "live", tostring(PL.McLive()), "hdl",
@@ -118,7 +118,7 @@ function PL.McBankPick()
   end
   P_Set(PL.MC_BANK_KEY, 1)
   local seen, h = PL.BankRun("mode change bank")
-  funcLuaCommand(C.P_CLEAR, PL.MC_BANK_KEY)
+  VRFW_Param.Clear(PL.MC_BANK_KEY)
   PL.mx_bank_move = 0
   if not seen then
     return nil

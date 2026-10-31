@@ -80,12 +80,6 @@ function PL.SSFocus(e)
   end
 end
 
--- menu_text row, or the Spanish text while the rows are not installed
-function PL.TxtOr(id, fallback)
-  local s = PL.Txt(id)
-  return s ~= "" and s or fallback
-end
-
 -- the screen's header title (retail: SwapSoccerTopCommonHeaderByHeaderType of soccer_top_menu, as OnInit sets it),
 -- e.g. «Pasiva personalizada» while its list is open; nil = the screen's own title again (text 1947742101)
 function PL.HeaderTitle(text)

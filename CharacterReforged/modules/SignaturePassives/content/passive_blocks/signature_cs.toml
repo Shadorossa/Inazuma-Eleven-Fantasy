@@ -400,13 +400,17 @@ by = "teammate"
 name = "cs_by_mnt_shiroshika"
 trait = "cs_trait_mnt_shiroshika"
 
-[[VRFW.MoveFamily]]
-name = "cs_family_legendaryweapons"
-families = ["HissatsuReforged.LegendaryWeapons"]
+[[VRFW.Half]]
+name = "cs_half_2"
+halves = [2]
+
+[[VRFW.Move]]
+name = "cs_move_whs02220_whs01500"
+moves = ["whs02220", "whs01500"]
 
 [[VRFW.TechniquePower]]
-name = "cs_techniquepower_self_10"
-value = 10
+name = "cs_techniquepower_self_12"
+value = 12
 target = "self"
 mode = "percent"
 
@@ -523,9 +527,19 @@ name = "cs_recasttime_self_minus20"
 percent = -20
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "cs_family_inazumapower"
-families = ["HissatsuReforged.InazumaPower"]
+[[VRFW.Clock]]
+name = "cs_clock_first_third"
+half_fraction_to = "1/3"
+
+[[VRFW.Move]]
+name = "cs_move_whs01970"
+moves = ["whs01970"]
+
+[[VRFW.TechniquePower]]
+name = "cs_techniquepower_self_15"
+value = 15
+target = "self"
+mode = "percent"
 
 [[VRFW.Stat]]
 name = "cs_stat_team_intelligence_2"
@@ -604,6 +618,12 @@ target = "team"
 name = "cs_family_firetornado"
 families = ["HissatsuReforged.FireTornado"]
 
+[[VRFW.TechniquePower]]
+name = "cs_techniquepower_self_10"
+value = 10
+target = "self"
+mode = "percent"
+
 [[VRFW.TensionCost]]
 name = "cs_tensioncost_team_minus8_omega_protocol"
 percent = -8
@@ -627,8 +647,8 @@ percent = 2
 target = "team"
 
 [[VRFW.MoveFamily]]
-name = "cs_family_eventhorizon"
-families = ["HissatsuReforged.EventHorizon"]
+name = "cs_family_dragon"
+families = ["HissatsuReforged.Dragon"]
 
 [[VRFW.Trait]]
 name = "cs_trait_zanark_domain"
@@ -654,10 +674,6 @@ trait = "cs_trait_zanark_domain"
 side = "team"
 max = 3
 others = true
-
-[[VRFW.MoveFamily]]
-name = "cs_family_beasts"
-families = ["HissatsuReforged.Beasts"]
 
 [[VRFW.TechniquePower]]
 name = "cs_techniquepower_self_block_6"
@@ -901,9 +917,16 @@ kinds = ["dribble"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "cs_family_northernice"
-families = ["HissatsuReforged.NorthernIce"]
+[[VRFW.HasBall]]
+name = "cs_holds_ball"
+holds = true
+
+[[VRFW.Stat]]
+name = "cs_stat_opponents_agility_minus3"
+value = -3
+mode = "percent"
+stats = ["agility"]
+target = "opponents"
 
 [[VRFW.Trait]]
 name = "cs_trait_lunar_howl"
@@ -930,6 +953,16 @@ trait = "cs_trait_lunar_howl"
 side = "team"
 min = 1
 others = true
+
+[[VRFW.Move]]
+name = "cs_move_whs01710"
+moves = ["whs01710"]
+
+[[VRFW.TechniquePower]]
+name = "cs_techniquepower_self_5"
+value = 5
+target = "self"
+mode = "percent"
 
 [[VRFW.By]]
 name = "cs_by_lunar_howl"
@@ -992,6 +1025,17 @@ trait = "cs_trait_perfect_cascade"
 [[VRFW.By]]
 name = "cs_by_perfect_cascade"
 trait = "cs_trait_perfect_cascade"
+
+[[VRFW.Trait]]
+name = "cs_trait_wind"
+elements = ["wind"]
+
+[[VRFW.Count]]
+name = "cs_count_wind_team_max3"
+trait = "cs_trait_wind"
+side = "team"
+max = 3
+others = true
 
 [[VRFW.Stat]]
 name = "cs_stat_team_pressure_2_wall"
@@ -1069,6 +1113,10 @@ trait = "cs_trait_despairadoes"
 side = "team"
 max = 3
 others = true
+
+[[VRFW.MoveFamily]]
+name = "cs_family_trianglez"
+families = ["HissatsuReforged.TriangleZ"]
 
 [[VRFW.Stat]]
 name = "cs_stat_team_technique_5_despairadoes"
@@ -1172,6 +1220,16 @@ target = "team"
 trait = "cs_trait_go2"
 mode = "percent"
 
+[[VRFW.Move]]
+name = "cs_move_whs01680"
+moves = ["whs01680"]
+
+[[VRFW.TechniquePower]]
+name = "cs_techniquepower_team_12"
+value = 12
+target = "team"
+mode = "percent"
+
 [[VRFW.Trait]]
 name = "cs_trait_keshin"
 keshin = true
@@ -1200,15 +1258,9 @@ percent = -6
 target = "team"
 trait = "cs_trait_speedster"
 
-[[VRFW.MoveFamily]]
-name = "cs_family_whirlwinds"
-families = ["HissatsuReforged.Whirlwinds"]
-
-[[VRFW.TechniquePower]]
-name = "cs_techniquepower_self_12"
-value = 12
-target = "self"
-mode = "percent"
+[[VRFW.Move]]
+name = "cs_move_whs01640"
+moves = ["whs01640"]
 
 [[VRFW.Trait]]
 name = "cs_trait_noble"
@@ -1281,10 +1333,6 @@ tags = ["acrobat"]
 [[VRFW.By]]
 name = "cs_by_acrobat"
 trait = "cs_trait_acrobat"
-
-[[VRFW.MoveFamily]]
-name = "cs_family_dragon"
-families = ["HissatsuReforged.Dragon"]
 
 [[VRFW.Count]]
 name = "cs_count_brain_team_max4"

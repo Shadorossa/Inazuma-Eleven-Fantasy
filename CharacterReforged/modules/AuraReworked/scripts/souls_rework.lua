@@ -1,7 +1,8 @@
 -- Souls Rework › totem levels and the skill reel (docs/game/mods/souls-rework-design.md §0 / §4 / §9). Data: every
 -- active mod's content\souls\*.toml (lib/data.lua); settings: config.toml; declarations: content\game\souls_rework.toml.
 --
--- Once per match frame (`tick`), per player on the pitch whose totem is out:
+-- Ten times a second of play (`tick`; every frame while a totem's mode is being decided), per player on the pitch whose
+-- totem is out:
 --   * level points (LP): per second of live play, per focus duel won, per goal, per use of the totem's own move (the
 --     LevelRule's amounts × the totem's lp_scale × Level P Plus); a level is kept for the whole match;
 --   * with Aura Points' pool running for the totem (config.toml [souls.aura_points] resource): the pool's max = the totem's SP
@@ -174,6 +175,7 @@ local pop_queue = {}     -- level-up pops for the graft: { seq, hdl, text, bubbl
 local pop_seq = 0
 local knocked = {}       -- hdl -> { mult, until }: players slowed by a knock-down
 local timed_count = 0    -- live timed effects (move_speed answers stay cheap without any)
+local undecided = 0      -- totems out whose mode (pool or timer) is not decided yet
 local records = {}       -- AuraReworked.SoulsPlayer rows written: hdl -> fields
 
 local function now() return VRFW.now() end
@@ -203,6 +205,20 @@ local function record(hdl, fields)
   pcall(VRFW.native.table_set, "AuraReworked.SoulsPlayer", hdl, fields)
 end
 
+-- the player's row from his totem out (none without one); a new table only when a field changed
+local function record_player(p)
+  local act = p.active
+  if not act then
+    if records[p.hdl] ~= nil then record(p.hdl, nil) end
+    return
+  end
+  local level = p.pairs[act.aura].level
+  local no_release = RULE.no_release and 0 or nil
+  local old = records[p.hdl]
+  if old and old.level == level and old.totem == act.aura and old.no_release == no_release then return end
+  record(p.hdl, { level = level, totem = act.aura, no_release = no_release })
+end
+
 local function clear_match()
   for hdl, p in pairs(players) do
     for name in pairs(p.fx) do
@@ -212,7 +228,7 @@ local function clear_match()
   if reel.current then pcall(VRFW.ui.close_menu, REEL.screen, false) end
   players, pending, knocked, records, pop_queue = {}, {}, {}, {}, {}
   reel.current, reel.armed, reel.busy_until = nil, nil, 0
-  timed_count = 0
+  timed_count, undecided = 0, 0
   pcall(VRFW.native.table_clear, "AuraReworked.SoulsPlayer")
 end
 
@@ -500,6 +516,7 @@ local function land_item(item, why)
 end
 
 local function land_pending()
+  if #pending == 0 then return end
   local t = now()
   local keep = {}
   for _, item in ipairs(pending) do
@@ -630,6 +647,7 @@ end
 -- ---------------------------------------------------------------------------------------------- the tick
 
 local function decide_mode(p, act, st, T)
+  undecided = undecided - 1
   local v = pool(p.hdl, act.aura)
   if v and v.touched then
     act.mode = "points"
@@ -657,6 +675,7 @@ local function step_player(p, actor, a)
   if act and (not T or act.aura ~= a.summon_skill) then
     info(string.format("actor %s T%d: totem %s over at Lv%d", hex(p.hdl), p.team, A.key(act.aura), p.pairs[act.aura].level))
     totem_over(p)
+    if not act.mode then undecided = undecided - 1 end
     p.active, act = nil, nil
   end
   if T and applies(p.team) then
@@ -669,33 +688,78 @@ local function step_player(p, actor, a)
     if not act then
       act = { aura = aura, frames = 0, base = a.summon_full or 30, mode = nil }
       p.active = act
+      undecided = undecided + 1
     end
     act.frames = act.frames + 1
     if not act.mode and act.frames >= MODE_DECIDE_FRAMES then decide_mode(p, act, st, T) end
     if act.mode == "points" and st.pool_level ~= st.level then apply_pool_max(p, aura, st, T) end
-    if match.live and a.in_play ~= 0 then add_lp(p, (RULE.per_second or 0) * match.dt) end
+    -- the live play since the last step
+    if match.step_live > 0 and a.in_play ~= 0 then add_lp(p, (RULE.per_second or 0) * match.step_live) end
   end
-  local release = p.active ~= nil and RULE.no_release
-  record(p.hdl, p.active and { level = p.pairs[p.active.aura].level, totem = p.active.aura, no_release = release and 0 or nil } or nil)
+  record_player(p)
 end
+
+-- the match's actors this frame and the actor table (nil outside a match): the library's reused list when it has one
+local function frame_actors()
+  if Actors.frame then return Actors.frame() end
+  local base = Actors.base()
+  if not base then return nil, nil end
+  return Actors.list(), base
+end
+
+local NO_MATCH = {}   -- (read only)
+local actor_recs = {}   -- [actor table index] = the table read_struct fills again every step
+
+-- the actor walk runs every SCAN_SECONDS of frame time (a frame without a valid time step counts as FALLBACK_DT);
+-- every frame while a totem just out has no mode yet (its first MODE_DECIDE_FRAMES steps)
+local SCAN_SECONDS = 0.1
+local FALLBACK_DT = 1 / 60
 
 VRFW.on("tick", function(ev)
   if not match.on then return nil end
-  local m = ev.match or {}
+  local m = ev.match or NO_MATCH
   match.state = m.soccer_state or 0
-  match.live = Live.live_dt(m, LIVE) > 0
+  local live_dt = Live.live_dt(m, LIVE)
+  match.live = live_dt > 0
   match.user = m.user_team or 0xFF
   match.dt = m.dt or 0
+  match.live_acc = (match.live_acc or 0) + live_dt
+  local dt = match.dt
+  match.scan_acc = (match.scan_acc or SCAN_SECONDS) + ((dt > 0 and dt < 1) and dt or FALLBACK_DT)
+  if match.scan_acc < SCAN_SECONDS and undecided == 0 then
+    land_pending()
+    expire_timed()
+    return nil
+  end
+  match.scan_acc = 0
+  match.step_live, match.live_acc = match.live_acc, 0
   match.frame = (match.frame or 0) + 1
   ensure_data()
-  if not Actors.base() then return nil end
-  for _, entry in ipairs(Actors.list()) do
-    local actor = entry.address
-    local a = VRFW.mem.read_struct("SrActor", actor)
-    if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == entry.index and a.team <= 1 then
-      local p = player(a.hdl)
-      p.team, p.actor, p.seen = a.team, actor, match.frame
-      step_player(p, actor, a)
+  local list, base = frame_actors()
+  if not base then return nil end
+  -- every actor's summon state in one read: the whole record only for a totem out, starting or just over
+  local summon = Actors.field and Actors.field("SrActor", "summon_state", base)
+  for _, entry in ipairs(list) do
+    local actor, hdl = entry.address, entry.handle
+    local idle = false
+    if summon then
+      local q = players[hdl]
+      idle = summon[entry.index + 1] ~= SUMMON_ACTIVE and not (q and q.active) and records[hdl] == nil
+    end
+    if idle then
+      -- (no totem: his step changes nothing)
+      if band(hdl, 0xFF) == entry.index and entry.team <= 1 then
+        local p = player(hdl)
+        p.team, p.actor, p.seen = entry.team, actor, match.frame
+      end
+    else
+      local a = VRFW.mem.read_struct("SrActor", actor, actor_recs[entry.index])
+      if a then actor_recs[entry.index] = a end
+      if a and a.hdl ~= 0 and band(a.hdl, 0xFF) == entry.index and a.team <= 1 then
+        local p = player(a.hdl)
+        p.team, p.actor, p.seen = a.team, actor, match.frame
+        step_player(p, actor, a)
+      end
     end
   end
   land_pending()
@@ -754,7 +818,7 @@ VRFW.on("match_start", function(ev)
   match.on = true
   match.no = match.no + 1
   match.seed = match.no * 7919 + (now() % 100000)
-  match.frame = 0
+  match.frame, match.scan_acc, match.live_acc, match.step_live = 0, nil, 0, 0
   info(string.format("match #%d: reel seed %d; top level %s, carousel %s, rival levels %s", match.no, match.seed,
     tostring(OPT.top_level), tostring(REEL.show), tostring(RULE.cpu)))
   return nil

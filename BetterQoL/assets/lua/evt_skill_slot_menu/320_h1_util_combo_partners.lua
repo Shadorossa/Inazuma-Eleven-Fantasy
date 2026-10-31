@@ -9,8 +9,7 @@
 -- skill_table_partners.toml: [[entry]] host = "character_reforged.skill_table.x_action", id = "partners",
 -- action = { lua = "BetterQoL.SkillTablePartners" }) and the screen's host calls BetterQoL.SkillTablePartners(phase,
 -- ctx) on the focused row:
---   "available" -> the row's move needs partners (CMND_BETTERQOL_COMBO_INFO: 2+ performers, the retail board's test); false
---                  while Inazuma Fantasy's own picker is in this screen (global EVT_CPK: its X stays alone);
+--   "available" -> the row's move needs partners (CMND_BETTERQOL_COMBO_INFO: 2+ performers, the retail board's test);
 --   "guide"     -> the guide entry «X Compañeros» (the entry's text utilities.cp_btn);
 --   "press"     -> the picker (the screen's action coroutine): Utilities' list window (layers util_pc_list /
 --                  util_pc_row added to this screen by the same menus file; the screen's own list cover hides the
@@ -894,7 +893,7 @@ do
 
   -- the move card of the move view is up (and nothing else owns the faces)
   function UTIL_CP.CardFacesWanted(host)
-    if type(EVT_CPK) == "table" or UTIL_CP.picking then
+    if UTIL_CP.picking then
       return false
     end
     local screen_helpers = host.L.PL
@@ -1061,9 +1060,6 @@ do
       return nil
     end
     if phase == "available" then
-      if type(EVT_CPK) == "table" then
-        return false -- Inazuma Fantasy's picker owns X on this screen
-      end
       return type(ctx.row) == "number" and (ctx.move or 0) ~= 0 and UTIL_CP.ComboInfo(ctx.move) ~= nil
     elseif phase == "guide" then
       return true

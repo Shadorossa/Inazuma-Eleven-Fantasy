@@ -1,0 +1,28 @@
+# «Dragón terrestre» (Land Dragon, whs00670; mountain shot, cut-in ev60_00670): while the ball flies to the goal it
+# keeps the look of the cut-in's last shot (c0500, the dragon racing along the pitch with the ball): the ball wrapped in
+# its green swirl and glows (billboards, round from every side, centred on the ball), and the teal dragon (its own
+# model, proportions and cut-in toon shading) swimming along the pitch right behind it, a wave running down its body
+# from the head to the tail, its head on the neck's line, its belly on the grass, coming out of the kick point; instead
+# of the plain mountain special-shot aura (ega0075a).
+# The object is ev6067ld00 (effect/event/ev60/ev6067ld00/), built by research/scripts/land_dragon_ball_fx.py from the
+# cut-in's effect object ev60006700 and the dragon chr/_waza/ev60_00670 (c0500's ball swirl; the dragon in
+# overlapping body slices on a swimming centre line, a full wave every 60 frames). Left out: the dust clouds, the dark
+# backdrop card and the earlier cuts.
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along
+# the ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\land_dragon_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "land_dragon"
+from = "ega0075a"
+object = "effect/event/ev60/ev6067ld00/ev6067ld00.objbin"
+
+[[shot_aura]]
+name = "land_dragon"
+when = { techniques = ["whs00670"] }
+aura = "land_dragon"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

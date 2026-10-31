@@ -12,6 +12,8 @@
 --     equipment, passives, captain, spirit, kit number...) would edit the team's players. Nothing else is left, so the
 --     card's PERSONAJE window never opens: a decide on a player card starts the move at once (the retail kind 0 row's
 --     own action); the coach card takes no decide.
+-- In the TEAM PAGE mode (foreign.tab) only the swap guard, the refused L1 / R1 and the hidden arrows apply: the
+-- coach, the COMANDOS window and the card's whole command list stay as in the retail screen.
 -- The mode is read once per open at OnInit (VRFW_TeamEditor.Foreign()).
 if VRFW_Host ~= nil then
   local STEM = "team_dock_formation_menu"
@@ -28,7 +30,7 @@ if VRFW_Host ~= nil then
     SOUND = VRFW_Cmd.SND_PLAY_SE, SE_NO = 2086672038,   -- sy0003
     LOG = VRFW_Cmd.EVT_LOG,                -- CMND_EVT_LOG
   }
-  local S = { on = false }
+  local S = { on = false, tab = false, hidden = {} }
 
   local function log(text)
     pcall(funcLuaCommand, K.LOG, "VRFW team editor", "lineup: " .. text)
@@ -38,9 +40,12 @@ if VRFW_Host ~= nil then
     id = "menu_engine.team_editor_foreign", phase = "before", priority = -1000,
     fn = function()
       local editor = VRFW_TeamEditor
-      S.on = type(editor) == "table" and type(editor.Foreign) == "function" and editor.Foreign() ~= nil
+      local foreign = type(editor) == "table" and type(editor.Foreign) == "function" and editor.Foreign() or nil
+      S.on = foreign ~= nil
+      S.tab = foreign ~= nil and foreign.tab == true
+      S.hidden = foreign ~= nil and type(foreign.hidden_card_rows) == "table" and foreign.hidden_card_rows or {}
       if S.on then
-        log("foreign team mode on")
+        log(S.tab and "team page mode on" or "foreign team mode on")
       end
     end,
   })
@@ -67,7 +72,7 @@ if VRFW_Host ~= nil then
   VRFW_Host.on(STEM, "OnEnter", {
     id = "menu_engine.team_editor_foreign", phase = "around", priority = -1000,
     fn = function(nxt, a1, ...)
-      if S.on and a1 == K.COACH_CARD then
+      if S.on and not S.tab and a1 == K.COACH_CARD then
         pcall(funcLuaCommand, K.SOUND, K.SE_NO)
         return 1
       end
@@ -80,7 +85,7 @@ if VRFW_Host ~= nil then
   VRFW_Host.on(STEM, "OnDecideFocus", {
     id = "menu_engine.team_editor_foreign", phase = "around", priority = -1000,
     fn = function(nxt, a1, a2, ...)
-      if not S.on or a1 ~= K.CARDS or retail("IsChangeMemberMode") == true then
+      if not S.on or S.tab or a1 ~= K.CARDS or retail("IsChangeMemberMode") == true then
         return nxt(a1, a2, ...)
       end
       retail("OnDecideFocusCommon", a1, a2)
@@ -98,7 +103,7 @@ if VRFW_Host ~= nil then
   VRFW_Host.on(STEM, "OnFunction", {
     id = "menu_engine.team_editor_foreign", phase = "around", priority = -1000,
     fn = function(nxt, a1, ...)
-      if S.on and (a1 == K.NEXT_DOCK or a1 == K.TEAM_COMMANDS) then
+      if S.on and (a1 == K.NEXT_DOCK or (a1 == K.TEAM_COMMANDS and not S.tab)) then
         pcall(funcLuaCommand, K.SOUND, K.SE_NO)
         return
       end
@@ -110,7 +115,7 @@ if VRFW_Host ~= nil then
   VRFW_Host.on(STEM, "AddButtonGuideInfo", {
     id = "menu_engine.team_editor_foreign", phase = "around", priority = -1000,
     fn = function(nxt, ...)
-      if S.on and select(6, ...) == K.TEAM_COMMANDS_INPUT then
+      if S.on and not S.tab and select(6, ...) == K.TEAM_COMMANDS_INPUT then
         return
       end
       return nxt(...)
@@ -134,9 +139,10 @@ if VRFW_Host ~= nil then
       if not S.on or type(r[1]) ~= "table" then
         return
       end
+      -- the team page keeps every row but the ones its caller hides (spec.hide_card_rows); a foreign team only KEEP_ROWS
       local keep = {}
       for _, kind in ipairs(r[1]) do
-        if K.KEEP_ROWS[kind] then
+        if (S.tab and not S.hidden[kind]) or (not S.tab and K.KEEP_ROWS[kind]) then
           keep[#keep + 1] = kind
         end
       end

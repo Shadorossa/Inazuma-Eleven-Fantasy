@@ -1,0 +1,28 @@
+# «Fuego supremo» (Maximum Fire, whs01370; fire shot, cut-in ev60_01370): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's shot cut (c0200, the burning ball skimming the pitch): on the ball the orange
+# glow and the fire swirl (round from every side, the whole ball inside them); behind it the flames it drags along the
+# ground (the flame fan rising behind the ball, its white-hot core and the two flame walls on its sides), out of the
+# kick point; and on the pitch the burning track it leaves (scorched strip, glowing strip, dark borders, small flames
+# and sparks), fixed where the ball passed, instead of the automatic aura.
+# The object is ev6013mf00 (effect/event/ev60/ev6013mf00/), built by research/scripts/maximum_fire_ball_fx.py from the
+# cut-in's effect object ev60013700: c0200 at 370, ball at the origin flying +Z, x1; nothing shows behind the kick
+# point (distance clock). Left out: the earlier cut (the charge in space), the backdrops and screens, the kicker's body
+# flames, flame sword and slashes, and the embers round the camera.
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\maximum_fire_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "maximum_fire"
+from = "ega0075c"
+object = "effect/event/ev60/ev6013mf00/ev6013mf00.objbin"
+
+[[shot_aura]]
+name = "maximum_fire"
+when = { techniques = ["whs01370"] }
+aura = "maximum_fire"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

@@ -607,7 +607,8 @@ end
 --   cancel ............ back to EMPEZAR
 --   active slot ....... returns true: the retail code continues (fade, title_menu_2), nothing is reloaded
 --                       (NOT for the locked slot: the menu never returns it and it is treated as cancel)
---   other slot ........ loader switch + reset flow (VRFW_SS_Switch); the title re-enters and opens the mode row
+--   other slot ........ loader switch + reset flow (VRFW_SS_Switch -> VRFW_Slots.load): the title re-enters and opens
+--                       the mode row; a reserved slot with a root menu opens that menu straight (no title)
 -- The locked slot (slot 1 by default) = the vanilla save, LOCKED while the slot service runs: the title may show it
 -- (boot load), but the game can only be continued on another player slot (duplicate it there from the slot screen).
 -- The player slots are the save part's layout (CMND_VRFW_SLOT_LAYOUT; config [save.slots] count).
@@ -624,73 +625,29 @@ end
 local VRFW_SS_LOADER = {
   VERSION = 2217361807,   -- () -> api (>= 1), modules bitmask (bit1 = value 2 = save_slots: the framework's slot service)
   GET_SLOT = 4245285902,        -- () -> active slot
-  LAYOUT = 2351791086,          -- () -> playerCount, lockedSlot, active, slot1, slot2, ... (CMND_VRFW_SLOT_LAYOUT)
   SLOT_INFO = 1195222835,      -- (n) -> exists, chapter, ...
-  RELOAD = 347070041,       -- (n) -> bool: name map -> slot n now, writes fenced until COMMIT/ABORT
   COMMIT = 4173545121,       -- () -> bool: fence off, slot remembered
-  ABORT = 2340980027,         -- () -> bool: back to the previous slot, fence off
   STATE = 3534676964,         -- () -> 0 idle, 1 switching (fenced), -1 error
-  BUSY = 1127104486,           -- () -> bool: a game save/load job is pending
   LOG = 3661580131,                  -- (...) -> true: evt_loader\loader.log
-  SLOT_RESERVED = 1380583127, -- (n) -> reserved, ownerModId, enterable (CMND_VRFW_SLOT_RESERVED)
-  REARM = 1609225498,         -- NOT in API 1 (proposed): reset the InitTitleState "loaded" guard
-                                             -- [[ ]+0x69C8]+ = 0; only used by VRFW_SS_FLOW "reentry"
 }
-local VRFW_SS_LOCKED_SLOT = 1                 -- the vanilla save: never continued / switched to (VRFW_SS_Layout reads it)
--- "apply":   slot with data = LOAD_HEADER + LOAD_GAME_DATA + APPLY_LOADED_DATA here (frozen API 1 commands only),
---            then CMND_GAME_RESET re-enters the title (retail return-to-title path) and skips EMPEZAR.
--- "reentry": HeaderClear + ResetAllGameData + LOAD_HEADER, then CMND_GAME_RESET; the load itself
---            runs in InitTitleState as at boot. Needs a loader that re-arms the guard (REARM above, or inside RELOAD).
-local VRFW_SS_FLOW = "apply"
 local VRFW_SS_MAX_SLOT = 99   -- highest slot number (save engine MAX_SLOT); a slot that is not a player one is a reserved one
 -- the owners' entry hooks (title VM): VRFW_SS_RESERVED_ENTER["<owner mod id>"] = function(slot) end
 VRFW_SS_RESERVED_ENTER = VRFW_SS_RESERVED_ENTER or EVT_SS_RESERVED_ENTER or {}
 EVT_SS_RESERVED_ENTER = VRFW_SS_RESERVED_ENTER   -- 1.x name: same object
 local VRFW_SS_MENU = 3561559540
 local VRFW_SS_KEY_RESULT = 2449975398
-local VRFW_SS_WAIT_FRAMES = 3600     -- give up on a save job after ~60 s
--- texts: menu_text rows of the framework (research/mods/VRFW/text/rows/save_slots.toml), read when shown
--- (VRFW_SS_Text); the English literals are the fallback when a row is missing
-local VRFW_SS_TXT = {
-  BUSY = "The game is saving or loading. Try again in a few seconds.",
-  REFUSED = "Could not switch to Slot %d.",
-  LOAD_FAILED = "The data of Slot %d could not be loaded. The current slot is kept.",
-  ID = {   -- row ids
-    BUSY = 511273385,          -- crc32("evt_slot_switch_busy")
-    REFUSED = 909275936,       -- crc32("evt_slot_switch_refused")
-    LOAD_FAILED = 3641072355,  -- crc32("evt_slot_switch_load_failed")
-  },
-}
-function VRFW_SS_Text(key)
-  local ok, s = pcall(funcLuaCommand, 4074371074, VRFW_SS_TXT.ID[key])
-  if ok and type(s) == "string" and s ~= "" then
-    return s
+-- texts: the framework's menu_text rows, read when shown (VRFW_Slots.text, lua\_all\04_slots.lua)
+function VRFW_SS_Text(key, k)
+  if type(VRFW_Slots) ~= "table" then
+    return "Could not switch to Slot " .. tostring(k) .. "."
   end
-  return VRFW_SS_TXT[key]
+  return VRFW_Slots.text(key, k)
 end
 -- retail commands
 local VRFW_SS_G = {
-  LOAD_HEADER = 4179471494,       -- 0xF91DAC86
-  IS_SAVE_WORKING = 1979970074,   -- 0x7603F21A
-  LOAD_GAME_DATA = 2585060058,    -- 0x9A14E2DA (1 = AUTOSAVE)
-  LOAD_FAILED = 3772572101,       -- 0xE0DCE1C5 (last save/load failed)
-  APPLY = 3660094710,             -- 0xDA289CF6 ApplyLoadedData
-  HEADER_CLEAR = 3960538079,      -- 0xEC1103DF
-  RESET_ALL = 1481565076,         -- 0x584EE394 ResetAllGameData
-  SKIP_PRESS_START = 937976662,   -- 0x37E86356 (true): TitleStart opens title_menu_2 directly on re-entry
-  GAME_RESET = 3897105282,        -- 0xE8491B82 CMND_GAME_RESET
-  GET_GFLAG = 941426960,          -- 0x381D0910 CMND_GET_GLOBAL_BIT_FLAG
-  SET_GFLAG = 3258400760,         -- 0xC2373FF8 CMND_SET_GLOBAL_BIT_FLAG
-  FLAG_AVATAR_DONE = 2113473044,  -- set by chara_edit_menu when the avatar is created; false -> TitleStart opens
-                                  -- title_menu_first_run (avatar, template, opening) instead of the mode menu
-  FADE = 609722083,               -- (1 out / 0 in, seconds)
-  FADE_DONE = 2259183189,
-  FADE_BUSY = 2736534827,
-  PRE_RESET = 3015544382,         -- menu command BackToTitleTop runs before closing (meaning unknown)
-  OPEN_MENU = 433545986, EXIST_MENU = 2231168902, CLOSE_MENU = 320421347,
   MENU_ACTIVE = 1558704558, FOCUS_ENABLE = 3518307824, ANIME = 3781155141,
+  OPEN_MENU = 433545986, EXIST_MENU = 2231168902,
   MSG_OPEN = 2289627655, MSG_BUSY = 898725220, MSG_DONE = 682363669,
-  SE = 1917805374,
   OPEN_LAYER = 629267548, CLOSE_LAYER = 1273612389,
 }
 
@@ -715,29 +672,21 @@ function VRFW_SS_Available()
   return math.floor(mods / 2) % 2 == 1
 end
 
--- the layout: k is a player slot (true) and the locked slot (0 = lock off); without the command: slots 1..3, slot 1
+-- the layout (k is a player slot, the locked slot) and the reserved slots: VRFW_Slots (lua\_all\04_slots.lua)
 local function VRFW_SS_Layout(k)
-  local t = table.pack(VRFW_SS_Call(VRFW_SS_LOADER.LAYOUT))
-  if type(t[1]) ~= "number" or t[1] < 1 then
-    return k >= 1 and k <= 3, VRFW_SS_LOCKED_SLOT
+  if type(VRFW_Slots) ~= "table" then
+    return k >= 1 and k <= 3, 1
   end
-  local player = false
-  for i = 4, 3 + math.floor(t[1]) do
-    if t[i] == k then
-      player = true
-    end
-  end
-  return player, type(t[2]) == "number" and math.floor(t[2]) or VRFW_SS_LOCKED_SLOT
+  return VRFW_Slots.layout(k)
 end
 
--- slot k is a reserved slot of a mod: its owner (nil = not reserved / no owner) and whether its mode lets it be entered
--- (the save engine's reservation; the screen's reserved card uses the same rule)
+-- slot k is a reserved slot of a mod: its owner (nil = not reserved / no owner), whether its mode lets it be
+-- entered, and the menu loading it opens as its menu scene's root (nil = its title)
 local function VRFW_SS_Reserved(k)
-  local r, owner, enterable = VRFW_SS_Call(VRFW_SS_LOADER.SLOT_RESERVED, k)
-  if r ~= true or type(owner) ~= "string" or owner == "" then
-    return nil, false
+  if type(VRFW_Slots) ~= "table" then
+    return nil, false, nil
   end
-  return owner, enterable == true
+  return VRFW_Slots.reserved(k)
 end
 
 -- After a switch the title is re-entered; the first title menu that runs OnInit lifts the write fence (the loader
@@ -753,19 +702,6 @@ function VRFW_SS_CommitPending()
 end
 EVT_SS_CommitPending = VRFW_SS_CommitPending   -- 1.x name: same function
 
-local function VRFW_SS_WaitSaveJob()
-  local k = 0
-  coroutine.yield()
-  while funcLuaCommand(VRFW_SS_G.IS_SAVE_WORKING) do
-    k = k + 1
-    if k > VRFW_SS_WAIT_FRAMES then
-      return false
-    end
-    coroutine.yield()
-  end
-  return true
-end
-
 local function VRFW_SS_Message(text)
   funcLuaCommand(VRFW_SS_G.MSG_OPEN, text, 0, 0, 0, 0, 0, false)
   while funcLuaCommand(VRFW_SS_G.MSG_BUSY) do
@@ -776,112 +712,25 @@ local function VRFW_SS_Message(text)
   end
 end
 
--- Every fade wait is bounded (VRFW_SS_FADE_FRAMES): a switch to a deleted reserved-slot save stopped
--- right after "switch" with the screen black and nothing else (a fade that never reported done); now the switch
--- goes on after the bound and a failure always fades back in.
-local VRFW_SS_FADE_FRAMES = 240
-local function VRFW_SS_FadeOut()
-  funcLuaCommand(VRFW_SS_G.FADE, 1, 0.5)
-  coroutine.yield()
-  local k = 0
-  while not funcLuaCommand(VRFW_SS_G.FADE_DONE) and k < VRFW_SS_FADE_FRAMES do
-    k = k + 1
-    coroutine.yield()
-  end
-  while funcLuaCommand(VRFW_SS_G.FADE_BUSY) and k < 2 * VRFW_SS_FADE_FRAMES do
-    k = k + 1
-    coroutine.yield()
-  end
-  if k >= VRFW_SS_FADE_FRAMES then
-    VRFW_SS_Log("fade out: gave up waiting after", k, "frames")
-  end
-end
-
-local function VRFW_SS_FadeIn()
-  funcLuaCommand(VRFW_SS_G.FADE, 0, 0.3)
-  coroutine.yield()
-  local k = 0
-  while funcLuaCommand(1215256347) and k < VRFW_SS_FADE_FRAMES do
-    k = k + 1
-    coroutine.yield()
-  end
-end
-
--- Switch to slot k (k ~= active). Returns false + message on failure (nothing changed); on success the title
--- scene is reset and this never returns.
+-- Switch to slot k (k ~= active): VRFW_Slots.load (lua\_all\04_slots.lua) with this title menu closed before the
+-- reset and the reserved slot's owner hook. Returns false + message on failure (nothing changed); on success the game
+-- resets (into the slot's title, or straight into a reserved slot's root menu) and this never returns.
 function VRFW_SS_Switch(k, exists)
-  if VRFW_SS_Call(VRFW_SS_LOADER.BUSY) == true then
-    return false, VRFW_SS_Text("BUSY")
+  if type(VRFW_Slots) ~= "table" then
+    VRFW_SS_Log("switch", k, "refused: VRFW_Slots missing in this VM")
+    return false, VRFW_SS_Text("REFUSED", k)
   end
-  if VRFW_SS_Call(VRFW_SS_LOADER.RELOAD, k) ~= true then
-    VRFW_SS_Log("reload refused", k)
-    return false, string.format(VRFW_SS_Text("REFUSED"), k)
-  end
-  local owner = VRFW_SS_Reserved(k)
-  local reserved = owner ~= nil
-  if reserved then
-    -- entered from this screen: the owner's hook (e.g. its "back" returns here)
-    local hook = VRFW_SS_RESERVED_ENTER[owner]
-    if type(hook) == "function" then
-      local okh, err = pcall(hook, k)
-      if not okh then VRFW_SS_Log("reserved enter hook of", owner, "failed:", tostring(err)) end
-    end
-  end
-  -- the loader may just have found the slot empty although its card said otherwise (a save deleted behind the card): ask again, so an empty slot is started as a new game instead of loading nothing
-  if exists then
-    local now = VRFW_SS_Call(VRFW_SS_LOADER.SLOT_INFO, k)
-    if now ~= true then
-      VRFW_SS_Log("slot", k, "has no readable game any more: started as a new game")
-      exists = false
-    end
-  end
-  VRFW_SS_Log("switch", k, exists == true, VRFW_SS_FLOW)
-  VRFW_SS_FadeOut()
-  if exists and VRFW_SS_FLOW == "apply" then
-    funcLuaCommand(VRFW_SS_G.LOAD_HEADER)
-    local ok = VRFW_SS_WaitSaveJob()
-    local started = ok and funcLuaCommand(VRFW_SS_G.LOAD_GAME_DATA, 1)
-    ok = started and VRFW_SS_WaitSaveJob() and not funcLuaCommand(VRFW_SS_G.LOAD_FAILED)
-    if not ok then
-      VRFW_SS_Log("load failed", k)
-      VRFW_SS_Call(VRFW_SS_LOADER.ABORT)
-      funcLuaCommand(VRFW_SS_G.LOAD_HEADER)       -- the header object may now describe slot k: read ours again
-      VRFW_SS_WaitSaveJob()
-      VRFW_SS_FadeIn()
-      return false, string.format(VRFW_SS_Text("LOAD_FAILED"), k)
-    end
-    funcLuaCommand(VRFW_SS_G.APPLY)
-  elseif exists then
-    -- "reentry": InitTitleState loads slot k when the title is entered again
-    VRFW_SS_Call(VRFW_SS_LOADER.REARM)
-    funcLuaCommand(VRFW_SS_G.HEADER_CLEAR)
-    funcLuaCommand(VRFW_SS_G.RESET_ALL)
-    funcLuaCommand(VRFW_SS_G.LOAD_HEADER)
-    VRFW_SS_WaitSaveJob()
-  else
-    -- empty slot = new game (retail "Reiniciar datos" minus SaveHeader/Delete): no header -> InitNewGameData
-    funcLuaCommand(VRFW_SS_G.HEADER_CLEAR)
-    funcLuaCommand(VRFW_SS_G.RESET_ALL)
-    -- The in-memory game was just wiped, so nothing of the previous slot can reach slot k any more. Lift the
-    -- write fence now: with SKIP_PRESS_START the title never runs VRFW_SS_CommitPending before the new game's
-    -- first autosave, and a fenced FileWriteAsync leaves the game on "Guardando..." forever.
-    VRFW_SS_Log("commit (new game)", VRFW_SS_Call(VRFW_SS_LOADER.COMMIT) == true)
-    -- First run like a fresh install: TitleStart only picks title_menu_first_run from the press-start title when the
-    -- "avatar created" flag is off, so clear it (if the reset did not) and do NOT skip the press-start screen.
-    if not reserved then            -- a reserved slot (a mod's mode) never runs the retail first-run flow
-      local before = funcLuaCommand(VRFW_SS_G.GET_GFLAG, VRFW_SS_G.FLAG_AVATAR_DONE)
-      funcLuaCommand(VRFW_SS_G.SET_GFLAG, VRFW_SS_G.FLAG_AVATAR_DONE, false)
-      VRFW_SS_Log("first run", k, "avatar flag", before == true, funcLuaCommand(VRFW_SS_G.GET_GFLAG, VRFW_SS_G.FLAG_AVATAR_DONE) == true)
-    end
-  end
-  funcLuaCommand(VRFW_SS_G.SKIP_PRESS_START, exists == true or reserved)
-  VRFW_SS_Log("game reset", k)
-  funcLuaMenuCommand(VRFW_SS_G.PRE_RESET)
-  funcLuaCommand(VRFW_SS_G.CLOSE_MENU, n, true)
-  funcLuaCommand(VRFW_SS_G.GAME_RESET)
-  while true do
-    coroutine.yield()
-  end
+  return VRFW_Slots.load(k, {
+    exists = exists,
+    close_menu = n,
+    on_reserved = function(owner, slot)
+      local hook = VRFW_SS_RESERVED_ENTER[owner]
+      if type(hook) == "function" then
+        hook(slot)
+      end
+    end,
+    log = VRFW_SS_Log,
+  })
 end
 
 -- Called by the patched StartItemSelectMenuCoroutine (inside that coroutine) after the EMPEZAR OK animation.

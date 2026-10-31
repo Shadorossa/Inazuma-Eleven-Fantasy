@@ -1,0 +1,19 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tornado de fuego DT (Fire Tornado TC, whs02160, cut-in ev60_02160) and of whs02170
+# (the other «Fire Tornado TC» key, no cut-in of its own: it wears the same aura, so it shares the flight).
+#
+# Measured: in the cut-in (c0400) the ball is kicked off a 9.9 m perch down a straight ~30 deg line, 2.59 m at its end
+# (research/scripts/shot_trajectory_from_cutin.py --points --move fire_tornado_tc). Flight (owner's rule 2026-10-24:
+# every aura shot a straight level line): one straight level line from the kick point to the goal, the ball centre at
+# 2.0 m the whole way. unblockable = false: the game's block rules (this mod changes no block rule). Heights are the
+# ball centre over the pitch (m); the height is held.
+
+# Tornado de fuego DT (whs02160).
+[[edit]]
+target = "whs02160"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }
+
+# Tornado de fuego DT, whs02170.
+[[edit]]
+target = "whs02170"
+trajectory = { points = [[0.0, 2.0]], straight = true, unblockable = false }

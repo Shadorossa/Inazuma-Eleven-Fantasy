@@ -11,10 +11,10 @@ PL.RO_GUIDE = 651715743 --[[skill_table_readonly_guide]]
 
 PL.PrevInit = OnInit
 function OnInit()
-  if funcLuaCommand(C.P_HAS, PL.KEY_READONLY) then
-    local v = funcLuaCommand(C.P_GET, PL.KEY_READONLY)
+  if VRFW_Param.Has(PL.KEY_READONLY) then
+    local v = VRFW_Param.Get(PL.KEY_READONLY)
     PL.readonly = v == true or v == 1
-    funcLuaCommand(C.P_CLEAR, PL.KEY_READONLY)
+    VRFW_Param.Clear(PL.KEY_READONLY)
   end
   PL.PrevInit()
 end

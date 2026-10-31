@@ -18,9 +18,6 @@
 #                                    tournament (the results first)
 #   fade_menu_encount                bbt_common.lua: the loading telop's match number and rival ladder are the
 #                                    tournament's; bbt_encount.lua (1.5.47): the path's node count is the mode's
-#   soccer_top_menu                  bbt_common.lua + bbt_top.lua + bbt_hub.lua (1.5.18): Inazuma Fantasy's «Modos de
-#                                    juego» hosts the Torneo (its tile: the panel over the bracket, the grid, the
-#                                    matches, the sync after them); the Battle Bay top menu never opens for it
 #   game_over_menu                   bbt_over.lua: the game-over telop after a group-stage defeat that keeps the player
 #                                    in the run, and after every league match (a draw or a defeat is a league result),
 #                                    is closed unseen from Step (CMND_BBD_TOURN_STILL_IN; the retail telop again if the
@@ -139,54 +136,6 @@ stem = "sub_window_group"
   type = "append_block"
   src = "bbt_common.lua"
   marker = "bb_tournament common"
-
-[[files]]
-stem = "soccer_top_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_common.lua"
-  marker = "bb_tournament common"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_top.lua"
-  marker = "bb_tournament top"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_top_overlay.lua"
-  marker = "bb_tournament top overlay"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_top_advance.lua"
-  marker = "bb_tournament top advance"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_top_league_hub.lua"
-  marker = "bb_tournament top league hub"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_top_entry.lua"
-  marker = "bb_tournament top entry"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_top_mode_selector.lua"
-  marker = "bb_tournament top mode selector"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_top_wraps.lua"
-  marker = "bb_tournament top wraps"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "bbt_hub.lua"
-  marker = "bb_tournament hub"
 
 [[files]]
 stem = "game_over_menu"

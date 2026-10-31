@@ -1,0 +1,344 @@
+# Better QoL › Unlocked formations: the names and descriptions of the formations the game has but never offers, in
+# the 9 languages. Each name is the game's own name of that language with its DF-MC-DL shape first (position_id 2-3 /
+# 4-7 / 8-10), written as that language writes the offered formations; where the game left only a Japanese placeholder
+# for the description, it is built from the layout by research/scripts/formation_descriptions.py. The formations with
+# a layout of their own in series_formations.toml carry their texts there; the two descriptions translated from the
+# game's Japanese text (F-Raimon, F-Basic) are text rows (text/rows/formation_descriptions.toml).
+schema = "VRFW.formation/1"
+
+# formation 0x2CD9760B (4-3-3 F-Raimon)
+[[edit]]
+target = 0x2CD9760B
+title = { ja = "４－３－３　F-ライモン", en = "4-3-3 F-Raimon", es = "4-3-3 F-Raimon", fr = "4-3-3 F-Raimon", de = "4-3-3 F-Raimon", it = "4-3-3 F-Raimon", pt = "4-3-3 F-Raimon", zh_hans = "4-3-3 F-雷门", zh_hant = "4-3-3 F-雷門" }
+
+# formation 0xB5D027B1 (4-3-3 F-Dark Knights)
+[[edit]]
+target = 0xB5D027B1
+title = { ja = "４－３－３　F-ダークナイツ", en = "4-3-3 F-Dark Knights", es = "4-3-3 F-Caballeros Oscuros", fr = "4-3-3 F-Chevaliers Noirs", de = "4-3-3 F-Dunkle Ritter", it = "4-3-3 F-Cavalieri Oscuri", pt = "4-3-3 F-Cavaleiros Sombrios", zh_hans = "4-3-3 F-黑骑士", zh_hant = "4-3-3 F-黑騎士" }
+description = { ja = "スリートップを敷いた　攻撃的な陣形。\n守備陣には集中力が求められる。", en = "An attack-minded formation with a front three. The\nback line has to stay alert.", es = "Una formación ofensiva con tres delanteros en\nataque. La defensa debe mantenerse atenta.", fr = "Une formation offensive avec trois attaquants. La\ndéfense doit rester vigilante.", de = "Eine offensive Aufstellung mit drei Stürmern. Die Abwehr\nmuss wachsam bleiben.", it = "Una formazione offensiva con tre punte. La difesa deve\nrestare attenta.", pt = "Formação ofensiva com um trio de ataque. A defesa\nprecisa ficar atenta.", zh_hans = "采用三前锋的进攻型阵型。\n后防线需时刻保持警惕。", zh_hant = "採用三前鋒的進攻型陣型。\n後防線需時刻保持警惕。" }
+
+# formation 0xC2D71727 (4-4-2 F-Basic)
+[[edit]]
+target = 0xC2D71727
+title = { ja = "４－４－２　F-ベーシック", en = "4-4-2 F-Basic", es = "4-4-2 F-Básico", fr = "4-4-2 F-Basique", de = "4-4-2 F-Basic", it = "4-4-2 F-Base", pt = "4-4-2 F-Básico", zh_hans = "4-4-2 F-基础", zh_hant = "4-4-2 F-基本" }
+
+# formation 0x5CB38284 (3-4-3 F-Milky Way)
+[[edit]]
+target = 0x5CB38284
+title = { ja = "３－４－３　F-ミルキーウェイ", en = "3-4-3 F-Milky Way", es = "3-4-3 F-Vía Láctea", fr = "3-4-3 F-Voie Lactée", de = "3-4-3 F-Milchstraße", it = "3-4-3 F-Via Lattea", pt = "3-4-3 F-Via Láctea", zh_hans = "3-4-3 F-银河", zh_hant = "3-4-3 F-銀河" }
+description = { ja = "スリートップを敷いた　攻撃的な陣形。\nサイドからの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with a front three.\nAttacks mainly down the flanks. The back line has to\nstay alert.", es = "Una formación ofensiva con tres delanteros en\nataque. Ataca sobre todo por las bandas. La defensa\ndebe mantenerse atenta.", fr = "Une formation offensive avec trois attaquants. Elle\nattaque surtout par les ailes. La défense doit rester\nvigilante.", de = "Eine offensive Aufstellung mit drei Stürmern. Greift vor\nallem über die Flügel an. Die Abwehr muss wachsam bleiben.", it = "Una formazione offensiva con tre punte. Attacca\nsoprattutto sulle fasce. La difesa deve restare attenta.", pt = "Formação ofensiva com um trio de ataque. Ataca\nprincipalmente pelas laterais. A defesa precisa\nficar atenta.", zh_hans = "采用三前锋的进攻型阵型。\n擅长从两翼进攻。\n后防线需时刻保持警惕。", zh_hant = "採用三前鋒的進攻型陣型。\n擅長從兩翼進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0x2BB4B212 (4-3-3 F-Omni)
+[[edit]]
+target = 0x2BB4B212
+title = { ja = "４－３－３　F-オムニ", en = "4-3-3 F-Omni", es = "4-3-3 F-Omni", fr = "4-3-3 F-Omni", de = "4-3-3 F-Omni", it = "4-3-3 F-Omni", pt = "4-3-3 F-Omni", zh_hans = "4-3-3 F-欧姆尼", zh_hant = "4-3-3 F-歐姆尼" }
+description = { ja = "スリートップを敷いた　攻撃的な陣形。\n守備陣には集中力が求められる。", en = "An attack-minded formation with a front three. The\nback line has to stay alert.", es = "Una formación ofensiva con tres delanteros en\nataque. La defensa debe mantenerse atenta.", fr = "Une formation offensive avec trois attaquants. La\ndéfense doit rester vigilante.", de = "Eine offensive Aufstellung mit drei Stürmern. Die Abwehr\nmuss wachsam bleiben.", it = "Una formazione offensiva con tre punte. La difesa deve\nrestare attenta.", pt = "Formação ofensiva com um trio de ataque. A defesa\nprecisa ficar atenta.", zh_hans = "采用三前锋的进攻型阵型。\n后防线需时刻保持警惕。", zh_hant = "採用三前鋒的進攻型陣型。\n後防線需時刻保持警惕。" }
+
+# formation 0xB2BDE3A8 (4-4-2 F-Neo Death Zone)
+[[edit]]
+target = 0xB2BDE3A8
+title = { ja = "４－４－２　F-ネオデスゾーン", en = "4-4-2 F-Neo Death Zone", es = "4-4-2 F-Zona de la Muerte Neo", fr = "4-4-2 F-Zone de la Mort Néo", de = "4-4-2 F-Neo-Todeszone", it = "4-4-2 F-Zona della Morte Neo", pt = "4-4-2 F-Zona da Morte Neo", zh_hans = "4-4-2 F-新死亡地带", zh_hant = "4-4-2 F-新死亡地帶" }
+description = { ja = "４人のラインを２本並べた　攻撃的な陣形。\n守備陣には集中力が求められる。", en = "An attack-minded formation with two lines of four.\nThe back line has to stay alert.", es = "Una formación ofensiva con dos líneas de cuatro. La\ndefensa debe mantenerse atenta.", fr = "Une formation offensive avec deux lignes de quatre. La\ndéfense doit rester vigilante.", de = "Eine offensive Aufstellung mit zwei Reihen aus je vier\nSpielern. Die Abwehr muss wachsam bleiben.", it = "Una formazione offensiva con due linee da quattro. La\ndifesa deve restare attenta.", pt = "Formação ofensiva com duas linhas de quatro. A\ndefesa precisa ficar atenta.", zh_hans = "排出两条四人横线的进攻型阵型。\n后防线需时刻保持警惕。", zh_hant = "排出兩條四人橫線的進攻型陣型。\n後防線需時刻保持警惕。" }
+
+# formation 0xC5BAD33E (3-5-2 F-Marine Snow)
+[[edit]]
+target = 0xC5BAD33E
+title = { ja = "３－５－２　F-マリンスノー", en = "3-5-2 F-Marine Snow", es = "3-5-2 F-Nieve Marina", fr = "3-5-2 F-Neige Marine", de = "3-5-2 F-Meeres-Schnee", it = "3-5-2 F-Neve Marina", pt = "3-5-2 F-Neve Marinha", zh_hans = "3-5-2 F-海雪", zh_hant = "3-5-2 F-海雪" }
+description = { ja = "中盤に５人を置いた　バランス型の陣形。\n中央からの攻撃が得意。\nどんな相手にも対応しやすい。", en = "A balanced formation with five players crowding the\nmidfield. Its play goes mainly through the middle.\nIt adapts well to any opponent.", es = "Una formación equilibrada con cinco centrocampistas\nen el medio. Su juego pasa sobre todo por el centro.\nSe adapta bien a cualquier rival.", fr = "Une formation équilibrée avec cinq joueurs au milieu de\nterrain. Son jeu passe surtout par l'axe. Elle s'adapte\nbien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit fünf Spielern im\nMittelfeld. Das Spiel läuft vor allem durch die Mitte. Sie\npasst sich jedem Gegner gut an.", it = "Una formazione equilibrata con cinque centrocampisti in\nmezzo. Il gioco passa soprattutto per il centro. Si\nadatta bene a qualsiasi avversario.", pt = "Formação equilibrada com cinco jogadores no\nmeio-campo. O jogo passa principalmente pelo meio.\nAdapta-se bem a qualquer adversário.", zh_hans = "中场布置五名球员的平衡型阵型。\n擅长中路进攻。\n能灵活应对各种对手。", zh_hant = "中場佈置五名球員的平衡型陣型。\n擅長中路進攻。\n能靈活應對各種對手。" }
+
+# formation 0x5505CEAF (4-3-3 F-Moonlight)
+[[edit]]
+target = 0x5505CEAF
+title = { ja = "４－３－３　F-ムーンライト", en = "4-3-3 F-Moonlight", es = "4-3-3 F-Luz de Luna", fr = "4-3-3 F-Clair de Lune", de = "4-3-3 F-Mondlicht", it = "4-3-3 F-Chiaro di Luna", pt = "4-3-3 F-Luar", zh_hans = "4-3-3 F-月光", zh_hant = "4-3-3 F-月光" }
+description = { ja = "スリートップを敷いた　守備的な陣形。\n中央からの攻撃が得意。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with a front three. Its\nplay goes mainly through the middle. Creating\nchances takes patience.", es = "Una formación defensiva con tres delanteros en\nataque. Su juego pasa sobre todo por el centro.\nCrear ocasiones requiere paciencia.", fr = "Une formation défensive avec trois attaquants. Son jeu\npasse surtout par l'axe. Il faut de la patience pour se\ncréer des occasions.", de = "Eine defensive Aufstellung mit drei Stürmern. Das Spiel\nläuft vor allem durch die Mitte. Torchancen erfordern\nGeduld.", it = "Una formazione difensiva con tre punte. Il gioco passa\nsoprattutto per il centro. Creare occasioni richiede\npazienza.", pt = "Formação defensiva com um trio de ataque. O jogo\npassa principalmente pelo meio. Criar chances exige\npaciência.", zh_hans = "采用三前锋的防守型阵型。\n擅长中路进攻。\n创造机会需要耐心。", zh_hant = "採用三前鋒的防守型陣型。\n擅長中路進攻。\n創造機會需要耐心。" }
+
+# formation 0x2202FE39 (4-5-1 F-Soft Lime)
+[[edit]]
+target = 0x2202FE39
+title = { ja = "４－５－１　F-ソフトライム", en = "4-5-1 F-Soft Lime", es = "4-5-1 F-Lima Suave", fr = "4-5-1 F-Citron Doux", de = "4-5-1 F-Soft Lime", it = "4-5-1 F-Lime Morbido", pt = "4-5-1 F-Lima Suave", zh_hans = "4-5-1 F-柔和莱姆", zh_hant = "4-5-1 F-柔和萊姆" }
+description = { ja = "中盤に５人を置いた　守備的な陣形。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with five players\ncrowding the midfield. Creating chances takes\npatience.", es = "Una formación defensiva con cinco centrocampistas en\nel medio. Crear ocasiones requiere paciencia.", fr = "Une formation défensive avec cinq joueurs au milieu de\nterrain. Il faut de la patience pour se créer des\noccasions.", de = "Eine defensive Aufstellung mit fünf Spielern im\nMittelfeld. Torchancen erfordern Geduld.", it = "Una formazione difensiva con cinque centrocampisti in\nmezzo. Creare occasioni richiede pazienza.", pt = "Formação defensiva com cinco jogadores no\nmeio-campo. Criar chances exige paciência.", zh_hans = "中场布置五名球员的防守型阵型。\n创造机会需要耐心。", zh_hant = "中場佈置五名球員的防守型陣型。\n創造機會需要耐心。" }
+
+# formation 0x42C577DC (4-4-2 F-Tiger Strike)
+[[edit]]
+target = 0x42C577DC
+title = { ja = "４－４－２　F-タイガストライク", en = "4-4-2 F-Tiger Strike", es = "4-4-2 F-Golpe del Tigre", fr = "4-4-2 F-Frappe du Tigre", de = "4-4-2 F-Tiger-Schlag", it = "4-4-2 F-Colpo della Tigre", pt = "4-4-2 F-Golpe do Tigre", zh_hans = "4-4-2 F-虎击", zh_hant = "4-4-2 F-虎擊" }
+description = { ja = "４人のラインを２本並べた　攻撃的な陣形。\n守備陣には集中力が求められる。", en = "An attack-minded formation with two lines of four.\nThe back line has to stay alert.", es = "Una formación ofensiva con dos líneas de cuatro. La\ndefensa debe mantenerse atenta.", fr = "Une formation offensive avec deux lignes de quatre. La\ndéfense doit rester vigilante.", de = "Eine offensive Aufstellung mit zwei Reihen aus je vier\nSpielern. Die Abwehr muss wachsam bleiben.", it = "Una formazione offensiva con due linee da quattro. La\ndifesa deve restare attenta.", pt = "Formação ofensiva com duas linhas de quatro. A\ndefesa precisa ficar atenta.", zh_hans = "排出两条四人横线的进攻型阵型。\n后防线需时刻保持警惕。", zh_hant = "排出兩條四人橫線的進攻型陣型。\n後防線需時刻保持警惕。" }
+
+# formation 0x35C2474A (4-4-2 F-Phantom)
+[[edit]]
+target = 0x35C2474A
+title = { ja = "４－４－２　F-ファントム", en = "4-4-2 F-Phantom", es = "4-4-2 F-Fantasma", fr = "4-4-2 F-Phantom", de = "4-4-2 F-Phantom", it = "4-4-2 F-Phantom", pt = "4-4-2 F-Fantasma", zh_hans = "4-4-2 F-幻影", zh_hant = "4-4-2 F-幻影" }
+description = { ja = "４人のラインを２本並べた　攻撃的な陣形。\n守備陣には集中力が求められる。", en = "An attack-minded formation with two lines of four.\nThe back line has to stay alert.", es = "Una formación ofensiva con dos líneas de cuatro. La\ndefensa debe mantenerse atenta.", fr = "Une formation offensive avec deux lignes de quatre. La\ndéfense doit rester vigilante.", de = "Eine offensive Aufstellung mit zwei Reihen aus je vier\nSpielern. Die Abwehr muss wachsam bleiben.", it = "Una formazione offensiva con due linee da quattro. La\ndifesa deve restare attenta.", pt = "Formação ofensiva com duas linhas de quatro. A\ndefesa precisa ficar atenta.", zh_hans = "排出两条四人横线的进攻型阵型。\n后防线需时刻保持警惕。", zh_hant = "排出兩條四人橫線的進攻型陣型。\n後防線需時刻保持警惕。" }
+
+# formation 0xACCB16F0 (3-6-1 F-Neo Cloud)
+[[edit]]
+target = 0xACCB16F0
+title = { ja = "３－６－１　F-ネオクラウド", en = "3-6-1 F-Neo Cloud", es = "3-6-1 F-Nube Neo", fr = "3-6-1 F-Néo Nuage", de = "3-6-1 F-Neo-Wolke", it = "3-6-1 F-Nuvola Neo", pt = "3-6-1 F-Nuvem Neo", zh_hans = "3-6-1 F-新云", zh_hant = "3-6-1 F-新雲" }
+description = { ja = "中盤に６人を置いた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with six players crowding the\nmidfield. It adapts well to any opponent.", es = "Una formación equilibrada con seis centrocampistas\nen el medio. Se adapta bien a cualquier rival.", fr = "Une formation équilibrée avec six joueurs au milieu de\nterrain. Elle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit sechs Spielern im\nMittelfeld. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con sei centrocampisti in\nmezzo. Si adatta bene a qualsiasi avversario.", pt = "Formação equilibrada com seis jogadores no\nmeio-campo. Adapta-se bem a qualquer adversário.", zh_hans = "中场布置六名球员的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "中場佈置六名球員的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0xDBCC2666 (2-4-4 F-Sacred)
+[[edit]]
+target = 0xDBCC2666
+title = { ja = "２－４－４　F-セイクリッド", en = "2-4-4 F-Sacred", es = "2-4-4 F-Sagrado", fr = "2-4-4 F-Sacré", de = "2-4-4 F-Heilig", it = "2-4-4 F-Sacro", pt = "2-4-4 F-Sagrado", zh_hans = "2-4-4 F-圣域", zh_hant = "2-4-4 F-聖域" }
+description = { ja = "ＤＦを２人に絞った　超攻撃的な陣形。\n中央からの攻撃が得意。\n守備は手薄で　カウンターに弱い。", en = "An all-out attacking formation that keeps only two\ndefenders at the back. Its play goes mainly through the\nmiddle. The defence is left open to counter-attacks.", es = "Una formación ultraofensiva que deja solo dos defensas\natrás. Su juego pasa sobre todo por el centro. La\ndefensa queda expuesta a los contraataques.", fr = "Une formation tout en attaque qui ne garde que deux\ndéfenseurs derrière. Son jeu passe surtout par l'axe. La\ndéfense reste exposée aux contre-attaques.", de = "Eine bedingungslos offensive Aufstellung mit nur zwei\nVerteidigern in der Abwehr. Das Spiel läuft vor allem\ndurch die Mitte. Die Abwehr ist anfällig für Konter.", it = "Una formazione votata all'attacco che lascia solo due\ndifensori dietro. Il gioco passa soprattutto per il\ncentro. La difesa resta esposta ai contropiedi.", pt = "Formação ultraofensiva que deixa só dois zagueiros\natrás. O jogo passa principalmente pelo meio. A\ndefesa fica exposta a contra-ataques.", zh_hans = "后防仅留两名后卫的全攻型阵型。\n擅长中路进攻。\n防守薄弱，容易被反击。", zh_hant = "後防僅留兩名後衛的全攻型陣型。\n擅長中路進攻。\n防守薄弱，容易被反擊。" }
+
+# formation 0x45A8B3C5 (2-4-4 F-Thousand)
+[[edit]]
+target = 0x45A8B3C5
+title = { ja = "２－４－４　F-サウザンド", en = "2-4-4 F-Thousand", es = "2-4-4 F-Mil", fr = "2-4-4 F-Mille", de = "2-4-4 F-Tausend", it = "2-4-4 F-Mille", pt = "2-4-4 F-Mil", zh_hans = "2-4-4 F-千", zh_hant = "2-4-4 F-千" }
+description = { ja = "ＤＦを２人に絞った　超攻撃的な陣形。\nサイドからの攻撃が得意。\n守備は手薄で　カウンターに弱い。", en = "An all-out attacking formation that keeps only two\ndefenders at the back. Attacks mainly down the\nflanks. The defence is left open to counter-attacks.", es = "Una formación ultraofensiva que deja solo dos\ndefensas atrás. Ataca sobre todo por las bandas. La\ndefensa queda expuesta a los contraataques.", fr = "Une formation tout en attaque qui ne garde que deux\ndéfenseurs derrière. Elle attaque surtout par les ailes.\nLa défense reste exposée aux contre-attaques.", de = "Eine bedingungslos offensive Aufstellung mit nur zwei\nVerteidigern in der Abwehr. Greift vor allem über die\nFlügel an. Die Abwehr ist anfällig für Konter.", it = "Una formazione votata all'attacco che lascia solo due\ndifensori dietro. Attacca soprattutto sulle fasce. La\ndifesa resta esposta ai contropiedi.", pt = "Formação ultraofensiva que deixa só dois zagueiros\natrás. Ataca principalmente pelas laterais. A defesa\nfica exposta a contra-ataques.", zh_hans = "后防仅留两名后卫的全攻型阵型。\n擅长从两翼进攻。\n防守薄弱，容易被反击。", zh_hant = "後防僅留兩名後衛的全攻型陣型。\n擅長從兩翼進攻。\n防守薄弱，容易被反擊。" }
+
+# formation 0x32AF8353 (4-4-2 F-Blue Leaf)
+[[edit]]
+target = 0x32AF8353
+title = { ja = "４－４－２　F-ブルーリーフ", en = "4-4-2 F-Blue Leaf", es = "4-4-2 F-Hoja Azul", fr = "4-4-2 F-Feuille Bleue", de = "4-4-2 F-Blatt Blau", it = "4-4-2 F-Foglia Blu", pt = "4-4-2 F-Folha Azul", zh_hans = "4-4-2 F-蓝叶", zh_hant = "4-4-2 F-藍葉" }
+description = { ja = "４人のラインを２本並べた　攻撃的な陣形。\n中央からの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with two lines of four.\nIts play goes mainly through the middle. The back\nline has to stay alert.", es = "Una formación ofensiva con dos líneas de cuatro. Su\njuego pasa sobre todo por el centro. La defensa debe\nmantenerse atenta.", fr = "Une formation offensive avec deux lignes de quatre. Son\njeu passe surtout par l'axe. La défense doit rester\nvigilante.", de = "Eine offensive Aufstellung mit zwei Reihen aus je vier\nSpielern. Das Spiel läuft vor allem durch die Mitte. Die\nAbwehr muss wachsam bleiben.", it = "Una formazione offensiva con due linee da quattro. Il\ngioco passa soprattutto per il centro. La difesa deve\nrestare attenta.", pt = "Formação ofensiva com duas linhas de quatro. O jogo\npassa principalmente pelo meio. A defesa precisa\nficar atenta.", zh_hans = "排出两条四人横线的进攻型阵型。\n擅长中路进攻。\n后防线需时刻保持警惕。", zh_hant = "排出兩條四人橫線的進攻型陣型。\n擅長中路進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0xABA6D2E9 (4-5-1 F-Kids Heart)
+[[edit]]
+target = 0xABA6D2E9
+title = { ja = "４－５－１　F-キッズハート", en = "4-5-1 F-Kids Heart", es = "4-5-1 F-Corazón de Niño", fr = "4-5-1 F-Cœur d’Enfant", de = "4-5-1 F-Kinderherz", it = "4-5-1 F-Cuore dei Bambini", pt = "4-5-1 F-Coração das Crianças", zh_hans = "4-5-1 F-孩子之心", zh_hant = "4-5-1 F-孩子之心" }
+description = { ja = "中盤に５人を置いた　守備的な陣形。\n中央からの攻撃が得意。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with five players\ncrowding the midfield. Its play goes mainly through\nthe middle. Creating chances takes patience.", es = "Una formación defensiva con cinco centrocampistas en\nel medio. Su juego pasa sobre todo por el centro.\nCrear ocasiones requiere paciencia.", fr = "Une formation défensive avec cinq joueurs au milieu de\nterrain. Son jeu passe surtout par l'axe. Il faut de la\npatience pour se créer des occasions.", de = "Eine defensive Aufstellung mit fünf Spielern im\nMittelfeld. Das Spiel läuft vor allem durch die Mitte.\nTorchancen erfordern Geduld.", it = "Una formazione difensiva con cinque centrocampisti in\nmezzo. Il gioco passa soprattutto per il centro. Creare\noccasioni richiede pazienza.", pt = "Formação defensiva com cinco jogadores no\nmeio-campo. O jogo passa principalmente pelo meio.\nCriar chances exige paciência.", zh_hans = "中场布置五名球员的防守型阵型。\n擅长中路进攻。\n创造机会需要耐心。", zh_hant = "中場佈置五名球員的防守型陣型。\n擅長中路進攻。\n創造機會需要耐心。" }
+
+# formation 0xDCA1E27F (3-5-2 F-Shining)
+[[edit]]
+target = 0xDCA1E27F
+title = { ja = "３－５－２　F-シャイニング", en = "3-5-2 F-Shining", es = "3-5-2 F-Brillante", fr = "3-5-2 F-Scintillant", de = "3-5-2 F-Strahlend", it = "3-5-2 F-Luminoso", pt = "3-5-2 F-Brilhante", zh_hans = "3-5-2 F-闪耀", zh_hant = "3-5-2 F-閃耀" }
+description = { ja = "中盤に５人を置いた　守備的な陣形。\n中央からの攻撃が得意。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with five players\ncrowding the midfield. Its play goes mainly through\nthe middle. Creating chances takes patience.", es = "Una formación defensiva con cinco centrocampistas en\nel medio. Su juego pasa sobre todo por el centro.\nCrear ocasiones requiere paciencia.", fr = "Une formation défensive avec cinq joueurs au milieu de\nterrain. Son jeu passe surtout par l'axe. Il faut de la\npatience pour se créer des occasions.", de = "Eine defensive Aufstellung mit fünf Spielern im\nMittelfeld. Das Spiel läuft vor allem durch die Mitte.\nTorchancen erfordern Geduld.", it = "Una formazione difensiva con cinque centrocampisti in\nmezzo. Il gioco passa soprattutto per il centro. Creare\noccasioni richiede pazienza.", pt = "Formação defensiva com cinco jogadores no\nmeio-campo. O jogo passa principalmente pelo meio.\nCriar chances exige paciência.", zh_hans = "中场布置五名球员的防守型阵型。\n擅长中路进攻。\n创造机会需要耐心。", zh_hant = "中場佈置五名球員的防守型陣型。\n擅長中路進攻。\n創造機會需要耐心。" }
+
+# formation 0x4C1EFFEE (4-5-1 F-Ancient)
+[[edit]]
+target = 0x4C1EFFEE
+title = { ja = "４－５－１　F-エンシャント", en = "4-5-1 F-Ancient", es = "4-5-1 F-Ancestral", fr = "4-5-1 F-Ancien", de = "4-5-1 F-Uralte", it = "4-5-1 F-Antico", pt = "4-5-1 F-Ancestral", zh_hans = "4-5-1 F-古代", zh_hant = "4-5-1 F-古代" }
+description = { ja = "中盤に５人を置いた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with five players crowding the\nmidfield. It adapts well to any opponent.", es = "Una formación equilibrada con cinco centrocampistas\nen el medio. Se adapta bien a cualquier rival.", fr = "Une formation équilibrée avec cinq joueurs au milieu de\nterrain. Elle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit fünf Spielern im\nMittelfeld. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con cinque centrocampisti in\nmezzo. Si adatta bene a qualsiasi avversario.", pt = "Formação equilibrada com cinco jogadores no\nmeio-campo. Adapta-se bem a qualquer adversário.", zh_hans = "中场布置五名球员的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "中場佈置五名球員的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0x3B19CF78 (4-4-2 F-Zero)
+[[edit]]
+target = 0x3B19CF78
+title = { ja = "４－４－２　F-ゼロ", en = "4-4-2 F-Zero", es = "4-4-2 F-Cero", fr = "4-4-2 F-Zéro", de = "4-4-2 F-Null", it = "4-4-2 F-Zero", pt = "4-4-2 F-Zero", zh_hans = "4-4-2 F-零", zh_hant = "4-4-2 F-零" }
+description = { ja = "４人のラインを２本並べた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with two lines of four. It\nadapts well to any opponent.", es = "Una formación equilibrada con dos líneas de cuatro.\nSe adapta bien a cualquier rival.", fr = "Une formation équilibrée avec deux lignes de quatre.\nElle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit zwei Reihen aus je vier\nSpielern. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con due linee da quattro. Si\nadatta bene a qualsiasi avversario.", pt = "Formação equilibrada com duas linhas de quatro.\nAdapta-se bem a qualquer adversário.", zh_hans = "排出两条四人横线的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "排出兩條四人橫線的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0x69E8241F (2-6-2 F-Albatross)
+[[edit]]
+target = 0x69E8241F
+title = { ja = "２－６－２　F-アルバトロス", en = "2-6-2 F-Albatross", es = "2-6-2 F-Albatros", fr = "2-6-2 F-Albatros", de = "2-6-2 F-Albatros", it = "2-6-2 F-Albatro", pt = "2-6-2 F-Albatroz", zh_hans = "2-6-2 F-信天翁", zh_hant = "2-6-2 F-信天翁" }
+description = { ja = "中盤に６人を置いた　守備的な陣形。\n中央からの攻撃が得意。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with six players crowding\nthe midfield. Its play goes mainly through the\nmiddle. Creating chances takes patience.", es = "Una formación defensiva con seis centrocampistas en\nel medio. Su juego pasa sobre todo por el centro.\nCrear ocasiones requiere paciencia.", fr = "Une formation défensive avec six joueurs au milieu de\nterrain. Son jeu passe surtout par l'axe. Il faut de la\npatience pour se créer des occasions.", de = "Eine defensive Aufstellung mit sechs Spielern im\nMittelfeld. Das Spiel läuft vor allem durch die Mitte.\nTorchancen erfordern Geduld.", it = "Una formazione difensiva con sei centrocampisti in\nmezzo. Il gioco passa soprattutto per il centro. Creare\noccasioni richiede pazienza.", pt = "Formação defensiva com seis jogadores no meio-campo.\nO jogo passa principalmente pelo meio. Criar chances\nexige paciência.", zh_hans = "中场布置六名球员的防守型阵型。\n擅长中路进攻。\n创造机会需要耐心。", zh_hant = "中場佈置六名球員的防守型陣型。\n擅長中路進攻。\n創造機會需要耐心。" }
+
+# formation 0x1EEF1489 (6-2-2 F-Legacy)
+[[edit]]
+target = 0x1EEF1489
+title = { ja = "６－２－２　F-レガシー", en = "6-2-2 F-Legacy", es = "6-2-2 F-Legado", fr = "6-2-2 F-Héritage", de = "6-2-2 F-Vermächtnis", it = "6-2-2 F-Eredità", pt = "6-2-2 F-Legado", zh_hans = "6-2-2 F-传承", zh_hant = "6-2-2 F-傳承" }
+description = { ja = "６バックで最終ラインを固めた　超守備的な陣形。\n得点を奪うのは難しい。", en = "A fully defensive formation built on a back line of\nsix. Scoring goals is hard work.", es = "Una formación ultradefensiva con una línea defensiva\nde seis. Marcar goles cuesta mucho.", fr = "Une formation ultra-défensive bâtie sur une défense à\nsix. Marquer des buts demande beaucoup d'efforts.", de = "Eine äußerst defensive Aufstellung mit einer Abwehrreihe\naus sechs Spielern. Tore zu erzielen ist harte Arbeit.", it = "Una formazione ultradifensiva con una linea difensiva a\nsei. Segnare è un'impresa.", pt = "Formação ultradefensiva com uma linha defensiva de\nseis. Marcar gols é difícil.", zh_hans = "以六名后卫构筑防线的全守型阵型。\n很难取得进球。", zh_hant = "以六名後衛構築防線的全守型陣型。\n很難取得進球。" }
+
+# formation 0x87E64533 (4-4-2 F-Delta Three)
+[[edit]]
+target = 0x87E64533
+title = { ja = "４－４－２　F-デルタスリー", en = "4-4-2 F-Delta Three", es = "4-4-2 F-Delta Tres", fr = "4-4-2 F-Delta Trois", de = "4-4-2 F-Delta Drei", it = "4-4-2 F-Delta Tre", pt = "4-4-2 F-Delta Três", zh_hans = "4-4-2 F-三角洲3", zh_hant = "4-4-2 F-三角洲3" }
+description = { ja = "４人のラインを２本並べた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with two lines of four. It\nadapts well to any opponent.", es = "Una formación equilibrada con dos líneas de cuatro.\nSe adapta bien a cualquier rival.", fr = "Une formation équilibrée avec deux lignes de quatre.\nElle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit zwei Reihen aus je vier\nSpielern. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con due linee da quattro. Si\nadatta bene a qualsiasi avversario.", pt = "Formação equilibrada com duas linhas de quatro.\nAdapta-se bem a qualquer adversário.", zh_hans = "排出两条四人横线的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "排出兩條四人橫線的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0xF0E175A5 (5-4-1 F-Mamorino Jinkei)
+[[edit]]
+target = 0xF0E175A5
+title = { ja = "５－４－１　F-マモリノジンケイ", en = "5-4-1 F-Mamorino Jinkei", es = "5-4-1 F-Mamorino Jinkei", fr = "5-4-1 F-Mamorino Jinkei", de = "5-4-1 F-Mamorino Jinkei", it = "5-4-1 F-Mamorino Jinkei", pt = "5-4-1 F-Mamorino Jinkei", zh_hans = "5-4-1 F-守护之阵形", zh_hant = "5-4-1 F-守護之陣型" }
+description = { ja = "５バックで最終ラインを固めた　超守備的な陣形。\nサイドからの攻撃が得意。\n得点を奪うのは難しい。", en = "A fully defensive formation built on a back line of\nfive. Attacks mainly down the flanks. Scoring goals\nis hard work.", es = "Una formación ultradefensiva con una línea defensiva\nde cinco. Ataca sobre todo por las bandas. Marcar\ngoles cuesta mucho.", fr = "Une formation ultra-défensive bâtie sur une défense à\ncinq. Elle attaque surtout par les ailes. Marquer des\nbuts demande beaucoup d'efforts.", de = "Eine äußerst defensive Aufstellung mit einer Abwehrreihe\naus fünf Spielern. Greift vor allem über die Flügel an.\nTore zu erzielen ist harte Arbeit.", it = "Una formazione ultradifensiva con una linea difensiva a\ncinque. Attacca soprattutto sulle fasce. Segnare è\nun'impresa.", pt = "Formação ultradefensiva com uma linha defensiva de\ncinco. Ataca principalmente pelas laterais. Marcar\ngols é difícil.", zh_hans = "以五名后卫构筑防线的全守型阵型。\n擅长从两翼进攻。\n很难取得进球。", zh_hant = "以五名後衛構築防線的全守型陣型。\n擅長從兩翼進攻。\n很難取得進球。" }
+
+# formation 0x6E85E006 (3-4-3 F-Alpha)
+[[edit]]
+target = 0x6E85E006
+title = { ja = "３－４－３　F-アルファ", en = "3-4-3 F-Alpha", es = "3-4-3 F-Alpha", fr = "3-4-3 F-Alpha", de = "3-4-3 F-Alpha", it = "3-4-3 F-Alpha", pt = "3-4-3 F-Alpha", zh_hans = "3-4-3 F-阿尔法", zh_hant = "3-4-3 F-阿爾法" }
+description = { ja = "スリートップを敷いた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with a front three. It adapts\nwell to any opponent.", es = "Una formación equilibrada con tres delanteros en\nataque. Se adapta bien a cualquier rival.", fr = "Une formation équilibrée avec trois attaquants. Elle\ns'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit drei Stürmern. Sie passt\nsich jedem Gegner gut an.", it = "Una formazione equilibrata con tre punte. Si adatta bene\na qualsiasi avversario.", pt = "Formação equilibrada com um trio de ataque.\nAdapta-se bem a qualquer adversário.", zh_hans = "采用三前锋的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "採用三前鋒的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0x1982D090 (3-5-2 F-Shikanotsuno)
+[[edit]]
+target = 0x1982D090
+title = { ja = "３－５－２　F-シカノツノ", en = "3-5-2 F-Shikanotsuno", es = "3-5-2 F-Shikanotsuno", fr = "3-5-2 F-Shikanotsuno", de = "3-5-2 F-Shikanotsuno", it = "3-5-2 F-Shikanotsuno", pt = "3-5-2 F-Shikanotsuno", zh_hans = "3-5-2 F-鹿之角", zh_hant = "3-5-2 F-鹿之角" }
+description = { ja = "中盤に５人を置いた　攻撃的な陣形。\n中央からの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with five players\ncrowding the midfield. Its play goes mainly through\nthe middle. The back line has to stay alert.", es = "Una formación ofensiva con cinco centrocampistas en\nel medio. Su juego pasa sobre todo por el centro. La\ndefensa debe mantenerse atenta.", fr = "Une formation offensive avec cinq joueurs au milieu de\nterrain. Son jeu passe surtout par l'axe. La défense\ndoit rester vigilante.", de = "Eine offensive Aufstellung mit fünf Spielern im\nMittelfeld. Das Spiel läuft vor allem durch die Mitte. Die\nAbwehr muss wachsam bleiben.", it = "Una formazione offensiva con cinque centrocampisti in\nmezzo. Il gioco passa soprattutto per il centro. La\ndifesa deve restare attenta.", pt = "Formação ofensiva com cinco jogadores no meio-campo.\nO jogo passa principalmente pelo meio. A defesa\nprecisa ficar atenta.", zh_hans = "中场布置五名球员的进攻型阵型。\n擅长中路进攻。\n后防线需时刻保持警惕。", zh_hant = "中場佈置五名球員的進攻型陣型。\n擅長中路進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0x808B812A (3-4-3 F-Beta)
+[[edit]]
+target = 0x808B812A
+title = { ja = "３－４－３　F-ベータ", en = "3-4-3 F-Beta", es = "3-4-3 F-Beta", fr = "3-4-3 F-Bêta", de = "3-4-3 F-Beta", it = "3-4-3 F-Beta", pt = "3-4-3 F-Beta", zh_hans = "3-4-3 F-贝塔", zh_hant = "3-4-3 F-貝塔" }
+description = { ja = "スリートップを敷いた　攻撃的な陣形。\n中央からの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with a front three. Its\nplay goes mainly through the middle. The back line\nhas to stay alert.", es = "Una formación ofensiva con tres delanteros en\nataque. Su juego pasa sobre todo por el centro. La\ndefensa debe mantenerse atenta.", fr = "Une formation offensive avec trois attaquants. Son jeu\npasse surtout par l'axe. La défense doit rester\nvigilante.", de = "Eine offensive Aufstellung mit drei Stürmern. Das Spiel\nläuft vor allem durch die Mitte. Die Abwehr muss wachsam\nbleiben.", it = "Una formazione offensiva con tre punte. Il gioco passa\nsoprattutto per il centro. La difesa deve restare\nattenta.", pt = "Formação ofensiva com um trio de ataque. O jogo\npassa principalmente pelo meio. A defesa precisa\nficar atenta.", zh_hans = "采用三前锋的进攻型阵型。\n擅长中路进攻。\n后防线需时刻保持警惕。", zh_hant = "採用三前鋒的進攻型陣型。\n擅長中路進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0xF78CB1BC (3-4-3 F-Gamma)
+[[edit]]
+target = 0xF78CB1BC
+title = { ja = "３－４－３　F-ガンマ", en = "3-4-3 F-Gamma", es = "3-4-3 F-Gamma", fr = "3-4-3 F-Gamma", de = "3-4-3 F-Gamma", it = "3-4-3 F-Gamma", pt = "3-4-3 F-Gama", zh_hans = "3-4-3 F-伽玛", zh_hant = "3-4-3 F-伽瑪" }
+description = { ja = "スリートップを敷いた　攻撃的な陣形。\nサイドからの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with a front three.\nAttacks mainly down the flanks. The back line has to\nstay alert.", es = "Una formación ofensiva con tres delanteros en\nataque. Ataca sobre todo por las bandas. La defensa\ndebe mantenerse atenta.", fr = "Une formation offensive avec trois attaquants. Elle\nattaque surtout par les ailes. La défense doit rester\nvigilante.", de = "Eine offensive Aufstellung mit drei Stürmern. Greift vor\nallem über die Flügel an. Die Abwehr muss wachsam bleiben.", it = "Una formazione offensiva con tre punte. Attacca\nsoprattutto sulle fasce. La difesa deve restare attenta.", pt = "Formação ofensiva com um trio de ataque. Ataca\nprincipalmente pelas laterais. A defesa precisa\nficar atenta.", zh_hans = "采用三前锋的进攻型阵型。\n擅长从两翼进攻。\n后防线需时刻保持警惕。", zh_hant = "採用三前鋒的進攻型陣型。\n擅長從兩翼進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0x6733AC2D (3-6-1 F-Terracotta)
+[[edit]]
+target = 0x6733AC2D
+title = { ja = "３－６－１　F-テラコッタ", en = "3-6-1 F-Terracotta", es = "3-6-1 F-Terracota", fr = "3-6-1 F-Terre cuite", de = "3-6-1 F-Terrakotta", it = "3-6-1 F-Terracotta", pt = "3-6-1 F-Terracota", zh_hans = "3-6-1 F-陶土", zh_hant = "3-6-1 F-陶土" }
+description = { ja = "中盤に６人を置いた　守備的な陣形。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with six players crowding\nthe midfield. Creating chances takes patience.", es = "Una formación defensiva con seis centrocampistas en\nel medio. Crear ocasiones requiere paciencia.", fr = "Une formation défensive avec six joueurs au milieu de\nterrain. Il faut de la patience pour se créer des\noccasions.", de = "Eine defensive Aufstellung mit sechs Spielern im\nMittelfeld. Torchancen erfordern Geduld.", it = "Una formazione difensiva con sei centrocampisti in\nmezzo. Creare occasioni richiede pazienza.", pt = "Formação defensiva com seis jogadores no meio-campo.\nCriar chances exige paciência.", zh_hans = "中场布置六名球员的防守型阵型。\n创造机会需要耐心。", zh_hant = "中場佈置六名球員的防守型陣型。\n創造機會需要耐心。" }
+
+# formation 0x10349CBB (3-4-3 F-Domain)
+[[edit]]
+target = 0x10349CBB
+title = { ja = "３－４－３　F-ドメイン", en = "3-4-3 F-Domain", es = "3-4-3 F-Dominio", fr = "3-4-3 F-Domaine", de = "3-4-3 F-Domäne", it = "3-4-3 F-Dominio", pt = "3-4-3 F-Domínio", zh_hans = "3-4-3 F-领域", zh_hant = "3-4-3 F-領域" }
+description = { ja = "スリートップを敷いた　超攻撃的な陣形。\nサイドからの攻撃が得意。\n守備は手薄で　カウンターに弱い。", en = "An all-out attacking formation with a front three.\nAttacks mainly down the flanks. The defence is left\nopen to counter-attacks.", es = "Una formación ultraofensiva con tres delanteros en\nataque. Ataca sobre todo por las bandas. La defensa\nqueda expuesta a los contraataques.", fr = "Une formation tout en attaque avec trois attaquants.\nElle attaque surtout par les ailes. La défense reste\nexposée aux contre-attaques.", de = "Eine bedingungslos offensive Aufstellung mit drei\nStürmern. Greift vor allem über die Flügel an. Die Abwehr\nist anfällig für Konter.", it = "Una formazione votata all'attacco con tre punte. Attacca\nsoprattutto sulle fasce. La difesa resta esposta ai\ncontropiedi.", pt = "Formação ultraofensiva com um trio de ataque. Ataca\nprincipalmente pelas laterais. A defesa fica exposta\na contra-ataques.", zh_hans = "采用三前锋的全攻型阵型。\n擅长从两翼进攻。\n防守薄弱，容易被反击。", zh_hant = "採用三前鋒的全攻型陣型。\n擅長從兩翼進攻。\n防守薄弱，容易被反擊。" }
+
+# formation 0x70F3155E (3-5-2 F-Perfect)
+[[edit]]
+target = 0x70F3155E
+title = { ja = "３－５－２　F-パーフェクト", en = "3-5-2 F-Perfect", es = "3-5-2 F-Perfecto", fr = "3-5-2 F-Parfait", de = "3-5-2 F-Perfekt", it = "3-5-2 F-Perfetto", pt = "3-5-2 F-Perfeito", zh_hans = "3-5-2 F-完美", zh_hant = "3-5-2 F-完美" }
+description = { ja = "中盤に５人を置いた　バランス型の陣形。\nサイドからの攻撃が得意。\nどんな相手にも対応しやすい。", en = "A balanced formation with five players crowding the\nmidfield. Attacks mainly down the flanks. It adapts\nwell to any opponent.", es = "Una formación equilibrada con cinco centrocampistas\nen el medio. Ataca sobre todo por las bandas. Se\nadapta bien a cualquier rival.", fr = "Une formation équilibrée avec cinq joueurs au milieu de\nterrain. Elle attaque surtout par les ailes. Elle\ns'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit fünf Spielern im\nMittelfeld. Greift vor allem über die Flügel an. Sie passt\nsich jedem Gegner gut an.", it = "Una formazione equilibrata con cinque centrocampisti in\nmezzo. Attacca soprattutto sulle fasce. Si adatta bene a\nqualsiasi avversario.", pt = "Formação equilibrada com cinco jogadores no\nmeio-campo. Ataca principalmente pelas laterais.\nAdapta-se bem a qualquer adversário.", zh_hans = "中场布置五名球员的平衡型阵型。\n擅长从两翼进攻。\n能灵活应对各种对手。", zh_hant = "中場佈置五名球員的平衡型陣型。\n擅長從兩翼進攻。\n能靈活應對各種對手。" }
+
+# formation 0x07F425C8 (3-6-1 F-Zan)
+[[edit]]
+target = 0x07F425C8
+title = { ja = "３－６－１　F-ザン", en = "3-6-1 F-Zan", es = "3-6-1 F-Zan", fr = "3-6-1 F-Zan", de = "3-6-1 F-Zan", it = "3-6-1 F-Zan", pt = "3-6-1 F-Zan", zh_hans = "3-6-1 F-斩", zh_hant = "3-6-1 F-斬" }
+description = { ja = "中盤に６人を置いた　攻撃的な陣形。\nサイドからの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with six players crowding\nthe midfield. Attacks mainly down the flanks. The\nback line has to stay alert.", es = "Una formación ofensiva con seis centrocampistas en\nel medio. Ataca sobre todo por las bandas. La\ndefensa debe mantenerse atenta.", fr = "Une formation offensive avec six joueurs au milieu de\nterrain. Elle attaque surtout par les ailes. La défense\ndoit rester vigilante.", de = "Eine offensive Aufstellung mit sechs Spielern im\nMittelfeld. Greift vor allem über die Flügel an. Die\nAbwehr muss wachsam bleiben.", it = "Una formazione offensiva con sei centrocampisti in\nmezzo. Attacca soprattutto sulle fasce. La difesa deve\nrestare attenta.", pt = "Formação ofensiva com seis jogadores no meio-campo.\nAtaca principalmente pelas laterais. A defesa\nprecisa ficar atenta.", zh_hans = "中场布置六名球员的进攻型阵型。\n擅长从两翼进攻。\n后防线需时刻保持警惕。", zh_hant = "中場佈置六名球員的進攻型陣型。\n擅長從兩翼進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0x9EFD7472 (3-5-2 F-Gil)
+[[edit]]
+target = 0x9EFD7472
+title = { ja = "３－５－２　F-ギル", en = "3-5-2 F-Gil", es = "3-5-2 F-Gil", fr = "3-5-2 F-Gil", de = "3-5-2 F-Gil", it = "3-5-2 F-Gil", pt = "3-5-2 F-Gil", zh_hans = "3-5-2 F-基尔", zh_hant = "3-5-2 F-基爾" }
+description = { ja = "中盤に５人を置いた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with five players crowding the\nmidfield. It adapts well to any opponent.", es = "Una formación equilibrada con cinco centrocampistas\nen el medio. Se adapta bien a cualquier rival.", fr = "Une formation équilibrée avec cinq joueurs au milieu de\nterrain. Elle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit fünf Spielern im\nMittelfeld. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con cinque centrocampisti in\nmezzo. Si adatta bene a qualsiasi avversario.", pt = "Formação equilibrada com cinco jogadores no\nmeio-campo. Adapta-se bem a qualquer adversário.", zh_hans = "中场布置五名球员的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "中場佈置五名球員的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0xE9FA44E4 (3-5-2 F-Gar)
+[[edit]]
+target = 0xE9FA44E4
+title = { ja = "３－５－２　F-ガル", en = "3-5-2 F-Gar", es = "3-5-2 F-Gar", fr = "3-5-2 F-Gar", de = "3-5-2 F-Gar", it = "3-5-2 F-Gar", pt = "3-5-2 F-Gar", zh_hans = "3-5-2 F-加尔", zh_hant = "3-5-2 F-加爾" }
+description = { ja = "中盤に５人を置いた　守備的な陣形。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with five players\ncrowding the midfield. Creating chances takes\npatience.", es = "Una formación defensiva con cinco centrocampistas en\nel medio. Crear ocasiones requiere paciencia.", fr = "Une formation défensive avec cinq joueurs au milieu de\nterrain. Il faut de la patience pour se créer des\noccasions.", de = "Eine defensive Aufstellung mit fünf Spielern im\nMittelfeld. Torchancen erfordern Geduld.", it = "Una formazione difensiva con cinque centrocampisti in\nmezzo. Creare occasioni richiede pazienza.", pt = "Formação defensiva com cinco jogadores no\nmeio-campo. Criar chances exige paciência.", zh_hans = "中场布置五名球员的防守型阵型。\n创造机会需要耐心。", zh_hant = "中場佈置五名球員的防守型陣型。\n創造機會需要耐心。" }
+
+# formation 0x779ED147 (3-5-2 F-Lagoon)
+[[edit]]
+target = 0x779ED147
+title = { ja = "３－５－２　F-ラグーン", en = "3-5-2 F-Lagoon", es = "3-5-2 F-Laguna", fr = "3-5-2 F-Lagon", de = "3-5-2 F-Lagune", it = "3-5-2 F-Laguna", pt = "3-5-2 F-Lagoa", zh_hans = "3-5-2 F-潟湖", zh_hant = "3-5-2 F-潟湖" }
+description = { ja = "中盤に５人を置いた　攻撃的な陣形。\nサイドからの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with five players\ncrowding the midfield. Attacks mainly down the\nflanks. The back line has to stay alert.", es = "Una formación ofensiva con cinco centrocampistas en\nel medio. Ataca sobre todo por las bandas. La\ndefensa debe mantenerse atenta.", fr = "Une formation offensive avec cinq joueurs au milieu de\nterrain. Elle attaque surtout par les ailes. La défense\ndoit rester vigilante.", de = "Eine offensive Aufstellung mit fünf Spielern im\nMittelfeld. Greift vor allem über die Flügel an. Die\nAbwehr muss wachsam bleiben.", it = "Una formazione offensiva con cinque centrocampisti in\nmezzo. Attacca soprattutto sulle fasce. La difesa deve\nrestare attenta.", pt = "Formação ofensiva com cinco jogadores no meio-campo.\nAtaca principalmente pelas laterais. A defesa\nprecisa ficar atenta.", zh_hans = "中场布置五名球员的进攻型阵型。\n擅长从两翼进攻。\n后防线需时刻保持警惕。", zh_hant = "中場佈置五名球員的進攻型陣型。\n擅長從兩翼進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0x0099E1D1 (2-5-3 F-Mangetsu)
+[[edit]]
+target = 0x0099E1D1
+title = { ja = "２－５－３　F-マンゲツ", en = "2-5-3 F-Mangetsu", es = "2-5-3 F-Mangetsu", fr = "2-5-3 F-Mangetsu", de = "2-5-3 F-Mangetsu", it = "2-5-3 F-Mangetsu", pt = "2-5-3 F-Mangetsu", zh_hans = "2-5-3 F-满月", zh_hant = "2-5-3 F-滿月" }
+description = { ja = "ＤＦを２人に絞った　超攻撃的な陣形。\n中央からの攻撃が得意。\n守備は手薄で　カウンターに弱い。", en = "An all-out attacking formation that keeps only two\ndefenders at the back. Its play goes mainly through the\nmiddle. The defence is left open to counter-attacks.", es = "Una formación ultraofensiva que deja solo dos defensas\natrás. Su juego pasa sobre todo por el centro. La\ndefensa queda expuesta a los contraataques.", fr = "Une formation tout en attaque qui ne garde que deux\ndéfenseurs derrière. Son jeu passe surtout par l'axe. La\ndéfense reste exposée aux contre-attaques.", de = "Eine bedingungslos offensive Aufstellung mit nur zwei\nVerteidigern in der Abwehr. Das Spiel läuft vor allem\ndurch die Mitte. Die Abwehr ist anfällig für Konter.", it = "Una formazione votata all'attacco che lascia solo due\ndifensori dietro. Il gioco passa soprattutto per il\ncentro. La difesa resta esposta ai contropiedi.", pt = "Formação ultraofensiva que deixa só dois zagueiros\natrás. O jogo passa principalmente pelo meio. A\ndefesa fica exposta a contra-ataques.", zh_hans = "后防仅留两名后卫的全攻型阵型。\n擅长中路进攻。\n防守薄弱，容易被反击。", zh_hant = "後防僅留兩名後衛的全攻型陣型。\n擅長中路進攻。\n防守薄弱，容易被反擊。" }
+
+# formation 0x9990B06B (3-5-2 F-Vampire)
+[[edit]]
+target = 0x9990B06B
+title = { ja = "３－５－２　F-ヴァンパイア", en = "3-5-2 F-Vampire", es = "3-5-2 F-Vampiro", fr = "3-5-2 F-Vampire", de = "3-5-2 F-Vampir", it = "3-5-2 F-Vampiro", pt = "3-5-2 F-Vampiro", zh_hans = "3-5-2 F-吸血鬼", zh_hant = "3-5-2 F-吸血鬼" }
+description = { ja = "中盤に５人を置いた　超守備的な陣形。\nサイドからの攻撃が得意。\n得点を奪うのは難しい。", en = "A fully defensive formation with five players\ncrowding the midfield. Attacks mainly down the\nflanks. Scoring goals is hard work.", es = "Una formación ultradefensiva con cinco\ncentrocampistas en el medio. Ataca sobre todo por\nlas bandas. Marcar goles cuesta mucho.", fr = "Une formation ultra-défensive avec cinq joueurs au\nmilieu de terrain. Elle attaque surtout par les ailes.\nMarquer des buts demande beaucoup d'efforts.", de = "Eine äußerst defensive Aufstellung mit fünf Spielern im\nMittelfeld. Greift vor allem über die Flügel an. Tore zu\nerzielen ist harte Arbeit.", it = "Una formazione ultradifensiva con cinque centrocampisti\nin mezzo. Attacca soprattutto sulle fasce. Segnare è\nun'impresa.", pt = "Formação ultradefensiva com cinco jogadores no\nmeio-campo. Ataca principalmente pelas laterais.\nMarcar gols é difícil.", zh_hans = "中场布置五名球员的全守型阵型。\n擅长从两翼进攻。\n很难取得进球。", zh_hant = "中場佈置五名球員的全守型陣型。\n擅長從兩翼進攻。\n很難取得進球。" }
+
+# formation 0xEE9780FD (4-3-3 F-Blood)
+[[edit]]
+target = 0xEE9780FD
+title = { ja = "４－３－３　F-ブラッド", en = "4-3-3 F-Blood", es = "4-3-3 F-Sangre", fr = "4-3-3 F-Sang", de = "4-3-3 F-Blut", it = "4-3-3 F-Sangue", pt = "4-3-3 F-Sangue", zh_hans = "4-3-3 F-鲜血", zh_hant = "4-3-3 F-鮮血" }
+description = { ja = "スリートップを敷いた　攻撃的な陣形。\n守備陣には集中力が求められる。", en = "An attack-minded formation with a front three. The\nback line has to stay alert.", es = "Una formación ofensiva con tres delanteros en\nataque. La defensa debe mantenerse atenta.", fr = "Une formation offensive avec trois attaquants. La\ndéfense doit rester vigilante.", de = "Eine offensive Aufstellung mit drei Stürmern. Die Abwehr\nmuss wachsam bleiben.", it = "Una formazione offensiva con tre punte. La difesa deve\nrestare attenta.", pt = "Formação ofensiva com um trio de ataque. A defesa\nprecisa ficar atenta.", zh_hans = "采用三前锋的进攻型阵型。\n后防线需时刻保持警惕。", zh_hant = "採用三前鋒的進攻型陣型。\n後防線需時刻保持警惕。" }
+
+# formation 0x7E289D6C (3-5-2 F-Chaos Flower)
+[[edit]]
+target = 0x7E289D6C
+title = { ja = "３－５－２　F-カオスフラワー", en = "3-5-2 F-Chaos Flower", es = "3-5-2 F-Flor del Caos", fr = "3-5-2 F-Fleur du Chaos", de = "3-5-2 F-Chaosblume", it = "3-5-2 F-Fiore del Caos", pt = "3-5-2 F-Flor do Caos", zh_hans = "3-5-2 F-混沌之花", zh_hant = "3-5-2 F-混沌之花" }
+description = { ja = "中盤に５人を置いた　バランス型の陣形。\nサイドからの攻撃が得意。\nどんな相手にも対応しやすい。", en = "A balanced formation with five players crowding the\nmidfield. Attacks mainly down the flanks. It adapts\nwell to any opponent.", es = "Una formación equilibrada con cinco centrocampistas\nen el medio. Ataca sobre todo por las bandas. Se\nadapta bien a cualquier rival.", fr = "Une formation équilibrée avec cinq joueurs au milieu de\nterrain. Elle attaque surtout par les ailes. Elle\ns'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit fünf Spielern im\nMittelfeld. Greift vor allem über die Flügel an. Sie passt\nsich jedem Gegner gut an.", it = "Una formazione equilibrata con cinque centrocampisti in\nmezzo. Attacca soprattutto sulle fasce. Si adatta bene a\nqualsiasi avversario.", pt = "Formação equilibrada com cinco jogadores no\nmeio-campo. Ataca principalmente pelas laterais.\nAdapta-se bem a qualquer adversário.", zh_hans = "中场布置五名球员的平衡型阵型。\n擅长从两翼进攻。\n能灵活应对各种对手。", zh_hant = "中場佈置五名球員的平衡型陣型。\n擅長從兩翼進攻。\n能靈活應對各種對手。" }
+
+# formation 0x092FADFA (4-4-2 F-Lightning)
+[[edit]]
+target = 0x092FADFA
+title = { ja = "４－４－２　F-ライトニング", en = "4-4-2 F-Lightning", es = "4-4-2 F-Relámpago", fr = "4-4-2 F-Éclair", de = "4-4-2 F-Blitz", it = "4-4-2 F-Lampo", pt = "4-4-2 F-Relâmpago", zh_hans = "4-4-2 F-闪电", zh_hant = "4-4-2 F-閃電" }
+description = { ja = "４人のラインを２本並べた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with two lines of four. It\nadapts well to any opponent.", es = "Una formación equilibrada con dos líneas de cuatro.\nSe adapta bien a cualquier rival.", fr = "Une formation équilibrée avec deux lignes de quatre.\nElle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit zwei Reihen aus je vier\nSpielern. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con due linee da quattro. Si\nadatta bene a qualsiasi avversario.", pt = "Formação equilibrada com duas linhas de quatro.\nAdapta-se bem a qualquer adversário.", zh_hans = "排出两条四人横线的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "排出兩條四人橫線的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0x3FB28399 (4-3-3 F-Burning Soul)
+[[edit]]
+target = 0x3FB28399
+title = { ja = "４－３－３　F-バーニングソウル", en = "4-3-3 F-Burning Soul", es = "4-3-3 F-Alma Ardiente", fr = "4-3-3 F-Âme Ardente", de = "4-3-3 F-Brennende Seele", it = "4-3-3 F-Anima Ardente", pt = "4-3-3 F-Alma Ardente", zh_hans = "4-3-3 F-燃烧之魂", zh_hant = "4-3-3 F-燃燒之魂" }
+description = { ja = "スリートップを敷いた　バランス型の陣形。\nサイドからの攻撃が得意。\nどんな相手にも対応しやすい。", en = "A balanced formation with a front three. Attacks\nmainly down the flanks. It adapts well to any\nopponent.", es = "Una formación equilibrada con tres delanteros en\nataque. Ataca sobre todo por las bandas. Se adapta\nbien a cualquier rival.", fr = "Une formation équilibrée avec trois attaquants. Elle\nattaque surtout par les ailes. Elle s'adapte bien à tout\nadversaire.", de = "Eine ausgewogene Aufstellung mit drei Stürmern. Greift vor\nallem über die Flügel an. Sie passt sich jedem Gegner gut\nan.", it = "Una formazione equilibrata con tre punte. Attacca\nsoprattutto sulle fasce. Si adatta bene a qualsiasi\navversario.", pt = "Formação equilibrada com um trio de ataque. Ataca\nprincipalmente pelas laterais. Adapta-se bem a\nqualquer adversário.", zh_hans = "采用三前锋的平衡型阵型。\n擅长从两翼进攻。\n能灵活应对各种对手。", zh_hant = "採用三前鋒的平衡型陣型。\n擅長從兩翼進攻。\n能靈活應對各種對手。" }
+
+# formation 0x48B5B30F (4-4-2 F-Ocean Dive)
+[[edit]]
+target = 0x48B5B30F
+title = { ja = "４－４－２　F-オーシャンダイブ", en = "4-4-2 F-Ocean Dive", es = "4-4-2 F-Inmersión Oceánica", fr = "4-4-2 F-Plongée Océanique", de = "4-4-2 F-Ozean-Tauchgang", it = "4-4-2 F-Immersione Oceanica", pt = "4-4-2 F-Mergulho Oceânico", zh_hans = "4-4-2 F-海洋潜行", zh_hant = "4-4-2 F-海洋潛行" }
+description = { ja = "４人のラインを２本並べた　守備的な陣形。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with two lines of four.\nCreating chances takes patience.", es = "Una formación defensiva con dos líneas de cuatro.\nCrear ocasiones requiere paciencia.", fr = "Une formation défensive avec deux lignes de quatre. Il\nfaut de la patience pour se créer des occasions.", de = "Eine defensive Aufstellung mit zwei Reihen aus je vier\nSpielern. Torchancen erfordern Geduld.", it = "Una formazione difensiva con due linee da quattro.\nCreare occasioni richiede pazienza.", pt = "Formação defensiva com duas linhas de quatro. Criar\nchances exige paciência.", zh_hans = "排出两条四人横线的防守型阵型。\n创造机会需要耐心。", zh_hant = "排出兩條四人橫線的防守型陣型。\n創造機會需要耐心。" }
+
+# formation 0xD1BCE2B5 (4-4-2 F-Sandstorm)
+[[edit]]
+target = 0xD1BCE2B5
+title = { ja = "４－４－２　F-サンドストーム", en = "4-4-2 F-Sandstorm", es = "4-4-2 F-Tormenta de Arena", fr = "4-4-2 F-Tempête de Sable", de = "4-4-2 F-Sandsturm", it = "4-4-2 F-Tempesta di Sabbia", pt = "4-4-2 F-Tempestade de Areia", zh_hans = "4-4-2 F-沙尘暴", zh_hant = "4-4-2 F-沙塵暴" }
+description = { ja = "４人のラインを２本並べた　攻撃的な陣形。\nサイドからの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with two lines of four.\nAttacks mainly down the flanks. The back line has to\nstay alert.", es = "Una formación ofensiva con dos líneas de cuatro.\nAtaca sobre todo por las bandas. La defensa debe\nmantenerse atenta.", fr = "Une formation offensive avec deux lignes de quatre. Elle\nattaque surtout par les ailes. La défense doit rester\nvigilante.", de = "Eine offensive Aufstellung mit zwei Reihen aus je vier\nSpielern. Greift vor allem über die Flügel an. Die Abwehr\nmuss wachsam bleiben.", it = "Una formazione offensiva con due linee da quattro.\nAttacca soprattutto sulle fasce. La difesa deve restare\nattenta.", pt = "Formação ofensiva com duas linhas de quatro. Ataca\nprincipalmente pelas laterais. A defesa precisa\nficar atenta.", zh_hans = "排出两条四人横线的进攻型阵型。\n擅长从两翼进攻。\n后防线需时刻保持警惕。", zh_hant = "排出兩條四人橫線的進攻型陣型。\n擅長從兩翼進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0xA6BBD223 (3-6-1 F-Coriander Smell)
+[[edit]]
+target = 0xA6BBD223
+title = { ja = "３－６－１　F-パクチースメル", en = "3-6-1 F-Coriander Smell", es = "3-6-1 F-Olor a Cilantro", fr = "3-6-1 F-Odeur de Coriandre", de = "3-6-1 F-Koriandergeruch", it = "3-6-1 F-Odore di Coriandolo", pt = "3-6-1 F-Cheiro de Coentro", zh_hans = "3-6-1 F-香菜味", zh_hant = "3-6-1 F-香菜味" }
+description = { ja = "中盤に６人を置いた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with six players crowding the\nmidfield. It adapts well to any opponent.", es = "Una formación equilibrada con seis centrocampistas\nen el medio. Se adapta bien a cualquier rival.", fr = "Une formation équilibrée avec six joueurs au milieu de\nterrain. Elle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit sechs Spielern im\nMittelfeld. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con sei centrocampisti in\nmezzo. Si adatta bene a qualsiasi avversario.", pt = "Formação equilibrada com seis jogadores no\nmeio-campo. Adapta-se bem a qualquer adversário.", zh_hans = "中场布置六名球员的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "中場佈置六名球員的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0x38DF4780 (4-3-3 F-Oasis Route)
+[[edit]]
+target = 0x38DF4780
+title = { ja = "４－３－３　F-オアシスルート", en = "4-3-3 F-Oasis Route", es = "4-3-3 F-Ruta del Oasis", fr = "4-3-3 F-Route de l’Oasis", de = "4-3-3 F-Oasenroute", it = "4-3-3 F-Rotta dell'Oasi", pt = "4-3-3 F-Rota do Oásis", zh_hans = "4-3-3 F-绿洲之路", zh_hant = "4-3-3 F-綠洲之路" }
+description = { ja = "スリートップを敷いた　超攻撃的な陣形。\nサイドからの攻撃が得意。\n守備は手薄で　カウンターに弱い。", en = "An all-out attacking formation with a front three.\nAttacks mainly down the flanks. The defence is left\nopen to counter-attacks.", es = "Una formación ultraofensiva con tres delanteros en\nataque. Ataca sobre todo por las bandas. La defensa\nqueda expuesta a los contraataques.", fr = "Une formation tout en attaque avec trois attaquants.\nElle attaque surtout par les ailes. La défense reste\nexposée aux contre-attaques.", de = "Eine bedingungslos offensive Aufstellung mit drei\nStürmern. Greift vor allem über die Flügel an. Die Abwehr\nist anfällig für Konter.", it = "Una formazione votata all'attacco con tre punte. Attacca\nsoprattutto sulle fasce. La difesa resta esposta ai\ncontropiedi.", pt = "Formação ultraofensiva com um trio de ataque. Ataca\nprincipalmente pelas laterais. A defesa fica exposta\na contra-ataques.", zh_hans = "采用三前锋的全攻型阵型。\n擅长从两翼进攻。\n防守薄弱，容易被反击。", zh_hant = "採用三前鋒的全攻型陣型。\n擅長從兩翼進攻。\n防守薄弱，容易被反擊。" }
+
+# formation 0x4FD87716 (3-4-3 F-Coup d’État)
+[[edit]]
+target = 0x4FD87716
+title = { ja = "３－４－３　F-クーデター", en = "3-4-3 F-Coup d’État", es = "3-4-3 F-Golpe de Estado", fr = "3-4-3 F-Coup d’État", de = "3-4-3 F-Staatsstreich", it = "3-4-3 F-Colpo di Stato", pt = "3-4-3 F-Golpe de Estado", zh_hans = "3-4-3 F-政变", zh_hant = "3-4-3 F-政變" }
+description = { ja = "スリートップを敷いた　バランス型の陣形。\nサイドからの攻撃が得意。\nどんな相手にも対応しやすい。", en = "A balanced formation with a front three. Attacks\nmainly down the flanks. It adapts well to any\nopponent.", es = "Una formación equilibrada con tres delanteros en\nataque. Ataca sobre todo por las bandas. Se adapta\nbien a cualquier rival.", fr = "Une formation équilibrée avec trois attaquants. Elle\nattaque surtout par les ailes. Elle s'adapte bien à tout\nadversaire.", de = "Eine ausgewogene Aufstellung mit drei Stürmern. Greift vor\nallem über die Flügel an. Sie passt sich jedem Gegner gut\nan.", it = "Una formazione equilibrata con tre punte. Attacca\nsoprattutto sulle fasce. Si adatta bene a qualsiasi\navversario.", pt = "Formação equilibrada com um trio de ataque. Ataca\nprincipalmente pelas laterais. Adapta-se bem a\nqualquer adversário.", zh_hans = "采用三前锋的平衡型阵型。\n擅长从两翼进攻。\n能灵活应对各种对手。", zh_hant = "採用三前鋒的平衡型陣型。\n擅長從兩翼進攻。\n能靈活應對各種對手。" }
+
+# formation 0xD6D126AC (5-1-4 F-Iron Shell)
+[[edit]]
+target = 0xD6D126AC
+title = { ja = "５－１－４　F-アイアンシェル", en = "5-1-4 F-Iron Shell", es = "5-1-4 F-Concha de Hierro", fr = "5-1-4 F-Coquille de Fer", de = "5-1-4 F-Eisenschale", it = "5-1-4 F-Conchiglia di Ferro", pt = "5-1-4 F-Concha de Ferro", zh_hans = "5-1-4 F-钢铁外壳", zh_hant = "5-1-4 F-鋼鐵外殼" }
+description = { ja = "５バックで最終ラインを固めた　守備的な陣形。\n中央からの攻撃が得意。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation built on a back line of\nfive. Its play goes mainly through the middle.\nCreating chances takes patience.", es = "Una formación defensiva con una línea defensiva de\ncinco. Su juego pasa sobre todo por el centro. Crear\nocasiones requiere paciencia.", fr = "Une formation défensive bâtie sur une défense à cinq.\nSon jeu passe surtout par l'axe. Il faut de la patience\npour se créer des occasions.", de = "Eine defensive Aufstellung mit einer Abwehrreihe aus fünf\nSpielern. Das Spiel läuft vor allem durch die Mitte.\nTorchancen erfordern Geduld.", it = "Una formazione difensiva con una linea difensiva a\ncinque. Il gioco passa soprattutto per il centro. Creare\noccasioni richiede pazienza.", pt = "Formação defensiva com uma linha defensiva de cinco.\nO jogo passa principalmente pelo meio. Criar chances\nexige paciência.", zh_hans = "以五名后卫构筑防线的防守型阵型。\n擅长中路进攻。\n创造机会需要耐心。", zh_hant = "以五名後衛構築防線的防守型陣型。\n擅長中路進攻。\n創造機會需要耐心。" }
+
+# formation 0xA1D6163A (2-5-3 F-Grace Fin)
+[[edit]]
+target = 0xA1D6163A
+title = { ja = "２－５－３　F-グレースフィン", en = "2-5-3 F-Grace Fin", es = "2-5-3 F-Aleta Elegante", fr = "2-5-3 F-Nageoire Gracieuse", de = "2-5-3 F-Graziöse Flosse", it = "2-5-3 F-Pinna Elegante", pt = "2-5-3 F-Barbatana Graciosa", zh_hans = "2-5-3 F-优雅鱼鳍", zh_hant = "2-5-3 F-優雅魚鰭" }
+description = { ja = "ＤＦを２人に絞った　攻撃的な陣形。\n厚い中盤でボールを保持しやすい。\n守備陣には集中力が求められる。", en = "An attack-minded formation that keeps only two\ndefenders at the back. Its busy midfield makes keeping\nthe ball easy. The back line has to stay alert.", es = "Una formación ofensiva que deja solo dos defensas\natrás. Su centro del campo poblado facilita mantener\nel balón. La defensa debe mantenerse atenta.", fr = "Une formation offensive qui ne garde que deux défenseurs\nderrière. Son milieu bien fourni aide à garder le\nballon. La défense doit rester vigilante.", de = "Eine offensive Aufstellung mit nur zwei Verteidigern in\nder Abwehr. Das volle Mittelfeld erleichtert den\nBallbesitz. Die Abwehr muss wachsam bleiben.", it = "Una formazione offensiva che lascia solo due difensori\ndietro. Il centrocampo folto facilita il possesso palla.\nLa difesa deve restare attenta.", pt = "Formação ofensiva que deixa só dois zagueiros atrás.\nO meio-campo cheio facilita a posse de bola. A\ndefesa precisa ficar atenta.", zh_hans = "后防仅留两名后卫的进攻型阵型。\n中场人数充足，便于控球。\n后防线需时刻保持警惕。", zh_hant = "後防僅留兩名後衛的進攻型陣型。\n中場人數充足，便於控球。\n後防線需時刻保持警惕。" }
+
+# formation 0x31690BAB (2-4-4 F-Lost Wing)
+[[edit]]
+target = 0x31690BAB
+title = { ja = "２－４－４　F-ロストウィング", en = "2-4-4 F-Lost Wing", es = "2-4-4 F-Ala Perdida", fr = "2-4-4 F-Aile Perdue", de = "2-4-4 F-Verlorener Flügel", it = "2-4-4 F-Ala Perduta", pt = "2-4-4 F-Asa Perdida", zh_hans = "2-4-4 F-失落之翼", zh_hant = "2-4-4 F-失落之翼" }
+description = { ja = "ＤＦを２人に絞った　超攻撃的な陣形。\n守備は手薄で　カウンターに弱い。", en = "An all-out attacking formation that keeps only two\ndefenders at the back. The defence is left open to\ncounter-attacks.", es = "Una formación ultraofensiva que deja solo dos\ndefensas atrás. La defensa queda expuesta a los\ncontraataques.", fr = "Une formation tout en attaque qui ne garde que deux\ndéfenseurs derrière. La défense reste exposée aux\ncontre-attaques.", de = "Eine bedingungslos offensive Aufstellung mit nur zwei\nVerteidigern in der Abwehr. Die Abwehr ist anfällig für\nKonter.", it = "Una formazione votata all'attacco che lascia solo due\ndifensori dietro. La difesa resta esposta ai\ncontropiedi.", pt = "Formação ultraofensiva que deixa só dois zagueiros\natrás. A defesa fica exposta a contra-ataques.", zh_hans = "后防仅留两名后卫的全攻型阵型。\n防守薄弱，容易被反击。", zh_hant = "後防僅留兩名後衛的全攻型陣型。\n防守薄弱，容易被反擊。" }
+
+# formation 0x466E3B3D (2-6-2 F-Predator)
+[[edit]]
+target = 0x466E3B3D
+title = { ja = "２－６－２　F-プレデター", en = "2-6-2 F-Predator", es = "2-6-2 F-Depredador", fr = "2-6-2 F-Prédateur", de = "2-6-2 F-Räuber", it = "2-6-2 F-Predatore", pt = "2-6-2 F-Predador", zh_hans = "2-6-2 F-掠食者", zh_hant = "2-6-2 F-掠食者" }
+description = { ja = "ＤＦを２人に絞った　バランス型の陣形。\n厚い中盤でボールを保持しやすい。\nどんな相手にも対応しやすい。", en = "A balanced formation that keeps only two defenders\nat the back. Its busy midfield makes keeping the\nball easy. It adapts well to any opponent.", es = "Una formación equilibrada que deja solo dos defensas\natrás. Su centro del campo poblado facilita mantener\nel balón. Se adapta bien a cualquier rival.", fr = "Une formation équilibrée qui ne garde que deux\ndéfenseurs derrière. Son milieu bien fourni aide à\ngarder le ballon. Elle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit nur zwei Verteidigern in\nder Abwehr. Das volle Mittelfeld erleichtert den\nBallbesitz. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata che lascia solo due difensori\ndietro. Il centrocampo folto facilita il possesso palla.\nSi adatta bene a qualsiasi avversario.", pt = "Formação equilibrada que deixa só dois zagueiros\natrás. O meio-campo cheio facilita a posse de bola.\nAdapta-se bem a qualquer adversário.", zh_hans = "后防仅留两名后卫的平衡型阵型。\n中场人数充足，便于控球。\n能灵活应对各种对手。", zh_hant = "後防僅留兩名後衛的平衡型陣型。\n中場人數充足，便於控球。\n能靈活應對各種對手。" }
+
+# formation 0x26A9B2D8 (3-3-4 F-Orbius)
+[[edit]]
+target = 0x26A9B2D8
+title = { ja = "３－３－４　F-オービアス", en = "3-3-4 F-Orbius", es = "3-3-4 F-Orbius", fr = "3-3-4 F-Orbius", de = "3-3-4 F-Orbius", it = "3-3-4 F-Orbius", pt = "3-3-4 F-Orbius", zh_hans = "3-3-4 F-奥比亚斯", zh_hant = "3-3-4 F-奧比亞斯" }
+description = { ja = "前線にＦＷを４人並べた　攻撃的な陣形。\nサイドからの攻撃が得意。\n守備陣には集中力が求められる。", en = "An attack-minded formation with four forwards up\nfront. Attacks mainly down the flanks. The back line\nhas to stay alert.", es = "Una formación ofensiva con cuatro delanteros arriba.\nAtaca sobre todo por las bandas. La defensa debe\nmantenerse atenta.", fr = "Une formation offensive avec quatre attaquants en\npointe. Elle attaque surtout par les ailes. La défense\ndoit rester vigilante.", de = "Eine offensive Aufstellung mit vier Stürmern in der\nSpitze. Greift vor allem über die Flügel an. Die Abwehr\nmuss wachsam bleiben.", it = "Una formazione offensiva con quattro attaccanti in\navanti. Attacca soprattutto sulle fasce. La difesa deve\nrestare attenta.", pt = "Formação ofensiva com quatro atacantes na frente.\nAtaca principalmente pelas laterais. A defesa\nprecisa ficar atenta.", zh_hans = "前场布置四名前锋的进攻型阵型。\n擅长从两翼进攻。\n后防线需时刻保持警惕。", zh_hant = "前場佈置四名前鋒的進攻型陣型。\n擅長從兩翼進攻。\n後防線需時刻保持警惕。" }
+
+# formation 0x51AE824E (5-2-3 F-Black Hole)
+[[edit]]
+target = 0x51AE824E
+title = { ja = "５－２－３　F-ブラックホール", en = "5-2-3 F-Black Hole", es = "5-2-3 F-Agujero Negro", fr = "5-2-3 F-Trou Noir", de = "5-2-3 F-Schwarzes Loch", it = "5-2-3 F-Buco Nero", pt = "5-2-3 F-Buraco Negro", zh_hans = "5-2-3 F-黑洞", zh_hant = "5-2-3 F-黑洞" }
+description = { ja = "５バックで最終ラインを固めた　守備的な陣形。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation built on a back line of\nfive. Creating chances takes patience.", es = "Una formación defensiva con una línea defensiva de\ncinco. Crear ocasiones requiere paciencia.", fr = "Une formation défensive bâtie sur une défense à cinq. Il\nfaut de la patience pour se créer des occasions.", de = "Eine defensive Aufstellung mit einer Abwehrreihe aus fünf\nSpielern. Torchancen erfordern Geduld.", it = "Una formazione difensiva con una linea difensiva a\ncinque. Creare occasioni richiede pazienza.", pt = "Formação defensiva com uma linha defensiva de cinco.\nCriar chances exige paciência.", zh_hans = "以五名后卫构筑防线的防守型阵型。\n创造机会需要耐心。", zh_hant = "以五名後衛構築防線的防守型陣型。\n創造機會需要耐心。" }
+
+# formation 0xC8A7D3F4 (6-3-1 F-Big Bang)
+[[edit]]
+target = 0xC8A7D3F4
+title = { ja = "６－３－１　F-ビッグバン", en = "6-3-1 F-Big Bang", es = "6-3-1 F-Gran Explosión", fr = "6-3-1 F-Big Bang", de = "6-3-1 F-Urknall", it = "6-3-1 F-Gran Bang", pt = "6-3-1 F-Grande Explosão", zh_hans = "6-3-1 F-大爆炸", zh_hant = "6-3-1 F-大爆炸" }
+description = { ja = "６バックで最終ラインを固めた　超守備的な陣形。\n中央からの攻撃が得意。\n得点を奪うのは難しい。", en = "A fully defensive formation built on a back line of\nsix. Its play goes mainly through the middle.\nScoring goals is hard work.", es = "Una formación ultradefensiva con una línea defensiva\nde seis. Su juego pasa sobre todo por el centro.\nMarcar goles cuesta mucho.", fr = "Une formation ultra-défensive bâtie sur une défense à\nsix. Son jeu passe surtout par l'axe. Marquer des buts\ndemande beaucoup d'efforts.", de = "Eine äußerst defensive Aufstellung mit einer Abwehrreihe\naus sechs Spielern. Das Spiel läuft vor allem durch die\nMitte. Tore zu erzielen ist harte Arbeit.", it = "Una formazione ultradifensiva con una linea difensiva a\nsei. Il gioco passa soprattutto per il centro. Segnare è\nun'impresa.", pt = "Formação ultradefensiva com uma linha defensiva de\nseis. O jogo passa principalmente pelo meio. Marcar\ngols é difícil.", zh_hans = "以六名后卫构筑防线的全守型阵型。\n擅长中路进攻。\n很难取得进球。", zh_hant = "以六名後衛構築防線的全守型陣型。\n擅長中路進攻。\n很難取得進球。" }
+
+# formation 0xBFA0E362 (5-4-1 F-Supernova)
+[[edit]]
+target = 0xBFA0E362
+title = { ja = "５－４－１　F-スーパーノヴァ", en = "5-4-1 F-Supernova", es = "5-4-1 F-Supernova", fr = "5-4-1 F-Supernova", de = "5-4-1 F-Supernova", it = "5-4-1 F-Supernova", pt = "5-4-1 F-Supernova", zh_hans = "5-4-1 F-超新星", zh_hant = "5-4-1 F-超新星" }
+description = { ja = "５バックで最終ラインを固めた　守備的な陣形。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation built on a back line of\nfive. Creating chances takes patience.", es = "Una formación defensiva con una línea defensiva de\ncinco. Crear ocasiones requiere paciencia.", fr = "Une formation défensive bâtie sur une défense à cinq. Il\nfaut de la patience pour se créer des occasions.", de = "Eine defensive Aufstellung mit einer Abwehrreihe aus fünf\nSpielern. Torchancen erfordern Geduld.", it = "Una formazione difensiva con una linea difensiva a\ncinque. Creare occasioni richiede pazienza.", pt = "Formação defensiva com uma linha defensiva de cinco.\nCriar chances exige paciência.", zh_hans = "以五名后卫构筑防线的防守型阵型。\n创造机会需要耐心。", zh_hant = "以五名後衛構築防線的防守型陣型。\n創造機會需要耐心。" }
+
+# formation 0x21C476C1 (5-3-2 F-Galaxy)
+[[edit]]
+target = 0x21C476C1
+title = { ja = "５－３－２　F-ギャラクシー", en = "5-3-2 F-Galaxy", es = "5-3-2 F-Galaxia", fr = "5-3-2 F-Galaxie", de = "5-3-2 F-Galaxie", it = "5-3-2 F-Galassia", pt = "5-3-2 F-Galáxia", zh_hans = "5-3-2 F-银河", zh_hant = "5-3-2 F-銀河" }
+description = { ja = "５バックで最終ラインを固めた　バランス型の陣形。\n中央からの攻撃が得意。\nどんな相手にも対応しやすい。", en = "A balanced formation built on a back line of five.\nIts play goes mainly through the middle. It adapts\nwell to any opponent.", es = "Una formación equilibrada con una línea defensiva de\ncinco. Su juego pasa sobre todo por el centro. Se\nadapta bien a cualquier rival.", fr = "Une formation équilibrée bâtie sur une défense à cinq.\nSon jeu passe surtout par l'axe. Elle s'adapte bien à\ntout adversaire.", de = "Eine ausgewogene Aufstellung mit einer Abwehrreihe aus\nfünf Spielern. Das Spiel läuft vor allem durch die Mitte.\nSie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con una linea difensiva a\ncinque. Il gioco passa soprattutto per il centro. Si\nadatta bene a qualsiasi avversario.", pt = "Formação equilibrada com uma linha defensiva de\ncinco. O jogo passa principalmente pelo meio.\nAdapta-se bem a qualquer adversário.", zh_hans = "以五名后卫构筑防线的平衡型阵型。\n擅长中路进攻。\n能灵活应对各种对手。", zh_hant = "以五名後衛構築防線的平衡型陣型。\n擅長中路進攻。\n能靈活應對各種對手。" }
+
+# formation 0x2D1B1C3C
+[[edit]]
+target = 0x2D1B1C3C
+description = { ja = "ＤＦ２人、ＦＷ２人を置いた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with two defenders and two\nforwards. It adapts well to any opponent.", es = "Una formación equilibrada con dos defensas y dos\ndelanteros. Se adapta bien a cualquier rival.", fr = "Une formation équilibrée avec deux défenseurs et deux\nattaquants. Elle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit zwei Verteidigern und\nzwei Stürmern. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con due difensori e due\nattaccanti. Si adatta bene a qualsiasi avversario.", pt = "Formação equilibrada com dois zagueiros e dois\natacantes. Adapta-se bem a qualquer adversário.", zh_hans = "布置两名后卫和两名前锋的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "佈置兩名後衛和兩名前鋒的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0xB4124D86
+[[edit]]
+target = 0xB4124D86
+description = { ja = "ＤＦ２人、ＦＷ２人を置いた　バランス型の陣形。\nどんな相手にも対応しやすい。", en = "A balanced formation with two defenders and two\nforwards. It adapts well to any opponent.", es = "Una formación equilibrada con dos defensas y dos\ndelanteros. Se adapta bien a cualquier rival.", fr = "Une formation équilibrée avec deux défenseurs et deux\nattaquants. Elle s'adapte bien à tout adversaire.", de = "Eine ausgewogene Aufstellung mit zwei Verteidigern und\nzwei Stürmern. Sie passt sich jedem Gegner gut an.", it = "Una formazione equilibrata con due difensori e due\nattaccanti. Si adatta bene a qualsiasi avversario.", pt = "Formação equilibrada com dois zagueiros e dois\natacantes. Adapta-se bem a qualquer adversário.", zh_hans = "布置两名后卫和两名前锋的平衡型阵型。\n能灵活应对各种对手。", zh_hant = "佈置兩名後衛和兩名前鋒的平衡型陣型。\n能靈活應對各種對手。" }
+
+# formation 0xC3157D10
+[[edit]]
+target = 0xC3157D10
+description = { ja = "ＤＦ３人、ＦＷ１人を置いた　守備的な陣形。\nチャンスを作るには忍耐が必要。", en = "A defence-minded formation with three defenders and\none forward. Creating chances takes patience.", es = "Una formación defensiva con tres defensas y un\ndelantero. Crear ocasiones requiere paciencia.", fr = "Une formation défensive avec trois défenseurs et un\nattaquant. Il faut de la patience pour se créer des\noccasions.", de = "Eine defensive Aufstellung mit drei Verteidigern und einem\nStürmer. Torchancen erfordern Geduld.", it = "Una formazione difensiva con tre difensori e un\nattaccante. Creare occasioni richiede pazienza.", pt = "Formação defensiva com três zagueiros e um atacante.\nCriar chances exige paciência.", zh_hans = "布置三名后卫和一名前锋的防守型阵型。\n创造机会需要耐心。", zh_hant = "佈置三名後衛和一名前鋒的防守型陣型。\n創造機會需要耐心。" }

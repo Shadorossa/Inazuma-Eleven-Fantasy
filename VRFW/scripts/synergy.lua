@@ -519,23 +519,42 @@ local function base_of_handle(h)
   return b
 end
 
+-- the member slots' handles and classes: one read of each array (one value at a time when the block is not readable at
+-- once: an unreadable slot reads as handle 0, class 0xFF)
+local function member_slots(team)
+  local first = team + MEMBER_BASE
+  local okh, handles = pcall(VRFW.mem.read_array, "u32", first, N_MEMBERS, MEMBER_STRIDE)
+  local okc, classes = pcall(VRFW.mem.read_array, "u8", first + MEMBER_CLASS, N_MEMBERS, MEMBER_STRIDE)
+  if okh and type(handles) == "table" and okc and type(classes) == "table" then return handles, classes end
+  handles, classes = {}, {}
+  for i = 0, N_MEMBERS - 1 do
+    local m = first + i * MEMBER_STRIDE
+    handles[i + 1] = rd("u32", m) or 0
+    classes[i + 1] = rd("u8", m + MEMBER_CLASS) or 0xFF
+  end
+  return handles, classes
+end
+
+local function same_values(a, b)
+  for i = 1, N_MEMBERS do
+    if a[i] ~= b[i] then return false end
+  end
+  return true
+end
+
 -- the members the game counts: { { i, h, base, staff } } pitch first, then staff; the same list object is returned while the team's member slots are unchanged,
 -- so a check whose members did not change reuses its answer (evaluate's memo)
-local MEMBERS = {}       -- team address -> { signature, list }
+local MEMBERS = {}       -- team address -> { kind, handles, classes, list }
 local MEMBERS_N = 0
 local function members(team)
   local kind = rd("u8", team + TEAM_KIND)
   if not kind or kind >= 2 then return nil end
   local limit = kind == 0 and 11 or 5
-  local handles, classes = {}, {}
-  for i = 0, N_MEMBERS - 1 do
-    local m = team + MEMBER_BASE + i * MEMBER_STRIDE
-    handles[i + 1] = rd("u32", m) or 0
-    classes[i + 1] = rd("u8", m + MEMBER_CLASS) or 0xFF
-  end
-  local signature = kind .. ":" .. table.concat(handles, ",") .. ":" .. table.concat(classes, ",")
+  local handles, classes = member_slots(team)
   local known = MEMBERS[team]
-  if known and known.signature == signature then return known.list end
+  if known and known.kind == kind and same_values(known.handles, handles) and same_values(known.classes, classes) then
+    return known.list
+  end
   local out, unresolved = {}, false
   for i = 0, N_MEMBERS - 1 do
     local h, cls = handles[i + 1], classes[i + 1]
@@ -553,7 +572,7 @@ local function members(team)
     MEMBERS_N = MEMBERS_N + 1
   end
   -- a handle not resolved yet (its card unknown): not kept, read again at the next check
-  MEMBERS[team] = (not unresolved) and { signature = signature, list = out } or nil
+  MEMBERS[team] = (not unresolved) and { kind = kind, handles = handles, classes = classes, list = out } or nil
   return out
 end
 
@@ -776,24 +795,66 @@ local function evaluate_uncached(d, team)
 end
 
 -- the synergy's state for one team; reused while the team's members list is the same object (no team: depends on the declaration only)
+local MAX_MEMOS = 32     -- team states kept per synergy (all dropped past it)
 local function evaluate(d, team)
   index()
   local ms = (team ~= 0) and members(team) or false
-  local memo = d.memo
-  if memo and memo.team == team and memo.members == ms and ms ~= nil then return memo.state end
+  local memos = d.memos
+  if memos == nil then
+    memos = { n = 0 }
+    d.memos = memos
+  end
+  local memo = memos[team]
+  if memo and memo.members == ms and ms ~= nil then return memo.state end
+  local t0 = VRFW.now()
   local st = evaluate_uncached(d, team)
-  d.memo = { team = team, members = ms, state = st }
+  st.check_ms = VRFW.now() - t0
+  if memo == nil then
+    if memos.n >= MAX_MEMOS then
+      memos = { n = 0 }
+      d.memos = memos
+    end
+    memos.n = memos.n + 1
+  end
+  memos[team] = { members = ms, state = st }
   return st
 end
 
-local function write_answer(out, st)
-  for i = 0, N_MEMBERS - 1 do wr("u32", out + 4 * i, 0) end
-  for r = 0, 7 do wr("u8", out + ANS_ROWS + r, 0) end
-  for _, m in ipairs(st.marks) do wr("u32", out + 4 * m.i, m.h) end
+-- the answer's bytes of a state, worked out once per state: the members taking part (u32 per member slot) and the
+-- row bytes followed by the active byte (ANS_ROWS .. ANS_ACTIVE, contiguous)
+local N_ROW_BYTES = ANS_ACTIVE - ANS_ROWS + 1
+local function answer_values(st)
+  if st.words then return st.words, st.bytes end
+  local words, bytes = {}, {}
+  for i = 1, N_MEMBERS do words[i] = 0 end
+  for i = 1, N_ROW_BYTES do bytes[i] = 0 end
+  for _, m in ipairs(st.marks) do words[m.i + 1] = m.h end
   for r, row in ipairs(st.rows) do
-    if r <= 8 and (row.kind == KIND_NEXUS and st.team or row.kind == KIND_FILLED) then wr("u8", out + ANS_ROWS + r - 1, 1) end
+    if r <= 8 and (row.kind == KIND_NEXUS and st.team or row.kind == KIND_FILLED) then bytes[r] = 1 end
   end
-  wr("u8", out + ANS_ACTIVE, st.active and 1 or 0)
+  bytes[N_ROW_BYTES] = st.active and 1 or 0
+  st.words, st.bytes = words, bytes
+  return words, bytes
+end
+
+local function write_answer(out, st)
+  local words, bytes = answer_values(st)
+  local ok_words = pcall(VRFW.mem.write_array, "u32", out, words)
+  local ok_bytes = pcall(VRFW.mem.write_array, "u8", out + ANS_ROWS, bytes)
+  if ok_words and ok_bytes then return end
+  -- (one value at a time when the arrays could not be written)
+  for i = 0, N_MEMBERS - 1 do wr("u32", out + 4 * i, words[i + 1]) end
+  for r = 0, N_ROW_BYTES - 1 do wr("u8", out + ANS_ROWS + r, bytes[r + 1]) end
+end
+
+-- the state's log line, built once per state
+local function state_line(d, st)
+  if st.line then return st.line end
+  local parts = {}
+  for _, r in ipairs(st.rows) do parts[#parts + 1] = string.format("%d:%08X", r.kind, r.base) end
+  st.line = string.format("%s: %s (%s, rows %s, +%d more)", d.key, st.active and "active" or "off",
+    st.team and "team" or "no team", table.concat(parts, " "), st.extra)
+  return st.line
 end
 
 if #LIST > 0 then
@@ -804,7 +865,6 @@ if #LIST > 0 then
     local out, sidp, team = a[1], a[2], a[3]
     local d = DECL[rd("u32", sidp) or 0]
     if not d or not out or out < 0x10000 then return nil end
-    local t0 = VRFW.now()
     local ok, st = pcall(evaluate, d, (team and team >= 0x10000) and team or 0)
     if not ok then
       local k = d.key .. ": " .. tostring(st)
@@ -815,19 +875,34 @@ if #LIST > 0 then
     if STATE_N > 64 then STATE, STATE_N = {}, 0 end
     if not STATE[out] then STATE_N = STATE_N + 1 end
     STATE[out] = st
-    local parts = {}
-    for _, r in ipairs(st.rows) do parts[#parts + 1] = string.format("%d:%08X", r.kind, r.base) end
-    local line = string.format("%s: %s (%s, rows %s, +%d more)", d.key, st.active and "active" or "off",
-      st.team and "team" or "no team", table.concat(parts, " "), st.extra)
-    if LAST[d.id] ~= line and logs < 200 then
+    if logs >= 200 then return nil end
+    local line = state_line(d, st)
+    if LAST[d.id] ~= line then
       LAST[d.id], logs = line, logs + 1
-      info(string.format("%s; check %.1f ms", line, VRFW.now() - t0))
+      info(string.format("%s; check %.1f ms", line, st.check_ms or 0))
     end
     return nil
   end)
 
   local CUR = nil          -- the panel being drawn: { answer, sid }
-  local PANEL = nil        -- the last panel drawn: { sid, state }
+  local PANEL = nil        -- the last panel drawn: { sid, state, zero (rows drawn by the menu's clones), layout, menu, frame }
+  local LAYOUT_KNOWN = {}  -- menu id -> { [2 / 3 rows] = row places ("dx,dy,scale;..." from the panel's anchor) }
+  local MENU_LOGGED = {}
+
+  -- CMND_VRFW_SYNERGY_LAYOUT_KNOWN(layout, menu id, places): that menu measured the row places of a layout (2 or 3
+  -- rows; places = "dx,dy,scale" per row, ";"-joined): the rows it draws itself are written as 0 from its next panel
+  -- on. The places are kept here and handed back with every panel (a menu opened again starts with none of its own)
+  function Synergy.CmdLayoutKnown(layout, menu, places)
+    if (layout == 2 or layout == 3) and type(menu) == "number" and type(places) == "string" and places ~= "" then
+      local k = u32(menu)
+      LAYOUT_KNOWN[k] = LAYOUT_KNOWN[k] or {}
+      if LAYOUT_KNOWN[k][layout] == nil then
+        info(string.format("synergy rows: menu %08X knows its %d-row places", k, layout))
+      end
+      LAYOUT_KNOWN[k][layout] = places
+    end
+    return true
+  end
 
   VRFW.on("hook:SynergyDetail", function(ev)
     local a = ev.args or {}
@@ -848,8 +923,15 @@ if #LIST > 0 then
 
   VRFW.on("hook:SynergyDetailRows", function(ev)
     local a = ev.args or {}
-    local list, answer = a[2], a[3]
+    local prop, list, answer = a[1], a[2], a[3]
     if not CUR or CUR.answer ~= answer then return nil end
+    -- the panel's menu (the row builder's property +0x38: the menu id, crc32 of its name, e.g. equip_synergy_menu)
+    local valid = prop and prop >= 0x10000
+    local menu = valid and u32(rd("u32", prop + 0x38) or 0) or 0
+    if not MENU_LOGGED[menu] then
+      MENU_LOGGED[menu] = true
+      info(string.format("synergy rows: a panel in menu %08X", menu))
+    end
     local st = STATE[answer]
     if not st or st.sid ~= CUR.sid then
       local ok, s2 = pcall(evaluate, DECL[CUR.sid], 0)
@@ -858,11 +940,44 @@ if #LIST > 0 then
     end
     local ids = rd("ptr", list)
     if not ids or ids < 0x10000 then return nil end
+    -- rows the menu draws itself (row clones): written as 0, so the game draws no row there (no face asked for, no face
+    -- shown when its picture loads: no blink); the game keeps the other rows' places and hides its unused rows itself.
+    -- The game picks its 3-row layout only when it draws 3 rows: a 3-row panel with a clone row is drawn wholly by the
+    -- clones, at the 3-row places. Only once the menu knows the row places of that layout (CMND_VRFW_SYNERGY_LAYOUT_KNOWN)
+    local d = DECL[CUR.sid]
+    local native = 0
     for r = 1, MAX_ROWS do
       local row = st.rows[r]
-      wr("u32", ids + 4 * (r - 1), row and row.base or 0)
+      if row and (row.base or 0) ~= 0 then native = native + 1 end
     end
-    PANEL = { sid = CUR.sid, state = st }
+    local layout = native == 3 and 3 or 2
+    local zero, any = {}, false
+    local places = LAYOUT_KNOWN[menu] and LAYOUT_KNOWN[menu][layout]
+    if places then
+      for r = 1, MAX_ROWS do
+        local row = st.rows[r]
+        if row and (#st.rows > MAX_ROWS or row.kind == KIND_EMPTY or (d.slot_members and row.pool ~= nil)) then
+          zero[r], any = true, true
+        end
+      end
+      if any and layout == 3 then
+        for r = 1, MAX_ROWS do zero[r] = st.rows[r] ~= nil end
+      end
+    end
+    for r = 1, MAX_ROWS do
+      local row = st.rows[r]
+      wr("u32", ids + 4 * (r - 1), (row and not zero[r]) and row.base or 0)
+    end
+    -- a 3-row panel drawn wholly by clones: the builder draws no row, so it shows its 2-row frame meshes (property
+    -- +0xA0 / +0xA4 on, +0xA8 / +0xAC / +0xB0 off); the menu puts the 3-row frame back (the mesh ids, read once here)
+    local frame = nil
+    if any and layout == 3 and valid then
+      frame = { off = {}, on = {} }
+      for _, o in ipairs({ 0xA0, 0xA4 }) do frame.off[#frame.off + 1] = string.format("%d", u32(rd("u32", prop + o) or 0)) end
+      for _, o in ipairs({ 0xA8, 0xAC, 0xB0 }) do frame.on[#frame.on + 1] = string.format("%d", u32(rd("u32", prop + o) or 0)) end
+      frame.off, frame.on = table.concat(frame.off, ","), table.concat(frame.on, ",")
+    end
+    PANEL = { sid = CUR.sid, state = st, zero = zero, layout = layout, places = any and places or nil, frame = frame }
     return nil
   end)
 
@@ -1159,14 +1274,23 @@ if #LIST > 0 then
   --   { active, extra, team, rows = { { kind (1 nexus, 2 nexus missing, 3 filled, 4 empty), name, hint, team_name, crests, faces, role, series } } }
   -- hint: the pool's own hint, else the synergy's; team_name: the hint's «{team}»; crests: item_emblem ids, comma-joined; faces: chara_base ids, comma-joined;
   -- single = 1 on a nexus row when the nexus is one person; role: an empty slot's staff role ("manager" / "coach", "" else);
-  -- series: series numbers, comma-joined: an empty staff slot's required series, or a filled row's own (when it shows crests)
+  -- series: series numbers, comma-joined: an empty staff slot's required series, or a filled row's own (when it shows crests);
+  -- pool: the row's slot pool key (<mod>.<name>, "" for a nexus row): rows of one pool are one requirement in the shop
   local ANSWER = nil       -- the last answer: { state, lang, answer } (the panel redrawn with the same state)
+  local LANGUAGE_OF = {}   -- language code -> its text folder (the game's language list, read once per code)
   function Synergy.CmdPanel(item, code)
     local sid = u32(item)
     if not PANEL or PANEL.sid ~= sid then return nil end
     local d, st = DECL[sid], PANEL.state
-    local lang = GameText.language(code)
-    if ANSWER and ANSWER.state == st and ANSWER.lang == lang then return ANSWER.answer end
+    local lang = LANGUAGE_OF[code or false]
+    if lang == nil then
+      lang = GameText.language(code)
+      -- (kept only once the game's language list answers: before it, the fallback is asked again)
+      local ok, list = pcall(VRFW.files.game_languages)
+      if ok and type(list) == "table" then LANGUAGE_OF[code or false] = lang end
+    end
+    local zero = PANEL.zero or {}
+    if ANSWER and ANSWER.state == st and ANSWER.lang == lang and ANSWER.zero == zero then return ANSWER.answer end
     local rows = {}
     for r, row in ipairs(st.rows) do
       if r > MAX_ROWS + 1 then break end   -- a 4-slot synergy: the menu patch draws its 4th row as a grid cell
@@ -1180,6 +1304,7 @@ if #LIST > 0 then
           or (row.kind == KIND_NEXUS) and faces_of(d, row.base)
           or (members and row.kind == KIND_EMPTY) and members_faces(row.pool, d) or "",
         single = ((row.kind == KIND_NEXUS or row.kind == KIND_NEXUS_MISSING) and single_nexus(d)) and 1 or 0,
+        pool = row.pool and row.pool.key or "",
         base = row.base or 0 }
       local x = rows[r]
       x.have = ""
@@ -1190,11 +1315,18 @@ if #LIST > 0 then
       end
       local staff = row.kind == KIND_EMPTY and not members and row.pool and row.pool.role or nil
       x.role = staff or ""
+      -- clone = 1: the game drew no row there (written as 0), the menu draws the whole row (a clone of a player's row
+      -- gets that player's series icons from `series`)
+      x.clone = (zero[r] or (r > MAX_ROWS and next(zero) ~= nil)) and 1 or 0
       x.series = staff and pool_series(row.pool)
-        or (row.kind == KIND_FILLED and x.crests ~= "") and row_series(row.base) or ""
+        or ((row.kind == KIND_FILLED or row.kind == KIND_NEXUS or row.kind == KIND_NEXUS_MISSING) and (x.crests ~= "" or x.clone == 1)) and row_series(row.base)
+        or (x.clone == 1 and row.kind == KIND_EMPTY and x.have ~= "" and x.base ~= 0) and row_series(x.base) or ""
     end
-    local answer = { active = st.active and 1 or 0, extra = st.extra, team = st.team and 1 or 0, rows = rows }
-    ANSWER = { state = st, lang = lang, answer = answer }
+    -- places: the clones' row places (kept here, the menu may have been opened again since it measured them); frame:
+    -- the 3-row frame meshes to put back on the detail layer when the game drew no row
+    local answer = { active = st.active and 1 or 0, extra = st.extra, team = st.team and 1 or 0, rows = rows,
+      layout = PANEL.layout or 2, places = PANEL.places or "", frame = PANEL.frame }
+    ANSWER = { state = st, lang = lang, answer = answer, zero = zero }
     return answer
   end
 
@@ -1250,5 +1382,6 @@ end
 -- No mod declares a synergy: the command is still a global and answers nil, so the menu patch leaves every panel as the game draws it.
 if #LIST == 0 then
   function Synergy.CmdPanel() return nil end
+  function Synergy.CmdLayoutKnown() return true end
   info("0 synergies declared (no active mod has content/synergies/*.toml): the game's check and panel unchanged")
 end

@@ -1,0 +1,28 @@
+# «Disparo rodante» (Rolling Kick, whs00150; forest shot, cut-in ev60_00150): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last cut (c0400): the soft cyan glow and the small cyan rings on the
+# ball, the cone of white light streaks trailing behind it and the wide white wind swirls wound round its way, turning
+# about it, instead of the plain forest special-shot aura. The object is ev6015rk00 (effect/event/ev60/ev6015rk00/),
+# built by research/scripts/rolling_kick_ball_fx.py from the cut-in's effect object ev60001500: c0400 held at frame
+# 284, ball at the origin, +Z along the flight, x1, raised 0.14 m to the ball's centre; the glow and the rings are
+# whole from the first frame, the streak cone and the swirls come out of the kick point and fade out softly ~15 m
+# behind the ball.
+# Left out: the jump, the dust and the burst of the earlier cuts and the speed-line backdrop.
+# Its flight: content\techniques\rolling_kick_trajectory.toml (level at 2.2 m).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "rolling_kick"
+from = "ega0075d"
+object = "effect/event/ev60/ev6015rk00/ev6015rk00.objbin"
+
+[[shot_aura]]
+name = "rolling_kick"
+when = { techniques = ["whs00150"] }
+aura = "rolling_kick"
+like = "ega0075d"
+# the streak cone and the swirls come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

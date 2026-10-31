@@ -9,8 +9,8 @@
 #                         private-room screen, then the room's local match (BBN_StartMatch: the host's team vs the
 #                         guest's, the Campaña «continue» on a borrowed block); the close notes (wrong code, different
 #                         mods with the list, the other player left / lost)
-#   soccer_top_menu       bbn_common.lua only: «Modos de juego»'s BB «Multi» box (Inazuma Fantasy's modes_hub) calls
-#                         BBN_Entry(host) first, so that box opens this room too, never the retail online steps
+#   soccer_top_menu       bbn_common.lua only: BBN_Entry(host) for a «Multi» box of that menu (no box calls it at
+#                         present), so such a box opens this room too, never the retail online steps
 #   network_room_match_top  bbn_top.lua (the network_menu object): in our room the private-room layer group opens at
 #                         once (never the retail room list / EOS lobbies); Back leaves the room
 #   network_room_match_wait bbn_wait.lua (the private-room screen): the UI shell; its network questions answered from

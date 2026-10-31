@@ -1,14 +1,20 @@
 schema = "VRFW.changelog/1"
 # CareerMode: ONE general summary of what the mod offers, shown on «Novedades de mods» (docs/framework/types/changelog.md).
-# Rules (the parser refuses the rest): a single [[release]]
+# Rules (the parser refuses the rest): a single [[release]], NO version / date keys, ONE page in every language
+# (at most 7 rows under the mod's name: 56 letters per row, 28 CJK characters; a longer note takes 2 rows).
+# Do not touch it on a version bump. Rewrite it only when what the mod offers changes: a text change shows the
+# sheet again at the title; nothing else does.
+lang = "es"
+
+[[release]]
 icon = "general"
 notes = [
     "Modo carrera: en «Modos de juego» del título.",
     "SuperLiga suiza de 12 rondas con todos los clubes.",
     "Sorteo en bombos: 4 ligas de 14, ida y vuelta.",
     "Fútbol Frontier a partido único; la final da la copa.",
-    "Clubes unidos de todos los juegos; 19 por partido.",
-    "Una carrera por ranura de guardado.",
+    "Media, potencial y forma; mercado y noticias en 3D.",
+    "Hasta 4 carreras por ranura de guardado.",
     "Calendario por días: mercado de fichajes y Mundial.",
 ]
 
@@ -18,8 +24,8 @@ notes = [
     "Swiss SuperLiga of 12 rounds with every club.",
     "Pot draw: 4 leagues of 14, home and away.",
     "Single-match Football Frontier; win the cup.",
-    "Clubs joined across games; 19 play a match.",
-    "One career per save slot.",
+    "Ratings, potential, form; transfers and 3D news.",
+    "Up to 4 careers per save slot.",
     "Day-by-day calendar: transfer windows, World Cup.",
 ]
 
@@ -29,8 +35,8 @@ notes = [
     "SuperLigue suisse de 12 tours avec tous les clubs.",
     "Tirage par chapeaux : 4 ligues de 14, aller-retour.",
     "Football Frontier sur un match ; la finale, la coupe.",
-    "Clubs réunis de tous les jeux ; 19 par match.",
-    "Une carrière par emplacement de sauvegarde.",
+    "Note, potentiel, forme ; mercato et actus 3D.",
+    "Jusqu'à 4 carrières par emplacement.",
     "Calendrier jour par jour : mercato et Coupe du monde.",
 ]
 
@@ -40,8 +46,8 @@ notes = [
     "Schweizer SuperLiga, 12 Runden mit allen Vereinen.",
     "Lostöpfe: 4 Ligen mit 14, Hin- und Rückspiel.",
     "Football Frontier mit Einzelspielen um den Pokal.",
-    "Vereine aller Spiele vereint; 19 pro Spiel.",
-    "Eine Karriere pro Speicherplatz.",
+    "Wertung, Potenzial, Form; Transfers, 3D-News.",
+    "Bis zu 4 Karrieren pro Speicherplatz.",
     "Kalender nach Tagen: Transferfenster und WM.",
 ]
 
@@ -51,8 +57,8 @@ notes = [
     "SuperLega svizzera di 12 turni con tutti i club.",
     "Sorteggio a urne: 4 leghe da 14, andata e ritorno.",
     "Football Frontier a gara secca; la finale, la coppa.",
-    "Club uniti di tutti i giochi; 19 a partita.",
-    "Una carriera per slot di salvataggio.",
+    "Media, potenziale, forma; mercato e notizie 3D.",
+    "Fino a 4 carriere per slot di salvataggio.",
     "Calendario giorno per giorno: mercato e Mondiale.",
 ]
 
@@ -62,8 +68,8 @@ notes = [
     "SuperLiga suíça de 12 rondas com todos os clubes.",
     "Sorteio por potes: 4 ligas de 14, ida e volta.",
     "Futebol Frontier a jogo único; a final dá a taça.",
-    "Clubes unidos de todos os jogos; 19 por jogo.",
-    "Uma carreira por ranhura de gravação.",
+    "Média, potencial e forma; mercado e notícias 3D.",
+    "Até 4 carreiras por ranhura de gravação.",
     "Calendário por dias: mercado e Mundial.",
 ]
 
@@ -73,8 +79,8 @@ notes = [
     "全クラブ参加、12ラウンドのスイス式リーグ。",
     "ポット抽選で14チームのリーグ4つ、2回戦制。",
     "フットボールフロンティアは一発勝負。",
-    "全作品のクラブを統合、試合は19人。",
-    "セーブスロットごとにキャリアはひとつ。",
+    "能力値・成長・調子、移籍市場、3Dニュース。",
+    "セーブスロットごとにキャリアは4つまで。",
     "日付つきカレンダー：移籍市場とワールドカップ。",
 ]
 
@@ -84,8 +90,8 @@ notes = [
     "全部俱乐部参加的12轮瑞士制超级联赛。",
     "抽签分档：4个14队联赛，主客场双循环。",
     "足球边境大赛单场淘汰，决赛赢得奖杯。",
-    "合并各作品俱乐部，每场19人。",
-    "每个存档位一个生涯。",
+    "能力值、潜力、状态，转会与3D新闻。",
+    "每个存档位最多4个生涯。",
     "按日历日期进行：转会窗口与世界杯。",
 ]
 
@@ -95,7 +101,7 @@ notes = [
     "全部俱樂部參加的12輪瑞士制超級聯賽。",
     "抽籤分檔：4個14隊聯賽，主客場雙循環。",
     "足球邊境大賽單場淘汰，決賽贏得獎盃。",
-    "合併各作品俱樂部，每場19人。",
-    "每個存檔位一個生涯。",
+    "能力值、潛力、狀態，轉會與3D新聞。",
+    "每個存檔位最多4個生涯。",
     "按日曆日期進行：轉會窗口與世界盃。",
 ]

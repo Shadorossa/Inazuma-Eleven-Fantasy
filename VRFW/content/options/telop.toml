@@ -3,6 +3,7 @@ schema = "VRFW.option/2"
 # Master switch: off hides every name banner (level badges stay) and disables its children; takes effect from the next telop.
 [[option]]
 id = "show_banners"                           # row key telop_engine.show_banners
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "toggle"
 label = "show_banners"                        # text key
 help = "show_banners_help"
@@ -12,6 +13,7 @@ order = 110
 # Hide aura banners (aura_*: miximax, armour, kizuna, power-up).
 [[option]]
 id = "hide_aura"                              # row key telop_engine.hide_aura
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "toggle"
 label = "hide_aura"
 help = "hide_aura_help"
@@ -22,6 +24,7 @@ order = 111
 # Hide special-move name banners (keshin, totems and auras keep theirs).
 [[option]]
 id = "hide_technique"                         # row key telop_engine.hide_technique
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "toggle"
 label = "hide_technique"
 help = "hide_technique_help"
@@ -32,6 +35,7 @@ order = 112
 # Custom telop language: 0 = original telops, 1 = game language, plus one value per language declared by enabled mods (`[content.languages] telops`), added at boot; shown disabled when no mod declares one.
 [[option]]
 id = "custom_banners"                         # row key telop_engine.custom_banners
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "list"
 label = "custom_banners"                      # text key
 help = "custom_banners_help"

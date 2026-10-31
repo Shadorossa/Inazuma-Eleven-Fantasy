@@ -1,0 +1,41 @@
+# BetterQoL › its action of the VR-Framework's save adjust (Options › «Ajustar save», content\save_adjust\
+# away_kits.toml, scripts\away_kit.lua): title, description and result (%d = the count the action answers). Rows of
+# menu_text, read by id = crc32(row id).
+schema = "VRFW.text/2"
+table = "menu_text"
+
+[[row]]
+id = "BetterQoL.SaveAdjustAwayKits"
+es = "Quitar las equipaciones de visitante de las actualizaciones"
+en = "Remove the away kits of the game updates"
+fr = "Retirer les tenues extérieur des mises à jour"
+de = "Auswärtstrikots der Updates entfernen"
+it = "Rimuovi le divise da trasferta degli aggiornamenti"
+pt = "Remover os equipamentos alternativos das atualizações"
+ja = "アップデートのアウェイユニフォームを外す"
+zh_hans = "移除更新加入的客场队服"
+zh_hant = "移除更新加入的客場隊服"
+
+[[row]]
+id = "BetterQoL.SaveAdjustAwayKitsDesc"
+es = "Las equipaciones de visitante que añadieron las actualizaciones salen de tu inventario y los equipos que las llevan vuelven a su equipación. El aspecto de visitante sigue en el selector de equipación (Y)."
+en = "The away kits the game updates added leave your inventory and the teams wearing one go back to their kit. The away look stays in the kit picker (Y)."
+fr = "Les tenues extérieur ajoutées par les mises à jour quittent ton inventaire et les équipes qui les portent reprennent leur tenue. L'aspect extérieur reste dans le choix de tenue (Y)."
+de = "Die Auswärtstrikots der Updates verlassen dein Inventar, und Teams, die eines tragen, bekommen ihr Trikot zurück. Der Auswärtslook bleibt in der Trikotauswahl (Y)."
+it = "Le divise da trasferta aggiunte dagli aggiornamenti lasciano l'inventario e le squadre che le indossano tornano alla loro divisa. L'aspetto da trasferta resta nella scelta della divisa (Y)."
+pt = "Os equipamentos alternativos que as atualizações adicionaram saem do teu inventário e as equipas que os usam voltam ao seu equipamento. O visual alternativo continua no seletor de equipamento (Y)."
+ja = "アップデートで追加されたアウェイユニフォームを所持品から外し、着ているチームは元のユニフォームに戻ります。アウェイの見た目はユニフォーム選択（Y）で使えます。"
+zh_hans = "更新加入的客场队服将从你的物品中移除，穿着它们的队伍换回原队服。客场外观仍可在队服选择中（Y）使用。"
+zh_hant = "更新加入的客場隊服將從你的物品中移除，穿著它們的隊伍換回原隊服。客場外觀仍可在隊服選擇中（Y）使用。"
+
+[[row]]
+id = "BetterQoL.SaveAdjustAwayKitsDone"
+es = "Hecho: %d equipaciones de visitante quitadas."
+en = "Done: %d away kits removed."
+fr = "Terminé : %d tenues extérieur retirées."
+de = "Fertig: %d Auswärtstrikots entfernt."
+it = "Fatto: %d divise da trasferta rimosse."
+pt = "Feito: %d equipamentos alternativos removidos."
+ja = "完了：アウェイユニフォームを%d着外しました。"
+zh_hans = "完成：移除了%d套客场队服。"
+zh_hant = "完成：移除了%d套客場隊服。"

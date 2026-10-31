@@ -14,6 +14,10 @@
 -- | CMND_VRFW_TEAM_ROSTER_RESTORE | team id (0 = every team written) | true, rows: the data's cards back |
 -- | CMND_VRFW_TEAM_STAND_IN | slot team id, source team id, card… | true, players: the slot team plays as the source with these cards |
 -- | CMND_VRFW_TEAM_STAND_IN_RESTORE | slot team id (0 = every one) | true, teams: the slot team's data back |
+-- | CMND_VRFW_TEAM_STAND_IN_FORMATION | slot team id, formation id | true: the standing-in slot team plays that formation |
+-- | CMND_VRFW_TEAM_STAND_IN_LOOK | slot team id, kit, emblem, coach card | true: the standing-in slot team wears / has them |
+-- | CMND_VRFW_TEAM_LOOK | team id | true, level, formation, kit, emblem, coach card (0 = none); false, why |
+-- | CMND_VRFW_TEAM_MEMBER_LEVELS | team id, base (0 = the record's level), level… | true, rows: roster slots 0.. play at those levels |
 
 TeamLineup = TeamLineup or {}
 
@@ -507,6 +511,7 @@ function TeamLineup.StandIn(team, source, ...)
     end
   end
   if not wr("u32", s.rec + REC_COUNT, #cards + #s.staff) then return false, "slice count write failed" end
+  s.placed = #cards
   local r = VRFW.mem.struct("RandomTeamRecord", s.rec)
   local sr = VRFW.mem.struct("RandomTeamRecord", src.rec)
   local okl = pcall(function()
@@ -516,6 +521,130 @@ function TeamLineup.StandIn(team, source, ...)
   info(string.format("team %s stands in for %s: %d player(s) (%d copied rows, %d other cards), %d staff row(s)",
     hex(team), hex(source), #cards, copied, other, #s.staff))
   return true, #cards
+end
+
+-- CMND_VRFW_TEAM_STAND_IN_FORMATION(slot team, formation): the slot team, standing in for a team, plays this formation
+-- instead of its source's. In memory only; CMND_VRFW_TEAM_STAND_IN_RESTORE puts the slot team's own back.
+function TeamLineup.StandInFormation(team, formation)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  formation = math.floor(tonumber(formation) or 0) % 4294967296
+  local s = STAND_IN[team]
+  if not s then return false, "slot team " .. hex(team) .. " stands in for no team" end
+  if formation == 0 then return false, "no formation" end
+  local r = VRFW.mem.struct("RandomTeamRecord", s.rec)
+  if not pcall(function() r.Formation = formation end) then return false, "formation write failed" end
+  info(string.format("team %s plays formation %s", hex(team), hex(formation)))
+  return true
+end
+
+-- CMND_VRFW_TEAM_STAND_IN_LOOK(slot team, kit, emblem, coach): the slot team, standing in for a team, wears this kit
+-- (uniform id), shows this crest (emblem item id) and has this coach (a card on its coach row, roster slot 19); 0 =
+-- the source's. In memory only; CMND_VRFW_TEAM_STAND_IN_RESTORE puts the slot team's own back.
+function TeamLineup.StandInLook(team, kit, emblem, coach)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  local s = STAND_IN[team]
+  if not s or not s.placed then return false, "slot team " .. hex(team) .. " stands in for no team" end
+  kit = math.floor(tonumber(kit) or 0) % 4294967296
+  emblem = math.floor(tonumber(emblem) or 0) % 4294967296
+  coach = math.floor(tonumber(coach) or 0) % 4294967296
+  local r = VRFW.mem.struct("RandomTeamRecord", s.rec)
+  if kit ~= 0 and not pcall(function() r.Uniform = kit end) then return false, "kit write failed" end
+  if emblem ~= 0 and not pcall(function() r.Emblem = emblem end) then return false, "emblem write failed" end
+  local coached = false
+  if coach ~= 0 then
+    for i, x in ipairs(s.staff) do
+      if x.slot == STAFF_SLOT and not coached then
+        local a = s.base + (s.first + s.placed + i - 1) * MEMBER_STRIDE
+        local ms = VRFW.mem.struct("RandomTeamMember", a)
+        local ok = pcall(function()
+          ms.Param = coach
+          ms.Uid = coach
+          ms.Skill = 0
+        end)
+        if not ok or rd("u32", a + MEMBER_CARD) ~= coach then return false, "coach write failed" end
+        coached = true
+      end
+    end
+    if not coached then return false, "slot team " .. hex(team) .. " has no coach row" end
+  end
+  info(string.format("team %s look: kit %s, emblem %s, coach %s", hex(team), hex(kit), hex(emblem), hex(coach)))
+  return true
+end
+
+-- CMND_VRFW_TEAM_LOOK(team): the team's record as the game has it in memory: level, formation, kit, emblem and the
+-- card of its coach row (roster slot 19; 0 = none)
+function TeamLineup.Look(team)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  local sl, why = read_slice(team)
+  if not sl then return false, "team " .. hex(team) .. ": " .. tostring(why) end
+  local ok, rv = pcall(VRFW.mem.read_struct, "RandomTeamRecord", sl.rec)
+  if not ok or type(rv) ~= "table" then return false, "team " .. hex(team) .. ": record unreadable" end
+  local coach = 0
+  for _, x in ipairs(sl.rows) do
+    if x.slot == STAFF_SLOT and coach == 0 then coach = x.card or 0 end
+  end
+  return true, math.floor(tonumber(rv.Level) or 0), math.floor(tonumber(rv.Formation) or 0) % 4294967296,
+    math.floor(tonumber(rv.Uniform) or 0) % 4294967296, math.floor(tonumber(rv.Emblem) or 0) % 4294967296, coach
+end
+
+-- CMND_VRFW_TEAM_MEMBER_LEVELS(team, base, level…): the member rows in roster slots 0.. play at these levels in the
+-- team's next matches: each row's level offset (team_config +0x44) becomes level - base (base 0 = the team record's
+-- level, the one a stand-in copies); a level 0 puts the row's own offset back; no level puts every row's back. In
+-- memory only; the first write of a row keeps its offset (read again when another card took the row, as a stand-in
+-- does), and CMND_VRFW_TEAM_STAND_IN_RESTORE puts a slot team's whole rows back anyway.
+local MEMBER_LEVEL = {}   -- member row address -> { card, offset } as first written over
+
+function TeamLineup.MemberLevels(team, base, ...)
+  team = math.floor(tonumber(team) or 0) % 4294967296
+  base = math.floor(tonumber(base) or 0)
+  local sl, why = read_slice(team)
+  if not sl then return false, "team " .. hex(team) .. ": " .. tostring(why) end
+  local ok, rv = pcall(VRFW.mem.read_struct, "RandomTeamRecord", sl.rec)
+  local record = ok and type(rv) == "table" and math.floor(tonumber(rv.Level) or 0) or 0
+  if base <= 0 then base = record end
+  if base <= 0 then return false, "team " .. hex(team) .. ": no level to count from" end
+  local by_slot = {}
+  for _, x in ipairs(sl.rows) do
+    if x.slot < STAFF_SLOT and by_slot[x.slot] == nil then by_slot[x.slot] = x end
+  end
+  local levels = { ... }
+  local function own(x)
+    local m = MEMBER_LEVEL[x.addr]
+    if m == nil or m.card ~= x.card then
+      m = { card = x.card, offset = rd("i16", x.addr + 0x44) or 0 }
+      MEMBER_LEVEL[x.addr] = m
+    end
+    return m
+  end
+  local n, lo, hi = 0, nil, nil
+  local function put(x, v)
+    local ms = VRFW.mem.struct("RandomTeamMember", x.addr)
+    if pcall(function() ms.LevelOffset = math.max(-998, math.min(998, v)) end) then n = n + 1 end
+  end
+  if #levels == 0 then
+    for _, x in pairs(by_slot) do
+      local m = MEMBER_LEVEL[x.addr]
+      if m and m.card == x.card then put(x, m.offset) end
+    end
+    info(string.format("team %s: member levels back: %d row(s)", hex(team), n))
+    return true, n
+  end
+  for k, v in ipairs(levels) do
+    local x = by_slot[k - 1]
+    v = math.floor(tonumber(v) or 0)
+    if x then
+      local m = own(x)
+      if v > 0 then
+        put(x, v - base)
+        lo, hi = lo and math.min(lo, v) or v, hi and math.max(hi, v) or v
+      else
+        put(x, m.offset)
+      end
+    end
+  end
+  info(string.format("team %s: member levels %s..%s from base %d (record level %d): %d row(s)", hex(team),
+    tostring(lo or "-"), tostring(hi or "-"), base, record, n))
+  return true, n
 end
 
 -- CMND_VRFW_TEAM_STAND_IN_RESTORE(slot team, 0 = every one): the slot team's rows, slice and record back

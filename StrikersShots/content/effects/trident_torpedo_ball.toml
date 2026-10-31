@@ -1,0 +1,41 @@
+# «Torpedo tridente» (Trident Torpedo, whs01850; wind shot, cut-in ev60_01850), in two effects (owner 2026-10-24):
+# * the ball aura (ev6185tt00): while the ball flies to the goal it keeps the look of the cut-in's last cut (c0400): its
+#   blue light, white tip, water auras and wave shell from the first frame, carrying the keshin's trident (thrown: its
+#   tip on the ball, its shaft straight back along the flight, revealed from the kick point), instead of the plain wind
+#   special-shot aura (ega0075b). The trigger copies the wind special-shot aura's row (like = "ega0075b"):
+#   CB_SkillShootBallAura turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b);
+# * the keshin behind the kicker (ev6185tk00): the keshin after its throw on the whole wave of the cut-in, smaller
+#   (x0.4), the wave's base on the pitch, its front 1 m behind the kicker, in its cut-in shading for 2 s, then fading
+#   out until 3 s: the rule's ground effect (ground_effect), pinned on the pitch where the shot was struck (position
+#   and the flight's yaw only): upright whatever the kicker does after the kick, killed when the shot ends.
+# Both built by research/scripts/trident_torpedo_ball_fx.py from the cut-in's effect object ev60018500 (c0400 held at
+# frame 458); the keshin's own model per shooter: trident_torpedo_ball_variants.toml.
+# docs/game/media/trident-torpedo-ball-fx.md. Its flight: content\techniques\trident_torpedo_trajectory.toml. Mod
+# «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "trident_torpedo"
+from = "ega0075b"
+object = "effect/event/ev60/ev6185tt00/ev6185tt00.objbin"
+
+# the keshin on its wave behind the kicker: the ground effect (the plain shot aura's row ega0021, on the ball's trail
+# slot), its origin the flight's start on the pitch, +Z along the flight
+[[effect]]
+name = "trident_torpedo_stand"
+from = "ega0021"
+object = "effect/event/ev60/ev6185tk00/ev6185tk00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "trident_torpedo"
+when = { techniques = ["whs01850"] }
+aura = "trident_torpedo"
+like = "ega0075b"
+# born at the kick point and run on the ball's distance from it (docs/framework/types/effect.md «Distance clock»): its
+# end-of-shot look from the first frame, the trident revealed from the kick point at 0.75 m a frame
+anchor = "kick"
+drift = 0.75
+# the keshin on its wave, standing on the pitch behind the kick point (its fade is 3 s)
+ground_effect = { effect = "trident_torpedo_stand" }

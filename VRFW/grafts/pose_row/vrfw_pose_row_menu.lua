@@ -146,20 +146,6 @@ local Ptr = EVT_PointerNew()
 
 --@lib evt_menu_kit.lua#CharaModel
 
-local function StartCo(fn, arg)
-  if evt_co ~= nil then
-    return
-  end
-  evt_co = coroutine.create(fn)
-  local ok, err = coroutine.resume(evt_co, arg)
-  if not ok then
-    Log("error", tostring(err))
-    evt_co = nil
-  elseif coroutine.status(evt_co) == "dead" then
-    evt_co = nil
-  end
-end
-
 local function Text(id)
   local ok, s = pcall(funcLuaCommand, C.TEXT_GET, id)
   if ok and type(s) == "string" then

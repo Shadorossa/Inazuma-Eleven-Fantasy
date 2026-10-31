@@ -1,0 +1,16 @@
+# BetterQoL › its action of the VR-Framework's save adjust (Options › «Ajustar save», docs/framework/save-adjust.md):
+# the away-kit items the game updates added (7.1.2 and 7.2.1: «E. visitante …», the home kit item's key + `_<n>`,
+# uniform = the home kit's away twin) leave the save, the teams wearing one back to the home kit. The away look stays
+# in the kit picker's Local / Visitante switch. The rule is scripts\away_kit.lua (config.toml [away_kit] keep); the
+# texts are text\rows\save_tools.toml.
+schema = "VRFW.save_adjust/1"
+
+[[VRFW.SaveAdjust]]
+id = "remove_away_kits"
+label = "BetterQoL.SaveAdjustAwayKits"
+description = "BetterQoL.SaveAdjustAwayKitsDesc"
+result = "BetterQoL.SaveAdjustAwayKitsDone"
+order = 140
+script = "away_kit.lua"
+run = "BetterQoL.SaveAdjust.remove_away_kits"
+available = "BetterQoL.SaveAdjust.can_remove_away_kits"

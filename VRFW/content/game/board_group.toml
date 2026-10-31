@@ -12,3 +12,8 @@ handler = "BoardGroup.Pieces"
 [[VRFW.Command]]
 name = "CMND_VRFW_BOARD_HIDE"
 handler = "BoardGroup.Hide"
+
+# () -> { pieceId, … } of the groups whose `hidden` conditions hold now (a board asks it once when it opens)
+[[VRFW.Command]]
+name = "CMND_VRFW_BOARD_HIDDEN"
+handler = "BoardGroup.Hidden"

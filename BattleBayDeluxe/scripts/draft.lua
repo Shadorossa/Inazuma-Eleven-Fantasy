@@ -1374,7 +1374,7 @@ end
 -- save slot (a rule team whose chain tile is won, or whose row condition holds, is in). Without the rule / the
 -- evaluator, or when the smaller pool cannot fill the places: every player (logged).
 -- the teams of `pending` whose unlock condition is not met right now (any of their enjoy rows); nil = the evaluator is
--- not available. Same answer as G.locked_teams() for these teams, without evaluating every other row.
+-- not available. Only these teams' rows are evaluated.
 local function locked_of(src, pending)
   if not VRFW.is_on("EvalCondition") then
     return nil

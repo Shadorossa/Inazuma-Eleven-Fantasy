@@ -1,0 +1,27 @@
+# «Fuego rápido» (Rapid Fire, whs02470; fire shot, cut-in ev60_02470): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last shot (c0400, the ball sent off giving out fire rings): the orange and
+# yellow glows and the small fire swirls on the ball (round from every side, the whole ball inside the glow) and the
+# fire rings it gives off, one every ~4.5 m of flight, each born on the ball, centred on the flight and facing along
+# it, growing with its flame tongues and fading where it was sent out, instead of the automatic aura.
+# The object is ev6024rf00 (effect/event/ev60/ev6024rf00/), built by research/scripts/rapid_fire_ball_fx.py from the
+# cut-in's effect object ev60024700: the glows and swirls of c0400 at 280, ball at the origin flying +Z, x1, the three
+# ring sets replayed; nothing shows behind the kick point (distance clock). Left out: the kick and burst of the earlier
+# cuts, the kick burst at the kick point and the flame sprite sheets along the cut-in's path.
+# The trigger copies the special-shot aura's row (like = "ega0085c"): CB_SkillShootBallAura turns +Z along the ball's
+# velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\rapid_fire_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "rapid_fire"
+from = "ega0085c"
+object = "effect/event/ev60/ev6024rf00/ev6024rf00.objbin"
+
+[[shot_aura]]
+name = "rapid_fire"
+when = { techniques = ["whs02470"] }
+aura = "rapid_fire"
+like = "ega0085c"
+anchor = "kick"
+drift = 0.75

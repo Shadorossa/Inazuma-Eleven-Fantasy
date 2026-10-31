@@ -62,19 +62,12 @@ aliases = ["CMND_FANTASY_PACHANGA_FLAGS", "CMND_EVT_PACHANGA_FLAGS"]
 handler = "Pachangas.Flags"
 needs = ["Party.SetOrganizedFlagBit", "Party.LogicalToPhysical", "pt_party"]
 
-# CMND_PACHANGAS_INIT(dock) -> members removed (-1 = not ready / not a dock)
+# CMND_PACHANGAS_MIRROR(dock, 5v5 formation id) -> changes (-1 = n/a), removed, added: the 5v5 team holds exactly the
+# players of the dock's 11v11 team; empty starter positions are filled from them by the formation's positions
 [[VRFW.Command]]
-name = "CMND_PACHANGAS_INIT"
-aliases = ["CMND_FANTASY_PACHANGA_INIT", "CMND_EVT_PACHANGA_INIT"]
-handler = "Pachangas.Init"
-needs = ["Party.SetOrganizedFlagBit", "Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party"]
-
-# CMND_PACHANGAS_SPLIT(dock) -> removed (5v5 auto-copy emptied), 0 = kept / already checked, -1 = n/a
-[[VRFW.Command]]
-name = "CMND_PACHANGAS_SPLIT"
-aliases = ["CMND_FANTASY_PACHANGA_SPLIT", "CMND_EVT_PACHANGA_SPLIT"]
-handler = "Pachangas.Split"
-needs = ["Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party", "pt_play_data"]
+name = "CMND_PACHANGAS_MIRROR"
+handler = "Pachangas.Mirror"
+needs = ["Party.SetOrganizedFlagBit", "Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party", "pt_play_data"]
 
 # CMND_PACHANGAS_TEAMSWAP(dock, on 1 / 0) -> ok, swapped dock (-1 none): 11v11 <-> 5v5 members for the team bonuses screen
 [[VRFW.Command]]
@@ -91,8 +84,10 @@ command = "CMND_GAME_RESET"
 handler = "Pachangas.OnGameReset"
 needs = ["Party.RecountTeamInfo", "Party.LogicalToPhysical", "pt_party"]
 
-# Independent 5v5 / 11v11 teams from dock 02 on: around the retail place / move 193693077(toSet, pos, fromSet, hdl, team)
-# (0xC35A80) the team the call is NOT about is saved (before) and put back, recounted, its dock bits restored (after).
+# One team per call from dock 02 on: around the retail place / move 193693077(toSet, pos, fromSet, hdl, team) (0xC35A80)
+# the team the call is NOT about is saved (before) and put back, recounted, its dock bits restored (after), so the
+# retail side effect never drops a player into a random 5v5 position; CMND_PACHANGAS_MIRROR then brings the 5v5 team
+# to the 11v11 team's players.
 [[VRFW.CommandFilter]]
 name = "PachangaSplitPre"
 command = 0x0B8B8595

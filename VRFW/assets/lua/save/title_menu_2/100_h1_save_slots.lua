@@ -29,3 +29,70 @@ else
     return init(...)
   end
 end
+
+-- A title in a reserved slot that opens a root menu ([[VRFW.SaveSlot]] root_menu: the slot's first entry as a new
+-- game, a mode's match or team dock that went back to the title): the title stays black and inactive and the game
+-- resets straight into the root menu (VRFW_Slots.forward). A refused straight reset (no carry) is tried again after
+-- RETRY_FRAMES, at most TRIES times; then the title is given back. One answer per title instance, no call per frame
+-- outside that coroutine.
+do
+  local TITLE_MENU, FADE, TRIES, RETRY_FRAMES = 3874253475 --[[title_menu_2]], 609722083, 3, 120
+  local fwd = nil   -- { co = coroutine } while this title instance forwards
+
+  local function Log(...)
+    pcall(funcLuaCommand, VRFW_Cmd.EVT_LOG, "save_slots", ...)
+  end
+
+  local function Forward()
+    for try = 1, TRIES do
+      local how = VRFW_Slots.forward(Log)
+      if how == "straight" or how == "title" then
+        while true do
+          coroutine.yield()
+        end
+      end
+      Log("root menu forward refused (try", try, "of", TRIES .. ")")
+      for _ = 1, RETRY_FRAMES do
+        coroutine.yield()
+      end
+    end
+    Log("root menu forward: given up, the title stays")
+    pcall(funcLuaCommand, FADE, 0, 0.3)
+    pcall(funcLuaMenuCommand, 1558704558 --[[menu active]], TITLE_MENU, true)
+  end
+
+  local function Start()
+    fwd = nil
+    if type(VRFW_Slots) ~= "table" or not VRFW_Slots.available() then
+      return
+    end
+    local ok, active = pcall(funcLuaCommand, VRFW_Cmd.VRFW_SLOT_ACTIVE)
+    if not ok or type(active) ~= "number" then
+      return
+    end
+    local owner, enterable, root = VRFW_Slots.reserved(active)
+    if owner == nil or root == nil or not enterable then
+      return
+    end
+    Log("title of slot", active, "opens", root, "as its scene root: black, forwarding")
+    pcall(funcLuaCommand, FADE, 1, 0)
+    pcall(funcLuaMenuCommand, 1558704558 --[[menu active]], TITLE_MENU, false)
+    fwd = { co = coroutine.create(Forward) }
+  end
+
+  local function Step()
+    if fwd == nil or coroutine.status(fwd.co) == "dead" then
+      return
+    end
+    local ok, err = coroutine.resume(fwd.co)
+    if not ok then
+      Log("root menu forward failed:", tostring(err))
+      fwd = nil
+    end
+  end
+
+  if VRFW_Host ~= nil then
+    VRFW_Host.on("title_menu_2", "OnInit", { id = "save_engine.root_slot_title", phase = "after", fn = function() Start() end })
+    VRFW_Host.on("title_menu_2", "Step", { id = "save_engine.root_slot_step", phase = "after", fn = function() Step() end })
+  end
+end

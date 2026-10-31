@@ -1,0 +1,8 @@
+schema = "VRFW.game/2"
+
+# Skill board locks (scripts/skill_board_lock.lua; declarations content/skill_board_lock/*.toml,
+# VRFW.skill_board_lock/1). The menus ask the command when a skill board screen opens (VRFW_SkillBoardLock.Read).
+
+[[VRFW.Command]]
+name = "CMND_VRFW_SKILL_BOARD_LOCK"    # () -> locked (bool), text id (crc32 of the lock's text row), dock only (bool)
+handler = "SkillBoardLock.Cmd"

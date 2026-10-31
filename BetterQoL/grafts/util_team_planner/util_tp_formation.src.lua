@@ -186,10 +186,9 @@ do
     end
     local set, ty = F.Squad()
     if c.act == "bank" then
-      funcLuaCommand(TP.C.PARAM_DEL, TP.KEY_BANK)
-      funcLuaCommand(TP.C.PARAM_SET, TP.KEY_BANK, 0, set, 1)
-      local okh, has = pcall(funcLuaCommand, TP.C.PARAM_HAS, TP.KEY_BANK)
-      TP.Log("«Añadir del banco»: squad", set, "request stored", tostring(okh and has))
+      VRFW_Param.Clear(TP.KEY_BANK)
+      VRFW_Param.Set(TP.KEY_BANK, set)
+      TP.Log("«Añadir del banco»: squad", set, "request stored", tostring(VRFW_Param.Has(TP.KEY_BANK)))
       pcall(FuncCloseFormationMenu)
     elseif c.act == "plan" then
       if not F.PickerOpen() then
@@ -841,15 +840,13 @@ do
       F.eg = nil                        -- a new menu: new layer instances
       F.tab_open, F.list, F.tabs = {}, nil, {}
       F.set, F.type = nil, 0
-      local okA, hasA = pcall(funcLuaCommand, TP.C.PARAM_HAS, F.PARAM_DOCK)
-      if okA and hasA then
-        F.set = funcLuaCommand(TP.C.PARAM_GET, F.PARAM_DOCK)
+      if VRFW_Param.Has(F.PARAM_DOCK) then
+        F.set = VRFW_Param.Get(F.PARAM_DOCK)
       end
-      local okB, hasB = pcall(funcLuaCommand, TP.C.PARAM_HAS, F.PARAM_TYPE)
-      if okB and hasB then
-        F.type = funcLuaCommand(TP.C.PARAM_GET, F.PARAM_TYPE) or 0
+      if VRFW_Param.Has(F.PARAM_TYPE) then
+        F.type = VRFW_Param.Get(F.PARAM_TYPE) or 0
       end
-      pcall(funcLuaCommand, TP.C.PARAM_DEL, TP.KEY_BANK)  -- a request nobody took
+      VRFW_Param.Clear(TP.KEY_BANK)  -- a request nobody took
       return orig(...)
     end
   end)

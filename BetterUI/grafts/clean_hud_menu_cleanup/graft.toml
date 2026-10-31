@@ -7,7 +7,7 @@
 # Crónica's icon boxes are graft clean_hud_chr_boxes. The data (corner layers, their retail function ids) is the
 # declared table at the top of the snippet; one snippet for every menu. Snippet = menu_generators.ui_clean_plain(part = "evt_ui_menu_cleanup.lua") of
 # research/grafts/_src/ui_clean; `menu_assemble.py regen clean_hud_menu_cleanup --write` rebuilds it. As a clean_hud
-# patch it runs after Inazuma Fantasy's (comp_menu, modes_hub, shop_rework) and after clean_hud_chr_boxes (910).
+# patch it runs after clean_hud_chr_boxes (910).
 name = "clean_hud_menu_cleanup"
 order = 915
 module = "lua_bridge"

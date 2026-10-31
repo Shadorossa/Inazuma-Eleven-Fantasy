@@ -7,3 +7,17 @@
 # content\contact_maps\office_terms.toml but not asked, and a trial («Prueba») stays playable without gating anything.
 # true = the old office's requirements are asked again. Owner 2026-10-20: «Quita los requisitos por ahora».
 requirements = false
+
+[album]
+# the price of a player signed from BetterQoL's «Álbum de jugadores» (option «Fichajes» = «Álbum»;
+# scripts\album_price.lua, CMND_NEWRECRUITMENT_ALBUM_PRICE). The game sells no player for this currency, so the price
+# is this rule: (base + per_level × the level he joins at, the team's level) × the factor of the shown card's rarity.
+# currency: the item paid (its game name; tk_hr000008 = «Puntos de amistad»)
+currency = "tk_hr000008"
+base = 100
+per_level = 10
+# factor per card rarity of the album row (its «Especiales» cards: Ídolo, Diamante…); a rarity not listed = 1
+[album.rarity_factor]
+"5" = 2
+"6" = 3
+"7" = 4

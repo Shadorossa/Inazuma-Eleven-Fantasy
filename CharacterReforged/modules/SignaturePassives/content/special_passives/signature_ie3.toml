@@ -32,10 +32,10 @@ passive = "c03030060_puerta_astral"
 character = "c03030060"
 tags = ["trickster", "veteran"]
 
-# Xavier Foster: Amanecer fulgurante — Sol-family technique power +10 % (his own moves)
+# Xavier Foster: Amanecer fulgurante — The Dawn power +12 % in the first third of each half (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c03030040_amanecer_fulgurante"
-blocks = ["ie3_family_divinepower", "ie3_techniquepower_self_10", "ie3_card_c03030040"]
+blocks = ["ie3_clock_first_third", "ie3_move_whs01100", "ie3_techniquepower_team_12", "ie3_card_c03030040"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -60,10 +60,10 @@ passive = "c03030050_rebeldia_fria"
 character = "c03030050"
 tags = ["rebel", "brain"]
 
-# Austin Hobbes: Tigre de la tormenta — Tigre-family technique power +10 % (his own moves)
+# Austin Hobbes: Tigre de la tormenta — Tiger Storm power +10 % (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c03030010_tigre_de_la_tormenta"
-blocks = ["ie3_family_beasts", "ie3_techniquepower_self_10", "ie3_card_c03030010"]
+blocks = ["ie3_move_whs01020", "ie3_techniquepower_team_10", "ie3_card_c03030010"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -74,10 +74,10 @@ passive = "c03030010_tigre_de_la_tormenta"
 character = "c03030010"
 tags = ["striker", "rookie"]
 
-# Archer Hawkins: Ojo de halcón — Ave-family technique power of every teammate +8 %
+# Archer Hawkins: Ojo de halcón — Hawk Shot power +12 % in the opponent half (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c03030020_ojo_de_halcon"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_team_8", "ie3_card_c03030020"]
+blocks = ["ie3_zone_opponent_half", "ie3_move_whs00100", "ie3_techniquepower_team_12", "ie3_card_c03030020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -130,15 +130,15 @@ passive = "c11901160_vision_de_estratega"
 character = "c11901160"
 tags = ["brain", "noble"]
 
-# Shadow Cimmerian: Sombra cosida — Sombra-family technique power +10 % (his own moves)
+# Shadow Cimmerian: Fénix de la sombra — Phoenix-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
-name = "c01010980_sombra_cosida"
-blocks = ["ie3_family_illusions", "ie3_techniquepower_self_10", "ie3_card_c01010980"]
+name = "c01010980_fenix_de_la_sombra"
+blocks = ["ie3_family_phoenix", "ie3_techniquepower_self_10", "ie3_card_c01010980"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c01010980"
-passive = "c01010980_sombra_cosida"
+passive = "c01010980_fenix_de_la_sombra"
 
 [[VRFW.CharacterTags]]
 character = "c01010980"
@@ -172,10 +172,10 @@ passive = "c03030210_rompeolas"
 character = "c03030210"
 tags = ["wall", "captain"]
 
-# David Waterman: Aliento de la Cruz del Sur — Hielo-family technique power +10 % (his own moves)
+# David Waterman: Aliento de la Cruz del Sur — Southern Cross power +15 % while he holds the ball in his own half
 [[VRFW.Passive]]
 name = "c03030220_aliento_de_la_cruz_del_sur"
-blocks = ["ie3_family_northernice", "ie3_techniquepower_self_10", "ie3_card_c03030220"]
+blocks = ["ie3_holds_ball", "ie3_zone_own_half", "ie3_move_who00430", "ie3_techniquepower_self_15", "ie3_card_c03030220"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -396,10 +396,10 @@ passive = "c11803010_honor_de_bandera"
 character = "c11803010"
 tags = ["veteran", "striker"]
 
-# Nasir Mustafa: Jinete de la tormenta de arena — Tormenta-family technique power +10 % (his own moves)
+# Nasir Mustafa: Jinete de la tormenta de arena — tension cost of his catches −8 % while his team is ahead
 [[VRFW.Passive]]
 name = "c03030410_jinete_de_la_tormenta_de_arena"
-blocks = ["ie3_family_whirlwinds", "ie3_techniquepower_self_10", "ie3_card_c03030410"]
+blocks = ["ie3_score_leading", "ie3_tensioncost_self_catch_minus8", "ie3_card_c03030410"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -452,10 +452,10 @@ passive = "c03030440_garra_de_leona"
 character = "c03030440"
 tags = ["beast", "rebel"]
 
-# Musa Sylla: Duna inamovible — Muro-family technique power +10 % (his own moves)
+# Musa Sylla: Duna inamovible — his physical +5 % in his own half
 [[VRFW.Passive]]
 name = "c03030450_duna_inamovible"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c03030450"]
+blocks = ["ie3_zone_own_half", "ie3_stat_self_physical_5", "ie3_card_c03030450"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -466,10 +466,10 @@ passive = "c03030450_duna_inamovible"
 character = "c03030450"
 tags = ["wall"]
 
-# Yusuf Massoud: Vuelo del halcón — Ave-family technique power +10 % (his own moves)
+# Yusuf Massoud: Vuelo del halcón — each dash he makes: his long-shot power +4 % (max 3, 20 s each)
 [[VRFW.Passive]]
 name = "c03030460_vuelo_del_halcon"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_self_10", "ie3_card_c03030460"]
+blocks = ["ie3_when_dash_by_self", "ie3_stack_max3_20s", "ie3_techniquepower_self_long_shoot_4", "ie3_card_c03030460"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -592,10 +592,10 @@ passive = "c03030540_sin_salida"
 character = "c03030540"
 tags = ["wall", "rebel"]
 
-# Rajab Ismail: Estrellas del desierto — Estrella-family technique power +10 % (his own moves)
+# Rajab Ismail: Estrellas del desierto — Meteor Attack power +5 % after each duel he wins (max 3, reset on a half)
 [[VRFW.Passive]]
 name = "c03030550_estrellas_del_desierto"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03030550"]
+blocks = ["ie3_when_duel_won_by_self", "ie3_stack_max3_0s_per_half", "ie3_move_whs00110", "ie3_techniquepower_self_5", "ie3_card_c03030550"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -718,10 +718,10 @@ passive = "c06037140_rayo_de_ganimedes"
 character = "c06037140"
 tags = ["cannon", "striker"]
 
-# Bryce Whitingale: Aliento helado — Hielo-family technique power +10 % (his own moves)
+# Bryce Whitingale: Aliento helado — Northern Impact power +15 % while his team is behind
 [[VRFW.Passive]]
 name = "c03030710_aliento_helado"
-blocks = ["ie3_family_northernice", "ie3_techniquepower_self_10", "ie3_card_c03030710"]
+blocks = ["ie3_score_trailing", "ie3_move_whs00930", "ie3_techniquepower_self_15", "ie3_card_c03030710"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -872,10 +872,10 @@ passive = "c03030720_aliento_de_herrero"
 character = "c03030720"
 tags = ["wall", "rookie"]
 
-# Dong-Hyun Seul: Meteoro en picado — Estrella-family technique power +10 % (his own moves)
+# Dong-Hyun Seul: Meteoro en picado — his move speed +5 % while an opposing «Goleador» holds the ball
 [[VRFW.Passive]]
 name = "c03030730_meteoro_en_picado"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03030730"]
+blocks = ["ie3_holder_striker_opponents", "ie3_movespeed_self_5", "ie3_card_c03030730"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -900,10 +900,10 @@ passive = "c03030740_trampa_de_la_arana"
 character = "c03030740"
 tags = ["rebel", "trickster"]
 
-# Sung-Jin Noh: Águila en vuelo bajo — Ave-family technique power +10 % (his own moves)
+# Sung-Jin Noh: Águila en vuelo bajo — his chain-shoot power +6 % in the last third of each half
 [[VRFW.Passive]]
 name = "c03030750_aguila_en_vuelo_bajo"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_self_10", "ie3_card_c03030750"]
+blocks = ["ie3_clock_last_third", "ie3_techniquepower_self_chain_shoot_6", "ie3_card_c03030750"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -984,10 +984,10 @@ passive = "c03030830_centinela_de_palacio"
 character = "c03030830"
 tags = ["noble", "wall"]
 
-# Lance Ralton: Lanza en ristre — Espada-family technique power +10 % (his own moves)
+# Lance Ralton: Lanza en ristre — Cross Drive power +15 % from set pieces
 [[VRFW.Passive]]
 name = "c03030840_lanza_en_ristre"
-blocks = ["ie3_family_legendaryweapons", "ie3_techniquepower_self_10", "ie3_card_c03030840"]
+blocks = ["ie3_own_set_piece", "ie3_move_whs00210", "ie3_techniquepower_self_15", "ie3_card_c03030840"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1012,10 +1012,10 @@ passive = "c03030850_filo_desgarrador"
 character = "c03030850"
 tags = ["rebel", "wall"]
 
-# Peter Coole: Luna del torneo — Luna-family technique power +10 % (his own moves)
+# Peter Coole: Luna del torneo — Ultra Moon power +20 % in extra time and the PK-out
 [[VRFW.Passive]]
 name = "c03030860_luna_del_torneo"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03030860"]
+blocks = ["ie3_half_3_4_5", "ie3_move_who00630", "ie3_techniquepower_self_20", "ie3_card_c03030860"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1124,10 +1124,10 @@ passive = "c03030930_galope_de_unicornio"
 character = "c03030930"
 tags = ["speedster"]
 
-# Nick Woodgate: Flecha del bosque de Sherwood — Trueno-family technique power +10 % (his own moves)
+# Nick Woodgate: Flecha del bosque de Sherwood — Paladin Strike power +5 % per Forest-element teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03030940_flecha_del_bosque_de_sherwood"
-blocks = ["ie3_family_inazumapower", "ie3_techniquepower_self_10", "ie3_card_c03030940"]
+blocks = ["ie3_count_forest_team_max3", "ie3_move_whs01140", "ie3_techniquepower_self_5", "ie3_card_c03030940"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1418,10 +1418,10 @@ passive = "c11803060_estandarte_del_imperio"
 character = "c11803060"
 tags = ["captain", "veteran"]
 
-# Erik Eagle: Águila de las praderas — Fuego-family technique power +10 % (his own moves)
+# Erik Eagle: Águila de las praderas — Phoenix-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03031470_aguila_de_las_praderas"
-blocks = ["ie3_family_firetornado", "ie3_techniquepower_self_10", "ie3_card_c03031470"]
+blocks = ["ie3_family_phoenix", "ie3_techniquepower_self_10", "ie3_card_c03031470"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1516,10 +1516,10 @@ passive = "c03031460_cabeza_de_campeon"
 character = "c03031460"
 tags = ["acrobat", "speedster"]
 
-# Shane Pierce: Pegaso encadenado — Pegaso-family technique power +10 % (his own moves)
+# Shane Pierce: Pegaso encadenado — Pegasus Shot power +5 % per «Divino» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03031480_pegaso_encadenado"
-blocks = ["ie3_family_pegasus", "ie3_techniquepower_self_10", "ie3_card_c03031480"]
+blocks = ["ie3_count_divine_team_max3", "ie3_move_whs01200", "ie3_techniquepower_self_5", "ie3_card_c03031480"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1600,10 +1600,10 @@ passive = "c03031530_bombardero_acrobatico"
 character = "c03031530"
 tags = ["acrobat"]
 
-# Bob Bobbins: Muro infinito — Muro-family technique power +10 % (his own moves)
+# Bob Bobbins: Muro infinito — his block power +3 % per «Muro» teammate on the pitch (max 4)
 [[VRFW.Passive]]
 name = "c03031540_muro_infinito"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c03031540"]
+blocks = ["ie3_count_wall_team_max4", "ie3_techniquepower_self_block_3", "ie3_card_c03031540"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1726,10 +1726,10 @@ passive = "c03033650_aliento_de_dragon"
 character = "c03033650"
 tags = ["beast"]
 
-# Mystral Callous: Lluvia de condena — Demonio-family technique power +10 % (his own moves)
+# Mystral Callous: Lluvia de condena — Doom Rain and Doom Spear power +12 % while his team is ahead
 [[VRFW.Passive]]
 name = "c03033660_lluvia_de_condena"
-blocks = ["ie3_family_majingiant", "ie3_techniquepower_self_10", "ie3_card_c03033660"]
+blocks = ["ie3_score_leading", "ie3_move_whs01390_whs01400", "ie3_techniquepower_self_12", "ie3_card_c03033660"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1880,10 +1880,10 @@ passive = "c03031650_motor_de_carreras"
 character = "c03031650"
 tags = ["speedster", "wall"]
 
-# Angelo Gabrini: Ángel de la medular — Cielo-family technique power +10 % (his own moves)
+# Angelo Gabrini: Ángel de la medular — his tension gain +4 % per «Divino» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03031660_angel_de_la_medular"
-blocks = ["ie3_family_divinepower", "ie3_techniquepower_self_10", "ie3_card_c03031660"]
+blocks = ["ie3_count_divine_team_max3", "ie3_tensiongain_self_4", "ie3_card_c03031660"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1936,10 +1936,10 @@ passive = "c03031690_infierno_de_dante"
 character = "c03031690"
 tags = ["mystic", "rebel"]
 
-# Paolo Bianchi: Espada de plata — Espada-family technique power +10 % (his own moves)
+# Paolo Bianchi: Espada de plata — Odin Sword power +15 % while his team is level or ahead
 [[VRFW.Passive]]
 name = "c03031700_espada_de_plata"
-blocks = ["ie3_family_legendaryweapons", "ie3_techniquepower_self_10", "ie3_card_c03031700"]
+blocks = ["ie3_score_leading_level", "ie3_move_whs01070", "ie3_techniquepower_self_15", "ie3_card_c03031700"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1950,24 +1950,24 @@ passive = "c03031700_espada_de_plata"
 character = "c03031700"
 tags = ["striker", "noble"]
 
-# Raffaele Generani: Disparo glacial — Hielo-family technique power +10 % (his own moves)
+# Raffaele Generani: Triple impulso de Génova — Twin Boost-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
-name = "c03031710_disparo_glacial"
-blocks = ["ie3_family_northernice", "ie3_techniquepower_self_10", "ie3_card_c03031710"]
+name = "c03031710_triple_impulso_de_genova"
+blocks = ["ie3_family_twinboost", "ie3_techniquepower_self_10", "ie3_card_c03031710"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c03031710"
-passive = "c03031710_disparo_glacial"
+passive = "c03031710_triple_impulso_de_genova"
 
 [[VRFW.CharacterTags]]
 character = "c03031710"
 tags = ["cannon"]
 
-# Daniele Santini: Gigante de piedra — Muro-family technique power +10 % (his own moves)
+# Daniele Santini: Gigante de piedra — Gigant Wall and Colosseum Guard power +10 %
 [[VRFW.Passive]]
 name = "c03031720_gigante_de_piedra"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c03031720"]
+blocks = ["ie3_move_whk00170_whk00620", "ie3_techniquepower_self_10", "ie3_card_c03031720"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2062,10 +2062,10 @@ passive = "c03031830_coletazo_de_bagre"
 character = "c03031830"
 tags = ["acrobat"]
 
-# Monstro Ximenes: Monstruo del área — Muro-family technique power +10 % (his own moves)
+# Monstro Ximenes: Monstruo del área — his shoot-block power +8 % in his own half
 [[VRFW.Passive]]
 name = "c03031840_monstruo_del_area"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c03031840"]
+blocks = ["ie3_zone_own_half", "ie3_techniquepower_self_shoot_block_8", "ie3_card_c03031840"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2398,10 +2398,10 @@ passive = "c03031090_perla_negra"
 character = "c03031090"
 tags = ["trickster", "rebel"]
 
-# Julio Acuto: Filo de lo agudo — Trueno-family technique power +10 % (his own moves)
+# Julio Acuto: Filo de lo agudo — Lightning Break-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03031100_filo_de_lo_agudo"
-blocks = ["ie3_family_inazumapower", "ie3_techniquepower_self_10", "ie3_card_c03031100"]
+blocks = ["ie3_family_lightningbreak", "ie3_techniquepower_self_10", "ie3_card_c03031100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2412,10 +2412,10 @@ passive = "c03031100_filo_de_lo_agudo"
 character = "c03031100"
 tags = ["striker", "trickster"]
 
-# Vittorio Amatista: Amatista de la lluvia — Estrella-family technique power +10 % (his own moves)
+# Vittorio Amatista: Amatista de la lluvia — Triangle-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03031110_amatista_de_la_lluvia"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03031110"]
+blocks = ["ie3_family_triangle", "ie3_techniquepower_self_10", "ie3_card_c03031110"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2426,10 +2426,10 @@ passive = "c03031110_amatista_de_la_lluvia"
 character = "c03031110"
 tags = ["striker", "cannon"]
 
-# Grigio Quarzo: Cuarzo gris — Muro-family technique power +10 % (his own moves)
+# Grigio Quarzo: Cuarzo gris — his catch power +8 % in the keeper battle against shots by Mountain-element shooters
 [[VRFW.Passive]]
 name = "c03031120_cuarzo_gris"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c03031120"]
+blocks = ["ie3_keepershotpower_self_minus8", "ie3_card_c03031120"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2524,24 +2524,24 @@ passive = "c03032210_gran_mano_del_pequeno"
 character = "c03032210"
 tags = ["wall", "rookie"]
 
-# Zephyr Vitesse: Huracán de bolsillo — Tormenta-family technique power +10 % (his own moves)
+# Zephyr Vitesse: Clones de bolsillo — Multiple-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
-name = "c03032220_huracan_de_bolsillo"
-blocks = ["ie3_family_whirlwinds", "ie3_techniquepower_self_10", "ie3_card_c03032220"]
+name = "c03032220_clones_de_bolsillo"
+blocks = ["ie3_family_multiple", "ie3_techniquepower_self_10", "ie3_card_c03032220"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c03032220"
-passive = "c03032220_huracan_de_bolsillo"
+passive = "c03032220_clones_de_bolsillo"
 
 [[VRFW.CharacterTags]]
 character = "c03032220"
 tags = ["speedster"]
 
-# Walter Mountain: Montaña de bolsillo — Roca-family technique power +10 % (his own moves)
+# Walter Mountain: Montaña de bolsillo — The Mountain power +5 % per Mountain-element teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03032230_montana_de_bolsillo"
-blocks = ["ie3_family_earthshaker", "ie3_techniquepower_self_10", "ie3_card_c03032230"]
+blocks = ["ie3_count_mountain_team_max3", "ie3_move_whd00680", "ie3_techniquepower_self_5", "ie3_card_c03032230"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2552,10 +2552,10 @@ passive = "c03032230_montana_de_bolsillo"
 character = "c03032230"
 tags = ["wall", "beast"]
 
-# Jimi Gaines: Costura de sombras — Sombra-family technique power +10 % (his own moves)
+# Jimi Gaines: Costura de sombras — Shadow Stitch power +15 % against «Ilusionista» ball carriers
 [[VRFW.Passive]]
 name = "c03032240_costura_de_sombras"
-blocks = ["ie3_family_illusions", "ie3_techniquepower_self_10", "ie3_card_c03032240"]
+blocks = ["ie3_holder_trickster_opponents", "ie3_move_whd00090", "ie3_techniquepower_self_15", "ie3_card_c03032240"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2580,10 +2580,10 @@ passive = "c03032250_arcoiris_de_hierro"
 character = "c03032250"
 tags = ["acrobat"]
 
-# Quint Hampton: Estrella fugaz — Estrella-family technique power +10 % (his own moves)
+# Quint Hampton: Estrella fugaz — Shooting Star power +12 % while his team is level (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c03032260_estrella_fugaz"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03032260"]
+blocks = ["ie3_score_level", "ie3_move_whd00230", "ie3_techniquepower_team_12", "ie3_card_c03032260"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2692,10 +2692,10 @@ passive = "c03032330_manglar_indomable"
 character = "c03032330"
 tags = ["beast", "rookie"]
 
-# Vic Vitrum: Lluvia de cristal — Estrella-family technique power of every teammate +8 %
+# Vic Vitrum: Lluvia de cristal — Meteor Shower power of every teammate +10 %
 [[VRFW.Passive]]
 name = "c03032340_lluvia_de_cristal"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_team_8", "ie3_card_c03032340"]
+blocks = ["ie3_move_who00420", "ie3_techniquepower_team_10", "ie3_card_c03032340"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2706,10 +2706,10 @@ passive = "c03032340_lluvia_de_cristal"
 character = "c03032340"
 tags = ["striker"]
 
-# Li Leung: Ventisca eterna — Hielo-family technique power of every teammate +8 %
+# Li Leung: Ventisca eterna — Eternal Blizzard power +15 % while a Wind-element teammate holds the ball
 [[VRFW.Passive]]
 name = "c03032350_ventisca_eterna"
-blocks = ["ie3_family_northernice", "ie3_techniquepower_team_8", "ie3_card_c03032350"]
+blocks = ["ie3_holder_wind_team", "ie3_move_whs00440", "ie3_techniquepower_self_15", "ie3_card_c03032350"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2734,10 +2734,10 @@ passive = "c03032360_improvisacion_de_jazz"
 character = "c03032360"
 tags = ["trickster", "speedster"]
 
-# David Arrows: Flecha al blanco — Muro-family technique power +10 % (his own moves)
+# David Arrows: Flecha al blanco — his catch power +6 % in the keeper battle against shots by FW shooters
 [[VRFW.Passive]]
 name = "c11803100_flecha_al_blanco"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c11803100"]
+blocks = ["ie3_keepershotpower_self_minus6", "ie3_card_c11803100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2748,10 +2748,10 @@ passive = "c11803100_flecha_al_blanco"
 character = "c11803100"
 tags = ["wall", "veteran"]
 
-# Anorel: Trono celestial — Cielo-family technique power +10 % (his own moves)
+# Anorel: Trono celestial — Celestial Zone power +15 % while a «Divino» teammate is on the pitch
 [[VRFW.Passive]]
 name = "c03034010_trono_celestial"
-blocks = ["ie3_family_divinepower", "ie3_techniquepower_self_10", "ie3_card_c03034010"]
+blocks = ["ie3_present_divine_team", "ie3_move_whk00710", "ie3_techniquepower_self_15", "ie3_card_c03034010"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2762,10 +2762,10 @@ passive = "c03034010_trono_celestial"
 character = "c03034010"
 tags = ["divine", "wall"]
 
-# Nenel: Primera luz del alba — Sol-family technique power +10 % (his own moves)
+# Nenel: Primera luz del alba — Dawnrise power +15 % in the first third of each half
 [[VRFW.Passive]]
 name = "c03034020_primera_luz_del_alba"
-blocks = ["ie3_family_divinepower", "ie3_techniquepower_self_10", "ie3_card_c03034020"]
+blocks = ["ie3_clock_first_third", "ie3_move_whd00700", "ie3_techniquepower_self_15", "ie3_card_c03034020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2790,10 +2790,10 @@ passive = "c03034030_fuego_del_serafin"
 character = "c03034030"
 tags = ["divine"]
 
-# Ekadel: Nevada angelical — Hielo-family technique power +10 % (his own moves)
+# Ekadel: Nevada angelical — Snow Angel and Angel Ball power +12 % in the first half
 [[VRFW.Passive]]
 name = "c03034040_nevada_angelical"
-blocks = ["ie3_family_northernice", "ie3_techniquepower_self_10", "ie3_card_c03034040"]
+blocks = ["ie3_half_1", "ie3_move_whd00550_who00640", "ie3_techniquepower_self_12", "ie3_card_c03034040"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2804,10 +2804,10 @@ passive = "c03034040_nevada_angelical"
 character = "c03034040"
 tags = ["divine"]
 
-# Lephiel: Espada flamígera — Espada-family technique power +10 % (his own moves)
+# Lephiel: Espada flamígera — his shoot power +5 % in the opponent half
 [[VRFW.Passive]]
 name = "c03034050_espada_flamigera"
-blocks = ["ie3_family_legendaryweapons", "ie3_techniquepower_self_10", "ie3_card_c03034050"]
+blocks = ["ie3_zone_opponent_half", "ie3_techniquepower_self_shoot_5", "ie3_card_c03034050"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2818,10 +2818,10 @@ passive = "c03034050_espada_flamigera"
 character = "c03034050"
 tags = ["divine", "noble"]
 
-# Sachinel: Luna de arcángel — Luna-family technique power +10 % (his own moves)
+# Sachinel: Luna de arcángel — each successful Ultra Moon by him: his shoot power +4 % (max 3, per half)
 [[VRFW.Passive]]
 name = "c03034060_luna_de_arcangel"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03034060"]
+blocks = ["ie3_when_technique_result_won_by_self", "ie3_move_who00630", "ie3_outcome_succeeds", "ie3_stack_max3_0s_per_half", "ie3_techniquepower_self_shoot_4", "ie3_card_c03034060"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2832,10 +2832,10 @@ passive = "c03034060_luna_de_arcangel"
 character = "c03034060"
 tags = ["divine", "striker"]
 
-# Wenel: Caída de Ícaro — Ave-family technique power +10 % (his own moves)
+# Wenel: Caída de Ícaro — The Ikaros power +10 % (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c03034070_caida_de_icaro"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_self_10", "ie3_card_c03034070"]
+blocks = ["ie3_move_who00520", "ie3_techniquepower_team_10", "ie3_card_c03034070"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2916,10 +2916,10 @@ passive = "c03034210_duque_del_abismo"
 character = "c03034210"
 tags = ["mystic", "wall"]
 
-# Rubú: Torbellino oscuro — Tormenta-family technique power +10 % (his own moves)
+# Rubú: Torbellino oscuro — Dark Whirlwind and Duskfall power +12 % in his own half
 [[VRFW.Passive]]
 name = "c03034220_torbellino_oscuro"
-blocks = ["ie3_family_whirlwinds", "ie3_techniquepower_self_10", "ie3_card_c03034220"]
+blocks = ["ie3_zone_own_half", "ie3_move_who00400_whd00710", "ie3_techniquepower_self_12", "ie3_card_c03034220"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2958,10 +2958,10 @@ passive = "c03034240_bestia_del_abismo"
 character = "c03034240"
 tags = ["mystic", "beast"]
 
-# Belal: Materia oscura — Sombra-family technique power +10 % (his own moves)
+# Belal: Materia oscura — Dark Matter power +15 % while his team is behind
 [[VRFW.Passive]]
 name = "c03034250_materia_oscura"
-blocks = ["ie3_family_illusions", "ie3_techniquepower_self_10", "ie3_card_c03034250"]
+blocks = ["ie3_score_trailing", "ie3_move_whs01350", "ie3_techniquepower_self_15", "ie3_card_c03034250"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2972,10 +2972,10 @@ passive = "c03034250_materia_oscura"
 character = "c03034250"
 tags = ["mystic", "trickster"]
 
-# Malphas: Pezuña del infierno — Demonio-family technique power +10 % (his own moves)
+# Malphas: Pezuña del infierno — Diabolical Cut power +15 % against «Divino» ball carriers
 [[VRFW.Passive]]
 name = "c03034260_pezuna_del_infierno"
-blocks = ["ie3_family_majingiant", "ie3_techniquepower_self_10", "ie3_card_c03034260"]
+blocks = ["ie3_holder_divine_opponents", "ie3_move_whd00540", "ie3_techniquepower_self_15", "ie3_card_c03034260"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3031,7 +3031,7 @@ tags = ["mystic", "trickster"]
 # Zanos: Fénix de ceniza — Fénix-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03034300_fenix_de_ceniza"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_self_10", "ie3_card_c03034300"]
+blocks = ["ie3_family_phoenix", "ie3_techniquepower_self_10", "ie3_card_c03034300"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3084,29 +3084,29 @@ passive = "c03032820_pinguino_de_brocken"
 character = "c03032820"
 tags = ["striker", "rebel"]
 
-# Heinrich Farber: Espada de Colonia — Espada-family technique power +10 % (his own moves)
+# Heinrich Farber: Pingüino de Colonia — Penguin-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
-name = "c03032830_espada_de_colonia"
-blocks = ["ie3_family_legendaryweapons", "ie3_techniquepower_self_10", "ie3_card_c03032830"]
+name = "c03032830_pinguino_de_colonia"
+blocks = ["ie3_family_penguin", "ie3_techniquepower_self_10", "ie3_card_c03032830"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c03032830"
-passive = "c03032830_espada_de_colonia"
+passive = "c03032830_pinguino_de_colonia"
 
 [[VRFW.CharacterTags]]
 character = "c03032830"
 tags = ["noble", "wall"]
 
-# Kurt Zawel: Muro de Berlín — Muro-family technique power +10 % (his own moves)
+# Kurt Zawel: Dobles de Berlín — Multiple-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
-name = "c03032840_muro_de_berlin"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c03032840"]
+name = "c03032840_dobles_de_berlin"
+blocks = ["ie3_family_multiple", "ie3_techniquepower_self_10", "ie3_card_c03032840"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c03032840"
-passive = "c03032840_muro_de_berlin"
+passive = "c03032840_dobles_de_berlin"
 
 [[VRFW.CharacterTags]]
 character = "c03032840"
@@ -3168,10 +3168,10 @@ passive = "c03032880_formacion_en_v"
 character = "c03032880"
 tags = ["speedster", "striker"]
 
-# Jonas Polk: Galaxia de acero — Estrella-family technique power +10 % (his own moves)
+# Jonas Polk: Galaxia de acero — The Galaxy power +12 % in the last third of each half (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c03032890_galaxia_de_acero"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03032890"]
+blocks = ["ie3_clock_last_third", "ie3_move_whs00390", "ie3_techniquepower_team_12", "ie3_card_c03032890"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3182,10 +3182,10 @@ passive = "c03032890_galaxia_de_acero"
 character = "c03032890"
 tags = ["cannon", "mystic"]
 
-# Maximilian Müller: Tornado oscuro — Tormenta-family technique power +10 % (his own moves)
+# Maximilian Müller: Tornado oscuro — Dark Tornado and Back Tornado power +12 % in the opponent half
 [[VRFW.Passive]]
 name = "c03032900_tornado_oscuro"
-blocks = ["ie3_family_whirlwinds", "ie3_techniquepower_self_10", "ie3_card_c03032900"]
+blocks = ["ie3_zone_opponent_half", "ie3_move_whs00430_whs00320", "ie3_techniquepower_self_12", "ie3_card_c03032900"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3224,15 +3224,15 @@ passive = "c03032920_palabra_de_portero_veterano"
 character = "c03032920"
 tags = ["wall", "veteran"]
 
-# Erwin Völz: Trueno del Rin — Trueno-family technique power +10 % (his own moves)
+# Erwin Völz: Pingüino del Rin — Penguin-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
-name = "c03032930_trueno_del_rin"
-blocks = ["ie3_family_inazumapower", "ie3_techniquepower_self_10", "ie3_card_c03032930"]
+name = "c03032930_pinguino_del_rin"
+blocks = ["ie3_family_penguin", "ie3_techniquepower_self_10", "ie3_card_c03032930"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c03032930"
-passive = "c03032930_trueno_del_rin"
+passive = "c03032930_pinguino_del_rin"
 
 [[VRFW.CharacterTags]]
 character = "c03032930"
@@ -3294,10 +3294,10 @@ passive = "c03032410_elegancia_bajo_palos"
 character = "c03032410"
 tags = ["wall", "noble"]
 
-# Kevin Pinot: Garra de grifo — Tigre-family technique power +10 % (his own moves)
+# Kevin Pinot: Garra de grifo — Zigzag Flame power +15 % against «Noble» ball carriers
 [[VRFW.Passive]]
 name = "c03032420_garra_de_grifo"
-blocks = ["ie3_family_beasts", "ie3_techniquepower_self_10", "ie3_card_c03032420"]
+blocks = ["ie3_holder_noble_opponents", "ie3_move_whd00690", "ie3_techniquepower_self_15", "ie3_card_c03032420"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3322,10 +3322,10 @@ passive = "c03032430_magia_blanca"
 character = "c03032430"
 tags = ["trickster", "divine"]
 
-# Francis Poujol: Muralla de Versalles — Muro-family technique power +10 % (his own moves)
+# Francis Poujol: Muralla de Versalles — his shoot-block power +4 % per «Noble» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03032440_muralla_de_versalles"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c03032440"]
+blocks = ["ie3_count_noble_team_max3", "ie3_techniquepower_self_shoot_block_4", "ie3_card_c03032440"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3364,10 +3364,10 @@ passive = "c03032460_primer_paso_de_baile"
 character = "c03032460"
 tags = ["trickster", "speedster"]
 
-# Julien Rousseau: Pétalos al viento — Pegaso-family technique power +10 % (his own moves)
+# Julien Rousseau: Pétalos al viento — recast time of his shoots −10 % in the last third of each half
 [[VRFW.Passive]]
 name = "c03032470_petalos_al_viento"
-blocks = ["ie3_family_pegasus", "ie3_techniquepower_self_10", "ie3_card_c03032470"]
+blocks = ["ie3_clock_last_third", "ie3_recasttime_self_shoot_minus10", "ie3_card_c03032470"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3392,10 +3392,10 @@ passive = "c03032480_espejismo_de_salon"
 character = "c03032480"
 tags = ["trickster", "noble"]
 
-# Romuald Huysmans: Caballero de la rosa — Pegaso-family technique power of every teammate +8 %
+# Romuald Huysmans: Caballero de la rosa — Paladin Strike power +15 % while a «Noble» teammate holds the ball
 [[VRFW.Passive]]
 name = "c03032490_caballero_de_la_rosa"
-blocks = ["ie3_family_pegasus", "ie3_techniquepower_team_8", "ie3_card_c03032490"]
+blocks = ["ie3_holder_noble_team", "ie3_move_whs01140", "ie3_techniquepower_self_15", "ie3_card_c03032490"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3476,10 +3476,10 @@ passive = "c03032540_bomba_de_humo"
 character = "c03032540"
 tags = ["trickster"]
 
-# Claude Moreau: Hora del cielo — Cielo-family technique power +10 % (his own moves)
+# Claude Moreau: Hora del cielo — each successful Heaven's Time by him: his agility +4 % (max 3, 60 s each)
 [[VRFW.Passive]]
 name = "c03032550_hora_del_cielo"
-blocks = ["ie3_family_divinepower", "ie3_techniquepower_self_10", "ie3_card_c03032550"]
+blocks = ["ie3_when_technique_result_won_by_self", "ie3_move_who00200", "ie3_outcome_succeeds", "ie3_stack_max3_60s", "ie3_stat_self_agility_4", "ie3_card_c03032550"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3490,10 +3490,10 @@ passive = "c03032550_hora_del_cielo"
 character = "c03032550"
 tags = ["acrobat", "divine"]
 
-# Michel Morland: Estrellas de Montmartre — Estrella-family technique power of every teammate +8 %
+# Michel Morland: Estrellas de Montmartre — his long-shot power +6 % while he holds the ball in the opponent half
 [[VRFW.Passive]]
 name = "c03032560_estrellas_de_montmartre"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_team_8", "ie3_card_c03032560"]
+blocks = ["ie3_holds_ball", "ie3_zone_opponent_half", "ie3_techniquepower_self_long_shoot_6", "ie3_card_c03032560"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3812,10 +3812,10 @@ passive = "c03033060_ritmo_de_armadillo"
 character = "c03033060"
 tags = ["beast", "wall"]
 
-# Adam Marunga: Luna sobre la sabana — Luna-family technique power +10 % (his own moves)
+# Adam Marunga: Luna sobre la sabana — his agility +3 % per Wind-element teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03033070_luna_sobre_la_sabana"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03033070"]
+blocks = ["ie3_count_wind_team_max3", "ie3_stat_self_agility_3", "ie3_card_c03033070"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3854,10 +3854,10 @@ passive = "c03033090_libertad_del_indico"
 character = "c03033090"
 tags = ["speedster", "veteran"]
 
-# Nathan Tswane: Relámpago de Soweto — Trueno-family technique power +10 % (his own moves)
+# Nathan Tswane: Relámpago de Soweto — each dash he makes: Lightning Bolt power +5 % (max 3, 20 s each)
 [[VRFW.Passive]]
 name = "c03033100_relampago_de_soweto"
-blocks = ["ie3_family_inazumapower", "ie3_techniquepower_self_10", "ie3_card_c03033100"]
+blocks = ["ie3_when_dash_by_self", "ie3_stack_max3_20s", "ie3_move_who00370", "ie3_techniquepower_self_5", "ie3_card_c03033100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3966,10 +3966,10 @@ passive = "c03032010_zorro_en_el_gallinero"
 character = "c03032010"
 tags = ["wall", "trickster"]
 
-# Jacques Allemand: Corte diabólico — Demonio-family technique power +10 % (his own moves)
+# Jacques Allemand: Corte diabólico — each block won by him: opponents' control −3 % for 30 s (max 2)
 [[VRFW.Passive]]
 name = "c03032020_corte_diabolico"
-blocks = ["ie3_family_majingiant", "ie3_techniquepower_self_10", "ie3_card_c03032020"]
+blocks = ["ie3_when_block_won_by_self", "ie3_stack_max2_30s", "ie3_stat_opponents_control_minus3", "ie3_card_c03032020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4008,10 +4008,10 @@ passive = "c03032040_apisonadora"
 character = "c03032040"
 tags = ["beast"]
 
-# Dean Goddard: Cinturón de asteroides — Estrella-family technique power +10 % (his own moves)
+# Dean Goddard: Cinturón de asteroides — Asteroid Belt power +15 % against «Cañonero» ball carriers
 [[VRFW.Passive]]
 name = "c03032050_cinturon_de_asteroides"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03032050"]
+blocks = ["ie3_holder_cannon_opponents", "ie3_move_whd00420", "ie3_techniquepower_self_15", "ie3_card_c03032050"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4050,10 +4050,10 @@ passive = "c03032070_seto_vivo_de_agilidad"
 character = "c03032070"
 tags = ["wall"]
 
-# Niccolò Mantegna: Pared temporal — Muro-family technique power +10 % (his own moves)
+# Niccolò Mantegna: Pared temporal — recast time of his moves −12 % in the second half
 [[VRFW.Passive]]
 name = "c03032080_pared_temporal"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_self_10", "ie3_card_c03032080"]
+blocks = ["ie3_half_2", "ie3_recasttime_self_minus12", "ie3_card_c03032080"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4095,7 +4095,7 @@ tags = ["mystic"]
 # Sedgley Scofield: Fénix oscuro — Fénix-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03032110_fenix_oscuro"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_self_10", "ie3_card_c03032110"]
+blocks = ["ie3_family_phoenix", "ie3_techniquepower_self_10", "ie3_card_c03032110"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4162,10 +4162,10 @@ passive = "c03032150_caiman_veloz"
 character = "c03032150"
 tags = ["speedster"]
 
-# Chris Ellis: Mente helada — Hielo-family technique power +10 % (his own moves)
+# Chris Ellis: Mente helada — opponents' intelligence −3 % in his own half
 [[VRFW.Passive]]
 name = "c03032160_mente_helada"
-blocks = ["ie3_family_northernice", "ie3_techniquepower_self_10", "ie3_card_c03032160"]
+blocks = ["ie3_zone_own_half", "ie3_stat_opponents_intelligence_minus3", "ie3_card_c03032160"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4218,10 +4218,10 @@ passive = "c11901010_sombra_del_emperador"
 character = "c11901010"
 tags = ["trickster", "veteran"]
 
-# Maxtor Lunde: Cumbre inmóvil — Roca-family technique power +10 % (his own moves)
+# Maxtor Lunde: Cumbre inmóvil — his pressure +5 % while his team is ahead
 [[VRFW.Passive]]
 name = "c11903040_cumbre_inmovil"
-blocks = ["ie3_family_earthshaker", "ie3_techniquepower_self_10", "ie3_card_c11903040"]
+blocks = ["ie3_score_leading", "ie3_stat_self_pressure_5", "ie3_card_c11903040"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4330,10 +4330,10 @@ passive = "c03036060_escudo_del_fuego"
 character = "c03036060"
 tags = ["wall", "mystic"]
 
-# Climie Hills: Baluarte del fuego — Sombra-family technique power +10 % (his own moves)
+# Climie Hills: Baluarte del fuego — God Hand-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03036120_baluarte_del_fuego"
-blocks = ["ie3_family_illusions", "ie3_techniquepower_self_10", "ie3_card_c03036120"]
+blocks = ["ie3_family_godhand", "ie3_techniquepower_self_10", "ie3_card_c03036120"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4442,10 +4442,10 @@ passive = "c03036350_muralla_del_fuego"
 character = "c03036350"
 tags = ["wall", "speedster"]
 
-# Hedwig Hodge: Trinchera de la montaña — Espada-family technique power +10 % (his own moves)
+# Hedwig Hodge: Trinchera de la montaña — God Hand-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03036390_trinchera_de_la_montana"
-blocks = ["ie3_family_legendaryweapons", "ie3_techniquepower_self_10", "ie3_card_c03036390"]
+blocks = ["ie3_family_godhand", "ie3_techniquepower_self_10", "ie3_card_c03036390"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4918,10 +4918,10 @@ passive = "c03038590_ahorro_de_energia_del_fuego"
 character = "c03038590"
 tags = ["wall", "beast"]
 
-# Erik Strongarm: Sortilegio del viento — Tormenta-family technique power of every teammate +8 %
+# Erik Strongarm: Sortilegio del viento — Tornado Catch power +5 % per Wind-element teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03038630_sortilegio_del_viento"
-blocks = ["ie3_family_whirlwinds", "ie3_techniquepower_team_8", "ie3_card_c03038630"]
+blocks = ["ie3_count_wind_team_max3", "ie3_move_whk00100", "ie3_techniquepower_self_5", "ie3_card_c03038630"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5478,10 +5478,10 @@ passive = "c03037240_cierre_final_del_bosque"
 character = "c03037240"
 tags = ["speedster", "wall"]
 
-# Rick Shaw: Voltereta de la montaña — Espada-family technique power of every teammate +8 %
+# Rick Shaw: Voltereta de la montaña — his block power +3 % per «Acróbata» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03037330_voltereta_de_la_montana"
-blocks = ["ie3_family_legendaryweapons", "ie3_techniquepower_team_8", "ie3_card_c03037330"]
+blocks = ["ie3_count_acrobat_team_max3", "ie3_techniquepower_self_block_3", "ie3_card_c03037330"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5506,10 +5506,10 @@ passive = "c03037350_bastion_de_la_roca"
 character = "c03037350"
 tags = ["wall", "trickster"]
 
-# Paddy Filler: Obús del bosque — Estrella-family technique power +10 % (his own moves)
+# Paddy Filler: Obús del bosque — Multiple-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03037390_obus_del_bosque"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_self_10", "ie3_card_c03037390"]
+blocks = ["ie3_family_multiple", "ie3_techniquepower_self_10", "ie3_card_c03037390"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5562,10 +5562,10 @@ passive = "c03037470_fintas_del_bosque"
 character = "c03037470"
 tags = ["trickster", "wall"]
 
-# Gustav Weathervane: Muralla del viento — Tormenta-family technique power +10 % (his own moves)
+# Gustav Weathervane: Muralla del viento — Whirlwind Force power +15 % in his own half
 [[VRFW.Passive]]
 name = "c03037520_muralla_del_viento"
-blocks = ["ie3_family_whirlwinds", "ie3_techniquepower_self_10", "ie3_card_c03037520"]
+blocks = ["ie3_zone_own_half", "ie3_move_whd00500", "ie3_techniquepower_self_15", "ie3_card_c03037520"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5590,10 +5590,10 @@ passive = "c03037570_fiereza_del_viento"
 character = "c03037570"
 tags = ["beast", "wall"]
 
-# Lenton Gouger: Presagio del fuego — Demonio-family technique power of every teammate +8 %
+# Lenton Gouger: Presagio del fuego — opponents' tension gain −5 % in the last third of each half
 [[VRFW.Passive]]
 name = "c03037590_presagio_del_fuego"
-blocks = ["ie3_family_majingiant", "ie3_techniquepower_team_8", "ie3_card_c03037590"]
+blocks = ["ie3_clock_last_third", "ie3_tensiongain_opponents_minus5", "ie3_card_c03037590"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5716,10 +5716,10 @@ passive = "c03037860_eco_de_la_montana"
 character = "c03037860"
 tags = ["wall", "mystic"]
 
-# Levi Atherton: Pirueta de la brisa — Estrella-family technique power of every teammate +8 %
+# Levi Atherton: Pirueta de la brisa — Acrobat Bomber power +12 % from set pieces (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c03037890_pirueta_de_la_brisa"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_team_8", "ie3_card_c03037890"]
+blocks = ["ie3_own_set_piece", "ie3_move_whs00520", "ie3_techniquepower_team_12", "ie3_card_c03037890"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5870,10 +5870,10 @@ passive = "c03038270_treta_de_la_brisa"
 character = "c03038270"
 tags = ["wall", "trickster"]
 
-# Monarch Rome: Cerrojo de la brisa — Cielo-family technique power +10 % (his own moves)
+# Monarch Rome: Cerrojo de la brisa — Triangle-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03038400_cerrojo_de_la_brisa"
-blocks = ["ie3_family_divinepower", "ie3_techniquepower_self_10", "ie3_card_c03038400"]
+blocks = ["ie3_family_triangle", "ie3_techniquepower_self_10", "ie3_card_c03038400"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6052,10 +6052,10 @@ passive = "c03038980_calculo_del_follaje"
 character = "c03038980"
 tags = ["brain", "wall"]
 
-# Nick Pincher: Gracia de la roca — Sombra-family technique power of every teammate +8 %
+# Nick Pincher: Gracia de la roca — his physical +3 % per «Divino» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03038990_gracia_de_la_roca"
-blocks = ["ie3_family_illusions", "ie3_techniquepower_team_8", "ie3_card_c03038990"]
+blocks = ["ie3_count_divine_team_max3", "ie3_stat_self_physical_3", "ie3_card_c03038990"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6150,10 +6150,10 @@ passive = "c03039170_furia_del_viento"
 character = "c03039170"
 tags = ["beast", "wall"]
 
-# Dirk Byker: Niebla del viento — Trueno-family technique power of every teammate +8 %
+# Dirk Byker: Niebla del viento — opponents' technique −3 % within 6 m of him
 [[VRFW.Passive]]
 name = "c03039200_niebla_del_viento"
-blocks = ["ie3_family_inazumapower", "ie3_techniquepower_team_8", "ie3_card_c03039200"]
+blocks = ["ie3_near_6m", "ie3_stat_opponents_technique_minus3", "ie3_card_c03039200"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6976,10 +6976,10 @@ passive = "c03038340_relampago_del_bosque"
 character = "c03038340"
 tags = ["brain", "speedster"]
 
-# BA Branssen: Voltereta del fuego — Luna-family technique power of every teammate +8 %
+# BA Branssen: Voltereta del fuego — his dribble power +3 % per «Acróbata» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03038350_voltereta_del_fuego"
-blocks = ["ie3_family_eventhorizon", "ie3_techniquepower_team_8", "ie3_card_c03038350"]
+blocks = ["ie3_count_acrobat_team_max3", "ie3_techniquepower_self_dribble_3", "ie3_card_c03038350"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -7578,10 +7578,10 @@ passive = "c03036500_empuje_final_del_fuego"
 character = "c03036500"
 tags = ["striker", "brain"]
 
-# Bob Jobbe: Ráfaga de la montaña — Ave-family technique power +10 % (his own moves)
+# Bob Jobbe: Ráfaga de la montaña — Tarzan Kick power +15 % while a «Bestia» teammate holds the ball
 [[VRFW.Passive]]
 name = "c03036540_rafaga_de_la_montana"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_self_10", "ie3_card_c03036540"]
+blocks = ["ie3_holder_beast_team", "ie3_move_whs00330", "ie3_techniquepower_self_15", "ie3_card_c03036540"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -7662,10 +7662,10 @@ passive = "c03036650_rafaga_de_la_roca"
 character = "c03036650"
 tags = ["striker", "trickster"]
 
-# Bernadette Stoker: Remate de la brasa — Pegaso-family technique power +10 % (his own moves)
+# Bernadette Stoker: Remate de la brasa — his shoot power +3 % per Fire-element teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03036710_remate_de_la_brasa"
-blocks = ["ie3_family_pegasus", "ie3_techniquepower_self_10", "ie3_card_c03036710"]
+blocks = ["ie3_count_fire_team_max3", "ie3_techniquepower_self_shoot_3", "ie3_card_c03036710"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -7861,7 +7861,7 @@ tags = ["striker", "acrobat"]
 # May Jarrett: Ráfaga del bosque — Fénix-family technique power +10 % (his own moves)
 [[VRFW.Passive]]
 name = "c03037020_rafaga_del_bosque"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_self_10", "ie3_card_c03037020"]
+blocks = ["ie3_family_phoenix", "ie3_techniquepower_self_10", "ie3_card_c03037020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -8138,10 +8138,10 @@ passive = "c03037500_pies_ligeros_del_fuego"
 character = "c03037500"
 tags = ["striker", "mystic"]
 
-# Adam Montayne: Sed de la roca — Roca-family technique power +10 % (his own moves)
+# Adam Montayne: Sed de la roca — his kick +5 % while his team is behind
 [[VRFW.Passive]]
 name = "c03037550_sed_de_la_roca"
-blocks = ["ie3_family_earthshaker", "ie3_techniquepower_self_10", "ie3_card_c03037550"]
+blocks = ["ie3_score_trailing", "ie3_stat_self_kick_5", "ie3_card_c03037550"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -8222,10 +8222,10 @@ passive = "c03037770_trueno_del_viento"
 character = "c03037770"
 tags = ["striker", "cannon"]
 
-# Zip Windrush: Sentencia del viento — Muro-family technique power of every teammate +8 %
+# Zip Windrush: Sentencia del viento — Odin Sword power +20 % in extra time and the PK-out
 [[VRFW.Passive]]
 name = "c03037790_sentencia_del_viento"
-blocks = ["ie3_family_greatwalls", "ie3_techniquepower_team_8", "ie3_card_c03037790"]
+blocks = ["ie3_half_3_4_5", "ie3_move_whs01070", "ie3_techniquepower_self_20", "ie3_card_c03037790"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -8320,10 +8320,10 @@ passive = "c03037940_fintas_del_viento"
 character = "c03037940"
 tags = ["striker", "trickster"]
 
-# Jacko Lenton: Ráfaga de la brasa — Demonio-family technique power +10 % (his own moves)
+# Jacko Lenton: Ráfaga de la brasa — each shot he starts: his technique +3 % (max 3, 60 s each)
 [[VRFW.Passive]]
 name = "c03037950_rafaga_de_la_brasa"
-blocks = ["ie3_family_majingiant", "ie3_techniquepower_self_10", "ie3_card_c03037950"]
+blocks = ["ie3_when_shot_start_by_self", "ie3_stack_max3_60s", "ie3_stat_self_technique_3", "ie3_card_c03037950"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -8516,10 +8516,10 @@ passive = "c03038320_embestida_del_bosque"
 character = "c03038320"
 tags = ["striker", "beast"]
 
-# Fabrice Soffner: Cañonazo del fuego — Hielo-family technique power +10 % (his own moves)
+# Fabrice Soffner: Cañonazo del fuego — his long-shot power +4 % per «Cañonero» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c03038360_canonazo_del_fuego"
-blocks = ["ie3_family_northernice", "ie3_techniquepower_self_10", "ie3_card_c03038360"]
+blocks = ["ie3_count_cannon_team_max3", "ie3_techniquepower_self_long_shoot_4", "ie3_card_c03038360"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -8740,10 +8740,10 @@ passive = "c03038820_descarga_del_fuego"
 character = "c03038820"
 tags = ["striker", "cannon"]
 
-# Mykerinos Menkh: Artillería de la roca — Tigre-family technique power +10 % (his own moves)
+# Mykerinos Menkh: Artillería de la roca — Power Shot power +15 % from set pieces
 [[VRFW.Passive]]
 name = "c03038830_artilleria_de_la_roca"
-blocks = ["ie3_family_beasts", "ie3_techniquepower_self_10", "ie3_card_c03038830"]
+blocks = ["ie3_own_set_piece", "ie3_techniquepower_self_shoot_15", "ie3_card_c03038830"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -8838,10 +8838,10 @@ passive = "c03039030_fuerza_del_duelo_de_la_espesura"
 character = "c03039030"
 tags = ["striker", "cannon"]
 
-# Scott Amundsen: Voltereta de la brasa — Ave-family technique power of every teammate +8 %
+# Scott Amundsen: Voltereta de la brasa — Back Tornado power +15 % while his team is level
 [[VRFW.Passive]]
 name = "c03039090_voltereta_de_la_brasa"
-blocks = ["ie3_family_legendarybirds", "ie3_techniquepower_team_8", "ie3_card_c03039090"]
+blocks = ["ie3_score_level", "ie3_move_whs00320", "ie3_techniquepower_self_15", "ie3_card_c03039090"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]

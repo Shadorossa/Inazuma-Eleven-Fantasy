@@ -31,18 +31,6 @@ zh_hans = "率领俱乐部征战超级联赛、各联赛与足球边境大赛。
 zh_hant = "率領俱樂部征戰超級聯賽、各聯賽與足球邊境大賽。"
 
 # the career's one season
-[[row]]
-id = "CareerMode.Season"
-es = "Temporada de carrera"
-en = "Career season"
-fr = "Saison de carrière"
-de = "Karrieresaison"
-it = "Stagione carriera"
-pt = "Época de carreira"
-ja = "キャリアシーズン"
-zh_hans = "生涯赛季"
-zh_hant = "生涯賽季"
-
 # no club found: the source mod is missing
 [[row]]
 id = "CareerMode.NeedsBattleBayDeluxe"
@@ -70,18 +58,6 @@ zh_hans = "{1}联赛"
 zh_hant = "{1}聯賽"
 
 # home: continue the career
-[[row]]
-id = "CareerMode.Continue"
-es = "Continuar"
-en = "Continue"
-fr = "Continuer"
-de = "Fortsetzen"
-it = "Continua"
-pt = "Continuar"
-ja = "つづきから"
-zh_hans = "继续"
-zh_hant = "繼續"
-
 # home: start a new career
 [[row]]
 id = "CareerMode.NewCareer"
@@ -96,83 +72,11 @@ zh_hans = "新生涯"
 zh_hant = "新生涯"
 
 # home: back to the title
-[[row]]
-id = "CareerMode.Exit"
-es = "Salir"
-en = "Exit"
-fr = "Quitter"
-de = "Verlassen"
-it = "Esci"
-pt = "Sair"
-ja = "やめる"
-zh_hans = "退出"
-zh_hant = "退出"
-
 # the career panel's title
-[[row]]
-id = "CareerMode.YourCareer"
-es = "Tu carrera"
-en = "Your career"
-fr = "Ta carrière"
-de = "Deine Karriere"
-it = "La tua carriera"
-pt = "A tua carreira"
-ja = "あなたのキャリア"
-zh_hans = "你的生涯"
-zh_hant = "你的生涯"
-
 # home without a career, line 1
-[[row]]
-id = "CareerMode.Intro1"
-es = "Elige un club; cada jugador existe una sola vez en tu carrera."
-en = "Pick a club; every player exists only once in your career."
-fr = "Choisis un club ; chaque joueur n'existe qu'une fois dans ta carrière."
-de = "Wähle einen Verein; jeder Spieler gibt es nur einmal in deiner Karriere."
-it = "Scegli un club; ogni giocatore esiste una sola volta nella carriera."
-pt = "Escolhe um clube; cada jogador existe só uma vez na tua carreira."
-ja = "クラブを選ぼう。選手はキャリアの中でひとりずつしか存在しません。"
-zh_hans = "选择一支俱乐部；每名球员在生涯中只存在一次。"
-zh_hant = "選擇一支俱樂部；每名球員在生涯中只存在一次。"
-
 # home without a career, line 2
-[[row]]
-id = "CareerMode.Intro2"
-es = "SuperLiga: todos los clubes, sistema suizo; pasan los mejores."
-en = "SuperLiga: every club, Swiss system; the best go on."
-fr = "SuperLigue : tous les clubs, système suisse ; les meilleurs passent."
-de = "SuperLiga: alle Vereine, Schweizer System; die Besten kommen weiter."
-it = "SuperLega: tutti i club, sistema svizzero; passano i migliori."
-pt = "SuperLiga: todos os clubes, sistema suíço; passam os melhores."
-ja = "スーパーリーグ：全クラブのスイス式。上位が勝ち抜けます。"
-zh_hans = "超级联赛：全部俱乐部，瑞士制；成绩最好的晋级。"
-zh_hant = "超級聯賽：全部俱樂部，瑞士制；成績最好的晉級。"
-
 # home without a career, line 3
-[[row]]
-id = "CareerMode.Intro3"
-es = "Un sorteo con bombos reparte los clasificados en ligas."
-en = "A draw with pots deals the qualified clubs into leagues."
-fr = "Un tirage avec des chapeaux répartit les qualifiés en ligues."
-de = "Eine Auslosung mit Töpfen verteilt die Qualifizierten auf Ligen."
-it = "Un sorteggio con le urne divide le qualificate in campionati."
-pt = "Um sorteio com potes reparte os apurados pelas ligas."
-ja = "ポット抽選で勝ち抜けたクラブを各リーグに振り分けます。"
-zh_hans = "通过分档抽签将晋级俱乐部分入各联赛。"
-zh_hant = "透過分檔抽籤將晉級俱樂部分入各聯賽。"
-
 # home without a career, line 4
-[[row]]
-id = "CareerMode.Intro4"
-es = "Los mejores de cada liga juegan el Fútbol Frontier."
-en = "The best of each league play the Football Frontier."
-fr = "Les meilleurs de chaque ligue jouent le Football Frontier."
-de = "Die Besten jeder Liga spielen den Football Frontier."
-it = "I migliori di ogni campionato giocano il Football Frontier."
-pt = "Os melhores de cada liga jogam o Futebol Frontier."
-ja = "各リーグの上位がフットボールフロンティアに挑みます。"
-zh_hans = "各联赛的佼佼者参加足球边境大赛。"
-zh_hant = "各聯賽的佼佼者參加足球邊境大賽。"
-
 # the start window's title
 [[row]]
 id = "CareerMode.StartTitle"
@@ -213,31 +117,7 @@ zh_hans = "超级联赛 {1}支俱乐部・{2}轮"
 zh_hant = "超級聯賽 {1}支俱樂部・{2}輪"
 
 # the replace window, line 1
-[[row]]
-id = "CareerMode.ReplaceLine1"
-es = "Una carrera nueva sustituye a la actual."
-en = "A new career replaces the current one."
-fr = "Une nouvelle carrière remplace l'actuelle."
-de = "Eine neue Karriere ersetzt die aktuelle."
-it = "Una nuova carriera sostituisce quella attuale."
-pt = "Uma nova carreira substitui a atual."
-ja = "新しいキャリアは今のキャリアと入れ替わります。"
-zh_hans = "新生涯将取代当前生涯。"
-zh_hant = "新生涯將取代當前生涯。"
-
 # the replace window, line 2
-[[row]]
-id = "CareerMode.ReplaceLine2"
-es = "La actual se guarda aparte al empezar la nueva."
-en = "The current one is set aside when the new one starts."
-fr = "L'actuelle est mise de côté quand la nouvelle commence."
-de = "Die aktuelle wird beim Start der neuen beiseitegelegt."
-it = "Quella attuale viene messa da parte all'inizio della nuova."
-pt = "A atual é guardada à parte quando a nova começa."
-ja = "新しいキャリアを始めると、今のキャリアは別に保管されます。"
-zh_hans = "开始新生涯时，当前生涯会另行保存。"
-zh_hant = "開始新生涯時，當前生涯會另行保存。"
-
 # hub page
 [[row]]
 id = "CareerMode.NextMatch"
@@ -875,18 +755,18 @@ ja = "ベンチ"
 zh_hans = "替补"
 zh_hant = "替補"
 
-# footer: change the hub tab
+# squad: a player of the starting places (the row's tag under «Titulares · Banquillo»; a bench player shows Bench)
 [[row]]
-id = "CareerMode.KeyTab"
-es = "L1/R1: Sección"
-en = "L1/R1: Section"
-fr = "L1/R1 : Section"
-de = "L1/R1: Bereich"
-it = "L1/R1: Sezione"
-pt = "L1/R1: Secção"
-ja = "L1/R1：切り替え"
-zh_hans = "L1/R1：切换"
-zh_hant = "L1/R1：切換"
+id = "CareerMode.Starter"
+es = "Titular"
+en = "Starter"
+fr = "Titulaire"
+de = "Startelf"
+it = "Titolare"
+pt = "Titular"
+ja = "スタメン"
+zh_hans = "首发"
+zh_hant = "首發"
 
 # footer: change the club
 [[row]]
@@ -913,19 +793,6 @@ pt = "Esq./Dir.: Liga"
 ja = "左右：リーグ"
 zh_hans = "左右：联赛"
 zh_hant = "左右：聯賽"
-
-# footer: change the page with up / down
-[[row]]
-id = "CareerMode.KeyPageUpDown"
-es = "Arriba/Abajo: Página"
-en = "Up/Down: Page"
-fr = "Haut/Bas : Page"
-de = "Hoch/Runter: Seite"
-it = "Su/Giù: Pagina"
-pt = "Cima/Baixo: Página"
-ja = "上下：ページ"
-zh_hans = "上下：翻页"
-zh_hant = "上下：翻頁"
 
 # club pick group: the game
 [[row]]
@@ -1177,15 +1044,15 @@ zh_hant = "超級聯賽 第{1}輪"
 # calendar row: {1} = round
 [[row]]
 id = "CareerMode.RoundSuperLigaShort"
-es = "SL J{1}"
-en = "SL R{1}"
-fr = "SL J{1}"
-de = "SL R{1}"
-it = "SL G{1}"
-pt = "SL J{1}"
-ja = "SL 第{1}節"
-zh_hans = "超 第{1}轮"
-zh_hant = "超 第{1}輪"
+es = "J{1}"
+en = "R{1}"
+fr = "J{1}"
+de = "R{1}"
+it = "G{1}"
+pt = "J{1}"
+ja = "第{1}節"
+zh_hans = "第{1}轮"
+zh_hant = "第{1}輪"
 
 # {1} = matchday
 [[row]]
@@ -1203,15 +1070,15 @@ zh_hant = "聯賽 第{1}輪"
 # calendar row: {1} = matchday
 [[row]]
 id = "CareerMode.RoundLeagueShort"
-es = "Liga J{1}"
-en = "Lg MD{1}"
-fr = "Lg J{1}"
-de = "Liga ST{1}"
-it = "Camp G{1}"
-pt = "Liga J{1}"
-ja = "リーグ 第{1}節"
-zh_hans = "联 第{1}轮"
-zh_hant = "聯 第{1}輪"
+es = "J{1}"
+en = "MD{1}"
+fr = "J{1}"
+de = "ST{1}"
+it = "G{1}"
+pt = "J{1}"
+ja = "第{1}節"
+zh_hans = "第{1}轮"
+zh_hant = "第{1}輪"
 
 # Football Frontier round
 [[row]]
@@ -1356,31 +1223,31 @@ ja = "(PK)"
 zh_hans = "(点球)"
 zh_hant = "(點球)"
 
-# the next match: play it
+# the next match: the «Jugar» button
 [[row]]
-id = "CareerMode.PlayKey"
-es = "A  Jugar"
-en = "A  Play"
-fr = "A  Jouer"
-de = "A  Spielen"
-it = "A  Gioca"
-pt = "A  Jogar"
-ja = "A  試合開始"
-zh_hans = "A  开始比赛"
-zh_hant = "A  開始比賽"
+id = "CareerMode.Play"
+es = "Jugar"
+en = "Play"
+fr = "Jouer"
+de = "Spielen"
+it = "Gioca"
+pt = "Jogar"
+ja = "試合開始"
+zh_hans = "开始比赛"
+zh_hant = "開始比賽"
 
-# the next match: simulate it
+# the next match: the «Simular» button
 [[row]]
-id = "CareerMode.SimKey"
-es = "Y  Simular"
-en = "Y  Simulate"
-fr = "Y  Simuler"
-de = "Y  Simulieren"
-it = "Y  Simula"
-pt = "Y  Simular"
-ja = "Y  シミュレート"
-zh_hans = "Y  模拟"
-zh_hant = "Y  模擬"
+id = "CareerMode.Simulate"
+es = "Simular"
+en = "Simulate"
+fr = "Simuler"
+de = "Simulieren"
+it = "Simula"
+pt = "Simular"
+ja = "シミュレート"
+zh_hans = "模拟"
+zh_hant = "模擬"
 
 # footer: simulate the match
 [[row]]
@@ -1397,16 +1264,16 @@ zh_hant = "Y：模擬"
 
 # a round without the club's match: simulate it
 [[row]]
-id = "CareerMode.SimRoundKey"
-es = "A  Simular jornada"
-en = "A  Simulate round"
-fr = "A  Simuler la journée"
-de = "A  Runde simulieren"
-it = "A  Simula giornata"
-pt = "A  Simular jornada"
-ja = "A  この節を進める"
-zh_hans = "A  模拟本轮"
-zh_hant = "A  模擬本輪"
+id = "CareerMode.SimulateRound"
+es = "Simular jornada"
+en = "Simulate round"
+fr = "Simuler la journée"
+de = "Runde simulieren"
+it = "Simula giornata"
+pt = "Simular jornada"
+ja = "この節を進める"
+zh_hans = "模拟本轮"
+zh_hant = "模擬本輪"
 
 # the club no longer plays this competition
 [[row]]
@@ -1462,16 +1329,16 @@ zh_hant = "你的俱樂部排名第{1}：躋身{2}支晉級球隊。"
 
 # open the draw of the leagues
 [[row]]
-id = "CareerMode.DrawKey"
-es = "A  Ver el sorteo"
-en = "A  See the draw"
-fr = "A  Voir le tirage"
-de = "A  Zur Auslosung"
-it = "A  Vedi il sorteggio"
-pt = "A  Ver o sorteio"
-ja = "A  抽選を見る"
-zh_hans = "A  查看抽签"
-zh_hant = "A  查看抽籤"
+id = "CareerMode.DrawShow"
+es = "Ver el sorteo"
+en = "See the draw"
+fr = "Voir le tirage"
+de = "Zur Auslosung"
+it = "Vedi il sorteggio"
+pt = "Ver o sorteio"
+ja = "抽選を見る"
+zh_hans = "查看抽签"
+zh_hant = "查看抽籤"
 
 # {1} = pot number
 [[row]]
@@ -1696,16 +1563,16 @@ zh_hant = "足球邊境大賽冠軍"
 
 # start the next season
 [[row]]
-id = "CareerMode.NextSeasonKey"
-es = "A  Siguiente temporada"
-en = "A  Next season"
-fr = "A  Saison suivante"
-de = "A  Nächste Saison"
-it = "A  Prossima stagione"
-pt = "A  Próxima época"
-ja = "A  次のシーズンへ"
-zh_hans = "A  下个赛季"
-zh_hant = "A  下個賽季"
+id = "CareerMode.NextSeason"
+es = "Siguiente temporada"
+en = "Next season"
+fr = "Saison suivante"
+de = "Nächste Saison"
+it = "Prossima stagione"
+pt = "Próxima época"
+ja = "次のシーズンへ"
+zh_hans = "下个赛季"
+zh_hant = "下個賽季"
 
 # {1} = round, {2} = rounds
 [[row]]
@@ -1836,19 +1703,6 @@ pt = "Futebol Frontier"
 ja = "フロンティア出場"
 zh_hans = "边境大赛资格"
 zh_hant = "邊境大賽資格"
-
-# key hint: left / right change the competition
-[[row]]
-id = "CareerMode.KeyCompetition"
-es = "Izq/Der: Competición"
-en = "Left/Right: Competition"
-fr = "Gauche/Droite : Compétition"
-de = "Links/Rechts: Wettbewerb"
-it = "Sx/Dx: Competizione"
-pt = "Esq/Dir: Competição"
-ja = "左右：大会"
-zh_hans = "左右：赛事"
-zh_hant = "左右：賽事"
 
 # competition: the Fútbol Frontier's knockout
 [[row]]
@@ -2373,15 +2227,158 @@ zh_hant = "本月無比賽"
 # footer: change the month with the arrows
 [[row]]
 id = "CareerMode.KeyMonth"
-es = "Flechas: Mes"
-en = "Arrows: Month"
-fr = "Flèches : Mois"
-de = "Pfeile: Monat"
-it = "Frecce: Mese"
-pt = "Setas: Mês"
-ja = "十字キー：月"
-zh_hans = "方向键：月份"
-zh_hant = "方向鍵：月份"
+es = "RS: Mes"
+en = "RS: Month"
+fr = "RS : Mois"
+de = "RS: Monat"
+it = "RS: Mese"
+pt = "RS: Mês"
+ja = "RS：月"
+zh_hans = "RS：月份"
+zh_hant = "RS：月份"
+
+[[row]]
+id = "CareerMode.KeyCalDay"
+es = "A: Avanzar hasta el día"
+en = "A: Advance to the day"
+fr = "A : Avancer jusqu'au jour"
+de = "A: Bis zum Tag vorspulen"
+it = "A: Avanza fino al giorno"
+pt = "A: Avançar até o dia"
+ja = "A：この日まで進む"
+zh_hans = "A：推进到该日"
+zh_hant = "A：推進到該日"
+
+[[row]]
+id = "CareerMode.CalWalkTitle"
+es = "Avanzar días"
+en = "Advance days"
+fr = "Avancer les jours"
+de = "Tage vorspulen"
+it = "Avanza i giorni"
+pt = "Avançar dias"
+ja = "日付を進める"
+zh_hans = "推进日期"
+zh_hant = "推進日期"
+
+[[row]]
+id = "CareerMode.CalWalkAsk"
+es = "¿Avanzar hasta el {1}?"
+en = "Advance to {1}?"
+fr = "Avancer jusqu'au {1} ?"
+de = "Bis {1} vorspulen?"
+it = "Avanzare fino a {1}?"
+pt = "Avançar até {1}?"
+ja = "{1}まで進めますか？"
+zh_hans = "推进到{1}吗？"
+zh_hant = "推進到{1}嗎？"
+
+[[row]]
+id = "CareerMode.CalWalkStops"
+es = "Se para antes si llega una oferta, cambia el mercado o hay partido."
+en = "It stops earlier on an offer, a window change or a match day."
+fr = "Arrêt plus tôt en cas d'offre, de mercato ou de match."
+de = "Stoppt früher bei Angebot, Transferfenster oder Spieltag."
+it = "Si ferma prima con un'offerta, il mercato o una partita."
+pt = "Para antes com uma oferta, mudança de mercado ou jogo."
+ja = "オファー、移籍期間の変化、試合日で途中で止まります。"
+zh_hans = "遇到报价、转会窗变化或比赛日会提前停止。"
+zh_hant = "遇到報價、轉會窗變化或比賽日會提前停止。"
+
+[[row]]
+id = "CareerMode.CalDayGone"
+es = "Ese día ya ha pasado."
+en = "That day has already gone by."
+fr = "Ce jour est déjà passé."
+de = "Dieser Tag ist schon vorbei."
+it = "Quel giorno è già passato."
+pt = "Esse dia já passou."
+ja = "その日はもう過ぎています。"
+zh_hans = "那一天已经过去了。"
+zh_hant = "那一天已經過去了。"
+
+[[row]]
+id = "CareerMode.CalDayToday"
+es = "Ese día es hoy."
+en = "That day is today."
+fr = "Ce jour est aujourd'hui."
+de = "Dieser Tag ist heute."
+it = "Quel giorno è oggi."
+pt = "Esse dia é hoje."
+ja = "その日は今日です。"
+zh_hans = "那一天就是今天。"
+zh_hant = "那一天就是今天。"
+
+[[row]]
+id = "CareerMode.CalNoWalk"
+es = "Ahora no se pueden avanzar días: sigue desde Inicio."
+en = "No days can be advanced now: carry on from Home."
+fr = "Impossible d'avancer les jours : continue depuis l'Accueil."
+de = "Jetzt kann nicht vorgespult werden: weiter auf der Startseite."
+it = "Ora non si possono avanzare i giorni: continua dalla Home."
+pt = "Agora não é possível avançar dias: continua no Início."
+ja = "今は日付を進められません。ホームから進めてください。"
+zh_hans = "现在无法推进日期：请在首页继续。"
+zh_hant = "現在無法推進日期：請在首頁繼續。"
+[[row]]
+id = "CareerMode.CalWalkHere"
+es = "Avanzar hasta aquí"
+en = "Advance to here"
+fr = "Avancer jusqu'ici"
+de = "Bis hierher vorspulen"
+it = "Avanza fino a qui"
+pt = "Avançar até aqui"
+ja = "ここまで進む"
+zh_hans = "推进到这里"
+zh_hant = "推進到這裡"
+
+[[row]]
+id = "CareerMode.CalNoEvents"
+es = "Sin eventos"
+en = "Nothing on this day"
+fr = "Aucun événement"
+de = "Keine Termine"
+it = "Nessun evento"
+pt = "Sem eventos"
+ja = "予定なし"
+zh_hans = "无事件"
+zh_hant = "無事件"
+
+[[row]]
+id = "CareerMode.CalTomorrow"
+es = "Mañana"
+en = "Tomorrow"
+fr = "Demain"
+de = "Morgen"
+it = "Domani"
+pt = "Amanhã"
+ja = "明日"
+zh_hans = "明天"
+zh_hant = "明天"
+
+[[row]]
+id = "CareerMode.CalInDays"
+es = "Dentro de {1} días"
+en = "In {1} days"
+fr = "Dans {1} jours"
+de = "In {1} Tagen"
+it = "Tra {1} giorni"
+pt = "Daqui a {1} dias"
+ja = "{1}日後"
+zh_hans = "{1}天后"
+zh_hant = "{1}天後"
+
+[[row]]
+id = "CareerMode.CalPast"
+es = "Ya ha pasado"
+en = "Already gone by"
+fr = "Déjà passé"
+de = "Schon vorbei"
+it = "Già passato"
+pt = "Já passou"
+ja = "過ぎた日"
+zh_hans = "已经过去"
+zh_hant = "已經過去"
 
 # World Cup round: a group matchday ({1})
 [[row]]
@@ -2399,15 +2396,15 @@ zh_hant = "世界盃·小組賽第{1}輪"
 # World Cup round, short: a group matchday ({1})
 [[row]]
 id = "CareerMode.WorldCupGroupShort"
-es = "MUN J{1}"
-en = "WC MD{1}"
-fr = "CdM J{1}"
-de = "WM {1}."
-it = "MOND G{1}"
-pt = "MUN J{1}"
-ja = "W杯 第{1}節"
-zh_hans = "世界杯 {1}"
-zh_hant = "世界盃 {1}"
+es = "J{1}"
+en = "MD{1}"
+fr = "J{1}"
+de = "{1}."
+it = "G{1}"
+pt = "J{1}"
+ja = "第{1}節"
+zh_hans = "{1}"
+zh_hant = "{1}"
 
 # World Cup knockout round
 [[row]]
@@ -2425,15 +2422,15 @@ zh_hant = "世界盃·32強"
 # World Cup knockout round, short
 [[row]]
 id = "CareerMode.WorldCupRound32Short"
-es = "MUN 1/16"
-en = "WC R32"
-fr = "CdM 1/16"
-de = "WM 1/16"
-it = "MOND 1/16"
-pt = "MUN 1/16"
-ja = "W杯 32強"
-zh_hans = "世界杯 32强"
-zh_hant = "世界盃 32強"
+es = "1/16"
+en = "R32"
+fr = "1/16"
+de = "1/16"
+it = "1/16"
+pt = "1/16"
+ja = "32強"
+zh_hans = "32强"
+zh_hant = "32強"
 
 # World Cup knockout round
 [[row]]
@@ -2451,15 +2448,15 @@ zh_hant = "世界盃·16強"
 # World Cup knockout round, short
 [[row]]
 id = "CareerMode.WorldCupRound16Short"
-es = "MUN 1/8"
-en = "WC R16"
-fr = "CdM 1/8"
-de = "WM 1/8"
-it = "MOND 1/8"
-pt = "MUN 1/8"
-ja = "W杯 16強"
-zh_hans = "世界杯 16强"
-zh_hant = "世界盃 16強"
+es = "1/8"
+en = "R16"
+fr = "1/8"
+de = "1/8"
+it = "1/8"
+pt = "1/8"
+ja = "16強"
+zh_hans = "16强"
+zh_hant = "16強"
 
 # World Cup knockout round
 [[row]]
@@ -2477,15 +2474,15 @@ zh_hant = "世界盃·八強賽"
 # World Cup knockout round, short
 [[row]]
 id = "CareerMode.WorldCupQuarterShort"
-es = "MUN 1/4"
-en = "WC QF"
-fr = "CdM 1/4"
-de = "WM VF"
-it = "MOND 1/4"
-pt = "MUN 1/4"
-ja = "W杯 準々決勝"
-zh_hans = "世界杯 1/4"
-zh_hant = "世界盃 八強"
+es = "1/4"
+en = "QF"
+fr = "1/4"
+de = "VF"
+it = "1/4"
+pt = "1/4"
+ja = "準々決勝"
+zh_hans = "1/4"
+zh_hant = "八強"
 
 # World Cup knockout round
 [[row]]
@@ -2503,15 +2500,15 @@ zh_hant = "世界盃·準決賽"
 # World Cup knockout round, short
 [[row]]
 id = "CareerMode.WorldCupSemiShort"
-es = "MUN Semi"
-en = "WC SF"
-fr = "CdM 1/2"
-de = "WM HF"
-it = "MOND Semi"
-pt = "MUN Meia"
-ja = "W杯 準決勝"
-zh_hans = "世界杯 半决赛"
-zh_hant = "世界盃 準決賽"
+es = "Semi"
+en = "SF"
+fr = "1/2"
+de = "HF"
+it = "Semi"
+pt = "Meia"
+ja = "準決勝"
+zh_hans = "半决赛"
+zh_hant = "準決賽"
 
 # World Cup knockout round
 [[row]]
@@ -2529,15 +2526,15 @@ zh_hant = "世界盃·決賽"
 # World Cup knockout round, short
 [[row]]
 id = "CareerMode.WorldCupFinalShort"
-es = "MUN Final"
-en = "WC Final"
-fr = "CdM Finale"
-de = "WM Finale"
-it = "MOND Finale"
-pt = "MUN Final"
-ja = "W杯 決勝"
-zh_hans = "世界杯 决赛"
-zh_hant = "世界盃 決賽"
+es = "Final"
+en = "Final"
+fr = "Finale"
+de = "Finale"
+it = "Finale"
+pt = "Final"
+ja = "決勝"
+zh_hans = "决赛"
+zh_hant = "決賽"
 
 # standings title: a World Cup group ({1} its letter)
 [[row]]
@@ -2619,16 +2616,16 @@ zh_hant = "選出你的{1}人名單。"
 
 # Inicio: the key that opens the call-up
 [[row]]
-id = "CareerMode.WorldCupPickKey"
-es = "A  Convocatoria"
-en = "A  Call-up"
-fr = "A  Sélection"
-de = "A  Kader"
-it = "A  Convocazioni"
-pt = "A  Convocatória"
-ja = "A  メンバー選考"
-zh_hans = "A  选拔名单"
-zh_hant = "A  選拔名單"
+id = "CareerMode.WorldCupPick"
+es = "Convocatoria"
+en = "Call-up"
+fr = "Sélection"
+de = "Kader"
+it = "Convocazioni"
+pt = "Convocatória"
+ja = "メンバー選考"
+zh_hans = "选拔名单"
+zh_hant = "選拔名單"
 
 # call-up page title ({1} the national side)
 [[row]]
@@ -2786,6 +2783,19 @@ ja = "{1}は売却を拒否：{2}人では人数が足りなくなる。"
 zh_hans = "{1}拒绝出售：只有{2}名球员，阵容会不足。"
 zh_hant = "{1}拒絕出售：只有{2}名球員，陣容會不足。"
 
+# hub tab: the club's call-up (the players its matches take, a squad larger than a match takes)
+[[row]]
+id = "CareerMode.TabCallUp"
+es = "Convocatoria"
+en = "Call-up"
+fr = "Convocation"
+de = "Aufgebot"
+it = "Convocazione"
+pt = "Convocatória"
+ja = "招集"
+zh_hans = "征召"
+zh_hant = "徵召"
+
 # squad tab key hint: the club's call-up for its matches (a squad larger than a match takes)
 [[row]]
 id = "CareerMode.KeyCallUp"
@@ -2798,3 +2808,5386 @@ pt = "A: Convocatória"
 ja = "A：招集"
 zh_hans = "A：征召"
 zh_hant = "A：徵召"
+
+# squad tab key hint: the game's team screen for the club (formation, starters and bench, player pages)
+[[row]]
+id = "CareerMode.KeyTeamDock"
+es = "A: Plantilla de equipo"
+en = "A: Team squad"
+fr = "A : Effectif de l'équipe"
+de = "A: Mannschaftskader"
+it = "A: Rosa della squadra"
+pt = "A: Plantel da equipa"
+ja = "A：チームメンバー"
+zh_hans = "A：球队阵容"
+zh_hant = "A：球隊陣容"
+
+# «Inicio» / «Competición»: a club's place and points in its table
+[[row]]
+id = "CareerMode.RankShort"
+es = "{1}.º · {2} pts"
+en = "{1}. · {2} pts"
+fr = "{1}e · {2} pts"
+de = "{1}. · {2} Pkt."
+it = "{1}º · {2} pt"
+pt = "{1}.º · {2} pts"
+ja = "{1}位 · {2}pt"
+zh_hans = "第{1}名 · {2}分"
+zh_hant = "第{1}名 · {2}分"
+
+# «Calendario»: between the two crests of a match not played yet
+[[row]]
+id = "CareerMode.Versus"
+es = "VS"
+en = "VS"
+fr = "VS"
+de = "VS"
+it = "VS"
+pt = "VS"
+ja = "VS"
+zh_hans = "VS"
+zh_hant = "VS"
+
+# «Competición»: the title of the table's zones
+[[row]]
+id = "CareerMode.Zones"
+es = "Clasificación"
+en = "Qualification"
+fr = "Qualification"
+de = "Qualifikation"
+it = "Qualificazione"
+pt = "Qualificação"
+ja = "勝ち抜け"
+zh_hans = "晋级区"
+zh_hant = "晉級區"
+
+# «Competición»: a zone of the table: places {1} to {2}, what they reach {3}
+[[row]]
+id = "CareerMode.ZoneRange"
+es = "{1}.º-{2}.º: {3}"
+en = "{1}-{2}: {3}"
+fr = "{1}e-{2}e : {3}"
+de = "{1}.-{2}.: {3}"
+it = "{1}º-{2}º: {3}"
+pt = "{1}.º-{2}.º: {3}"
+ja = "{1}～{2}位：{3}"
+zh_hans = "第{1}～{2}名：{3}"
+zh_hant = "第{1}～{2}名：{3}"
+
+# «Competición»: the header after the competition's name: the last round played
+[[row]]
+id = "CareerMode.AfterRound"
+es = "Jornada {1}"
+en = "Round {1}"
+fr = "Journée {1}"
+de = "Spieltag {1}"
+it = "Giornata {1}"
+pt = "Jornada {1}"
+ja = "第{1}節"
+zh_hans = "第{1}轮"
+zh_hant = "第{1}輪"
+
+# hub tab: the transfer market
+[[row]]
+id = "CareerMode.TabMarket"
+es = "Mercado"
+en = "Market"
+fr = "Mercato"
+de = "Transfermarkt"
+it = "Mercato"
+pt = "Mercado"
+ja = "移籍市場"
+zh_hans = "转会市场"
+zh_hant = "轉會市場"
+
+# market bar: the window is closed, {1} = the day the next one opens
+[[row]]
+id = "CareerMode.MarketClosedOpens"
+es = "Mercado cerrado · abre {1}"
+en = "Window closed · opens {1}"
+fr = "Mercato fermé · ouvre le {1}"
+de = "Transferfenster zu · ab {1}"
+it = "Mercato chiuso · apre il {1}"
+pt = "Mercado fechado · abre a {1}"
+ja = "移籍期間外・{1}から"
+zh_hans = "转会窗口关闭 · {1}开放"
+zh_hant = "轉會窗口關閉 · {1}開放"
+
+# market bar: the club's money
+[[row]]
+id = "CareerMode.MarketBudget"
+es = "Presupuesto"
+en = "Budget"
+fr = "Budget"
+de = "Budget"
+it = "Budget"
+pt = "Orçamento"
+ja = "予算"
+zh_hans = "预算"
+zh_hant = "預算"
+
+# market filter: every position
+[[row]]
+id = "CareerMode.PosAll"
+es = "Todos"
+en = "All"
+fr = "Tous"
+de = "Alle"
+it = "Tutti"
+pt = "Todos"
+ja = "全て"
+zh_hans = "全部"
+zh_hant = "全部"
+
+# market column
+[[row]]
+id = "CareerMode.ColClub"
+es = "Club"
+en = "Club"
+fr = "Club"
+de = "Verein"
+it = "Club"
+pt = "Clube"
+ja = "クラブ"
+zh_hans = "俱乐部"
+zh_hant = "俱樂部"
+
+# market column: the player's rating
+[[row]]
+id = "CareerMode.ColRatingShort"
+es = "Val."
+en = "Rtg."
+fr = "Note"
+de = "Wert."
+it = "Val."
+pt = "Aval."
+ja = "評価"
+zh_hans = "评分"
+zh_hant = "評分"
+
+# market column: the asking price
+[[row]]
+id = "CareerMode.ColPrice"
+es = "Precio"
+en = "Price"
+fr = "Prix"
+de = "Preis"
+it = "Prezzo"
+pt = "Preço"
+ja = "価格"
+zh_hans = "价格"
+zh_hant = "價格"
+
+# market column: the amount offered
+[[row]]
+id = "CareerMode.ColOffer"
+es = "Oferta"
+en = "Offer"
+fr = "Offre"
+de = "Angebot"
+it = "Offerta"
+pt = "Oferta"
+ja = "提示額"
+zh_hans = "报价"
+zh_hant = "報價"
+
+# market column: market value
+[[row]]
+id = "CareerMode.ColValue"
+es = "Valor"
+en = "Value"
+fr = "Valeur"
+de = "Marktwert"
+it = "Valore"
+pt = "Valor"
+ja = "市場価値"
+zh_hans = "身价"
+zh_hant = "身價"
+
+# market: a player of no club
+[[row]]
+# the market: a player of no club who plays for a national side
+id = "CareerMode.MarketOther"
+es = "Otro"
+en = "Other"
+fr = "Autre"
+de = "Andere"
+it = "Altro"
+pt = "Outro"
+ja = "その他"
+zh_hans = "其他"
+zh_hant = "其他"
+
+[[row]]
+id = "CareerMode.MarketFree"
+es = "Libre"
+en = "Free agent"
+fr = "Libre"
+de = "Vereinslos"
+it = "Svincolato"
+pt = "Livre"
+ja = "フリー"
+zh_hans = "自由球员"
+zh_hant = "自由球員"
+
+# market: an empty list
+[[row]]
+id = "CareerMode.MarketEmpty"
+es = "No hay jugadores aquí"
+en = "No players here"
+fr = "Aucun joueur ici"
+de = "Keine Spieler hier"
+it = "Nessun giocatore qui"
+pt = "Nenhum jogador aqui"
+ja = "選手がいません"
+zh_hans = "这里没有球员"
+zh_hant = "這裡沒有球員"
+
+# player card: market value
+[[row]]
+id = "CareerMode.MarketValue"
+es = "Valor"
+en = "Value"
+fr = "Valeur"
+de = "Wert"
+it = "Valore"
+pt = "Valor"
+ja = "価値"
+zh_hans = "身价"
+zh_hant = "身價"
+
+# player card: the price his club asks
+[[row]]
+id = "CareerMode.MarketAsk"
+es = "Precio"
+en = "Price"
+fr = "Prix"
+de = "Preis"
+it = "Prezzo"
+pt = "Preço"
+ja = "価格"
+zh_hans = "价格"
+zh_hant = "價格"
+
+# player card: a free player's signing fee
+[[row]]
+id = "CareerMode.MarketFee"
+es = "Coste"
+en = "Fee"
+fr = "Prime"
+de = "Handgeld"
+it = "Costo"
+pt = "Custo"
+ja = "契約金"
+zh_hans = "签约费"
+zh_hant = "簽約費"
+
+# player card: the money left after the signing
+[[row]]
+id = "CareerMode.MarketAfter"
+es = "Tras fichar"
+en = "After signing"
+fr = "Après signature"
+de = "Danach"
+it = "Dopo l'acquisto"
+pt = "Após contratar"
+ja = "獲得後"
+zh_hans = "签约后"
+zh_hant = "簽約後"
+
+# player card: squad size, {1} = players, {2} = the cap
+[[row]]
+id = "CareerMode.MarketSquadLine"
+es = "Plantilla: {1} / {2}"
+en = "Squad: {1} / {2}"
+fr = "Effectif : {1} / {2}"
+de = "Kader: {1} / {2}"
+it = "Rosa: {1} / {2}"
+pt = "Plantel: {1} / {2}"
+ja = "メンバー：{1} / {2}"
+zh_hans = "阵容：{1} / {2}"
+zh_hant = "陣容：{1} / {2}"
+
+# market key: offer the asking price
+[[row]]
+id = "CareerMode.KeyOffer"
+es = "A: Ofertar"
+en = "A: Make offer"
+fr = "A : Faire une offre"
+de = "A: Angebot"
+it = "A: Fai un'offerta"
+pt = "A: Fazer oferta"
+ja = "A：オファー"
+zh_hans = "A：报价"
+zh_hant = "A：報價"
+
+# market key: the game's player page
+[[row]]
+id = "CareerMode.KeyViewPlayer"
+es = "Y: Ver jugador"
+en = "Y: View player"
+fr = "Y : Voir le joueur"
+de = "Y: Spieler ansehen"
+it = "Y: Vedi giocatore"
+pt = "Y: Ver jogador"
+ja = "Y：選手を見る"
+zh_hans = "Y：查看球员"
+zh_hant = "Y：查看球員"
+
+# market key: the position filter (left / right)
+[[row]]
+id = "CareerMode.KeyPosition"
+es = "←→: Posición"
+en = "←→: Position"
+fr = "←→ : Poste"
+de = "←→: Position"
+it = "←→: Ruolo"
+pt = "←→: Posição"
+ja = "←→：ポジション"
+zh_hans = "←→：位置"
+zh_hant = "←→：位置"
+
+# market key: accept the offer
+[[row]]
+id = "CareerMode.KeyAcceptOffer"
+es = "A: Aceptar oferta"
+en = "A: Accept offer"
+fr = "A : Accepter l'offre"
+de = "A: Annehmen"
+it = "A: Accetta offerta"
+pt = "A: Aceitar oferta"
+ja = "A：受ける"
+zh_hans = "A：接受报价"
+zh_hant = "A：接受報價"
+
+# market key: refuse the offer
+[[row]]
+id = "CareerMode.KeyRefuseOffer"
+es = "Y: Rechazar"
+en = "Y: Refuse"
+fr = "Y : Refuser"
+de = "Y: Ablehnen"
+it = "Y: Rifiuta"
+pt = "Y: Recusar"
+ja = "Y：断る"
+zh_hans = "Y：拒绝"
+zh_hant = "Y：拒絕"
+
+# buy dialog title
+[[row]]
+id = "CareerMode.KeyOfferTitle"
+es = "Ofertar"
+en = "Make an offer"
+fr = "Faire une offre"
+de = "Angebot machen"
+it = "Fai un'offerta"
+pt = "Fazer oferta"
+ja = "オファー"
+zh_hans = "报价"
+zh_hant = "報價"
+
+# buy dialog: {1} = player, {2} = price
+[[row]]
+id = "CareerMode.BuyLine1"
+es = "¿Ofertar {2} por {1}?"
+en = "Offer {2} for {1}?"
+fr = "Offrir {2} pour {1} ?"
+de = "{2} für {1} bieten?"
+it = "Offrire {2} per {1}?"
+pt = "Oferecer {2} por {1}?"
+ja = "{1}に{2}を提示しますか？"
+zh_hans = "为{1}报价{2}？"
+zh_hant = "為{1}報價{2}？"
+
+# buy dialog: {1} = the money left
+[[row]]
+id = "CareerMode.BuyLine2"
+es = "Te quedarán {1}"
+en = "You will have {1} left"
+fr = "Il vous restera {1}"
+de = "Danach bleiben {1}"
+it = "Ti resteranno {1}"
+pt = "Ficarás com {1}"
+ja = "残り予算：{1}"
+zh_hans = "剩余预算：{1}"
+zh_hant = "剩餘預算：{1}"
+
+# offer dialog title
+[[row]]
+id = "CareerMode.AcceptOfferTitle"
+es = "Aceptar oferta"
+en = "Accept offer"
+fr = "Accepter l'offre"
+de = "Angebot annehmen"
+it = "Accetta offerta"
+pt = "Aceitar oferta"
+ja = "オファーを受ける"
+zh_hans = "接受报价"
+zh_hant = "接受報價"
+
+# offer dialog: {1} = bidding club, {2} = amount, {3} = player
+[[row]]
+id = "CareerMode.AcceptLine1"
+es = "{1} ofrece {2} por {3}"
+en = "{1} offer {2} for {3}"
+fr = "{1} offre {2} pour {3}"
+de = "{1} bietet {2} für {3}"
+it = "{1} offre {2} per {3}"
+pt = "{1} oferece {2} por {3}"
+ja = "{1}が{3}に{2}を提示"
+zh_hans = "{1}为{3}报价{2}"
+zh_hant = "{1}為{3}報價{2}"
+
+# market refusal: the squad is at the cap
+[[row]]
+id = "CareerMode.MarketSquadFull"
+es = "Tu plantilla está completa: vende antes de fichar"
+en = "Your squad is full: sell before signing"
+fr = "Effectif complet : vendez avant de recruter"
+de = "Kader voll: erst verkaufen"
+it = "Rosa al completo: vendi prima di ingaggiare"
+pt = "Plantel completo: vende antes de contratar"
+ja = "メンバーが満員です。先に放出してください"
+zh_hans = "阵容已满：请先出售"
+zh_hant = "陣容已滿：請先出售"
+
+[[row]]
+id = "CareerMode.MarketBidderFull"
+es = "El club comprador tiene la plantilla completa: la oferta se retira"
+en = "The bidding club's squad is full: the offer is withdrawn"
+fr = "L'effectif du club acheteur est complet : l'offre est retirée"
+de = "Der Kader des bietenden Vereins ist voll: Angebot zurückgezogen"
+it = "La rosa del club acquirente è al completo: l'offerta è ritirata"
+pt = "O plantel do clube comprador está completo: a proposta foi retirada"
+ja = "買い手クラブのメンバーが満員のため、オファーは取り下げられました"
+zh_hans = "买方俱乐部阵容已满：报价已撤回"
+zh_hant = "買方俱樂部陣容已滿：報價已撤回"
+
+# market refusal: not enough money
+[[row]]
+id = "CareerMode.MarketNoMoney"
+es = "No tienes presupuesto suficiente"
+en = "Not enough budget"
+fr = "Budget insuffisant"
+de = "Budget reicht nicht"
+it = "Budget insufficiente"
+pt = "Orçamento insuficiente"
+ja = "予算が足りません"
+zh_hans = "预算不足"
+zh_hant = "預算不足"
+
+# market refusal: the bidding club has no money left
+[[row]]
+id = "CareerMode.MarketBidderNoMoney"
+es = "El club ofertante ya no tiene dinero"
+en = "The bidding club has no money left"
+fr = "Le club offrant n'a plus d'argent"
+de = "Dem bietenden Verein fehlt das Geld"
+it = "Il club offerente non ha più soldi"
+pt = "O clube ofertante já não tem dinheiro"
+ja = "オファー元に資金がありません"
+zh_hans = "报价俱乐部资金不足"
+zh_hant = "報價俱樂部資金不足"
+
+# market refusal: no transfer window today
+[[row]]
+id = "CareerMode.MarketClosed"
+es = "El mercado está cerrado"
+en = "The transfer window is closed"
+fr = "Le mercato est fermé"
+de = "Das Transferfenster ist zu"
+it = "Il mercato è chiuso"
+pt = "O mercado está fechado"
+ja = "移籍期間外です"
+zh_hans = "转会窗口已关闭"
+zh_hant = "轉會窗口已關閉"
+
+# market refusal: any other reason
+[[row]]
+id = "CareerMode.MarketRefused"
+es = "No se puede hacer ahora"
+en = "Not possible now"
+fr = "Impossible pour l'instant"
+de = "Jetzt nicht möglich"
+it = "Non è possibile ora"
+pt = "Não é possível agora"
+ja = "今はできません"
+zh_hans = "现在无法进行"
+zh_hant = "現在無法進行"
+
+# money of the mode, {1} = the amount with its separators, {2} = the currency's name (the game item of config.toml
+# [market] currency_item)
+[[row]]
+id = "CareerMode.Money"
+es = "{1} {2}"
+en = "{1} {2}"
+fr = "{1} {2}"
+de = "{1} {2}"
+it = "{1} {2}"
+pt = "{1} {2}"
+ja = "{1}{2}"
+zh_hans = "{1}{2}"
+zh_hant = "{1}{2}"
+
+# the thousands separator of money
+[[row]]
+id = "CareerMode.ThousandsSep"
+es = "."
+en = ","
+fr = " "
+de = "."
+it = "."
+pt = "."
+ja = ","
+zh_hans = ","
+zh_hant = ","
+
+# the careers page: its title
+[[row]]
+id = "CareerMode.YourCareers"
+es = "Tus carreras"
+en = "Your careers"
+fr = "Tes carrières"
+de = "Deine Karrieren"
+it = "Le tue carriere"
+pt = "As tuas carreiras"
+ja = "キャリア一覧"
+zh_hans = "你的生涯"
+zh_hant = "你的生涯"
+
+# the careers page: the note (save slot, careers in use / careers)
+[[row]]
+id = "CareerMode.CareersNote"
+es = "Ranura {1} · Carreras {2}/{3}"
+en = "Slot {1} · Careers {2}/{3}"
+fr = "Emplacement {1} · {2}/{3}"
+de = "Platz {1} · Karrieren {2}/{3}"
+it = "Slot {1} · Carriere {2}/{3}"
+pt = "Ranhura {1} · Carreiras {2}/{3}"
+ja = "スロット{1} · キャリア {2}/{3}"
+zh_hans = "存档位{1} · 生涯 {2}/{3}"
+zh_hant = "存檔位{1} · 生涯 {2}/{3}"
+
+# a career card's title
+[[row]]
+id = "CareerMode.CareerN"
+es = "Carrera {1}"
+en = "Career {1}"
+fr = "Carrière {1}"
+de = "Karriere {1}"
+it = "Carriera {1}"
+pt = "Carreira {1}"
+ja = "キャリア{1}"
+zh_hans = "生涯{1}"
+zh_hant = "生涯{1}"
+
+# an empty career card
+[[row]]
+id = "CareerMode.SlotFree"
+es = "Ranura {1} libre"
+en = "Slot {1} free"
+fr = "Emplacement {1} libre"
+de = "Platz {1} frei"
+it = "Slot {1} libero"
+pt = "Ranhura {1} livre"
+ja = "スロット{1} 空き"
+zh_hans = "空位{1}"
+zh_hant = "空位{1}"
+
+# a career card: the club's place
+[[row]]
+id = "CareerMode.SlotPlace"
+es = "Posición"
+en = "Position"
+fr = "Position"
+de = "Platz"
+it = "Posizione"
+pt = "Posição"
+ja = "順位"
+zh_hans = "排名"
+zh_hant = "排名"
+
+# a career card: the career's date when last played
+[[row]]
+id = "CareerMode.SlotLast"
+es = "Última vez"
+en = "Last played"
+fr = "Dernière fois"
+de = "Zuletzt"
+it = "Ultima volta"
+pt = "Última vez"
+ja = "最終プレイ"
+zh_hans = "上次"
+zh_hant = "上次"
+
+# the careers page keys
+[[row]]
+id = "CareerMode.KeyContinue"
+es = "A: Continuar"
+en = "A: Continue"
+fr = "A : Continuer"
+de = "A: Fortsetzen"
+it = "A: Continua"
+pt = "A: Continuar"
+ja = "A：つづける"
+zh_hans = "A：继续"
+zh_hant = "A：繼續"
+
+# the careers page keys
+[[row]]
+id = "CareerMode.KeyNewCareer"
+es = "A: Nueva carrera"
+en = "A: New career"
+fr = "A : Nouvelle carrière"
+de = "A: Neue Karriere"
+it = "A: Nuova carriera"
+pt = "A: Nova carreira"
+ja = "A：新しいキャリア"
+zh_hans = "A：新生涯"
+zh_hant = "A：新生涯"
+
+# the careers page keys
+[[row]]
+id = "CareerMode.KeyDelete"
+es = "X: Borrar"
+en = "X: Delete"
+fr = "X : Supprimer"
+de = "X: Löschen"
+it = "X: Elimina"
+pt = "X: Apagar"
+ja = "X：削除"
+zh_hans = "X：删除"
+zh_hant = "X：刪除"
+
+# the careers page keys
+[[row]]
+id = "CareerMode.KeyExit"
+es = "B: Salir"
+en = "B: Exit"
+fr = "B : Quitter"
+de = "B: Verlassen"
+it = "B: Esci"
+pt = "B: Sair"
+ja = "B：もどる"
+zh_hans = "B：退出"
+zh_hant = "B：退出"
+
+# deleting a career: the window's title
+[[row]]
+id = "CareerMode.DeleteTitle"
+es = "Borrar la carrera {1}"
+en = "Delete career {1}"
+fr = "Supprimer la carrière {1}"
+de = "Karriere {1} löschen"
+it = "Elimina la carriera {1}"
+pt = "Apagar a carreira {1}"
+ja = "キャリア{1}を削除"
+zh_hans = "删除生涯{1}"
+zh_hant = "刪除生涯{1}"
+
+# deleting a career: the warning
+[[row]]
+id = "CareerMode.DeleteLine"
+es = "La carrera se borra de esta ranura."
+en = "The career is removed from this slot."
+fr = "La carrière est retirée de cet emplacement."
+de = "Die Karriere wird von diesem Platz entfernt."
+it = "La carriera viene tolta da questo slot."
+pt = "A carreira é retirada desta ranhura."
+ja = "このスロットからキャリアを削除します。"
+zh_hans = "将从此位置删除该生涯。"
+zh_hant = "將從此位置刪除該生涯。"
+
+# deleting a career: the buttons
+[[row]]
+id = "CareerMode.Delete"
+es = "Borrar"
+en = "Delete"
+fr = "Supprimer"
+de = "Löschen"
+it = "Elimina"
+pt = "Apagar"
+ja = "削除"
+zh_hans = "删除"
+zh_hant = "刪除"
+
+# deleting a career: the buttons
+[[row]]
+id = "CareerMode.Cancel"
+es = "Cancelar"
+en = "Cancel"
+fr = "Annuler"
+de = "Abbrechen"
+it = "Annulla"
+pt = "Cancelar"
+ja = "キャンセル"
+zh_hans = "取消"
+zh_hant = "取消"
+
+# a news card's side column: the club the player joins
+[[row]]
+id = "CareerMode.NewsIn"
+es = "Llega"
+en = "Joins"
+fr = "Arrive"
+de = "Kommt"
+it = "Arriva"
+pt = "Chega"
+ja = "加入"
+zh_hans = "加盟"
+zh_hant = "加盟"
+
+# a news card's side column: the club the player leaves
+[[row]]
+id = "CareerMode.NewsOut"
+es = "Sale"
+en = "Leaves"
+fr = "Part"
+de = "Geht"
+it = "Lascia"
+pt = "Sai"
+ja = "退団"
+zh_hans = "离队"
+zh_hant = "離隊"
+
+# «Inicio» key hint: the news feed
+[[row]]
+id = "CareerMode.KeyNews"
+es = "RS: Noticias"
+en = "RS: News"
+fr = "RS : Actualités"
+de = "RS: News"
+it = "RS: Notizie"
+pt = "RS: Notícias"
+ja = "RS：ニュース"
+zh_hans = "RS：新闻"
+zh_hant = "RS：新聞"
+
+# ---- «Noticias» (scripts\lib\news.lua): tags, headlines and texts of the news cards ----
+
+# the news feed: tags of the news cards
+[[row]]
+id = "CareerMode.NewsTagSigning"
+es = "Fichaje"
+en = "Signing"
+fr = "Recrue"
+de = "Neuzugang"
+it = "Acquisto"
+pt = "Contratação"
+ja = "加入"
+zh_hans = "签约"
+zh_hant = "簽約"
+
+[[row]]
+id = "CareerMode.NewsTagSale"
+es = "Venta"
+en = "Sale"
+fr = "Vente"
+de = "Verkauf"
+it = "Cessione"
+pt = "Venda"
+ja = "移籍"
+zh_hans = "出售"
+zh_hant = "出售"
+
+[[row]]
+id = "CareerMode.NewsTagTransfer"
+es = "Mercado"
+en = "Transfer"
+fr = "Transfert"
+de = "Transfer"
+it = "Mercato"
+pt = "Transferência"
+ja = "移籍情報"
+zh_hans = "转会"
+zh_hant = "轉會"
+
+[[row]]
+id = "CareerMode.NewsTagOffer"
+es = "Oferta"
+en = "Offer"
+fr = "Offre"
+de = "Angebot"
+it = "Offerta"
+pt = "Oferta"
+ja = "オファー"
+zh_hans = "报价"
+zh_hant = "報價"
+
+[[row]]
+id = "CareerMode.NewsTagResult"
+es = "Resultado"
+en = "Result"
+fr = "Résultat"
+de = "Ergebnis"
+it = "Risultato"
+pt = "Resultado"
+ja = "試合結果"
+zh_hans = "赛果"
+zh_hant = "賽果"
+
+[[row]]
+id = "CareerMode.NewsTagTable"
+es = "Clasificación"
+en = "Standings"
+fr = "Classement"
+de = "Tabelle"
+it = "Classifica"
+pt = "Classificação"
+ja = "順位"
+zh_hans = "排名"
+zh_hant = "排名"
+
+[[row]]
+id = "CareerMode.NewsTagCup"
+es = "Copa"
+en = "Cup"
+fr = "Coupe"
+de = "Pokal"
+it = "Coppa"
+pt = "Taça"
+ja = "大会"
+zh_hans = "杯赛"
+zh_hant = "盃賽"
+
+[[row]]
+id = "CareerMode.NewsTagMarket"
+es = "Mercado"
+en = "Market"
+fr = "Mercato"
+de = "Transferfenster"
+it = "Mercato"
+pt = "Mercado"
+ja = "移籍市場"
+zh_hans = "转会窗"
+zh_hant = "轉會窗"
+
+[[row]]
+id = "CareerMode.NewsTagWorldCup"
+es = "Mundial"
+en = "World Cup"
+fr = "Coupe du monde"
+de = "Weltmeisterschaft"
+it = "Mondiale"
+pt = "Mundial"
+ja = "世界大会"
+zh_hans = "世界杯"
+zh_hant = "世界盃"
+
+# headlines: {1} a player or a team, {2} a team or a competition
+[[row]]
+id = "CareerMode.NewsHeadTransfer"
+es = "¡{1} ficha por {2}!"
+en = "{1} signs for {2}!"
+fr = "{1} signe à {2} !"
+de = "{1} wechselt zu {2}!"
+it = "{1} firma per {2}!"
+pt = "{1} assina pelo {2}!"
+ja = "{1}が{2}に加入！"
+zh_hans = "{1}加盟{2}！"
+zh_hant = "{1}加盟{2}！"
+
+[[row]]
+id = "CareerMode.NewsHeadOffer"
+es = "Oferta por {1}"
+en = "An offer for {1}"
+fr = "Une offre pour {1}"
+de = "Ein Angebot für {1}"
+it = "Un'offerta per {1}"
+pt = "Uma oferta por {1}"
+ja = "{1}にオファー"
+zh_hans = "{1}收到报价"
+zh_hant = "{1}收到報價"
+
+[[row]]
+id = "CareerMode.NewsHeadWin"
+es = "Victoria ante {1}"
+en = "Win against {1}"
+fr = "Victoire contre {1}"
+de = "Sieg gegen {1}"
+it = "Vittoria contro {1}"
+pt = "Vitória sobre {1}"
+ja = "{1}に勝利"
+zh_hans = "战胜{1}"
+zh_hant = "戰勝{1}"
+
+[[row]]
+id = "CareerMode.NewsHeadDraw"
+es = "Empate ante {1}"
+en = "Draw with {1}"
+fr = "Match nul contre {1}"
+de = "Remis gegen {1}"
+it = "Pareggio con {1}"
+pt = "Empate com {1}"
+ja = "{1}と引き分け"
+zh_hans = "与{1}战平"
+zh_hant = "與{1}戰平"
+
+[[row]]
+id = "CareerMode.NewsHeadLoss"
+es = "Derrota ante {1}"
+en = "Defeat against {1}"
+fr = "Défaite contre {1}"
+de = "Niederlage gegen {1}"
+it = "Sconfitta contro {1}"
+pt = "Derrota para {1}"
+ja = "{1}に敗戦"
+zh_hans = "负于{1}"
+zh_hant = "負於{1}"
+
+[[row]]
+id = "CareerMode.NewsHeadLeader"
+es = "¡{1}, líder!"
+en = "{1} go top!"
+fr = "{1} en tête !"
+de = "{1} ist Tabellenführer!"
+it = "{1} in vetta!"
+pt = "{1} na liderança!"
+ja = "{1}が首位に！"
+zh_hans = "{1}登顶！"
+zh_hant = "{1}登頂！"
+
+[[row]]
+id = "CareerMode.NewsHeadLeadLost"
+es = "{1} pierde el liderato"
+en = "{1} lose top spot"
+fr = "{1} perd la tête"
+de = "{1} verliert die Tabellenführung"
+it = "{1} perde la vetta"
+pt = "{1} perde a liderança"
+ja = "{1}が首位陥落"
+zh_hans = "{1}失去榜首"
+zh_hant = "{1}失去榜首"
+
+[[row]]
+id = "CareerMode.NewsHeadZoneIn"
+es = "{1} entra en zona de clasificación"
+en = "{1} climb into the qualifying places"
+fr = "{1} entre dans la zone de qualification"
+de = "{1} auf einem Qualifikationsplatz"
+it = "{1} in zona qualificazione"
+pt = "{1} entra na zona de qualificação"
+ja = "{1}が出場圏内に浮上"
+zh_hans = "{1}进入晋级区"
+zh_hant = "{1}進入晉級區"
+
+[[row]]
+id = "CareerMode.NewsHeadZoneOut"
+es = "{1} sale de la zona de clasificación"
+en = "{1} drop out of the qualifying places"
+fr = "{1} sort de la zone de qualification"
+de = "{1} fällt aus den Qualifikationsplätzen"
+it = "{1} esce dalla zona qualificazione"
+pt = "{1} sai da zona de qualificação"
+ja = "{1}が出場圏外に後退"
+zh_hans = "{1}跌出晋级区"
+zh_hant = "{1}跌出晉級區"
+
+[[row]]
+id = "CareerMode.NewsHeadThrough"
+es = "{1} sigue adelante en {2}"
+en = "{1} go through in {2}"
+fr = "{1} passe un tour en {2}"
+de = "{1} kommt weiter in {2}"
+it = "{1} avanza in {2}"
+pt = "{1} avança em {2}"
+ja = "{1}が{2}で勝ち上がり"
+zh_hans = "{1}在{2}中晋级"
+zh_hant = "{1}在{2}中晉級"
+
+[[row]]
+id = "CareerMode.NewsHeadOut"
+es = "{1}, eliminado de {2}"
+en = "{1} knocked out of {2}"
+fr = "{1} éliminé de {2}"
+de = "{1} scheidet aus {2} aus"
+it = "{1} eliminato da {2}"
+pt = "{1} eliminado de {2}"
+ja = "{1}が{2}で敗退"
+zh_hans = "{1}被{2}淘汰"
+zh_hant = "{1}被{2}淘汰"
+
+[[row]]
+id = "CareerMode.NewsHeadChampion"
+es = "¡{1} gana {2}!"
+en = "{1} win {2}!"
+fr = "{1} remporte {2} !"
+de = "{1} gewinnt {2}!"
+it = "{1} vince {2}!"
+pt = "{1} vence {2}!"
+ja = "{1}が{2}優勝！"
+zh_hans = "{1}夺得{2}冠军！"
+zh_hant = "{1}奪得{2}冠軍！"
+
+[[row]]
+id = "CareerMode.NewsHeadWindowOpen"
+es = "¡Se abre el mercado de fichajes!"
+en = "The transfer window opens!"
+fr = "Le mercato ouvre !"
+de = "Das Transferfenster ist offen!"
+it = "Si apre il mercato!"
+pt = "Abre a janela de transferências!"
+ja = "移籍市場オープン！"
+zh_hans = "转会窗开启！"
+zh_hant = "轉會窗開啟！"
+
+[[row]]
+id = "CareerMode.NewsHeadWindowClose"
+es = "Se cierra el mercado de fichajes"
+en = "The transfer window closes"
+fr = "Le mercato ferme"
+de = "Das Transferfenster schließt"
+it = "Si chiude il mercato"
+pt = "Fecha a janela de transferências"
+ja = "移籍市場クローズ"
+zh_hans = "转会窗关闭"
+zh_hant = "轉會窗關閉"
+
+[[row]]
+id = "CareerMode.NewsHeadWorldCupCall"
+es = "{1} te ofrece su banquillo"
+en = "{1} offer you their bench"
+fr = "{1} t'offre son banc"
+de = "{1} bietet dir die Trainerbank an"
+it = "{1} ti offre la panchina"
+pt = "{1} oferece-te o banco"
+ja = "{1}が監督就任を打診"
+zh_hans = "{1}邀请你执教"
+zh_hant = "{1}邀請你執教"
+
+# texts under the headlines
+[[row]]
+id = "CareerMode.NewsTextTransfer"
+es = "Llega desde {1} por {2}."
+en = "He joins from {1} for {2}."
+fr = "Il arrive de {1} pour {2}."
+de = "Er kommt von {1} für {2}."
+it = "Arriva da {1} per {2}."
+pt = "Chega do {1} por {2}."
+ja = "{1}から{2}で移籍。"
+zh_hans = "以{2}从{1}转会而来。"
+zh_hant = "以{2}從{1}轉會而來。"
+
+[[row]]
+id = "CareerMode.NewsTextTransferFree"
+es = "Llega como jugador libre."
+en = "He joins on a free."
+fr = "Il arrive libre."
+de = "Er kommt ablösefrei."
+it = "Arriva a parametro zero."
+pt = "Chega a custo zero."
+ja = "フリーで加入。"
+zh_hans = "以自由身加盟。"
+zh_hant = "以自由身加盟。"
+
+[[row]]
+id = "CareerMode.NewsTextOffer"
+es = "{1} ofrece {2}. Respóndela en «Mercado»."
+en = "{1} offer {2}. Answer it on «Market»."
+fr = "{1} offre {2}. Réponds dans «Mercato»."
+de = "{1} bietet {2}. Antworte unter «Markt»."
+it = "{1} offre {2}. Rispondi in «Mercato»."
+pt = "{1} oferece {2}. Responde em «Mercado»."
+ja = "{1}が{2}を提示。「移籍市場」で返答。"
+zh_hans = "{1}出价{2}。请在「转会」中回复。"
+zh_hant = "{1}出價{2}。請在「轉會」中回覆。"
+
+[[row]]
+id = "CareerMode.NewsTextScore"
+es = "{1} {2} - {3} {4}"
+en = "{1} {2} - {3} {4}"
+fr = "{1} {2} - {3} {4}"
+de = "{1} {2} - {3} {4}"
+it = "{1} {2} - {3} {4}"
+pt = "{1} {2} - {3} {4}"
+ja = "{1} {2} - {3} {4}"
+zh_hans = "{1} {2} - {3} {4}"
+zh_hant = "{1} {2} - {3} {4}"
+
+[[row]]
+id = "CareerMode.NewsTextPlace"
+es = "Puesto {1} con {2} puntos."
+en = "Place {1} with {2} points."
+fr = "{1}e place avec {2} points."
+de = "Platz {1} mit {2} Punkten."
+it = "{1}º posto con {2} punti."
+pt = "{1}º lugar com {2} pontos."
+ja = "{1}位（勝ち点{2}）"
+zh_hans = "第{1}名，{2}分。"
+zh_hant = "第{1}名，{2}分。"
+
+[[row]]
+id = "CareerMode.NewsTextThrough"
+es = "A por la siguiente ronda."
+en = "On to the next round."
+fr = "Cap sur le tour suivant."
+de = "Auf in die nächste Runde."
+it = "Avanti al prossimo turno."
+pt = "Rumo à próxima ronda."
+ja = "次のラウンドへ。"
+zh_hans = "向下一轮进发。"
+zh_hant = "向下一輪進發。"
+
+[[row]]
+id = "CareerMode.NewsTextOut"
+es = "Se acabó el camino esta temporada."
+en = "The road ends here this season."
+fr = "Le parcours s'arrête là cette saison."
+de = "Für diese Saison ist Schluss."
+it = "Il cammino finisce qui quest'anno."
+pt = "O caminho acaba aqui esta época."
+ja = "今季の挑戦はここまで。"
+zh_hans = "本赛季征程到此为止。"
+zh_hant = "本賽季征程到此為止。"
+
+[[row]]
+id = "CareerMode.NewsTextChampion"
+es = "El título de la temporada {1} es suyo."
+en = "The season {1} title is theirs."
+fr = "Le titre de la saison {1} est à eux."
+de = "Der Titel der Saison {1} gehört ihnen."
+it = "Il titolo della stagione {1} è loro."
+pt = "O título da época {1} é deles."
+ja = "シーズン{1}のタイトルを獲得。"
+zh_hans = "第{1}赛季冠军到手。"
+zh_hant = "第{1}賽季冠軍到手。"
+
+[[row]]
+id = "CareerMode.NewsTextWindowOpen"
+es = "Abierto hasta el {1}."
+en = "Open until {1}."
+fr = "Ouvert jusqu'au {1}."
+de = "Offen bis {1}."
+it = "Aperto fino al {1}."
+pt = "Aberta até {1}."
+ja = "{1}まで。"
+zh_hans = "开放至{1}。"
+zh_hant = "開放至{1}。"
+
+[[row]]
+id = "CareerMode.NewsTextWindowClose"
+es = "Vuelve el {1}."
+en = "Back on {1}."
+fr = "Retour le {1}."
+de = "Wieder ab {1}."
+it = "Riapre il {1}."
+pt = "Volta a {1}."
+ja = "次は{1}から。"
+zh_hans = "{1}重新开启。"
+zh_hant = "{1}重新開啟。"
+
+[[row]]
+id = "CareerMode.NewsTextWindowLast"
+es = "No hay más ventanas esta temporada."
+en = "No more windows this season."
+fr = "Plus de mercato cette saison."
+de = "Keine Fenster mehr in dieser Saison."
+it = "Niente più mercato in questa stagione."
+pt = "Não há mais janelas esta época."
+ja = "今季の移籍期間は終了。"
+zh_hans = "本赛季已无转会窗。"
+zh_hant = "本賽季已無轉會窗。"
+
+[[row]]
+id = "CareerMode.NewsTextWorldCupCall"
+es = "Dirige a la selección en el Mundial."
+en = "Lead the national side at the World Cup."
+fr = "Dirige la sélection à la Coupe du monde."
+de = "Führe das Nationalteam bei der WM."
+it = "Guida la nazionale al Mondiale."
+pt = "Dirige a seleção no Mundial."
+ja = "世界大会で代表を率いよう。"
+zh_hans = "在世界杯上执教国家队。"
+zh_hant = "在世界盃上執教國家隊。"
+
+# competition names inside the headlines
+[[row]]
+id = "CareerMode.NewsCompFrontier"
+es = "el Fútbol Frontier"
+en = "the Football Frontier"
+fr = "le Football Frontier"
+de = "dem Football Frontier"
+it = "il Football Frontier"
+pt = "o Futebol Frontier"
+ja = "フットボールフロンティア"
+zh_hans = "足球边境大赛"
+zh_hant = "足球邊境大賽"
+
+[[row]]
+id = "CareerMode.NewsCompWorldCup"
+es = "el Mundial"
+en = "the World Cup"
+fr = "la Coupe du monde"
+de = "der Weltmeisterschaft"
+it = "il Mondiale"
+pt = "o Mundial"
+ja = "世界大会"
+zh_hans = "世界杯"
+zh_hant = "世界盃"
+
+# setup screen title
+[[row]]
+id = "CareerMode.SetupTitle"
+es = "Nueva carrera · Opciones"
+en = "New career · Options"
+fr = "Nouvelle carrière · Options"
+de = "Neue Karriere · Optionen"
+it = "Nuova carriera · Opzioni"
+pt = "Nova carreira · Opções"
+ja = "新しいキャリア・オプション"
+zh_hans = "新生涯 · 选项"
+zh_hant = "新生涯 · 選項"
+
+# setup screen: second step after the club pick
+[[row]]
+id = "CareerMode.SetupStep"
+es = "Paso 2 de 2"
+en = "Step 2 of 2"
+fr = "Étape 2 sur 2"
+de = "Schritt 2 von 2"
+it = "Passo 2 di 2"
+pt = "Passo 2 de 2"
+ja = "ステップ 2/2"
+zh_hans = "第 2 步，共 2 步"
+zh_hant = "第 2 步，共 2 步"
+
+# setup option: the transfer market on / off
+[[row]]
+id = "CareerMode.OptMarket"
+es = "Mercado de fichajes"
+en = "Transfer market"
+fr = "Mercato des transferts"
+de = "Transfermarkt"
+it = "Calciomercato"
+pt = "Mercado de transferências"
+ja = "移籍市場"
+zh_hans = "转会市场"
+zh_hant = "轉會市場"
+
+# setup option: extra starting money
+[[row]]
+id = "CareerMode.OptBacking"
+es = "Respaldo financiero"
+en = "Financial backing"
+fr = "Soutien financier"
+de = "Finanzspritze"
+it = "Sostegno finanziario"
+pt = "Apoio financeiro"
+ja = "資金援助"
+zh_hans = "资金支持"
+zh_hant = "資金支持"
+
+# setup option: how hard the AI clubs negotiate with the player
+[[row]]
+id = "CareerMode.OptNegotiation"
+es = "Negociación de los clubes"
+en = "Club negotiation"
+fr = "Négociation des clubs"
+de = "Verhandlung der Vereine"
+it = "Trattative dei club"
+pt = "Negociação dos clubes"
+ja = "クラブとの交渉"
+zh_hans = "俱乐部谈判"
+zh_hant = "俱樂部談判"
+
+# setup option: how often the AI clubs trade
+[[row]]
+id = "CareerMode.OptActivity"
+es = "Actividad del mercado"
+en = "Market activity"
+fr = "Activité du mercato"
+de = "Marktaktivität"
+it = "Attività di mercato"
+pt = "Atividade do mercado"
+ja = "市場の活発さ"
+zh_hans = "市场活跃度"
+zh_hant = "市場活躍度"
+
+# setup option: the board may sack the player
+[[row]]
+id = "CareerMode.OptSacking"
+es = "Despido por objetivos"
+en = "Sacked for missed objectives"
+fr = "Renvoi si objectifs manqués"
+de = "Entlassung bei verfehlten Zielen"
+it = "Esonero per obiettivi mancati"
+pt = "Demissão por objetivos"
+ja = "目標未達で解任"
+zh_hans = "未达目标解雇"
+zh_hant = "未達目標解僱"
+
+# option value
+[[row]]
+id = "CareerMode.Yes"
+es = "Sí"
+en = "Yes"
+fr = "Oui"
+de = "Ja"
+it = "Sì"
+pt = "Sim"
+ja = "あり"
+zh_hans = "是"
+zh_hant = "是"
+
+# option value
+[[row]]
+id = "CareerMode.No"
+es = "No"
+en = "No"
+fr = "Non"
+de = "Nein"
+it = "No"
+pt = "Não"
+ja = "なし"
+zh_hans = "否"
+zh_hant = "否"
+
+# negotiation preset
+[[row]]
+id = "CareerMode.NegotiationEasy"
+es = "Fácil"
+en = "Easy"
+fr = "Facile"
+de = "Leicht"
+it = "Facile"
+pt = "Fácil"
+ja = "やさしい"
+zh_hans = "简单"
+zh_hant = "簡單"
+
+# negotiation preset
+[[row]]
+id = "CareerMode.NegotiationNormal"
+es = "Normal"
+en = "Normal"
+fr = "Normale"
+de = "Normal"
+it = "Normale"
+pt = "Normal"
+ja = "ふつう"
+zh_hans = "普通"
+zh_hant = "普通"
+
+# negotiation preset
+[[row]]
+id = "CareerMode.NegotiationHard"
+es = "Difícil"
+en = "Hard"
+fr = "Difficile"
+de = "Schwer"
+it = "Difficile"
+pt = "Difícil"
+ja = "むずかしい"
+zh_hans = "困难"
+zh_hant = "困難"
+
+# market activity preset
+[[row]]
+id = "CareerMode.ActivityOff"
+es = "Ninguna"
+en = "None"
+fr = "Aucune"
+de = "Keine"
+it = "Nessuna"
+pt = "Nenhuma"
+ja = "なし"
+zh_hans = "无"
+zh_hant = "無"
+
+# market activity preset
+[[row]]
+id = "CareerMode.ActivityLow"
+es = "Baja"
+en = "Low"
+fr = "Faible"
+de = "Niedrig"
+it = "Bassa"
+pt = "Baixa"
+ja = "低い"
+zh_hans = "低"
+zh_hant = "低"
+
+# market activity preset
+[[row]]
+id = "CareerMode.ActivityNormal"
+es = "Normal"
+en = "Normal"
+fr = "Normale"
+de = "Normal"
+it = "Normale"
+pt = "Normal"
+ja = "ふつう"
+zh_hans = "普通"
+zh_hant = "普通"
+
+# market activity preset
+[[row]]
+id = "CareerMode.ActivityHigh"
+es = "Alta"
+en = "High"
+fr = "Élevée"
+de = "Hoch"
+it = "Alta"
+pt = "Alta"
+ja = "高い"
+zh_hans = "高"
+zh_hant = "高"
+
+# setup line: market on
+[[row]]
+id = "CareerMode.DescMarketOn"
+es = "Pestaña «Mercado», fichajes y ofertas en las ventanas; los clubes de la IA también fichan."
+en = "«Market» tab, signings and offers in the windows; the AI clubs trade too."
+fr = "Onglet «Mercato», recrutements et offres pendant les fenêtres ; les clubs de l'IA aussi."
+de = "Reiter «Transfermarkt», Transfers und Angebote in den Fenstern; die KI-Vereine handeln auch."
+it = "Scheda «Mercato», acquisti e offerte nelle finestre; anche i club dell'IA trattano."
+pt = "Separador «Mercado», contratações e ofertas nas janelas; os clubes da IA também."
+ja = "「移籍市場」タブ、移籍期間に獲得とオファー。CPUクラブも移籍します。"
+zh_hans = "「转会市场」标签，窗口期内签约与报价；AI俱乐部也会交易。"
+zh_hant = "「轉會市場」標籤，窗口期內簽約與報價；AI俱樂部也會交易。"
+
+# setup line: market off
+[[row]]
+id = "CareerMode.DescMarketOff"
+es = "Sin pestaña «Mercado» ni traspasos; las plantillas se quedan como al empezar."
+en = "No «Market» tab and no transfers; the squads stay as they start."
+fr = "Pas d'onglet «Mercato» ni de transferts ; les effectifs restent ceux du départ."
+de = "Kein Reiter «Transfermarkt», keine Transfers; die Kader bleiben wie zu Beginn."
+it = "Nessuna scheda «Mercato» né trasferimenti; le rose restano quelle iniziali."
+pt = "Sem separador «Mercado» nem transferências; os plantéis ficam como no início."
+ja = "「移籍市場」タブも移籍もなし。メンバーは開始時のまま。"
+zh_hans = "没有「转会市场」标签和转会；阵容保持初始状态。"
+zh_hant = "沒有「轉會市場」標籤和轉會；陣容保持初始狀態。"
+
+# setup line: backing (left / right one step, LB / RB more)
+[[row]]
+id = "CareerMode.DescBacking"
+es = "Dinero extra al empezar. Izquierda / Derecha: un paso; LB / RB: varios."
+en = "Extra money at the start. Left / Right: one step; LB / RB: several."
+fr = "Argent en plus au départ. Gauche / Droite : un cran ; LB / RB : plusieurs."
+de = "Extra Geld zum Start. Links / Rechts: ein Schritt; LB / RB: mehrere."
+it = "Soldi extra all'inizio. Sinistra / Destra: un passo; LB / RB: diversi."
+pt = "Dinheiro extra no início. Esquerda / Direita: um passo; LB / RB: vários."
+ja = "開始時の追加資金。左右：1段階、LB / RB：複数段階。"
+zh_hans = "开始时的额外资金。左/右：一档；LB / RB：多档。"
+zh_hant = "開始時的額外資金。左/右：一檔；LB / RB：多檔。"
+
+# setup line: {1} = % of the price the clubs ask the player, {2} = % of their bids for his players
+[[row]]
+id = "CareerMode.DescNegotiation"
+es = "Te piden el {1} % de su precio; sus pujas por tus jugadores, el {2} %."
+en = "They ask you {1} % of their price; their bids for your players, {2} %."
+fr = "Ils vous demandent {1} % de leur prix ; leurs offres pour vos joueurs, {2} %."
+de = "Sie verlangen {1} % ihres Preises; ihre Gebote für deine Spieler: {2} %."
+it = "Ti chiedono il {1} % del prezzo; le offerte per i tuoi giocatori, il {2} %."
+pt = "Pedem-te {1} % do preço; as ofertas pelos teus jogadores, {2} %."
+ja = "要求額は価格の{1}％、あなたの選手へのオファーは{2}％。"
+zh_hans = "向你要价为价格的{1}%；对你球员的报价为{2}%。"
+zh_hant = "向你要價為價格的{1}%；對你球員的報價為{2}%。"
+
+# setup line: {1} = AI deals per round
+[[row]]
+id = "CareerMode.DescActivity"
+es = "Hasta {1} traspasos de la IA por jornada con el mercado abierto."
+en = "Up to {1} AI transfers a round while the window is open."
+fr = "Jusqu'à {1} transferts de l'IA par journée pendant le mercato."
+de = "Bis zu {1} KI-Transfers pro Spieltag im offenen Fenster."
+it = "Fino a {1} trasferimenti dell'IA per giornata a mercato aperto."
+pt = "Até {1} transferências da IA por jornada com o mercado aberto."
+ja = "移籍期間中、CPUの移籍は1節に最大{1}件。"
+zh_hans = "转会窗口期间每轮最多{1}笔AI转会。"
+zh_hant = "轉會窗口期間每輪最多{1}筆AI轉會。"
+
+# setup line: no AI transfers
+[[row]]
+id = "CareerMode.DescActivityOff"
+es = "Los clubes de la IA no fichan ni pujan."
+en = "The AI clubs neither sign nor bid."
+fr = "Les clubs de l'IA ne recrutent pas et ne font pas d'offres."
+de = "Die KI-Vereine verpflichten und bieten nicht."
+it = "I club dell'IA non acquistano né fanno offerte."
+pt = "Os clubes da IA não contratam nem fazem ofertas."
+ja = "CPUクラブは獲得もオファーもしません。"
+zh_hans = "AI俱乐部不签约也不报价。"
+zh_hant = "AI俱樂部不簽約也不報價。"
+
+# setup line: sacking on
+[[row]]
+id = "CareerMode.DescSackingOn"
+es = "Si fallas los objetivos de la directiva al final de la temporada, te despiden."
+en = "Miss the board's objectives at the season's end and you are sacked."
+fr = "Si vous manquez les objectifs de la direction en fin de saison, vous êtes renvoyé."
+de = "Verfehlst du die Ziele des Vorstands am Saisonende, wirst du entlassen."
+it = "Se manchi gli obiettivi della società a fine stagione, vieni esonerato."
+pt = "Se falhares os objetivos da direção no fim da época, és despedido."
+ja = "シーズン終了時に目標未達なら解任されます。"
+zh_hans = "赛季结束时未达成董事会目标将被解雇。"
+zh_hant = "賽季結束時未達成董事會目標將被解僱。"
+
+# setup line: sacking off
+[[row]]
+id = "CareerMode.DescSackingOff"
+es = "La directiva solo avisa: nunca te despiden."
+en = "The board only warns you: you are never sacked."
+fr = "La direction ne fait qu'avertir : jamais de renvoi."
+de = "Der Vorstand warnt nur: keine Entlassung."
+it = "La società avvisa soltanto: nessun esonero."
+pt = "A direção só avisa: nunca és despedido."
+ja = "警告のみで、解任されることはありません。"
+zh_hans = "董事会只会警告：永不解雇。"
+zh_hant = "董事會只會警告：永不解僱。"
+
+# skill board screens inside a career: the Accept guide entry / guide line
+[[row]]
+id = "CareerMode.SkillBoardLocked"
+es = "Bloqueado por las reglas de la carrera"
+en = "Locked by the career's rules"
+fr = "Bloqué par les règles de la carrière"
+de = "Durch die Karriereregeln gesperrt"
+it = "Bloccato dalle regole della carriera"
+pt = "Bloqueado pelas regras da carreira"
+ja = "キャリアのルールで変更不可"
+zh_hans = "受生涯规则限制，无法更改"
+zh_hant = "受生涯規則限制，無法更改"
+
+# setup line: an option of the market, which is off
+[[row]]
+id = "CareerMode.DescNoMarket"
+es = "Sin mercado de fichajes: no se usa."
+en = "No transfer market: not used."
+fr = "Pas de mercato : inutilisé."
+de = "Kein Transfermarkt: ohne Wirkung."
+it = "Senza calciomercato: non usato."
+pt = "Sem mercado: não é usado."
+ja = "移籍市場なし：使用しません。"
+zh_hans = "无转会市场：不使用。"
+zh_hant = "無轉會市場：不使用。"
+
+# setup: {1} = the club's place by rating, {2} = clubs
+[[row]]
+id = "CareerMode.SetupRank"
+es = "{1}.º de {2} por valoración"
+en = "{1} of {2} by rating"
+fr = "{1}e sur {2} au classement"
+de = "{1}. von {2} nach Wertung"
+it = "{1}° di {2} per valutazione"
+pt = "{1}.º de {2} por avaliação"
+ja = "評価順 {2}中{1}位"
+zh_hans = "评分排名 {1}/{2}"
+zh_hant = "評分排名 {1}/{2}"
+
+# setup: the starting budget block
+[[row]]
+id = "CareerMode.SetupBudget"
+es = "Presupuesto inicial"
+en = "Starting budget"
+fr = "Budget de départ"
+de = "Startbudget"
+it = "Budget iniziale"
+pt = "Orçamento inicial"
+ja = "初期予算"
+zh_hans = "初始预算"
+zh_hant = "初始預算"
+
+# setup: the club's own budget
+[[row]]
+id = "CareerMode.SetupClubBudget"
+es = "Club"
+en = "Club"
+fr = "Club"
+de = "Verein"
+it = "Club"
+pt = "Clube"
+ja = "クラブ"
+zh_hans = "俱乐部"
+zh_hant = "俱樂部"
+
+# setup: club budget + backing
+[[row]]
+id = "CareerMode.SetupTotal"
+es = "Total"
+en = "Total"
+fr = "Total"
+de = "Gesamt"
+it = "Totale"
+pt = "Total"
+ja = "合計"
+zh_hans = "合计"
+zh_hant = "合計"
+
+# setup: no market, so no budget
+[[row]]
+id = "CareerMode.SetupNoMarket"
+es = "Sin mercado de fichajes: sin presupuesto; la plantilla es la del club al empezar."
+en = "No transfer market: no budget; the squad is the club's at the start."
+fr = "Pas de mercato : pas de budget ; l'effectif est celui du départ."
+de = "Kein Transfermarkt: kein Budget; der Kader ist der zu Beginn."
+it = "Senza calciomercato: nessun budget; la rosa è quella iniziale."
+pt = "Sem mercado: sem orçamento; o plantel é o do início."
+ja = "移籍市場なし：予算なし。メンバーは開始時のまま。"
+zh_hans = "无转会市场：没有预算；阵容为开始时的阵容。"
+zh_hant = "無轉會市場：沒有預算；陣容為開始時的陣容。"
+
+# setup button: start the career
+[[row]]
+id = "CareerMode.SetupStart"
+es = "Empezar carrera"
+en = "Start career"
+fr = "Commencer la carrière"
+de = "Karriere starten"
+it = "Inizia la carriera"
+pt = "Começar carreira"
+ja = "キャリア開始"
+zh_hans = "开始生涯"
+zh_hant = "開始生涯"
+
+# setup key
+[[row]]
+id = "CareerMode.KeySetupStart"
+es = "A: Empezar"
+en = "A: Start"
+fr = "A : Commencer"
+de = "A: Starten"
+it = "A: Inizia"
+pt = "A: Começar"
+ja = "A：開始"
+zh_hans = "A：开始"
+zh_hant = "A：開始"
+
+# setup key: left / right change the value
+[[row]]
+id = "CareerMode.KeySetupChange"
+es = "←→: Cambiar valor"
+en = "←→: Change value"
+fr = "←→ : Changer"
+de = "←→: Ändern"
+it = "←→: Cambia valore"
+pt = "←→: Mudar valor"
+ja = "←→：変更"
+zh_hans = "←→：更改"
+zh_hant = "←→：更改"
+
+# the board's objectives (hub, setup screen)
+[[row]]
+id = "CareerMode.BoardTitle"
+es = "Objetivos de la directiva"
+en = "Board objectives"
+fr = "Objectifs de la direction"
+de = "Ziele des Vorstands"
+it = "Obiettivi della società"
+pt = "Objetivos da direção"
+ja = "クラブの目標"
+zh_hans = "董事会目标"
+zh_hant = "董事會目標"
+
+# objective: {1} = the SuperLiga place asked
+[[row]]
+id = "CareerMode.ObjSuperLiga"
+es = "SuperLiga: top {1}"
+en = "SuperLiga: top {1}"
+fr = "SuperLiga : top {1}"
+de = "SuperLiga: Top {1}"
+it = "SuperLiga: top {1}"
+pt = "SuperLiga: top {1}"
+ja = "スーパーリーグ：{1}位以内"
+zh_hans = "超级联赛：前{1}名"
+zh_hant = "超級聯賽：前{1}名"
+
+# objective: {1} = the league place asked
+[[row]]
+id = "CareerMode.ObjLeague"
+es = "Liga: top {1}"
+en = "League: top {1}"
+fr = "Ligue : top {1}"
+de = "Liga: Top {1}"
+it = "Lega: top {1}"
+pt = "Liga: top {1}"
+ja = "リーグ：{1}位以内"
+zh_hans = "联赛：前{1}名"
+zh_hant = "聯賽：前{1}名"
+
+# objective: {1} = the Football Frontier round to reach
+[[row]]
+id = "CareerMode.ObjFrontier"
+es = "Frontier: {1}"
+en = "Frontier: {1}"
+fr = "Frontier : {1}"
+de = "Frontier: {1}"
+it = "Frontier: {1}"
+pt = "Frontier: {1}"
+ja = "フロンティア：{1}"
+zh_hans = "Frontier：{1}"
+zh_hant = "Frontier：{1}"
+
+# news tag: the board
+[[row]]
+id = "CareerMode.NewsTagBoard"
+es = "Directiva"
+en = "Board"
+fr = "Direction"
+de = "Vorstand"
+it = "Società"
+pt = "Direção"
+ja = "クラブ首脳"
+zh_hans = "董事会"
+zh_hant = "董事會"
+
+# news head: {1} = the club
+[[row]]
+id = "CareerMode.NewsHeadBoardWarning"
+es = "La directiva de {1} no está contenta"
+en = "{1}'s board is not happy"
+fr = "La direction de {1} n'est pas satisfaite"
+de = "Der Vorstand von {1} ist unzufrieden"
+it = "La società {1} non è contenta"
+pt = "A direção do {1} não está satisfeita"
+ja = "{1}の首脳陣は不満です"
+zh_hans = "{1}董事会不满意"
+zh_hant = "{1}董事會不滿意"
+
+# news: {1} = the SuperLiga place asked, {2} = the place reached
+[[row]]
+id = "CareerMode.NewsTextBoardSuperLiga"
+es = "Pedía acabar la SuperLiga entre los {1} primeros; habéis sido {2}.º."
+en = "It wanted a SuperLiga top {1}; you finished {2}."
+fr = "Elle voulait un top {1} en SuperLiga ; vous avez fini {2}e."
+de = "Er wollte die SuperLiga unter den ersten {1}; ihr wurdet {2}."
+it = "Chiedeva la SuperLiga tra i primi {1}; avete chiuso {2}°."
+pt = "Pedia o top {1} da SuperLiga; acabaram em {2}.º."
+ja = "スーパーリーグ{1}位以内が目標でしたが、{2}位でした。"
+zh_hans = "目标是超级联赛前{1}名，你们排名第{2}。"
+zh_hant = "目標是超級聯賽前{1}名，你們排名第{2}。"
+
+# news: {1} = the league place asked, {2} = the place now
+[[row]]
+id = "CareerMode.NewsTextBoardLeague"
+es = "Pide acabar la liga entre los {1} primeros; ahora vais {2}.º."
+en = "It wants a league top {1}; you are {2} now."
+fr = "Elle veut un top {1} en ligue ; vous êtes {2}e."
+de = "Er will in der Liga unter die ersten {1}; ihr seid {2}."
+it = "Chiede la lega tra i primi {1}; ora siete {2}°."
+pt = "Pede o top {1} da liga; agora estão em {2}.º."
+ja = "リーグ{1}位以内が目標ですが、現在{2}位です。"
+zh_hans = "目标是联赛前{1}名，目前排名第{2}。"
+zh_hant = "目標是聯賽前{1}名，目前排名第{2}。"
+
+# news head: {1} = the club
+[[row]]
+id = "CareerMode.NewsHeadSacked"
+es = "{1} despide a su entrenador"
+en = "{1} sack their manager"
+fr = "{1} renvoie son entraîneur"
+de = "{1} entlässt den Trainer"
+it = "{1} esonera l'allenatore"
+pt = "{1} despede o treinador"
+ja = "{1}が監督を解任"
+zh_hans = "{1}解雇主教练"
+zh_hant = "{1}解僱主教練"
+
+# news: {1} = the club
+[[row]]
+id = "CareerMode.NewsTextSacked"
+es = "La directiva de {1} no perdona los objetivos fallados."
+en = "{1}'s board does not forgive the missed objectives."
+fr = "La direction de {1} ne pardonne pas les objectifs manqués."
+de = "Der Vorstand von {1} verzeiht die verfehlten Ziele nicht."
+it = "La società {1} non perdona gli obiettivi mancati."
+pt = "A direção do {1} não perdoa os objetivos falhados."
+ja = "{1}の首脳陣は目標未達を許しませんでした。"
+zh_hans = "{1}董事会不容忍未达成的目标。"
+zh_hant = "{1}董事會不容忍未達成的目標。"
+
+# the hub's next tile: the manager was sacked
+[[row]]
+id = "CareerMode.SackedTitle"
+es = "Despedido"
+en = "Sacked"
+fr = "Renvoyé"
+de = "Entlassen"
+it = "Esonerato"
+pt = "Despedido"
+ja = "解任"
+zh_hans = "被解雇"
+zh_hant = "被解僱"
+
+# {1} = the club, {2} = the season
+[[row]]
+id = "CareerMode.SackedLine"
+es = "La directiva de {1} te ha despedido al final de la temporada {2}."
+en = "{1}'s board sacked you at the end of season {2}."
+fr = "La direction de {1} vous a renvoyé à la fin de la saison {2}."
+de = "Der Vorstand von {1} hat dich am Ende der Saison {2} entlassen."
+it = "La società {1} ti ha esonerato alla fine della stagione {2}."
+pt = "A direção do {1} despediu-te no fim da época {2}."
+ja = "シーズン{2}終了時、{1}の首脳陣はあなたを解任しました。"
+zh_hans = "{1}董事会在第{2}赛季结束时解雇了你。"
+zh_hant = "{1}董事會在第{2}賽季結束時解僱了你。"
+
+# the sacked career stays to look at
+[[row]]
+id = "CareerMode.SackedLine2"
+es = "La carrera ha terminado: puedes consultarla, pero no seguir."
+en = "The career is over: you can look at it, not go on."
+fr = "La carrière est finie : consultable, mais sans suite."
+de = "Die Karriere ist vorbei: ansehen ja, weiterspielen nein."
+it = "La carriera è finita: consultabile, ma non continua."
+pt = "A carreira acabou: podes consultá-la, mas não continuar."
+ja = "キャリアは終了しました。閲覧のみ可能です。"
+zh_hans = "生涯已结束：可以查看，但无法继续。"
+zh_hant = "生涯已結束：可以查看，但無法繼續。"
+
+# a career's phase on its slot card
+[[row]]
+id = "CareerMode.Phase_sacked"
+es = "Despedido"
+en = "Sacked"
+fr = "Renvoyé"
+de = "Entlassen"
+it = "Esonerato"
+pt = "Despedido"
+ja = "解任"
+zh_hans = "被解雇"
+zh_hant = "被解僱"
+
+# career levels (owner 2026-10-30): the player card's potential and the levels gained / lost in the last months
+[[row]]
+id = "CareerMode.LevelPotential"
+es = "Potencial: {1}"
+en = "Potential: {1}"
+fr = "Potentiel : {1}"
+de = "Potenzial: {1}"
+it = "Potenziale: {1}"
+pt = "Potencial: {1}"
+ja = "ポテンシャル: {1}"
+zh_hans = "潜力：{1}"
+zh_hant = "潛力：{1}"
+
+[[row]]
+id = "CareerMode.LevelRise"
+es = "+{1} en los últimos meses"
+en = "+{1} in recent months"
+fr = "+{1} ces derniers mois"
+de = "+{1} in den letzten Monaten"
+it = "+{1} negli ultimi mesi"
+pt = "+{1} nos últimos meses"
+ja = "ここ数か月で+{1}"
+zh_hans = "近几个月+{1}"
+zh_hant = "近幾個月+{1}"
+
+[[row]]
+id = "CareerMode.LevelFall"
+es = "-{1} en los últimos meses"
+en = "-{1} in recent months"
+fr = "-{1} ces derniers mois"
+de = "-{1} in den letzten Monaten"
+it = "-{1} negli ultimi mesi"
+pt = "-{1} nos últimos meses"
+ja = "ここ数か月で-{1}"
+zh_hans = "近几个月-{1}"
+zh_hant = "近幾個月-{1}"
+
+[[row]]
+id = "CareerMode.NewsTagSeason"
+es = "Temporada"
+en = "Season"
+fr = "Saison"
+de = "Saison"
+it = "Stagione"
+pt = "Época"
+ja = "シーズン"
+zh_hans = "赛季"
+zh_hant = "賽季"
+
+[[row]]
+id = "CareerMode.NewsTagPlayer"
+es = "Jugador"
+en = "Player"
+fr = "Joueur"
+de = "Spieler"
+it = "Giocatore"
+pt = "Jogador"
+ja = "選手"
+zh_hans = "球员"
+zh_hant = "球員"
+
+# {1} a team, {2} the season number
+[[row]]
+id = "CareerMode.NewsHeadPresent"
+es = "{1} arranca la temporada {2}"
+en = "{1} kick off season {2}"
+fr = "{1} lance la saison {2}"
+de = "{1} startet in Saison {2}"
+it = "{1} inizia la stagione {2}"
+pt = "{1} arranca a época {2}"
+ja = "{1}、シーズン{2}開幕"
+zh_hans = "{1}开启第{2}赛季"
+zh_hant = "{1}開啟第{2}賽季"
+
+# {1} the club's best player
+[[row]]
+id = "CareerMode.NewsTextPresent"
+es = "{1} es la estrella del equipo."
+en = "{1} is the team's star."
+fr = "{1} est la star de l'équipe."
+de = "{1} ist der Star des Teams."
+it = "{1} è la stella della squadra."
+pt = "{1} é a estrela da equipa."
+ja = "{1}がチームのエース。"
+zh_hans = "{1}是球队的核心。"
+zh_hant = "{1}是球隊的核心。"
+
+[[row]]
+id = "CareerMode.NewsHeadFavourite"
+es = "{1}, favorito al título"
+en = "{1}, title favourites"
+fr = "{1}, favori pour le titre"
+de = "{1}, Titelfavorit"
+it = "{1}, favorito per il titolo"
+pt = "{1}, favorito ao título"
+ja = "{1}が優勝候補"
+zh_hans = "{1}是夺冠热门"
+zh_hant = "{1}是奪冠熱門"
+
+[[row]]
+id = "CareerMode.NewsTextFavourite"
+es = "El club mejor valorado; su referente es {1}."
+en = "The best rated club; {1} leads the way."
+fr = "Le club le mieux noté ; {1} montre la voie."
+de = "Der bestbewertete Verein; {1} führt ihn an."
+it = "Il club più quotato; il leader è {1}."
+pt = "O clube mais cotado; a referência é {1}."
+ja = "最高評価のクラブ。中心は{1}。"
+zh_hans = "评分最高的俱乐部，核心是{1}。"
+zh_hant = "評分最高的俱樂部，核心是{1}。"
+
+[[row]]
+id = "CareerMode.NewsHeadBoardGoals"
+es = "La directiva de {1} marca los objetivos"
+en = "{1}'s board sets the goals"
+fr = "La direction de {1} fixe les objectifs"
+de = "Der Vorstand von {1} setzt die Ziele"
+it = "La dirigenza di {1} fissa gli obiettivi"
+pt = "A direção do {1} define os objetivos"
+ja = "{1}の首脳陣が目標を設定"
+zh_hans = "{1}管理层设定目标"
+zh_hant = "{1}管理層設定目標"
+
+[[row]]
+id = "CareerMode.NewsTextBoardGoals"
+es = "Acabar la SuperLiga entre los {1} primeros."
+en = "Finish the SuperLiga in the top {1}."
+fr = "Finir la SuperLigue dans les {1} premiers."
+de = "Die SuperLiga unter den ersten {1} beenden."
+it = "Chiudere la SuperLega tra i primi {1}."
+pt = "Acabar a SuperLiga entre os {1} primeiros."
+ja = "スーパーリーグで{1}位以内。"
+zh_hans = "超级联赛进入前{1}名。"
+zh_hant = "超級聯賽進入前{1}名。"
+
+# {1} the player of the matchday; text: {1} his club, {2} the rival
+[[row]]
+id = "CareerMode.NewsHeadPlayerOfDay"
+es = "{1}, jugador de la jornada"
+en = "{1}, player of the matchday"
+fr = "{1}, joueur de la journée"
+de = "{1}, Spieler des Spieltags"
+it = "{1}, giocatore della giornata"
+pt = "{1}, jogador da jornada"
+ja = "{1}が今節のMVP"
+zh_hans = "{1}当选本轮最佳"
+zh_hant = "{1}當選本輪最佳"
+
+[[row]]
+id = "CareerMode.NewsTextPlayerOfDay"
+es = "El mejor de {1} ante {2}."
+en = "{1}'s best against {2}."
+fr = "Le meilleur de {1} contre {2}."
+de = "Der Beste von {1} gegen {2}."
+it = "Il migliore di {1} contro {2}."
+pt = "O melhor do {1} frente ao {2}."
+ja = "{2}戦で{1}の最高評価。"
+zh_hans = "{1}对阵{2}的最佳球员。"
+zh_hant = "{1}對陣{2}的最佳球員。"
+
+# {1} the new leader of the club's table
+[[row]]
+id = "CareerMode.NewsHeadNewLeader"
+es = "{1}, nuevo líder"
+en = "{1} go top"
+fr = "{1}, nouveau leader"
+de = "{1}, neuer Tabellenführer"
+it = "{1}, nuova capolista"
+pt = "{1}, novo líder"
+ja = "{1}が首位に浮上"
+zh_hans = "{1}登上榜首"
+zh_hant = "{1}登上榜首"
+
+# the market list while the day's prices are worked out: {1} = percent done
+[[row]]
+id = "CareerMode.MarketPricing"
+es = "Calculando precios… {1} %"
+en = "Working out prices… {1} %"
+fr = "Calcul des prix… {1} %"
+de = "Preise werden berechnet … {1} %"
+it = "Calcolo dei prezzi… {1} %"
+pt = "A calcular preços… {1} %"
+ja = "価格を計算中… {1}%"
+zh_hans = "正在计算价格… {1}%"
+zh_hant = "正在計算價格… {1}%"
+
+# market column / card: the career level
+[[row]]
+id = "CareerMode.MarketLevel"
+es = "Media"
+en = "Rating"
+fr = "Note"
+de = "Wertung"
+it = "Media"
+pt = "Média"
+ja = "総合"
+zh_hans = "综合"
+zh_hant = "綜合"
+
+# market card: the last match scores
+[[row]]
+id = "CareerMode.MarketFormLast"
+es = "Forma"
+en = "Form"
+fr = "Forme"
+de = "Form"
+it = "Forma"
+pt = "Forma"
+ja = "調子"
+zh_hans = "状态"
+zh_hant = "狀態"
+
+# market card: {1} = signed percent, {2} = months
+[[row]]
+id = "CareerMode.MarketTrend"
+es = "{1} % en {2} meses"
+en = "{1} % in {2} months"
+fr = "{1} % en {2} mois"
+de = "{1} % in {2} Monaten"
+it = "{1} % in {2} mesi"
+pt = "{1} % em {2} meses"
+ja = "{2}か月で{1}%"
+zh_hans = "{2}个月 {1}%"
+zh_hant = "{2}個月 {1}%"
+
+# market list: rows {1}-{2} of {3}
+[[row]]
+id = "CareerMode.MarketRange"
+es = "{1}-{2} de {3}"
+en = "{1}-{2} of {3}"
+fr = "{1}-{2} sur {3}"
+de = "{1}-{2} von {3}"
+it = "{1}-{2} di {3}"
+pt = "{1}-{2} de {3}"
+ja = "{3}人中 {1}-{2}"
+zh_hans = "{1}-{2} / {3}"
+zh_hant = "{1}-{2} / {3}"
+
+# market filter chip
+[[row]]
+id = "CareerMode.FilterFree"
+es = "Libres"
+en = "Free agents"
+fr = "Libres"
+de = "Vereinslos"
+it = "Svincolati"
+pt = "Livres"
+ja = "フリー"
+zh_hans = "自由球员"
+zh_hant = "自由球員"
+
+# market filter chip: the club's money buys him
+[[row]]
+id = "CareerMode.FilterAffordable"
+es = "Asequibles"
+en = "Affordable"
+fr = "Abordables"
+de = "Bezahlbar"
+it = "Accessibili"
+pt = "Acessíveis"
+ja = "予算内"
+zh_hans = "买得起"
+zh_hant = "買得起"
+
+# market filter chip: by club (off)
+[[row]]
+id = "CareerMode.FilterClubOff"
+es = "Club"
+en = "Club"
+fr = "Club"
+de = "Verein"
+it = "Club"
+pt = "Clube"
+ja = "クラブ"
+zh_hans = "俱乐部"
+zh_hant = "俱樂部"
+
+# market filter chip: {1} = the club
+[[row]]
+id = "CareerMode.FilterClub"
+es = "Club: {1}"
+en = "Club: {1}"
+fr = "Club : {1}"
+de = "Verein: {1}"
+it = "Club: {1}"
+pt = "Clube: {1}"
+ja = "クラブ：{1}"
+zh_hans = "俱乐部：{1}"
+zh_hant = "俱樂部：{1}"
+
+# market order
+[[row]]
+id = "CareerMode.SortLevel"
+es = "Media"
+en = "Rating"
+fr = "Note"
+de = "Wertung"
+it = "Media"
+pt = "Média"
+ja = "総合"
+zh_hans = "综合"
+zh_hant = "綜合"
+
+# market order
+[[row]]
+id = "CareerMode.SortPrice"
+es = "Precio"
+en = "Price"
+fr = "Prix"
+de = "Preis"
+it = "Prezzo"
+pt = "Preço"
+ja = "価格"
+zh_hans = "价格"
+zh_hant = "價格"
+
+# market order
+[[row]]
+id = "CareerMode.SortValue"
+es = "Valor"
+en = "Value"
+fr = "Valeur"
+de = "Wert"
+it = "Valore"
+pt = "Valor"
+ja = "市場価値"
+zh_hans = "身价"
+zh_hant = "身價"
+
+# market order
+[[row]]
+id = "CareerMode.SortPotential"
+es = "Potencial"
+en = "Potential"
+fr = "Potentiel"
+de = "Potenzial"
+it = "Potenziale"
+pt = "Potencial"
+ja = "潜在能力"
+zh_hans = "潜力"
+zh_hant = "潛力"
+
+# market order
+[[row]]
+id = "CareerMode.SortForm"
+es = "Forma"
+en = "Form"
+fr = "Forme"
+de = "Form"
+it = "Forma"
+pt = "Forma"
+ja = "調子"
+zh_hans = "状态"
+zh_hant = "狀態"
+
+# market card: the player's role in his club
+[[row]]
+id = "CareerMode.Role_star"
+es = "Estrella del equipo"
+en = "Team star"
+fr = "Star de l'équipe"
+de = "Star des Teams"
+it = "Stella della squadra"
+pt = "Estrela da equipa"
+ja = "チームのエース"
+zh_hans = "队内球星"
+zh_hant = "隊內球星"
+
+# market card: the player's role in his club
+[[row]]
+id = "CareerMode.Role_starter"
+es = "Titular"
+en = "Starter"
+fr = "Titulaire"
+de = "Stammspieler"
+it = "Titolare"
+pt = "Titular"
+ja = "レギュラー"
+zh_hans = "主力"
+zh_hant = "主力"
+
+# market card: the player's role in his club
+[[row]]
+id = "CareerMode.Role_reserve"
+es = "Suplente"
+en = "Reserve"
+fr = "Remplaçant"
+de = "Ersatzspieler"
+it = "Riserva"
+pt = "Suplente"
+ja = "控え"
+zh_hans = "替补"
+zh_hant = "替補"
+
+# market card: no club
+[[row]]
+id = "CareerMode.Role_free"
+es = "Agente libre"
+en = "Free agent"
+fr = "Agent libre"
+de = "Vereinslos"
+it = "Svincolato"
+pt = "Jogador livre"
+ja = "フリー"
+zh_hans = "自由球员"
+zh_hant = "自由球員"
+
+# market key
+[[row]]
+id = "CareerMode.KeyFilter"
+es = "L2: Filtros"
+en = "L2: Filters"
+fr = "L2 : Filtres"
+de = "L2: Filter"
+it = "L2: Filtri"
+pt = "L2: Filtros"
+ja = "L2：絞り込み"
+zh_hans = "L2：筛选"
+zh_hant = "L2：篩選"
+
+# a list amount in millions: {1} = the number (one decimal at most)
+[[row]]
+id = "CareerMode.MoneyMillions"
+es = "{1}M"
+en = "{1}M"
+fr = "{1}M"
+de = "{1}M"
+it = "{1}M"
+pt = "{1}M"
+ja = "{1}M"
+zh_hans = "{1}M"
+zh_hant = "{1}M"
+
+# a list amount in thousands
+[[row]]
+id = "CareerMode.MoneyThousands"
+es = "{1}k"
+en = "{1}k"
+fr = "{1}k"
+de = "{1}k"
+it = "{1}k"
+pt = "{1}k"
+ja = "{1}k"
+zh_hans = "{1}k"
+zh_hant = "{1}k"
+
+# the decimal separator of shortened amounts
+[[row]]
+id = "CareerMode.DecimalSep"
+es = ","
+en = "."
+fr = ","
+de = ","
+it = ","
+pt = ","
+ja = "."
+zh_hans = "."
+zh_hant = "."
+
+# market card: no match played yet
+[[row]]
+id = "CareerMode.MarketNoMatches"
+es = "Sin partidos"
+en = "No matches"
+fr = "Aucun match"
+de = "Keine Spiele"
+it = "Nessuna partita"
+pt = "Sem jogos"
+ja = "試合なし"
+zh_hans = "暂无比赛"
+zh_hant = "暫無比賽"
+
+# hub tab bar label (short: 7 tabs share the bar)
+[[row]]
+id = "CareerMode.TabBarHome"
+es = "Inicio"
+en = "Home"
+fr = "Accueil"
+de = "Start"
+it = "Home"
+pt = "Início"
+ja = "ホーム"
+zh_hans = "首页"
+zh_hant = "首頁"
+
+# hub tab bar label (short)
+[[row]]
+id = "CareerMode.TabBarCalendar"
+es = "Fechas"
+en = "Dates"
+fr = "Dates"
+de = "Termine"
+it = "Date"
+pt = "Datas"
+ja = "日程"
+zh_hans = "赛程"
+zh_hant = "賽程"
+
+# hub tab bar label (short): the leagues and cups
+[[row]]
+id = "CareerMode.TabBarCompetition"
+es = "Torneos"
+en = "Cups"
+fr = "Tournois"
+de = "Turniere"
+it = "Tornei"
+pt = "Torneios"
+ja = "大会"
+zh_hans = "赛事"
+zh_hant = "賽事"
+
+# hub tab bar label (short)
+[[row]]
+id = "CareerMode.TabBarSquad"
+es = "Equipo"
+en = "Squad"
+fr = "Effectif"
+de = "Kader"
+it = "Rosa"
+pt = "Plantel"
+ja = "メンバー"
+zh_hans = "阵容"
+zh_hant = "陣容"
+
+# hub tab bar label (short): the club's call-up
+[[row]]
+id = "CareerMode.TabBarCallUp"
+es = "Citados"
+en = "Call-up"
+fr = "Convoc."
+de = "Aufgebot"
+it = "Convoc."
+pt = "Convoc."
+ja = "招集"
+zh_hans = "征召"
+zh_hant = "徵召"
+
+# hub tab bar label (short)
+[[row]]
+id = "CareerMode.TabBarMarket"
+es = "Mercado"
+en = "Market"
+fr = "Mercato"
+de = "Markt"
+it = "Mercato"
+pt = "Mercado"
+ja = "移籍"
+zh_hans = "转会"
+zh_hant = "轉會"
+
+# hub tab bar label (short) and the «Ajustes» page's title
+[[row]]
+id = "CareerMode.TabBarSettings"
+es = "Ajustes"
+en = "Settings"
+fr = "Réglages"
+de = "Optionen"
+it = "Opzioni"
+pt = "Ajustes"
+ja = "設定"
+zh_hans = "设置"
+zh_hant = "設定"
+
+# «Ajustes» page button: the career written now
+[[row]]
+id = "CareerMode.SaveProgress"
+es = "Guardar progreso"
+en = "Save progress"
+fr = "Sauvegarder"
+de = "Fortschritt speichern"
+it = "Salva progressi"
+pt = "Guardar progresso"
+ja = "進行状況をセーブ"
+zh_hans = "保存进度"
+zh_hant = "儲存進度"
+
+# «Ajustes» page footer
+[[row]]
+id = "CareerMode.KeySave"
+es = "A: Guardar"
+en = "A: Save"
+fr = "A : Sauvegarder"
+de = "A: Speichern"
+it = "A: Salva"
+pt = "A: Guardar"
+ja = "A：セーブ"
+zh_hans = "A：保存"
+zh_hant = "A：儲存"
+
+# «Ajustes» page: how the career is saved
+[[row]]
+id = "CareerMode.SettingsAutoSave"
+es = "La carrera se guarda sola tras cada partido y cada cambio; este botón la guarda ahora."
+en = "The career saves itself after every match and every change; this button saves it now."
+fr = "La carrière se sauvegarde après chaque match et chaque changement ; ce bouton la sauvegarde maintenant."
+de = "Die Karriere speichert sich nach jedem Spiel und jeder Änderung; dieser Knopf speichert sie jetzt."
+it = "La carriera si salva dopo ogni partita e ogni modifica; questo pulsante la salva ora."
+pt = "A carreira guarda-se após cada jogo e cada alteração; este botão guarda-a agora."
+ja = "キャリアは試合や変更のたびに自動でセーブされます。このボタンで今すぐセーブします。"
+zh_hans = "生涯会在每场比赛和每次变更后自动保存；此按钮立即保存。"
+zh_hant = "生涯會在每場比賽和每次變更後自動儲存；此按鈕立即儲存。"
+
+# «Ajustes» page: {1} = date and time of the last save
+[[row]]
+id = "CareerMode.SettingsLastSaved"
+es = "Último guardado: {1}"
+en = "Last saved: {1}"
+fr = "Dernière sauvegarde : {1}"
+de = "Zuletzt gespeichert: {1}"
+it = "Ultimo salvataggio: {1}"
+pt = "Último guardado: {1}"
+ja = "最終セーブ：{1}"
+zh_hans = "上次保存：{1}"
+zh_hant = "上次儲存：{1}"
+
+# «Ajustes» page: a career saved by an earlier version (no save time yet)
+[[row]]
+id = "CareerMode.SettingsNotSaved"
+es = "Último guardado: —"
+en = "Last saved: —"
+fr = "Dernière sauvegarde : —"
+de = "Zuletzt gespeichert: —"
+it = "Ultimo salvataggio: —"
+pt = "Último guardado: —"
+ja = "最終セーブ：—"
+zh_hans = "上次保存：—"
+zh_hant = "上次儲存：—"
+
+# «Ajustes» page: {1} = the game's save slot, {2} = the career in it
+[[row]]
+id = "CareerMode.SettingsFile"
+es = "Partida {1} · carrera {2} (archivo propio del modo, aparte de la partida)"
+en = "Save slot {1} · career {2} (the mode's own file, apart from the game save)"
+fr = "Emplacement {1} · carrière {2} (fichier propre au mode, à part de la sauvegarde)"
+de = "Speicherplatz {1} · Karriere {2} (eigene Datei des Modus, getrennt vom Spielstand)"
+it = "Slot {1} · carriera {2} (file proprio della modalità, separato dal salvataggio)"
+pt = "Ranhura {1} · carreira {2} (ficheiro próprio do modo, à parte do jogo gravado)"
+ja = "スロット{1}・キャリア{2}（ゲームのセーブとは別のモード専用ファイル）"
+zh_hans = "存档位 {1} · 生涯 {2}（模式自己的文件，与游戏存档分开）"
+zh_hant = "存檔位 {1} · 生涯 {2}（模式自己的檔案，與遊戲存檔分開）"
+
+# window title after «Guardar progreso»
+[[row]]
+id = "CareerMode.SaveDone"
+es = "Progreso guardado"
+en = "Progress saved"
+fr = "Progression sauvegardée"
+de = "Fortschritt gespeichert"
+it = "Progressi salvati"
+pt = "Progresso guardado"
+ja = "セーブしました"
+zh_hans = "进度已保存"
+zh_hant = "進度已儲存"
+
+# window title when the career could not be written
+[[row]]
+id = "CareerMode.SaveFailed"
+es = "No se pudo guardar"
+en = "Could not save"
+fr = "Sauvegarde impossible"
+de = "Speichern fehlgeschlagen"
+it = "Impossibile salvare"
+pt = "Não foi possível guardar"
+ja = "セーブできませんでした"
+zh_hans = "无法保存"
+zh_hant = "無法儲存"
+
+# window line when the career could not be written
+[[row]]
+id = "CareerMode.SaveFailedLine"
+es = "El archivo de la carrera no se escribió. Se intentará de nuevo con el próximo cambio."
+en = "The career file was not written. It is tried again with the next change."
+fr = "Le fichier de la carrière n'a pas été écrit. Nouvel essai au prochain changement."
+de = "Die Karrieredatei wurde nicht geschrieben. Bei der nächsten Änderung wird es erneut versucht."
+it = "Il file della carriera non è stato scritto. Si riproverà alla prossima modifica."
+pt = "O ficheiro da carreira não foi escrito. Tenta-se de novo na próxima alteração."
+ja = "キャリアのファイルを書き込めませんでした。次の変更時に再試行します。"
+zh_hans = "生涯文件未能写入。下次变更时会再次尝试。"
+zh_hant = "生涯檔案未能寫入。下次變更時會再次嘗試。"
+
+# club pick panel tab
+[[row]]
+id = "CareerMode.PanelSummary"
+es = "Resumen"
+en = "Summary"
+fr = "Résumé"
+de = "Übersicht"
+it = "Riepilogo"
+pt = "Resumo"
+ja = "概要"
+zh_hans = "概要"
+zh_hant = "概要"
+
+# club pick panel tab
+[[row]]
+id = "CareerMode.PanelSquad"
+es = "Plantilla"
+en = "Squad"
+fr = "Effectif"
+de = "Kader"
+it = "Rosa"
+pt = "Plantel"
+ja = "メンバー"
+zh_hans = "阵容"
+zh_hant = "陣容"
+
+# club pick footer: X turns the panel's tab
+[[row]]
+id = "CareerMode.KeyPanel"
+es = "X: Resumen / Plantilla"
+en = "X: Summary / Squad"
+fr = "X : Résumé / Effectif"
+de = "X: Übersicht / Kader"
+it = "X: Riepilogo / Rosa"
+pt = "X: Resumo / Plantel"
+ja = "X：概要／メンバー"
+zh_hans = "X：概要／阵容"
+zh_hant = "X：概要／陣容"
+
+# club pick button: {1} = the club
+[[row]]
+id = "CareerMode.PickClub"
+es = "Elegir {1}"
+en = "Pick {1}"
+fr = "Choisir {1}"
+de = "{1} wählen"
+it = "Scegli {1}"
+pt = "Escolher {1}"
+ja = "{1}を選ぶ"
+zh_hans = "选择{1}"
+zh_hant = "選擇{1}"
+
+# «Inicio»: the week tile's title
+[[row]]
+id = "CareerMode.ThisWeek"
+es = "Esta semana"
+en = "This week"
+fr = "Cette semaine"
+de = "Diese Woche"
+it = "Questa settimana"
+pt = "Esta semana"
+ja = "今週"
+zh_hans = "本周"
+zh_hant = "本週"
+
+# «Inicio»: the budget tile's title
+[[row]]
+id = "CareerMode.Budget"
+es = "Presupuesto"
+en = "Budget"
+fr = "Budget"
+de = "Budget"
+it = "Budget"
+pt = "Orçamento"
+ja = "予算"
+zh_hans = "预算"
+zh_hant = "預算"
+
+# ---- the market's search (owner 2026-10-31, mock-up Mercado 2 A)
+
+# search row: the player's name
+[[row]]
+id = "CareerMode.SearchName"
+es = "Nombre"
+en = "Name"
+fr = "Nom"
+de = "Name"
+it = "Nome"
+pt = "Nome"
+ja = "名前"
+zh_hans = "名字"
+zh_hant = "名字"
+
+# search row value: no name searched
+[[row]]
+id = "CareerMode.SearchNameAny"
+es = "Cualquiera"
+en = "Any"
+fr = "Tous"
+de = "Alle"
+it = "Qualsiasi"
+pt = "Qualquer"
+ja = "指定なし"
+zh_hans = "不限"
+zh_hant = "不限"
+
+# search row: the club
+[[row]]
+id = "CareerMode.SearchClub"
+es = "Club"
+en = "Club"
+fr = "Club"
+de = "Verein"
+it = "Club"
+pt = "Clube"
+ja = "クラブ"
+zh_hans = "俱乐部"
+zh_hant = "俱樂部"
+
+# search row value: every club
+[[row]]
+id = "CareerMode.SearchAllClubs"
+es = "Todos los clubes"
+en = "All clubs"
+fr = "Tous les clubs"
+de = "Alle Vereine"
+it = "Tutti i club"
+pt = "Todos os clubes"
+ja = "全クラブ"
+zh_hans = "全部俱乐部"
+zh_hant = "全部俱樂部"
+
+# search row: the position
+[[row]]
+id = "CareerMode.SearchPosition"
+es = "Posición"
+en = "Position"
+fr = "Poste"
+de = "Position"
+it = "Ruolo"
+pt = "Posição"
+ja = "ポジション"
+zh_hans = "位置"
+zh_hant = "位置"
+
+# search row: the lowest media
+[[row]]
+id = "CareerMode.SearchLevelMin"
+es = "Media mínima"
+en = "Min. rating"
+fr = "Note min."
+de = "Wertung min."
+it = "Media minima"
+pt = "Média mínima"
+ja = "総合値（下限）"
+zh_hans = "最低综合"
+zh_hant = "最低綜合"
+
+# search row: the highest media
+[[row]]
+id = "CareerMode.SearchLevelMax"
+es = "Media máxima"
+en = "Max. rating"
+fr = "Note max."
+de = "Wertung max."
+it = "Media massima"
+pt = "Média máxima"
+ja = "総合値（上限）"
+zh_hans = "最高综合"
+zh_hant = "最高綜合"
+
+# search row: the highest price
+[[row]]
+id = "CareerMode.SearchPrice"
+es = "Precio máximo"
+en = "Max. price"
+fr = "Prix max."
+de = "Preis max."
+it = "Prezzo massimo"
+pt = "Preço máximo"
+ja = "価格（上限）"
+zh_hans = "最高价格"
+zh_hant = "最高價格"
+
+# search row value: no limit
+[[row]]
+id = "CareerMode.SearchAny"
+es = "Sin límite"
+en = "No limit"
+fr = "Sans limite"
+de = "Ohne Grenze"
+it = "Nessun limite"
+pt = "Sem limite"
+ja = "制限なし"
+zh_hans = "不限"
+zh_hant = "不限"
+
+# search row: the player's series
+[[row]]
+id = "CareerMode.SearchSeries"
+es = "Serie"
+en = "Series"
+fr = "Série"
+de = "Serie"
+it = "Serie"
+pt = "Série"
+ja = "シリーズ"
+zh_hans = "系列"
+zh_hant = "系列"
+
+# search row value: every series
+[[row]]
+id = "CareerMode.SearchAllSeries"
+es = "Todas"
+en = "All"
+fr = "Toutes"
+de = "Alle"
+it = "Tutte"
+pt = "Todas"
+ja = "すべて"
+zh_hans = "全部"
+zh_hant = "全部"
+
+# search switch: free players only
+[[row]]
+id = "CareerMode.SearchFree"
+es = "Solo libres"
+en = "Free agents only"
+fr = "Libres seulement"
+de = "Nur vereinslos"
+it = "Solo svincolati"
+pt = "Só livres"
+ja = "フリーのみ"
+zh_hans = "仅自由球员"
+zh_hant = "僅自由球員"
+
+# search switch: players the club's money buys only
+[[row]]
+id = "CareerMode.SearchAffordable"
+es = "Solo asequibles"
+en = "Affordable only"
+fr = "Abordables seulement"
+de = "Nur bezahlbar"
+it = "Solo accessibili"
+pt = "Só acessíveis"
+ja = "購入可能のみ"
+zh_hans = "仅买得起"
+zh_hant = "僅買得起"
+
+# the name row's hint
+[[row]]
+id = "CareerMode.SearchKeyboardHint"
+es = "A: Teclado"
+en = "A: Keyboard"
+fr = "A : Clavier"
+de = "A: Tastatur"
+it = "A: Tastiera"
+pt = "A: Teclado"
+ja = "A：キーボード"
+zh_hans = "A：键盘"
+zh_hant = "A：鍵盤"
+
+# footer on the search: A
+[[row]]
+id = "CareerMode.KeySearchPick"
+es = "A: Elegir"
+en = "A: Choose"
+fr = "A : Choisir"
+de = "A: Wählen"
+it = "A: Scegli"
+pt = "A: Escolher"
+ja = "A：決定"
+zh_hans = "A：选择"
+zh_hant = "A：選擇"
+
+# footer on the search: X
+[[row]]
+id = "CareerMode.KeySearchKeyboard"
+es = "A: Teclado"
+en = "A: Keyboard"
+fr = "A : Clavier"
+de = "A: Tastatur"
+it = "A: Tastiera"
+pt = "A: Teclado"
+ja = "A：キーボード"
+zh_hans = "A：键盘"
+zh_hant = "A：鍵盤"
+
+# footer on the search: Y
+[[row]]
+id = "CareerMode.KeySearchClear"
+es = "Y: Limpiar filtros"
+en = "Y: Clear filters"
+fr = "Y : Effacer les filtres"
+de = "Y: Filter löschen"
+it = "Y: Azzera filtri"
+pt = "Y: Limpar filtros"
+ja = "Y：フィルター解除"
+zh_hans = "Y：清除筛选"
+zh_hant = "Y：清除篩選"
+
+# footer on the search: B
+[[row]]
+id = "CareerMode.KeySearchResults"
+es = "B: Resultados"
+en = "B: Results"
+fr = "B : Résultats"
+de = "B: Ergebnisse"
+it = "B: Risultati"
+pt = "B: Resultados"
+ja = "B：結果"
+zh_hans = "B：结果"
+zh_hant = "B：結果"
+
+# a series' name in the search (VRFW.chara.series_names: ie1)
+[[row]]
+id = "CareerMode.Series_ie1"
+es = "Inazuma Eleven"
+en = "Inazuma Eleven"
+fr = "Inazuma Eleven"
+de = "Inazuma Eleven"
+it = "Inazuma Eleven"
+pt = "Inazuma Eleven"
+ja = "イナズマイレブン"
+zh_hans = "闪电十一人"
+zh_hant = "閃電十一人"
+
+# a series' name in the search (VRFW.chara.series_names: ie2)
+[[row]]
+id = "CareerMode.Series_ie2"
+es = "Inazuma Eleven 2"
+en = "Inazuma Eleven 2"
+fr = "Inazuma Eleven 2"
+de = "Inazuma Eleven 2"
+it = "Inazuma Eleven 2"
+pt = "Inazuma Eleven 2"
+ja = "イナズマイレブン2"
+zh_hans = "闪电十一人2"
+zh_hant = "閃電十一人2"
+
+# a series' name in the search (VRFW.chara.series_names: ie3)
+[[row]]
+id = "CareerMode.Series_ie3"
+es = "Inazuma Eleven 3"
+en = "Inazuma Eleven 3"
+fr = "Inazuma Eleven 3"
+de = "Inazuma Eleven 3"
+it = "Inazuma Eleven 3"
+pt = "Inazuma Eleven 3"
+ja = "イナズマイレブン3"
+zh_hans = "闪电十一人3"
+zh_hant = "閃電十一人3"
+
+# a series' name in the search (VRFW.chara.series_names: go1)
+[[row]]
+id = "CareerMode.Series_go1"
+es = "Inazuma Eleven GO"
+en = "Inazuma Eleven GO"
+fr = "Inazuma Eleven GO"
+de = "Inazuma Eleven GO"
+it = "Inazuma Eleven GO"
+pt = "Inazuma Eleven GO"
+ja = "イナズマイレブンGO"
+zh_hans = "闪电十一人GO"
+zh_hant = "閃電十一人GO"
+
+# a series' name in the search (VRFW.chara.series_names: go2)
+[[row]]
+id = "CareerMode.Series_go2"
+es = "GO Chrono Stone"
+en = "GO Chrono Stone"
+fr = "GO Chrono Stone"
+de = "GO Chrono Stone"
+it = "GO Chrono Stone"
+pt = "GO Chrono Stone"
+ja = "GO クロノ・ストーン"
+zh_hans = "GO 时空之石"
+zh_hant = "GO 時空之石"
+
+# a series' name in the search (VRFW.chara.series_names: go3)
+[[row]]
+id = "CareerMode.Series_go3"
+es = "GO Galaxy"
+en = "GO Galaxy"
+fr = "GO Galaxy"
+de = "GO Galaxy"
+it = "GO Galaxy"
+pt = "GO Galaxy"
+ja = "GO ギャラクシー"
+zh_hans = "GO 银河"
+zh_hant = "GO 銀河"
+
+# a series' name in the search (VRFW.chara.series_names: ares)
+[[row]]
+id = "CareerMode.Series_ares"
+es = "Ares"
+en = "Ares"
+fr = "Ares"
+de = "Ares"
+it = "Ares"
+pt = "Ares"
+ja = "アレスの天秤"
+zh_hans = "阿瑞斯的天秤"
+zh_hant = "阿瑞斯的天秤"
+
+# a series' name in the search (VRFW.chara.series_names: orion)
+[[row]]
+id = "CareerMode.Series_orion"
+es = "Orion"
+en = "Orion"
+fr = "Orion"
+de = "Orion"
+it = "Orion"
+pt = "Orion"
+ja = "オリオンの刻印"
+zh_hans = "猎户座的刻印"
+zh_hant = "獵戶座的刻印"
+
+# a series' name in the search (VRFW.chara.series_names: victory_road)
+[[row]]
+id = "CareerMode.Series_victory_road"
+es = "Victory Road"
+en = "Victory Road"
+fr = "Victory Road"
+de = "Victory Road"
+it = "Victory Road"
+pt = "Victory Road"
+ja = "ヴィクトリーロード"
+zh_hans = "胜利之路"
+zh_hant = "勝利之路"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort1"
+es = "ENE"
+en = "JAN"
+fr = "JAN"
+de = "JAN"
+it = "GEN"
+pt = "JAN"
+ja = "1月"
+zh_hans = "1月"
+zh_hant = "1月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort2"
+es = "FEB"
+en = "FEB"
+fr = "FÉV"
+de = "FEB"
+it = "FEB"
+pt = "FEV"
+ja = "2月"
+zh_hans = "2月"
+zh_hant = "2月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort3"
+es = "MAR"
+en = "MAR"
+fr = "MAR"
+de = "MÄR"
+it = "MAR"
+pt = "MAR"
+ja = "3月"
+zh_hans = "3月"
+zh_hant = "3月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort4"
+es = "ABR"
+en = "APR"
+fr = "AVR"
+de = "APR"
+it = "APR"
+pt = "ABR"
+ja = "4月"
+zh_hans = "4月"
+zh_hant = "4月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort5"
+es = "MAY"
+en = "MAY"
+fr = "MAI"
+de = "MAI"
+it = "MAG"
+pt = "MAI"
+ja = "5月"
+zh_hans = "5月"
+zh_hant = "5月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort6"
+es = "JUN"
+en = "JUN"
+fr = "JUIN"
+de = "JUN"
+it = "GIU"
+pt = "JUN"
+ja = "6月"
+zh_hans = "6月"
+zh_hant = "6月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort7"
+es = "JUL"
+en = "JUL"
+fr = "JUIL"
+de = "JUL"
+it = "LUG"
+pt = "JUL"
+ja = "7月"
+zh_hans = "7月"
+zh_hant = "7月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort8"
+es = "AGO"
+en = "AUG"
+fr = "AOÛT"
+de = "AUG"
+it = "AGO"
+pt = "AGO"
+ja = "8月"
+zh_hans = "8月"
+zh_hant = "8月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort9"
+es = "SEP"
+en = "SEP"
+fr = "SEP"
+de = "SEP"
+it = "SET"
+pt = "SET"
+ja = "9月"
+zh_hans = "9月"
+zh_hant = "9月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort10"
+es = "OCT"
+en = "OCT"
+fr = "OCT"
+de = "OKT"
+it = "OTT"
+pt = "OUT"
+ja = "10月"
+zh_hans = "10月"
+zh_hant = "10月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort11"
+es = "NOV"
+en = "NOV"
+fr = "NOV"
+de = "NOV"
+it = "NOV"
+pt = "NOV"
+ja = "11月"
+zh_hans = "11月"
+zh_hant = "11月"
+
+# «Fechas»: a month's tick on the season's line
+[[row]]
+id = "CareerMode.MonthShort12"
+es = "DIC"
+en = "DEC"
+fr = "DÉC"
+de = "DEZ"
+it = "DIC"
+pt = "DEZ"
+ja = "12月"
+zh_hans = "12月"
+zh_hant = "12月"
+
+# «Fechas»: the season line's band: {1} played of {2} matches
+[[row]]
+id = "CareerMode.MatchesPlayed"
+es = "{1} / {2} partidos"
+en = "{1} / {2} matches"
+fr = "{1} / {2} matchs"
+de = "{1} / {2} Spiele"
+it = "{1} / {2} partite"
+pt = "{1} / {2} jogos"
+ja = "{1} / {2} 試合"
+zh_hans = "{1} / {2} 场"
+zh_hant = "{1} / {2} 場"
+
+# «Fechas»: the next milestone's tile
+[[row]]
+id = "CareerMode.NextMilestone"
+es = "Próximo hito"
+en = "Next milestone"
+fr = "Prochaine étape"
+de = "Nächster Termin"
+it = "Prossima tappa"
+pt = "Próximo marco"
+ja = "次の予定"
+zh_hans = "下一个节点"
+zh_hant = "下一個節點"
+
+# milestone
+[[row]]
+id = "CareerMode.MilestoneWindowCloses"
+es = "Cierre del mercado"
+en = "Transfer window closes"
+fr = "Fermeture du mercato"
+de = "Transferfenster schließt"
+it = "Chiusura del mercato"
+pt = "Fecho do mercado"
+ja = "移籍市場終了"
+zh_hans = "转会窗口关闭"
+zh_hant = "轉會窗口關閉"
+
+# milestone
+[[row]]
+id = "CareerMode.MilestoneWindowOpens"
+es = "Apertura del mercado"
+en = "Transfer window opens"
+fr = "Ouverture du mercato"
+de = "Transferfenster öffnet"
+it = "Apertura del mercato"
+pt = "Abertura do mercado"
+ja = "移籍市場開始"
+zh_hans = "转会窗口开启"
+zh_hant = "轉會窗口開啟"
+
+# milestone
+[[row]]
+id = "CareerMode.MilestoneDraw"
+es = "Sorteo de las ligas"
+en = "League draw"
+fr = "Tirage des ligues"
+de = "Auslosung der Ligen"
+it = "Sorteggio dei campionati"
+pt = "Sorteio das ligas"
+ja = "リーグ抽選"
+zh_hans = "联赛抽签"
+zh_hant = "聯賽抽籤"
+
+# milestone
+[[row]]
+id = "CareerMode.MilestoneWorldCup"
+es = "Empieza el Mundial"
+en = "World Cup starts"
+fr = "Début de la Coupe du monde"
+de = "WM beginnt"
+it = "Inizia il Mondiale"
+pt = "Começa o Mundial"
+ja = "ワールドカップ開幕"
+zh_hans = "世界杯开幕"
+zh_hant = "世界盃開幕"
+
+# milestone
+[[row]]
+id = "CareerMode.MilestoneBreak"
+es = "Parón"
+en = "Break"
+fr = "Trêve"
+de = "Pause"
+it = "Sosta"
+pt = "Paragem"
+ja = "中断期間"
+zh_hans = "休赛期"
+zh_hant = "休賽期"
+
+# milestone
+[[row]]
+id = "CareerMode.MilestoneSeasonEnd"
+es = "Fin de temporada"
+en = "End of the season"
+fr = "Fin de saison"
+de = "Saisonende"
+it = "Fine stagione"
+pt = "Fim da temporada"
+ja = "シーズン終了"
+zh_hans = "赛季结束"
+zh_hant = "賽季結束"
+
+# milestone: {1} = month, {2} = days left
+[[row]]
+id = "CareerMode.MilestoneWhen"
+es = "{1} · en {2} días"
+en = "{1} · in {2} days"
+fr = "{1} · dans {2} jours"
+de = "{1} · in {2} Tagen"
+it = "{1} · tra {2} giorni"
+pt = "{1} · em {2} dias"
+ja = "{1}・あと{2}日"
+zh_hans = "{1} · {2}天后"
+zh_hant = "{1} · {2}天後"
+
+# milestone: today
+[[row]]
+id = "CareerMode.MilestoneToday"
+es = "Hoy"
+en = "Today"
+fr = "Aujourd'hui"
+de = "Heute"
+it = "Oggi"
+pt = "Hoje"
+ja = "今日"
+zh_hans = "今天"
+zh_hant = "今天"
+
+# «Fechas»: the match after the next one
+[[row]]
+id = "CareerMode.NextAfter"
+es = "Siguiente"
+en = "After that"
+fr = "Ensuite"
+de = "Danach"
+it = "Dopo"
+pt = "Seguinte"
+ja = "その次"
+zh_hans = "再下一场"
+zh_hant = "再下一場"
+
+# «Torneos»: the table's form column
+[[row]]
+id = "CareerMode.ColForm"
+es = "Forma"
+en = "Form"
+fr = "Forme"
+de = "Form"
+it = "Forma"
+pt = "Forma"
+ja = "調子"
+zh_hans = "近况"
+zh_hant = "近況"
+
+# «Torneos»: the Fútbol Frontier's tree beside a table
+[[row]]
+id = "CareerMode.FrontierTree"
+es = "Fútbol Frontier · Cuadro"
+en = "Football Frontier · Bracket"
+fr = "Football Frontier · Tableau"
+de = "Football Frontier · Turnierbaum"
+it = "Football Frontier · Tabellone"
+pt = "Football Frontier · Chaveamento"
+ja = "フットボールフロンティア・トーナメント表"
+zh_hans = "足球前线 · 对阵图"
+zh_hant = "足球前線 · 對陣圖"
+
+# «Torneos»: a match's winner not known yet
+[[row]]
+id = "CareerMode.ToBeDecided"
+es = "Por decidir"
+en = "To be decided"
+fr = "À déterminer"
+de = "Offen"
+it = "Da decidere"
+pt = "Por decidir"
+ja = "未定"
+zh_hans = "待定"
+zh_hant = "待定"
+
+# «Ajustes»: the last save's tile
+[[row]]
+id = "CareerMode.LastSaved"
+es = "Último guardado"
+en = "Last saved"
+fr = "Dernière sauvegarde"
+de = "Zuletzt gespeichert"
+it = "Ultimo salvataggio"
+pt = "Último salvamento"
+ja = "最終セーブ"
+zh_hans = "上次保存"
+zh_hant = "上次儲存"
+
+# «Ajustes»: the autosave tile
+[[row]]
+id = "CareerMode.AutoSave"
+es = "Autoguardado"
+en = "Autosave"
+fr = "Sauvegarde auto"
+de = "Autospeichern"
+it = "Salvataggio automatico"
+pt = "Salvamento automático"
+ja = "オートセーブ"
+zh_hans = "自动保存"
+zh_hant = "自動儲存"
+
+# «Ajustes»: the file tile
+[[row]]
+id = "CareerMode.SaveFile"
+es = "Archivo"
+en = "File"
+fr = "Fichier"
+de = "Datei"
+it = "File"
+pt = "Ficheiro"
+ja = "ファイル"
+zh_hans = "文件"
+zh_hant = "檔案"
+
+# «Ajustes»: the game's save slot {1}
+[[row]]
+id = "CareerMode.SaveSlotN"
+es = "Partida {1}"
+en = "Save {1}"
+fr = "Partie {1}"
+de = "Spielstand {1}"
+it = "Partita {1}"
+pt = "Jogo {1}"
+ja = "セーブ{1}"
+zh_hans = "存档 {1}"
+zh_hant = "存檔 {1}"
+
+# «Ajustes»: the career's played matches
+[[row]]
+id = "CareerMode.MatchesPlayedLabel"
+es = "Partidos jugados"
+en = "Matches played"
+fr = "Matchs joués"
+de = "Gespielte Spiele"
+it = "Partite giocate"
+pt = "Jogos disputados"
+ja = "試合数"
+zh_hans = "已赛场次"
+zh_hant = "已賽場次"
+
+# «Ajustes»: a place {1}
+[[row]]
+id = "CareerMode.PlaceShort"
+es = "{1}.º"
+en = "{1}."
+fr = "{1}e"
+de = "{1}."
+it = "{1}°"
+pt = "{1}.º"
+ja = "{1}位"
+zh_hans = "第{1}"
+zh_hant = "第{1}"
+
+# «Ajustes»: the summary's season box (no market)
+[[row]]
+id = "CareerMode.SeasonLabel"
+es = "Temporada"
+en = "Season"
+fr = "Saison"
+de = "Saison"
+it = "Stagione"
+pt = "Temporada"
+ja = "シーズン"
+zh_hans = "赛季"
+zh_hant = "賽季"
+
+# «Ajustes»: the save dialog's question
+[[row]]
+id = "CareerMode.SaveAsk"
+es = "¿Guardar la carrera ahora?"
+en = "Save the career now?"
+fr = "Sauvegarder la carrière maintenant ?"
+de = "Karriere jetzt speichern?"
+it = "Salvare la carriera ora?"
+pt = "Guardar a carreira agora?"
+ja = "キャリアを今セーブしますか？"
+zh_hans = "现在保存生涯吗？"
+zh_hant = "現在儲存生涯嗎？"
+
+# ---- the market's transfer talks (owner 2026-10-31, mock-up Mercado 2 A)
+
+# the talk window while the club is asked
+[[row]]
+id = "CareerMode.TalkWaiting"
+es = "Hablando con el club…"
+en = "Talking to the club…"
+fr = "Discussion avec le club…"
+de = "Gespräch mit dem Verein…"
+it = "In contatto con il club…"
+pt = "Falando com o clube…"
+ja = "クラブと交渉中…"
+zh_hans = "正在与俱乐部沟通…"
+zh_hant = "正在與俱樂部溝通…"
+
+# reply: the club counters: {1} = club
+[[row]]
+id = "CareerMode.TalkCounterHead"
+es = "Contraoferta de {1}"
+en = "Counter-offer from {1}"
+fr = "Contre-offre de {1}"
+de = "Gegenangebot von {1}"
+it = "Controfferta di {1}"
+pt = "Contraproposta de {1}"
+ja = "{1}からの逆提案"
+zh_hans = "{1}的还价"
+zh_hant = "{1}的還價"
+
+# reply: the bidder raises its offer: {1} = bidder
+[[row]]
+id = "CareerMode.TalkBidCounterHead"
+es = "{1} mejora su oferta"
+en = "{1} raises its offer"
+fr = "{1} améliore son offre"
+de = "{1} erhöht sein Angebot"
+it = "{1} migliora l'offerta"
+pt = "{1} melhora a oferta"
+ja = "{1}が提示額を上げた"
+zh_hans = "{1}提高了报价"
+zh_hant = "{1}提高了報價"
+
+# reply: too low an offer: {1} = club
+[[row]]
+id = "CareerMode.TalkLowHead"
+es = "{1}: oferta demasiado baja"
+en = "{1}: that offer is far too low"
+fr = "{1} : offre bien trop basse"
+de = "{1}: Angebot viel zu niedrig"
+it = "{1}: offerta troppo bassa"
+pt = "{1}: oferta baixa demais"
+ja = "{1}：低すぎるオファー"
+zh_hans = "{1}：报价太低了"
+zh_hant = "{1}：報價太低了"
+
+# reply: the club breaks off: {1} = club
+[[row]]
+id = "CareerMode.TalkWalkedHead"
+es = "{1} rompe la negociación"
+en = "{1} breaks off the talks"
+fr = "{1} rompt les négociations"
+de = "{1} bricht die Verhandlung ab"
+it = "{1} interrompe la trattativa"
+pt = "{1} rompe a negociação"
+ja = "{1}が交渉を打ち切った"
+zh_hans = "{1}中止了谈判"
+zh_hant = "{1}中止了談判"
+
+# the amount's label (buy)
+[[row]]
+id = "CareerMode.TalkYourOffer"
+es = "Tu nueva oferta"
+en = "Your new offer"
+fr = "Votre nouvelle offre"
+de = "Dein neues Angebot"
+it = "La tua nuova offerta"
+pt = "Tua nova oferta"
+ja = "新しいオファー"
+zh_hans = "你的新出价"
+zh_hant = "你的新出價"
+
+# the amount's label (an offer received)
+[[row]]
+id = "CareerMode.TalkYourAsk"
+es = "Lo que pides"
+en = "Your ask"
+fr = "Votre demande"
+de = "Deine Forderung"
+it = "La tua richiesta"
+pt = "O teu pedido"
+ja = "要求額"
+zh_hans = "你的要价"
+zh_hant = "你的要價"
+
+# the patience bar's label (buy)
+[[row]]
+id = "CareerMode.TalkPatience"
+es = "Paciencia del club"
+en = "The club's patience"
+fr = "Patience du club"
+de = "Geduld des Vereins"
+it = "Pazienza del club"
+pt = "Paciência do clube"
+ja = "クラブの忍耐"
+zh_hans = "俱乐部的耐心"
+zh_hant = "俱樂部的耐心"
+
+# the patience bar's label (an offer received)
+[[row]]
+id = "CareerMode.TalkBidderPatience"
+es = "Paciencia del comprador"
+en = "The buyer's patience"
+fr = "Patience de l'acheteur"
+de = "Geduld des Käufers"
+it = "Pazienza dell'acquirente"
+pt = "Paciência do comprador"
+ja = "買い手の忍耐"
+zh_hans = "买方的耐心"
+zh_hant = "買方的耐心"
+
+# the hint under the patience (buy): {1} = rounds
+[[row]]
+id = "CareerMode.TalkHint"
+es = "Cada oferta gasta paciencia; si se agota, rompe la negociación."
+en = "Each offer uses patience; at none they break off."
+fr = "Chaque offre use sa patience ; à zéro, il rompt."
+de = "Jedes Angebot kostet Geduld; bei null bricht er ab."
+it = "Ogni offerta consuma pazienza; a zero rompe."
+pt = "Cada oferta gasta paciência; sem ela, rompe."
+ja = "提示ごとに我慢が減り、尽きると決裂。"
+zh_hans = "每次出价消耗耐心，耗尽即谈崩。"
+zh_hant = "每次出價消耗耐心，耗盡即談崩。"
+
+# the hint under the patience (an offer received, «Negociar»)
+[[row]]
+id = "CareerMode.TalkSellHint"
+es = "Responde en unos días. Si pides demasiado, se retira."
+en = "They answer in a few days. Ask too much and they leave."
+fr = "Réponse sous quelques jours. Trop demander le fait partir."
+de = "Antwort in ein paar Tagen. Zu viel verlangt: weg."
+it = "Risponde tra qualche giorno. Se chiedi troppo, se ne va."
+pt = "Responde em alguns dias. Se pedir demais, desiste."
+ja = "数日後に返答。高すぎると撤退。"
+zh_hans = "几天后回复。要价过高会退出。"
+zh_hant = "幾天後回覆。要價過高會退出。"
+
+# a deal's window title (buy)
+[[row]]
+id = "CareerMode.TalkDoneTitle"
+es = "Fichaje cerrado"
+en = "Signing done"
+fr = "Transfert conclu"
+de = "Transfer perfekt"
+it = "Acquisto concluso"
+pt = "Contratação fechada"
+ja = "獲得成立"
+zh_hans = "签约完成"
+zh_hant = "簽約完成"
+
+# a deal's line (buy): {1} = player, {2} = fee
+[[row]]
+id = "CareerMode.TalkDoneLine"
+es = "{1} ficha por {2}."
+en = "{1} signs for {2}."
+fr = "{1} signe pour {2}."
+de = "{1} wechselt für {2}."
+it = "{1} firma per {2}."
+pt = "{1} assina por {2}."
+ja = "{1}を{2}で獲得。"
+zh_hans = "以{2}签下{1}。"
+zh_hant = "以{2}簽下{1}。"
+
+# a deal's window title (sale)
+[[row]]
+id = "CareerMode.TalkSoldTitle"
+es = "Venta cerrada"
+en = "Sale done"
+fr = "Vente conclue"
+de = "Verkauf perfekt"
+it = "Vendita conclusa"
+pt = "Venda fechada"
+ja = "売却成立"
+zh_hans = "出售完成"
+zh_hant = "出售完成"
+
+# a deal's line (sale): {1} = player, {2} = fee
+[[row]]
+id = "CareerMode.TalkSoldLine"
+es = "{1} se va por {2}."
+en = "{1} leaves for {2}."
+fr = "{1} part pour {2}."
+de = "{1} geht für {2}."
+it = "{1} parte per {2}."
+pt = "{1} sai por {2}."
+ja = "{1}を{2}で売却。"
+zh_hans = "{1}以{2}离队。"
+zh_hant = "{1}以{2}離隊。"
+
+# the bidder walked away: {1} = bidder
+[[row]]
+id = "CareerMode.TalkBidderWalked"
+es = "{1} retira su oferta."
+en = "{1} withdraws its offer."
+fr = "{1} retire son offre."
+de = "{1} zieht das Angebot zurück."
+it = "{1} ritira l'offerta."
+pt = "{1} retira a oferta."
+ja = "{1}がオファーを撤回した。"
+zh_hans = "{1}撤回了报价。"
+zh_hant = "{1}撤回了報價。"
+
+# a refusal: the club broke off the talks
+[[row]]
+id = "CareerMode.TalkWalked"
+es = "Este club ya no negocia contigo hasta que cierre el mercado."
+en = "This club won't talk to you until the window closes."
+fr = "Ce club ne négocie plus avant la fin du mercato."
+de = "Dieser Verein verhandelt bis Transferschluss nicht mehr."
+it = "Questo club non tratta più fino alla chiusura del mercato."
+pt = "Este clube não negocia mais até o mercado fechar."
+ja = "このクラブとは移籍期間終了まで交渉できない。"
+zh_hans = "转会窗口关闭前该俱乐部不再与你谈判。"
+zh_hant = "轉會窗口關閉前該俱樂部不再與你談判。"
+
+# footer in the talks: A (buy)
+[[row]]
+id = "CareerMode.KeyTalkOffer"
+es = "A: Ofertar"
+en = "A: Offer"
+fr = "A : Offrir"
+de = "A: Bieten"
+it = "A: Offri"
+pt = "A: Ofertar"
+ja = "A：オファー"
+zh_hans = "A：出价"
+zh_hant = "A：出價"
+
+# footer in the talks: A (an offer received)
+[[row]]
+id = "CareerMode.KeyTalkAsk"
+es = "A: Pedir"
+en = "A: Ask"
+fr = "A : Demander"
+de = "A: Fordern"
+it = "A: Chiedi"
+pt = "A: Pedir"
+ja = "A：要求"
+zh_hans = "A：要价"
+zh_hant = "A：要價"
+
+# footer in the talks: Y (buy)
+[[row]]
+id = "CareerMode.KeyTalkAccept"
+es = "Y: Aceptar lo que piden"
+en = "Y: Accept their ask"
+fr = "Y : Accepter leur prix"
+de = "Y: Forderung annehmen"
+it = "Y: Accetta la richiesta"
+pt = "Y: Aceitar o pedido"
+ja = "Y：要求額で合意"
+zh_hans = "Y：接受要价"
+zh_hant = "Y：接受要價"
+
+# footer in the talks: Y (an offer received)
+[[row]]
+id = "CareerMode.KeyTalkTake"
+es = "Y: Aceptar su oferta"
+en = "Y: Take their offer"
+fr = "Y : Accepter l'offre"
+de = "Y: Angebot annehmen"
+it = "Y: Accetta l'offerta"
+pt = "Y: Aceitar a oferta"
+ja = "Y：提示額で合意"
+zh_hans = "Y：接受报价"
+zh_hant = "Y：接受報價"
+
+# footer in the talks: left / right
+[[row]]
+id = "CareerMode.KeyTalkSteps"
+es = "←→: Cantidad"
+en = "←→: Amount"
+fr = "←→ : Montant"
+de = "←→: Betrag"
+it = "←→: Importo"
+pt = "←→: Quantia"
+ja = "←→：金額"
+zh_hans = "←→：金额"
+zh_hant = "←→：金額"
+
+# footer in the talks: L2 / R2
+[[row]]
+id = "CareerMode.KeyTalkBig"
+es = "L2/R2: Paso grande"
+en = "L2/R2: Big step"
+fr = "L2/R2 : Grand pas"
+de = "L2/R2: Großer Schritt"
+it = "L2/R2: Passo grande"
+pt = "L2/R2: Passo grande"
+ja = "L2/R2：大きく"
+zh_hans = "L2/R2：大步"
+zh_hant = "L2/R2：大步"
+
+# footer in the talks: B
+[[row]]
+id = "CareerMode.KeyTalkLeave"
+es = "B: Retirarse"
+en = "B: Walk away"
+fr = "B : Se retirer"
+de = "B: Abbrechen"
+it = "B: Ritirati"
+pt = "B: Retirar-se"
+ja = "B：引き下がる"
+zh_hans = "B：退出"
+zh_hant = "B：退出"
+
+# ---- the Fútbol Frontier's round of 32 (owner 2026-10-31)
+
+# Football Frontier round
+[[row]]
+id = "CareerMode.FrontierRound32"
+es = "Fútbol Frontier · Dieciseisavos"
+en = "Football Frontier · Round of 32"
+fr = "Football Frontier · Seizièmes"
+de = "Football Frontier · Sechzehntelfinale"
+it = "Football Frontier · Sedicesimi"
+pt = "Futebol Frontier · Dezasseis-avos"
+ja = "フロンティア 2回戦"
+zh_hans = "边境大赛 32强"
+zh_hant = "邊境大賽 32強"
+
+# Football Frontier round, short
+[[row]]
+id = "CareerMode.FrontierRound32Short"
+es = "Dieciseisavos"
+en = "Round of 32"
+fr = "Seizièmes"
+de = "Sechzehntelfinale"
+it = "Sedicesimi"
+pt = "Dezasseis-avos"
+ja = "2回戦"
+zh_hans = "32强"
+zh_hant = "32強"
+
+# Football Frontier round
+[[row]]
+id = "CareerMode.Reached_Round32"
+es = "Tu club llegó a los dieciseisavos del Fútbol Frontier."
+en = "Your club reached the Football Frontier round of 32."
+fr = "Ton club a atteint les seizièmes du Football Frontier."
+de = "Dein Verein erreichte das Sechzehntelfinale des Football Frontier."
+it = "Il tuo club è arrivato ai sedicesimi del Football Frontier."
+pt = "O teu clube chegou aos dezasseis-avos do Futebol Frontier."
+ja = "フロンティア2回戦に進出しました。"
+zh_hans = "你的俱乐部打进了边境大赛32强。"
+zh_hant = "你的俱樂部打進了邊境大賽32強。"
+
+# a league table's zone: the place whose best clubs go on to the Football Frontier; {1} = the place
+[[row]]
+id = "CareerMode.FrontierBestOfPlace"
+es = "Fútbol Frontier · los mejores {1}.º"
+en = "Football Frontier · the best {1}th places"
+fr = "Football Frontier · les meilleurs {1}es"
+de = "Football Frontier · die besten {1}."
+it = "Football Frontier · i migliori {1}°"
+pt = "Futebol Frontier · os melhores {1}.º"
+ja = "フロンティア・成績上位の{1}位"
+zh_hans = "边境大赛·成绩最好的第{1}名"
+zh_hant = "邊境大賽·成績最好的第{1}名"
+
+# the «Torneos» stats panel: its tabs
+
+[[row]]
+id = "CareerMode.StatGoals"
+es = "Goleadores"
+en = "Top scorers"
+fr = "Buteurs"
+de = "Torschützen"
+it = "Marcatori"
+pt = "Marcadores"
+ja = "得点王"
+zh_hans = "射手榜"
+zh_hant = "射手榜"
+
+[[row]]
+id = "CareerMode.StatRating"
+es = "Nota media"
+en = "Average rating"
+fr = "Note moyenne"
+de = "Durchschnittsnote"
+it = "Voto medio"
+pt = "Nota média"
+ja = "平均評価"
+zh_hans = "平均评分"
+zh_hant = "平均評分"
+
+[[row]]
+id = "CareerMode.StatMvp"
+es = "MVP"
+en = "MVP"
+fr = "MVP"
+de = "MVP"
+it = "MVP"
+pt = "MVP"
+ja = "MVP"
+zh_hans = "MVP"
+zh_hant = "MVP"
+
+# its columns
+
+[[row]]
+id = "CareerMode.ColGoals"
+es = "G"
+en = "G"
+fr = "B"
+de = "T"
+it = "G"
+pt = "G"
+ja = "得点"
+zh_hans = "进球"
+zh_hant = "進球"
+
+[[row]]
+id = "CareerMode.ColMvp"
+es = "MVP"
+en = "MVP"
+fr = "MVP"
+de = "MVP"
+it = "MVP"
+pt = "MVP"
+ja = "MVP"
+zh_hans = "MVP"
+zh_hant = "MVP"
+
+# the club's best players under the list, and the panel without stats (the World Cup)
+
+[[row]]
+id = "CareerMode.StatsBestOfClub"
+es = "Lo mejor de tu club"
+en = "Your club's best"
+fr = "Le meilleur de ton club"
+de = "Das Beste deines Vereins"
+it = "Il meglio del tuo club"
+pt = "O melhor do teu clube"
+ja = "チームのベスト"
+zh_hans = "本队最佳"
+zh_hant = "本隊最佳"
+
+[[row]]
+id = "CareerMode.StatsNone"
+es = "Sin estadísticas en esta competición"
+en = "No stats in this competition"
+fr = "Pas de statistiques pour cette compétition"
+de = "Keine Statistiken in diesem Wettbewerb"
+it = "Nessuna statistica in questa competizione"
+pt = "Sem estatísticas nesta competição"
+ja = "この大会の成績はありません"
+zh_hans = "本赛事暂无数据"
+zh_hant = "本賽事暫無數據"
+
+# «Inicio» › «Próximo partido»: the key prompts while days are left, the events on the days' line
+
+[[row]]
+id = "CareerMode.DayContinue"
+es = "Continuar"
+en = "Continue"
+fr = "Continuer"
+de = "Weiter"
+it = "Continua"
+pt = "Continuar"
+ja = "進む"
+zh_hans = "继续"
+zh_hant = "繼續"
+
+[[row]]
+id = "CareerMode.DayToMatch"
+es = "Ir al partido"
+en = "Go to match"
+fr = "Aller au match"
+de = "Zum Spiel"
+it = "Vai alla partita"
+pt = "Ir para o jogo"
+ja = "試合へ"
+zh_hans = "前往比赛"
+zh_hant = "前往比賽"
+
+[[row]]
+id = "CareerMode.DayEventWindowOpen"
+es = "Abre mercado"
+en = "Window opens"
+fr = "Mercato ouvert"
+de = "Transferfenster auf"
+it = "Apre il mercato"
+pt = "Abre o mercado"
+ja = "移籍市場開始"
+zh_hans = "转会窗开启"
+zh_hant = "轉會窗開啟"
+
+[[row]]
+id = "CareerMode.DayEventWindowClose"
+es = "Cierra mercado"
+en = "Window closes"
+fr = "Mercato fermé"
+de = "Transferfenster zu"
+it = "Chiude il mercato"
+pt = "Fecha o mercado"
+ja = "移籍市場終了"
+zh_hans = "转会窗关闭"
+zh_hant = "轉會窗關閉"
+
+[[row]]
+id = "CareerMode.DayEventDraw"
+es = "Sorteo"
+en = "Draw"
+fr = "Tirage"
+de = "Auslosung"
+it = "Sorteggio"
+pt = "Sorteio"
+ja = "抽選"
+zh_hans = "抽签"
+zh_hant = "抽籤"
+
+[[row]]
+id = "CareerMode.DayEventOffer"
+es = "Oferta"
+en = "Offer"
+fr = "Offre"
+de = "Angebot"
+it = "Offerta"
+pt = "Oferta"
+ja = "オファー"
+zh_hans = "报价"
+zh_hant = "報價"
+
+[[row]]
+id = "CareerMode.DayEventMatch"
+es = "Partido"
+en = "Match"
+fr = "Match"
+de = "Spiel"
+it = "Partita"
+pt = "Jogo"
+ja = "試合"
+zh_hans = "比赛"
+zh_hant = "比賽"
+
+# loans: the news tag
+[[row]]
+id = "CareerMode.NewsTagLoan"
+es = "Cesión"
+en = "Loan"
+fr = "Prêt"
+de = "Leihe"
+it = "Prestito"
+pt = "Empréstimo"
+ja = "レンタル"
+zh_hans = "租借"
+zh_hant = "租借"
+
+# loans: an AI club's loan offer, {1} the player
+[[row]]
+id = "CareerMode.NewsHeadLoanOffer"
+es = "Oferta de cesión por {1}"
+en = "Loan offer for {1}"
+fr = "Offre de prêt pour {1}"
+de = "Leihangebot für {1}"
+it = "Offerta di prestito per {1}"
+pt = "Proposta de empréstimo por {1}"
+ja = "{1}にレンタルのオファー"
+zh_hans = "{1}收到租借报价"
+zh_hant = "{1}收到租借報價"
+
+# loans: {1} the club, {2} the fee, {3} the day he comes back
+[[row]]
+id = "CareerMode.NewsTextLoanOffer"
+es = "{1} ofrece {2} por tenerlo cedido hasta el {3}. Respóndela en «Mercado»."
+en = "{1} offer {2} to borrow him until {3}. Answer it on «Market»."
+fr = "{1} offre {2} pour un prêt jusqu'au {3}. Réponds dans «Mercato»."
+de = "{1} bietet {2} für eine Leihe bis {3}. Antworte unter «Markt»."
+it = "{1} offre {2} per il prestito fino al {3}. Rispondi in «Mercato»."
+pt = "{1} oferece {2} pelo empréstimo até {3}. Responde em «Mercado»."
+ja = "{1}が{3}までのレンタルで{2}を提示。「移籍市場」で返答。"
+zh_hans = "{1}出价{2}租借至{3}。请在「转会」中回复。"
+zh_hant = "{1}出價{2}租借至{3}。請在「轉會」中回覆。"
+
+# loans: a player loaned out, {1} the player, {2} the borrower
+[[row]]
+id = "CareerMode.NewsHeadLoan"
+es = "{1}, cedido a {2}"
+en = "{1} loaned to {2}"
+fr = "{1} prêté à {2}"
+de = "{1} an {2} verliehen"
+it = "{1} in prestito a {2}"
+pt = "{1} emprestado a {2}"
+ja = "{1}が{2}へレンタル移籍"
+zh_hans = "{1}租借至{2}"
+zh_hant = "{1}租借至{2}"
+
+# loans: {1} the fee, {2} the day he comes back
+[[row]]
+id = "CareerMode.NewsTextLoan"
+es = "Cesión por {1}. Vuelve el {2}."
+en = "Loan fee {1}. He returns on {2}."
+fr = "Prêt pour {1}. Retour le {2}."
+de = "Leihgebühr {1}. Rückkehr am {2}."
+it = "Prestito per {1}. Torna il {2}."
+pt = "Empréstimo por {1}. Volta a {2}."
+ja = "レンタル料{1}。{2}に復帰。"
+zh_hans = "租借费{1}。{2}回归。"
+zh_hant = "租借費{1}。{2}回歸。"
+
+# loans: a loan over, {1} the player
+[[row]]
+id = "CareerMode.NewsHeadLoanBack"
+es = "{1} vuelve de su cesión"
+en = "{1} back from loan"
+fr = "{1} rentre de prêt"
+de = "{1} kehrt von der Leihe zurück"
+it = "{1} rientra dal prestito"
+pt = "{1} regressa do empréstimo"
+ja = "{1}がレンタルから復帰"
+zh_hans = "{1}租借结束归队"
+zh_hant = "{1}租借結束歸隊"
+
+# loans: {1} the club he was loaned to
+[[row]]
+id = "CareerMode.NewsTextLoanBack"
+es = "Termina su cesión en {1} y vuelve a la plantilla."
+en = "His loan at {1} is over; he rejoins the squad."
+fr = "Son prêt à {1} est terminé ; il retrouve l'effectif."
+de = "Seine Leihe bei {1} ist vorbei; er kehrt in den Kader zurück."
+it = "Il prestito a {1} è finito; torna in rosa."
+pt = "O empréstimo no {1} acabou; volta ao plantel."
+ja = "{1}でのレンタルが終わり、チームに復帰。"
+zh_hans = "在{1}的租借结束，回归阵容。"
+zh_hant = "在{1}的租借結束，回歸陣容。"
+
+# market: a bid for a player on no list, {1} the club, {2} the bid
+[[row]]
+id = "CareerMode.NewsTextOfferUnlisted"
+es = "{1} ofrece {2} aunque no está en venta. Respóndela en «Mercado»."
+en = "{1} offer {2} although he is not for sale. Answer it on «Market»."
+fr = "{1} offre {2} alors qu'il n'est pas à vendre. Réponds dans «Mercato»."
+de = "{1} bietet {2}, obwohl er nicht zum Verkauf steht. Antworte unter «Markt»."
+it = "{1} offre {2} anche se non è in vendita. Rispondi in «Mercato»."
+pt = "{1} oferece {2} apesar de não estar à venda. Responde em «Mercado»."
+ja = "{1}が売りに出ていない選手に{2}を提示。「移籍市場」で返答。"
+zh_hans = "{1}出价{2}，尽管他并未挂牌。请在「转会」中回复。"
+zh_hant = "{1}出價{2}，儘管他並未掛牌。請在「轉會」中回覆。"
+
+# market refusal: a blocked player put on a list
+[[row]]
+id = "CareerMode.MarketUnblockFirst"
+es = "Está bloqueado: desbloquéalo antes de ponerlo en una lista"
+en = "He is blocked: unblock him before you list him"
+fr = "Il est bloqué : débloque-le avant de le mettre sur une liste"
+de = "Er ist gesperrt: Entsperre ihn, bevor du ihn listest"
+it = "È bloccato: sbloccalo prima di metterlo in lista"
+pt = "Está bloqueado: desbloqueia-o antes de o pôr numa lista"
+ja = "ブロック中です。リストに載せる前に解除してください"
+zh_hans = "已锁定：请先解锁再挂牌"
+zh_hant = "已鎖定：請先解鎖再掛牌"
+
+# market refusal: a loan fee asked for more
+[[row]]
+id = "CareerMode.MarketLoanNoTalk"
+es = "La cuota de una cesión no se negocia: acéptala o recházala"
+en = "A loan fee is not negotiated: accept or refuse it"
+fr = "Les frais de prêt ne se négocient pas : accepte ou refuse"
+de = "Eine Leihgebühr wird nicht verhandelt: Nimm an oder lehne ab"
+it = "La quota di un prestito non si tratta: accetta o rifiuta"
+pt = "A taxa de empréstimo não se negoceia: aceita ou recusa"
+ja = "レンタル料は交渉できません。受けるか断ってください"
+zh_hans = "租借费不可议价：接受或拒绝"
+zh_hant = "租借費不可議價：接受或拒絕"
+
+# market refusal: a player out on loan
+[[row]]
+id = "CareerMode.MarketOnLoan"
+es = "Está cedido: no se puede fichar hasta que vuelva"
+en = "He is out on loan: he cannot be signed until he returns"
+fr = "Il est prêté : impossible de le recruter avant son retour"
+de = "Er ist verliehen: Er kann erst nach seiner Rückkehr verpflichtet werden"
+it = "È in prestito: non si può ingaggiare finché non torna"
+pt = "Está emprestado: não pode ser contratado até voltar"
+ja = "レンタル中のため、復帰するまで獲得できません"
+zh_hans = "他正被租借：归队前无法签下"
+zh_hant = "他正被租借：歸隊前無法簽下"
+
+# market refusal: a loan offer whose day back has passed
+[[row]]
+id = "CareerMode.MarketLoanLate"
+es = "Esa cesión ya habría terminado: la oferta se retira"
+en = "That loan would be over already: the offer is withdrawn"
+fr = "Ce prêt serait déjà terminé : l'offre est retirée"
+de = "Diese Leihe wäre schon vorbei: Angebot zurückgezogen"
+it = "Quel prestito sarebbe già finito: l'offerta è ritirata"
+pt = "Esse empréstimo já teria acabado: a proposta foi retirada"
+ja = "そのレンタルは既に終わっているため、オファーは取り下げられました"
+zh_hans = "该租借已经结束：报价已撤回"
+zh_hant = "該租借已經結束：報價已撤回"
+
+# market: «Plantilla»'s status filter, every player
+[[row]]
+id = "CareerMode.MkFilterAll"
+es = "Todos"
+en = "All"
+fr = "Tous"
+de = "Alle"
+it = "Tutti"
+pt = "Todos"
+ja = "全員"
+zh_hans = "全部"
+zh_hant = "全部"
+
+# market: «Plantilla»'s status filter, listed for sale
+[[row]]
+id = "CareerMode.MkFilterTransfer"
+es = "Transferibles"
+en = "Transfer list"
+fr = "Transférables"
+de = "Transferliste"
+it = "Cedibili"
+pt = "Transferíveis"
+ja = "放出リスト"
+zh_hans = "可转会"
+zh_hant = "可轉會"
+
+# market: «Plantilla»'s status filter, listed for loan (and out on loan)
+[[row]]
+id = "CareerMode.MkFilterLoan"
+es = "Cedibles"
+en = "Loan list"
+fr = "Prêtables"
+de = "Leihliste"
+it = "In prestito"
+pt = "Emprestáveis"
+ja = "レンタル可"
+zh_hans = "可租借"
+zh_hant = "可租借"
+
+# market: «Plantilla»'s status filter, blocked
+[[row]]
+id = "CareerMode.MkFilterBlocked"
+es = "Bloqueados"
+en = "Blocked"
+fr = "Bloqués"
+de = "Gesperrt"
+it = "Bloccati"
+pt = "Bloqueados"
+ja = "ブロック"
+zh_hans = "已锁定"
+zh_hant = "已鎖定"
+
+# market: a player's status tag, listed for sale
+[[row]]
+id = "CareerMode.MkTagTransfer"
+es = "Transferible"
+en = "Transfer"
+fr = "Transférable"
+de = "Transfer"
+it = "Cedibile"
+pt = "Transferível"
+ja = "放出"
+zh_hans = "可转会"
+zh_hant = "可轉會"
+
+# market: a player's status tag, listed for loan
+[[row]]
+id = "CareerMode.MkTagLoan"
+es = "Cedible"
+en = "Loan"
+fr = "Prêtable"
+de = "Leihe"
+it = "Prestito"
+pt = "Emprestável"
+ja = "レンタル可"
+zh_hans = "可租借"
+zh_hant = "可租借"
+
+# market: a player's status tag, blocked
+[[row]]
+id = "CareerMode.MkTagBlocked"
+es = "Bloqueado"
+en = "Blocked"
+fr = "Bloqué"
+de = "Gesperrt"
+it = "Bloccato"
+pt = "Bloqueado"
+ja = "ブロック"
+zh_hans = "已锁定"
+zh_hant = "已鎖定"
+
+# market: a player's status tag, out on loan
+[[row]]
+id = "CareerMode.MkTagLoaned"
+es = "Cedido"
+en = "On loan"
+fr = "Prêté"
+de = "Verliehen"
+it = "In prestito"
+pt = "Emprestado"
+ja = "レンタル中"
+zh_hans = "租借中"
+zh_hant = "租借中"
+
+# market card: a man out on loan, {1} the club, {2} the day he comes back
+[[row]]
+id = "CareerMode.MkLoanedTo"
+es = "Cedido a {1} hasta el {2}"
+en = "On loan at {1} until {2}"
+fr = "Prêté à {1} jusqu'au {2}"
+de = "An {1} verliehen bis {2}"
+it = "In prestito a {1} fino al {2}"
+pt = "Emprestado ao {1} até {2}"
+ja = "{1}へレンタル中（{2}まで）"
+zh_hans = "租借至{1}，至{2}"
+zh_hant = "租借至{1}，至{2}"
+
+# market: the name bar's hint
+[[row]]
+id = "CareerMode.MkSearchBar"
+es = "Buscar por nombre…"
+en = "Search by name…"
+fr = "Chercher par nom…"
+de = "Nach Namen suchen…"
+it = "Cerca per nome…"
+pt = "Procurar por nome…"
+ja = "名前で検索…"
+zh_hans = "按名字搜索…"
+zh_hant = "按名字搜尋…"
+
+# market: a loan offer's window title
+[[row]]
+id = "CareerMode.MkLoanTitle"
+es = "Aceptar cesión"
+en = "Accept the loan"
+fr = "Accepter le prêt"
+de = "Leihe annehmen"
+it = "Accettare il prestito"
+pt = "Aceitar o empréstimo"
+ja = "レンタルを受ける"
+zh_hans = "接受租借"
+zh_hant = "接受租借"
+
+# market: a loan offer, {1} the player, {2} the club, {3} the day he comes back
+[[row]]
+id = "CareerMode.MkLoanLine"
+es = "{1} jugará en {2} hasta el {3}."
+en = "{1} will play for {2} until {3}."
+fr = "{1} jouera pour {2} jusqu'au {3}."
+de = "{1} spielt bis {3} für {2}."
+it = "{1} giocherà per {2} fino al {3}."
+pt = "{1} vai jogar no {2} até {3}."
+ja = "{1}は{3}まで{2}でプレーします。"
+zh_hans = "{1}将效力于{2}至{3}。"
+zh_hant = "{1}將效力於{2}至{3}。"
+
+# market: a loan offer, {1} the fee
+[[row]]
+id = "CareerMode.MkLoanLine2"
+es = "Cuota de cesión: {1}"
+en = "Loan fee: {1}"
+fr = "Frais de prêt : {1}"
+de = "Leihgebühr: {1}"
+it = "Quota del prestito: {1}"
+pt = "Taxa de empréstimo: {1}"
+ja = "レンタル料：{1}"
+zh_hans = "租借费：{1}"
+zh_hant = "租借費：{1}"
+
+# market keys: A on «Plantilla»
+[[row]]
+id = "CareerMode.MkKeyOptions"
+es = "A: Opciones"
+en = "A: Options"
+fr = "A : Options"
+de = "A: Optionen"
+it = "A: Opzioni"
+pt = "A: Opções"
+ja = "A：オプション"
+zh_hans = "A：选项"
+zh_hant = "A：選項"
+
+# market keys: B closes the options
+[[row]]
+id = "CareerMode.MkKeyClose"
+es = "B: Cerrar"
+en = "B: Close"
+fr = "B : Fermer"
+de = "B: Schließen"
+it = "B: Chiudi"
+pt = "B: Fechar"
+ja = "B：閉じる"
+zh_hans = "B：关闭"
+zh_hant = "B：關閉"
+
+# market keys: right to the bar's section («Buscar» / «En venta»)
+[[row]]
+id = "CareerMode.MkKeyToMarket"
+es = "→: Mercado"
+en = "→: Market"
+fr = "→ : Marché"
+de = "→: Markt"
+it = "→: Mercato"
+pt = "→: Mercado"
+ja = "→：マーケット"
+zh_hans = "→：市场"
+zh_hant = "→：市場"
+
+# market keys: left to «Plantilla»
+[[row]]
+id = "CareerMode.MkKeyToSquad"
+es = "←: Plantilla"
+en = "←: Squad"
+fr = "← : Effectif"
+de = "←: Kader"
+it = "←: Rosa"
+pt = "←: Plantel"
+ja = "←：メンバー"
+zh_hans = "←：阵容"
+zh_hant = "←：陣容"
+
+# market keys: X searches a name
+[[row]]
+id = "CareerMode.MkKeyFilters"
+es = "X: Filtros"
+en = "X: Filters"
+fr = "X : Filtres"
+de = "X: Filter"
+it = "X: Filtri"
+pt = "X: Filtros"
+ja = "X：絞り込み"
+zh_hans = "X：筛选"
+zh_hant = "X：篩選"
+
+# «Ajustes»: a save's date with its year, {1} day, {2} month, {3} year
+[[row]]
+id = "CareerMode.SettingsDateYear"
+es = "{1}/{2}/{3}"
+en = "{1}/{2}/{3}"
+fr = "{1}/{2}/{3}"
+de = "{1}.{2}.{3}"
+it = "{1}/{2}/{3}"
+pt = "{1}/{2}/{3}"
+ja = "{3}/{2}/{1}"
+zh_hans = "{3}/{2}/{1}"
+zh_hant = "{3}/{2}/{1}"
+
+# «Ajustes»: the autosave tile's checkbox label, on / off
+[[row]]
+id = "CareerMode.AutoSaveOn"
+es = "Activado"
+en = "On"
+fr = "Activée"
+de = "An"
+it = "Attivo"
+pt = "Ativado"
+ja = "オン"
+zh_hans = "开启"
+zh_hant = "開啟"
+
+[[row]]
+id = "CareerMode.AutoSaveOff"
+es = "Desactivado"
+en = "Off"
+fr = "Désactivée"
+de = "Aus"
+it = "Disattivo"
+pt = "Desativado"
+ja = "オフ"
+zh_hans = "关闭"
+zh_hant = "關閉"
+
+# «Ajustes» page: how the career is saved with its autosave off
+[[row]]
+id = "CareerMode.SettingsAutoSaveOff"
+es = "Autoguardado desactivado: la carrera solo se guarda con este botón."
+en = "Autosave is off: the career is only saved with this button."
+fr = "Sauvegarde auto désactivée : la carrière ne se sauvegarde qu'avec ce bouton."
+de = "Autospeichern aus: Die Karriere wird nur mit diesem Knopf gespeichert."
+it = "Salvataggio automatico disattivo: la carriera si salva solo con questo pulsante."
+pt = "Gravação automática desativada: a carreira só se guarda com este botão."
+ja = "オートセーブはオフです。キャリアはこのボタンでのみセーブされます。"
+zh_hans = "自动保存已关闭：生涯只能通过此按钮保存。"
+zh_hant = "自動儲存已關閉：生涯只能透過此按鈕儲存。"
+
+# ---- the market (Mercado7): the bar's sections, «En venta», the card's offer lines
+# the market bar: the window open, the day it closes
+[[row]]
+id = "CareerMode.MkClosesOn"
+es = "El mercado cierra el {1}"
+en = "The market closes on {1}"
+fr = "Le marché ferme le {1}"
+de = "Der Markt schließt am {1}"
+it = "Il mercato chiude il {1}"
+pt = "O mercado fecha a {1}"
+ja = "移籍市場の締切：{1}"
+zh_hans = "转会市场于{1}关闭"
+zh_hant = "轉會市場於{1}關閉"
+
+# the market bar: the section of the search
+[[row]]
+id = "CareerMode.MkSecSearch"
+es = "Buscar"
+en = "Search"
+fr = "Chercher"
+de = "Suchen"
+it = "Cerca"
+pt = "Procurar"
+ja = "探す"
+zh_hans = "搜索"
+zh_hant = "搜尋"
+
+# the market bar: the section of the offers received, their count
+[[row]]
+id = "CareerMode.MkSecSale"
+es = "En venta ({1})"
+en = "For sale ({1})"
+fr = "En vente ({1})"
+de = "Zum Verkauf ({1})"
+it = "In vendita ({1})"
+pt = "À venda ({1})"
+ja = "売却 ({1})"
+zh_hans = "出售 ({1})"
+zh_hant = "出售 ({1})"
+
+# «En venta»: no offer received
+[[row]]
+id = "CareerMode.MkSaleEmpty"
+es = "No has recibido ofertas"
+en = "No offers received"
+fr = "Aucune offre reçue"
+de = "Keine Angebote erhalten"
+it = "Nessuna offerta ricevuta"
+pt = "Nenhuma oferta recebida"
+ja = "オファーはありません"
+zh_hans = "没有收到报价"
+zh_hant = "沒有收到報價"
+
+# «En venta»: the column of the offer's kind
+[[row]]
+id = "CareerMode.MkColKind"
+es = "Tipo"
+en = "Type"
+fr = "Type"
+de = "Art"
+it = "Tipo"
+pt = "Tipo"
+ja = "種類"
+zh_hans = "类型"
+zh_hant = "類型"
+
+# «En venta»: the column of the amount (and the card's line)
+[[row]]
+id = "CareerMode.MkColAmount"
+es = "Importe"
+en = "Amount"
+fr = "Montant"
+de = "Betrag"
+it = "Importo"
+pt = "Valor"
+ja = "金額"
+zh_hans = "金额"
+zh_hant = "金額"
+
+# «En venta»: the column of a loan's end
+[[row]]
+id = "CareerMode.MkColUntil"
+es = "Hasta"
+en = "Until"
+fr = "Jusqu'au"
+de = "Bis"
+it = "Fino al"
+pt = "Até"
+ja = "期限"
+zh_hans = "截至"
+zh_hant = "截至"
+
+# «En venta»: the column of the day received
+[[row]]
+id = "CareerMode.MkColReceived"
+es = "Recibida"
+en = "Received"
+fr = "Reçue"
+de = "Erhalten"
+it = "Ricevuta"
+pt = "Recebida"
+ja = "受信日"
+zh_hans = "收到"
+zh_hant = "收到"
+
+# «En venta»: a transfer offer
+[[row]]
+id = "CareerMode.MkKindTransfer"
+es = "Traspaso"
+en = "Transfer"
+fr = "Transfert"
+de = "Transfer"
+it = "Trasferimento"
+pt = "Transferência"
+ja = "移籍"
+zh_hans = "转会"
+zh_hant = "轉會"
+
+# «En venta»: a loan offer
+[[row]]
+id = "CareerMode.MkKindLoan"
+es = "Cesión"
+en = "Loan"
+fr = "Prêt"
+de = "Leihe"
+it = "Prestito"
+pt = "Empréstimo"
+ja = "レンタル"
+zh_hans = "租借"
+zh_hant = "租借"
+
+# the market card: the bidding club
+[[row]]
+id = "CareerMode.MkOfferFrom"
+es = "Oferta de"
+en = "Offer from"
+fr = "Offre de"
+de = "Angebot von"
+it = "Offerta di"
+pt = "Oferta de"
+ja = "オファー元"
+zh_hans = "报价方"
+zh_hant = "報價方"
+
+# the market card: a loan offer's end
+[[row]]
+id = "CareerMode.MkLoanUntil"
+es = "Cesión hasta"
+en = "Loan until"
+fr = "Prêt jusqu'au"
+de = "Leihe bis"
+it = "Prestito fino al"
+pt = "Empréstimo até"
+ja = "レンタル期限"
+zh_hans = "租借至"
+zh_hant = "租借至"
+
+# the market card: a loan offer's fee
+[[row]]
+id = "CareerMode.MkLoanFee"
+es = "Cuota"
+en = "Fee"
+fr = "Indemnité"
+de = "Gebühr"
+it = "Quota"
+pt = "Taxa"
+ja = "レンタル料"
+zh_hans = "租借费"
+zh_hant = "租借費"
+
+# «En venta»: the note under the offers
+[[row]]
+id = "CareerMode.MkSaleNote"
+es = "Las ofertas caducan al cerrar el mercado."
+en = "Offers expire when the market closes."
+fr = "Les offres expirent à la fermeture du marché."
+de = "Angebote verfallen, wenn der Markt schließt."
+it = "Le offerte scadono alla chiusura del mercato."
+pt = "As ofertas expiram quando o mercado fecha."
+ja = "オファーは移籍市場の締切で失効します。"
+zh_hans = "报价在转会市场关闭时失效。"
+zh_hant = "報價在轉會市場關閉時失效。"
+
+# market keys: A accepts an offer
+[[row]]
+id = "CareerMode.MkKeyAccept"
+es = "A: Aceptar"
+en = "A: Accept"
+fr = "A : Accepter"
+de = "A: Annehmen"
+it = "A: Accetta"
+pt = "A: Aceitar"
+ja = "A：受諾"
+zh_hans = "A：接受"
+zh_hant = "A：接受"
+
+# market keys: L2 / R2 switch the bar's sections
+[[row]]
+id = "CareerMode.MkKeySections"
+es = "L2/R2: Buscar / En venta"
+en = "L2/R2: Search / For sale"
+fr = "L2/R2 : Chercher / En vente"
+de = "L2/R2: Suchen / Verkauf"
+it = "L2/R2: Cerca / In vendita"
+pt = "L2/R2: Procurar / À venda"
+ja = "L2/R2：探す／売却"
+zh_hans = "L2/R2：搜索／出售"
+zh_hant = "L2/R2：搜尋／出售"
+
+# market keys: X, «Plantilla»'s next status filter
+[[row]]
+id = "CareerMode.MkKeyFilterX"
+es = "X: Filtro"
+en = "X: Filter"
+fr = "X : Filtre"
+de = "X: Filter"
+it = "X: Filtro"
+pt = "X: Filtro"
+ja = "X：絞り込み"
+zh_hans = "X：筛选"
+zh_hant = "X：篩選"
+
+# accepting a transfer offer: the dialog's title
+[[row]]
+id = "CareerMode.MkAcceptTitle"
+es = "Aceptar oferta"
+en = "Accept offer"
+fr = "Accepter l'offre"
+de = "Angebot annehmen"
+it = "Accetta offerta"
+pt = "Aceitar oferta"
+ja = "オファーを受諾"
+zh_hans = "接受报价"
+zh_hant = "接受報價"
+
+# accepting a transfer offer: player, club, amount
+[[row]]
+id = "CareerMode.MkAcceptLine"
+es = "¿Vender a {1} a {2} por {3}?"
+en = "Sell {1} to {2} for {3}?"
+fr = "Vendre {1} à {2} pour {3} ?"
+de = "{1} für {3} an {2} verkaufen?"
+it = "Vendere {1} al {2} per {3}?"
+pt = "Vender {1} ao {2} por {3}?"
+ja = "{1}を{3}で{2}に売却しますか？"
+zh_hans = "以{3}将{1}出售给{2}？"
+zh_hant = "以{3}將{1}出售給{2}？"
+
+# ---- the market: «Negociar» on an offer received (the bidder answers in a few days)
+# market keys: X opens «Negociar» on a transfer offer
+[[row]]
+id = "CareerMode.MkKeyNegotiate"
+es = "X: Negociar"
+en = "X: Negotiate"
+fr = "X : Négocier"
+de = "X: Verhandeln"
+it = "X: Tratta"
+pt = "X: Negociar"
+ja = "X：交渉"
+zh_hans = "X：谈判"
+zh_hant = "X：談判"
+
+# «En venta»: the bidder has not answered the player's ask yet
+[[row]]
+id = "CareerMode.MkWaitingReply"
+es = "Esperando respuesta"
+en = "Waiting for reply"
+fr = "En attente de réponse"
+de = "Warte auf Antwort"
+it = "In attesa di risposta"
+pt = "Aguardando resposta"
+ja = "返答待ち"
+zh_hans = "等待回复"
+zh_hant = "等待回覆"
+
+# «En venta»: the bidder pays the player's ask (A closes the sale)
+[[row]]
+id = "CareerMode.MkPriceAgreed"
+es = "Precio aceptado: pulsa A para vender"
+en = "Price agreed: press A to sell"
+fr = "Prix accepté : appuie sur A pour vendre"
+de = "Preis akzeptiert: A zum Verkaufen"
+it = "Prezzo accettato: premi A per vendere"
+pt = "Preço aceito: aperte A para vender"
+ja = "価格合意：Aで売却"
+zh_hans = "价格已接受：按A出售"
+zh_hant = "價格已接受：按A出售"
+
+# the market card: the player's last asking price
+[[row]]
+id = "CareerMode.MkYourAsk"
+es = "Tu precio"
+en = "Your price"
+fr = "Ton prix"
+de = "Dein Preis"
+it = "Il tuo prezzo"
+pt = "Seu preço"
+ja = "あなたの希望額"
+zh_hans = "你的要价"
+zh_hant = "你的要價"
+
+# «Negociar»: the ask sent, the dialog's title
+[[row]]
+id = "CareerMode.MkAskSentTitle"
+es = "Precio enviado"
+en = "Price sent"
+fr = "Prix envoyé"
+de = "Preis gesendet"
+it = "Prezzo inviato"
+pt = "Preço enviado"
+ja = "希望額を送信"
+zh_hans = "要价已发送"
+zh_hant = "要價已送出"
+
+# «Negociar»: the ask sent: {1} the club, {2} the price
+[[row]]
+id = "CareerMode.MkAskSentLine"
+es = "{1} estudia tu precio de {2}."
+en = "{1} is considering your price of {2}."
+fr = "{1} étudie ton prix de {2}."
+de = "{1} prüft deinen Preis von {2}."
+it = "{1} valuta il tuo prezzo di {2}."
+pt = "{1} está avaliando seu preço de {2}."
+ja = "{1}が希望額{2}を検討中。"
+zh_hans = "{1}正在考虑你的要价{2}。"
+zh_hant = "{1}正在考慮你的要價{2}。"
+
+# «Negociar»: the answer comes as a news item in a few days
+[[row]]
+id = "CareerMode.MkAskSentLine2"
+es = "Responderá en unos días; te llegará como noticia."
+en = "They will answer in a few days, in the news."
+fr = "Réponse dans quelques jours, dans les actualités."
+de = "Die Antwort kommt in ein paar Tagen in den News."
+it = "Risponderà tra qualche giorno, nelle notizie."
+pt = "A resposta chega em alguns dias, nas notícias."
+ja = "数日後にニュースで返答が届きます。"
+zh_hans = "几天后会在新闻中回复。"
+zh_hant = "幾天後會在新聞中回覆。"
+
+# market refusal: the bidder has not answered the last ask yet
+[[row]]
+id = "CareerMode.MarketTalkPending"
+es = "El club aún no ha respondido a tu precio"
+en = "The club has not answered your price yet"
+fr = "Le club n'a pas encore répondu à ton prix"
+de = "Der Verein hat auf deinen Preis noch nicht geantwortet"
+it = "Il club non ha ancora risposto al tuo prezzo"
+pt = "O clube ainda não respondeu ao seu preço"
+ja = "クラブはまだ返答していません"
+zh_hans = "俱乐部尚未回复你的要价"
+zh_hant = "俱樂部尚未回覆你的要價"
+
+# market refusal: the bidder already pays the asked price
+[[row]]
+id = "CareerMode.MarketTalkAgreed"
+es = "El club ya paga tu precio: acéptalo"
+en = "The club already pays your price: accept it"
+fr = "Le club paie déjà ton prix : accepte"
+de = "Der Verein zahlt deinen Preis schon: nimm an"
+it = "Il club paga già il tuo prezzo: accetta"
+pt = "O clube já paga seu preço: aceite"
+ja = "クラブは希望額を支払います：受諾してください"
+zh_hans = "俱乐部已接受你的要价：请接受"
+zh_hant = "俱樂部已接受你的要價：請接受"
+
+# news: a bidder's answer to the player's price, head: {1} the player
+[[row]]
+id = "CareerMode.NewsHeadBidReply"
+es = "Respuesta por {1}"
+en = "Reply about {1}"
+fr = "Réponse pour {1}"
+de = "Antwort zu {1}"
+it = "Risposta per {1}"
+pt = "Resposta por {1}"
+ja = "{1}の交渉の返答"
+zh_hans = "关于{1}的回复"
+zh_hant = "關於{1}的回覆"
+
+# news: the bidder pays the ask: {1} the club, {2} the new bid, {3} the ask
+[[row]]
+id = "CareerMode.NewsTextBidAgreed"
+es = "{1} acepta pagar {3}. Cierra la venta en «Mercado»."
+en = "{1} agrees to pay {3}. Close the sale in «Market»."
+fr = "{1} accepte de payer {3}. Conclus la vente dans «Marché»."
+de = "{1} zahlt {3}. Schließe den Verkauf im «Markt» ab."
+it = "{1} accetta di pagare {3}. Chiudi la vendita in «Mercato»."
+pt = "{1} aceita pagar {3}. Feche a venda em «Mercado»."
+ja = "{1}が{3}の支払いに合意。「マーケット」で売却を確定しよう。"
+zh_hans = "{1}同意支付{3}。在「市场」完成出售。"
+zh_hant = "{1}同意支付{3}。在「市場」完成出售。"
+
+# news: the bidder bids again: {1} the club, {2} the new bid, {3} the ask
+[[row]]
+id = "CareerMode.NewsTextBidCounter"
+es = "{1} sube su oferta a {2} (pediste {3})."
+en = "{1} raises its offer to {2} (you asked {3})."
+fr = "{1} monte son offre à {2} (tu demandais {3})."
+de = "{1} erhöht auf {2} (du wolltest {3})."
+it = "{1} alza l'offerta a {2} (chiedevi {3})."
+pt = "{1} aumenta a oferta para {2} (você pediu {3})."
+ja = "{1}がオファーを{2}に上げた（希望額{3}）。"
+zh_hans = "{1}将报价提高到{2}（你要价{3}）。"
+zh_hant = "{1}將報價提高到{2}（你要價{3}）。"
+
+# news: the bidder walks away: {1} the club, {2} its last bid, {3} the ask
+[[row]]
+id = "CareerMode.NewsTextBidWalked"
+es = "{1} rechaza tu precio de {3} y retira la oferta."
+en = "{1} rejects your price of {3} and withdraws its offer."
+fr = "{1} refuse ton prix de {3} et retire son offre."
+de = "{1} lehnt deinen Preis von {3} ab und zieht das Angebot zurück."
+it = "{1} rifiuta il tuo prezzo di {3} e ritira l'offerta."
+pt = "{1} recusa seu preço de {3} e retira a oferta."
+ja = "{1}は希望額{3}を拒否し、オファーを取り下げた。"
+zh_hans = "{1}拒绝了你{3}的要价并撤回报价。"
+zh_hant = "{1}拒絕了你{3}的要價並撤回報價。"
+
+# ---- the talks window v3 (owner 2026-10-31): patience bar, budget box, compact buttons
+# the talks window: the bidder's amount, {1} the club
+[[row]]
+id = "CareerMode.TalkTheyOffer"
+es = "{1} ofrece"
+en = "{1} offers"
+fr = "{1} propose"
+de = "{1} bietet"
+it = "{1} offre"
+pt = "{1} oferece"
+ja = "{1}の提示額"
+zh_hans = "{1}出价"
+zh_hant = "{1}出價"
+
+# the talks window: the selling club's price, {1} the club
+[[row]]
+id = "CareerMode.TalkTheyAsk"
+es = "{1} pide"
+en = "{1} asks"
+fr = "{1} demande"
+de = "{1} verlangt"
+it = "{1} chiede"
+pt = "{1} pede"
+ja = "{1}の希望額"
+zh_hans = "{1}要价"
+zh_hant = "{1}要價"
+
+# the talks window: the steps, {1} small, {2} big
+[[row]]
+id = "CareerMode.TalkStepsShort"
+es = "←/→ ±{1}  ·  L2/R2 ±{2}"
+en = "←/→ ±{1}  ·  L2/R2 ±{2}"
+fr = "←/→ ±{1}  ·  L2/R2 ±{2}"
+de = "←/→ ±{1}  ·  L2/R2 ±{2}"
+it = "←/→ ±{1}  ·  L2/R2 ±{2}"
+pt = "←/→ ±{1}  ·  L2/R2 ±{2}"
+ja = "←/→ ±{1}  ·  L2/R2 ±{2}"
+zh_hans = "←/→ ±{1}  ·  L2/R2 ±{2}"
+zh_hant = "←/→ ±{1}  ·  L2/R2 ±{2}"
+
+# the talks window: the patience this amount would cost, {1} = percent
+[[row]]
+id = "CareerMode.TalkCostPreview"
+es = "Esta cifra: -{1} %"
+en = "This amount: -{1}%"
+fr = "Ce montant : -{1} %"
+de = "Dieser Betrag: -{1} %"
+it = "Questa cifra: -{1}%"
+pt = "Este valor: -{1}%"
+ja = "この金額：-{1}%"
+zh_hans = "此金额：-{1}%"
+zh_hant = "此金額：-{1}%"
+
+# the talks window: this amount would use up the patience
+[[row]]
+id = "CareerMode.TalkCostWalk"
+es = "¡Se retiraría!"
+en = "They would walk away!"
+fr = "Il partirait !"
+de = "Er würde abbrechen!"
+it = "Si ritirerebbe!"
+pt = "Ele desistiria!"
+ja = "交渉決裂になる！"
+zh_hans = "对方会退出！"
+zh_hant = "對方會退出！"
+
+# the talks window (an offer received): {1} the first bid, {2} the value
+[[row]]
+id = "CareerMode.TalkSellFactsShort"
+es = "1ª oferta {1}  ·  valor {2}"
+en = "First offer {1}  ·  value {2}"
+fr = "1re offre {1}  ·  valeur {2}"
+de = "Erstes Angebot {1}  ·  Wert {2}"
+it = "1ª offerta {1}  ·  valore {2}"
+pt = "1ª oferta {1}  ·  valor {2}"
+ja = "初回提示 {1}  ·  価値 {2}"
+zh_hans = "首次报价 {1}  ·  身价 {2}"
+zh_hant = "首次報價 {1}  ·  身價 {2}"
+
+# the talks window (buying): {1} the starting price, {2} the value
+[[row]]
+id = "CareerMode.TalkFactsShort"
+es = "Precio inicial {1}  ·  valor {2}"
+en = "Starting price {1}  ·  value {2}"
+fr = "Prix initial {1}  ·  valeur {2}"
+de = "Startpreis {1}  ·  Wert {2}"
+it = "Prezzo iniziale {1}  ·  valore {2}"
+pt = "Preço inicial {1}  ·  valor {2}"
+ja = "初期価格 {1}  ·  価値 {2}"
+zh_hans = "初始价格 {1}  ·  身价 {2}"
+zh_hant = "初始價格 {1}  ·  身價 {2}"
+
+# the talks window: A sends the ask, {1} the amount
+[[row]]
+id = "CareerMode.TalkAskButton"
+es = "A: Pedir {1}"
+en = "A: Ask {1}"
+fr = "A : Demander {1}"
+de = "A: {1} fordern"
+it = "A: Chiedi {1}"
+pt = "A: Pedir {1}"
+ja = "A：{1}を要求"
+zh_hans = "A：要价 {1}"
+zh_hant = "A：要價 {1}"
+
+# the talks window: A sends the offer, {1} the amount
+[[row]]
+id = "CareerMode.TalkOfferButton"
+es = "A: Ofrecer {1}"
+en = "A: Offer {1}"
+fr = "A : Proposer {1}"
+de = "A: {1} bieten"
+it = "A: Offri {1}"
+pt = "A: Oferecer {1}"
+ja = "A：{1}を提示"
+zh_hans = "A：出价 {1}"
+zh_hant = "A：出價 {1}"
+
+# the talks window: Y takes the other side's amount, {1} it
+[[row]]
+id = "CareerMode.TalkAcceptButton"
+es = "Y: Aceptar {1}"
+en = "Y: Accept {1}"
+fr = "Y : Accepter {1}"
+de = "Y: {1} annehmen"
+it = "Y: Accetta {1}"
+pt = "Y: Aceitar {1}"
+ja = "Y：{1}で合意"
+zh_hans = "Y：接受 {1}"
+zh_hant = "Y：接受 {1}"
+
+# the talks window: B closes it
+[[row]]
+id = "CareerMode.TalkLeaveButton"
+es = "B: Salir"
+en = "B: Leave"
+fr = "B : Quitter"
+de = "B: Verlassen"
+it = "B: Esci"
+pt = "B: Sair"
+ja = "B：戻る"
+zh_hans = "B：离开"
+zh_hant = "B：離開"
+
+# ---- «Torneos» focus keys, «Plantilla» status checkboxes (owner 2026-10-31)
+# «Torneos» keys: Y moves the focus between the table and the players' stats
+[[row]]
+id = "CareerMode.KeyStandFocus"
+es = "Y: Clasificación/Jugadores"
+en = "Y: Table/Players"
+fr = "Y : Classement/Joueurs"
+de = "Y: Tabelle/Spieler"
+it = "Y: Classifica/Giocatori"
+pt = "Y: Classificação/Jogadores"
+ja = "Y：順位表/選手"
+zh_hans = "Y：积分榜/球员"
+zh_hant = "Y：積分榜/球員"
+
+# «Torneos» keys: left / right, the stats tab
+[[row]]
+id = "CareerMode.KeyStatsTab"
+es = "←/→: Estadística"
+en = "←/→: Stat"
+fr = "←/→ : Statistique"
+de = "←/→: Statistik"
+it = "←/→: Statistica"
+pt = "←/→: Estatística"
+ja = "←/→：成績"
+zh_hans = "←/→：数据"
+zh_hant = "←/→：數據"
+
+# «Plantilla» options: a transfer offer for him, {1} the club, {2} the amount
+[[row]]
+id = "CareerMode.MkOfferLine"
+es = "Oferta de {1}: {2}"
+en = "Offer from {1}: {2}"
+fr = "Offre de {1} : {2}"
+de = "Angebot von {1}: {2}"
+it = "Offerta di {1}: {2}"
+pt = "Oferta de {1}: {2}"
+ja = "{1}からのオファー：{2}"
+zh_hans = "{1}的报价：{2}"
+zh_hant = "{1}的報價：{2}"
+
+# «Plantilla» options: a loan offer for him, {1} the club, {2} the fee
+[[row]]
+id = "CareerMode.MkLoanOfferLine"
+es = "Cesión a {1}: {2}"
+en = "Loan to {1}: {2}"
+fr = "Prêt à {1} : {2}"
+de = "Leihe an {1}: {2}"
+it = "Prestito al {1}: {2}"
+pt = "Empréstimo ao {1}: {2}"
+ja = "{1}へのレンタル：{2}"
+zh_hans = "租借给{1}：{2}"
+zh_hant = "租借給{1}：{2}"
+
+# the search bar's filter button (no filter set)
+[[row]]
+id = "CareerMode.MkFilters"
+es = "Filtros"
+en = "Filters"
+fr = "Filtres"
+de = "Filter"
+it = "Filtri"
+pt = "Filtros"
+ja = "絞り込み"
+zh_hans = "筛选"
+zh_hant = "篩選"
+
+# the search bar's filter button: {1} = the filters set
+[[row]]
+id = "CareerMode.MkFiltersOn"
+es = "Filtros ({1})"
+en = "Filters ({1})"
+fr = "Filtres ({1})"
+de = "Filter ({1})"
+it = "Filtri ({1})"
+pt = "Filtros ({1})"
+ja = "絞り込み（{1}）"
+zh_hans = "筛选（{1}）"
+zh_hant = "篩選（{1}）"
+
+# the filter panel's title
+[[row]]
+id = "CareerMode.MkFilterTitle"
+es = "Filtros de búsqueda"
+en = "Search filters"
+fr = "Filtres de recherche"
+de = "Suchfilter"
+it = "Filtri di ricerca"
+pt = "Filtros de pesquisa"
+ja = "検索の絞り込み"
+zh_hans = "搜索筛选"
+zh_hant = "搜尋篩選"
+
+# the filter panel's last row: every filter and the order back
+[[row]]
+id = "CareerMode.MkFilterReset"
+es = "Restablecer"
+en = "Reset"
+fr = "Réinitialiser"
+de = "Zurücksetzen"
+it = "Ripristina"
+pt = "Repor"
+ja = "リセット"
+zh_hans = "重置"
+zh_hant = "重設"
+
+# the filter panel's order row
+[[row]]
+id = "CareerMode.SearchSort"
+es = "Orden"
+en = "Sort by"
+fr = "Trier par"
+de = "Sortieren"
+it = "Ordina per"
+pt = "Ordenar"
+ja = "並び順"
+zh_hans = "排序"
+zh_hant = "排序"
+
+# the filter panel's keys: the arrows move between the boxes
+[[row]]
+id = "CareerMode.MkKeyFilterRow"
+es = "↑↓←→: Casilla"
+en = "↑↓←→: Box"
+fr = "↑↓←→ : Case"
+de = "↑↓←→: Feld"
+it = "↑↓←→: Casella"
+pt = "↑↓←→: Caixa"
+ja = "↑↓←→：項目"
+zh_hans = "↑↓←→：项目"
+zh_hant = "↑↓←→：項目"
+
+# the filter panel's keys: A uses the focused box (a value, a switch, the club list)
+[[row]]
+id = "CareerMode.MkKeyFilterValue"
+es = "A: Cambiar"
+en = "A: Change"
+fr = "A : Changer"
+de = "A: Ändern"
+it = "A: Cambia"
+pt = "A: Mudar"
+ja = "A：変更"
+zh_hans = "A：更改"
+zh_hant = "A：變更"
+
+# the filter panel's keys: B closes it and searches
+[[row]]
+id = "CareerMode.MkKeyFilterApply"
+es = "B: Aplicar"
+en = "B: Apply"
+fr = "B : Appliquer"
+de = "B: Anwenden"
+it = "B: Applica"
+pt = "B: Aplicar"
+ja = "B：決定"
+zh_hans = "B：应用"
+zh_hant = "B：套用"
+
+# the filter panel's keys: L / R step the focused value
+[[row]]
+id = "CareerMode.MkKeyFilterStep"
+es = "L/R: Valor"
+en = "L/R: Value"
+fr = "L/R : Valeur"
+de = "L/R: Wert"
+it = "L/R: Valore"
+pt = "L/R: Valor"
+ja = "L/R：値"
+zh_hans = "L/R：数值"
+zh_hant = "L/R：數值"
+
+# the club list's keys: up / down a club
+[[row]]
+id = "CareerMode.MkKeyClubRow"
+es = "↑↓: Club"
+en = "↑↓: Club"
+fr = "↑↓ : Club"
+de = "↑↓: Verein"
+it = "↑↓: Club"
+pt = "↑↓: Clube"
+ja = "↑↓：クラブ"
+zh_hans = "↑↓：俱乐部"
+zh_hant = "↑↓：俱樂部"
+
+# the club list's keys: A picks the club
+[[row]]
+id = "CareerMode.MkKeyClubPick"
+es = "A: Elegir"
+en = "A: Pick"
+fr = "A : Choisir"
+de = "A: Wählen"
+it = "A: Scegli"
+pt = "A: Escolher"
+ja = "A：選ぶ"
+zh_hans = "A：选择"
+zh_hant = "A：選擇"
+
+# the club list's keys: B goes back to the filters
+[[row]]
+id = "CareerMode.MkKeyClubBack"
+es = "B: Filtros"
+en = "B: Filters"
+fr = "B : Filtres"
+de = "B: Filter"
+it = "B: Filtri"
+pt = "B: Filtros"
+ja = "B：絞り込み"
+zh_hans = "B：筛选"
+zh_hant = "B：篩選"
+
+# «Ver jugador» keys: up / down the next player
+[[row]]
+id = "CareerMode.MkKeyViewPlayer"
+es = "↑↓: Jugador"
+en = "↑↓: Player"
+fr = "↑↓ : Joueur"
+de = "↑↓: Spieler"
+it = "↑↓: Giocatore"
+pt = "↑↓: Jogador"
+ja = "↑↓：選手"
+zh_hans = "↑↓：球员"
+zh_hant = "↑↓：球員"
+
+# «Ver jugador» keys: L2 / R2 the pages
+[[row]]
+id = "CareerMode.MkKeyViewPage"
+es = "L2/R2: Página"
+en = "L2/R2: Page"
+fr = "L2/R2 : Page"
+de = "L2/R2: Seite"
+it = "L2/R2: Pagina"
+pt = "L2/R2: Página"
+ja = "L2/R2：ページ"
+zh_hans = "L2/R2：页面"
+zh_hant = "L2/R2：頁面"
+
+# «Ver jugador» keys: B, the list again
+[[row]]
+id = "CareerMode.MkKeyViewBack"
+es = "B: Lista"
+en = "B: List"
+fr = "B : Liste"
+de = "B: Liste"
+it = "B: Lista"
+pt = "B: Lista"
+ja = "B：リスト"
+zh_hans = "B：列表"
+zh_hant = "B：列表"
+
+# an element's name (chara_param element 1)
+[[row]]
+id = "CareerMode.Element1"
+es = "Viento"
+en = "Wind"
+fr = "Vent"
+de = "Wind"
+it = "Vento"
+pt = "Vento"
+ja = "風"
+zh_hans = "风"
+zh_hant = "風"
+
+# an element's name (chara_param element 2)
+[[row]]
+id = "CareerMode.Element2"
+es = "Bosque"
+en = "Forest"
+fr = "Forêt"
+de = "Wald"
+it = "Foresta"
+pt = "Floresta"
+ja = "林"
+zh_hans = "林"
+zh_hant = "林"
+
+# an element's name (chara_param element 3)
+[[row]]
+id = "CareerMode.Element3"
+es = "Fuego"
+en = "Fire"
+fr = "Feu"
+de = "Feuer"
+it = "Fuoco"
+pt = "Fogo"
+ja = "火"
+zh_hans = "火"
+zh_hant = "火"
+
+# an element's name (chara_param element 4)
+[[row]]
+id = "CareerMode.Element4"
+es = "Montaña"
+en = "Mountain"
+fr = "Montagne"
+de = "Berg"
+it = "Montagna"
+pt = "Montanha"
+ja = "山"
+zh_hans = "山"
+zh_hant = "山"
+
+# an element's name (chara_param element 5)
+[[row]]
+id = "CareerMode.Element5"
+es = "Vacío"
+en = "Void"
+fr = "Néant"
+de = "Leere"
+it = "Vuoto"
+pt = "Vazio"
+ja = "虚"
+zh_hans = "虚"
+zh_hant = "虛"
+
+# «Ver jugador»: the description page
+[[row]]
+id = "CareerMode.ViewPageDescription"
+es = "Descripción"
+en = "Description"
+fr = "Description"
+de = "Beschreibung"
+it = "Descrizione"
+pt = "Descrição"
+ja = "プロフィール"
+zh_hans = "简介"
+zh_hant = "簡介"
+
+# «Ver jugador»: the stats page (his stats at his level)
+[[row]]
+id = "CareerMode.ViewPageStats"
+es = "Estadísticas"
+en = "Stats"
+fr = "Statistiques"
+de = "Werte"
+it = "Statistiche"
+pt = "Estatísticas"
+ja = "ステータス"
+zh_hans = "能力值"
+zh_hant = "能力值"
+
+# «Ver jugador»: the special moves page
+[[row]]
+id = "CareerMode.ViewPageMoves"
+es = "Supertécnicas"
+en = "Special moves"
+fr = "Supertechniques"
+de = "Spezialtechniken"
+it = "Supertecniche"
+pt = "Supertécnicas"
+ja = "必殺技"
+zh_hans = "必杀技"
+zh_hant = "必殺技"
+
+# a stat's name (growth table column Kc_*)
+[[row]]
+id = "CareerMode.Stat_Kc"
+es = "Tiro"
+en = "Kick"
+fr = "Tir"
+de = "Schuss"
+it = "Tiro"
+pt = "Chute"
+ja = "キック"
+zh_hans = "射门"
+zh_hant = "射門"
+
+# a stat's name (growth table column Cr_*)
+[[row]]
+id = "CareerMode.Stat_Cr"
+es = "Control"
+en = "Control"
+fr = "Contrôle"
+de = "Kontrolle"
+it = "Controllo"
+pt = "Controle"
+ja = "コントロール"
+zh_hans = "控球"
+zh_hant = "控球"
+
+# a stat's name (growth table column Tc_*)
+[[row]]
+id = "CareerMode.Stat_Tc"
+es = "Técnica"
+en = "Technique"
+fr = "Technique"
+de = "Technik"
+it = "Tecnica"
+pt = "Técnica"
+ja = "テクニック"
+zh_hans = "技术"
+zh_hant = "技術"
+
+# a stat's name (growth table column Pr_*)
+[[row]]
+id = "CareerMode.Stat_Pr"
+es = "Presión"
+en = "Pressure"
+fr = "Pression"
+de = "Druck"
+it = "Pressione"
+pt = "Pressão"
+ja = "プレッシャー"
+zh_hans = "压迫"
+zh_hant = "壓迫"
+
+# a stat's name (growth table column Ps_*)
+[[row]]
+id = "CareerMode.Stat_Ps"
+es = "Físico"
+en = "Physical"
+fr = "Physique"
+de = "Körper"
+it = "Fisico"
+pt = "Físico"
+ja = "フィジカル"
+zh_hans = "体格"
+zh_hant = "體格"
+
+# a stat's name (growth table column Ag_*)
+[[row]]
+id = "CareerMode.Stat_Ag"
+es = "Agilidad"
+en = "Agility"
+fr = "Agilité"
+de = "Agilität"
+it = "Agilità"
+pt = "Agilidade"
+ja = "アジリティ"
+zh_hans = "敏捷"
+zh_hant = "敏捷"
+
+# a stat's name (growth table column It_*)
+[[row]]
+id = "CareerMode.Stat_It"
+es = "Inteligencia"
+en = "Intelligence"
+fr = "Intelligence"
+de = "Intelligenz"
+it = "Intelligenza"
+pt = "Inteligência"
+ja = "インテリジェンス"
+zh_hans = "智力"
+zh_hant = "智力"

@@ -39,14 +39,18 @@ kinds = ["dribble"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_divinepower"
-families = ["HissatsuReforged.DivinePower"]
+[[VRFW.Clock]]
+name = "ie3_clock_first_third"
+half_fraction_to = "1/3"
+
+[[VRFW.Move]]
+name = "ie3_move_whs01100"
+moves = ["whs01100"]
 
 [[VRFW.TechniquePower]]
-name = "ie3_techniquepower_self_10"
-value = 10
-target = "self"
+name = "ie3_techniquepower_team_12"
+value = 12
+target = "team"
 mode = "percent"
 
 [[VRFW.Trigger]]
@@ -74,19 +78,24 @@ mode = "percent"
 stats = ["pressure"]
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_beasts"
-families = ["HissatsuReforged.Beasts"]
-
-[[VRFW.MoveFamily]]
-name = "ie3_family_legendarybirds"
-families = ["HissatsuReforged.LegendaryBirds"]
+[[VRFW.Move]]
+name = "ie3_move_whs01020"
+moves = ["whs01020"]
 
 [[VRFW.TechniquePower]]
-name = "ie3_techniquepower_team_8"
-value = 8
+name = "ie3_techniquepower_team_10"
+value = 10
 target = "team"
 mode = "percent"
+
+[[VRFW.Zone]]
+name = "ie3_zone_opponent_half"
+z = [0.0, 200.0]
+frame = "team"
+
+[[VRFW.Move]]
+name = "ie3_move_whs00100"
+moves = ["whs00100"]
 
 [[VRFW.Holder]]
 name = "ie3_holder_inazuma_national_team"
@@ -130,8 +139,14 @@ stats = ["control"]
 target = "self"
 
 [[VRFW.MoveFamily]]
-name = "ie3_family_illusions"
-families = ["HissatsuReforged.Illusions"]
+name = "ie3_family_phoenix"
+families = ["HissatsuReforged.Phoenix"]
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_10"
+value = 10
+target = "self"
+mode = "percent"
 
 [[VRFW.Stat]]
 name = "ie3_stat_team_intelligence_2"
@@ -158,9 +173,24 @@ kinds = ["catch"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_northernice"
-families = ["HissatsuReforged.NorthernIce"]
+[[VRFW.HasBall]]
+name = "ie3_holds_ball"
+holds = true
+
+[[VRFW.Zone]]
+name = "ie3_zone_own_half"
+z = [-200.0, 0.0]
+frame = "team"
+
+[[VRFW.Move]]
+name = "ie3_move_who00430"
+moves = ["who00430"]
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_15"
+value = 15
+target = "self"
+mode = "percent"
 
 [[VRFW.Trigger]]
 name = "ie3_when_dash_by_team"
@@ -274,10 +304,6 @@ kinds = ["shoot"]
 target = "self"
 mode = "percent"
 
-[[VRFW.Clock]]
-name = "ie3_clock_first_third"
-half_fraction_to = "1/3"
-
 [[VRFW.Stat]]
 name = "ie3_stat_team_intelligence_3"
 value = 3
@@ -371,9 +397,11 @@ kinds = ["shoot"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_whirlwinds"
-families = ["HissatsuReforged.Whirlwinds"]
+[[VRFW.TensionCost]]
+name = "ie3_tensioncost_self_catch_minus8"
+percent = -8
+kinds = ["catch"]
+target = "self"
 
 [[VRFW.Trait]]
 name = "ie3_trait_brain"
@@ -422,9 +450,17 @@ mode = "percent"
 stats = ["kick"]
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_greatwalls"
-families = ["HissatsuReforged.GreatWalls"]
+[[VRFW.Trigger]]
+name = "ie3_when_dash_by_self"
+on = "dash"
+by = "self"
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_long_shoot_4"
+value = 4
+kinds = ["long_shoot"]
+target = "self"
+mode = "percent"
 
 [[VRFW.TensionCost]]
 name = "ie3_tensioncost_team_minus10_desert_lions"
@@ -505,9 +541,20 @@ side = "opponents"
 max = 3
 others = true
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_eventhorizon"
-families = ["HissatsuReforged.EventHorizon"]
+[[VRFW.Trigger]]
+name = "ie3_when_duel_won_by_self"
+on = "duel_won"
+by = "self"
+
+[[VRFW.Move]]
+name = "ie3_move_whs00110"
+moves = ["whs00110"]
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_5"
+value = 5
+target = "self"
+mode = "percent"
 
 [[VRFW.TensionCost]]
 name = "ie3_tensioncost_team_minus3"
@@ -576,12 +623,9 @@ side = "team"
 max = 4
 others = true
 
-[[VRFW.TechniquePower]]
-name = "ie3_techniquepower_self_long_shoot_4"
-value = 4
-kinds = ["long_shoot"]
-target = "self"
-mode = "percent"
+[[VRFW.Move]]
+name = "ie3_move_whs00930"
+moves = ["whs00930"]
 
 [[VRFW.MoveFamily]]
 name = "ie3_family_firetornado"
@@ -655,6 +699,21 @@ percent = 3
 target = "team"
 
 [[VRFW.Trait]]
+name = "ie3_trait_striker"
+tags = ["striker"]
+
+[[VRFW.Holder]]
+name = "ie3_holder_striker_opponents"
+trait = "ie3_trait_striker"
+side = "opponents"
+others = false
+
+[[VRFW.MoveSpeed]]
+name = "ie3_movespeed_self_5"
+percent = 5
+target = "self"
+
+[[VRFW.Trait]]
 name = "ie3_trait_knights_of_queen"
 team_groups = ["SynergiesReworked.knights_of_queen"]
 
@@ -671,6 +730,13 @@ value = -3
 mode = "percent"
 stats = ["pressure"]
 target = "opponents"
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_chain_shoot_6"
+value = 6
+kinds = ["chain_shoot"]
+target = "self"
+mode = "percent"
 
 [[VRFW.Trigger]]
 name = "ie3_when_half_start_by_self"
@@ -723,9 +789,12 @@ target = "team"
 trait = "ie3_trait_knights_of_queen"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_legendaryweapons"
-families = ["HissatsuReforged.LegendaryWeapons"]
+[[VRFW.SetPiece]]
+name = "ie3_own_set_piece"
+
+[[VRFW.Move]]
+name = "ie3_move_whs00210"
+moves = ["whs00210"]
 
 [[VRFW.By]]
 name = "ie3_by_wall"
@@ -737,6 +806,20 @@ value = 2
 mode = "percent"
 stats = ["pressure"]
 target = "self"
+
+[[VRFW.Half]]
+name = "ie3_half_3_4_5"
+halves = [3, 4, 5]
+
+[[VRFW.Move]]
+name = "ie3_move_who00630"
+moves = ["who00630"]
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_20"
+value = 20
+target = "self"
+mode = "percent"
 
 [[VRFW.TechniquePower]]
 name = "ie3_techniquepower_team_block_2"
@@ -776,9 +859,9 @@ kinds = ["catch"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_inazumapower"
-families = ["HissatsuReforged.InazumaPower"]
+[[VRFW.Move]]
+name = "ie3_move_whs01140"
+moves = ["whs01140"]
 
 [[VRFW.MoveFamily]]
 name = "ie3_family_godhand"
@@ -965,9 +1048,20 @@ kinds = ["long_shoot"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_pegasus"
-families = ["HissatsuReforged.Pegasus"]
+[[VRFW.Trait]]
+name = "ie3_trait_divine"
+tags = ["divine"]
+
+[[VRFW.Count]]
+name = "ie3_count_divine_team_max3"
+trait = "ie3_trait_divine"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.Move]]
+name = "ie3_move_whs01200"
+moves = ["whs01200"]
 
 [[VRFW.Count]]
 name = "ie3_count_unicorn_team_max3"
@@ -1004,6 +1098,20 @@ others = true
 name = "ie3_techniquepower_self_chain_shoot_8"
 value = 8
 kinds = ["chain_shoot"]
+target = "self"
+mode = "percent"
+
+[[VRFW.Count]]
+name = "ie3_count_wall_team_max4"
+trait = "ie3_trait_wall"
+side = "team"
+max = 4
+others = true
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_block_3"
+value = 3
+kinds = ["block"]
 target = "self"
 mode = "percent"
 
@@ -1056,9 +1164,15 @@ trait = "ie3_trait_team_ogre"
 side = "team"
 others = false
 
-[[VRFW.MoveFamily]]
-name = "ie3_family_majingiant"
-families = ["HissatsuReforged.MajinGiant"]
+[[VRFW.Move]]
+name = "ie3_move_whs01390_whs01400"
+moves = ["whs01390", "whs01400"]
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_12"
+value = 12
+target = "self"
+mode = "percent"
 
 [[VRFW.Stat]]
 name = "ie3_stat_opponents_pressure_minus2"
@@ -1078,10 +1192,6 @@ mode = "percent"
 stats = ["pressure"]
 target = "team"
 trait = "ie3_trait_team_ogre"
-
-[[VRFW.Trait]]
-name = "ie3_trait_striker"
-tags = ["striker"]
 
 [[VRFW.Count]]
 name = "ie3_count_striker_opponents_max4"
@@ -1132,12 +1242,33 @@ percent = 8
 target = "team"
 trait = "ie3_trait_orpheus"
 
+[[VRFW.TensionGain]]
+name = "ie3_tensiongain_self_4"
+percent = 4
+target = "self"
+
 [[VRFW.Count]]
 name = "ie3_count_royal_academy_opponents_max3"
 trait = "ie3_trait_royal_academy"
 side = "opponents"
 max = 3
 others = true
+
+[[VRFW.Score]]
+name = "ie3_score_leading_level"
+states = ["leading", "level"]
+
+[[VRFW.Move]]
+name = "ie3_move_whs01070"
+moves = ["whs01070"]
+
+[[VRFW.MoveFamily]]
+name = "ie3_family_twinboost"
+families = ["HissatsuReforged.TwinBoost"]
+
+[[VRFW.Move]]
+name = "ie3_move_whk00170_whk00620"
+moves = ["whk00170", "whk00620"]
 
 [[VRFW.Stat]]
 name = "ie3_stat_team_technique_6_orpheus"
@@ -1175,6 +1306,13 @@ trait = "ie3_trait_ares"
 side = "opponents"
 max = 3
 others = true
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_shoot_block_8"
+value = 8
+kinds = ["shoot_block"]
+target = "self"
+mode = "percent"
 
 [[VRFW.Trait]]
 name = "ie3_trait_mountain"
@@ -1281,6 +1419,21 @@ others = true
 name = "ie3_family_penguin"
 families = ["HissatsuReforged.Penguin"]
 
+[[VRFW.MoveFamily]]
+name = "ie3_family_lightningbreak"
+families = ["HissatsuReforged.LightningBreak"]
+
+[[VRFW.MoveFamily]]
+name = "ie3_family_triangle"
+families = ["HissatsuReforged.Triangle"]
+
+[[VRFW.KeeperShotPower]]
+name = "ie3_keepershotpower_self_minus8"
+side = "keeper"
+percent = -8
+target = "self"
+shooter_trait = "ie3_trait_mountain"
+
 [[VRFW.Count]]
 name = "ie3_count_striker_opponents_max3"
 trait = "ie3_trait_striker"
@@ -1322,8 +1475,30 @@ max = 3
 others = true
 
 [[VRFW.MoveFamily]]
-name = "ie3_family_earthshaker"
-families = ["HissatsuReforged.Earthshaker"]
+name = "ie3_family_multiple"
+families = ["HissatsuReforged.Multiple"]
+
+[[VRFW.Move]]
+name = "ie3_move_whd00680"
+moves = ["whd00680"]
+
+[[VRFW.Holder]]
+name = "ie3_holder_trickster_opponents"
+trait = "ie3_trait_trickster"
+side = "opponents"
+others = false
+
+[[VRFW.Move]]
+name = "ie3_move_whd00090"
+moves = ["whd00090"]
+
+[[VRFW.Score]]
+name = "ie3_score_level"
+states = ["level"]
+
+[[VRFW.Move]]
+name = "ie3_move_whd00230"
+moves = ["whd00230"]
 
 [[VRFW.Holder]]
 name = "ie3_holder_little_gigantes_team"
@@ -1349,9 +1524,33 @@ mode = "percent"
 name = "ie3_family_dragon"
 families = ["HissatsuReforged.Dragon"]
 
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_team_8"
+value = 8
+target = "team"
+mode = "percent"
+
 [[VRFW.By]]
 name = "ie3_by_little_gigantes"
 trait = "ie3_trait_little_gigantes"
+
+[[VRFW.Move]]
+name = "ie3_move_who00420"
+moves = ["who00420"]
+
+[[VRFW.Trait]]
+name = "ie3_trait_wind"
+elements = ["wind"]
+
+[[VRFW.Holder]]
+name = "ie3_holder_wind_team"
+trait = "ie3_trait_wind"
+side = "team"
+others = false
+
+[[VRFW.Move]]
+name = "ie3_move_whs00440"
+moves = ["whs00440"]
 
 [[VRFW.TechniquePower]]
 name = "ie3_techniquepower_self_dribble_4"
@@ -1359,6 +1558,50 @@ value = 4
 kinds = ["dribble"]
 target = "self"
 mode = "percent"
+
+[[VRFW.Trait]]
+name = "ie3_trait_fw"
+positions = ["fw"]
+
+[[VRFW.KeeperShotPower]]
+name = "ie3_keepershotpower_self_minus6"
+side = "keeper"
+percent = -6
+target = "self"
+shooter_trait = "ie3_trait_fw"
+
+[[VRFW.Present]]
+name = "ie3_present_divine_team"
+trait = "ie3_trait_divine"
+side = "team"
+min = 1
+others = true
+
+[[VRFW.Move]]
+name = "ie3_move_whk00710"
+moves = ["whk00710"]
+
+[[VRFW.Move]]
+name = "ie3_move_whd00700"
+moves = ["whd00700"]
+
+[[VRFW.Half]]
+name = "ie3_half_1"
+halves = [1]
+
+[[VRFW.Move]]
+name = "ie3_move_whd00550_who00640"
+moves = ["whd00550", "who00640"]
+
+[[VRFW.Trigger]]
+name = "ie3_when_technique_result_won_by_self"
+on = "technique_result"
+arg = "won"
+by = "self"
+
+[[VRFW.Move]]
+name = "ie3_move_who00520"
+moves = ["who00520"]
 
 [[VRFW.Trait]]
 name = "ie3_trait_dark_team"
@@ -1383,17 +1626,6 @@ stats = ["technique"]
 target = "team"
 trait = "ie3_trait_sky_team"
 
-[[VRFW.Trait]]
-name = "ie3_trait_divine"
-tags = ["divine"]
-
-[[VRFW.Present]]
-name = "ie3_present_divine_team"
-trait = "ie3_trait_divine"
-side = "team"
-min = 1
-others = true
-
 [[VRFW.Stat]]
 name = "ie3_stat_self_control_8"
 value = 8
@@ -1415,6 +1647,10 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.Move]]
+name = "ie3_move_who00400_whd00710"
+moves = ["who00400", "whd00710"]
+
 [[VRFW.Trait]]
 name = "ie3_trait_mystic"
 tags = ["mystic"]
@@ -1431,6 +1667,20 @@ trait = "ie3_trait_dark_team"
 side = "team"
 min = 1
 others = true
+
+[[VRFW.Move]]
+name = "ie3_move_whs01350"
+moves = ["whs01350"]
+
+[[VRFW.Holder]]
+name = "ie3_holder_divine_opponents"
+trait = "ie3_trait_divine"
+side = "opponents"
+others = false
+
+[[VRFW.Move]]
+name = "ie3_move_whd00540"
+moves = ["whd00540"]
 
 [[VRFW.TechniquePower]]
 name = "ie3_techniquepower_team_shoot_8_dark_team"
@@ -1463,6 +1713,14 @@ target = "team"
 trait = "ie3_trait_brocken_brigade"
 mode = "percent"
 
+[[VRFW.Move]]
+name = "ie3_move_whs00390"
+moves = ["whs00390"]
+
+[[VRFW.Move]]
+name = "ie3_move_whs00430_whs00320"
+moves = ["whs00430", "whs00320"]
+
 [[VRFW.Holder]]
 name = "ie3_holder_brocken_brigade_team"
 trait = "ie3_trait_brocken_brigade"
@@ -1488,11 +1746,39 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.Trait]]
+name = "ie3_trait_noble"
+tags = ["noble"]
+
+[[VRFW.Holder]]
+name = "ie3_holder_noble_opponents"
+trait = "ie3_trait_noble"
+side = "opponents"
+others = false
+
+[[VRFW.Move]]
+name = "ie3_move_whd00690"
+moves = ["whd00690"]
+
 [[VRFW.TensionCost]]
 name = "ie3_tensioncost_team_minus10_rose_griffons"
 percent = -10
 target = "team"
 trait = "ie3_trait_rose_griffons"
+
+[[VRFW.Count]]
+name = "ie3_count_noble_team_max3"
+trait = "ie3_trait_noble"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_shoot_block_4"
+value = 4
+kinds = ["shoot_block"]
+target = "self"
+mode = "percent"
 
 [[VRFW.Stat]]
 name = "ie3_stat_team_control_8_rose_griffons"
@@ -1501,6 +1787,12 @@ mode = "percent"
 stats = ["control"]
 target = "team"
 trait = "ie3_trait_rose_griffons"
+
+[[VRFW.RecastTime]]
+name = "ie3_recasttime_self_shoot_minus10"
+percent = -10
+kinds = ["shoot"]
+target = "self"
 
 [[VRFW.Holder]]
 name = "ie3_holder_rose_griffons_team"
@@ -1515,9 +1807,19 @@ kinds = ["dribble"]
 target = "self"
 mode = "percent"
 
+[[VRFW.Holder]]
+name = "ie3_holder_noble_team"
+trait = "ie3_trait_noble"
+side = "team"
+others = false
+
 [[VRFW.By]]
 name = "ie3_by_rose_griffons"
 trait = "ie3_trait_rose_griffons"
+
+[[VRFW.Move]]
+name = "ie3_move_who00200"
+moves = ["who00200"]
 
 [[VRFW.Trait]]
 name = "ie3_trait_red_matador"
@@ -1560,11 +1862,6 @@ percent = 8
 target = "team"
 trait = "ie3_trait_red_matador"
 
-[[VRFW.Zone]]
-name = "ie3_zone_opponent_half"
-z = [0.0, 200.0]
-frame = "team"
-
 [[VRFW.Present]]
 name = "ie3_present_red_matador_team"
 trait = "ie3_trait_red_matador"
@@ -1594,6 +1891,24 @@ kinds = ["block"]
 target = "team"
 trait = "ie3_trait_cape_crusaders"
 mode = "percent"
+
+[[VRFW.Count]]
+name = "ie3_count_wind_team_max3"
+trait = "ie3_trait_wind"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.Stat]]
+name = "ie3_stat_self_agility_3"
+value = 3
+mode = "percent"
+stats = ["agility"]
+target = "self"
+
+[[VRFW.Move]]
+name = "ie3_move_who00370"
+moves = ["who00370"]
 
 [[VRFW.Present]]
 name = "ie3_present_cape_crusaders_team"
@@ -1626,6 +1941,23 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.Trigger]]
+name = "ie3_when_block_won_by_self"
+on = "block_won"
+by = "self"
+
+[[VRFW.Stack]]
+name = "ie3_stack_max2_30s"
+max = 2
+duration_s = 30
+
+[[VRFW.Stat]]
+name = "ie3_stat_opponents_control_minus3"
+value = -3
+mode = "percent"
+stats = ["control"]
+target = "opponents"
+
 [[VRFW.Stat]]
 name = "ie3_stat_team_kick_8_team_garcildo"
 value = 8
@@ -1633,6 +1965,25 @@ mode = "percent"
 stats = ["kick"]
 target = "team"
 trait = "ie3_trait_team_garcildo"
+
+[[VRFW.Holder]]
+name = "ie3_holder_cannon_opponents"
+trait = "ie3_trait_cannon"
+side = "opponents"
+others = false
+
+[[VRFW.Move]]
+name = "ie3_move_whd00420"
+moves = ["whd00420"]
+
+[[VRFW.Half]]
+name = "ie3_half_2"
+halves = [2]
+
+[[VRFW.RecastTime]]
+name = "ie3_recasttime_self_minus12"
+percent = -12
+target = "self"
 
 [[VRFW.Present]]
 name = "ie3_present_team_garcildo_team"
@@ -1648,6 +1999,13 @@ mode = "percent"
 stats = ["pressure"]
 target = "team"
 trait = "ie3_trait_mystic"
+
+[[VRFW.Stat]]
+name = "ie3_stat_opponents_intelligence_minus3"
+value = -3
+mode = "percent"
+stats = ["intelligence"]
+target = "opponents"
 
 [[VRFW.TechniquePower]]
 name = "ie3_techniquepower_self_catch_4"
@@ -1859,22 +2217,15 @@ side = "team"
 min = 1
 others = true
 
+[[VRFW.Move]]
+name = "ie3_move_whk00100"
+moves = ["whk00100"]
+
 [[VRFW.Present]]
 name = "ie3_present_captain_team"
 trait = "ie3_trait_captain"
 side = "team"
 min = 1
-others = true
-
-[[VRFW.Trait]]
-name = "ie3_trait_wind"
-elements = ["wind"]
-
-[[VRFW.Count]]
-name = "ie3_count_wind_team_max3"
-trait = "ie3_trait_wind"
-side = "team"
-max = 3
 others = true
 
 [[VRFW.Count]]
@@ -1966,11 +2317,27 @@ target = "self"
 mode = "percent"
 
 [[VRFW.Count]]
+name = "ie3_count_acrobat_team_max3"
+trait = "ie3_trait_acrobat"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.Move]]
+name = "ie3_move_whd00500"
+moves = ["whd00500"]
+
+[[VRFW.Count]]
 name = "ie3_count_rebel_team_max3"
 trait = "ie3_trait_rebel"
 side = "team"
 max = 3
 others = true
+
+[[VRFW.TensionGain]]
+name = "ie3_tensiongain_opponents_minus5"
+percent = -5
+target = "opponents"
 
 [[VRFW.Stat]]
 name = "ie3_stat_team_technique_2_wind"
@@ -1986,21 +2353,15 @@ percent = -5
 target = "team"
 trait = "ie3_trait_wind"
 
-[[VRFW.Trait]]
-name = "ie3_trait_noble"
-tags = ["noble"]
-
-[[VRFW.Holder]]
-name = "ie3_holder_noble_team"
-trait = "ie3_trait_noble"
-side = "team"
-others = false
-
 [[VRFW.TensionCost]]
 name = "ie3_tensioncost_team_minus5"
 percent = -5
 target = "team"
 positions = ["df"]
+
+[[VRFW.Move]]
+name = "ie3_move_whs00520"
+moves = ["whs00520"]
 
 [[VRFW.TechniquePower]]
 name = "ie3_techniquepower_team_block_2_3"
@@ -2066,6 +2427,13 @@ stats = ["technique"]
 target = "team"
 positions = ["df"]
 
+[[VRFW.Stat]]
+name = "ie3_stat_self_physical_3"
+value = 3
+mode = "percent"
+stats = ["physical"]
+target = "self"
+
 [[VRFW.By]]
 name = "ie3_by_wind"
 trait = "ie3_trait_wind"
@@ -2087,6 +2455,17 @@ name = "ie3_holder_wall_team"
 trait = "ie3_trait_wall"
 side = "team"
 others = false
+
+[[VRFW.Near]]
+name = "ie3_near_6m"
+metres = 6.0
+
+[[VRFW.Stat]]
+name = "ie3_stat_opponents_technique_minus3"
+value = -3
+mode = "percent"
+stats = ["technique"]
+target = "opponents"
 
 [[VRFW.By]]
 name = "ie3_by_noble"
@@ -2259,6 +2638,13 @@ percent = 4
 target = "team"
 trait = "ie3_trait_forest"
 
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_dribble_3"
+value = 3
+kinds = ["dribble"]
+target = "self"
+mode = "percent"
+
 [[VRFW.By]]
 name = "ie3_by_fire"
 trait = "ie3_trait_fire"
@@ -2398,12 +2784,23 @@ target = "team"
 trait = "ie3_trait_acrobat"
 mode = "percent"
 
+[[VRFW.Move]]
+name = "ie3_move_whs00330"
+moves = ["whs00330"]
+
 [[VRFW.TechniquePower]]
 name = "ie3_techniquepower_team_shoot_8_cannon"
 value = 8
 kinds = ["shoot"]
 target = "team"
 trait = "ie3_trait_cannon"
+mode = "percent"
+
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_shoot_3"
+value = 3
+kinds = ["shoot"]
+target = "self"
 mode = "percent"
 
 [[VRFW.TensionCost]]
@@ -2495,16 +2892,24 @@ stats = ["control"]
 target = "team"
 trait = "ie3_trait_brain"
 
-[[VRFW.Trait]]
-name = "ie3_trait_fw"
-positions = ["fw"]
-
 [[VRFW.Present]]
 name = "ie3_present_fw_team"
 trait = "ie3_trait_fw"
 side = "team"
 min = 1
 others = true
+
+[[VRFW.Trigger]]
+name = "ie3_when_shot_start_by_self"
+on = "shot_start"
+by = "self"
+
+[[VRFW.Stat]]
+name = "ie3_stat_self_technique_3"
+value = 3
+mode = "percent"
+stats = ["technique"]
+target = "self"
 
 [[VRFW.Holder]]
 name = "ie3_holder_cannon_team"
@@ -2543,12 +2948,6 @@ value = 5
 kinds = ["long_shoot"]
 target = "self"
 mode = "percent"
-
-[[VRFW.Holder]]
-name = "ie3_holder_wind_team"
-trait = "ie3_trait_wind"
-side = "team"
-others = false
 
 [[VRFW.TechniquePower]]
 name = "ie3_techniquepower_team_shoot_4_mountain"
@@ -2589,6 +2988,13 @@ kinds = ["long_shoot"]
 target = "self"
 mode = "percent"
 
+[[VRFW.TechniquePower]]
+name = "ie3_techniquepower_self_shoot_15"
+value = 15
+target = "self"
+kinds = ["shoot"]
+mode = "percent"
+
 [[VRFW.Holder]]
 name = "ie3_holder_rebel_team"
 trait = "ie3_trait_rebel"
@@ -2601,6 +3007,10 @@ trait = "ie3_trait_fw"
 side = "team"
 max = 3
 others = true
+
+[[VRFW.Move]]
+name = "ie3_move_whs00320"
+moves = ["whs00320"]
 
 [[VRFW.TechniquePower]]
 name = "ie3_techniquepower_team_shoot_4_wind"

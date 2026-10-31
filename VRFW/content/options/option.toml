@@ -18,6 +18,7 @@ order = 100
 # Group: custom style.
 [[option]]
 id = "custom_style"
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "toggle"
 label = "custom_style"
 help = "custom_style_help"
@@ -27,6 +28,7 @@ order = 120
 
 [[option]]
 id = "opening"
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "list"
 hook = "title_opening"
 parent = "mod_options.custom_style"

@@ -147,14 +147,6 @@ function EVT_RestoreCoroutine(row)
   end
   return r
 end
--- the Hiper row can be emptied by Eliminar (hold) when a half shows something, its own slot or a fallback
-function PL.RowRemovable(row)
-  if row ~= 0 then
-    return false
-  end
-  local okS, aura, mix = pcall(PL.CrShownSlots)
-  return okS and ((aura or 0) ~= 0 or (mix or 0) ~= 0)
-end
 
 -- Restablecer (tap) on the aura half with its own slot empty: a shown list fallback goes as with Eliminar; nothing to
 -- restore and nothing shown: the error sound, no board write

@@ -1,0 +1,14 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Aliento blanco (White Breath, whs01870).
+#
+# Measured: in the last cut (c0400) the breath carries the ball from 2.61 m before the player's mouth, rising gently
+# to 3.55 m at the goal mouth. Flight (owner's rule 2026-10-24: every aura shot a straight level line, <= 3 m): one
+# straight level line from the kick point to the goal, the ball centre at 2.6 m the whole way (the breath beam at
+# the wyvern's mouth), so the beam's widest streaks stay clear of the grass.
+# unblockable = false: the game's block rules (this mod changes no block rule). Heights are the ball centre over the
+# pitch (m); the height is held.
+
+# Aliento blanco (whs01870).
+[[edit]]
+target = "whs01870"
+trajectory = { points = [[0.0, 2.6]], straight = true, unblockable = false }

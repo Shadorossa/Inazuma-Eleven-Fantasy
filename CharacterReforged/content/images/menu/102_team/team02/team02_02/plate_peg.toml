@@ -4,7 +4,7 @@
 # (GENERATED there by research/scripts/plate_peg_build.py; same sprites, same PNGs): copied here on 2026-10-14 (without
 # Inazuma Fantasy the sprites were missing and the panel drew white rectangles), IF's copy removed the same day with
 # the player page (docs/refactor/aura-mods-split.md «Player page»). In the mod's own localised atlas
-# character_reforged_plate_peg (never the game's team02_02: content\sprite_redirects\plate_peg.toml serves the
+# character_reforged_plate_peg but the «T» after the number (content\sprite_redirects\plate_peg.toml serves the
 # names the Lua asks team02_02 for).
 schema = "VRFW.image/1"
 
@@ -18,6 +18,15 @@ lang = ["", "en", "es", "fr", "de", "it", "pt", "zh_hans", "zh_hant"]
 atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
 name = "evt_ph_peg"
 size = [408, 96]
+
+
+# The «T» after the number (evt_gtxt_peg_t / evt_gtxt_sp_t) stays in the game's team02_02 page: the _gtxt_t01 quad
+# keeps its texture page on a sprite swap and only takes the new UVs, so a picture in another atlas draws a piece of
+# team02_02 (a white square). The squares swap pages and live in the own atlas.
+[[texture]]
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
+name = "team02_02"
+size = [920, 612]
 
 [[sprite]]
 atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
@@ -66,48 +75,48 @@ png = "plate_peg/fsp_en.png"
 
 
 [[sprite]]
-atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
 lang = ["es", "pt"]
 name = "evt_gtxt_peg_t"
-texture = "character_reforged_plate_peg"
+texture = "team02_02"
 x = 0
-y = 0
+y = 536
 png = "plate_peg/peg_es_t.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
 lang = ["fr"]
 name = "evt_gtxt_peg_t"
-texture = "character_reforged_plate_peg"
+texture = "team02_02"
 x = 0
-y = 0
+y = 536
 png = "plate_peg/pg_fr_t.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
 lang = ["it"]
 name = "evt_gtxt_peg_t"
-texture = "character_reforged_plate_peg"
+texture = "team02_02"
 x = 0
-y = 0
+y = 536
 png = "plate_peg/psg_it_t.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
 lang = ["de"]
 name = "evt_gtxt_peg_t"
-texture = "character_reforged_plate_peg"
+texture = "team02_02"
 x = 0
-y = 0
+y = 536
 png = "plate_peg/kgp_de_t.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
 lang = ["", "en", "zh_hans", "zh_hant"]
 name = "evt_gtxt_peg_t"
-texture = "character_reforged_plate_peg"
+texture = "team02_02"
 x = 0
-y = 0
+y = 536
 png = "plate_peg/fsp_en_t.png"
 
 [[sprite]]
@@ -119,11 +128,11 @@ y = 0
 png = "plate_peg/tension_on_peg.png"
 
 [[sprite]]
-atlas = "#/menu/102_team/character_reforged_own/<LG>/character_reforged_plate_peg.g4tx"
+atlas = "#/menu/102_team/team02/team02_02/<LG>/team02_02.g4tx"
 name = "evt_gtxt_sp_t"
-texture = "character_reforged_plate_peg"
+texture = "team02_02"
 x = 60
-y = 0
+y = 536
 png = "plate_peg/sp_t.png"
 
 [[sprite]]

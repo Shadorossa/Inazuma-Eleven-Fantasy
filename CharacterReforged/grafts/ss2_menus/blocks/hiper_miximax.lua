@@ -277,10 +277,10 @@ function PL.MxDirectPick(row)
   if row ~= 0 or not PL.MX_BANK or n == nil or n == 0 or PL.MxStub() then
     return false
   end
-  if not funcLuaCommand(C.P_HAS, EVT_KEY_RESULT) or funcLuaCommand(C.P_HAS, PL.MX_KEY_DEL) then
+  if not VRFW_Param.Has(EVT_KEY_RESULT) or VRFW_Param.Has(PL.MX_KEY_DEL) then
     return false
   end
-  return EVT_U32(funcLuaCommand(C.P_GET, EVT_KEY_RESULT) or 0) == PL.MX_CREATE
+  return EVT_U32(VRFW_Param.Get(EVT_KEY_RESULT) or 0) == PL.MX_CREATE
 end
 
 -- the screen back after a direct «Crear miximax» that did not reach the bank (refusal, error, old list)
@@ -330,7 +330,7 @@ function PL.MxPreBlack(what, secs)
     return
   end
   local okr, h = pcall(funcLuaCommand, 3185911119, PL.MX_BANK_RESULT)
-  if not okr or type(h) ~= "number" or h == 0 or not funcLuaCommand(C.P_HAS, PL.MX_BANK_MOVE) then
+  if not okr or type(h) ~= "number" or h == 0 or not VRFW_Param.Has(PL.MX_BANK_MOVE) then
     return
   end
   local okc, ctx = pcall(PL.MxSceneContext)
@@ -354,7 +354,7 @@ end
 -- open the retail bank (graft mx_bank) for this player and wait for it: seen (it opened), the chosen handle (0 = none)
 function PL.BankRun(what)
   pcall(funcLuaCommand, 2565779025, PL.MX_BANK_RESULT, 0)
-  funcLuaCommand(C.P_CLEAR, PL.MX_BANK_MOVE)
+  VRFW_Param.Clear(PL.MX_BANK_MOVE)
   PL.mx_bank_move = 0
   P_Set(PL.MX_BANK_KEY, n)
   funcLuaMenuCommand(C.MENU_ACTIVE, EVT_MENU, false)
@@ -380,11 +380,11 @@ function PL.BankRun(what)
     coroutine.yield()
   end
   PL.MxPreBlack(what, 0)                           -- picked as it closed: black before this screen resumes
-  funcLuaCommand(C.P_CLEAR, PL.MX_BANK_KEY)
+  VRFW_Param.Clear(PL.MX_BANK_KEY)
   pcall(funcLuaCommand, PL.MX_CMD.BANK_MODE, 0)     -- the bank graft clears it too; never leave the filter on
-  if funcLuaCommand(C.P_HAS, PL.MX_BANK_MOVE) then
-    PL.mx_bank_move = EVT_U32(funcLuaCommand(C.P_GET, PL.MX_BANK_MOVE) or 0)
-    funcLuaCommand(C.P_CLEAR, PL.MX_BANK_MOVE)
+  if VRFW_Param.Has(PL.MX_BANK_MOVE) then
+    PL.mx_bank_move = EVT_U32(VRFW_Param.Get(PL.MX_BANK_MOVE) or 0)
+    VRFW_Param.Clear(PL.MX_BANK_MOVE)
   end
   funcLuaMenuCommand(C.MENU_RESUME, EVT_MENU)
   coroutine.yield()
@@ -575,8 +575,8 @@ PL.MX_KEY_FUSED = 1894840368          -- pick block: the fusion aura "Miximax" i
 -- Eliminar on the fusion entry undoes the fusion; everything else is the normal equip
 PL.MxPrevEquip = EVT_Equip
 function EVT_Equip(row, skill, inv_hint, cur)
-  local del = funcLuaCommand(C.P_HAS, PL.MX_KEY_DEL)
-  funcLuaCommand(C.P_CLEAR, PL.MX_KEY_DEL)
+  local del = VRFW_Param.Has(PL.MX_KEY_DEL)
+  VRFW_Param.Clear(PL.MX_KEY_DEL)
   if row == 0 and del and skill == PL.MX_FUSION then
     PL.MxClear()
     if EVT_Skill(0) == PL.MX_FUSION then

@@ -2,14 +2,39 @@ id = "VRFW"
 former_ids = ["vr_framework"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the game's language (text\rows\mod_info.toml)
 name = "VRFW"
-version = "2.311.0"
+version = "2.406.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
 description = "The base of the VR ModLoader's mods, in one mod: characters and teams declared by mods and their rarity (chara), mod texts in 9 languages (text), the save slots (the slot screen before the game starts), per-mod save data tied to the slot and the mods' save flags (save), global game rules declared by mods: parameters (game_param and the other property tables), controls and buttons (system), mod audio and voice packs (audio), match rulesets (match), special move animations (anim), row changes in any game table (tables), game modes declared by mods (modes), special move name banners, the «Mod options» tab and the title menu's «Mods» screen (graphics). Built into the VR ModLoader (winmm.dll): no DLL of its own. Needed by the mods that use any of its parts."
 # the base loads first: the mods that use it load after it (and win their conflicts)
 priority = -10
 tags = ["Framework"]
-updated = "2026-10-30"
+updated = "2026-10-31"
+# 2.406.0: friendly way back menus net: a return = "menus" match that ends in an empty story field (a hub entered by a
+# straight reset, e.g. a title row root_menu) resets straight into the recorded scene root (docs/framework/match-start.md §5d)
+# 2.405.0: VRFW_FaceIcon.Card opts.portrait keeps the portrait background and gradient; VRFW_CharaIcons
+# (assets/lua/menu/_all/84_chara_icons.lua): a card's position and element icons (the team screen's sprites)
+# 2.400.0: scripts/lib/save_tree.lua (save tree adapter + patch list, from Character Reforged) and scripts/lib/save_kits.lua
+# (kit items of the game, removal of chosen kit items from a save tree) shared by the mods' save adjust actions.
+# 2.399.0: CMND_VRFW_TEAM_MEMBER_EXP (a character's EXP bar at a share of his level) and team editor members
+# { slot, card, level, exp } (docs/framework/team-editor.md); lib/exp_table (the EXP table, shared with match_exp)
+# 2.391.0: team editor members take an own level ({ slot, card, level }; docs/framework/team-editor.md)
+# 2.383.0: vrfw_team_icon without the synergy item component (the copy is drawn); team editor docs: the host's
+# background must be the background-pass object mainmenu90_00_background_draw_type_before
+# 2.381.0: team editor spec.header_dx (the team name bar moved to the side with header_top)
+# 2.380.0: team editor spec.icons (up to 3 icon buttons opening list rows, vrfw_team_icon) and spec.hide_list (the dock
+# list off screen; docs/framework/team-editor.md «Icon buttons and the hidden list»)
+# 2.379.0: CMND_VRFW_TEAM_HOME_STADIUM (a team's home stadium for the game Lua); team editor spec.hide_card_rows
+# (player popup rows left out in a team page; docs/framework/team-editor.md)
+# 2.378.0: two bench columns in the team editor (spec.bench_columns = 2, docs/framework/team-editor.md): the team's
+# reserve positions 20-24 shown, focused and swapped as a second bench column
+# 2.376.0: board groups' `hidden` conditions (CMND_VRFW_BOARD_HIDDEN, docs/framework/route-board.md §9): a group's
+# nodes stay hidden while a mod option (or config) condition holds; `when` conditions take `option = "<mod>.<row>"`
+# 2.357.0: the extra slot's fusion under a worn armour (docs/game/hiper/hiper-two-slots.md §4): with `[rules] stack`
+# naming miximax before armour, the mix slot's Mix-Max starts while the armour runs (the armour keeps the metamorphosis,
+# the fusion adds its stats and partner moves and ends with it); an awakening power in the aura slot stacks as a totem
+# 2.338.0: per-member levels (CMND_VRFW_TEAM_MEMBER_LEVELS, docs/framework/team-lineup.md): each roster slot of a
+# team plays at its own level in its next matches
 # 2.285.0: VRFW_Param (menu Lua parameter store), lib/basics (VRFW.value / config / logger), docs/framework/shared-helpers.md §3b-3c
 # 2.284.0: Comment links to existing docs and README rewritten for the VRFW folder and id
 # 2.277.0: stand-in teams (CMND_VRFW_TEAM_STAND_IN / _RESTORE, docs/framework/team-lineup.md): a slot team plays as

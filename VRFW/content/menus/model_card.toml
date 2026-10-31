@@ -1,0 +1,35 @@
+# Model cards (VR-Framework UI piece, Lua lua\_all\91_model_card.lua `VRFW_ModelCard`; docs/framework/model-card.md):
+# the objects its layers use. A screen that shows a model card adds these layers to its own rows (or with [[patch]]
+# add_layer), flags [0, 1, 1, 0, 1, 0] for the backdrop and [0, 1, 0, 0, 1, 0] for the others.
+#   vrfw_model_card            the 3D model: the retail shop list base (its CMenuCharaModelComponent and the shop's
+#                              model camera) with one model slot, no self rotation, its list / sound / collision /
+#                              analog parts removed
+#   vrfw_model_card_backdrop   the game's menu background drawn in the BACKGROUND pass (m_drawType 1, as the transfer
+#                              office's shop01_00_background): shown in place of the screen's mainmenu90_00_background
+#                              while a model card is up, so the model (3D pass) is drawn over it and every normal 2D
+#                              layer over the model
+#   vrfw_model_card_ground     a plain quad in the background pass (the card's own colour behind the model), over the
+#                              backdrop
+schema = "VRFW.menu/2"
+
+[[object]]
+name = "vrfw_model_card"
+from = "shop01_01_list_base"
+remove_block = ["CMenuListViewShop", "CMenuSoundCmdProperty", "MenuCollisionSetting", "CAnalogInputComponent"]
+set = [
+    { param = "m_useObjectNum", match = { 1 = 4 }, values = { 1 = 1 } },
+    { param = "m_isRotateSelf", match = { 1 = 1 }, values = { 1 = 0 } },
+]
+
+[[object]]
+name = "vrfw_model_card_backdrop"
+from = "mainmenu90_00_background_draw_type_before"
+set = [
+    { param = "m_drawPriority", match = { 1 = 450 }, values = { 1 = 200 } },
+]
+
+[[object]]
+name = "vrfw_model_card_ground"
+from = "cmn01_10_new_icon"
+set = [{ param = "m_drawPriority", match = { 1 = 999 }, values = { 1 = 210 } }]
+add = [{ block = "CMenuRenderComponent", param = "m_drawType", values = [1] }]

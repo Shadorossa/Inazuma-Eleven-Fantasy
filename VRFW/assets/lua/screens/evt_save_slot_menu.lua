@@ -172,6 +172,7 @@ local page, pages = 0, 1
 --     row = "...", title = "...",        -- band text, card title (a text field may also be a function(api) -> text,
 --     ask = "...",                       --   called when shown: no engine call at chunk load); ask = question before
 --                                        --   entering from another slot (default TXT.ASK_LOAD)
+--                                        --   (false = entered at once, no question)
 --     art = {tex = "#/menu/....g4tx",    -- the owner's texture; sprite names below are in it
 --            body_on = "...", body_off = "...", band_on = "...", band_off = "...", icon = "...", icon_off = "...",
 --            strip = "...", rows = {"...", "...", "...", "...", "..."}},   -- rows: the 5 row icons
@@ -1484,7 +1485,7 @@ local function Decide(i)
       return
     end
     funcLuaCommand(C.SE, SE_OK)
-    if active == res.slot or Ask(ResText(res.p.ask) or string.format(TXT.ASK_LOAD, res.slot)) then
+    if active == res.slot or res.p.ask == false or Ask(ResText(res.p.ask) or string.format(TXT.ASK_LOAD, res.slot)) then
       funcLuaCommand(C.SE, SE_DECIDE)
       Close(res.slot)
     end

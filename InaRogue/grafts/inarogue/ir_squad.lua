@@ -7,10 +7,10 @@
 --       every run starts at Lv 5 and no retail player stays), then every INAROGUE bank player (at most DK.MAX) is
 --       created at Lv 5 (CMND_ADD_PARTY, no team set, tag 0x10000000) = the club roster of the retail Banco; a first
 --       eleven that fits the points is placed (the user changes it in the dock);
---   the dock opens through the title's own "Mi equipo" request (INAROGUE closes with result 9, the title sends
---       1438851263, title_main reserves soccer_team_dock_menu as in retail); byte flag 606 remembers why (1 run start,
+--   the dock opens as its own scene root (VRFW_Reset.straight into soccer_team_dock_menu, as the top bar's «Mi
+--       equipo»); byte flag 606 remembers why (1 run start,
 --       2 during the run, 3 before a match) and the dock block adds 10 when it really opened;
---   back from the dock (the title reopens INAROGUE): the VS team is read (positions 0-18 + coach 19) and checked
+--   back from the dock (slot 4's title forwards into INAROGUE): the VS team is read (positions 0-18 + coach 19) and checked
 --       (11 starters, only INAROGUE players, the points before the run). Run start: TEAM_SET per slot + TEAM_COMMIT,
 --       the run gets each position (CMND_EVT_RL_RUN_SET_SLOT) and every roster player NOT picked is deleted, so during
 --       the run the dock and its Banco hold only the run's players. During the run: the positions are written back.
@@ -429,12 +429,27 @@ function DK.Roster()
   return true
 end
 
--- open the retail "Plantilla de equipo" (result 9: the title sends the "Mi equipo" request)
+-- open the retail "Plantilla de equipo": the game reset straight into the dock as its own scene root, as the top
+-- bar's «Mi equipo» (VRFW_Reset.straight); its Back / its match go back to slot 4's title, which forwards straight
+-- into INAROGUE again (graft save_slots). No carry: nothing is reset, INAROGUE stays and says so.
 function DK.Open(why)
   DK_Byte(why)
-  Call(C.P_SET, DK.KEY_TRY, 0, why, 1)
+  VRFW_Param.Set(DK.KEY_TRY, why)
   Log("open the retail team dock, request", why)
-  IRM_FadeClose(9)
+  IRM_FadeOut()
+  local how = type(VRFW_Reset) == "table" and VRFW_Reset.straight({ menu = "soccer_team_dock_menu", bgm_stop = true,
+    need_carry = true, log = function(text) Log("team dock:", text) end }) or "refused"
+  Log("team dock: straight reset", how)
+  if how ~= "refused" then
+    while true do
+      coroutine.yield()
+    end
+  end
+  VRFW_Param.Clear(DK.KEY_TRY)
+  DK_Byte(0)
+  funcLuaCommand(C.FADE, 0, 0.3)
+  funcLuaMenuCommand(C.MENU_ACTIVE, MENU, true)
+  Message(T(DK.T_NOT_OPENED))
 end
 
 -- () -> the pending request (0 none; 1-5 asked but the dock never opened; 11-15 back from the dock)
@@ -677,7 +692,7 @@ end
 -- left by an earlier session that ended before the dock opened; it is cleared without a message
 function DK.DropStale()
   local p = DK.Pending()
-  if p >= 1 and p <= 5 and not Call(P_HAS, DK.KEY_TRY) then
+  if p >= 1 and p <= 5 and not VRFW_Param.Has(DK.KEY_TRY) then
     Log("stale dock request", p, "from the save cleared (not sent in this session)")
     DK_Byte(0)
   end
@@ -687,7 +702,7 @@ end
 function DK.Finish()
   local p = DK.Pending()
   DK_Byte(0)
-  Call(C.P_CLEAR, DK.KEY_TRY)
+  VRFW_Param.Clear(DK.KEY_TRY)
   if p >= 1 and p <= 5 then
     Log("dock request", p, "but the dock never opened")
     Message(T(DK.T_NOT_OPENED))

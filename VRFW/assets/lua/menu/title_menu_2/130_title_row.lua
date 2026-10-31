@@ -16,6 +16,9 @@
 --   locked   (`locked` Lua says so, or the `mode` is off / locked) -> retail buzzer + `locked_text` window; nothing else
 --   gate     `gate` Lua returns true to go on (false: it gave its own feedback)
 --   open_menu  the menu opens as a child of the title, the title waits and takes input back when it closes
+--   root_menu  the menu opens as the root of its own menu scene (play mode 1, matches start from it): black, the
+--              game kept in memory, reset straight into it (VRFW_Reset.straight); its way out is the reset to the
+--              title (VRFW_Reset.to_title), which focuses the button again. No carry: nothing happens (buzzer)
 --   lua        the global function runs (key, position); its return value is OnEnter's
 --   command    funcLuaCommand(crc32(name), key)
 --   title      the button presses that retail title item (its request; e.g. "option" = the save load of Opciones);
@@ -65,6 +68,7 @@ local TR = {
   INPUT = 1558704558,       -- menu input on / off
   VISIBLE = VRFW_Cmd.SET_LAYER_VISIBLE,      -- CMND_SET_LAYER_VISIBLE
   MSG = 2289627655, MSG_BUSY = 898725220, MSG_DONE = 682363669,   -- the system message window
+  FADE = 609722083, FADE_DONE = 2259183189,   -- (on, seconds) the screen fade to black; it is done
   FOCUS_KEY = TR_Crc("vrfw_title_row_focus"),
   -- the players mark after a label (retail gaiji texts: «1», «1-2», «1-3» players)
   GAIJI = {[1] = 3337686268, [2] = 3561086357, [3] = 433723010},
@@ -120,13 +124,14 @@ local function TR_Id(s)
   return tonumber(s) or TR_Crc(s)
 end
 
+-- a menu_text row (id = crc32 of the key) first, then the text engine's key (a mod's text.toml)
 local function TR_Text(key)
   if type(key) ~= "string" or key == "" then
     return ""
   end
-  local s = TR_Call(TR.TEXT_KEY, key)
+  local s = TR_Call(TR.TEXT_ID, TR_Crc(key))
   if type(s) ~= "string" or s == "" then
-    s = TR_Call(TR.TEXT_ID, TR_Crc(key))
+    s = TR_Call(TR.TEXT_KEY, key)
   end
   return type(s) == "string" and s or ""
 end
@@ -380,6 +385,38 @@ local function TR_OpenCo(menu)
   TR_Restore()
 end
 
+local function TR_RootCo(e, menu)
+  funcLuaMenuCommand(TR.INPUT, TR.MENU, false)
+  funcLuaMenuCommand(TR.VISIBLE, TR.CURSOR, 0, false)
+  funcLuaCommand(TR.FADE, 1, 0.3)
+  coroutine.yield()
+  while not funcLuaCommand(TR.FADE_DONE) do
+    coroutine.yield()
+  end
+  -- a menu scene under the title (the 3D map) goes with the old rpg scene
+  local okm, state = pcall(funcLuaCommand, VRFW_Cmd.VRFW_MENU_SCENE_STATE)
+  if okm and state == "up" then
+    pcall(funcLuaCommand, VRFW_Cmd.VRFW_MENU_SCENE_SET, "leaving", "title row " .. e.key .. ": root_menu " .. e.value)
+  end
+  VRFW_Param.Set(TR.FOCUS_KEY, e.item)
+  local how = VRFW_Reset.straight({ menu = menu, bgm_stop = true, need_carry = true,
+    log = function(text) TR_Log("button " .. e.key .. ": root_menu: " .. text) end })
+  TR_Log("button " .. e.key .. ": root_menu " .. e.value .. ": " .. how)
+  if how == "refused" then
+    VRFW_Param.Clear(TR.FOCUS_KEY)
+    funcLuaCommand(TR.SOUND, TR.BUZZER)
+    funcLuaCommand(TR.FADE, 0, 0.3)
+    TR_Restore()
+    return
+  end
+  for _ = 1, 900 do
+    coroutine.yield()
+  end
+  TR_Log("button " .. e.key .. ": root_menu: still here 900 frames after the reset")
+  funcLuaCommand(TR.FADE, 0, 0.3)
+  TR_Restore()
+end
+
 local function TR_ModeCo(e)
   while type(VRFW_Mode) == "table" and VRFW_Mode.busy() do
     VRFW_Mode.step()
@@ -505,6 +542,11 @@ local function TR_Press(e, nxt, a1, a2)
     funcLuaCommand(TR.SOUND, TR.DECIDE)
     local m = TR_Crc(e.value)
     tr.co = coroutine.create(function() TR_OpenCo(m) end)
+    return
+  elseif e.kind == "root_menu" then
+    funcLuaCommand(TR.SOUND, TR.DECIDE)
+    local m = TR_Crc(e.value)
+    tr.co = coroutine.create(function() TR_RootCo(e, m) end)
     return
   elseif e.kind == "lua" then
     local f = _G[e.value]

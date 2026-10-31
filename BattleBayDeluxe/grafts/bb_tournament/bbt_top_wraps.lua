@@ -155,7 +155,7 @@ do
     if not okt then
       BBT_Logger().once("tree_menu_error", "bracket menu error", tostring(errt))
     end
-    -- 1.5.33: a bracket layer set up after the bracket opened (bbt_hub.lua OnSetupLayer hid it): the page again
+    -- 1.5.33: a bracket layer set up after the bracket opened (S.redraw): the page again
     if S.redraw then
       S.redraw = false
       if S.open and not S.champ then

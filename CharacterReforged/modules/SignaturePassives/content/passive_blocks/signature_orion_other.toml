@@ -212,14 +212,19 @@ kinds = ["dribble"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "orion_other_family_whirlwinds"
-families = ["HissatsuReforged.Whirlwinds"]
+[[VRFW.Trigger]]
+name = "orion_other_when_dash_by_self"
+on = "dash"
+by = "self"
+
+[[VRFW.Move]]
+name = "orion_other_move_whd00070"
+moves = ["whd00070"]
 
 [[VRFW.TechniquePower]]
-name = "orion_other_techniquepower_team_3"
-value = 3
-target = "team"
+name = "orion_other_techniquepower_self_5"
+value = 5
+target = "self"
 mode = "percent"
 
 [[VRFW.Trigger]]
@@ -244,15 +249,20 @@ name = "orion_other_tension_2"
 units = 2
 team = "carrier"
 
-[[VRFW.MoveFamily]]
-name = "orion_other_family_greatwalls"
-families = ["HissatsuReforged.GreatWalls"]
+[[VRFW.Trait]]
+name = "orion_other_trait_fire"
+elements = ["fire"]
 
-[[VRFW.TechniquePower]]
-name = "orion_other_techniquepower_team_8"
-value = 8
-target = "team"
-mode = "percent"
+[[VRFW.Count]]
+name = "orion_other_count_fire_team_max3"
+trait = "orion_other_trait_fire"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.Move]]
+name = "orion_other_move_whd00480"
+moves = ["whd00480"]
 
 [[VRFW.TechniquePower]]
 name = "orion_other_techniquepower_team_dribble_8_raging_bulls"
@@ -262,19 +272,32 @@ target = "team"
 trait = "orion_other_trait_raging_bulls"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "orion_other_family_majingiant"
-families = ["HissatsuReforged.MajinGiant"]
+[[VRFW.HasBall]]
+name = "orion_other_holds_ball"
+holds = true
 
-[[VRFW.MoveFamily]]
-name = "orion_other_family_illusions"
-families = ["HissatsuReforged.Illusions"]
+[[VRFW.Zone]]
+name = "orion_other_zone_opponent_half"
+z = [0.0, 200.0]
+frame = "team"
+
+[[VRFW.Move]]
+name = "orion_other_move_who00650"
+moves = ["who00650"]
 
 [[VRFW.TechniquePower]]
-name = "orion_other_techniquepower_team_4"
-value = 4
-target = "team"
+name = "orion_other_techniquepower_self_15"
+value = 15
+target = "self"
 mode = "percent"
+
+[[VRFW.Half]]
+name = "orion_other_half_2"
+halves = [2]
+
+[[VRFW.Move]]
+name = "orion_other_move_whs02020"
+moves = ["whs02020"]
 
 [[VRFW.Trait]]
 name = "orion_other_trait_fallen_angels"
@@ -357,6 +380,12 @@ mode = "percent"
 name = "orion_other_family_firetornado"
 families = ["HissatsuReforged.FireTornado"]
 
+[[VRFW.TechniquePower]]
+name = "orion_other_techniquepower_team_3"
+value = 3
+target = "team"
+mode = "percent"
+
 [[VRFW.Clock]]
 name = "orion_other_clock_last_third"
 half_fraction_from = "2/3"
@@ -397,9 +426,19 @@ target = "team"
 trait = "orion_other_trait_fallen_angels"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "orion_other_family_inazumapower"
-families = ["HissatsuReforged.InazumaPower"]
+[[VRFW.Trait]]
+name = "orion_other_trait_mystic"
+tags = ["mystic"]
+
+[[VRFW.Holder]]
+name = "orion_other_holder_mystic_team"
+trait = "orion_other_trait_mystic"
+side = "team"
+others = false
+
+[[VRFW.Move]]
+name = "orion_other_move_whs01590"
+moves = ["whs01590"]
 
 [[VRFW.Trait]]
 name = "orion_other_trait_brain"
@@ -441,17 +480,6 @@ mode = "percent"
 name = "orion_other_movespeed_team_2"
 percent = 2
 target = "team"
-
-[[VRFW.Trait]]
-name = "orion_other_trait_fire"
-elements = ["fire"]
-
-[[VRFW.Count]]
-name = "orion_other_count_fire_team_max3"
-trait = "orion_other_trait_fire"
-side = "team"
-max = 3
-others = true
 
 [[VRFW.TechniquePower]]
 name = "orion_other_techniquepower_self_block_2"
@@ -578,6 +606,17 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.Score]]
+name = "orion_other_score_level"
+states = ["level"]
+
+[[VRFW.TechniquePower]]
+name = "orion_other_techniquepower_self_block_6"
+value = 6
+kinds = ["block"]
+target = "self"
+mode = "percent"
+
 [[VRFW.By]]
 name = "orion_other_by_arabian_firebirds"
 trait = "orion_other_trait_arabian_firebirds"
@@ -615,15 +654,9 @@ kinds = ["long_shoot"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "orion_other_family_legendarybirds"
-families = ["HissatsuReforged.LegendaryBirds"]
-
-[[VRFW.TechniquePower]]
-name = "orion_other_techniquepower_team_6"
-value = 6
-target = "team"
-mode = "percent"
+[[VRFW.Move]]
+name = "orion_other_move_whs00240"
+moves = ["whs00240"]
 
 [[VRFW.Trait]]
 name = "orion_other_trait_fire_fw"
@@ -645,22 +678,14 @@ elements = ["wind"]
 name = "orion_other_by_wind"
 trait = "orion_other_trait_wind"
 
-[[VRFW.Trait]]
-name = "orion_other_trait_legendarybirds"
-families = ["HissatsuReforged.LegendaryBirds"]
-
-[[VRFW.Count]]
-name = "orion_other_count_legendarybirds_team_max3"
-trait = "orion_other_trait_legendarybirds"
-side = "team"
-max = 3
-others = true
+[[VRFW.Move]]
+name = "orion_other_move_whs03190"
+moves = ["whs03190"]
 
 [[VRFW.TechniquePower]]
-name = "orion_other_techniquepower_self_dribble_3"
-value = 3
-kinds = ["dribble"]
-target = "self"
+name = "orion_other_techniquepower_team_10"
+value = 10
+target = "team"
 mode = "percent"
 
 [[VRFW.Stat]]
@@ -731,6 +756,14 @@ mode = "percent"
 stats = ["physical"]
 target = "self"
 
+[[VRFW.Score]]
+name = "orion_other_score_trailing"
+states = ["trailing"]
+
+[[VRFW.Move]]
+name = "orion_other_move_whs03340"
+moves = ["whs03340"]
+
 [[VRFW.MoveSpeed]]
 name = "orion_other_movespeed_self_3"
 percent = 3
@@ -752,6 +785,12 @@ mode = "percent"
 [[VRFW.MoveFamily]]
 name = "orion_other_family_dragon"
 families = ["HissatsuReforged.Dragon"]
+
+[[VRFW.TechniquePower]]
+name = "orion_other_techniquepower_team_6"
+value = 6
+target = "team"
+mode = "percent"
 
 [[VRFW.Present]]
 name = "orion_other_present_avenging_acrobats_team"
@@ -916,6 +955,12 @@ target = "team"
 name = "orion_other_move_who00630_whs03320_whs02400_whk01460"
 moves = ["who00630", "whs03320", "whs02400", "whk01460"]
 
+[[VRFW.TechniquePower]]
+name = "orion_other_techniquepower_team_8"
+value = 8
+target = "team"
+mode = "percent"
+
 [[VRFW.Count]]
 name = "orion_other_count_brain_team_max4"
 trait = "orion_other_trait_brain"
@@ -923,23 +968,12 @@ side = "team"
 max = 4
 others = true
 
-[[VRFW.Trait]]
-name = "orion_other_trait_northernice"
-families = ["HissatsuReforged.NorthernIce"]
-
 [[VRFW.Count]]
-name = "orion_other_count_northernice_team_max3"
-trait = "orion_other_trait_northernice"
+name = "orion_other_count_wall_team_max3"
+trait = "orion_other_trait_wall"
 side = "team"
 max = 3
 others = true
-
-[[VRFW.TechniquePower]]
-name = "orion_other_techniquepower_self_block_4"
-value = 4
-kinds = ["block"]
-target = "self"
-mode = "percent"
 
 [[VRFW.Trait]]
 name = "orion_other_trait_df_pitch_perfectionists"
@@ -959,10 +993,6 @@ trait = "orion_other_trait_pitch_perfectionists"
 side = "team"
 max = 3
 others = true
-
-[[VRFW.Score]]
-name = "orion_other_score_trailing"
-states = ["trailing"]
 
 [[VRFW.TechniquePower]]
 name = "orion_other_techniquepower_self_shoot_6"
@@ -1052,6 +1082,13 @@ positions = ["gk"]
 name = "orion_other_by_gk_own_team"
 trait = "orion_other_trait_gk_own_team"
 
+[[VRFW.TechniquePower]]
+name = "orion_other_techniquepower_self_block_4"
+value = 4
+kinds = ["block"]
+target = "self"
+mode = "percent"
+
 [[VRFW.Count]]
 name = "orion_other_count_the_sambassadors_team_max3"
 trait = "orion_other_trait_the_sambassadors"
@@ -1067,9 +1104,20 @@ team_groups = ["SynergiesReworked.guardians_of_the_queen"]
 name = "orion_other_by_guardians_of_the_queen"
 trait = "orion_other_trait_guardians_of_the_queen"
 
-[[VRFW.MoveFamily]]
-name = "orion_other_family_legendaryweapons"
-families = ["HissatsuReforged.LegendaryWeapons"]
+[[VRFW.Trait]]
+name = "orion_other_trait_noble"
+tags = ["noble"]
+
+[[VRFW.Count]]
+name = "orion_other_count_noble_team_max3"
+trait = "orion_other_trait_noble"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.Move]]
+name = "orion_other_move_whs01070"
+moves = ["whs01070"]
 
 [[VRFW.Count]]
 name = "orion_other_count_guardians_of_the_queen_team_max3"
@@ -1089,22 +1137,11 @@ side = "opponents"
 max = 3
 others = true
 
-[[VRFW.Trait]]
-name = "orion_other_trait_noble"
-tags = ["noble"]
-
 [[VRFW.Holder]]
 name = "orion_other_holder_noble_team"
 trait = "orion_other_trait_noble"
 side = "team"
 others = false
-
-[[VRFW.Count]]
-name = "orion_other_count_noble_team_max3"
-trait = "orion_other_trait_noble"
-side = "team"
-max = 3
-others = true
 
 [[VRFW.TechniquePower]]
 name = "orion_other_techniquepower_opponents_shoot_minus2"
@@ -1130,6 +1167,12 @@ others = true
 [[VRFW.Move]]
 name = "orion_other_move_whd00230_whs00140_whs01380_whs02590"
 moves = ["whd00230", "whs00140", "whs01380", "whs02590"]
+
+[[VRFW.TechniquePower]]
+name = "orion_other_techniquepower_team_4"
+value = 4
+target = "team"
+mode = "percent"
 
 [[VRFW.Trait]]
 name = "orion_other_trait_gk_own_group"
@@ -1212,23 +1255,10 @@ trait = "orion_other_trait_acrobat"
 name = "orion_other_by_star_spangled_unicorns"
 trait = "orion_other_trait_star_spangled_unicorns"
 
-[[VRFW.Trait]]
-name = "orion_other_trait_greatwalls"
-families = ["HissatsuReforged.GreatWalls"]
-
-[[VRFW.Count]]
-name = "orion_other_count_greatwalls_team_max3"
-trait = "orion_other_trait_greatwalls"
-side = "team"
-max = 3
-others = true
-
-[[VRFW.TechniquePower]]
-name = "orion_other_techniquepower_self_catch_3"
-value = 3
-kinds = ["catch"]
-target = "self"
-mode = "percent"
+[[VRFW.StaminaRecovery]]
+name = "orion_other_staminarecovery_team_4"
+percent = 4
+target = "team"
 
 [[VRFW.Holder]]
 name = "orion_other_holder_striker_team"
@@ -1249,6 +1279,10 @@ value = 10
 kinds = ["long_shoot"]
 target = "self"
 mode = "percent"
+
+[[VRFW.Move]]
+name = "orion_other_move_whd00390"
+moves = ["whd00390"]
 
 [[VRFW.Count]]
 name = "orion_other_count_orion_team_max4"
@@ -1299,6 +1333,10 @@ trait = "orion_other_trait_orion"
 side = "team"
 max = 3
 others = true
+
+[[VRFW.Move]]
+name = "orion_other_move_whs00430"
+moves = ["whs00430"]
 
 [[VRFW.TechniquePower]]
 name = "orion_other_techniquepower_self_shoot_3"

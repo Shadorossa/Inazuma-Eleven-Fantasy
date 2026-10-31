@@ -86,7 +86,7 @@ do
       coroutine.yield()
     end
     for _, key in ipairs({T.KEY_HDL, T.KEY_DOCK_OK, T.KEY_DOCK_NO, T.KEY_DOCK_TYPE}) do
-      funcLuaCommand(C.P_CLEAR, key)               -- left over when the window never opened
+      VRFW_Param.Clear(key)                        -- left over when the window never opened
     end
     funcLuaMenuCommand(C.MENU_RESUME, T.EVT_MENU)
     coroutine.yield()

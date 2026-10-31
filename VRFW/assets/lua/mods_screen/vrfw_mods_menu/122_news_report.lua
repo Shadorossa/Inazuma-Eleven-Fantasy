@@ -68,14 +68,40 @@ function RV.Cat(e)
   return e.sev == "error" and "error" or (e.sev == "warn" and "warning" or "info")
 end
 
--- the header of a code's group: its row in the player's language, else the core's English hint, else the code
-function RV.Head(e)
+-- the schema line(s) an entry's message asks for (the core writes "must start with `schema = ...`"), else nil
+function RV.Wanted(e)
+  local w = string.match(e.msg, "must start with `(.+)`")
+  if w == nil then
+    return nil
+  end
+  return (string.gsub(w, "` or `", " / "))
+end
+
+-- the header of a code's group: its row in the player's language, else the core's English hint, else the code.
+-- `{s}` = the schema line(s) the group's files need (`wanted`), else the generic form
+function RV.Head(e, wanted)
   local k = "rc_" .. e.code
   local s = T(k)
   if s ~= k then
-    return s
+    local w = wanted or 'schema = "VRFW.<type>/<version>"'
+    return (string.gsub(s, "{s}", function() return w end))
   end
   return e.hint ~= "" and (e.code .. ": " .. e.hint) or e.code
+end
+
+-- the distinct schema lines the entries of one group (category + code) ask for, joined with " / "; nil when none
+function RV.GroupWanted(items, cat, code)
+  local seen, list = {}, {}
+  for _, x in ipairs(items) do
+    if x.cat == cat and x.code == code then
+      local w = RV.Wanted(x)
+      if w ~= nil and not seen[w] then
+        seen[w] = true
+        list[#list + 1] = w
+      end
+    end
+  end
+  return #list > 0 and table.concat(list, " / ") or nil
 end
 
 function RV.Of(id)
@@ -113,7 +139,7 @@ function RV.Of(id)
   for _, e in ipairs(items) do
     if e.cat .. "/" .. e.code ~= last then
       last = e.cat .. "/" .. e.code
-      r.problems[#r.problems + 1] = {hdr = true, cat = e.cat, sev = e.sev, text = RV.Head(e)}
+      r.problems[#r.problems + 1] = {hdr = true, cat = e.cat, sev = e.sev, text = RV.Head(e, RV.GroupWanted(items, e.cat, e.code))}
     end
     r.problems[#r.problems + 1] = e
   end

@@ -1,0 +1,28 @@
+# «Daruma de fuego» (Daruma Boomer, whs02840; fire shot, cut-in ev60_02840): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last cut (c0400): the flame daruma round the ball (its fire, body and
+# eyes, facing the camera from every side) with its two fire swirls spinning round it, the fire tube trailing straight
+# behind it with the cut-in's fire rings every metre, and the burnt fire carpet on the pitch under its path, instead
+# of the plain fire special-shot aura. The object is ev6028db00 (effect/event/ev60/ev6028db00/), built by
+# research/scripts/daruma_boomer_ball_fx.py from the cut-in's effect object ev60028400: c0400 held at frame 440, ball
+# at the origin, +Z along the flight, x1; the daruma is whole from the first frame, the tube, rings and carpet come
+# out of the kick point and fade out softly 14 m behind the ball. Left out: the daruma forming in the sky (the earlier
+# cuts), the smoke clouds and fire left in the world behind the ball, the sparks fixed along the cut-in's path and the
+# screen cards round its camera. Its flight: content\techniques\daruma_boomer_trajectory.toml (level at 0.6 m).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "daruma_boomer"
+from = "ega0075c"
+object = "effect/event/ev60/ev6028db00/ev6028db00.objbin"
+
+[[shot_aura]]
+name = "daruma_boomer"
+when = { techniques = ["whs02840"] }
+aura = "daruma_boomer"
+like = "ega0075c"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

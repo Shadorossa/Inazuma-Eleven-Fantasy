@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Disparo rodante (Rolling Kick, whs00150, cut-in ev60_00150): one straight level
+# line from the kick point to the goal, the ball at 2.2 m the whole way (in the cut-in at ~1.8-2.2 m; its wind swirls,
+# ~2.0 m round the way, stay clear of the grass). Heights are the ball centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Disparo rodante (whs00150).
+[[edit]]
+target = "whs00150"
+trajectory = { points = [[0.0, 2.2]], straight = true, unblockable = false }

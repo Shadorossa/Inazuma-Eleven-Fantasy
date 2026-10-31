@@ -684,16 +684,15 @@ trait = "gx_ares_trait_anyone"
 side = "team"
 others = false
 
-[[VRFW.Trait]]
-name = "gx_ares_trait_whirlwinds"
-families = ["HissatsuReforged.Whirlwinds"]
+[[VRFW.Move]]
+name = "gx_ares_move_whs02080"
+moves = ["whs02080"]
 
-[[VRFW.Count]]
-name = "gx_ares_count_whirlwinds_team_max2"
-trait = "gx_ares_trait_whirlwinds"
-side = "team"
-max = 2
-others = true
+[[VRFW.TechniquePower]]
+name = "gx_ares_techniquepower_self_15"
+value = 15
+target = "self"
+mode = "percent"
 
 [[VRFW.MoveSpeed]]
 name = "gx_ares_movespeed_team_3_storm_wolves"
@@ -805,15 +804,19 @@ target = "opponents"
 mode = "percent"
 
 [[VRFW.Trait]]
-name = "gx_ares_trait_northernice"
-families = ["HissatsuReforged.NorthernIce"]
+name = "gx_ares_trait_mystic"
+tags = ["mystic"]
 
-[[VRFW.Count]]
-name = "gx_ares_count_northernice_team_max2"
-trait = "gx_ares_trait_northernice"
+[[VRFW.Present]]
+name = "gx_ares_present_mystic_team"
+trait = "gx_ares_trait_mystic"
 side = "team"
-max = 2
+min = 1
 others = true
+
+[[VRFW.Move]]
+name = "gx_ares_move_whs01710"
+moves = ["whs01710"]
 
 [[VRFW.Trigger]]
 name = "gx_ares_when_possession_change_by_teammate"
@@ -868,8 +871,8 @@ target = "self"
 mode = "percent"
 
 [[VRFW.MoveFamily]]
-name = "gx_ares_family_earthshaker"
-families = ["HissatsuReforged.Earthshaker"]
+name = "gx_ares_family_trianglez"
+families = ["HissatsuReforged.TriangleZ"]
 
 [[VRFW.Trait]]
 name = "gx_ares_trait_fire_fw"
@@ -1045,9 +1048,9 @@ side = "team"
 max = 4
 others = true
 
-[[VRFW.MoveFamily]]
-name = "gx_ares_family_divinepower"
-families = ["HissatsuReforged.DivinePower"]
+[[VRFW.Move]]
+name = "gx_ares_move_who00530"
+moves = ["who00530"]
 
 [[VRFW.TechniquePower]]
 name = "gx_ares_techniquepower_team_shoot_4_ixar_fleet"
@@ -1168,11 +1171,20 @@ side = "opponents"
 min = 1
 others = true
 
-[[VRFW.TechniquePower]]
-name = "gx_ares_techniquepower_self_10"
-value = 10
-target = "self"
-mode = "percent"
+[[VRFW.Trait]]
+name = "gx_ares_trait_divine"
+tags = ["divine"]
+
+[[VRFW.Present]]
+name = "gx_ares_present_divine_team"
+trait = "gx_ares_trait_divine"
+side = "team"
+min = 1
+others = true
+
+[[VRFW.Move]]
+name = "gx_ares_move_who00850"
+moves = ["who00850"]
 
 [[VRFW.Holder]]
 name = "gx_ares_holder_wind_team"
@@ -1338,6 +1350,16 @@ others = true
 name = "gx_ares_techniquepower_self_catch_8"
 value = 8
 kinds = ["catch"]
+target = "self"
+mode = "percent"
+
+[[VRFW.Move]]
+name = "gx_ares_move_whs00310"
+moves = ["whs00310"]
+
+[[VRFW.TechniquePower]]
+name = "gx_ares_techniquepower_self_5"
+value = 5
 target = "self"
 mode = "percent"
 
@@ -1546,12 +1568,6 @@ others = true
 name = "gx_ares_move_whs00260"
 moves = ["whs00260"]
 
-[[VRFW.TechniquePower]]
-name = "gx_ares_techniquepower_self_15"
-value = 15
-target = "self"
-mode = "percent"
-
 [[VRFW.Trait]]
 name = "gx_ares_trait_whs00260"
 moves = ["whs00260"]
@@ -1676,6 +1692,27 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.Move]]
+name = "gx_ares_move_whs02910_whs00340"
+moves = ["whs02910", "whs00340"]
+
+[[VRFW.TechniquePower]]
+name = "gx_ares_techniquepower_self_10"
+value = 10
+target = "self"
+mode = "percent"
+
+[[VRFW.MoveFamily]]
+name = "gx_ares_family_multiple"
+families = ["HissatsuReforged.Multiple"]
+
+[[VRFW.TechniquePower]]
+name = "gx_ares_techniquepower_opponents_dribble_minus3"
+value = -3
+kinds = ["dribble"]
+target = "opponents"
+mode = "percent"
+
 [[VRFW.Trigger]]
 name = "gx_ares_when_shot_start_by_teammate"
 on = "shot_start"
@@ -1691,10 +1728,6 @@ value = 3
 mode = "percent"
 stats = ["technique"]
 target = "self"
-
-[[VRFW.Trait]]
-name = "gx_ares_trait_divine"
-tags = ["divine"]
 
 [[VRFW.By]]
 name = "gx_ares_by_divine"
@@ -1859,10 +1892,6 @@ trait = "gx_ares_trait_green_hill_ares"
 side = "team"
 max = 3
 others = true
-
-[[VRFW.Trait]]
-name = "gx_ares_trait_mystic"
-tags = ["mystic"]
 
 [[VRFW.Count]]
 name = "gx_ares_count_mystic_team_max3"

@@ -77,8 +77,3 @@ VRFW.on("hook:CharacterReforged.ArmedSlotItem:post", function(ev)
     hex(u32_at(keshin_p)), hex(u32_at(card_p)), hex(armed), hex(u32_at(out))))
   return nil
 end)
-
--- is the armour slot without the item on (a mod declares it and the hook is in)?
-function CharacterReforged.ArmourWithoutItemOn()
-  return rules().armour_without_item and VRFW.is_on("CharacterReforged.ArmedSlotItem")
-end

@@ -1,0 +1,29 @@
+# «Fulgor majestuoso» (Majestic Radiance, whs02260; wind shot, cut-in ev60_02260): while the ball flies to the goal
+# after the cut-in it keeps the look of the cut-in's last cut (c0400): the ball in its glow of light (soft cyan glow,
+# cyan ring, white core) and the spear of light that shoots along its way (white blade with a cyan rim, white core,
+# soft blue layer and a flowing cyan wavy outline) trailing straight behind it, instead of the plain wind special-shot
+# aura. The object is ev6022mj00 (effect/event/ev60/ev6022mj00/), built by
+# research/scripts/majestic_radiance_ball_fx.py from the cut-in's effect object ev60022600: the glow at c0400 frame 376,
+# the spear at frame 388, ball at the origin, +Z along the flight, raised 0.14 m to the ball's centre; glow, ring and
+# core faced to the camera (round from every side, the whole ball inside the white core), the spear (~22 m, crossed
+# copies: the same from every side) coming out of the kick point and fading out softly at its rear.
+# Left out: the other spears that fan out of the kick point, the light lance and shield the kicker holds, the charge's
+# rings and flashes and the backdrop. Its flight: content\techniques\majestic_radiance_trajectory.toml (level at 1.2 m).
+# The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "majestic_radiance"
+from = "ega0075b"
+object = "effect/event/ev60/ev6022mj00/ev6022mj00.objbin"
+
+[[shot_aura]]
+name = "majestic_radiance"
+when = { techniques = ["whs02260"] }
+aura = "majestic_radiance"
+like = "ega0075b"
+# the spear comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's reveal step; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

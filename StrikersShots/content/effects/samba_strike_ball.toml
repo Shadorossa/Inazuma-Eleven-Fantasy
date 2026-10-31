@@ -1,0 +1,27 @@
+# «Golpe de samba» (Samba Strike, whs01090; mountain shot, cut-in ev60_01090): while the ball flies to the goal after
+# the cut-in it keeps the look of the cut-in's last shot (c0400, the ball sent off by the four kickers): the spinning
+# cup of green and white swirl cards round the ball (the inner cards one way, the outer green card the other, at their
+# cut-in rates) and its soft green glow, instead of the plain mountain special-shot aura (ega0085a).
+# The object is ev6109ss00 (effect/event/ev60/ev6109ss00/), built by research/scripts/samba_strike_ball_fx.py from the
+# cut-in's effect object ev60010900: c0400 at frame 318, ball at the origin flying +Z, the swirl's axis along the flight
+# (the cut-in's downward tilt taken out), x1. Left out: the background of the cut (star panels, speed streaks, white
+# flash) and the kick cards at the kickers.
+# The trigger copies the mountain special-shot aura's row (like = "ega0085a"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b); the distance clock (anchor = "kick", drift = 0.75) plays the
+# clip by the ball's distance from the kick point. Its flight: content\techniques\samba_strike_trajectory.toml.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "samba_strike"
+from = "ega0085a"
+object = "effect/event/ev60/ev6109ss00/ev6109ss00.objbin"
+
+[[shot_aura]]
+name = "samba_strike"
+when = { techniques = ["whs01090"] }
+aura = "samba_strike"
+like = "ega0085a"
+anchor = "kick"
+drift = 0.75

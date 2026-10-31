@@ -1,0 +1,15 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Triángulo letal final (Final Death Zone, whs02010 and whs02010_or, cut-in
+# ev60_02010): one straight level line at 1.4 m from the kick point into the goal point, whatever the shot's length,
+# so the beam round the ball (0.66 m in radius) runs clear of the grass. unblockable = false: the game's block rules
+# (this mod changes no block rule). Heights are the ball centre over the pitch (m); the height is held.
+
+# Triángulo letal final (whs02010).
+[[edit]]
+target = "whs02010"
+trajectory = { points = [[0.0, 1.40]], straight = true, unblockable = false }
+
+# Triángulo letal final, cross variant (whs02010_or).
+[[edit]]
+target = "whs02010_or"
+trajectory = { points = [[0.0, 1.40]], straight = true, unblockable = false }

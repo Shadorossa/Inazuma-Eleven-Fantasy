@@ -1,14 +1,10 @@
-# The ONE pachanga function of the VR-Framework match engine: the generic
-# executor VRFW_PACHANGA (pachanga_core.lua) in every menu a pachanga starts from or comes back to, the title end of
-# the way back (pachanga_title.lua) and the story-field fallback (pachanga_field.lua, VRFW_PACHANGA_FieldTick).
-# Callers (e.g. a roguelite dock, office trials, chain modes) only pick a rules id declared by their mod and call
-# VRFW_PACHANGA.start / back / set_passed.
+# The pachanga way back of the VR-Framework match engine: the title end of the way back (pachanga_title.lua) and the
+# story-field fallback (pachanga_field.lua, VRFW_PACHANGA_FieldTick). The friendly executor VRFW_PACHANGA itself is in
+# every menu VM (VRFW lua\menu\_all\12_pachanga.lua). Callers (e.g. a roguelite dock, office trials, chain modes) only
+# pick a rules id declared by their mod and call VRFW_PACHANGA.start / back / set_passed.
 # A VR-Framework graft (module match_engine; no global alias): built by `menu_assemble.py build --mod vr_framework`
 # into the save part's Lua root (framework_pack.py).
-# Order: that root runs after a mod's lua_early root in every menu, so the callers (other mod: no build `requires`) find
-# VRFW_PACHANGA defined before any callback, and on title_menu_2 pachanga_title.lua wraps OnInit OUTSIDE modes_hub's
-# wrapper (before: inside). Same effect: modes_hub takes its keys before it calls the retail OnInit and does nothing
-# after it, so the order stays modes_hub's keys -> retail OnInit -> back(1) -> EVT_MH_T.pending = the origin.
+# On title_menu_2 pachanga_title.lua closes the pachanga after the retail OnInit.
 name = "pachanga_core"
 mod = "VRFW"
 order = 200
@@ -16,57 +12,10 @@ module = ""
 requires = []
 conflicts = []
 wraps = ["OnInit", "Step"]
-description = "Pachangas: the one launch / way back of every mode's friendly matches (VR-Framework match engine)"
-
-[[files]]
-stem = "soccer_team_dock_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "shop_menu_buy"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "market_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-# "Game Modes" (soccer_top_menu): a mode that starts its friendly straight from the hub (e.g. a
-# "Training Field" graft)
-[[files]]
-stem = "soccer_top_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "soccer_vs_cpu_list_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
+description = "Pachangas: the way back of every mode's friendly matches at the title and the story field (VR-Framework match engine)"
 
 [[files]]
 stem = "title_menu_2"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
 
   [[files.ops]]
   type = "append_block"
@@ -75,20 +24,7 @@ stem = "title_menu_2"
   crc = "none"
 
 [[files]]
-stem = "rpg_info_window"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
 stem = "activity_telop_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
 
   # return = "title" fallback: a story field after a pachanga -> black, title (rules field_net)
   [[files.ops]]
@@ -101,11 +37,6 @@ stem = "main_menu"
 
   [[files.ops]]
   type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-  [[files.ops]]
-  type = "append_block"
   src = "pachanga_field.lua"
   marker = "pachanga field"
 
@@ -114,78 +45,5 @@ stem = "map_menu"
 
   [[files.ops]]
   type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-  [[files.ops]]
-  type = "append_block"
   src = "pachanga_field.lua"
   marker = "pachanga field"
-
-# The match start service (VRFW_MATCH, lua\_all\12_match_start.lua, VRFW): a match started straight from any hub
-# of the menus needs the executor there (the top bar hosts of the menus; the field / title ones are left out: a match
-# from a field never comes back to a hub)
-
-[[files]]
-stem = "item_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "play_guide_top_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "chronicle_mode_top_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "victory_road_top_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "bb_stadium_top_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "team_dock_common_top_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "information_top_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"
-
-[[files]]
-stem = "vs_route_town_menu"
-
-  [[files.ops]]
-  type = "append_block"
-  src = "pachanga_core.lua"
-  marker = "pachanga core"

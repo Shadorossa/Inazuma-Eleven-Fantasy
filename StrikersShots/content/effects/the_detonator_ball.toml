@@ -1,0 +1,29 @@
+# «Detonador» (The Detonator, whs02960; forest shot, cut-in ev60_02960): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0300, the ball fired down out of space): the round pink-white
+# head on the ball and the pink-white beam trailing straight behind it (its two round layers with their texture
+# flow and the pink outer fan standing upright along it), instead of the plain forest special-shot aura. The object is ev6029dt00 (effect/event/ev60/ev6029dt00/), built by
+# research/scripts/the_detonator_ball_fx.py from the cut-in's effect object ev60029600: c0300 held at frame 505, ball
+# at the origin, +Z along the flight (the cut-in's dive turned level), x1, raised 0.14 m to the ball's centre and
+# moved 0.4 m forward (the whole ball inside the head's nose); the head is whole from the first frame, the beam comes
+# out of the kick point and fades out softly 24 m behind the ball.
+# Left out: the kick in space, the black hole and the burst of the earlier cuts, the planets and moons of the
+# backdrop and the sparkles fixed along the cut-in's path. Its flight: content\techniques\the_detonator_trajectory.toml
+# (level at 1.8 m).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "the_detonator"
+from = "ega0075d"
+object = "effect/event/ev60/ev6029dt00/ev6029dt00.objbin"
+
+[[shot_aura]]
+name = "the_detonator"
+when = { techniques = ["whs02960"] }
+aura = "the_detonator"
+like = "ega0075d"
+# the beam comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

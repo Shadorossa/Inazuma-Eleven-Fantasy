@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Relámpago volcánico (Volcanic Lightning, whs02570, cut-in ev60_02570): one straight
+# level line from the kick point to the goal, the ball at 2.6 m the whole way (the cut-in drops it out of the sky; its
+# smoke cone, ~2 m round at its rear, stays clear of the grass). Heights are the ball centre over the pitch (m); the
+# height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Relámpago volcánico (whs02570).
+[[edit]]
+target = "whs02570"
+trajectory = { points = [[0.0, 2.6]], straight = true, unblockable = false }

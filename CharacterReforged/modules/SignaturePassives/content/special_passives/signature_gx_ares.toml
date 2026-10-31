@@ -984,10 +984,10 @@ passive = "c06031290_tormenta_de_azufre"
 character = "c06031290"
 tags = ["striker", "acrobat"]
 
-# Domitri Sobirov: Desastre inminente — his shoot power +5 % per teammate carrying a Tormenta-family move (max 2)
+# Domitri Sobirov: Desastre inminente — Disaster Strike power +15 % in the last third of each half
 [[VRFW.Passive]]
 name = "c06031300_desastre_inminente"
-blocks = ["gx_ares_count_whirlwinds_team_max2", "gx_ares_techniquepower_self_shoot_5", "gx_ares_card_c06031300"]
+blocks = ["gx_ares_clock_last_third", "gx_ares_move_whs02080", "gx_ares_techniquepower_self_15", "gx_ares_card_c06031300"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1334,10 +1334,10 @@ passive = "c06031690_lobo_de_las_olas"
 character = "c06031690"
 tags = ["beast", "striker"]
 
-# Serban Bacha: Leopardo de ventisca — his shoot power +5 % per teammate carrying a Hielo-family move (max 2)
+# Serban Bacha: Leopardo de ventisca — Snowstorm Leopard power +15 % while a «Místico» teammate is on the pitch
 [[VRFW.Passive]]
 name = "c06031700_leopardo_de_ventisca"
-blocks = ["gx_ares_count_northernice_team_max2", "gx_ares_techniquepower_self_shoot_5", "gx_ares_card_c06031700"]
+blocks = ["gx_ares_present_mystic_team", "gx_ares_move_whs01710", "gx_ares_techniquepower_self_15", "gx_ares_card_c06031700"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1488,15 +1488,15 @@ passive = "c06031870_bomba_retardada"
 character = "c06031870"
 tags = ["mystic", "cannon"]
 
-# Cotopax Gerigar: Roca incandescente — Roca-family move power of every teammate +8 %
+# Cotopax Gerigar: Triángulo incandescente — Triangle Z-family move power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c06031880_roca_incandescente"
-blocks = ["gx_ares_family_earthshaker", "gx_ares_techniquepower_team_8", "gx_ares_card_c06031880"]
+name = "c06031880_triangulo_incandescente"
+blocks = ["gx_ares_family_trianglez", "gx_ares_techniquepower_team_8", "gx_ares_card_c06031880"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c06031880"
-passive = "c06031880_roca_incandescente"
+passive = "c06031880_triangulo_incandescente"
 
 [[VRFW.CharacterTags]]
 character = "c06031880"
@@ -2006,10 +2006,10 @@ passive = "c06032880_estampida_en_linea"
 character = "c06032880"
 tags = ["beast", "speedster"]
 
-# Despina Lux: Danza del dios del viento — Cielo-family move power of every teammate +8 %
+# Despina Lux: Danza del dios del viento — Wind God's Dance power +15 % while he holds the ball in the opponent half
 [[VRFW.Passive]]
 name = "c06032890_danza_del_dios_del_viento"
-blocks = ["gx_ares_family_divinepower", "gx_ares_techniquepower_team_8", "gx_ares_card_c06032890"]
+blocks = ["gx_ares_holds_ball", "gx_ares_zone_opponent_half", "gx_ares_move_who00530", "gx_ares_techniquepower_self_15", "gx_ares_card_c06032890"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2412,10 +2412,10 @@ passive = "c06030140_impostor_de_la_espada"
 character = "c06030140"
 tags = ["striker", "rebel"]
 
-# Catra Page: Canto de Atenea — Cielo-family move power +10 % (a move she carries)
+# Catra Page: Canto de Atenea — Athena's Anthem power +15 % while a «Divino» teammate is on the pitch
 [[VRFW.Passive]]
 name = "c06030230_canto_de_atenea"
-blocks = ["gx_ares_family_divinepower", "gx_ares_techniquepower_self_10", "gx_ares_card_c06030230"]
+blocks = ["gx_ares_present_divine_team", "gx_ares_move_who00850", "gx_ares_techniquepower_self_15", "gx_ares_card_c06030230"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2664,15 +2664,15 @@ passive = "c06039390_puno_de_orbes"
 character = "c06039390"
 tags = ["wall", "beast"]
 
-# Ducksquiggan Barboyle: Remate de la roca — Roca-family move power of every teammate +8 %
+# Ducksquiggan Barboyle: Remate de la llama — Fire Tornado-family move power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c06039410_remate_de_la_roca"
-blocks = ["gx_ares_family_earthshaker", "gx_ares_techniquepower_team_8", "gx_ares_card_c06039410"]
+name = "c06039410_remate_de_la_llama"
+blocks = ["gx_ares_family_firetornado", "gx_ares_techniquepower_team_8", "gx_ares_card_c06039410"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c06039410"
-passive = "c06039410_remate_de_la_roca"
+passive = "c06039410_remate_de_la_llama"
 
 [[VRFW.CharacterTags]]
 character = "c06039410"
@@ -2986,10 +2986,10 @@ passive = "c11807010_escudo_a_toda_potencia"
 character = "c11807010"
 tags = ["wall", "noble"]
 
-# Mister Yi: Flecha divina de Yi — Flecha-family move power +10 % (a move he carries)
+# Mister Yi: Flecha divina de Yi — Divine Arrows power +5 % per teammate of the Raimon group on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11807020_flecha_divina_de_yi"
-blocks = ["gx_ares_family_divinepower", "gx_ares_techniquepower_self_10", "gx_ares_card_c11807020"]
+blocks = ["gx_ares_count_raimon_rosters_team_max3", "gx_ares_move_whs00310", "gx_ares_techniquepower_self_5", "gx_ares_card_c11807020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4456,10 +4456,10 @@ passive = "c07080040_espiritu_de_lucha"
 character = "c07080040"
 tags = ["divine", "speedster"]
 
-# Percy Hurst: Sierra de Zeus — Cielo-family move power of every teammate +8 %
+# Percy Hurst: Sierra de Zeus — Celestial Saw and God Knows power +10 %
 [[VRFW.Passive]]
 name = "c07080110_sierra_de_zeus"
-blocks = ["gx_ares_family_divinepower", "gx_ares_techniquepower_team_8", "gx_ares_card_c07080110"]
+blocks = ["gx_ares_move_whs02910_whs00340", "gx_ares_techniquepower_self_10", "gx_ares_card_c07080110"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4470,10 +4470,10 @@ passive = "c07080110_sierra_de_zeus"
 character = "c07080110"
 tags = ["striker", "divine"]
 
-# Apollo Light: Carro del sol joven — Sol-family move power of every teammate +8 %
+# Apollo Light: Carro del sol joven — Multiple-family move power of every teammate +8 %
 [[VRFW.Passive]]
 name = "c07080030_carro_del_sol_joven"
-blocks = ["gx_ares_family_divinepower", "gx_ares_techniquepower_team_8", "gx_ares_card_c07080030"]
+blocks = ["gx_ares_family_multiple", "gx_ares_techniquepower_team_8", "gx_ares_card_c07080030"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4498,10 +4498,10 @@ passive = "c07080050_furia_de_ares"
 character = "c07080050"
 tags = ["divine", "wall"]
 
-# Danny Wood: Temblor de coloso — Roca-family move power of every teammate +8 %
+# Danny Wood: Temblor de coloso — opponents' dribble power −3 % while his team is ahead
 [[VRFW.Passive]]
 name = "c07080060_temblor_de_coloso"
-blocks = ["gx_ares_family_earthshaker", "gx_ares_techniquepower_team_8", "gx_ares_card_c07080060"]
+blocks = ["gx_ares_score_leading", "gx_ares_techniquepower_opponents_dribble_minus3", "gx_ares_card_c07080060"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]

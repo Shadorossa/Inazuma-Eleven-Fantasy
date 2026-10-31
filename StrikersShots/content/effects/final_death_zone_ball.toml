@@ -1,0 +1,27 @@
+# «Final Death Zone» («Triángulo letal final», whs02010 and whs02010_or; forest shot of three players, cut-in
+# ev60_02010): while the ball flies to the goal it is the head of the last triangle's purple-white energy beam, as at
+# the end of the cut-in: the ball inside the cut-in's purple energy sphere (haze, pink and white core, rings; round from
+# every view) and the beam (white core, black core line, purple auras, spiral, side glow and wave) flowing straight
+# out of the back of it, rigid (never stretched or grown), revealed from the kick point by the distance flown, its rear
+# end fading out; the purple lightning flashes on it and the core flickers; the beam's cards drawn twice (crossed), so
+# it looks the same from the touchline, x0.45.
+# The object is ev6201fd00 (effect/event/ev60/ev6201fd00/), built by research/scripts/final_death_zone_ball_fx.py from
+# ev60020100.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"); the distance clock (anchor = "kick",
+# drift) reveals the beam from the kick point. Flight: content\techniques\final_death_zone_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "final_death_zone"
+from = "ega0075d"
+object = "effect/event/ev60/ev6201fd00/ev6201fd00.objbin"
+
+[[shot_aura]]
+name = "final_death_zone"
+when = { techniques = ["whs02010", "whs02010_or"] }
+aura = "final_death_zone"
+like = "ega0075d"
+anchor = "kick"
+drift = 0.75

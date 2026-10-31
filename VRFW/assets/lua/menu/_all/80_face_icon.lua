@@ -10,7 +10,9 @@
 --     loads and when it cannot be drawn: never a blank face. One log line per failure (instance + character).
 --   VRFW_FaceIcon.Card(layer, idx, who, x, y, size[, opts]) -> the same answer: an instance of a copy of the retail
 --     list character card (team00_01_chara_card_for_list) shown as its portrait only (every other part hidden),
---     centred on (x, y) screen px (y down), `size` px high. The caller shows the instance itself.
+--     centred on (x, y) screen px (y down), `size` px high. The caller shows the instance itself. opts.portrait = true
+--     keeps the card's portrait background and its gradient (the full portrait look of the player pages) instead of
+--     the bare face.
 --   VRFW_FaceIcon.Request(layer, idx, who, mesh, slot[, opts]) -> true | false: one request of the face (slot reset,
 --     then the command), nothing remembered and no mesh shown or hidden: for a screen that shows the mesh itself
 --     (its own fade-in or its own art on the same mesh). false = no character or the command refused.
@@ -37,8 +39,9 @@ if VRFW_FaceIcon == nil then
     CARD = {
       MESH = 2828003679 --[[_icon_chr_dmy_l01]], SLOT = 21929195 --[[icon_chr_dmy_l01]], NAME = 170976702 --[[_text_chr01]],
       RH = 156, OX = 59, OY = 11,
+      -- the portrait's background and gradient: hidden unless opts.portrait
+      FRAME = {2907077971 --[[_icon_chr_base_l01]], 2211886546 --[[_icon_chr_gradation_l01]]},
       HIDE = {
-        2907077971 --[[_icon_chr_base_l01]], 2211886546 --[[_icon_chr_gradation_l01]],
         960763094 --[[_seasonal_frame_l01]], 2508362790 --[[_avatar_frame_l01]], 3345942320 --[[_icon_chr_focus_l01]],
         1721769611 --[[_icon_chr_position_dmy_l01]], 3895971012 --[[_icon_base_l01]],
         32585899 --[[_icon_chr_type_dmy_l01]], 814224422 --[[_icon_lock01]], 2815608092 --[[_icon_captain01]],
@@ -180,6 +183,7 @@ if VRFW_FaceIcon == nil then
     menu(F.SCALE, layer, s, s, 1, idx)
     menu(F.POS, layer, x - C.OX * s, -y - C.OY * s, 0, idx)
     local k = layer .. ":" .. idx
+    local mode = (opts and opts.portrait) and "portrait" or "face"
     if F.card_key[k] == nil then
       for _, m in ipairs(C.HIDE) do
         menu(F.MESH_VISIBLE, layer, m, false, idx)
@@ -188,7 +192,15 @@ if VRFW_FaceIcon == nil then
         menu(F.NODE_VISIBLE, layer, n, false, idx)
       end
       menu(F.TEXT_VISIBLE, layer, C.NAME, false, idx)
-      F.card_key[k] = true
+    end
+    if F.card_key[k] ~= mode then
+      for _, m in ipairs(C.FRAME) do
+        menu(F.MESH_VISIBLE, layer, m, mode == "portrait", idx)
+      end
+      if F.card_key[k] ~= nil or mode == "portrait" then
+        log("card", k, "now", mode)
+      end
+      F.card_key[k] = mode
     end
     return F.Face(layer, idx, who, C.MESH, C.SLOT, opts)
   end

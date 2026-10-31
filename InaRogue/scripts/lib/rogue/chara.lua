@@ -140,13 +140,6 @@ function M.shown_tier(i)
   return 1
 end
 
--- INAROGUE tier 1-5 as its cards show it (What-if cards included); 0 = none
-function M.star_tier(param)
-  local i = M.get(param)
-  if i and i.tier >= 1 and i.tier <= M.MAX_TIER then return i.tier end
-  return 0
-end
-
 function M.tier_of(param)
   return M.shown_tier(M.get(param))
 end

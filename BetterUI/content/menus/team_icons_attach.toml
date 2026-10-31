@@ -1,0 +1,34 @@
+# The team editor's icon buttons (VRFW_TeamEditor spec.icons: vrfw_team_icon, VRFW content/menus/team_icons.toml) on
+# BetterUI's compact pitch frame (soccer11_02_formation_frame_evt_fc, its layout soccer11_02_evt_fc): each instance
+# 0-2 hangs from a joint of its own under the lower synergy button's attach joint _atc_synergy02, the way the synergy
+# buttons hang from the frame. The dock panel (graft ui_clean_dock_panel, CHD.IconsPlace) places the row by writing
+# these joints, so each icon's pointer zone and cursor locator are on the icon (an instance moved with
+# CMND_SET_LAYER_LOCAL_POS keeps both at the layout's place). Translations: the panel's centre -139 and a 132.8 step
+# beside it, 292.6 under the button (the dock panel's CHD_ICONS row for 3 icons).
+schema = "VRFW.menu/2"
+
+[[layout]]
+file = "common/menu/00_soccer/soccer11/soccer11_02/soccer11_02_evt_fc.g4pkm"
+joint = "_atc_vrfw_icon01"
+parent = "_atc_synergy02"
+translate = [-271.8, -292.6]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer11/soccer11_02/soccer11_02_evt_fc.g4pkm"
+joint = "_atc_vrfw_icon02"
+parent = "_atc_synergy02"
+translate = [-139.0, -292.6]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer11/soccer11_02/soccer11_02_evt_fc.g4pkm"
+joint = "_atc_vrfw_icon03"
+parent = "_atc_synergy02"
+translate = [-6.2, -292.6]
+
+[[object_set]]
+object = "soccer11_02_formation_frame_evt_fc"
+copy = [
+    { param = "NullLayerName", match = { 3 = 1179455358, 4 = 0 }, values = { 1 = 3112134118, 2 = 3112134118, 3 = 330027688, 4 = 0 } },   # vrfw_team_icon 0 on _atc_vrfw_icon01
+    { param = "NullLayerName", match = { 3 = 1179455358, 4 = 0 }, values = { 1 = 544617564, 2 = 544617564, 3 = 330027688, 4 = 1 } },     # vrfw_team_icon 1 on _atc_vrfw_icon02
+    { param = "NullLayerName", match = { 3 = 1179455358, 4 = 0 }, values = { 1 = 1467024586, 2 = 1467024586, 3 = 330027688, 4 = 2 } },   # vrfw_team_icon 2 on _atc_vrfw_icon03
+]

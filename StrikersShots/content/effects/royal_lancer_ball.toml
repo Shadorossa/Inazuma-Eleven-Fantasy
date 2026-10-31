@@ -1,0 +1,27 @@
+# «Lancero real» (Royal Lancer, whs02890; mountain shot, cut-in ev60_02890): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's shot cut (c0060): the ball in the socket of a pale cyan lance of light, its
+# point ahead of the ball, wrapped in white spiral shells, with two long white-cyan cones and torn wind shells trailing
+# behind it, instead of the plain special-shot aura. The object is ev6028rl00 (effect/event/ev60/ev6028rl00/), built by
+# research/scripts/royal_lancer_ball_fx.py from the cut-in's effect object ev60028900: c0060 held at frame 424, ball at
+# the origin raised 0.14 m to its centre, +Z along the lance, x0.6; the lance given crossed copies (same look from the
+# touchline), the trail coming out of the kick point by distance and fading out softly at its rear.
+# Left out: the king's throne-room scene, the sun-shaped magic circle of the kick and the king's thrown lance.
+# Its flight: content\techniques\royal_lancer_trajectory.toml (level at 2.0 m).
+# The trigger copies the special-shot aura row the automatic aura used (like = "ega0085a"): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "royal_lancer"
+from = "ega0085a"
+object = "effect/event/ev60/ev6028rl00/ev6028rl00.objbin"
+
+[[shot_aura]]
+name = "royal_lancer"
+when = { techniques = ["whs02890"] }
+aura = "royal_lancer"
+like = "ega0085a"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

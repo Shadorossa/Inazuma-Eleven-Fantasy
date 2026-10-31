@@ -9,6 +9,11 @@
 --     chara    MatchUnit.Chara of the actor's unit (u32, 0 = unknown); read only with opts.chara = true
 --     opts.chara = true      also read each actor's character (one game call per actor: Match.ActorUnit)
 --     opts.empty = true      keep the records whose handle is 0 (left out by default)
+--   Actors.frame()          -> Actors.list(), Actors.base(): the list in tables of the library, filled again by each
+--                              call (valid until the next call; read only): a per-frame walk leaves no garbage
+--   Actors.field(struct, field[, base]) -> one field of the caller mod's [[VRFW.Struct]] `struct` in every record of
+--                              the table (1..count: entry.index + 1) in one read; nil when the struct / field is unknown
+--                              or not readable (`base`: the table's address when the caller has it)
 --   Actors.each([opts])     -> an iterator over Actors.list(opts): for _, a in Actors.each{ chara = true } do … end
 --   Actors.of(handle[, opts]) -> the entry of one handle (its record is index handle & 0xFF), nil when not on the table
 --   Actors.chara(address)   -> MatchUnit.Chara of the actor record at `address` (0 = unknown)
@@ -104,6 +109,70 @@ function M.list(opts)
     end
   end
   return out
+end
+
+-- Actors.frame(): the list and its entries are kept and filled again (a frame walk allocates nothing)
+local FRAME_LIST, FRAME_ENTRIES, FRAME_N = {}, {}, 0
+
+function M.frame()
+  local out = FRAME_LIST
+  for i = FRAME_N, 1, -1 do out[i] = nil end
+  FRAME_N = 0
+  local L = M.layout()
+  local base = L and M.base()
+  if base == nil then
+    return out, nil
+  end
+  local okh, handles = pcall(VRFW.mem.read_array, "u32", base + L.handle, L.count, L.stride)
+  local okt, teams = pcall(VRFW.mem.read_array, "u8", base + L.team, L.count, L.stride)
+  if not okh or type(handles) ~= "table" or not okt or type(teams) ~= "table" then
+    return out, base
+  end
+  local n = 0
+  for i = 0, L.count - 1 do
+    local handle = handles[i + 1] or 0
+    if handle ~= 0 then
+      n = n + 1
+      local a = FRAME_ENTRIES[n]
+      if a == nil then
+        a = {}
+        FRAME_ENTRIES[n] = a
+      end
+      a.index, a.address, a.handle, a.team = i, base + i * L.stride, handle, teams[i + 1] or 0xFF
+      out[n] = a
+    end
+  end
+  FRAME_N = n
+  return out, base
+end
+
+-- [struct .. "." .. field] = { at, type } (false = unknown): asked once
+local FIELDS = {}
+
+function M.field(struct, field, base)
+  local key = struct .. "." .. field
+  local f = FIELDS[key]
+  if f == nil then
+    f = false
+    if type(VRFW.mem.field_of) == "function" then
+      local ok, at, ty = pcall(VRFW.mem.field_of, struct, field)
+      if ok and type(at) == "number" and type(ty) == "string" then f = { at = at, type = ty } end
+    end
+    FIELDS[key] = f
+  end
+  if not f then
+    return nil
+  end
+  local L = M.layout()
+  base = base or (L and M.base())
+  if L == nil or base == nil then
+    return nil
+  end
+  local ok, values = pcall(VRFW.mem.read_array, f.type, base + f.at, L.count, L.stride)
+  if ok and type(values) == "table" then
+    return values
+  end
+  return nil
 end
 
 function M.each(opts)

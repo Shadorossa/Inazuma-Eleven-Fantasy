@@ -2,8 +2,10 @@
 # match with VRFW_MATCH.start (docs/framework/match-start.md). The match row is config.toml [match] game; both sides are
 # career clubs through the match engine's next-match overrides teams.user.team / teams.rival.team, at the host club's
 # home stadium (the screen passes the host as the context's rival; rival_home). Nothing of the match reaches the save
-# slot (sink); the career records the game's own result (scripts\career.lua, signal vrfw.match_result). After the
-# match the title opens again and presses the career's button (origin = its title item), so the hub comes back.
+# slot (sink); the career records the game's own result (scripts\career.lua, signal vrfw.match_result, published at the
+# match's end before the result screen). The hub is the root of its own menu scene (title row root_menu), so after the
+# match the game reopens it with the game in memory (return = "menus": no game reset, no title); the friendly closes
+# there (sink off).
 schema = "VRFW.friendly/1"
 
 [[friendly]]
@@ -13,7 +15,5 @@ team = "current"
 pre_match = true
 rival_home = true
 save = "sink"
-return = "title"
-keep_game = false
-origin = "career_mode"
+return = "menus"
 before = [{ op = "fade_encounter" }]

@@ -480,10 +480,10 @@ passive = "c05021100_rayo_de_golondrina"
 character = "c05021100"
 tags = ["striker", "speedster"]
 
-# Korin Maebayashi: Katana de crisantemo — power of his own «Espada»-family moves +10%
+# Korin Maebayashi: Katana de crisantemo — Chrysanthemum Katana and Katana Kick power +12 % in the second half
 [[VRFW.Passive]]
 name = "c05021110_katana_de_crisantemo"
-blocks = ["cs_family_legendaryweapons", "cs_techniquepower_self_10", "cs_card_c05021110"]
+blocks = ["cs_half_2", "cs_move_whs02220_whs01500", "cs_techniquepower_self_12", "cs_card_c05021110"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -704,10 +704,10 @@ passive = "c05020480_flecha_de_cupido_militar"
 character = "c05020480"
 tags = ["brain", "trickster"]
 
-# Juliet: Plasma de vanguardia — power of his own «Trueno»-family moves +10%
+# Juliet: Plasma de vanguardia — Plasma Ball power +15 % in the first third of each half
 [[VRFW.Passive]]
 name = "c05020490_plasma_de_vanguardia"
-blocks = ["cs_family_inazumapower", "cs_techniquepower_self_10", "cs_card_c05020490"]
+blocks = ["cs_clock_first_third", "cs_move_whs01970", "cs_techniquepower_self_15", "cs_card_c05020490"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1096,15 +1096,15 @@ passive = "c05028310_rafaga_incansable"
 character = "c05028310"
 tags = ["striker", "cannon"]
 
-# Navan: Nueve estrellas fugaces — power of his own «Estrella»-family moves +10%
+# Navan: Nueve dragones — power of his own «Dragon»-family moves +10%
 [[VRFW.Passive]]
-name = "c05021490_nueve_estrellas_fugaces"
-blocks = ["cs_family_eventhorizon", "cs_techniquepower_self_10", "cs_card_c05021490"]
+name = "c05021490_nueve_dragones"
+blocks = ["cs_family_dragon", "cs_techniquepower_self_10", "cs_card_c05021490"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c05021490"
-passive = "c05021490_nueve_estrellas_fugaces"
+passive = "c05021490_nueve_dragones"
 
 [[VRFW.CharacterTags]]
 character = "c05021490"
@@ -1152,10 +1152,10 @@ passive = "c05021410_primero_en_la_fila"
 character = "c05021410"
 tags = ["wall", "divine"]
 
-# Dva: Segundo aliento del tigre — power of his own «Tigre»-family moves +10%
+# Dva: Segundo aliento del tigre — his physical +5 % in the second half
 [[VRFW.Passive]]
 name = "c05021420_segundo_aliento_del_tigre"
-blocks = ["cs_family_beasts", "cs_techniquepower_self_10", "cs_card_c05021420"]
+blocks = ["cs_half_2", "cs_stat_self_physical_5", "cs_card_c05021420"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2160,10 +2160,10 @@ passive = "c05023340_confianza_en_la_locura"
 character = "c05023340"
 tags = ["brain", "beast"]
 
-# Lieva Snoshu: Aliento de la ventisca — power of his own «Hielo»-family moves +10%
+# Lieva Snoshu: Aliento de la ventisca — opponents' agility −3 % while he holds the ball
 [[VRFW.Passive]]
 name = "c05023350_aliento_de_la_ventisca"
-blocks = ["cs_family_northernice", "cs_techniquepower_self_10", "cs_card_c05023350"]
+blocks = ["cs_holds_ball", "cs_stat_opponents_agility_minus3", "cs_card_c05023350"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2342,10 +2342,10 @@ passive = "c05023470_susurro_de_la_espesura"
 character = "c05023470"
 tags = ["brain", "beast"]
 
-# Sylvester Bullet: Bala plateada — power of his own «Lobo»-family moves +10%
+# Sylvester Bullet: Bala plateada — Snowstorm Leopard power +5 % per «Bestia» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c05023480_bala_plateada"
-blocks = ["cs_family_beasts", "cs_techniquepower_self_10", "cs_card_c05023480"]
+blocks = ["cs_count_beast_team_max3", "cs_move_whs01710", "cs_techniquepower_self_5", "cs_card_c05023480"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2692,10 +2692,10 @@ passive = "c05021900_compuerta_de_oro"
 character = "c05021900"
 tags = ["striker", "cannon"]
 
-# Ough Cee: Disparo de rastrillo — power of his own «Espada»-family moves +10%
+# Ough Cee: Disparo de rastrillo — power of his own «Fire Tornado»-family moves +10%
 [[VRFW.Passive]]
 name = "c05021910_disparo_de_rastrillo"
-blocks = ["cs_family_legendaryweapons", "cs_techniquepower_self_10", "cs_card_c05021910"]
+blocks = ["cs_family_firetornado", "cs_techniquepower_self_10", "cs_card_c05021910"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2762,10 +2762,10 @@ passive = "c05021950_mina_de_la_veta"
 character = "c05021950"
 tags = ["striker", "brain"]
 
-# Ji Tenn: Ventisca de hielo — power of his own «Hielo»-family moves +10%
+# Ji Tenn: Ventisca de hielo — his shoot power +4 % per Wind-element teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c05021960_ventisca_de_hielo"
-blocks = ["cs_family_northernice", "cs_techniquepower_self_10", "cs_card_c05021960"]
+blocks = ["cs_count_wind_team_max3", "cs_techniquepower_self_shoot_4", "cs_card_c05021960"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3196,15 +3196,15 @@ passive = "c05024830_tulipan_de_acero"
 character = "c05024830"
 tags = ["wall", "beast"]
 
-# Aster: Aster de la lluvia estelar — power of his own «Estrella»-family moves +10%
+# Aster: Aster del triángulo — power of his own «Triangle Z»-family moves +10%
 [[VRFW.Passive]]
-name = "c05024900_aster_de_la_lluvia_estelar"
-blocks = ["cs_family_eventhorizon", "cs_techniquepower_self_10", "cs_card_c05024900"]
+name = "c05024900_aster_del_triangulo"
+blocks = ["cs_family_trianglez", "cs_techniquepower_self_10", "cs_card_c05024900"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c05024900"
-passive = "c05024900_aster_de_la_lluvia_estelar"
+passive = "c05024900_aster_del_triangulo"
 
 [[VRFW.CharacterTags]]
 character = "c05024900"
@@ -3616,10 +3616,10 @@ passive = "c05029840_mordedura_de_vibora"
 character = "c05029840"
 tags = ["rebel", "mystic"]
 
-# Silvain Hache: Comadreja de la ventisca — power of his own «Hielo»-family moves +10%
+# Silvain Hache: Comadreja de la ventisca — Zero Magnum power +12 % in the second half (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c05029810_comadreja_de_la_ventisca"
-blocks = ["cs_family_northernice", "cs_techniquepower_self_10", "cs_card_c05029810"]
+blocks = ["cs_half_2", "cs_move_whs01680", "cs_techniquepower_team_12", "cs_card_c05029810"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3910,10 +3910,10 @@ passive = "c05026710_ancla_de_buen_augurio"
 character = "c05026710"
 tags = ["wall", "trickster"]
 
-# Kyoko Hanabayashi: Pasión de la sirena — power of his own «Tormenta»-family moves +10%
+# Kyoko Hanabayashi: Pasión de la sirena — Flying Fish power +15 % while he holds the ball in the opponent half
 [[VRFW.Passive]]
 name = "c05026720_pasion_de_la_sirena"
-blocks = ["cs_family_whirlwinds", "cs_techniquepower_self_10", "cs_card_c05026720"]
+blocks = ["cs_holds_ball", "cs_zone_opponent_half", "cs_move_whs01640", "cs_techniquepower_self_15", "cs_card_c05026720"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4022,15 +4022,15 @@ passive = "c05026790_lealtad_del_shinsengumi"
 character = "c05026790"
 tags = ["captain", "wall"]
 
-# Victor Blade: Dinastía del filo negro — power of his own «Espada»-family moves +12%
+# Victor Blade: Dinastía de la llama negra — power of his own «Fire Tornado»-family moves +12%
 [[VRFW.Passive]]
-name = "c05029410_dinastia_del_filo_negro"
-blocks = ["cs_family_legendaryweapons", "cs_techniquepower_self_12", "cs_card_c05029410"]
+name = "c05029410_dinastia_de_la_llama_negra"
+blocks = ["cs_family_firetornado", "cs_techniquepower_self_12", "cs_card_c05029410"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c05029410"
-passive = "c05029410_dinastia_del_filo_negro"
+passive = "c05029410_dinastia_de_la_llama_negra"
 
 [[VRFW.CharacterTags]]
 character = "c05029410"

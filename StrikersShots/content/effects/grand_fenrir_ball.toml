@@ -1,0 +1,27 @@
+# «Gran lobo» (Grand Fenrir, whs01060; forest shot, cut-in ev60_01060): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0400): the ball inside its white glowing head, the purple flame
+# cone flaring back from it, the pink core line streaming behind, the four pink-white ribbons twisting round the line
+# and the purple wind arcs swirling round the head, instead of the plain forest special-shot aura. The object is
+# ev6010gf00 (effect/event/ev60/ev6010gf00/), built by research/scripts/grand_fenrir_ball_fx.py from the cut-in's
+# effect object ev60010600 at c0400 frame 404: ball at the origin, +Z along the flight, raised 0.14 m to the ball's
+# centre; head, cone and trail coming out of the kick point, the line's and ribbons' rear ends fading out softly.
+# Left out: the shock disc the ball bursts through, the space backdrop and speed lines, mountains, rocks, smoke and the
+# kickers' jump effects. Its flight: content\techniques\grand_fenrir_trajectory.toml (level at 2.0 m).
+# The trigger copies the forest special-shot aura's row (like = "ega0075d"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "grand_fenrir"
+from = "ega0075d"
+object = "effect/event/ev60/ev6010gf00/ev6010gf00.objbin"
+
+[[shot_aura]]
+name = "grand_fenrir"
+when = { techniques = ["whs01060"] }
+aura = "grand_fenrir"
+like = "ega0075d"
+# head, cone and trail come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's reveal step; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

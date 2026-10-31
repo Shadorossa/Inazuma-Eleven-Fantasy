@@ -1,0 +1,40 @@
+# «Carga al galope» (Destrier Charge, whs01910; mountain shot, cut-in ev60_01910): while the ball flies to the goal
+# after the cut-in it keeps the look of the cut-in's last cut (c0300), in two effects:
+# * destrier_charge (object ev6191dc00, `aura`): on the ball the white-blue spiky star (pulsing as in the cut-in, round
+#   from every side) with the two spinning white-blue spike cones trailing ~10 m behind it, the cyan-blue cone of light
+#   rays converging on the ball from the kick point, and the white wind rings the ball leaves behind, each staying
+#   where it was sent out, growing and fading;
+# * destrier_charge_spirit (object ev6191dk00, `ground_effect`): the cut-in's keshin, the armoured giant with its lance
+#   and shield, charging toward the goal as in the cut-in (leaning forward, the lance held out) with a galloping sway,
+#   at its own size with its cut-in shading, behind the kicker (the lance's tip 2 m behind the kick point); it fades
+#   out 3.5-4 s after the kick.
+# The ball sits in the middle of the star (the aura raised 0.14 m: the match ball's centre over the aura's origin).
+# Built by research/scripts/destrier_charge_ball_fx.py from the cut-in's effect object ev60019100 and the keshin
+# k000190. Its flight: content\techniques\destrier_charge_trajectory.toml (level, 1.4 m up).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "destrier_charge"
+from = "ega0075a"
+object = "effect/event/ev60/ev6191dc00/ev6191dc00.objbin"
+
+[[effect]]
+name = "destrier_charge_spirit"
+from = "ega0021"
+object = "effect/event/ev60/ev6191dk00/ev6191dk00.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "destrier_charge"
+when = { techniques = ["whs01910"] }
+aura = "destrier_charge"
+like = "ega0075a"
+# the cones, the ray cone and the rings come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "destrier_charge_spirit" }

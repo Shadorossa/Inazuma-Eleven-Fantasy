@@ -202,11 +202,11 @@ function CmPages.GhostAsk(i)
     return
   end
   funcLuaCommand(C.SE, SE_DECIDE)
-  funcLuaCommand(C.P_SET, 4261573565 --[[vrfw_window_yes_text]], 0, T.GO, 1)
-  funcLuaCommand(C.P_SET, 1121728934 --[[vrfw_window_no_text]], 0, T.CLOSE, 1)
+  VRFW_Param.Set(4261573565 --[[vrfw_window_yes_text]], T.GO)
+  VRFW_Param.Set(1121728934 --[[vrfw_window_no_text]], T.CLOSE)
   local go = Ask(text)
-  funcLuaCommand(C.P_CLEAR, 4261573565)
-  funcLuaCommand(C.P_CLEAR, 1121728934)
+  VRFW_Param.Clear(4261573565)
+  VRFW_Param.Clear(1121728934)
   if not go then
     return
   end

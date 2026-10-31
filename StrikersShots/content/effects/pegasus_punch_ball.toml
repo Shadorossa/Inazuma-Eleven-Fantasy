@@ -3,7 +3,7 @@
 # and sparks, trailing the long aura cone and the two ribbons, shedding the wind rings and sparks along its way, instead
 # of the plain wind special-shot aura (ega0075b).
 # The object is ev6182pp00 (effect/event/ev60/ev6182pp00/), built by research/scripts/pegasus_punch_ball_fx.py from the
-# cut-in's effect object ev60018200: c0400 replayed from its first frame (406), then held at frame 464, ball at the
+# cut-in's effect object ev60018200: c0400 held at frame 464 (the cut's end) from the first frame, ball at the
 # origin flying +Z, x1. Nothing else is alive in c0400. docs/game/media/pegasus-punch-ball-fx.md.
 # The trigger copies the wind special-shot aura's row (like = "ega0075b"): CB_SkillShootBallAura turns +Z along the
 # ball's velocity every frame (aura-balon-tiro.md §2b). Its flight: content\techniques\pegasus_punch_trajectory.toml.
@@ -21,5 +21,7 @@ name = "pegasus_punch"
 when = { techniques = ["whs01820"] }
 aura = "pegasus_punch"
 like = "ega0075b"
-# the aura's replay (58 effect frames to the end-of-shot look) stretched to the real flight (docs/framework/effect.md §6 «Fit to the flight»)
-fit = { replay = 58 }
+# the cone, ribbons, shed rings and sparks come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

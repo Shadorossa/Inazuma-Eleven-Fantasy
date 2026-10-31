@@ -1,11 +1,91 @@
-# Pachangas (module of Football Reforged): the Team Dock list («Plantilla de equipo», soccer_team_dock_menu) gets a
-# LEFT row. The retail list has none (only up / down / right); the graft pachanga_dock reads it in OnFunction
-# (pachangas_dock_left) to move from the «Pachanga» cell to the «Partido» cell of the list's first row
-# (docs/game/ui/pachanga-templates.md §18). On every other row it does nothing, as before.
+# Pachangas (module of Football Reforged): the Team Dock list («Plantilla de equipo», soccer_team_dock_menu) as used by
+# the format columns of graft pachanga_dock (docs/game/ui/pachanga-templates.md §18).
 schema = "VRFW.menu/2"
 
+# The list gets a LEFT row. The retail list has none (only up / down / right); the graft reads it in OnFunction
+# (pachangas_dock_left) to move from the «Pachanga» cell to the «Partido» cell of the list's first row. On every other
+# row it does nothing, as before.
 [[patch]]
 menu = "soccer_team_dock_menu"
 add_cmd = [
     { layer = "team01_02_list_item", input = "CMD_LEFT", command = "CMD_FUNCTION", arg = "pachangas_dock_left", flag = 1 },
+]
+
+# One slot joint per list row that no animation drives. The rows hang from _atc_list01 .. _atc_list09 of the locator
+# layout, and its «Open» animation keys those joints every frame (slide in, then the _smt_default_01 loop), so a node
+# write on them never shows. Each new joint is a child of its _atc_listNN at (0, 0): the rows still slide in with the
+# game's animation and sit where they always did, and the graft moves the new joints for the columns.
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot01"
+parent = "_atc_list01"
+translate = [0.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot02"
+parent = "_atc_list02"
+translate = [0.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot03"
+parent = "_atc_list03"
+translate = [0.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot04"
+parent = "_atc_list04"
+translate = [0.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot05"
+parent = "_atc_list05"
+translate = [0.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot06"
+parent = "_atc_list06"
+translate = [0.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot07"
+parent = "_atc_list07"
+translate = [0.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot08"
+parent = "_atc_list08"
+translate = [0.0, 0.0]
+
+[[layout]]
+file = "common/menu/102_team/team01/team01_01/team01_01.g4pkm"
+joint = "_atc_pachangas_slot09"
+parent = "_atc_list09"
+translate = [0.0, 0.0]
+
+# The locator's attach rows NullLayerName [name, joint, layer, instance] (layer team01_02_list_item = crc32 3367997069)
+# put list instance i on _atc_pachangas_slot<i + 1> instead of _atc_list<i + 1> (values: crc32 of the joint names).
+# The retail object places instances 0 .. 7; the copied row places instance 8 on slot 9 for a list of 9 rows
+# (Home Stadium without BetterUI), so the framework's attach_slots finds every instance placed.
+[[object_set]]
+object = "team01_01_list_item_locator"
+set = [
+    { param = "NullLayerName", match = { 2 = 3618404533, 3 = 3367997069 }, values = { 2 = 964938275 } },   # _atc_list01 -> _atc_pachangas_slot01
+    { param = "NullLayerName", match = { 2 = 1319446799, 3 = 3367997069 }, values = { 2 = 2693438361 } },  # _atc_list02 -> _atc_pachangas_slot02
+    { param = "NullLayerName", match = { 2 = 966924697, 3 = 3367997069 }, values = { 2 = 3616385807 } },   # _atc_list03 -> _atc_pachangas_slot03
+    { param = "NullLayerName", match = { 2 = 2814807098, 3 = 3367997069 }, values = { 2 = 1240022700 } },  # _atc_list04 -> _atc_pachangas_slot04
+    { param = "NullLayerName", match = { 2 = 3502357676, 3 = 3367997069 }, values = { 2 = 1055788602 } },  # _atc_list05 -> _atc_pachangas_slot05
+    { param = "NullLayerName", match = { 2 = 1237904662, 3 = 3367997069 }, values = { 2 = 2816958336 } },  # _atc_list06 -> _atc_pachangas_slot06
+    { param = "NullLayerName", match = { 2 = 1053810048, 3 = 3367997069 }, values = { 2 = 3504369430 } },  # _atc_list07 -> _atc_pachangas_slot07
+    { param = "NullLayerName", match = { 2 = 2926624785, 3 = 3367997069 }, values = { 2 = 1079997063 } },  # _atc_list08 -> _atc_pachangas_slot08
+]
+copy = [
+    # name pachangas_slot09, joint _atc_pachangas_slot09, instance 8
+    { param = "NullLayerName", match = { 3 = 3367997069, 4 = 7 }, values = { 1 = 871014685, 2 = 928530961, 4 = 8 } },
 ]

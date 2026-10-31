@@ -1,0 +1,71 @@
+# The second bench column of the team screens (docs/framework/team-editor.md «Two bench columns»; Lua
+# assets/lua/menu/_all/81_team_editor_bench_columns.lua). The team's reserve positions 20-24 get cards: the pitch frame's bench
+# rows (card and empty slot, instances 11-15 on _pos_sub_atc01..05) copied for instances 20-24 on five new joints
+# _pos_sub2_atc01..05, one column right of the bench; the dock and the lineup screen create 25 cards (0-18 as retail,
+# 19 unused, 20-24 the second column). A screen whose caller asks for no second column hides instances 19-24.
+schema = "VRFW.menu/2"
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+layer = "team00_01_chara_card_for_soccer"
+count = 25
+
+[[patch]]
+menu = "soccer_team_dock_menu"
+layer = "team00_01_p1_chara_card_blank"
+count = 25
+
+[[patch]]
+menu = "soccer_formation_menu"
+layer = "team00_01_chara_card_for_soccer"
+count = 25
+
+[[patch]]
+menu = "soccer_formation_menu"
+layer = "team00_01_p1_chara_card_blank"
+count = 25
+
+[[layout]]
+file = "common/menu/00_soccer/soccer11/soccer11_02/soccer11_02.g4pkm"
+joint = "_pos_sub2_atc01"
+parent = "_pos_sub01"
+translate = [116.0, 0.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer11/soccer11_02/soccer11_02.g4pkm"
+joint = "_pos_sub2_atc02"
+parent = "_pos_sub01"
+translate = [116.0, -100.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer11/soccer11_02/soccer11_02.g4pkm"
+joint = "_pos_sub2_atc03"
+parent = "_pos_sub01"
+translate = [116.0, -200.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer11/soccer11_02/soccer11_02.g4pkm"
+joint = "_pos_sub2_atc04"
+parent = "_pos_sub01"
+translate = [116.0, -300.0]
+
+[[layout]]
+file = "common/menu/00_soccer/soccer11/soccer11_02/soccer11_02.g4pkm"
+joint = "_pos_sub2_atc05"
+parent = "_pos_sub01"
+translate = [116.0, -400.0]
+
+[[object_set]]
+object = "soccer11_02_formation_frame"
+copy = [
+    { param = "NullLayerName", match = { 3 = 1973487846, 4 = 11 }, values = { 1 = 2652682047, 2 = 85645720, 4 = 20 } },   # chara_card_sub2_01 on _pos_sub2_atc01, instance 20
+    { param = "NullLayerName", match = { 3 = 1973487846, 4 = 12 }, values = { 1 = 118875781, 2 = 2618525730, 4 = 21 } },   # chara_card_sub2_02 on _pos_sub2_atc02, instance 21
+    { param = "NullLayerName", match = { 3 = 1973487846, 4 = 13 }, values = { 1 = 1880282643, 2 = 3944003764, 4 = 22 } },   # chara_card_sub2_03 on _pos_sub2_atc03, instance 22
+    { param = "NullLayerName", match = { 3 = 1973487846, 4 = 14 }, values = { 1 = 4000727984, 2 = 1970285847, 4 = 23 } },   # chara_card_sub2_04 on _pos_sub2_atc04, instance 23
+    { param = "NullLayerName", match = { 3 = 1973487846, 4 = 15 }, values = { 1 = 2574349094, 2 = 41360769, 4 = 24 } },   # chara_card_sub2_05 on _pos_sub2_atc05, instance 24
+    { param = "NullLayerName", match = { 3 = 3571911991, 4 = 11 }, values = { 1 = 1801749855, 2 = 85645720, 4 = 20 } },   # chara_card_blank_sub2_01
+    { param = "NullLayerName", match = { 3 = 3571911991, 4 = 12 }, values = { 1 = 4067284197, 2 = 2618525730, 4 = 21 } },   # chara_card_blank_sub2_02
+    { param = "NullLayerName", match = { 3 = 3571911991, 4 = 13 }, values = { 1 = 2238375027, 2 = 3944003764, 4 = 22 } },   # chara_card_blank_sub2_03
+    { param = "NullLayerName", match = { 3 = 3571911991, 4 = 14 }, values = { 1 = 453931472, 2 = 1970285847, 4 = 23 } },   # chara_card_blank_sub2_04
+    { param = "NullLayerName", match = { 3 = 3571911991, 4 = 15 }, values = { 1 = 1812545862, 2 = 41360769, 4 = 24 } },   # chara_card_blank_sub2_05
+]

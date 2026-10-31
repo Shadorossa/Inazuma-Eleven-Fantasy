@@ -1,0 +1,39 @@
+# «Tiro sombrío» (Shadow Kick, whs02390; fire shot, cut-in ev60_02390): while the ball flies to the goal after the
+# cut-in it keeps the look of the cut-in's last cut (c0400), in two effects:
+# * shadow_kick (object ev6239sk00, `aura`): round the ball the black-purple flame cone with its flowing texture and
+#   the red lightning crackling round it, and the black-red beam out of the kick point (never stretched, its far end
+#   fading);
+# * shadow_kick_spirit (object ev6239sk01, `ground_effect`): the cut-in's keshin «Sombra de plasma» (k000720) behind
+#   the kicker, at its own size with its cut-in shading, striking toward the goal once as in the cut-in, easing back to
+#   its start pose once and then holding still (its front 2 m behind the kick point); it fades out 3.5-4 s after the
+#   kick.
+# The ball sits in the middle of the flame cone (the aura raised 0.14 m: the match ball's centre over the aura's origin).
+# Built by research/scripts/shadow_kick_ball_fx.py from the cut-in's effect object ev60023900 and the keshin k000720.
+# Its flight: content\techniques\shadow_kick_trajectory.toml (level).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"): CB_SkillShootBallAura turns +Z along the
+# ball's velocity every frame (aura-balon-tiro.md §2b).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own
+# cut-in effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "shadow_kick"
+from = "ega0075c"
+object = "effect/event/ev60/ev6239sk00/ev6239sk00.objbin"
+
+[[effect]]
+name = "shadow_kick_spirit"
+from = "ega0021"
+object = "effect/event/ev60/ev6239sk01/ev6239sk01.objbin"
+clips = { in = "in", loop = "loop", out = "out" }
+
+[[shot_aura]]
+name = "shadow_kick"
+when = { techniques = ["whs02390"] }
+aura = "shadow_kick"
+like = "ega0075c"
+# the flame cone, the lightning and the beam come out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75
+ground_effect = { effect = "shadow_kick_spirit" }

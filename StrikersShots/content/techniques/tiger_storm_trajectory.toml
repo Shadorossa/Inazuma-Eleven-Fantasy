@@ -1,0 +1,13 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiger Storm (whs01020 and whs01020_or, same cut-in ev60_01020).
+#
+# Measured: the event ball of ev60_01020 c0500 flies dead level ~9.5 m up (10.09 m at the cut's first frame, then
+# 9.52-9.57 m over 58 m). Flight (owner's rule 2026-10-24: every aura shot a straight level line, at most 3 m): one
+# straight level line from the kick point to the goal, the ball centre at 3.0 m the whole way (the flame band widens to
+# ~3 m below the flight at its far end). unblockable = false: the game's block rules (this mod changes no block rule).
+# Heights are the ball centre over the pitch (m); the height is held.
+
+# Tiger Storm (whs01020; whs01020_or follows the base move's rule).
+[[edit]]
+target = "whs01020"
+trajectory = { points = [[0.0, 3.0]], straight = true, unblockable = false }

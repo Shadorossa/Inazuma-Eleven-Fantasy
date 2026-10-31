@@ -32,3 +32,5 @@ slot = 65
 args = ["ptr", "ptr", "u32", "u8"]
 ret = "u64"
 apply = "script"
+# only a forced refill reaches the script (an unforced one is left as the game does it)
+pre_when = { value = "mask(args[4], 0xFF)", not = 0 }

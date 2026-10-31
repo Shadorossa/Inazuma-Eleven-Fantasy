@@ -166,7 +166,7 @@ do
     ARMED = 1206374040,               -- _gtxt_cmd_armed01
     SUB = 559600405,                  -- _icon_sp_sub_dmy01 (the property badge)
     AT_DMY = 365666709,               -- _num_at_cmd_dmy01
-    VRFW_TEXT_GET = 459261927,
+    TEXT_BY_KEY = 459261927,
     -- the card's type badge («Tiro»): the retail pill sprite (area_base01..04, rounded ends) swapped on this card only
     -- for the mod's square-ended twin of the same colour (images/menu/102_team/team02/team02_02/family_badge.toml)
     TX_BADGES = 715273984,            -- #/menu/102_team/team02/evt_skc_badges/evt_skc_badges.g4tx (this mod's own atlas)
@@ -527,7 +527,7 @@ do
         end
       end
       if s == "" then
-        local okv, t = pcall(funcLuaCommand, SKC.VRFW_TEXT_GET, fam.text)
+        local okv, t = pcall(funcLuaCommand, SKC.TEXT_BY_KEY, fam.text)
         if okv and type(t) == "string" then
           s = t
         end

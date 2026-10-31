@@ -1,0 +1,10 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Tiro sombrío (Shadow Kick, whs02390, cut-in ev60_02390): one straight level line
+# from the kick point to the goal, the ball centre at 1.2 m the whole way (the black-red beam round the ball's way,
+# ~0.9 m across its centre line, clears the grass). Heights are the ball centre over the pitch (m); the height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Tiro sombrío (whs02390).
+[[edit]]
+target = "whs02390"
+trajectory = { points = [[0.0, 1.2]], straight = true, unblockable = false }

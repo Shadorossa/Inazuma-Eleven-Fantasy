@@ -1,0 +1,28 @@
+# «Tiro supermasivo» (Supermassive Shot, whs02100 and whs02100_mm, same cut-in; mountain counter shot, cut-in
+# ev60_02100): while the ball flies to the goal it wears the cut-in's last shot (c0400, the ball ploughing level along
+# the pitch as a ~9 m black hole sphere), held from the aura's first frame: the black sphere with its red and black
+# core (round from every side) and the red waves swirling inside it, its haze, speed lines and purple lightning, the
+# black rocks with their red glows orbiting it, the ground bank and chunks it pushes ahead; the dust walls and dust
+# waves it drags come out of the kick point as the ball moves away (revealed by distance, never stretched), their rear
+# end one smooth ramp from the kick point and their far end fading out. Texture flow in whole periods over the loop.
+# x1.
+# The object is ev6210sm00 (effect/event/ev60/ev6210sm00/), built by research/scripts/supermassive_shot_ball_fx.py
+# from ev60021000 (docs/game/media/supermassive-shot-ball-fx.md).
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the mountain special-shot aura's row (like = "ega0075a"). Flight:
+# content\techniques\supermassive_shot_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "supermassive_shot"
+from = "ega0075a"
+object = "effect/event/ev60/ev6210sm00/ev6210sm00.objbin"
+
+[[shot_aura]]
+name = "supermassive_shot"
+when = { techniques = ["whs02100", "whs02100_mm"] }
+aura = "supermassive_shot"
+like = "ega0075a"
+anchor = "kick"
+drift = 0.75

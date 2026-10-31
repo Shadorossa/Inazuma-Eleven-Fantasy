@@ -104,6 +104,34 @@ name = "CMND_VRFW_TEAM_STAND_IN_RESTORE"
 handler = "TeamLineup.StandInRestore"
 needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember"]
 
+# (slot team id, formation id) -> true | false, why: the slot team, standing in for a team, plays that formation (in
+# memory; CMND_VRFW_TEAM_STAND_IN_RESTORE puts its own back)
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_STAND_IN_FORMATION"
+handler = "TeamLineup.StandInFormation"
+needs = ["RandomTeamRecord"]
+
+# (slot team id, kit, emblem, coach card) -> true | false, why: the slot team, standing in for a team, wears that kit,
+# shows that crest and has that coach (0 = the source's; in memory, undone by CMND_VRFW_TEAM_STAND_IN_RESTORE)
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_STAND_IN_LOOK"
+handler = "TeamLineup.StandInLook"
+needs = ["RandomTeamRecord", "RandomTeamMember"]
+
+# (team id, base level (0 = the team record's), level…) -> true, rows | false, why: the member rows in roster slots 0..
+# play at those levels in the team's next matches (offset = level - base; 0 = the row's own offset; no level = every
+# row's own back; in memory, never saved): a career mode's players at their career levels
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_MEMBER_LEVELS"
+handler = "TeamLineup.MemberLevels"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamMember", "RandomTeamConfig"]
+
+# (team id) -> true, level, formation, kit, emblem, coach card (0 = none) | false, why: the team's record in memory
+[[VRFW.Command]]
+name = "CMND_VRFW_TEAM_LOOK"
+handler = "TeamLineup.Look"
+needs = ["RandomTeamFind", "RandomTeamRecord", "RandomTeamConfig"]
+
 # (team id, roster slot) -> true, move1..move6, level1..level6 of that member row's loadout as the match plays it (auras
 # included; 0 = empty) | false, why: the player page previewing a team member shows the member's own set
 [[VRFW.Command]]

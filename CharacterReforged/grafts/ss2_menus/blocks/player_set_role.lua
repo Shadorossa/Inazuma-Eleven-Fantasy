@@ -1483,8 +1483,8 @@ end
 -- ---- wrappers ---------------------------------------------------------------------------------------------------
 PL.PrevInit2 = OnInit
 function OnInit()
-  if funcLuaCommand(C.P_HAS, 813466851) then       -- formation id (team dock; kept for the six-sense menu)
-    PL.formation = funcLuaCommand(C.P_GET, 813466851)
+  if VRFW_Param.Has(813466851) then       -- formation id (team dock; kept for the six-sense menu)
+    PL.formation = VRFW_Param.Get(813466851)
   end
   PL.PrevInit2()
 end

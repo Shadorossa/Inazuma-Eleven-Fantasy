@@ -1,0 +1,34 @@
+# Model cards (docs/framework/model-card.md): defaults of the VRFW_ModelCard service. Read by scripts\model_card.lua
+# and sent with each clip answer to the game Lua side (assets\lua\menu\_all\91_model_card.lua).
+
+[clips]
+# the pack every menu model has loaded: its clips play without loading a pack onto the model
+base_pack = "p010"
+# the clip that ends every clip list ("pack:clip"): the stand every menu model plays
+stand = "p010:立ち1L"
+
+# The model camera of the object vrfw_model_card (the retail shop list base: eye (0, eye_y, eye_z) looking at
+# (0, look_y, 0), vertical field of view 20 degrees on a 1920 x 1080 menu): px_per_m_at_1m = 540 / tan(10 degrees).
+[camera]
+eye_y = 2.25
+eye_z = 12.5
+look_y = 1.6
+px_per_m_at_1m = 3060
+# the height a player is framed with (m): a box's model height in px is shown for a player this tall
+player_height = 1.7
+# the model's turn (degrees around the vertical axis; negative = towards the screen's left)
+turn = -15
+# frames a loaded pack is given before its clip plays
+pack_frames = 6
+
+# A card asked with fit = true: its box is the rectangle the whole model must stay inside. The model is sized so this
+# envelope (around the feet point, any player: tall bodies, big hair, the arms of the stand turned by [camera] turn)
+# fills the box minus margin_px on each side, its feet margin_px + below_m over the box's bottom edge.
+[fit]
+# height above the feet (m): the tallest model with its hair
+top_m = 2.1
+# depth of the soles under the feet point (m)
+below_m = 0.03
+# width (m): shoulders, arms and wide hair, turned
+width_m = 1.1
+margin_px = 6

@@ -167,10 +167,16 @@ local function record(hdl)
   return nil
 end
 
-local function item_of(inv)
+-- `cache` (optional): inventory handle -> item, shared by the cards of one sweep (one inventory record serves every card
+-- that equips that item)
+local function item_of(inv, cache)
   if not inv or inv == 0 then return 0 end
+  local known = cache and cache[inv]
+  if known then return known end
   local ok, item = pcall(VRFW.item.of_inv, inv)
-  return ok and u32(item or 0) or 0
+  item = ok and u32(item or 0) or 0
+  if cache then cache[inv] = item end
+  return item
 end
 
 -- the items on the card's board slots 0..8 (placed, else native)
@@ -190,6 +196,26 @@ local function list(addr)
     out[k] = u32(rd("u32", addr + REC_LIST + k * LIST_ENTRY) or 0)
   end
   return out
+end
+
+-- the technique list and the board of a record in one guarded read (record +0x50 .. the end of the native board);
+-- the per-field reads above when that region is not readable
+local RECORD_WORDS = math.floor((REC_NATIVE + BOARD_SLOTS * 4 - REC_LIST) / 4)
+local PLACED_WORD, NATIVE_WORD = math.floor((REC_PLACED - REC_LIST) / 4), math.floor((REC_NATIVE - REC_LIST) / 4)
+local LIST_ENTRY_WORDS = math.floor(LIST_ENTRY / 4)
+local function list_and_board(addr, inv_items)
+  local ok, w = pcall(VRFW.mem.read_array, "u32", addr + REC_LIST, RECORD_WORDS, 4)
+  if not ok or type(w) ~= "table" or #w ~= RECORD_WORDS then return list(addr), board(addr) end
+  local l, b = {}, {}
+  for k = 0, LIST_SLOTS - 1 do
+    l[k] = u32(w[k * LIST_ENTRY_WORDS + 1] or 0)
+  end
+  for s = 0, BOARD_SLOTS - 1 do
+    local inv = u32(w[PLACED_WORD + s + 1] or 0)
+    if inv == 0 then inv = u32(w[NATIVE_WORD + s + 1] or 0) end
+    b[s] = item_of(inv, inv_items)
+  end
+  return l, b
 end
 
 local OWNED_MAX_AGE_MS = 6000
@@ -223,8 +249,9 @@ end
 -- first Mix-Max / «Modo cambio» of the list (list order), else (none in the list) the first of his board. Every other
 -- aura of the list is hidden (kept where it is in the save).
 local AURA_FROM_BOARD_SLOT, MIX_FROM_STORE, MIX_FROM_BOARD = 8, 100, 200
-local function project_with_board(hdl, addr)
-  local l, b = list(addr), board(addr)
+-- `stored` (optional): the card's stored mix when the caller holds the store; `inv_items`: the sweep's item cache
+local function project_with_board(hdl, addr, stored, inv_items)
+  local l, b = list_and_board(addr, inv_items)
   local out = { techniques = {}, rows = {}, aura = 0, mix = 0, aura_from = -1, mix_from = -1, hidden = {} }
   local empty = {}
   for k = 0, LIST_SLOTS - 1 do
@@ -244,7 +271,7 @@ local function project_with_board(hdl, addr)
   if b[8] ~= 0 and (own == "aura" or own == "armour") then
     out.aura, out.aura_from = b[8], AURA_FROM_BOARD_SLOT
   end
-  local m = CharacterReforged.MixStored and CharacterReforged.MixStored(hdl) or 0   -- the stored mix (the mix store below)
+  local m = stored or (CharacterReforged.MixStored and CharacterReforged.MixStored(hdl)) or 0   -- the stored mix (the mix store below)
   if m ~= 0 then out.mix, out.mix_from = m, MIX_FROM_STORE end
   for k = 0, LIST_SLOTS - 1 do
     local x = l[k]
@@ -524,7 +551,7 @@ local function sweep_start(on, report_why)
   SWEEP.running, SWEEP.dirty = true, false
   SWEEP.on, SWEEP.report_why = on, report_why
   SWEEP.cards, SWEEP.next_card = cards, 1
-  SWEEP.mix_rows, SWEEP.context_rows = {}, {}
+  SWEEP.mix_rows, SWEEP.context_rows, SWEEP.inv_items, SWEEP.touched = {}, {}, {}, {}
   SWEEP.stored, SWEEP.projected = 0, 0
   SWEEP.with_aura, SWEEP.with_mix = 0, 0
   SWEEP.report_players, SWEEP.report_examples, SWEEP.report_hidden = 0, {}, 0
@@ -571,8 +598,9 @@ end
 local REPORT_EXAMPLES = 3
 
 local function sweep_card(st, c)
-  local p, b = project_with_board(c.hdl, c.addr)
-  if not st.mix[key(c.hdl)] and p.mix ~= 0 then
+  local stored = st.mix[key(c.hdl)]
+  local p, b = project_with_board(c.hdl, c.addr, stored or 0, SWEEP.inv_items)
+  if not stored and p.mix ~= 0 then
     SWEEP.mix_rows[#SWEEP.mix_rows + 1] = { c.hdl, p.mix }
     SWEEP.projected = SWEEP.projected + 1
   end
@@ -600,6 +628,11 @@ local function sweep_finish()
   if not okm then warn("MixSlot not written: " .. tostring(em)) end
   local okc, ec = pcall(VRFW.native.table_replace, CONTEXT, nil, SWEEP.context_rows)
   if not okc then warn("form context not written: " .. tostring(ec)) end
+  -- the cards published while the sweep ran keep their newer rows
+  for card, t in pairs(SWEEP.touched or {}) do
+    pcall(VRFW.native.table_set, CONTEXT, card, t.row)
+    if t.mix ~= 0 then pcall(VRFW.native.table_set, TABLE, card, t.mix) end
+  end
   if not CONTEXT_LOG.logged or CONTEXT_LOG.on ~= SWEEP.on then
     CONTEXT_LOG.logged, CONTEXT_LOG.on = true, SWEEP.on
     info(string.format("form context (%s view): %d owned card(s), %d with an aura, %d with a mix (table %s, read by the form viewer); MixSlot: %d stored, %d projected",
@@ -610,7 +643,7 @@ local function sweep_finish()
     info(string.format("projection (%s): %d player(s) with entries hidden in the new set (%d in all, kept in their lists); first: %s",
       SWEEP.report_why, SWEEP.report_players, SWEEP.report_hidden, table.concat(SWEEP.report_examples, "; ")))
   end
-  SWEEP.cards, SWEEP.mix_rows, SWEEP.context_rows = nil, nil, nil
+  SWEEP.cards, SWEEP.mix_rows, SWEEP.context_rows, SWEEP.inv_items, SWEEP.touched = nil, nil, nil, nil, nil
 end
 
 -- one card's rows at once (the card a menu shows: the skill table, the player page, the dock card ask for its
@@ -631,15 +664,12 @@ function CharacterReforged.PublishCardRows(card, p)
   end
   local row = context_row({ hdl = card, param = u32(r.param or 0) }, p, board(r.addr), on)
   pcall(VRFW.native.table_set, CONTEXT, card, row)
-  -- a running sweep may have read this card before the edit: one more sweep follows it
-  if SWEEP.running then SWEEP.dirty = true end
   local st = load()
   local stored = st.mix[key(card)] or 0
-  if stored ~= 0 then
-    pcall(VRFW.native.table_set, TABLE, card, stored)
-  elseif p.mix ~= 0 then
-    pcall(VRFW.native.table_set, TABLE, card, p.mix)
-  end
+  local mix = stored ~= 0 and stored or (p.mix or 0)
+  if mix ~= 0 then pcall(VRFW.native.table_set, TABLE, card, mix) end
+  -- a running sweep may have read this card before: its end writes this card's rows again (no new whole sweep)
+  if SWEEP.running and SWEEP.touched then SWEEP.touched[card] = { row = row, mix = mix } end
 end
 
 -- THE EFFECTIVE SKILL SET (the VR-Framework's skill set service, VRFW.skill_set): every reader of a player's equipped
@@ -648,6 +678,23 @@ end
 -- aura move, else his moveset default; mix slot = the stored / projected mix, else his moveset default; techniques =
 -- the 6 rows in table order, an empty list position taking the board slot of the same position when it holds a special
 -- move not already listed, as the match's list_board_fill; filled rows first, empty rows last). Victory Road: nil (the retail data).
+-- An empty board slot takes the learn list move of the same slot once its level is reached (board slots 3-5 open only
+-- through the retail board screen, which is gone).
+
+-- the card's learn list moves whose level the player has reached: { [slot 1-9] = move }
+local function learned_moves(hdl, param)
+  local out = {}
+  local okl, set = pcall(VRFW.learn.learnset, param)
+  if not okl or type(set) ~= "table" then return out end
+  local oko, _, level = pcall(VRFW.learn.of, hdl)
+  level = oko and tonumber(level) or 0
+  for k, e in ipairs(set) do
+    local m, need = u32(e.move or 0), tonumber(e.level) or 0
+    if m ~= 0 and (need <= 1 or level >= need) then out[k] = m end
+  end
+  return out
+end
+
 function CharacterReforged.EffectiveSkillSet(card)
   if not CharacterReforged.SkillSetOnNow() then return nil end
   card = u32(card or 0)
@@ -665,10 +712,15 @@ function CharacterReforged.EffectiveSkillSet(card)
     if x ~= 0 then listed[x] = true end
   end
   local filled, empty = {}, {}
+  local learn = nil
   for i, x in ipairs(p.techniques) do
     local pos = p.rows[i]
     if x == 0 and pos and pos >= 0 then
       local m = b[pos] or 0
+      if m == 0 then
+        learn = learn or learned_moves(card, u32(r.param or 0))
+        m = learn[pos + 1] or 0
+      end
       if m ~= 0 and aura_type(m) == nil and not listed[m] then
         x = m
         listed[m] = true
@@ -711,17 +763,30 @@ end
 
 -- ---------------------------------------------------------------------------------------------- branch rule
 
--- every owned card's board on branch 1 -> switched, total
-local function force_branch1()
-  local cards = owned()
-  local n = 0
-  for _, c in ipairs(cards) do
+-- every owned card's board on branch 1, BRANCH_CARDS_PER_STEP cards per step (a long save holds thousands of cards):
+-- true when the pass has finished; BRANCH.switched / BRANCH.total then hold its counts
+local BRANCH_CARDS_PER_STEP = 500
+local BRANCH = { cards = nil, next_card = 1, switched = 0, total = 0 }
+local function branch_start()
+  BRANCH.cards, BRANCH.next_card, BRANCH.switched = owned(), 1, 0
+  BRANCH.total = #BRANCH.cards
+end
+local function branch_step()
+  local cards = BRANCH.cards or {}
+  local last = math.min(#cards, BRANCH.next_card + BRANCH_CARDS_PER_STEP - 1)
+  for i = BRANCH.next_card, last do
+    local c = cards[i]
     local r = rd("u32", c.addr + REC_ROUTE)
     if r ~= nil and r ~= 0 then
-      if pcall(VRFW.mem.write, "u32", c.addr + REC_ROUTE, 0) then n = n + 1 end
+      if pcall(VRFW.mem.write, "u32", c.addr + REC_ROUTE, 0) then BRANCH.switched = BRANCH.switched + 1 end
     end
   end
-  return n, #cards
+  BRANCH.next_card = last + 1
+  if BRANCH.next_card > #cards then
+    BRANCH.cards = nil
+    return true
+  end
+  return false
 end
 
 -- branch_due: the whole-roster branch rule runs once after an option edge, a save load or a match (not on a timer)
@@ -743,6 +808,7 @@ local function option_check()
   SWEEP.dirty, SWEEP.running = true, false
 end
 
+-- one step of the due work (branch rule pass, then the sweep) -> true when more work is left for the next step
 local function tick()
   if ST.changed then
     ST.changed = false
@@ -752,12 +818,28 @@ local function tick()
   end
   if RT.option_dirty then option_check() end
   local idle = RT.on ~= nil and VRFW.slots.ready() and not (VRFW.in_match and VRFW.in_match())
-  if RT.on and idle and RT.branch_due then
+  if not idle then return false end
+  if not RT.on then BRANCH.cards = nil end
+  if RT.on and RT.branch_due then
+    -- a new pass (also when one was running: the roster may have changed)
     RT.branch_due = false
-    local ok, n, total = pcall(force_branch1)
+    local ok, e = pcall(branch_start)
     if not ok then
-      warn("branch rule: " .. tostring(n))
-    elseif RT.edge then
+      BRANCH.cards = nil
+      warn("branch rule: " .. tostring(e))
+    end
+    return BRANCH.cards ~= nil
+  end
+  if BRANCH.cards then
+    local ok, finished = pcall(branch_step)
+    if not ok then
+      BRANCH.cards = nil
+      warn("branch rule: " .. tostring(finished))
+      return false
+    end
+    if not finished then return true end
+    local n, total = BRANCH.switched, BRANCH.total
+    if RT.edge then
       if total > 0 then
         RT.edge = false
         info(string.format("branch rule: new set on: %d of %d owned player(s) switched to branch 1 (switching off restores nothing)", n, total))
@@ -767,10 +849,11 @@ local function tick()
     elseif n > 0 then
       info(string.format("branch rule: %d player(s) back on branch 1 (a recruit or a branch switch while the new set is on)", n))
     end
+    return true
   end
-  if not idle then return end
   if SWEEP.running then
-    pcall(sweep_step)
+    local ok, finished = pcall(sweep_step)
+    return ok and not finished
   elseif SWEEP.dirty then
     -- whole-roster sweep only when due (option, save load, slot switch, game reset, match end); a card edited in a menu
     -- is published at once by PublishCardRows
@@ -781,7 +864,9 @@ local function tick()
       SWEEP.running = false
       warn("sweep: " .. tostring(e))
     end
+    return SWEEP.running
   end
+  return false
 end
 
 -- WHO DRIVES THE STEP (2026-10-14, owner: Jade Beor wore Metis' armour with Magister in the table's aura half): the
@@ -790,16 +875,16 @@ end
 -- context» / «branch rule» line in loader.log; the form viewer fell back to its board scan and found Metis on board
 -- slot 2). The menus drive it now: every menu that opens (the hook bus event menu:open, MENU_SLICES slices) and
 -- this mod's own commands (at most one slice every COMMAND_STEP_EVERY_MS: the skill table, the player page and the
--- dock card ask for the shown card's projection while they are open). "tick" stays (harmless in a match).
--- a menu open runs at most MENU_SLICES slices and stops after MENU_STEP_BUDGET_MS (the rest on the next opens / commands)
+-- dock card ask for the shown card's projection while they are open). No "tick" handler: in a match nothing is due.
+-- a menu open runs at most MENU_SLICES steps and stops after MENU_STEP_BUDGET_MS (the rest on the next opens / commands)
 local MENU_SLICES, MENU_STEP_BUDGET_MS, COMMAND_STEP_EVERY_MS = 8, 16, 250
 local LAST_COMMAND_STEP = { at = -COMMAND_STEP_EVERY_MS }
 local function menu_step()
   local started = VRFW.now()
-  tick()
+  local more = tick()
   for _ = 2, MENU_SLICES do
-    if not SWEEP.running or VRFW.now() - started >= MENU_STEP_BUDGET_MS then break end
-    sweep_step()
+    if not more or VRFW.now() - started >= MENU_STEP_BUDGET_MS then break end
+    more = tick()
   end
 end
 function CharacterReforged.CommandStep()
@@ -809,7 +894,6 @@ function CharacterReforged.CommandStep()
   tick()
 end
 
-VRFW.on("tick", function() pcall(tick) end)
 -- any option: a parent row switched off changes what this row answers too
 VRFW.on("option_changed", function() RT.option_dirty = true end)
 -- a match can teach moves and bring recruits: the tables and the branch rule are due again after it

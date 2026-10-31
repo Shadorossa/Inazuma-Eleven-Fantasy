@@ -4,8 +4,9 @@
 # effects:
 # * shell_burst_panel (object ev6223sp00, `ground_effect`): the green honeycomb of seven glass cells standing on the
 #   pitch at the kick point, upright and facing the goal, the ball's way through its centre cell; its inner lights,
-#   the circuit ring spreading out of it and the six outer cells' muzzle glows (camera-facing, flickering), for the
-#   whole flight (it goes with the aura when the shot ends);
+#   the circuit ring and the six outer cells' muzzle glows (camera-facing), all steady, for the whole flight (owner
+#   2026-10-31: «avanza el panel de cristales con el disparo en vez de quedarse como punto fijo», «no deben desaparecer
+#   los fragmentos»; VRFW >= 2.346.0 keeps it there in world space; it goes with the aura when the shot ends);
 # * shell_burst (object ev6223sb00, `aura`, on the distance clock): the centre cell's yellow glow round the ball
 #   (camera-facing, flickering) and the seven rays the cells fire, laid along the flight from each cell to the ball
 #   (owner 2026-10-24: «deben quedarse disparando desde los fragmentos verdes como punto quieto donde inicia el rayo»):

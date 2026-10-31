@@ -228,15 +228,15 @@ passive = "c04000150_cazador_paciente"
 character = "c04000150"
 tags = ["trickster", "rookie"]
 
-# Lucian Dark: Sombra tímida — Sombra-family technique power of every teammate +8 %
+# Lucian Dark: Pingüino tímido — Penguin-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04000170_sombra_timida"
-blocks = ["go_family_illusions", "go_techniquepower_team_8", "go_card_c04000170"]
+name = "c04000170_pinguino_timido"
+blocks = ["go_family_penguin", "go_techniquepower_team_8", "go_card_c04000170"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04000170"
-passive = "c04000170_sombra_timida"
+passive = "c04000170_pinguino_timido"
 
 [[VRFW.CharacterTags]]
 character = "c04000170"
@@ -382,10 +382,10 @@ passive = "c04000240_peso_pesado"
 character = "c04000240"
 tags = ["beast", "wall"]
 
-# Sirius Starsky: Lluvia de estrellas — Estrella-family technique power of every teammate +8 %
+# Sirius Starsky: Lluvia de estrellas — Meteor Blade power +15 % while a teammate with a Keshin is on the pitch
 [[VRFW.Passive]]
 name = "c04000250_lluvia_de_estrellas"
-blocks = ["go_family_eventhorizon", "go_techniquepower_team_8", "go_card_c04000250"]
+blocks = ["go_present_keshin_team", "go_move_whs00510", "go_techniquepower_self_15", "go_card_c04000250"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1166,10 +1166,10 @@ passive = "c04004140_equilibrio_de_cubierta"
 character = "c04004140"
 tags = ["speedster", "rookie"]
 
-# Skylar Lepton: Rayo de tormenta — Trueno-family technique power of every teammate +8 %
+# Skylar Lepton: Rayo de tormenta — each dash by a «Velocista» teammate: his shoot power +3 % (max 3, 20 s each)
 [[VRFW.Passive]]
 name = "c04004150_rayo_de_tormenta"
-blocks = ["go_family_inazumapower", "go_techniquepower_team_8", "go_card_c04004150"]
+blocks = ["go_when_dash_by_teammate", "go_by_speedster", "go_stack_max3_20s", "go_techniquepower_self_shoot_3", "go_card_c04004150"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1292,10 +1292,10 @@ passive = "c04003040_lanza_del_titan"
 character = "c04003040"
 tags = ["divine", "wall"]
 
-# Phoebus Moonlight: Luz de luna — Luna-family technique power of every teammate +8 %
+# Phoebus Moonlight: Luz de luna — all teammates recover stamina 4 % faster in the second half
 [[VRFW.Passive]]
 name = "c04003050_luz_de_luna"
-blocks = ["go_family_eventhorizon", "go_techniquepower_team_8", "go_card_c04003050"]
+blocks = ["go_half_2", "go_staminarecovery_team_4", "go_card_c04003050"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1320,10 +1320,10 @@ passive = "c04003090_corriente_oceanica"
 character = "c04003090"
 tags = ["divine", "speedster"]
 
-# Coeus Heavens: Cielos abiertos — Cielo-family technique power of every teammate +8 %
+# Coeus Heavens: Cielos abiertos — his shoot power +3 % per «Divino» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c04003100_cielos_abiertos"
-blocks = ["go_family_divinepower", "go_techniquepower_team_8", "go_card_c04003100"]
+blocks = ["go_count_divine_team_max3", "go_techniquepower_self_shoot_3", "go_card_c04003100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -1880,10 +1880,10 @@ passive = "c04002540_fondo_de_armario"
 character = "c04002540"
 tags = ["trickster", "brain"]
 
-# Daren Blakh: Aullido de medianoche — Lobo-family technique power of every teammate +8 %
+# Daren Blakh: Aullido de medianoche — Legendary Wolf power +15 % in the second half
 [[VRFW.Passive]]
 name = "c04002550_aullido_de_medianoche"
-blocks = ["go_family_beasts", "go_techniquepower_team_8", "go_card_c04002550"]
+blocks = ["go_half_2", "go_move_whs00600", "go_techniquepower_self_15", "go_card_c04002550"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2174,10 +2174,10 @@ passive = "c04003210_aliento_de_grada"
 character = "c04003210"
 tags = ["captain", "noble"]
 
-# Aimé Quintet: Salto de dimensión — recast time of his moves −15 % while a teammate carrying a Pegaso-family technique is on the pitch
+# Aimé Quintet: Salto de dimensión — Air Ride power +10 % (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c04003220_salto_de_dimension"
-blocks = ["go_present_pegasus_team", "go_recasttime_self_minus15", "go_card_c04003220"]
+blocks = ["go_move_who00590", "go_techniquepower_team_10", "go_card_c04003220"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2300,10 +2300,10 @@ passive = "c04003300_quinto_elemento"
 character = "c04003300"
 tags = ["striker", "rookie"]
 
-# Erik Pentona: Estrella de rayos — Estrella-family technique power of every teammate +8 %
+# Erik Pentona: Estrella de rayos — Entropic Arrows power +15 % while he holds the ball in the opponent half
 [[VRFW.Passive]]
 name = "c04003310_estrella_de_rayos"
-blocks = ["go_family_eventhorizon", "go_techniquepower_team_8", "go_card_c04003310"]
+blocks = ["go_holds_ball", "go_zone_opponent_half", "go_move_whs01620", "go_techniquepower_self_15", "go_card_c04003310"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2412,10 +2412,10 @@ passive = "c04002050_furia_glacial"
 character = "c04002050"
 tags = ["beast", "rookie"]
 
-# Bob Sled: Deslizamiento sobre hielo — his move speed +3 % per Hielo-carrying teammate on the pitch (max 3)
+# Bob Sled: Deslizamiento sobre hielo — his move speed +5 % while he holds the ball
 [[VRFW.Passive]]
 name = "c04002060_deslizamiento_sobre_hielo"
-blocks = ["go_count_northernice_team_max3", "go_movespeed_self_3", "go_card_c04002060"]
+blocks = ["go_holds_ball", "go_movespeed_self_5", "go_card_c04002060"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2510,10 +2510,10 @@ passive = "c04002070_cristal_quebradizo"
 character = "c04002070"
 tags = ["striker", "trickster"]
 
-# Art Tundra: Cima helada — Hielo-family technique power of every Alpine-group teammate +10 %
+# Art Tundra: Cima helada — Eternal Blizzard power +5 % per Alpine-group teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c04002080_cima_helada"
-blocks = ["go_family_northernice", "go_techniquepower_team_10_alpine", "go_card_c04002080"]
+blocks = ["go_count_alpine_team_max3", "go_move_whs00440", "go_techniquepower_self_5", "go_card_c04002080"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3154,10 +3154,10 @@ passive = "c04002820_luz_de_urano"
 character = "c04002820"
 tags = ["trickster", "wall"]
 
-# Manning Moon: Luna de cuarto menguante — Luna-family technique power of every teammate +8 %
+# Manning Moon: Luna de cuarto menguante — opponents' kick −3 % in the last third of each half
 [[VRFW.Passive]]
 name = "c04002830_luna_de_cuarto_menguante"
-blocks = ["go_family_eventhorizon", "go_techniquepower_team_8", "go_card_c04002830"]
+blocks = ["go_clock_last_third", "go_stat_opponents_kick_minus3", "go_card_c04002830"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3756,10 +3756,10 @@ passive = "c04003450_himno_de_la_luz"
 character = "c04003450"
 tags = ["brain", "divine"]
 
-# Beacon Noor: Hora de gracia — Cielo-family technique power of every teammate +8 %
+# Beacon Noor: Hora de gracia — recast time of his dribbles −10 % in the last third of each half
 [[VRFW.Passive]]
 name = "c04003460_hora_de_gracia"
-blocks = ["go_family_divinepower", "go_techniquepower_team_8", "go_card_c04003460"]
+blocks = ["go_clock_last_third", "go_recasttime_self_dribble_minus10", "go_card_c04003460"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4316,10 +4316,10 @@ passive = "c04015290_trance_del_desierto"
 character = "c04015290"
 tags = ["mystic", "rookie"]
 
-# Solomon Roundhay: Tifón del sur — Tormenta-family technique power of every teammate +8 %
+# Solomon Roundhay: Tifón del sur — The Typhoon power +5 % per Wind-element teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c04015300_tifon_del_sur"
-blocks = ["go_family_whirlwinds", "go_techniquepower_team_8", "go_card_c04015300"]
+blocks = ["go_count_wind_team_max3", "go_move_whs00990", "go_techniquepower_self_5", "go_card_c04015300"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4736,10 +4736,10 @@ passive = "c04004360_ladron_de_recreo"
 character = "c04004360"
 tags = ["trickster", "wall"]
 
-# Steve Grim: Deseo fugaz — Estrella-family technique power of every teammate +8 %
+# Steve Grim: Deseo fugaz — his tension gain +6 % while his team is behind
 [[VRFW.Passive]]
 name = "c06037420_deseo_fugaz"
-blocks = ["go_family_eventhorizon", "go_techniquepower_team_8", "go_card_c06037420"]
+blocks = ["go_score_trailing", "go_tensiongain_self_6", "go_card_c06037420"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4753,7 +4753,7 @@ tags = ["speedster", "veteran"]
 # Maddie Moonlight: Equilibrista del circo — her tension cost −8 % while a teammate carrying a Luna-family technique is on the pitch
 [[VRFW.Passive]]
 name = "c06037410_equilibrista_del_circo"
-blocks = ["go_present_eventhorizon_team", "go_tensioncost_self_minus8", "go_card_c06037410"]
+blocks = ["go_present_penguin_team", "go_tensioncost_self_minus8", "go_card_c06037410"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -4988,10 +4988,10 @@ passive = "c05026520_orden_y_concierto"
 character = "c05026520"
 tags = ["brain", "veteran"]
 
-# Austin Hobbes: Tigre madurado — Tigre-family technique power of every teammate +8 %
+# Austin Hobbes: Tigre madurado — Tiger Drive power +5 % per «Novato» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c05026600_tigre_madurado"
-blocks = ["go_family_beasts", "go_techniquepower_team_8", "go_card_c05026600"]
+blocks = ["go_count_rookie_team_max3", "go_move_whs00960", "go_techniquepower_self_5", "go_card_c05026600"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5142,10 +5142,10 @@ passive = "c06037430_manos_magicas"
 character = "c06037430"
 tags = ["wall", "veteran"]
 
-# Archer Hawkins: Halcón en vuelo — Ave-family technique power of every teammate +8 %
+# Archer Hawkins: Halcón en vuelo — each successful Hawk Shot by a teammate: his team +2 tension (max 3 per half)
 [[VRFW.Passive]]
 name = "c06037440_halcon_en_vuelo"
-blocks = ["go_family_legendarybirds", "go_techniquepower_team_8", "go_card_c06037440"]
+blocks = ["go_when_technique_result_won_by_teammate", "go_move_whs00100", "go_outcome_succeeds", "go_stack_max3_0s_per_half", "go_tension_2", "go_card_c06037440"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5296,10 +5296,10 @@ passive = "c04000340_brisa_de_relevo"
 character = "c04000340"
 tags = ["speedster"]
 
-# Fletch Blitzen: Relámpago y rayo — Trueno-family technique power of every teammate +8 %
+# Fletch Blitzen: Relámpago y rayo — his agility +5 % in the first third of each half
 [[VRFW.Passive]]
 name = "c04016140_relampago_y_rayo"
-blocks = ["go_family_inazumapower", "go_techniquepower_team_8", "go_card_c04016140"]
+blocks = ["go_clock_first_third", "go_stat_self_agility_5", "go_card_c04016140"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5660,15 +5660,15 @@ passive = "c04010230_hambre_de_gol"
 character = "c04010230"
 tags = ["striker", "trickster"]
 
-# Siarti Tivi: Linaje Hielo — Hielo-family technique power of every teammate +8 %
+# Siarti Tivi: Linaje Gran Muralla — Great Wall power +15 % while his team is ahead
 [[VRFW.Passive]]
-name = "c04010240_linaje_hielo"
-blocks = ["go_family_northernice", "go_techniquepower_team_8", "go_card_c04010240"]
+name = "c04010240_linaje_gran_muralla"
+blocks = ["go_score_leading", "go_move_whd00890", "go_techniquepower_self_15", "go_card_c04010240"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04010240"
-passive = "c04010240_linaje_hielo"
+passive = "c04010240_linaje_gran_muralla"
 
 [[VRFW.CharacterTags]]
 character = "c04010240"
@@ -5716,15 +5716,15 @@ passive = "c04010270_rugido"
 character = "c04010270"
 tags = ["beast", "wall"]
 
-# Romulus Fulmen: Herencia Hielo — Hielo-family technique power of every teammate +8 %
+# Romulus Fulmen: Herencia Eléctrica — Electric Impedance power +15 % in the second half
 [[VRFW.Passive]]
-name = "c04010280_herencia_hielo"
-blocks = ["go_family_northernice", "go_techniquepower_team_8", "go_card_c04010280"]
+name = "c04010280_herencia_electrica"
+blocks = ["go_half_2", "go_move_whd01130", "go_techniquepower_self_15", "go_card_c04010280"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04010280"
-passive = "c04010280_herencia_hielo"
+passive = "c04010280_herencia_electrica"
 
 [[VRFW.CharacterTags]]
 character = "c04010280"
@@ -6332,15 +6332,15 @@ passive = "c04010710_pequeno_empujon"
 character = "c04010710"
 tags = ["wall"]
 
-# Apra Chabel: Linaje Hielo — Hielo-family technique power of every teammate +8 %
+# Apra Chabel: Linaje Remate rebotado — Rebound-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04010720_linaje_hielo"
-blocks = ["go_family_northernice", "go_techniquepower_team_8", "go_card_c04010720"]
+name = "c04010720_linaje_remate_rebotado"
+blocks = ["go_family_rebound", "go_techniquepower_team_8", "go_card_c04010720"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04010720"
-passive = "c04010720_linaje_hielo"
+passive = "c04010720_linaje_remate_rebotado"
 
 [[VRFW.CharacterTags]]
 character = "c04010720"
@@ -6612,10 +6612,10 @@ passive = "c04010920_ganas_de_ayudar"
 character = "c04010920"
 tags = ["trickster", "wall"]
 
-# Cabal Whitehurst: Especialista en Estrella — Estrella-family technique power of every teammate +8 %
+# Cabal Whitehurst: Especialista en Estrella — Dark Energy Star power +15 % while a teammate with a Miximax is on the pitch
 [[VRFW.Passive]]
 name = "c04010930_especialista_en_estrella"
-blocks = ["go_family_eventhorizon", "go_techniquepower_team_8", "go_card_c04010930"]
+blocks = ["go_present_miximax_team", "go_move_whs01690", "go_techniquepower_self_15", "go_card_c04010930"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6780,15 +6780,15 @@ passive = "c04011040_contencion"
 character = "c04011040"
 tags = ["wall"]
 
-# Philippa Belle: Especialista en Trueno — Trueno-family technique power of every teammate +8 %
+# Philippa Belle: Especialista en Tornado de fuego — Fire Tornado-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04011050_especialista_en_trueno"
-blocks = ["go_family_inazumapower", "go_techniquepower_team_8", "go_card_c04011050"]
+name = "c04011050_especialista_en_tornado_de_fuego"
+blocks = ["go_family_firetornado", "go_techniquepower_team_8", "go_card_c04011050"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04011050"
-passive = "c04011050_especialista_en_trueno"
+passive = "c04011050_especialista_en_tornado_de_fuego"
 
 [[VRFW.CharacterTags]]
 character = "c04011050"
@@ -6836,10 +6836,10 @@ passive = "c04011080_analisis_de_tiro"
 character = "c04011080"
 tags = ["brain", "acrobat"]
 
-# Alfio Blackside: Linaje Muro — Muro-family technique power of every teammate +8 %
+# Alfio Blackside: Linaje Muro — Overnight Fortress power +12 % while his team is ahead (a duo move: both carriers gain)
 [[VRFW.Passive]]
 name = "c04011100_linaje_muro"
-blocks = ["go_family_greatwalls", "go_techniquepower_team_8", "go_card_c04011100"]
+blocks = ["go_score_leading", "go_move_whd01080", "go_techniquepower_team_12", "go_card_c04011100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -7452,10 +7452,10 @@ passive = "c04011530_pequeno_empujon"
 character = "c04011530"
 tags = ["brain", "acrobat"]
 
-# Shai Klopps: Especialista en Muro — Muro-family technique power of every teammate +8 %
+# Shai Klopps: Especialista en Muro — The Wall power +5 % per «Muro» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c04011540_especialista_en_muro"
-blocks = ["go_family_greatwalls", "go_techniquepower_team_8", "go_card_c04011540"]
+blocks = ["go_count_wall_team_max3", "go_move_whd00010", "go_techniquepower_self_5", "go_card_c04011540"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -7564,10 +7564,10 @@ passive = "c04011610_truco_de_manos"
 character = "c04011610"
 tags = ["trickster", "brain"]
 
-# Luke Dwight: Herencia Estrella — Estrella-family technique power of every teammate +8 %
+# Luke Dwight: Herencia Estrella — Asterocks power +15 % in the first half
 [[VRFW.Passive]]
 name = "c04011620_herencia_estrella"
-blocks = ["go_family_eventhorizon", "go_techniquepower_team_8", "go_card_c04011620"]
+blocks = ["go_half_1", "go_move_whd01040", "go_techniquepower_self_15", "go_card_c04011620"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -7732,15 +7732,15 @@ passive = "c04011730_ganas_de_ayudar"
 character = "c04011730"
 tags = ["wall"]
 
-# Ken Dough: Herencia Dragón — Dragón-family technique power of every teammate +8 %
+# Ken Dough: Herencia Remate rebotado — Rebound-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04011740_herencia_dragon"
-blocks = ["go_family_dragon", "go_techniquepower_team_8", "go_card_c04011740"]
+name = "c04011740_herencia_remate_rebotado"
+blocks = ["go_family_rebound", "go_techniquepower_team_8", "go_card_c04011740"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04011740"
-passive = "c04011740_herencia_dragon"
+passive = "c04011740_herencia_remate_rebotado"
 
 [[VRFW.CharacterTags]]
 character = "c04011740"
@@ -8124,15 +8124,15 @@ passive = "c04012010_truco_de_manos"
 character = "c04012010"
 tags = ["trickster", "wall"]
 
-# Raider Takkel: Especialista en Tormenta — Tormenta-family technique power of every teammate +8 %
+# Raider Takkel: Especialista en Niebla — Mystic Mist power +5 % per «Místico» teammate on the pitch (max 3)
 [[VRFW.Passive]]
-name = "c04012020_especialista_en_tormenta"
-blocks = ["go_family_whirlwinds", "go_techniquepower_team_8", "go_card_c04012020"]
+name = "c04012020_especialista_en_niebla"
+blocks = ["go_count_mystic_team_max3", "go_move_whd00900", "go_techniquepower_self_5", "go_card_c04012020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04012020"
-passive = "c04012020_especialista_en_tormenta"
+passive = "c04012020_especialista_en_niebla"
 
 [[VRFW.CharacterTags]]
 character = "c04012020"
@@ -8292,15 +8292,15 @@ passive = "c04012130_ganas_de_ayudar"
 character = "c04012130"
 tags = ["trickster"]
 
-# Bill Sye: Especialista en Hielo — Hielo-family technique power of every teammate +8 %
+# Bill Sye: Especialista en Céfiro — Zephyr Shot power +15 % from set pieces
 [[VRFW.Passive]]
-name = "c04012140_especialista_en_hielo"
-blocks = ["go_family_northernice", "go_techniquepower_team_8", "go_card_c04012140"]
+name = "c04012140_especialista_en_cefiro"
+blocks = ["go_own_set_piece", "go_move_whs01460", "go_techniquepower_self_15", "go_card_c04012140"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04012140"
-passive = "c04012140_especialista_en_hielo"
+passive = "c04012140_especialista_en_cefiro"
 
 [[VRFW.CharacterTags]]
 character = "c04012140"
@@ -8404,15 +8404,15 @@ passive = "c04012210_pase_maestro"
 character = "c04012210"
 tags = ["brain"]
 
-# Cindy Reller: Herencia Espada — Espada-family technique power of every teammate +8 %
+# Cindy Reller: Herencia Tornado de fuego — Fire Tornado-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04012220_herencia_espada"
-blocks = ["go_family_legendaryweapons", "go_techniquepower_team_8", "go_card_c04012220"]
+name = "c04012220_herencia_tornado_de_fuego"
+blocks = ["go_family_firetornado", "go_techniquepower_team_8", "go_card_c04012220"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04012220"
-passive = "c04012220_herencia_espada"
+passive = "c04012220_herencia_tornado_de_fuego"
 
 [[VRFW.CharacterTags]]
 character = "c04012220"
@@ -8796,15 +8796,15 @@ passive = "c04012490_engano_de_muro"
 character = "c04012490"
 tags = ["trickster", "wall"]
 
-# Moonir Stone: Especialista en Muro — Muro-family technique power of every teammate +8 %
+# Moonir Stone: Especialista en Tornado de fuego — Fire Tornado-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04012500_especialista_en_muro"
-blocks = ["go_family_greatwalls", "go_techniquepower_team_8", "go_card_c04012500"]
+name = "c04012500_especialista_en_tornado_de_fuego"
+blocks = ["go_family_firetornado", "go_techniquepower_team_8", "go_card_c04012500"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04012500"
-passive = "c04012500_especialista_en_muro"
+passive = "c04012500_especialista_en_tornado_de_fuego"
 
 [[VRFW.CharacterTags]]
 character = "c04012500"
@@ -9132,10 +9132,10 @@ passive = "c04012730_pequeno_empujon"
 character = "c04012730"
 tags = ["mystic", "acrobat"]
 
-# Richard Roake: Especialista en Muro — Muro-family technique power of every teammate +8 %
+# Richard Roake: Especialista en Muro — recast time of his catches −8 % in the last third of each half
 [[VRFW.Passive]]
 name = "c04012740_especialista_en_muro"
-blocks = ["go_family_greatwalls", "go_techniquepower_team_8", "go_card_c04012740"]
+blocks = ["go_clock_last_third", "go_recasttime_self_catch_minus8", "go_card_c04012740"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -10364,10 +10364,10 @@ passive = "c04013610_robo_relampago"
 character = "c04013610"
 tags = ["speedster"]
 
-# Florence Orderly: Linaje Hielo — Hielo-family technique power of every teammate +8 %
+# Florence Orderly: Linaje Hielo — Land of Ice power +15 % in his own half
 [[VRFW.Passive]]
 name = "c04013620_linaje_hielo"
-blocks = ["go_family_northernice", "go_techniquepower_team_8", "go_card_c04013620"]
+blocks = ["go_zone_own_half", "go_move_whd00240", "go_techniquepower_self_15", "go_card_c04013620"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -10644,15 +10644,15 @@ passive = "c04013810_rebote_agil"
 character = "c04013810"
 tags = ["acrobat", "striker"]
 
-# Carter Spaid: Especialista en Tormenta — Tormenta-family technique power of every teammate +8 %
+# Carter Spaid: Especialista en Tornado de fuego — Fire Tornado-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04013820_especialista_en_tormenta"
-blocks = ["go_family_whirlwinds", "go_techniquepower_team_8", "go_card_c04013820"]
+name = "c04013820_especialista_en_tornado_de_fuego"
+blocks = ["go_family_firetornado", "go_techniquepower_team_8", "go_card_c04013820"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04013820"
-passive = "c04013820_especialista_en_tormenta"
+passive = "c04013820_especialista_en_tornado_de_fuego"
 
 [[VRFW.CharacterTags]]
 character = "c04013820"
@@ -10700,15 +10700,15 @@ passive = "c04013850_analisis_de_tiro"
 character = "c04013850"
 tags = ["brain"]
 
-# Capitán Jokar: Linaje Hielo — Hielo-family technique power of every teammate +8 %
+# Capitán Jokar: Linaje Remate rebotado — Rebound-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04013860_linaje_hielo"
-blocks = ["go_family_northernice", "go_techniquepower_team_8", "go_card_c04013860"]
+name = "c04013860_linaje_remate_rebotado"
+blocks = ["go_family_rebound", "go_techniquepower_team_8", "go_card_c04013860"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04013860"
-passive = "c04013860_linaje_hielo"
+passive = "c04013860_linaje_remate_rebotado"
 
 [[VRFW.CharacterTags]]
 character = "c04013860"
@@ -10924,15 +10924,15 @@ passive = "c04014010_hambre_de_gol"
 character = "c04014010"
 tags = ["striker", "trickster"]
 
-# Drummond Bays: Herencia Tormenta — Tormenta-family technique power of every teammate +8 %
+# Drummond Bays: Herencia Tornado de fuego — Fire Tornado-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04014020_herencia_tormenta"
-blocks = ["go_family_whirlwinds", "go_techniquepower_team_8", "go_card_c04014020"]
+name = "c04014020_herencia_tornado_de_fuego"
+blocks = ["go_family_firetornado", "go_techniquepower_team_8", "go_card_c04014020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04014020"
-passive = "c04014020_herencia_tormenta"
+passive = "c04014020_herencia_tornado_de_fuego"
 
 [[VRFW.CharacterTags]]
 character = "c04014020"
@@ -12324,15 +12324,15 @@ passive = "c04015010_mal_de_ojo"
 character = "c04015010"
 tags = ["mystic"]
 
-# Shilo Placidus: Especialista en Estrella — Estrella-family technique power of every teammate +8 %
+# Shilo Placidus: Especialista en Trayectoria — Optimal Trajectory power +5 % per «Cerebro» teammate on the pitch (max 3)
 [[VRFW.Passive]]
-name = "c04015020_especialista_en_estrella"
-blocks = ["go_family_eventhorizon", "go_techniquepower_team_8", "go_card_c04015020"]
+name = "c04015020_especialista_en_trayectoria"
+blocks = ["go_count_brain_team_max3", "go_move_whs01560", "go_techniquepower_self_5", "go_card_c04015020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04015020"
-passive = "c04015020_especialista_en_estrella"
+passive = "c04015020_especialista_en_trayectoria"
 
 [[VRFW.CharacterTags]]
 character = "c04015020"
@@ -12436,15 +12436,15 @@ passive = "c04015090_linea_de_ataque"
 character = "c04015090"
 tags = ["striker", "beast"]
 
-# Fünf Whitely: Herencia Hielo — Hielo-family technique power of every teammate +8 %
+# Fünf Whitely: Herencia Remate rebotado — Rebound-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04015100_herencia_hielo"
-blocks = ["go_family_northernice", "go_techniquepower_team_8", "go_card_c04015100"]
+name = "c04015100_herencia_remate_rebotado"
+blocks = ["go_family_rebound", "go_techniquepower_team_8", "go_card_c04015100"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04015100"
-passive = "c04015100_herencia_hielo"
+passive = "c04015100_herencia_remate_rebotado"
 
 [[VRFW.CharacterTags]]
 character = "c04015100"
@@ -12492,15 +12492,15 @@ passive = "c04015130_pequeno_empujon"
 character = "c04015130"
 tags = ["brain", "beast"]
 
-# Maude Erne: Especialista en Muro — Muro-family technique power of every teammate +8 %
+# Maude Erne: Especialista en Remate rebotado — Rebound-family technique power of every teammate +8 %
 [[VRFW.Passive]]
-name = "c04015140_especialista_en_muro"
-blocks = ["go_family_greatwalls", "go_techniquepower_team_8", "go_card_c04015140"]
+name = "c04015140_especialista_en_remate_rebotado"
+blocks = ["go_family_rebound", "go_techniquepower_team_8", "go_card_c04015140"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c04015140"
-passive = "c04015140_especialista_en_muro"
+passive = "c04015140_especialista_en_remate_rebotado"
 
 [[VRFW.CharacterTags]]
 character = "c04015140"

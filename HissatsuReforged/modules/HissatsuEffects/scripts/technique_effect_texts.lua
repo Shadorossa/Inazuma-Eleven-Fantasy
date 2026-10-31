@@ -101,6 +101,11 @@ local function load_all()
   return cache
 end
 
+-- the index is built when a slot loads (off the game thread), so the first move card does not read every rule file
+VRFW.on("slot_load", function()
+  load_all()
+end)
+
 -- CMND_HISSATSUEFFECTS_MOVE_RULE_TEXTS(move)
 function RuleTexts.OfMove(move)
   local out = { count = 0 }

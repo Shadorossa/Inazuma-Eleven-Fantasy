@@ -666,8 +666,7 @@ do
     if not EVT_RV.on then
       return evt_rv_decide(a1, a2, ...)
     end
-    funcLuaCommand(EVT_RV.P_CLEAR, EVT_RV.KEY_RESULT)
-    funcLuaCommand(EVT_RV.P_SET, EVT_RV.KEY_RESULT, 0, 1, 1)
+    VRFW_Param.Replace(EVT_RV.KEY_RESULT, 1)
     funcLuaMenuCommand(1558704558, 831645521 --[[vs_route_town_vs_team_menu]], false)
     funcLuaMenuCommand(2171393651, 2296367164 --[[cmn05_01_cursor]], false)
     flag = true
@@ -689,8 +688,7 @@ do
   local evt_rv_back = OnBack
   function OnBack(a1, ...)
     if EVT_RV.on then
-      funcLuaCommand(EVT_RV.P_CLEAR, EVT_RV.KEY_RESULT)
-      funcLuaCommand(EVT_RV.P_SET, EVT_RV.KEY_RESULT, 0, 0, 1)
+      VRFW_Param.Replace(EVT_RV.KEY_RESULT, 0)
       EVT_RV.log("back: node", EVT_RV.node)
     end
     return evt_rv_back(a1, ...)

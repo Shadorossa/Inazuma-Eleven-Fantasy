@@ -351,20 +351,32 @@ end
 -- Hideable board groups ([[VRFW.BoardGroup]], content\board_groups\*.toml, scripts\board_group.lua): a mod lists board
 -- nodes that a switch hides at once, visually only (not drawn, not focusable, the d-pad skips them; their data and
 -- save state stay). The switch lives for the game session (CMND_VRFW_BOARD_HIDE); a mod's key or button calls
--- VRFW_RN_SetHide. VRFW_RN_GROUPS = {pieces = {[pieceId] = true}, n}: read once per board VM.
+-- VRFW_RN_SetHide. A group's `hidden` conditions (CMND_VRFW_BOARD_HIDDEN) hide its nodes whatever the switch.
+-- VRFW_RN_GROUPS = {pieces = {[pieceId] = true}, always = {[pieceId] = true}, n}: read once per board VM.
 VRFW_RN_GROUPS = nil
 VRFW_RN_CMD_GROUP_PIECES = 3067101002   -- () -> { pieceId, … } of the hideable groups
 VRFW_RN_CMD_HIDE = 2817173096           -- () -> on; ("set", 0 | 1) -> on
+VRFW_RN_CMD_HIDDEN = 3470847879       -- () -> { pieceId, … } of the groups hidden by their conditions
 
 function VRFW_RN_Groups()
   if VRFW_RN_GROUPS ~= nil then
     return VRFW_RN_GROUPS
   end
-  VRFW_RN_GROUPS = {pieces = {}, n = 0, on = false}
+  VRFW_RN_GROUPS = {pieces = {}, always = {}, n = 0, hidden = 0, on = false}
+  local okd, ruled = pcall(funcLuaCommand, VRFW_RN_CMD_HIDDEN)
+  if okd and type(ruled) == "table" then
+    for _, p in ipairs(ruled) do
+      if type(p) == "number" and not VRFW_RN_GROUPS.always[p % 4294967296] then
+        VRFW_RN_GROUPS.always[p % 4294967296] = true
+        VRFW_RN_GROUPS.hidden = VRFW_RN_GROUPS.hidden + 1
+      end
+    end
+  end
   local ok, list = pcall(funcLuaCommand, VRFW_RN_CMD_GROUP_PIECES)
   if ok and type(list) == "table" then
     for _, p in ipairs(list) do
-      if type(p) == "number" then
+      -- a node its group's conditions hide is not the switch's: the switch's count leaves it out
+      if type(p) == "number" and not VRFW_RN_GROUPS.always[p % 4294967296] then
         VRFW_RN_GROUPS.pieces[p % 4294967296] = true
         VRFW_RN_GROUPS.n = VRFW_RN_GROUPS.n + 1
       end
@@ -372,13 +384,18 @@ function VRFW_RN_Groups()
   end
   local okh, on = pcall(funcLuaCommand, VRFW_RN_CMD_HIDE)
   VRFW_RN_GROUPS.on = okh and on == true
-  VRFW_RN_Log("groups: hideable pieces", VRFW_RN_GROUPS.n, "hidden", tostring(VRFW_RN_GROUPS.on))
+  VRFW_RN_Log("groups: hideable pieces", VRFW_RN_GROUPS.n, "hidden", tostring(VRFW_RN_GROUPS.on),
+    "always hidden", VRFW_RN_GROUPS.hidden)
   return VRFW_RN_GROUPS
 end
 
 function VRFW_RN_GroupHidden(node)
   local G = VRFW_RN_Groups()
-  return G.on and node.piece ~= nil and G.pieces[node.piece % 4294967296] == true
+  if node.piece == nil then
+    return false
+  end
+  local piece = node.piece % 4294967296
+  return G.always[piece] == true or (G.on and G.pieces[piece] == true)
 end
 
 -- how many board nodes a hide switch would hide (0: no mod declares a hideable group)

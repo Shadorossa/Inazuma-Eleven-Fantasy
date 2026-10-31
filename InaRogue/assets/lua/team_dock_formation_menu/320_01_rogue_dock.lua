@@ -78,6 +78,7 @@ do
     IRD.flush_unwrapped()
     local rs, act = call(IRD.SLOT)
     IRD.on = type(rs) == "number" and rs == act
+    IRD.checked = true
     if IRD.on then
       IRD.run = call(IRD.RUN_INFO) == true
       IRD.set = call(IRD.GET_VS) or 0

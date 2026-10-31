@@ -176,6 +176,9 @@ end
 
 VRFW.on("match_start", function()
   CHARGE = {}
+  -- the move table and the settings are read here (the mode watcher's thread), not by the match's first move
+  settings()
+  move_category(0)
   return nil
 end)
 

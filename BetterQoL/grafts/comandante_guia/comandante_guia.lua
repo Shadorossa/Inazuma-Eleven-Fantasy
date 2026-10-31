@@ -109,10 +109,6 @@ local function EVT_CmdrQuery()
   return q
 end
 
-function EVT_CmdrLocked()
-  return EVT_CmdrQuery().locked
-end
-
 -- instance 1 of the guide layer (the Commander / Manual guide); instance 0 = bench request, 2 = spectator
 function EVT_CmdrApply(src)
   -- no coach mode in this match: the guide stays hidden, none of the coach-mode queries run (the framework refuses

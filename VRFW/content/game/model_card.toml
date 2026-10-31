@@ -1,0 +1,14 @@
+schema = "VRFW.game/2"
+
+# Model cards: one player's 3D model posed inside a box of a menu screen (docs/framework/model-card.md). Run time:
+# scripts\model_card.lua; game Lua side: assets\lua\menu\_all\91_model_card.lua (VRFW_ModelCard).
+
+# (motion set, clips "pack:clip|…") -> { clip, name, pack, attach, camera }: the first clip the set holds
+[[VRFW.Command]]
+name = "CMND_VRFW_MODEL_CARD_CLIP"
+handler = "ModelCard.Clip"
+
+# (model handle, pack path) -> true | false, why: the motion pack loaded onto the model
+[[VRFW.Command]]
+name = "CMND_VRFW_MODEL_CARD_PACK"
+handler = "ModelCard.Pack"

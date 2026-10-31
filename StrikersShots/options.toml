@@ -9,6 +9,7 @@ schema = "VRFW.option/2"
 
 [[option]]
 id = "skip_goal_scene"                        # row key StrikersShots.skip_goal_scene
+visual = true                                 # only what this player sees / hears: not compared in online rooms
 type = "toggle"                               # 0 = Desactivado (goal smash plays), 1 = Activado (normal goal)
 label = "skip_goal_scene"                     # «Saltar la cinemática de gol especial» (text\keys.toml, 9 languages)
 help = "skip_goal_scene_help"

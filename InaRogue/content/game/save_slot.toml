@@ -12,6 +12,9 @@ schema = "VRFW.game/2"
 name = "InaRogue.SaveSlot"
 slot = { config = "save_slots.slot", default = 4, min = 2, max = 99 }
 takes_over = ["inazuma_fantasy"]
+# loading slot 4 from the slot screen opens INAROGUE's menu as the root of its own menu scene (no title; the game never
+# boots into slot 4; docs/game/modes/inarogue-own-scene-plan.md)
+root_menu = "evt_inarogue_menu"
 
 # ------------------------------------------------------------------------------------------------ save import
 
@@ -48,11 +51,6 @@ aliases = ["CMND_EVT_SLOT_ROGUE_RESET"]
 handler = "InaRogue.Slot.Reset"
 
 [[VRFW.Command]]
-name = "CMND_INAROGUE_SLOT_ROGUE_RETURN"   # (n) -> ok: where «back» goes from the INAROGUE save (2..3, 0 = the slot screen)
-aliases = ["CMND_EVT_SLOT_ROGUE_RETURN"]
-handler = "InaRogue.Slot.Return"
-
-[[VRFW.Command]]
 name = "CMND_INAROGUE_S1P_LOAD"            # () -> ok, chapter, subPhase (the locked slot's progress, read-only; INAROGUE only)
 aliases = ["CMND_EVT_S1P_LOAD"]
 handler = "InaRogue.Slot.S1pLoad"
@@ -75,7 +73,8 @@ needs = ["inarogue_phase_status"]
 
 # ------------------------------------------------------------------------------------------------ filters (INAROGUE save)
 
-# the title's mode request 0x449E298B(id): refused in the INAROGUE save except the options and «Mi equipo»
+# the title's mode request 0x449E298B(id): refused in the INAROGUE save except the options and «Mi equipo» (a safety
+# net: slot 4's title only forwards into INAROGUE)
 [[VRFW.CommandFilter]]
 name = "InaRogue.SlotModes"
 command = 1151216011

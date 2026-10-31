@@ -95,24 +95,6 @@ function PL.CrShownSlots()
   return aura, mix
 end
 
--- one loader.log line per shown player whose list holds hidden auras (kept; the 6 rows show the special moves)
-PL.proj_logged = {}
-function PL.ProjectionLog()
-  if n == nil or n == 0 or PL.proj_logged[n] then
-    return
-  end
-  PL.proj_logged[n] = true
-  local hidden = {}
-  for p = 0, EVT_NORMAL_NUM - 1 do
-    local id = EVT_ListSkill(p)
-    if id ~= 0 and EVT_IsSpecial(id) then
-      hidden[#hidden + 1] = string.format("%d %s", p + 1, EVT_Name(id))
-    end
-  end
-  if #hidden > 0 then
-    EVT_Log("projection", "player", string.format("%08X", EVT_U32(n)), "hidden on list positions (kept):", table.concat(hidden, ", "))
-  end
-end
 PL.ProjPrevEquip = EVT_Equip
 function EVT_Equip(row, skill, inv_hint, cur)
   local displaced = nil

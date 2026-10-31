@@ -51,11 +51,41 @@ local function set_of(list)
   return out
 end
 
+-- lower-cased mod name -> the installed id the framework gives that mod (the `mod` of its declarations, the id
+-- VRFW.files.config takes): every active mod's installed id, mod.toml id, prefix and former_ids; read once
+local INSTALLED_IDS = nil
+local function installed_id(name)
+  name = tostring(name or "")
+  if INSTALLED_IDS == nil then
+    INSTALLED_IDS = {}
+    local ok, files = pcall(VRFW.files.declarations, "mod.toml")
+    if ok and type(files) == "table" then
+      local roots = {}
+      for _, f in ipairs(files) do
+        if f.file == "mod.toml" and type(f.data) == "table" then roots[#roots + 1] = f end
+      end
+      for _, f in ipairs(roots) do
+        local names = { f.data.id, f.data.prefix }
+        for _, n in ipairs(type(f.data.former_ids) == "table" and f.data.former_ids or {}) do names[#names + 1] = n end
+        for _, n in ipairs(names) do
+          if type(n) == "string" and n ~= "" then INSTALLED_IDS[n:lower()] = tostring(f.mod) end
+        end
+      end
+      for _, f in ipairs(roots) do INSTALLED_IDS[tostring(f.mod):lower()] = tostring(f.mod) end
+    else
+      warn("mod manifests not readable (" .. tostring(files) .. "): mod names taken as installed ids")
+    end
+  end
+  return INSTALLED_IDS[name:lower()] or name
+end
+M.installed_id = installed_id
+
 -- the clubs of the source mods and the game's own teams of config [teams] game_team_pattern:
 -- { { id, key, name_text, rating, players = { { card, uid, slot, number } }, game } }, sorted by key; nil + why when
 -- there is none
 function M.load()
-  local sources = set_of(config("teams.sources", {}))
+  local sources = {}
+  for name in pairs(set_of(config("teams.sources", {}))) do sources[installed_id(name)] = true end
   local level = tonumber(config("teams.level", 0)) or 0
   local needs = config("teams.require", {})
   local last_slot = tonumber(config("teams.player_slot_max", 18)) or 18
@@ -117,6 +147,12 @@ function M.load()
       end
     end
   end
+  if next(mods) == nil then
+    local names = {}
+    for name in pairs(sources) do names[#names + 1] = name end
+    table.sort(names)
+    warn("no team declaration of the source mods (" .. table.concat(names, ", ") .. "): only the game's own teams")
+  end
   if #out == 0 then
     return nil, "no club declared by the source mods"
   end
@@ -132,6 +168,8 @@ function M.load()
   return out
 end
 
+local RAW = {}   -- game table path -> { info, refs, members } rows, read once
+
 -- the game's own teams no source mod declares (team_config, config.toml [teams] game_table): the ones of `keys`, and
 -- with `pattern` (a Lua pattern) every team whose key matches it at `level` (0 = any) ->
 -- { [key] = { id, key, name_text, players = { { card, uid, slot, number } }, same_as = {}, series = "" } }
@@ -139,14 +177,21 @@ function M.game_teams(keys, pattern, level)
   local out = {}
   if #keys == 0 and (pattern or "") == "" then return out end
   local path = tostring(config("teams.game_table", "data/common/gamedata/team/team_config_*.cfg.bin"))
-  local ok1, info_rows = pcall(VRFW.table.raw, path, "SOCCER_TEAM_INFO", { 1, 2, 4, 9 })
-  local ok2, refs = pcall(VRFW.table.raw, path, "SOCCER_TEAM_INFO_REF_MEMBER", { 1, 2 })
-  local ok3, members = pcall(VRFW.table.raw, path, "SOCCER_TEAM_MEMBER", { 1, 2, 9, 11 })
-  if not (ok1 and ok2 and ok3) or type(info_rows) ~= "table" or type(refs) ~= "table" or type(members) ~= "table"
-      or #refs ~= #info_rows then
-    warn("the game's team table is not readable (" .. path .. "): no game teams")
-    return out
+  -- the game's files do not change while the game runs: the three tables read once per path
+  local cached = RAW[path]
+  if cached == nil then
+    local ok1, info_rows = pcall(VRFW.table.raw, path, "SOCCER_TEAM_INFO", { 1, 2, 4, 9 })
+    local ok2, refs = pcall(VRFW.table.raw, path, "SOCCER_TEAM_INFO_REF_MEMBER", { 1, 2 })
+    local ok3, members = pcall(VRFW.table.raw, path, "SOCCER_TEAM_MEMBER", { 1, 2, 9, 11 })
+    if not (ok1 and ok2 and ok3) or type(info_rows) ~= "table" or type(refs) ~= "table" or type(members) ~= "table"
+        or #refs ~= #info_rows then
+      warn("the game's team table is not readable (" .. path .. "): no game teams")
+      return out
+    end
+    cached = { info = info_rows, refs = refs, members = members }
+    RAW[path] = cached
   end
+  local info_rows, refs, members = cached.info, cached.refs, cached.members
   local want = set_of(keys)
   local last_slot = tonumber(config("teams.player_slot_max", 18)) or 18
   for i, r in ipairs(info_rows) do
@@ -182,7 +227,7 @@ function M.mark_national(list)
   if mod == "" or path == "" then
     return 0, 0
   end
-  local ok, keys = pcall(VRFW.files.config, path, mod)
+  local ok, keys = pcall(VRFW.files.config, path, installed_id(mod))
   if not ok or type(keys) ~= "table" then
     warn("national sides: " .. mod .. " " .. path .. " not readable (" .. tostring(keys) .. "): every team is a club")
     return 0, 0
@@ -211,26 +256,83 @@ function M.mark_national(list)
   return n, #keys
 end
 
--- team id -> rating from the rating table (config.toml [ratings] table); unknown teams get the median
-function M.rate(list)
-  local key = tostring(config("ratings.table", ""))
-  local map, values = {}, {}
-  if key ~= "" then
-    local ok, rows = pcall(VRFW.table.raw, key, tostring(config("ratings.rows", "EVT_BB_RATING")))
-    if ok and type(rows) == "table" then
-      for _, r in ipairs(rows) do
-        local team, v = u32(r[1]), tonumber(r[2]) or 0
-        if team ~= 0 and v > 0 then
-          map[team] = v
-        end
-      end
-    else
-      info("no rating table (" .. key .. "): the draw uses one rating for every club")
-    end
+-- team id -> rating from the exported function of config.toml [ratings] source ("<Prefix>.<Function>"), read once
+local RATINGS = nil
+local function rating_map()
+  if RATINGS then return RATINGS end
+  RATINGS = {}
+  local source = tostring(config("ratings.source", ""))
+  local prefix, name = source:match("^([%w_]+)%.([%w_]+)$")
+  if not prefix then return RATINGS end   -- no exported function ("" or the career's own rule, e.g. "levels")
+  local owner = rawget(_G, prefix)
+  local ok, map = false, nil
+  if type(owner) == "table" then
+    ok, map = pcall(function() return owner[name]() end)
   end
+  if ok and type(map) == "table" then
+    for team, v in pairs(map) do
+      team, v = u32(team), tonumber(v) or 0
+      if team ~= 0 and v > 0 then RATINGS[team] = v end
+    end
+  else
+    info("no club ratings from " .. source .. " (" .. tostring(map) .. ")")
+  end
+  return RATINGS
+end
+
+-- card -> strength (chara_param column config [ratings] strength_column, else [squads] strength_column), read once
+local STRENGTH = nil
+local function strength_of(card)
+  if STRENGTH == nil then
+    STRENGTH = {}
+    local col = tostring(config("ratings.strength_column", config("squads.strength_column", "rank")))
+    local ok, list = pcall(VRFW.chara.cards, { columns = { col } })
+    for _, k in ipairs(ok and type(list) == "table" and list or {}) do
+      STRENGTH[u32(k.id)] = tonumber(type(k.cols) == "table" and k.cols[col]) or 0
+    end
+    if not ok then warn("character index not readable (" .. tostring(list) .. "): no roster ratings") end
+  end
+  return STRENGTH[u32(card)] or 0
+end
+
+-- a club's rating from its players (config [ratings] fallback = "best_players"): `base` + the mean strength of its
+-- best `count` players x `scale`; nil without players. `cards` = the club's cards (its career squad), else its roster
+local function roster_rating(t, cards)
+  local count = math.max(1, floor(tonumber(config("ratings.count", 11)) or 11))
+  local base = tonumber(config("ratings.base", 100)) or 100
+  local scale = tonumber(config("ratings.scale", 10)) or 10
+  local values = {}
+  if type(cards) == "table" then
+    for _, c in ipairs(cards) do values[#values + 1] = strength_of(c) end
+  else
+    for _, p in ipairs(t.players or {}) do values[#values + 1] = strength_of(p.card) end
+  end
+  if #values == 0 then return nil end
+  table.sort(values, function(a, b) return a > b end)
+  local sum, n = 0, math.min(count, #values)
+  for i = 1, n do sum = sum + values[i] end
+  return base + sum / n * scale
+end
+
+-- team id -> rating: the ratings of config [ratings] source when they rate any team of `list` (an unrated one gets
+-- their median); else, with [ratings] fallback = "best_players", every team rated from its players (roster_rating;
+-- `cards_of` = team id -> its cards, e.g. the career squads; nil = the rosters); else every team the same rating
+function M.rate(list, cards_of)
+  local map, values = rating_map(), {}
   for _, t in ipairs(list) do
     if map[t.id] then
       values[#values + 1] = map[t.id]
+    end
+  end
+  local how = "rating source"
+  if #values == 0 and tostring(config("ratings.fallback", "best_players")) == "best_players" then
+    how, map = "players", {}
+    for _, t in ipairs(list) do
+      local r = roster_rating(t, type(cards_of) == "table" and cards_of[t.id] or nil)
+      if r and r > 0 then
+        map[t.id] = r
+        values[#values + 1] = r
+      end
     end
   end
   table.sort(values)
@@ -238,7 +340,8 @@ function M.rate(list)
   for _, t in ipairs(list) do
     t.rating = map[t.id] or median
   end
-  info(string.format("%d of %d clubs rated (median %s)", #values, #list, tostring(median)))
+  info(string.format("%d of %d clubs rated by the %s (median %s, %s to %s)", #values, #list, how,
+    string.format("%.1f", median), string.format("%.1f", values[1] or 0), string.format("%.1f", values[#values] or 0)))
 end
 
 -- the names of the clubs in the family language (config.toml [family] language), by name text id
@@ -259,6 +362,27 @@ local function names_of(list)
   for id, s in pairs(texts) do
     if s ~= "" then
       out[u32(id)] = (s:gsub("^%s+", ""):gsub("%s+$", ""))
+    end
+  end
+  return out
+end
+
+-- the teams of `list` whose names (config [family] language) another team of the list has too -> { [team id] =
+-- its series ([[team]] series, "" for a game team) }
+function M.name_clashes(list)
+  local names = names_of(list)
+  local by_name = {}
+  for _, t in ipairs(list) do
+    local name = names[t.name_text]
+    if name then
+      by_name[name] = by_name[name] or {}
+      table.insert(by_name[name], t)
+    end
+  end
+  local out = {}
+  for _, group in pairs(by_name) do
+    if #group > 1 then
+      for _, t in ipairs(group) do out[t.id] = tostring(t.series or "") end
     end
   end
   return out

@@ -274,3 +274,10 @@ game_rate = 14.1
 # pre-match event to go straight to the kick-off, 0..10 (default 1.0 = the retail Y hold; 0 = no X prompt). It was
 # BetterUI's config.toml prematch_skip_hold until Utilities 1.17.0.
 hold = 1.0
+
+[away_kit]
+# Save adjust «Quitar las equipaciones de visitante de las actualizaciones» (Options › «Ajustar save»,
+# content\save_adjust\away_kits.toml, scripts\away_kit.lua): a kit item is an away-kit item when its key is another
+# kit item's key + `_<n>` and its uniform is that kit's away twin (the pair map of the Local / Visitante switch).
+# keep: item keys that stay although they match (a team's own kit, not an away copy of a kit).
+keep = ["uni_u041401_20"]   # «Equipación Revolucionarios»: Revolucionarios' own kit (a match prize), Kirkwood GO's twin

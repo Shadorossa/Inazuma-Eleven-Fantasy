@@ -115,10 +115,6 @@ function M.target_level_raw(curve, phase, col, cols)
   return math.max(U.round(a + (b - a) * t), 1)
 end
 
-function M.target_level(curve, phase, col, cols)
-  return growth.clamp(M.target_level_raw(curve, phase, col, cols))   -- the level the game plays now
-end
-
 -- tier window (lo, hi) of the pool of `kind` in `phase`
 function M.tier_range(kind, phase)
   local p = math.max(phase, 1)

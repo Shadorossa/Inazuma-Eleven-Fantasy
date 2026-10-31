@@ -117,14 +117,6 @@ function M.connected(m, from, to)
   return false
 end
 
-function M.next_of(m, cur)
-  local o = {}
-  for _, e in ipairs(m.edges) do
-    if e[1] == cur then o[#o + 1] = e[2] end
-  end
-  return o
-end
-
 local function col_width(m, c)
   local n = 0
   for _, nd in ipairs(m.nodes) do

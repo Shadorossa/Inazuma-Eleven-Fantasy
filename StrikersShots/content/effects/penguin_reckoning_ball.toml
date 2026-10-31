@@ -1,0 +1,31 @@
+# «Pingüinos de luz y sombra» (Penguin Reckoning, whs03250; forest shot, cut-in ev60_03250): while the ball flies to the
+# goal after the cut-in it keeps the look of the cut-in's shot cut (c0800): the ball as a comet with a white core in a
+# yellow light shell and a purple shadow shell, a yellow and a purple tail, a warm glow and black lightning crackling
+# round it, and the six penguins of the cut-in (three of light with their halos, three of shadow with red devil wings)
+# gliding right behind it, swaying gently, each trailing a long straight plume of light or shadow, instead of the plain special-shot
+# aura. The object is ev6032pr00 (effect/event/ev60/ev6032pr00/), built by
+# research/scripts/penguin_reckoning_ball_fx.py from the cut-in's effect object ev60032500 and its penguin model
+# ev60_03251: c0800 held at frame 490, ball at the origin raised 0.14 m to its centre, +Z along the plumes (the comet
+# head turned onto them), x1; the penguins in their cut-in places, poses and toon shading, each rocking and bobbing
+# at its own phase, growing in as the kick point passes them; the plumes and
+# tails coming out of the kick point by distance and fading out softly at their rear; the glows drawn as billboards.
+# Left out: the kick's light / shadow burst, the goal's impacts and rings, and every part of the earlier cuts.
+# Its flight: content\techniques\penguin_reckoning_trajectory.toml (level at 2.0 m).
+# The trigger copies the special-shot aura row the automatic aura used (like = "ega0075d"): CB_SkillShootBallAura
+# turns +Z along the ball's velocity every frame (aura-balon-tiro.md §2b).
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "penguin_reckoning"
+from = "ega0075d"
+object = "effect/event/ev60/ev6032pr00/ev6032pr00.objbin"
+
+[[shot_aura]]
+name = "penguin_reckoning"
+when = { techniques = ["whs03250"] }
+aura = "penguin_reckoning"
+like = "ega0075d"
+# the trail comes out of the kick point: the clip runs on the ball's distance from it
+# (0.75 m a frame, the generator's DRIFT; docs/framework/types/effect.md «Distance clock»)
+anchor = "kick"
+drift = 0.75

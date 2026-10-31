@@ -3,13 +3,13 @@ former_ids = ["pachangas"]
 # name / description: the English fallback; the «Mods» screen shows the text keys mod_name / mod_description in the
 # game's language (text\keys.toml)
 name = "5-a-side teams"
-version = "1.9.0"
+version = "1.14.0"
 author = "Shadorossa"
 author_steam = "76561199013321372"
-description = "Team Dock's list starts with one row of two columns, «Match» and «5-a-side» (left / right pick one, confirm switches the dock to it): every Team Dock holds its own 5-a-side team next to its 11-a-side one, with its 5v5 formations, kit, emblem and bank view, and «Set as active team» picks the active 5-a-side team the friendlies are played with."
+description = "Team Dock's list starts with one row of two columns, «Match» and «5-a-side» (left / right pick one, confirm switches): every Team Dock's 5-a-side team mirrors its match team, with the same players, kit, emblem and name; its five are picked automatically by the 5v5 formation and can be swapped among those players, and the active team is one Team Dock for both formats: its 5-a-side team is the one the friendlies are played with."
 priority = 0
 tags = ["Teams", "Gameplay"]
-updated = "2026-10-30"
+updated = "2026-10-31"
 # 1.0.1 (2026-10-15): the team name length filter left pachanga_dock: Utilities owns it (graft util_team_name,
 # docs/game/ui/team-name-length.md)
 # 1.0.2 (2026-10-16): the four type boxes became one normal list row «< 11 v 11 >»: left / right (or a click on its
@@ -29,14 +29,16 @@ folder = "Pachangas"
 # Moved out of Inazuma Fantasy (id inazuma_fantasy, research/mods/_aside: its part pachanga, module pachanga) on
 # 2026-10-15 (owner request: the pachangas live in Football Reforged; docs/game/ui/pachanga-templates.md). Standard mod
 # layout (docs/framework/mod-layout.md):
-#   scripts\pachanga.lua                   the 5v5 templates: the active pachanga team per save slot and team bank page
-#                                          (blob pachanga.json), the 5v5 / 11v11 split of docks 02+, the team bonuses swap
+#   scripts\pachanga.lua                   the 5v5 templates: the active pachanga team (the active match dock's pair), the
+#                                          mirror rule (the 5v5 team = the 11v11 team's players, CMND_PACHANGAS_MIRROR;
+#                                          blob pachanga.json), one team per place / move, the team bonuses swap
 #   scripts\scripts.toml                   the scripts' instruction budget
 #   content\game\pachanga.toml             commands CMND_PACHANGAS_* (aliases CMND_FANTASY_PACHANGA_* / CMND_EVT_PACHANGA_*)
 #   content\game\save_import.toml          Inazuma Fantasy's pachanga.json, copied once per save slot
 #   content\menus\pachanga_bank.toml       the bank's 5v5 pitch layer evt_bank5_field (assets\gamedata\menu\obj\ and
 #                                          assets\menu\100_mainmenu\mainmenu04\evt_bank5_field\)
-#   content\menus\pachanga_dock.toml       the Team Dock list's LEFT key (the format columns, graft pachanga_dock)
+#   content\menus\pachanga_dock.toml       the Team Dock list's LEFT key and its own row slot joints (the format
+#                                          columns, graft pachanga_dock)
 #   content\images\menu\102_team\team01\team01_02.toml   the format columns' half plates: recipes that cut the game's
 #                                          own list row plates at build (end caps + a shorter middle; no game pixel)
 #   text\rows\pachanga_dock.toml           the type row's texts (menu_text, 9 languages)

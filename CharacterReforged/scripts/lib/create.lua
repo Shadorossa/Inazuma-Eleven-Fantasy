@@ -123,15 +123,6 @@ local function load_systems()
   return list
 end
 
--- the declared systems in row order (a copy of their data, for other mods)
-function CharacterReforged.Create.Systems()
-  local out = {}
-  for i, s in ipairs(load_systems()) do
-    out[i] = { system = s.system, pair_system = s.pair_system, mod = s.mod, item = s.item, store = s.store_name, carrier = s.carrier }
-  end
-  return out
-end
-
 -- ---------------------------------------------------------------------------------------- the flow (commands)
 
 local SNAP = {}

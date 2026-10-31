@@ -1,0 +1,11 @@
+schema = "VRFW.technique/3"
+# «Strikers Shots»: the flight of Golf total (Utter Gutsiness Club, whs00630, cut-in ev60_00630): one straight level
+# line from the kick point to the goal, the ball at 2.2 m the whole way (the cut-in sends it climbing; its star and
+# glows, up to ~1.9 m round the ball, stay clear of the grass). Heights are the ball centre over the pitch (m); the
+# height is held.
+# unblockable = false: the game's block rules (this mod changes no block rule).
+
+# Golf total (whs00630).
+[[edit]]
+target = "whs00630"
+trajectory = { points = [[0.0, 2.2]], straight = true, unblockable = false }

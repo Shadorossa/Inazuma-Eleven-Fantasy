@@ -1,0 +1,9 @@
+schema = "VRFW.skill_board_lock/1"
+# Career Mode › while the career's team screen is up (state careermode.skill_board_locked, scripts\career.lua) no
+# player's moves, auras or mix can be changed; the skill board screens only show them.
+
+[[VRFW.SkillBoardLock]]
+name = "career"
+state = "careermode.skill_board_locked"
+text = "CareerMode.SkillBoardLocked"
+dock_only = true

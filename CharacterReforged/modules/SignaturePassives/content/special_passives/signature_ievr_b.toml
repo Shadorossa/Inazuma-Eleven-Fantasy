@@ -1474,15 +1474,15 @@ passive = "c11110150_lecho_de_rosas"
 character = "c11110150"
 tags = ["noble", "trickster"]
 
-# Amara Winslow: Espada de la reina — power of her «Espada» family moves +10 %
+# Amara Winslow: Guardia múltiple de la reina — power of her «Multiple» family moves +10 %
 [[VRFW.Passive]]
-name = "c11110160_espada_de_la_reina"
-blocks = ["ievr_b_family_legendaryweapons", "ievr_b_techniquepower_self_10", "ievr_b_card_c11110160"]
+name = "c11110160_guardia_multiple_de_la_reina"
+blocks = ["ievr_b_family_multiple", "ievr_b_techniquepower_self_10", "ievr_b_card_c11110160"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c11110160"
-passive = "c11110160_espada_de_la_reina"
+passive = "c11110160_guardia_multiple_de_la_reina"
 
 [[VRFW.CharacterTags]]
 character = "c11110160"
@@ -1740,10 +1740,10 @@ passive = "c11210510_piedra_filosofal"
 character = "c11210510"
 tags = ["brain", "striker"]
 
-# Victorio Cryptix: Máscara de cripta — power of his «Sombra» family moves +10 %
+# Victorio Cryptix: Máscara de cripta — power of his «Rebound» family moves +10 %
 [[VRFW.Passive]]
 name = "c11600010_mascara_de_cripta"
-blocks = ["ievr_b_family_illusions", "ievr_b_techniquepower_self_10", "ievr_b_card_c11600010"]
+blocks = ["ievr_b_family_rebound", "ievr_b_techniquepower_self_10", "ievr_b_card_c11600010"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2048,10 +2048,10 @@ passive = "c11700320_manos_que_inspiran"
 character = "c11700320"
 tags = ["wall", "brain"]
 
-# Harrey Tagebard: Premio gordo — power of his «Tigre» family moves +10 %
+# Harrey Tagebard: Premio gordo — each goal he scores: his team +2 tension (max 3 per half)
 [[VRFW.Passive]]
 name = "c11700790_premio_gordo"
-blocks = ["ievr_b_family_beasts", "ievr_b_techniquepower_self_10", "ievr_b_card_c11700790"]
+blocks = ["ievr_b_when_goal_by_self", "ievr_b_stack_max3_0s_per_half", "ievr_b_tension_2", "ievr_b_card_c11700790"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -2370,10 +2370,10 @@ passive = "c11020120_aliento_para_el_equipo"
 character = "c11020120"
 tags = ["brain", "trickster"]
 
-# Nino Gamberini: Triángulo de fuego — his shoot power +3 % per teammate on the pitch carrying a «Fuego» family move (max 3)
+# Nino Gamberini: Triángulo de fuego — his shoot power +3 % per teammate on the pitch carrying a Triangle Z family move (max 3)
 [[VRFW.Passive]]
 name = "c11020130_triangulo_de_fuego"
-blocks = ["ievr_b_count_firetornado_team_max3", "ievr_b_techniquepower_self_shoot_3", "ievr_b_card_c11020130"]
+blocks = ["ievr_b_count_trianglez_team_max3", "ievr_b_techniquepower_self_shoot_3", "ievr_b_card_c11020130"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3070,10 +3070,10 @@ passive = "c11140070_bajamar"
 character = "c11140070"
 tags = ["speedster", "wall"]
 
-# Summers Laughlin: Sol sobre el muelle — power of his «Sol» family moves +10 %
+# Summers Laughlin: Sol sobre el muelle — Solar Surprise power +15 % in the first half
 [[VRFW.Passive]]
 name = "c11140080_sol_sobre_el_muelle"
-blocks = ["ievr_b_family_eventhorizon", "ievr_b_techniquepower_self_10", "ievr_b_card_c11140080"]
+blocks = ["ievr_b_half_1", "ievr_b_move_whd00870", "ievr_b_techniquepower_self_15", "ievr_b_card_c11140080"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3280,10 +3280,10 @@ passive = "c11150020_pelota_bendecida"
 character = "c11150020"
 tags = ["divine", "speedster"]
 
-# Riza Nagivar: Trueno en el Olimpo — power of his «Trueno» family moves +10 %
+# Riza Nagivar: Trueno en el Olimpo — Thundertaker power +5 % per «Divino» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11150030_trueno_en_el_olimpo"
-blocks = ["ievr_b_family_inazumapower", "ievr_b_techniquepower_self_10", "ievr_b_card_c11150030"]
+blocks = ["ievr_b_count_divine_team_max3", "ievr_b_move_whs02210", "ievr_b_techniquepower_self_5", "ievr_b_card_c11150030"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3322,10 +3322,10 @@ passive = "c11150050_canto_de_atenea"
 character = "c11150050"
 tags = ["divine", "acrobat"]
 
-# Kazimir Stormblade: Hoja de Odín — power of his «Espada» family moves +10 %
+# Kazimir Stormblade: Hoja de Odín — Odin Sword and Gladius Arch power +12 % while his team is level
 [[VRFW.Passive]]
 name = "c11150060_hoja_de_odin"
-blocks = ["ievr_b_family_legendaryweapons", "ievr_b_techniquepower_self_10", "ievr_b_card_c11150060"]
+blocks = ["ievr_b_score_level", "ievr_b_move_whs01070_whs01040", "ievr_b_techniquepower_self_12", "ievr_b_card_c11150060"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3448,10 +3448,10 @@ passive = "c11150140_cosecha_divina"
 character = "c11150140"
 tags = ["divine", "wall"]
 
-# Cate Heckel: Lluvia de estrellas — power of his «Estrella» family moves +10 %
+# Cate Heckel: Lluvia de estrellas — each successful Meteor Shower by him: his team +1 tension (max 3 per half)
 [[VRFW.Passive]]
 name = "c11150150_lluvia_de_estrellas"
-blocks = ["ievr_b_family_eventhorizon", "ievr_b_techniquepower_self_10", "ievr_b_card_c11150150"]
+blocks = ["ievr_b_when_technique_result_won_by_self", "ievr_b_move_who00420", "ievr_b_outcome_succeeds", "ievr_b_stack_max3_0s_per_half", "ievr_b_tension_1", "ievr_b_card_c11150150"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3546,10 +3546,10 @@ passive = "c11700060_todos_al_remate"
 character = "c11700060"
 tags = ["striker", "captain"]
 
-# Starry Durant: Polvo de estrellas — power of his «Estrella» family moves +10 %
+# Starry Durant: Polvo de estrellas — Mystic Mist power +15 % while a «Cerebro» teammate is on the pitch
 [[VRFW.Passive]]
 name = "c11700430_polvo_de_estrellas"
-blocks = ["ievr_b_family_eventhorizon", "ievr_b_techniquepower_self_10", "ievr_b_card_c11700430"]
+blocks = ["ievr_b_present_brain_team", "ievr_b_move_whd00900", "ievr_b_techniquepower_self_15", "ievr_b_card_c11700430"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -3630,15 +3630,15 @@ passive = "c11720060_martillazo_de_gravedad"
 character = "c11720060"
 tags = ["wall", "beast"]
 
-# Lyra Nazar: Luz de pegaso — power of her «Pegaso» family moves +10 %
+# Lyra Nazar: Luz del triángulo — power of her «Triangle» family moves +10 %
 [[VRFW.Passive]]
-name = "c11720070_luz_de_pegaso"
-blocks = ["ievr_b_family_pegasus", "ievr_b_techniquepower_self_10", "ievr_b_card_c11720070"]
+name = "c11720070_luz_del_triangulo"
+blocks = ["ievr_b_family_triangle", "ievr_b_techniquepower_self_10", "ievr_b_card_c11720070"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c11720070"
-passive = "c11720070_luz_de_pegaso"
+passive = "c11720070_luz_del_triangulo"
 
 [[VRFW.CharacterTags]]
 character = "c11720070"
@@ -3854,15 +3854,15 @@ passive = "c11070140_mirada_de_espanto"
 character = "c11070140"
 tags = ["mystic", "striker"]
 
-# Volk Lorius: Lobo de la tormenta — power of his «Lobo» family moves +10 %
+# Volk Lorius: Manada múltiple — power of his «Multiple» family moves +10 %
 [[VRFW.Passive]]
-name = "c11070150_lobo_de_la_tormenta"
-blocks = ["ievr_b_family_beasts", "ievr_b_techniquepower_self_10", "ievr_b_card_c11070150"]
+name = "c11070150_manada_multiple"
+blocks = ["ievr_b_family_multiple", "ievr_b_techniquepower_self_10", "ievr_b_card_c11070150"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c11070150"
-passive = "c11070150_lobo_de_la_tormenta"
+passive = "c11070150_manada_multiple"
 
 [[VRFW.CharacterTags]]
 character = "c11070150"
@@ -3882,15 +3882,15 @@ passive = "c11070160_tropiezo_en_la_sombra"
 character = "c11070160"
 tags = ["wall", "beast"]
 
-# Wythers Moonridge: Luna sobre la cresta — power of his «Luna» family moves +10 %
+# Wythers Moonridge: Clones sobre la cresta — power of his «Multiple» family moves +10 %
 [[VRFW.Passive]]
-name = "c11070500_luna_sobre_la_cresta"
-blocks = ["ievr_b_family_eventhorizon", "ievr_b_techniquepower_self_10", "ievr_b_card_c11070500"]
+name = "c11070500_clones_sobre_la_cresta"
+blocks = ["ievr_b_family_multiple", "ievr_b_techniquepower_self_10", "ievr_b_card_c11070500"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c11070500"
-passive = "c11070500_luna_sobre_la_cresta"
+passive = "c11070500_clones_sobre_la_cresta"
 
 [[VRFW.CharacterTags]]
 character = "c11070500"
@@ -5352,10 +5352,10 @@ passive = "c11724060_buen_pase_buen_juego"
 character = "c11724060"
 tags = ["speedster", "brain"]
 
-# Callista Norton: Bumerán de tigre — power of her «Tigre» family moves +10 %
+# Callista Norton: Bumerán de tigre — Boomerang Bluff and Tiger Drive power +10 %
 [[VRFW.Passive]]
 name = "c11724070_bumeran_de_tigre"
-blocks = ["ievr_b_family_beasts", "ievr_b_techniquepower_self_10", "ievr_b_card_c11724070"]
+blocks = ["ievr_b_move_who00760_whs00960", "ievr_b_techniquepower_self_10", "ievr_b_card_c11724070"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -5800,15 +5800,15 @@ passive = "c11090110_llano_de_la_sabiduria"
 character = "c11090110"
 tags = ["brain", "trickster"]
 
-# Rowland Brightwood: Bosque de sombras — power of his «Sombra» family moves +10 %
+# Rowland Brightwood: Bosque de clones — power of his «Multiple» family moves +10 %
 [[VRFW.Passive]]
-name = "c11090120_bosque_de_sombras"
-blocks = ["ievr_b_family_illusions", "ievr_b_techniquepower_self_10", "ievr_b_card_c11090120"]
+name = "c11090120_bosque_de_clones"
+blocks = ["ievr_b_family_multiple", "ievr_b_techniquepower_self_10", "ievr_b_card_c11090120"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
 character = "c11090120"
-passive = "c11090120_bosque_de_sombras"
+passive = "c11090120_bosque_de_clones"
 
 [[VRFW.CharacterTags]]
 character = "c11090120"
@@ -6178,10 +6178,10 @@ passive = "c11721050_linea_de_pase_limpia"
 character = "c11721050"
 tags = ["brain", "trickster"]
 
-# Rylan Spiker: Remate de tigre — power of his «Tigre» family moves +10 %
+# Rylan Spiker: Remate de tigre — Tiger Drive power +15 % from set pieces
 [[VRFW.Passive]]
 name = "c11721060_remate_de_tigre"
-blocks = ["ievr_b_family_beasts", "ievr_b_techniquepower_self_10", "ievr_b_card_c11721060"]
+blocks = ["ievr_b_own_set_piece", "ievr_b_move_whs00960", "ievr_b_techniquepower_self_15", "ievr_b_card_c11721060"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6290,10 +6290,10 @@ passive = "c11729010_apretar_los_dientes"
 character = "c11729010"
 tags = ["brain", "trickster"]
 
-# Davey Lockers: Lluvia de meteoros — power of his «Estrella» family moves +10 %
+# Davey Lockers: Lluvia de meteoros — Meteor Shower power +5 % per «Acróbata» teammate on the pitch (max 3)
 [[VRFW.Passive]]
 name = "c11729020_lluvia_de_meteoros"
-blocks = ["ievr_b_family_eventhorizon", "ievr_b_techniquepower_self_10", "ievr_b_card_c11729020"]
+blocks = ["ievr_b_count_acrobat_team_max3", "ievr_b_move_who00420", "ievr_b_techniquepower_self_5", "ievr_b_card_c11729020"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]
@@ -6710,10 +6710,10 @@ passive = "c11500480_soplo_de_cojin"
 character = "c11500480"
 tags = ["brain", "acrobat"]
 
-# Flaurine Woodwind: Flauta travesera — power of her «Espada» family moves +10 %
+# Flaurine Woodwind: Flauta travesera — all teammates' control +2 % in the second half
 [[VRFW.Passive]]
 name = "c11700550_flauta_travesera"
-blocks = ["ievr_b_family_legendaryweapons", "ievr_b_techniquepower_self_10", "ievr_b_card_c11700550"]
+blocks = ["ievr_b_half_2", "ievr_b_stat_team_control_2", "ievr_b_card_c11700550"]
 caps = ["signature_total"]
 
 [[VRFW.Character]]

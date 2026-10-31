@@ -1,0 +1,26 @@
+# «Tornado de fuego DT» (Fire Tornado TC, whs02160 and whs02160_or, same cut-in ev60_02160; whs02170, the other «Fire
+# Tornado TC» key, has no cut-in of its own and wears the same aura): the finished fire whirl of the cut-in's last
+# cut (c0400, frame 381): the fire swirl round the ball (flame domes, cores, flame cone), the spiralling fire tube
+# trailing ~11 m behind it, the fire rings round the tube and the white light ribbon along the path, the fire flowing
+# on in a seamless loop; turned along the flight (no cut-in tilt), x1. The tube, rings and ribbon come out of the kick
+# point as the ball moves away (distance clock) with a soft rear end. The object is ev6216tc00, built by
+# research/scripts/fire_tornado_tc_ball_fx.py from the cut-in's effect object ev60021600.
+# docs/game/media/fire-tornado-tc-ball-fx.md.
+# Mod «Strikers Shots»: visuals only. The effect objects are generated on the author's PC from the game's own cut-in
+# effects by research/scripts/*_ball_fx.py (never committed: research/mods/StrikersShots/README.md).
+# The trigger copies the fire special-shot aura's row (like = "ega0075c"). Flight:
+# content\techniques\fire_tornado_tc_trajectory.toml.
+schema = "VRFW.effect/1"
+
+[[effect]]
+name = "fire_tornado_tc"
+from = "ega0075c"
+object = "effect/event/ev60/ev6216tc00/ev6216tc00.objbin"
+
+[[shot_aura]]
+name = "fire_tornado_tc"
+when = { techniques = ["whs02160", "whs02160_or", "whs02170"] }
+aura = "fire_tornado_tc"
+like = "ega0075c"
+anchor = "kick"
+drift = 0.75

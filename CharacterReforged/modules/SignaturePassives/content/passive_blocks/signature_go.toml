@@ -156,8 +156,8 @@ target = "self"
 mode = "percent"
 
 [[VRFW.MoveFamily]]
-name = "go_family_illusions"
-families = ["HissatsuReforged.Illusions"]
+name = "go_family_penguin"
+families = ["HissatsuReforged.Penguin"]
 
 [[VRFW.TechniquePower]]
 name = "go_techniquepower_team_8"
@@ -254,9 +254,26 @@ mode = "percent"
 stats = ["physical"]
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "go_family_eventhorizon"
-families = ["HissatsuReforged.EventHorizon"]
+[[VRFW.Trait]]
+name = "go_trait_keshin"
+keshin = true
+
+[[VRFW.Present]]
+name = "go_present_keshin_team"
+trait = "go_trait_keshin"
+side = "team"
+min = 1
+others = true
+
+[[VRFW.Move]]
+name = "go_move_whs00510"
+moves = ["whs00510"]
+
+[[VRFW.TechniquePower]]
+name = "go_techniquepower_self_15"
+value = 15
+target = "self"
+mode = "percent"
 
 [[VRFW.Trigger]]
 name = "go_when_technique_result_won_by_self"
@@ -373,10 +390,6 @@ mode = "percent"
 stats = ["physical"]
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "go_family_penguin"
-families = ["HissatsuReforged.Penguin"]
-
 [[VRFW.TechniquePower]]
 name = "go_techniquepower_self_catch_4"
 value = 4
@@ -439,12 +452,6 @@ target = "team"
 [[VRFW.Move]]
 name = "go_move_whs00400"
 moves = ["whs00400"]
-
-[[VRFW.TechniquePower]]
-name = "go_techniquepower_self_15"
-value = 15
-target = "self"
-mode = "percent"
 
 [[VRFW.Trait]]
 name = "go_trait_kirkwood"
@@ -610,9 +617,14 @@ mode = "percent"
 stats = ["agility"]
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "go_family_inazumapower"
-families = ["HissatsuReforged.InazumaPower"]
+[[VRFW.Trigger]]
+name = "go_when_dash_by_teammate"
+on = "dash"
+by = "teammate"
+
+[[VRFW.By]]
+name = "go_by_speedster"
+trait = "go_trait_speedster"
 
 [[VRFW.Trait]]
 name = "go_trait_mount_olympus"
@@ -657,16 +669,21 @@ name = "go_stack_max3_30s"
 max = 3
 duration_s = 30
 
+[[VRFW.Half]]
+name = "go_half_2"
+halves = [2]
+
+[[VRFW.StaminaRecovery]]
+name = "go_staminarecovery_team_4"
+percent = 4
+target = "team"
+
 [[VRFW.TechniquePower]]
 name = "go_techniquepower_self_block_3"
 value = 3
 kinds = ["block"]
 target = "self"
 mode = "percent"
-
-[[VRFW.MoveFamily]]
-name = "go_family_divinepower"
-families = ["HissatsuReforged.DivinePower"]
 
 [[VRFW.Trigger]]
 name = "go_when_ball_stopped_block_by_team"
@@ -810,9 +827,9 @@ target = "team"
 trait = "go_trait_forest"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "go_family_beasts"
-families = ["HissatsuReforged.Beasts"]
+[[VRFW.Move]]
+name = "go_move_whs00600"
+moves = ["whs00600"]
 
 [[VRFW.Trait]]
 name = "go_trait_prodigy_grammar"
@@ -894,21 +911,15 @@ side = "team"
 max = 3
 others = true
 
-[[VRFW.Trait]]
-name = "go_trait_pegasus"
-families = ["HissatsuReforged.Pegasus"]
+[[VRFW.Move]]
+name = "go_move_who00590"
+moves = ["who00590"]
 
-[[VRFW.Present]]
-name = "go_present_pegasus_team"
-trait = "go_trait_pegasus"
-side = "team"
-min = 1
-others = true
-
-[[VRFW.RecastTime]]
-name = "go_recasttime_self_minus15"
-percent = -15
-target = "self"
+[[VRFW.TechniquePower]]
+name = "go_techniquepower_team_10"
+value = 10
+target = "team"
+mode = "percent"
 
 [[VRFW.Trait]]
 name = "go_trait_dragon_link"
@@ -978,6 +989,19 @@ side = "team"
 max = 4
 others = true
 
+[[VRFW.HasBall]]
+name = "go_holds_ball"
+holds = true
+
+[[VRFW.Zone]]
+name = "go_zone_opponent_half"
+z = [0.0, 200.0]
+frame = "team"
+
+[[VRFW.Move]]
+name = "go_move_whs01620"
+moves = ["whs01620"]
+
 [[VRFW.Trait]]
 name = "go_trait_whs01550"
 moves = ["whs01550"]
@@ -1000,22 +1024,6 @@ value = 6
 kinds = ["long_shoot"]
 target = "self"
 mode = "percent"
-
-[[VRFW.Trait]]
-name = "go_trait_northernice"
-families = ["HissatsuReforged.NorthernIce"]
-
-[[VRFW.Count]]
-name = "go_count_northernice_team_max3"
-trait = "go_trait_northernice"
-side = "team"
-max = 3
-others = true
-
-[[VRFW.MoveSpeed]]
-name = "go_movespeed_self_3"
-percent = 3
-target = "self"
 
 [[VRFW.Trait]]
 name = "go_trait_df_alpine"
@@ -1048,15 +1056,14 @@ mode = "percent"
 stats = ["kick"]
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "go_family_northernice"
-families = ["HissatsuReforged.NorthernIce"]
+[[VRFW.Move]]
+name = "go_move_whs00440"
+moves = ["whs00440"]
 
 [[VRFW.TechniquePower]]
-name = "go_techniquepower_team_10_alpine"
-value = 10
-target = "team"
-trait = "go_trait_alpine"
+name = "go_techniquepower_self_5"
+value = 5
+target = "self"
 mode = "percent"
 
 [[VRFW.Trait]]
@@ -1159,6 +1166,11 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.MoveSpeed]]
+name = "go_movespeed_self_3"
+percent = 3
+target = "self"
+
 [[VRFW.Trait]]
 name = "go_trait_df_universal"
 team_groups = ["SynergiesReworked.universal"]
@@ -1171,6 +1183,13 @@ kinds = ["block"]
 target = "team"
 trait = "go_trait_df_universal"
 mode = "percent"
+
+[[VRFW.Stat]]
+name = "go_stat_opponents_kick_minus3"
+value = -3
+mode = "percent"
+stats = ["kick"]
+target = "opponents"
 
 [[VRFW.Trait]]
 name = "go_trait_almighty_faith"
@@ -1230,6 +1249,12 @@ name = "go_tensioncost_team_minus6_eternal_light"
 percent = -6
 target = "team"
 trait = "go_trait_eternal_light"
+
+[[VRFW.RecastTime]]
+name = "go_recasttime_self_dribble_minus10"
+percent = -10
+kinds = ["dribble"]
+target = "self"
 
 [[VRFW.Count]]
 name = "go_count_eternal_light_team_max3"
@@ -1370,9 +1395,16 @@ name = "go_tensioncost_self_minus8"
 percent = -8
 target = "self"
 
-[[VRFW.MoveFamily]]
-name = "go_family_whirlwinds"
-families = ["HissatsuReforged.Whirlwinds"]
+[[VRFW.Count]]
+name = "go_count_wind_team_max3"
+trait = "go_trait_wind"
+side = "team"
+max = 3
+others = true
+
+[[VRFW.Move]]
+name = "go_move_whs00990"
+moves = ["whs00990"]
 
 [[VRFW.TechniquePower]]
 name = "go_techniquepower_opponents_shoot_block_minus3"
@@ -1428,13 +1460,18 @@ target = "team"
 trait = "go_trait_df_inazuma_kids_fc"
 mode = "percent"
 
+[[VRFW.TensionGain]]
+name = "go_tensiongain_self_6"
+percent = 6
+target = "self"
+
 [[VRFW.Trait]]
-name = "go_trait_eventhorizon"
-families = ["HissatsuReforged.EventHorizon"]
+name = "go_trait_penguin"
+families = ["HissatsuReforged.Penguin"]
 
 [[VRFW.Present]]
-name = "go_present_eventhorizon_team"
-trait = "go_trait_eventhorizon"
+name = "go_present_penguin_team"
+trait = "go_trait_penguin"
 side = "team"
 min = 1
 others = true
@@ -1462,6 +1499,10 @@ name = "go_when_block_won_by_team"
 on = "block_won"
 by = "team"
 
+[[VRFW.Move]]
+name = "go_move_whs00960"
+moves = ["whs00960"]
+
 [[VRFW.Trait]]
 name = "go_trait_who00130_whd00140"
 moves = ["who00130", "whd00140"]
@@ -1488,9 +1529,20 @@ kinds = ["catch"]
 target = "self"
 mode = "percent"
 
-[[VRFW.MoveFamily]]
-name = "go_family_legendarybirds"
-families = ["HissatsuReforged.LegendaryBirds"]
+[[VRFW.Trigger]]
+name = "go_when_technique_result_won_by_teammate"
+on = "technique_result"
+arg = "won"
+by = "teammate"
+
+[[VRFW.Move]]
+name = "go_move_whs00100"
+moves = ["whs00100"]
+
+[[VRFW.Tension]]
+name = "go_tension_2"
+units = 2
+team = "carrier"
 
 [[VRFW.Stat]]
 name = "go_stat_self_technique_2"
@@ -1512,6 +1564,10 @@ target = "team"
 trait = "go_trait_forest_df"
 mode = "percent"
 
+[[VRFW.Clock]]
+name = "go_clock_first_third"
+half_fraction_to = "1/3"
+
 [[VRFW.Count]]
 name = "go_count_wall_team_max3"
 trait = "go_trait_wall"
@@ -1525,12 +1581,6 @@ value = 2
 kinds = ["block"]
 target = "self"
 mode = "percent"
-
-[[VRFW.Trigger]]
-name = "go_when_technique_result_won_by_teammate"
-on = "technique_result"
-arg = "won"
-by = "teammate"
 
 [[VRFW.Trait]]
 name = "go_trait_acrobat"
@@ -1603,12 +1653,9 @@ side = "team"
 max = 3
 others = true
 
-[[VRFW.Count]]
-name = "go_count_wind_team_max3"
-trait = "go_trait_wind"
-side = "team"
-max = 3
-others = true
+[[VRFW.Move]]
+name = "go_move_whd00890"
+moves = ["whd00890"]
 
 [[VRFW.TechniquePower]]
 name = "go_techniquepower_self_catch_2"
@@ -1617,23 +1664,9 @@ kinds = ["catch"]
 target = "self"
 mode = "percent"
 
-[[VRFW.Tension]]
-name = "go_tension_2"
-units = 2
-team = "carrier"
-
-[[VRFW.Trigger]]
-name = "go_when_dash_by_teammate"
-on = "dash"
-by = "teammate"
-
-[[VRFW.By]]
-name = "go_by_speedster"
-trait = "go_trait_speedster"
-
-[[VRFW.HasBall]]
-name = "go_holds_ball"
-holds = true
+[[VRFW.Move]]
+name = "go_move_whd01130"
+moves = ["whd01130"]
 
 [[VRFW.TechniquePower]]
 name = "go_techniquepower_team_shoot_3"
@@ -1659,12 +1692,6 @@ value = 3
 kinds = ["shoot"]
 target = "team"
 trait = "go_trait_fire_fw"
-mode = "percent"
-
-[[VRFW.TechniquePower]]
-name = "go_techniquepower_self_5"
-value = 5
-target = "self"
 mode = "percent"
 
 [[VRFW.Count]]
@@ -1701,6 +1728,10 @@ stats = ["physical"]
 target = "team"
 trait = "go_trait_wind"
 
+[[VRFW.MoveFamily]]
+name = "go_family_rebound"
+families = ["HissatsuReforged.Rebound"]
+
 [[VRFW.Trait]]
 name = "go_trait_fw_own_team"
 same_team_as_holder = true
@@ -1713,6 +1744,21 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.Trait]]
+name = "go_trait_miximax"
+miximax = true
+
+[[VRFW.Present]]
+name = "go_present_miximax_team"
+trait = "go_trait_miximax"
+side = "team"
+min = 1
+others = true
+
+[[VRFW.Move]]
+name = "go_move_whs01690"
+moves = ["whs01690"]
+
 [[VRFW.Count]]
 name = "go_count_striker_team_max3"
 trait = "go_trait_striker"
@@ -1720,9 +1766,15 @@ side = "team"
 max = 3
 others = true
 
-[[VRFW.MoveFamily]]
-name = "go_family_greatwalls"
-families = ["HissatsuReforged.GreatWalls"]
+[[VRFW.Move]]
+name = "go_move_whd01080"
+moves = ["whd01080"]
+
+[[VRFW.TechniquePower]]
+name = "go_techniquepower_team_12"
+value = 12
+target = "team"
+mode = "percent"
 
 [[VRFW.TechniquePower]]
 name = "go_techniquepower_team_block_2_fire"
@@ -1778,6 +1830,18 @@ kinds = ["chain_shoot"]
 target = "self"
 mode = "percent"
 
+[[VRFW.Move]]
+name = "go_move_whd00010"
+moves = ["whd00010"]
+
+[[VRFW.Half]]
+name = "go_half_1"
+halves = [1]
+
+[[VRFW.Move]]
+name = "go_move_whd01040"
+moves = ["whd01040"]
+
 [[VRFW.Trait]]
 name = "go_trait_mountain_df"
 elements = ["mountain"]
@@ -1804,6 +1868,10 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.Move]]
+name = "go_move_whd00900"
+moves = ["whd00900"]
+
 [[VRFW.TechniquePower]]
 name = "go_techniquepower_team_block_2_wind_df"
 value = 2
@@ -1820,9 +1888,12 @@ stats = ["physical"]
 target = "team"
 trait = "go_trait_forest"
 
-[[VRFW.MoveFamily]]
-name = "go_family_legendaryweapons"
-families = ["HissatsuReforged.LegendaryWeapons"]
+[[VRFW.SetPiece]]
+name = "go_own_set_piece"
+
+[[VRFW.Move]]
+name = "go_move_whs01460"
+moves = ["whs01460"]
 
 [[VRFW.Stat]]
 name = "go_stat_team_physical_3_mountain"
@@ -1867,6 +1938,12 @@ side = "team"
 max = 3
 others = true
 
+[[VRFW.RecastTime]]
+name = "go_recasttime_self_catch_minus8"
+percent = -8
+kinds = ["catch"]
+target = "self"
+
 [[VRFW.Stat]]
 name = "go_stat_team_physical_3_fire"
 value = 3
@@ -1892,11 +1969,19 @@ mode = "percent"
 name = "go_family_godhand"
 families = ["HissatsuReforged.GodHand"]
 
+[[VRFW.Move]]
+name = "go_move_whd00240"
+moves = ["whd00240"]
+
 [[VRFW.TensionCost]]
 name = "go_tensioncost_team_minus8_mystic"
 percent = -8
 target = "team"
 trait = "go_trait_mystic"
+
+[[VRFW.Move]]
+name = "go_move_whs01560"
+moves = ["whs01560"]
 
 # the own passive slot's game passive of each character (the card: name and text, no game effect)
 [[VRFW.GamePassive]]

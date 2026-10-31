@@ -47,7 +47,9 @@ do
   BetterUI_CharaMenu.CB = "CallbackCloseSelectCharaSetting" -- retail callback name of the per-player window
   BetterUI_CharaMenu.GRID_KIND = 26                         -- retail sub-window type: two-column grid
   BetterUI_CharaMenu.LIST_KIND = 0                          -- sub-window type: one-column list (win05_13, 9 slots)
-  -- sub_window_group getMaxParamNum / SetupWindowParams: size code -> rows of the type-0 window
+  -- sub_window_group getMaxParamNum / SetupWindowParams: size code -> rows of the type-0 window (the code also sets
+  -- how many buttons open: a larger code leaves empty buttons). The panel's height is the window's win_size animation
+  -- of that code (BetterUI assets/lua/sub_window_group/120_window_size.lua plays it again once the window is open)
   BetterUI_CharaMenu.SIZE_BY_ROWS = {[1] = 0, [2] = 0, [3] = 1, [4] = 2, [5] = 6, [6] = 3, [7] = 7, [8] = 8, [9] = 4}
   BetterUI_CharaMenu.MAX_ROWS = 9
   BetterUI_CharaMenu.CMND_SUB_WINDOW_POS = 63483614         -- funcLuaCommand(id, x, y): the retail opener's last call
